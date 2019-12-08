@@ -85,5 +85,10 @@ defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automat
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
 
+define('SUPERADMIN',1);
+define('ADMIN',2);
+define('HR',3);
+define('STAFF',4);
+
 define('USER_IMAGE_PATH','uploads/images/users/');
 define('GROUP_IMAGE_PATH','uploads/images/groups/');
