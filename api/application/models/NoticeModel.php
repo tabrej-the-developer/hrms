@@ -14,7 +14,6 @@ class NoticeModel extends CI_Model {
 		if($endDate != null){
 			$queryText .= " AND sentDate <= $endDate";
 		}
-
 		$query = $this->db->query($queryText);
 		return $query->result();
 	}

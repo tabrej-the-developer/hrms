@@ -3,6 +3,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Util extends CI_Controller {
 
+	function __construct() {
+		header('Access-Control-Allow-Origin: *');
+		header("Access-Control-Allow-Headers: X-DEVICE-ID,X-TOKEN, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
+		header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+		$method = $_SERVER['REQUEST_METHOD'];
+		if($method == "OPTIONS") {
+		die();
+		}
+		parent::__construct();
+	}
 
 	public function index(){
 
@@ -23,10 +33,10 @@ class Util extends CI_Controller {
 						$var['centerid'] = $cen->centerid;
 						$var['addStreet'] = $cen->addStreet;
 						$var['addCity'] = $cen->addCity;
-						$var['addState'] = $var->addState;
-						$var['addZip'] = $var->addZip;
-						$var['name'] = $var->name;
-						$var['logo'] = $var->logo;
+						$var['addState'] = $cen->addState;
+						$var['addZip'] = $cen->addZip;
+						$var['name'] = $cen->name;
+						$var['logo'] = $cen->logo;
 						array_push($data,$var);
 					}
 					$mdata['centers'] = $data;

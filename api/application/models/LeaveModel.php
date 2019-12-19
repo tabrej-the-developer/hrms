@@ -34,10 +34,10 @@ class LeaveModel extends CI_Model {
 		$this->load->database();
 		$queryTxt = "SELECT * FROM leaveapplication WHERE userid IN (SELECT id FROM users WHERE center LIKE '%$centerid|%' AND role != 1)";
 		if($startDate != null)
-			$queryText .= " AND startDate <= $startDate";
+			$queryTxt .= " AND startDate <= $startDate";
 		if($endDate != null)
-			$queryText .= " ADN endDate >= $endDate";
-		$query = $this->db->query($queryText);
+			$queryTxt .= " ADN endDate >= $endDate";
+		$query = $this->db->query($queryTxt);
 		return $query->result();
 	}
 
@@ -45,10 +45,10 @@ class LeaveModel extends CI_Model {
 		$this->load->database();
 		$queryTxt = "SELECT * FROM leaveapplication WHERE userid = '$userid'";
 		if($startDate != null)
-			$queryText .= " AND startDate <= $startDate";
+			$queryTxt .= " AND startDate <= $startDate";
 		if($endDate != null)
-			$queryText .= " ADN endDate >= $endDate";
-		$query = $this->db->query($queryText);
+			$queryTxt .= " ADN endDate >= $endDate";
+		$query = $this->db->query($queryTxt);
 		return $query->result();
 	}
 
