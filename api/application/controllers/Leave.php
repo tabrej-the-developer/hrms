@@ -1,39 +1,84 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Leave extends CI_Controller {
+class Leave extends CI_Controller{
 
-	public function CreateLeaveType (){
+	function __construct() {
+		header('Access-Control-Allow-Origin: *');
+		header("Access-Control-Allow-Headers: X-DEVICE-ID,X-TOKEN, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
+		header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+		$method = $_SERVER['REQUEST_METHOD'];
+		if($method == "OPTIONS") {
+		die();
+		}
+		parent::__construct();
+	}
+
+	public function index(){
+
+	}
+
+	public function GetAllLeaveTypes($userid){
 		$headers = $this->input->request_headers();
-		if($headers != null && array_key_exists('X-DEVICE-ID', $headers) && array_key_exists('X-TOKEN', $headers)){
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
-			$res = $this->authModel->getAuthUserId($headers['X-DEVICE-ID'],$headers['X-TOKEN']);
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			if($res != null && $res->userid == $userid){
-				$json = json_decode(file_get_contents('php://input'));
-				if($json != null){
-					$name = $json->name;
-					$slug = $json->slug;
-					$isPaidYN = $json->isPaidYN;
-					$userid = $json->userid;
-					$userDetails = $this->authModel->getUserDetails($userid);
-					if($userDetails != null && $userDetails->role == SUPERADMIN){
-						$this->load->model('leaveModel');
-						$this->leaveModel->createLeaveType($name,$isPaidYN,$slug,$userid);
-						$data['Status'] = 'SUCCESS';
-						http_response_code(200);
-						echo json_encode($data);
+				$userDetails = $this->authModel->getUserDetails($userid);
+				if($userDetails->role == 1){
+					$this->load->model('leaveModel');
+					$leaveTypes = $this->leaveModel->getLeaveTypeBySuperadmin($userid);
+					$data = array();
+					foreach($leaveTypes as $lt){
+						$var['id'] = $lt->id;
+						$var['name'] = $lt->name;
+						$var['slug'] = $lt->slug;
+						$var['isPaidYN'] = $lt->isPaidYN;
+						array_push($data,$var);
 					}
-					else{
-
-						$data['Status'] = 'ERROR';
-						$data['Message'] = "You are not allowed";
-					}
+					$mdata['leaveTypes'] = $data;
 					http_response_code(200);
-					echo json_encode($data);
+					echo json_encode($mdata);
 				}
 				else{
 					http_response_code(401);
 				}
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
+	public function CreateLeaveType(){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $json->userid){
+				$name = $json->name;
+				$slug = $json->slug;
+				$isPaidYN = $json->isPaidYN;
+				$userid = $json->userid;
+				$userDetails = $this->authModel->getUserDetails($userid);
+				if($userDetails != null && $userDetails->role == SUPERADMIN){
+					$this->load->model('leaveModel');
+					$this->leaveModel->createLeaveType($name,$isPaidYN,$slug,$userid);
+					$data['Status'] = 'SUCCESS';
+					http_response_code(200);
+					echo json_encode($data);
+				}
+				else{
+
+					$data['Status'] = 'ERROR';
+					$data['Message'] = "You are not allowed";
+				}
+				http_response_code(200);
+				echo json_encode($data);
 			}
 			else{
 				http_response_code(401);
@@ -47,36 +92,31 @@ class Leave extends CI_Controller {
 
 	public function EditLeaveType(){
 		$headers = $this->input->request_headers();
-		if($headers != null && array_key_exists('X-DEVICE-ID', $headers) && array_key_exists('X-TOKEN', $headers)){
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
-			$res = $this->authModel->getAuthUserId($headers['X-DEVICE-ID'],$headers['X-TOKEN']);
-			if($res != null && $res->userid == $userid){
-				$json = json_decode(file_get_contents('php://input'));
-				if($json != null){
-					$leaveId = $json->leaveId;
-					$name = $json->name;
-					$slug = $json->slug;
-					$isPaidYN = $json->isPaidYN;
-					$userid = $json->userid;
-					$userDetails = $this->authModel->getUserDetails($userid);
-					if($userDetails != null && $userDetails->role == SUPERADMIN){
-						$this->load->model('leaveModel');
-						$this->leaveModel->editLeaveType($leaveId,$name,$isPaidYN,$slug);
-						$data['Status'] = 'SUCCESS';
-						http_response_code(200);
-						echo json_encode($data);
-					}
-					else{
-
-						$data['Status'] = 'ERROR';
-						$data['Message'] = "You are not allowed";
-					}
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $json->userid){
+				$leaveId = $json->leaveId;
+				$name = $json->name;
+				$slug = $json->slug;
+				$isPaidYN = $json->isPaidYN;
+				$userid = $json->userid;
+				$userDetails = $this->authModel->getUserDetails($userid);
+				if($userDetails != null && $userDetails->role == SUPERADMIN){
+					$this->load->model('leaveModel');
+					$this->leaveModel->editLeaveType($leaveId,$name,$isPaidYN,$slug);
+					$data['Status'] = 'SUCCESS';
 					http_response_code(200);
 					echo json_encode($data);
 				}
 				else{
-					http_response_code(401);
+
+					$data['Status'] = 'ERROR';
+					$data['Message'] = "You are not allowed";
 				}
+				http_response_code(200);
+				echo json_encode($data);
 			}
 			else{
 				http_response_code(401);
@@ -90,9 +130,9 @@ class Leave extends CI_Controller {
 
 	public function DeleteLeaveType(){
 		$headers = $this->input->request_headers();
-		if($headers != null && array_key_exists('X-DEVICE-ID', $headers) && array_key_exists('X-TOKEN', $headers)){
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
-			$res = $this->authModel->getAuthUserId($headers['X-DEVICE-ID'],$headers['X-TOKEN']);
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			if($res != null && $res->userid == $userid){
 				$json = json_decode(file_get_contents('php://input'));
 				if($json != null){
@@ -129,9 +169,9 @@ class Leave extends CI_Controller {
 
 	public function GetAllLeavesByCenter($userid,$centerid,$startDate=null,$endDate=null){
 		$headers = $this->input->request_headers();
-		if($headers != null && array_key_exists('X-DEVICE-ID', $headers) && array_key_exists('X-TOKEN', $headers)){
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
-			$res = $this->authModel->getAuthUserId($headers['X-DEVICE-ID'],$headers['X-TOKEN']);
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			if($res != null && $res->userid == $userid){
 				$this->load->model('leaveModel');
 				$allLeaves = $this->leaveModel->getAllLeavesByCenter($centerid,$startDate,$endDate);
@@ -142,7 +182,7 @@ class Leave extends CI_Controller {
 					$var['name'] = $userDetails->name;
 					$var['title'] = $userDetails->title;
 					$var['appliedDate'] = $leaveApp->appliedDate;
-					$leaveDetails = $this->leaveModel->getLeaveType($leaveApp->id);
+					$leaveDetails = $this->leaveModel->getLeaveType($leaveApp->leaveId);
 					$var['leaveTypeName'] = $leaveDetails->name;
 					$var['leaveTypeSlug'] = $leaveDetails->slug;
 					$var['startDate'] = $leaveApp->startDate;
@@ -167,9 +207,9 @@ class Leave extends CI_Controller {
 
 	public function GetAllLeavesByUser($userid,$memeberid,$startDate=null,$endDate=null){
 		$headers = $this->input->request_headers();
-		if($headers != null && array_key_exists('X-DEVICE-ID', $headers) && array_key_exists('X-TOKEN', $headers)){
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
-			$res = $this->authModel->getAuthUserId($headers['X-DEVICE-ID'],$headers['X-TOKEN']);
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			if($res != null && $res->userid == $userid){
 				$this->load->model('leaveModel');
 				$allLeaves = $this->leaveModel->getAllLeavesByUser($centerid,$startDate,$endDate);
@@ -188,6 +228,7 @@ class Leave extends CI_Controller {
 				}
 				$mdata['userid'] = $memeberid;
 				$mdata['name'] = $userDetails->name;
+				$mdata['title'] = $userDetails->title;
 				$mdata['leaves'] = $data;
 				http_response_code(200);
 				echo json_encode($mdata);
@@ -203,9 +244,9 @@ class Leave extends CI_Controller {
 
 	public function ApplyLeave(){
 		$headers = $this->input->request_headers();
-		if($headers != null && array_key_exists('X-DEVICE-ID', $headers) && array_key_exists('X-TOKEN', $headers)){
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
-			$res = $this->authModel->getAuthUserId($headers['X-DEVICE-ID'],$headers['X-TOKEN']);
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			if($res != null && $res->userid == $userid){
 				$json = json_decode(file_get_contents('php://input'));
 				if($json != null){
@@ -235,9 +276,9 @@ class Leave extends CI_Controller {
 
 	public function GetLeaveBalance($userid){
 		$headers = $this->input->request_headers();
-		if($headers != null && array_key_exists('X-DEVICE-ID', $headers) && array_key_exists('X-TOKEN', $headers)){
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
-			$res = $this->authModel->getAuthUserId($headers['X-DEVICE-ID'],$headers['X-TOKEN']);
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			if($res != null && $res->userid == $userid){
 				$this->load->model('leaveModel');
 				$allLeaves = $this->leaveModel->getLeaveBalance($userid);

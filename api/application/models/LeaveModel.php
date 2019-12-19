@@ -24,14 +24,20 @@ class LeaveModel extends CI_Model {
 		return $query->row();
 	}
 
+	public function getLeaveTypeBySuperadmin($userid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM leaves WHERE superAdminId = '$userid'");
+		return $query->result();
+	}
+
 	public function getAllLeavesByCenter($centerid,$startDate = null,$endDate = null){
 		$this->load->database();
 		$queryTxt = "SELECT * FROM leaveapplication WHERE userid IN (SELECT id FROM users WHERE center LIKE '%$centerid|%' AND role != 1)";
 		if($startDate != null)
-			$queryText .= " AND startDate <= $startDate";
+			$queryTxt .= " AND startDate <= $startDate";
 		if($endDate != null)
-			$queryText .= " ADN endDate >= $endDate";
-		$query = $this->db->query($queryText);
+			$queryTxt .= " ADN endDate >= $endDate";
+		$query = $this->db->query($queryTxt);
 		return $query->result();
 	}
 
@@ -39,10 +45,10 @@ class LeaveModel extends CI_Model {
 		$this->load->database();
 		$queryTxt = "SELECT * FROM leaveapplication WHERE userid = '$userid'";
 		if($startDate != null)
-			$queryText .= " AND startDate <= $startDate";
+			$queryTxt .= " AND startDate <= $startDate";
 		if($endDate != null)
-			$queryText .= " ADN endDate >= $endDate";
-		$query = $this->db->query($queryText);
+			$queryTxt .= " ADN endDate >= $endDate";
+		$query = $this->db->query($queryTxt);
 		return $query->result();
 	}
 

@@ -24,6 +24,24 @@ class MessengerModel extends CI_Model {
 		return $query->result();
 	}
 
+	public function GetRecentChat($userid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM chat WHERE senderId = '$userid' OR receiverId = '$userid'");
+		return $query->result();
+	}
+
+	public function GetAllUserChats($userid,$memberid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM chat WHERE (senderId = '$userid' AND receiverId = '$memberid') OR (senderId = '$memberid' AND receiverId = '$userid')");
+		return  $query->result(); 
+	}
+
+	public function GetAllGroupChats($groupId){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM chat WHERE receiverId = '$groupId'");
+		return $query->result();
+	}
+
 	public function CreateGroup($groupName,$adminId,$imageUrl){
 		$groupId = uniqid();
 		$this->load->database();
@@ -38,12 +56,18 @@ class MessengerModel extends CI_Model {
 
 	public function AddMember($groupId,$userid){
 		$this->load->database();
-		$this->db->query("INSERT INTO groupmembers values(0,'$groupId','$userid','CURDATE()')");
+		$this->db->query("INSERT INTO groupmembers values(0,'$groupId','$userid',CURDATE())");
 	}
 
 	public function LeaveGroup($groupId,$userid){
 		$this->load->database();
 		$this->db->query("DELETE FROM groupmembers WHERE groupId = '$groupId' and memberId='$userid'");
+	}
+
+	public function GetGroupMember($groupId,$userid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM groupmembers WHERE groupId='$groupId' AND memberId='$userid'");
+		return $query->row();
 	}
 
 	public function DeleteGroup($groupId){
@@ -65,7 +89,7 @@ class MessengerModel extends CI_Model {
 
 	public function GetMemberDetails($userid){
 		$this->load->database();
-		$query = $this->db->query("SELECT id,name,imageUrl,title FROM userid WHERE id = '$userid'");
+		$query = $this->db->query("SELECT id,name,imageUrl,title FROM users WHERE id = '$userid'");
 		return $query->row();
 	}
 
