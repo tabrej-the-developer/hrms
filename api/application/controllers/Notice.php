@@ -3,11 +3,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Notice extends CI_Controller {
 
+	public function index(){
+		
+	}
+
 	public function GetAllNotices($userid,$startDate = null,$endDate = null){
 		$headers = $this->input->request_headers();
-		if($headers != null && array_key_exists('X-DEVICE-ID', $headers) && array_key_exists('X-TOKEN', $headers)){
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
-			$res = $this->authModel->getAuthUserId($headers['X-DEVICE-ID'],$headers['X-TOKEN']);
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			if($res != null && $res->userid == $userid){
 				$this->load->model('noticeModel');
 				$notices = $this->noticeModel->getAllNotices($userid,$startDate,$endDate);
@@ -15,7 +19,7 @@ class Notice extends CI_Controller {
 				foreach($notices as $notice){
 					$var['noticeId'] = $notice->id;
 					$userDetails = $this->authModel->getUserDetails($notice->senderId);
-					$var['senderId'] = $userDetails->senderId;
+					$var['senderId'] = $notice->senderId;
 					$var['senderName'] = $userDetails->name;
 					$var['subject'] = $notice->subject;
 					$var['text'] = $notice->htmlText;
@@ -38,23 +42,18 @@ class Notice extends CI_Controller {
 
 	public function UpdateStatus(){
 		$headers = $this->input->request_headers();
-		if($headers != null && array_key_exists('X-DEVICE-ID', $headers) && array_key_exists('X-TOKEN', $headers)){
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
-			$res = $this->authModel->getAuthUserId($headers['X-DEVICE-ID'],$headers['X-TOKEN']);
-			if($res != null && $res->userid == $userid){
-				$json = json_decode(file_get_contents('php://input'));
-				if($json != null){
-					$noticeId = $json->noticeId;
-					$userid = $json->userid;
-					$status = $json->status;
-					$this->load->model('noticeModel');
-					$this->noticeModel->updateNotice($userid,$noticeId,$status);
-					http_response_code(200);
-					echo json_encode($data);
-				}
-				else{
-					http_response_code(401);
-				}
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json != null && $res != null && $res->userid == $json->userid){
+				$noticeId = $json->noticeId;
+				$userid = $json->userid;
+				$status = $json->status;
+				$this->load->model('noticeModel');
+				$this->noticeModel->updateNotice($userid,$noticeId,$status);
+				http_response_code(200);
+				echo json_encode($data);
 			}
 			else{
 				http_response_code(401);
@@ -67,9 +66,9 @@ class Notice extends CI_Controller {
 
 	public function AddNotice(){
 		$headers = $this->input->request_headers();
-		if($headers != null && array_key_exists('X-DEVICE-ID', $headers) && array_key_exists('X-TOKEN', $headers)){
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
-			$res = $this->authModel->getAuthUserId($headers['X-DEVICE-ID'],$headers['X-TOKEN']);
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			if($res != null && $res->userid == $userid){
 				$json = json_decode(file_get_contents('php://input'));
 				if($json != null){
