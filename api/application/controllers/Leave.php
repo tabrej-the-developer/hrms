@@ -24,25 +24,20 @@ class Leave extends CI_Controller{
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			if($res != null && $res->userid == $userid){
-				$userDetails = $this->authModel->getUserDetails($userid);
-				if($userDetails->role == 1){
-					$this->load->model('leaveModel');
-					$leaveTypes = $this->leaveModel->getLeaveTypeBySuperadmin($userid);
-					$data = array();
-					foreach($leaveTypes as $lt){
-						$var['id'] = $lt->id;
-						$var['name'] = $lt->name;
-						$var['slug'] = $lt->slug;
-						$var['isPaidYN'] = $lt->isPaidYN;
-						array_push($data,$var);
-					}
-					$mdata['leaveTypes'] = $data;
-					http_response_code(200);
-					echo json_encode($mdata);
+				$userDetails = $this->authModel->getSuperAdminId($userid);
+				$this->load->model('leaveModel');
+				$leaveTypes = $this->leaveModel->getLeaveTypeBySuperadmin($userDetails->id);
+				$data = array();
+				foreach($leaveTypes as $lt){
+					$var['id'] = $lt->id;
+					$var['name'] = $lt->name;
+					$var['slug'] = $lt->slug;
+					$var['isPaidYN'] = $lt->isPaidYN;
+					array_push($data,$var);
 				}
-				else{
-					http_response_code(401);
-				}
+				$mdata['leaveTypes'] = $data;
+				http_response_code(200);
+				echo json_encode($mdata);
 			}
 			else{
 				http_response_code(401);
@@ -133,30 +128,25 @@ class Leave extends CI_Controller{
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
-			if($res != null && $res->userid == $userid){
-				$json = json_decode(file_get_contents('php://input'));
-				if($json != null){
-					$leaveId = $json->leaveId;
-					$userid = $json->userid;
-					$userDetails = $this->authModel->getUserDetails($userid);
-					if($userDetails != null && $userDetails->role == SUPERADMIN){
-						$this->load->model('leaveModel');
-						$this->leaveModel->deleteLeaveType($leaveId);
-						$data['Status'] = 'SUCCESS';
-						http_response_code(200);
-						echo json_encode($data);
-					}
-					else{
-
-						$data['Status'] = 'ERROR';
-						$data['Message'] = "You are not allowed";
-					}
+			$json = json_decode(file_get_contents('php://input'));
+			if($json != null && $res != null && $res->userid == $json->userid){
+				$leaveId = $json->leaveId;
+				$userid = $json->userid;
+				$userDetails = $this->authModel->getUserDetails($userid);
+				if($userDetails != null && $userDetails->role == SUPERADMIN){
+					$this->load->model('leaveModel');
+					$this->leaveModel->deleteLeaveType($leaveId);
+					$data['Status'] = 'SUCCESS';
 					http_response_code(200);
 					echo json_encode($data);
 				}
 				else{
-					http_response_code(401);
+
+					$data['Status'] = 'ERROR';
+					$data['Message'] = "You are not allowed";
 				}
+				http_response_code(200);
+				echo json_encode($data);
 			}
 			else{
 				http_response_code(401);
@@ -177,14 +167,17 @@ class Leave extends CI_Controller{
 				$allLeaves = $this->leaveModel->getAllLeavesByCenter($centerid,$startDate,$endDate);
 				$data = array();
 				foreach ($allLeaves as $leaveApp) {
+					$var['id'] = $leaveApp->applicationId;
 					$var['userid'] = $leaveApp->userid;
 					$userDetails = $this->authModel->getUserDetails($var['userid']);
 					$var['name'] = $userDetails->name;
 					$var['title'] = $userDetails->title;
 					$var['appliedDate'] = $leaveApp->appliedDate;
 					$leaveDetails = $this->leaveModel->getLeaveType($leaveApp->leaveId);
-					$var['leaveTypeName'] = $leaveDetails->name;
-					$var['leaveTypeSlug'] = $leaveDetails->slug;
+					if($leaveDetails != null){
+						$var['leaveTypeName'] = $leaveDetails->name;
+						$var['leaveTypeSlug'] = $leaveDetails->slug;
+					}
 					$var['startDate'] = $leaveApp->startDate;
 					$var['endDate'] = $leaveApp->endDate;
 					$var['status'] = $leaveApp->status == 1 ? "Applied" : ($leaveApp->status == 2 ? "Approved" : "Rejected");
@@ -212,12 +205,13 @@ class Leave extends CI_Controller{
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			if($res != null && $res->userid == $userid){
 				$this->load->model('leaveModel');
-				$allLeaves = $this->leaveModel->getAllLeavesByUser($centerid,$startDate,$endDate);
+				$allLeaves = $this->leaveModel->getAllLeavesByUser($userid,$startDate,$endDate);
 				$userDetails = $this->authModel->getUserDetails($memeberid);
 				$data = array();
 				foreach ($allLeaves as $leaveApp) {
+					$var['id'] = $leaveApp->applicationId;
 					$var['appliedDate'] = $leaveApp->appliedDate;
-					$leaveDetails = $this->leaveModel->getLeaveType($leaveApp->id);
+					$leaveDetails = $this->leaveModel->getLeaveType($leaveApp->leaveId);
 					$var['leaveTypeName'] = $leaveDetails->name;
 					$var['leaveTypeSlug'] = $leaveDetails->slug;
 					$var['startDate'] = $leaveApp->startDate;
@@ -247,23 +241,18 @@ class Leave extends CI_Controller{
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
-			if($res != null && $res->userid == $userid){
-				$json = json_decode(file_get_contents('php://input'));
-				if($json != null){
-					$userid = $json->userid;
-					$leaveTypeId = $json->leaveTypeId;
-					$startDate = $json->startDate;
-					$endDate = $json->endDate;
-					$notes = $json->notes;
-					$this->load->model('leaveModel');
-					$this->leaveModel->applyLeave($userid,$leaveTypeId,$startDate,$endDate,$notes);
-					$data['Status'] = 'SUCCESS';
-					http_response_code(200);
-					echo json_encode($data);
-				}
-				else{
-					http_response_code(401);
-				}
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $json->userid){
+				$userid = $json->userid;
+				$leaveTypeId = $json->leaveTypeId;
+				$startDate = $json->startDate;
+				$endDate = $json->endDate;
+				$notes = $json->notes;
+				$this->load->model('leaveModel');
+				$this->leaveModel->applyLeave($userid,$leaveTypeId,$startDate,$endDate,$notes);
+				$data['Status'] = 'SUCCESS';
+				http_response_code(200);
+				echo json_encode($data);
 			}
 			else{
 				http_response_code(401);
@@ -298,6 +287,30 @@ class Leave extends CI_Controller{
 				$mdata['balance'] = $data;
 				http_response_code(200);
 				echo json_encode($mdata);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
+	public function UpdateLeaveApplication(){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $json->userid){
+				$leaveApplication = $json->leaveApplication;
+				$status = $json->status;
+				$this->load->model('leaveModel');
+				$this->leaveModel->updateLeave($leaveApplication,$status);
+				$data['Status'] = 'SUCCESS';
+				http_response_code(200);
+				echo json_encode($data);
 			}
 			else{
 				http_response_code(401);

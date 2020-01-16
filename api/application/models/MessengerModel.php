@@ -26,8 +26,14 @@ class MessengerModel extends CI_Model {
 
 	public function GetRecentChat($userid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM chat WHERE senderId = '$userid' OR receiverId = '$userid'");
-		return $query->result();
+		$query = $this->db->query("SELECT DISTINCT(u1.id) FROM users as u1 JOIN chat on u1.id = chat.senderId WHERE chat.receiverId = '$userid' UNION SELECT DISTINCT(u2.id) FROM users as u2 JOIN chat on u2.id = chat.receiverId WHERE chat.senderId = '$userid'");
+		$var = array();
+		foreach($query->result() as $cu) {
+			$chatUsers = $cu->id;
+			$q = $this->db->query ("SELECT * FROM chat WHERE chatId = (SELECT MAX(chat.chatId) FROM chat WHERE (chat.senderId = '$chatUsers' and chat.receiverId = '$userid') or (chat.receiverId = '$chatUsers' and chat.senderId = '$userid'))");
+			array_push($var,$q->row());
+		}
+		return $var;
 	}
 
 	public function GetAllUserChats($userid,$memberid){
@@ -109,5 +115,10 @@ class MessengerModel extends CI_Model {
 		$this->load->database();
 		$query = $this->db->query("SELECT COUNT(id) as count from groupmembers where groupId='$groupId'");
 		return $query->row();
+	}
+
+	public function PostChat($senderId,$receiverId,$isGroupYN,$chatText,$mediaContent){
+		$this->load->database();
+		$query = $this->db->query("INSERT INTO chat VALUES(0,'$senderId','$receiverId','$isGroupYN','$chatText',now(),'$mediaContent')");
 	}
 }

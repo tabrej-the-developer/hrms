@@ -62,4 +62,9 @@ class LeaveModel extends CI_Model {
 		$query = $this->db->query("SELECT * FROM leavebalance WHERE userid = '$userid'");
 		return $query->result();
 	}
+
+	public function updateLeave($leaveApp,$status){
+		$this->load->database();
+		$this->db->query("UPDATE leaveapplication SET status = $status WHERE applicationId=$leaveApp");
+	}
 }

@@ -82,24 +82,19 @@ class Messenger extends CI_Controller {
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			$json = json_decode(file_get_contents('php://input'));
 			if($json != null && $res != null && $res->userid == $json->admin){
-				if($json != null){
-					$groupName = $json->groupName;
-					$avatarUrl = $json->avatarUrl;
-					$adminId = $json->admin;
-					$this->load->model('messengerModel');
-					$groupId = $this->messengerModel->CreateGroup($groupName,$adminId,$avatarUrl);
-					foreach ($json->members as $groupMember) {
-						$this->messengerModel->AddMember($groupId,$groupMember);
-					}
-					$this->messengerModel->AddMember($groupId,$adminId);
-					$data['groupId'] = $groupId;
-					$data['Status'] = 'SUCCESS';
-					http_response_code(200);
-					echo json_encode($data);
+				$groupName = $json->groupName;
+				$avatarUrl = $json->avatarUrl;
+				$adminId = $json->admin;
+				$this->load->model('messengerModel');
+				$groupId = $this->messengerModel->CreateGroup($groupName,$adminId,$avatarUrl);
+				foreach ($json->members as $groupMember) {
+					$this->messengerModel->AddMember($groupId,$groupMember);
 				}
-				else{
-					http_response_code(401);
-				}
+				$this->messengerModel->AddMember($groupId,$adminId);
+				$data['groupId'] = $groupId;
+				$data['Status'] = 'SUCCESS';
+				http_response_code(200);
+				echo json_encode($data);
 			}
 			else{
 				http_response_code(401);
@@ -115,30 +110,25 @@ class Messenger extends CI_Controller {
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
-			if($res != null && $res->userid == $userid){
-				$json = json_decode(file_get_contents('php://input'));
-				if($json != null){
-					$groupId = $json->groupId;
-					$adminId = $json->admin;
-					$this->load->model('messengerModel');
-					$g = $this->messengerModel->GetGroupInfo($groupId);
-					$data = [];
-					if($g->adminId == $adminId){
-						foreach ($json->members as $groupMember) {
-							$this->messengerModel->AddMember($groupId,$groupMember->memberid);
-						}
-						$data['Status'] = 'SUCCESS';
+			$json = json_decode(file_get_contents('php://input'));
+			if($json != null && $res != null && $res->userid == $json->userid){
+				$groupId = $json->groupId;
+				$adminId = $json->admin;
+				$this->load->model('messengerModel');
+				$g = $this->messengerModel->GetGroupInfo($groupId);
+				$data = [];
+				if($g->adminId == $adminId){
+					foreach ($json->members as $groupMember) {
+						$this->messengerModel->AddMember($groupId,$groupMember->memberid);
 					}
-					else{
-						$data['Status'] = 'ERROR';
-						$data['Message'] = 'Incorrect admin Id';
-					}
-					http_response_code(200);
-					echo json_encode($data);
+					$data['Status'] = 'SUCCESS';
 				}
 				else{
-					http_response_code(401);
+					$data['Status'] = 'ERROR';
+					$data['Message'] = 'Incorrect admin Id';
 				}
+				http_response_code(200);
+				echo json_encode($data);
 			}
 			else{
 				http_response_code(401);
@@ -154,21 +144,16 @@ class Messenger extends CI_Controller {
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
-			if($res != null && $res->userid == $userid){
-				$json = json_decode(file_get_contents('php://input'));
-				if($json != null){
-					$groupId = $json->groupId;
-					$groupName = $json->groupName;
-					$avatarUrl = $json->avatarUrl;
-					$this->load->model('messengerModel');
-					$this->messengerModel->UpdateGroup($groupName,$avatarUrl,$groupId);
-					$data['Status'] = 'SUCCESS';
-					http_response_code(200);
-					echo json_encode($data);
-				}
-				else{
-					http_response_code(401);
-				}
+			$json = json_decode(file_get_contents('php://input'));
+			if($json != null && $res != null && $res->userid == $json->userid){
+				$groupId = $json->groupId;
+				$groupName = $json->groupName;
+				$avatarUrl = $json->avatarUrl;
+				$this->load->model('messengerModel');
+				$this->messengerModel->UpdateGroup($groupName,$avatarUrl,$groupId);
+				$data['Status'] = 'SUCCESS';
+				http_response_code(200);
+				echo json_encode($data);
 			}
 			else{
 				http_response_code(401);
@@ -184,20 +169,15 @@ class Messenger extends CI_Controller {
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
-			if($res != null && $res->userid == $userid){
-				$json = json_decode(file_get_contents('php://input'));
-				if($json != null){
-					$groupId = $json->groupId;
-					$userid = $json->userid;
-					$this->load->model('messengerModel');
-					$this->messengerModel->LeaveGroup($groupId,$userid);
-					$data['Status'] = 'SUCCESS';
-					http_response_code(200);
-					echo json_encode($data);
-				}
-				else{
-					http_response_code(401);
-				}
+			$json = json_decode(file_get_contents('php://input'));
+			if($json != null && $res != null && $res->userid == $userid){
+				$groupId = $json->groupId;
+				$userid = $json->userid;
+				$this->load->model('messengerModel');
+				$this->messengerModel->LeaveGroup($groupId,$userid);
+				$data['Status'] = 'SUCCESS';
+				http_response_code(200);
+				echo json_encode($data);
 			}
 			else{
 				http_response_code(401);
@@ -213,27 +193,22 @@ class Messenger extends CI_Controller {
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
-			if($res != null && $res->userid == $userid){
-				$json = json_decode(file_get_contents('php://input'));
-				if($json != null){
-					$groupId = $json->groupId;
-					$userid = $json->userid;
-					$this->load->model('messengerModel');
-					$g = $this->messengerModel->GetGroupInfo($groupId);
-					if($g->adminId == $userid){
-						$this->messengerModel->DeleteGroup($groupId);
-						$data['Status'] = 'SUCCESS';
-					}
-					else{
-						$data['Status'] = 'ERROR';
-						$data['Message'] = 'Permission denied';
-					}
-					http_response_code(200);
-					echo json_encode($data);
+			$json = json_decode(file_get_contents('php://input'));
+			if($res != null && $res->userid == $json->userid){
+				$groupId = $json->groupId;
+				$userid = $json->userid;
+				$this->load->model('messengerModel');
+				$g = $this->messengerModel->GetGroupInfo($groupId);
+				if($g->adminId == $userid){
+					$this->messengerModel->DeleteGroup($groupId);
+					$data['Status'] = 'SUCCESS';
 				}
 				else{
-					http_response_code(401);
+					$data['Status'] = 'ERROR';
+					$data['Message'] = 'Permission denied';
 				}
+				http_response_code(200);
+				echo json_encode($data);
 			}
 			else{
 				http_response_code(401);
@@ -378,7 +353,7 @@ class Messenger extends CI_Controller {
 				$chats = $this->messengerModel->GetAllUserChats($userid,$memberid);
 				$data = array();
 				foreach ($chats as $ch) {
-					$var['id'] = $ch->id;
+					$var['id'] = $ch->chatId;
 					$var['senderId'] = $ch->senderId;
 					$var['receiverId'] = $ch->receiverId;
 					$var['chatText'] = $ch->chatText;
@@ -412,7 +387,7 @@ class Messenger extends CI_Controller {
 					$chats = $this->messengerModel->GetAllGroupChats($groupId);
 					$data = array();
 					foreach ($chats as $ch) {
-						$var['id'] = $ch->id;
+						$var['id'] = $ch->chatId;
 						$var['senderId'] = $ch->senderId;
 						$var['receiverId'] = $ch->receiverId;
 						$var['chatText'] = $ch->chatText;
@@ -429,6 +404,33 @@ class Messenger extends CI_Controller {
 					$mdata['Status'] = "ERROR";
 					$mdata['Message'] = "You are not allowed to view chats in this group.";
 				}
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
+	public function PostChat(){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json != null && $res != null && $res->userid == $json->userid){
+				$senderId = $json->userid;
+				$receiverId = $json->receiverId;
+				$isGroupYN = $json->isGroupYN;
+				$chatText = $json->chatText;
+				$mediaContent = $json->mediaContent;
+				$this->load->model('messengerModel');
+				$this->messengerModel->PostChat($senderId,$receiverId,$isGroupYN,$chatText,$mediaContent);
+				$data['Status'] = 'SUCCESS';
+				http_response_code(200);
+				echo json_encode($data);
 			}
 			else{
 				http_response_code(401);
