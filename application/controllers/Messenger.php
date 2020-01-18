@@ -24,14 +24,7 @@ class Messenger extends CI_Controller {
 	}
 
 	public function chats($currentUserId=null,$isGroupYN=null){
-		$this->session->set_userdata(array(
-			'AuthToken'=>'5488S5DD8D2C8V58SF5SD5SDDS',
-			'LoginId'=>'ab',
-			'UserType'=>'Superadmin',
-			'Name'=>'Arpita Saxena',
-			'ImgUrl'=>'http://www.oetdlabs.com/images/arpita.jpg',
-			'x-device-id'=>'123',
-		));
+
 		if($currentUserId != null && $isGroupYN == null) return;
 		if($this->session->has_userdata('LoginId')){
 			$data['recentChats'] = $this->getRecentChats();

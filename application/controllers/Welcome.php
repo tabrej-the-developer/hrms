@@ -20,7 +20,49 @@ class Welcome extends CI_Controller {
 	 */
 	public function index($currentUserId=null,$isGroupYN=null)
 	{
-		$this->load->view('leaves/leaves_tracking');
+		$this->load->view('login');
 	}
 
+	public function login(){
+		$this->load->helper('form');
+		$form_data = $this->input->post();
+		if($form_data != null){
+			$email = $form_data['email'];
+			$password = $form_data['password'];
+			if($email == "ab"){
+				$this->session->set_userdata(array(
+					'AuthToken'=>'5488S5DD8D2C8V58SF5SD5SDDS',
+					'LoginId'=>'ab',
+					'UserType'=>'Superadmin',
+					'Name'=>'Arpita Saxena',
+					'ImgUrl'=>'http://www.oetdlabs.com/images/arpita.jpg',
+					'x-device-id'=>'123',
+				));
+				redirect('messenger');
+			}
+			else if($email == "abcd"){
+				$this->session->set_userdata(array(
+					'AuthToken'=>'5488S5DD8D2C8V58SF5SD5SDDM',
+					'LoginId'=>'abcd',
+					'UserType'=>'Admin',
+					'Name'=>'Arpita Saxena',
+					'ImgUrl'=>'http://www.oetdlabs.com/images/arpita.jpg',
+					'x-device-id'=>'123',
+				));
+				redirect('messenger');
+
+			}
+			else if($email == "staff1"){
+				$this->session->set_userdata(array(
+					'AuthToken'=>'5488S5DD8D2C8V58SF5SD5SDDT',
+					'LoginId'=>'staff1',
+					'UserType'=>'Staff',
+					'Name'=>'Arpita Saxena',
+					'ImgUrl'=>'http://www.oetdlabs.com/images/arpita.jpg',
+					'x-device-id'=>'123',
+				));
+				redirect('messenger');
+			}
+		}
+	}
 }
