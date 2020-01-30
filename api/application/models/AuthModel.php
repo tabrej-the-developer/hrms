@@ -21,4 +21,55 @@ class AuthModel extends CI_Model {
 		$query = $this->db->query("SELECT * FROM `users` where role = 1 and instr(center,(SELECT u.center FROM users as u WHERE u.id='$userid'))");
 		return $query->row();
 	}
+
+	public function getUserFromEmail($email){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM users where email = '$email'");
+		return $query->row();
+	}
+
+	public function insertUser($email,$password,$name,$role,$title,$center,$manager,$firbaseuid){
+		$this->load->database();
+		$uid = uniqid();
+		$query = $this->db->query("INSERT INTO users VALUES('$uid','$email','$password','$name',null,$role,'$title','$center|','$manager','$firbaseuid','N','now()')");
+		return $uid;
+	}
+
+	public function verifyUser($userid){
+		$this->load->database();
+		$query = $this->db->query("UPDATE users SET isVerified = 'Y' WHERE id='$userid'");
+	}
+
+	public function insertToken($userid,$token,$isForgotYN){
+		$this->load->database();
+		$query = $this->db->query("INSERT INTO authtokens VALUES(0,'$userid','$token','$isForgotYN')");
+	}
+
+	public function getToken($userid,$token){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM authtokens WHERE userid = '$userid' AND token = '$token'");
+		return $query->row();
+	}
+
+	public function deleteToken($userid,$token){
+		$this->load->database();
+		$this->db->query("DELETE FROM authtokens WHERE userid='$userid' AND token = '$token'");
+	}
+
+	public function updatePassword($userid,$password){
+		$this->load->database();
+		$this->db->query("UPDATE users SET password = '$password' WHERE id='$userid'");
+	}
+
+	public function getUser($email,$password){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM users WHERE email='$email' and password='$password'");
+		return $query->row();
+	}
+
+	public function insertLogin($userid,$deviceid,$token){
+		$this->load->database();
+		$query = $this->db->query("DELETE FROM logins WHERE userid = '$userid'");
+		$query = $this->db->query("INSERT INTO logins VALUES(0,'$userid','now()','$deviceid','$token','N')");
+	}
 }

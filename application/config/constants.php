@@ -86,3 +86,8 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 
 
 define('BASE_API_URL','http://todquest.com/PN101/api/');
+
+define('SUPERADMIN',1);
+define('ADMIN',2);
+define('HR',3);
+define('STAFF',4);

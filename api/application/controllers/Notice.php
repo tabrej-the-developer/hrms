@@ -64,6 +64,7 @@ class Notice extends CI_Controller {
 				$this->load->model('noticeModel');
 				$this->noticeModel->updateNotice($userid,$noticeId,$status);
 				http_response_code(200);
+				$data['Status'] = "SUCCESS";
 				echo json_encode($data);
 			}
 			else{

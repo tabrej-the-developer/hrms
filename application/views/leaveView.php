@@ -70,7 +70,7 @@
 			border-bottom:none;
 			border-top-left-radius:0;
 			border-top-right-radius:0;
-			background-color: #17a2b8;
+			background-color: #307bd3;
 			color: #fff;
 		}
 		.modal-content {
@@ -195,7 +195,7 @@ img{ max-width:140%;}
                 </div>
 
 <?php
-	if($this->session->userdata('UserType') != 'Superadmin'){ ?>
+	if($this->session->userdata('UserType') != SUPERADMIN){ ?>
 				<div class="row mt-3">
                     <div class="col-md-12"><h6>Leave Balance</h6></div>
                 </div>
@@ -265,14 +265,14 @@ img{ max-width:140%;}
                     <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
 
 	              <?php
-	              	if($this->session->userdata('UserType') != 'Staff' && $this->session->userdata('UserType') != 'Superadmin'){ ?>
+	              	if($this->session->userdata('UserType') != STAFF && $this->session->userdata('UserType') != SUPERADMIN){ ?>
                       <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Leave Approvals</a>
                   <?php }?>
                      
-                  	<a class="nav-item nav-link <?php if($this->session->userdata('UserType') == 'Staff' || $this->session->userdata('UserType') == 'Superadmin') echo 'active';?>" id="nav-contact-tab1" data-toggle="tab" href="#nav-contact1" role="tab" aria-controls="nav-contact" aria-selected="false">My Leave Requests</a>
+                  	<a class="nav-item nav-link <?php if($this->session->userdata('UserType') == STAFF || $this->session->userdata('UserType') == SUPERADMIN) echo 'active';?>" id="nav-contact-tab1" data-toggle="tab" href="#nav-contact1" role="tab" aria-controls="nav-contact" aria-selected="false">My Leave Requests</a>
 					  
 	              <?php
-	              	if($this->session->userdata('UserType') == 'Superadmin'){ ?>
+	              	if($this->session->userdata('UserType') == SUPERADMIN){ ?>
 				  	<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Manage Leave Type</a>
 					<?php }?>
                      
@@ -280,7 +280,7 @@ img{ max-width:140%;}
                   </nav>
         <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
           	<?php
-          	if($this->session->userdata('UserType') != 'Staff' && $this->session->userdata('UserType') != 'Superadmin'){ ?>
+          	if($this->session->userdata('UserType') != STAFF && $this->session->userdata('UserType') != SUPERADMIN){ ?>
 				<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
 	              	<div class="card">
 	                <div class="card-header">
@@ -365,14 +365,14 @@ img{ max-width:140%;}
 	      	<?php }?>
 
               
-				  <div class="tab-pane fade <?php if($this->session->userdata('UserType') == 'Staff' || $this->session->userdata('UserType') == 'Superadmin') echo 'show active';?>" id="nav-contact1" role="tabpanel" aria-labelledby="nav-home-tab">
+				  <div class="tab-pane fade <?php if($this->session->userdata('UserType') == STAFF || $this->session->userdata('UserType') == SUPERADMIN) echo 'show active';?>" id="nav-contact1" role="tabpanel" aria-labelledby="nav-home-tab">
 	                  	<div class="card">
 			                <div class="card-header">
 							<div class="row">
 			                    <div class="col-md-6"></div>
 								<div class="col-md-6 text-right">
 									<?php 
-									if($this->session->userdata('UserType') != 'Superadmin'){ ?>
+									if($this->session->userdata('UserType') != SUPERADMIN){ ?>
 										<button type="button" name="apply_button" id="apply_button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal"> <i class="fas fa-plus-circle"></i> Apply Leave</button>
 									<?php }?>
 								</div>
@@ -383,7 +383,7 @@ img{ max-width:140%;}
 			                        <thead>
 			                            <tr class="text-muted">
 	                            	<?php
-	                            		if($this->session->userdata('UserType') == 'Superadmin'){ ?>
+	                            		if($this->session->userdata('UserType') == SUPERADMIN){ ?>
 			                            <th>Emp Name</th>
 			                            <th>Emp Designation</th>
 			                        <?php }?>
@@ -401,7 +401,7 @@ img{ max-width:140%;}
 			                        	foreach ($leaves->leaves as $l) { ?>
 										<tr>
 	                            		<?php
-	                            			if($this->session->userdata('UserType') == 'Superadmin'){ ?>
+	                            			if($this->session->userdata('UserType') == SUPERADMIN){ ?>
 											<td><?php echo $l->name;?></td>
 											<td><?php echo $l->title;?></td>
 			                       		<?php }?>
@@ -444,7 +444,7 @@ img{ max-width:140%;}
 			      </div>
               
           	<?php
-          		if($this->session->userdata('UserType') == 'Superadmin'){ ?>
+          		if($this->session->userdata('UserType') == SUPERADMIN){ ?>
                     <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
 						<div class="card-header">
 							<div class="row">

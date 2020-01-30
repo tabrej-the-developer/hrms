@@ -118,7 +118,7 @@
             <a class="nav-link" href="javascript:void(0);" style="color:#f5f5f5;"><i class="fas fa-user-circle" style="color:#f5f5f5;"></i> <?php echo strtoupper($this->session->userdata('email')) ?></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="<?php echo base_url();?>main/logout" style="color:#f5f5f5;"><i class="fas fa-sign-out-alt" style="color:#f5f5f5;"></i>Logout</a>
+            <a class="nav-link" href="<?php echo base_url();?>welcome/logout" style="color:#f5f5f5;"><i class="fas fa-sign-out-alt" style="color:#f5f5f5;"></i>Logout</a>
           </li>
         </ul>
       </div>

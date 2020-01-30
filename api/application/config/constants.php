@@ -90,5 +90,9 @@ define('ADMIN',2);
 define('HR',3);
 define('STAFF',4);
 
+define('APP_NAME','Personnel');
+define('SMTP_EMAIL','spotlist@todquest.com');
+define('SMTP_PASSWORD','K!ddz1ng');
+
 define('USER_IMAGE_PATH','uploads/images/users/');
 define('GROUP_IMAGE_PATH','uploads/images/groups/');

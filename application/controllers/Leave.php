@@ -5,7 +5,7 @@ class Leave extends CI_Controller {
 
 	public function index(){
 
-		if($this->session->userdata('UserType') == 'Superadmin'){
+		if($this->session->userdata('UserType') == SUPERADMIN){
 			$data['leaveType'] = $this->getLeaveType();
 			$data['centers'] = $this->getAllCenters();
 			if($data['centers'] != null){
@@ -13,7 +13,7 @@ class Leave extends CI_Controller {
 				$data['leaves'] = $this->getLeaveByCenter($centers[0]->centerid);
 			}
 		}
-		else if($this->session->userdata('UserType') == 'Staff'){
+		else if($this->session->userdata('UserType') == STAFF){
 			$data['balance'] = $this->getLeaveBalance();
 			$data['leaves'] = $this->getAllLeavesByUser();
 		}

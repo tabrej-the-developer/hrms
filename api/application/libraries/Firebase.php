@@ -28,10 +28,8 @@ class Firebase{
         $userProperties = [
             'email' => $data['email'],
             'emailVerified' => $data['verified'],
-            'phoneNumber' => $data['phone'],
             'password' => $data['password'],
             'displayName' => $data['name'],
-            'photoUrl' => $data['photoUrl'],
             'disabled' => false,
         ];
 
