@@ -8,6 +8,9 @@
 <head>
 <?php $this->load->view('header'); ?>
 <style>
+  body{
+    overflow-y:hidden;
+  }
 .container{max-width:1150px; margin:auto;}
 img{ max-width:75%;}
 
@@ -47,8 +50,9 @@ img{ max-width:75%;}
 .inbox_people {
   background: #f8f8f8 none repeat scroll 0 0;
   float: left;
-  overflow: hidden;
   width: 25%; border-right:1px solid #c4c4c4;
+  top:0;
+  position:sticky;
 }
 .inbox_msg {
   border: none;
@@ -99,7 +103,12 @@ img{ max-width:75%;}
   margin: 0;
   padding: 10px 16px 5px;
 }
-.inbox_chat { height: 597px; overflow-y: scroll;  background: #cccccc73;}
+.chat_list:hover{
+  background:white;
+  cursor:pointer;
+}
+.inbox_chat { 
+  max-height: 70vh; overflow-y: scroll;overflow-x:hidden;word-wrap: wrap;  background: #cccccc73;}
 
 .active_chat{ background:#ebebeb;}
 
@@ -181,7 +190,6 @@ button:focus {
 }
 .messaging { padding: 0 0 50px 0;}
 .msg_history {
-  height: 516px;
   overflow-y: auto;
 }
 hr {
@@ -559,7 +567,7 @@ table {
 </style>
 </head>
 <body>
-<div class="container">
+<div class="container " id="container">
 <div class="messaging">
       <div class="inbox_msg">
         <div class="inbox_people">
@@ -573,7 +581,7 @@ table {
 			</div>
 
           </div>
-		  <p  style="background: #cccccc94; margin: 0; font-size: 18px; padding: 10px 10px 10px 20px;">General</p>
+		  <p  style="background: #8198A3;color:white; margin: 0; font-size: 18px; padding: 10px 10px 10px 20px;">General</p>
           <div class="inbox_chat">
             <?php
               $recents = json_decode($recentChats);
@@ -595,7 +603,7 @@ table {
         </div>
                 <div class="chat_ib">
                   <h5><?php echo $rc->name;?></h5>
-                  <p><?php echo $rc->lastText;?></p>
+                  <p><?php echo substr($rc->lastText,0,50);?></p>
                 </div>
               </div>
             </div>
@@ -745,10 +753,10 @@ table {
 				</div>
 		<!-- add to group model end -->
 		<div class="container header">
-		<div class="row">
+		<div class="row" style="display:flex;justify-content:flex-end;margin:0">
 			
 			<div class="col-md-4 header-right">
-			<div class="row">
+			<div class="row" style="display:flex;justify-content:center;margin:0">
 				<a href="javascript:void(0);" id="contact_us">
           <?php
             $currentUserInfo = json_decode($currentUserInfo);
@@ -756,7 +764,7 @@ table {
               $currentUserInfo->avatarUrl = base_url().'assets/images/defaultUser.png';
             }
           ?>
-				<div class="icon">
+				<div class="icon" style="display:flex;justify-content:center;margin:0">
           <img class="altimg-main" src="<?php echo $currentUserInfo->avatarUrl;?>" alt="img_src">
         </div></a>
 				<p style="margin: 0; font-size: 20px; padding: 15px 10px 10px 20px;color: #1c73b8;"><?php 
@@ -767,7 +775,6 @@ table {
           ?></p>
 			</div>
 			</div>
-			<div class="col-md-4"></div>
 			<!--<div class="col-md-4 header-right">
 			<div class="dropdown">
               <a href="#"><i class="fas fa-ellipsis-v" style="float:right; margin-top: 20px; color: #607d8bc4; font-size: 19px;"></i></a>
@@ -781,8 +788,8 @@ table {
 			
 		</div>		
 	</div>
-        <div class="mesgs">
-          <div class="msg_history">
+        <div class="mesgs" style="height:70vh;">
+          <div class="msg_history" id="msg_history">
           <?php
               $currentChat = json_decode($currentChat);
               foreach ($currentChat->chats as $chats) { ?>
@@ -807,10 +814,11 @@ table {
           <div class="type_msg">
             <div class="input_msg_write">
               <form method="post" action="<?php echo base_url().'messenger/postNewMessage';?>" id="chatForm">
-              <input type="text" class="write_msg" id="chatText" name="chatText" placeholder=" Type your message..." />
+              <input type="text" class="write_msg" id="chatText" name="chatText" placeholder=" Type your message..." autofocus />
               <input type="hidden" name="receiverId" id="receiverId" value="<?php echo $currentUserId;?>">
               <input type="hidden" name="isGroupYN" id="isGroupYN" value="<?php echo $isGroupYN;?>">
               <button class="msg_send_btn" type="button" onclick="sendMessage()">SEND</button>
+            </form>
             </div>
           </div>
 		  
@@ -1016,9 +1024,19 @@ $('.save').click(function(){
 	</script>
 
   <script type="text/javascript">
+    
     var base_url = "<?php echo base_url();?>";
     function loadNewChat(userid,isGroupYN){
-      window.location.href = base_url + "messenger/chats/" + userid +"/" + isGroupYN;
+        $('#container').text('loading . . .');
+
+      $.ajax({
+        type:'POST',
+        url : base_url + "messenger/chats/" + userid +"/" + isGroupYN,
+        
+        success: function(response) {
+          $('#container').html(response)
+        }
+    });
     }
 
     function saveGroup(){
