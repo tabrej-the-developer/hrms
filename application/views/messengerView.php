@@ -789,6 +789,7 @@ table {
 		</div>		
 	</div>
         <div class="mesgs" style="height:70vh;">
+          <span id = "onlyMsgs">
           <div class="msg_history" id="msg_history">
           <?php
               $currentChat = json_decode($currentChat);
@@ -807,7 +808,7 @@ table {
               </div>
             </div>
           <?php }?>
-        </div>
+        </div></span>
 		  
 		  
 		  
@@ -1032,7 +1033,7 @@ $('.save').click(function(){
      url: base_url + "messenger/chats/" + userid +"/" + isGroupYN,
       dataType: 'html',
        success: function(response) {
-        $('#msg_history').html($(response).find('.mesgs').html());
+        $('#msg_history').html($(response).find('#onlyMsgs').html());
          } 
        });
     }
