@@ -1027,16 +1027,14 @@ $('.save').click(function(){
     
     var base_url = "<?php echo base_url();?>";
     function loadNewChat(userid,isGroupYN){
-        $('#container').text('loading . . .');
-
       $.ajax({
-        type:'POST',
-        url : base_url + "messenger/chats/" + userid +"/" + isGroupYN,
-        
-        success: function(response) {
-          $('#container').html(response)
-        }
-    });
+      type : 'POST',
+     url: base_url + "messenger/chats/" + userid +"/" + isGroupYN,
+      dataType: 'html',
+       success: function(response) {
+        $('#msg_history').html($(response).find('.mesgs').html());
+         } 
+       });
     }
 
     function saveGroup(){
