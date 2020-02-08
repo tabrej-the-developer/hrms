@@ -285,6 +285,9 @@ input.rounded:focus {
     background-color: #fff;
     border-bottom:0; 
 }
+.dropdown-menus{
+  display:none;
+}
 </style>
 </head>
 <body>
@@ -308,9 +311,9 @@ input.rounded:focus {
 				 <div class="dropdown">
                      <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-filter"></i></button>
                           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
-                            <a class="dropdown-item" href="<?php echo base_url().'notice/notices/Inbox';?>">Inbox</a>
-                            <a class="dropdown-item" href="<?php echo base_url().'notice/notices/Sent';?>">Sent</a>
-                            <a class="dropdown-item" href="<?php echo base_url().'notice/notices/Archived';?>">Archive</a>
+                            <a class="dropdown-item" id="Inbox">Inbox</a>
+                            <a class="dropdown-item" id="Sent">Sent</a>
+                            <a class="dropdown-item" id="Archived">Archive</a>
                           </div>
                   </div>
 			  </li>
@@ -322,7 +325,7 @@ input.rounded:focus {
             foreach ($allNotices as $notice) { 
               $date=date_create($notice->date);
               ?>
-            <div class="chat_list <?php if($notice->noticeId == $currentNotice->noticeId) echo 'active_chat';?>" onclick="loadNewNotice('<?php echo $notice->noticeId;?>')">
+            <div class="chat_list <?php if($notice->noticeId == $currentNotice->noticeId) echo 'active_chat';?>" onclick="loadNewNotice('<?php echo $notice->noticeId;?>')" id="<?php echo 'chat_list_'.$notice->noticeId;?>">
               <div class="chat_people">
                 <div class="chat_img"> <img src="<?php echo base_url().'assets/images/defaultUser.png';?>" alt="user photo"> </div>
                 <div class="chat_ib">
@@ -353,14 +356,14 @@ input.rounded:focus {
                                 </div>
                             </div>
                             <div>
-                                <div class="dropdown">
+                                <div class="dropdowns">
                                   
                                     <?php 
                                     if($noticeStatus == 'Inbox'){ ?>
-                                    <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" >
                                         <i class="fa fa-ellipsis-h"></i>
                                     </button>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
+                                    <div class="dropdown-menus " aria-labelledby="gedf-drop1">
                                       <form id="statusForm" method="post" action="<?php echo base_url().'notice/updateStatus';?>">
                                       <input type="hidden" name="currentNoticeId" id="currentNoticeId" value="<?php echo $currentNotice->noticeId;?>">
                                         <div class="h6 dropdown-header" onclick="updateStatus()">Archive</div>
@@ -383,7 +386,7 @@ input.rounded:focus {
                             <?php echo html_entity_decode(stripslashes($currentNotice->text));?>
                     </div>  
                   <?php }
-                  else echo "No notices";?>
+                  else echo "<span style=\"font-size:30px;align-self:center\">No notices</span>";?>
                 </div>
                 <!-- Post-->
 			
@@ -405,14 +408,61 @@ input.rounded:focus {
     );
 });
 
+  $(document).ready(function(){
+    $(document).on("mouseover",".dropdowns", function() {
+            $( ".dropdown-menus").css("display","block")
+        });         
+       $(document).on("mouseleave",".dropdowns", function() {
+            $( ".dropdown-menus").css("display","none")
+        });   
+        
+});
+
+  $('.dropdown-item').click(function(e){
+    var id = $(this).attr('id');
+    var base_url ="<?php echo base_url().'notice/notices/';?>"+id;
+    $.ajax({
+      type:'POST',
+      url:base_url,
+      success:function(response){
+       $('.inbox_chat').html($(response).find(".inbox_chat").html());
+       $('.card').html($(response).find(".card").html());
+       $('#noticeTitle').html($(response).find("#noticeTitle").html());
+
+       var new_url=base_url;
+       window.history.pushState("data","Title",new_url);
+      },
+    })
+  })
+
+ 
+
+   
+
 	</script>
 
   <script type="text/javascript">
     var base_url = "<?php echo base_url();?>";
     var noticeStatus = "<?php echo $noticeStatus;?>";
     function loadNewNotice(noticeid){
-      window.location.href = base_url + "notice/notices/" + noticeStatus + "/" + noticeid;
-    }
+      trim = window.location.href.split("/");
+      if(trim[trim.indexOf('notices')+1] === ""){
+        chatId= base_url + '/notice/notices/Inbox/' + noticeid;
+      }else{
+              chatId= window.location.href+ '/' + noticeid;
+      }
+      alert(chatId)
+    $(document).ready(function(){
+      $.ajax({
+      url:chatId,
+      type:'POST',
+      success: function(response){
+       $('.card').html($(response).find(".card").html());
+      
+      }
+    })
+    })
+  }
     function updateStatus(){
       document.getElementById('statusForm').submit();
     }
