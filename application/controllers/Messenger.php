@@ -45,7 +45,7 @@ class Messenger extends CI_Controller {
 			$data['isGroupYN'] = $isGroupYN;
 			$data['users'] = $this->getUsers();
 			$data['groups'] = $this->getGroups();
-			$this->load->view('messengerView',$data);
+			$this->load->view('mView',$data);
 		}
 		else{
 			$this->load->view('notAllowedView');
