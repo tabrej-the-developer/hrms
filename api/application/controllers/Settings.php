@@ -134,57 +134,65 @@ class Settings extends CI_Controller {
 				$name = $json->name;
 				$password = $json->password;
 				$role = $json->role;
-				$title = $json->title;
 				$center = $json->center;
 				$manager = $json->manager;
 				$userid = $json->userid;
+				$roleid = $json->roleid;
+				$maxHoursPerWeek = $json->maxHoursPerWeek;
+				$hourlyRate = $json->hourlyRate;
 				$userDetails = $this->authModel->getUserDetails($userid);
 				if($userDetails != null && $userDetails->role == SUPERADMIN){
 					if($name != null && $name != "" &&
 						$password != null && $password != "" &&
 						$role != null && $role != "" && 
-						$title != null && $title != "" && 
 						$center != null && $center != "" && 
-						$manager != null && $manager != ""){
+						$manager != null && $manager != "" &&
+						$roleid != null && $roleid != ""){
 
-						$firebaseData = array(
-							'email'=>$email,
-							'verified'=>'N',
-							'password'=>$password,
-							'name'=>$name
-						);
+						$this->load->model('rostersModel');
+						$roleModel = $this->rostersModel->getRole($roleid);
 
-						$firebaseUser = $this->firebase->createUser($firebaseData);
-						$userid = $this->authModel->insertUser($email,$password,$name,$role,$title,$center,$manager,$firebaseUser->uid);
-						
-						//todo send mail
-						$token = uniqid();
-						$this->authModel->insertToken($userid,$token,'N');
-						$mData['activationLink'] = base_url().'auth/verifyUser/'.$userid.'/'.$token;
-						$mData['appName'] = APP_NAME;
-						$this->load->library('email');
-						$config = array(
-						    'protocol'  => 'smtp',
-						    'smtp_host' => 'ssl://smtp.zoho.com',
-						    'smtp_port' => 465,
-						    'smtp_user' => SMTP_EMAIL,
-						    'smtp_pass' => SMTP_PASSWORD,
-						    'mailtype'  => 'html',
-						    'charset'   => 'utf-8'
-						);
-						$this->email->initialize($config);
-						$this->email->set_mailtype("html");
-						$this->email->set_newline("\r\n");
-						$htmlContent = $this->load->view('template/signupEmail',$mData,true);
-						$this->email->to($email);
-						$this->email->from($config['smtp_user'],$mData['appName'].' Support');
-						$this->email->subject('Hello from '.$mData['appName']);
-						$this->email->message($htmlContent);
-						$this->email->send();
+						if($roleModel != null){ 
+							$firebaseData = array(
+								'email'=>$email,
+								'verified'=>'N',
+								'password'=>$password,
+								'name'=>$name
+							);
+
+							$firebaseUser = $this->firebase->createUser($firebaseData);
+							$userid = $this->authModel->insertUser($email,$password,$name,$role,$roleModel->roleName,$center,$manager,$firebaseUser->uid,$userid,$roleid,$maxHoursPerWeek,$hourlyRate);
+							// $this->authModel->insertEmployee($userid,$roleid,$maxHoursPerWeek,$hourlyRate);
+							
+							//todo send mail
+							$token = uniqid();
+							$this->authModel->insertToken($userid,$token,'N');
+							$mData['activationLink'] = base_url().'auth/verifyUser/'.$userid.'/'.$token;
+							$mData['appName'] = APP_NAME;
+							$this->load->library('email');
+							$config = array(
+							    'protocol'  => 'smtp',
+							    'smtp_host' => 'ssl://smtp.zoho.com',
+							    'smtp_port' => 465,
+							    'smtp_user' => SMTP_EMAIL,
+							    'smtp_pass' => SMTP_PASSWORD,
+							    'mailtype'  => 'html',
+							    'charset'   => 'utf-8'
+							);
+							$this->email->initialize($config);
+							$this->email->set_mailtype("html");
+							$this->email->set_newline("\r\n");
+							$htmlContent = $this->load->view('template/signupEmail',$mData,true);
+							$this->email->to($email);
+							$this->email->from($config['smtp_user'],$mData['appName'].' Support');
+							$this->email->subject('Hello from '.$mData['appName']);
+							$this->email->message($htmlContent);
+							//$this->email->send();
 
 
-						$data['Status'] = 'SUCCESS';
-						$data['Message'] = 'Successfully registered. Please verify your email id to continue';
+							$data['Status'] = 'SUCCESS';
+							$data['Message'] = 'Successfully registered. Please verify your email id to continue';
+						}	
 					}
 					else{
 						$data['Status'] = 'ERROR';

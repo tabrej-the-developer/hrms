@@ -21,9 +21,15 @@ class RostersModel extends CI_Model {
 		return $query->result();
 	}
 
+	public function getRole($roleid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM orgchartroles WHERE roleid = $roleid");
+		return $query->row();
+	}
+
 	public function getAllEmployees($roleid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM employee WHERE roleid='$roleid'");
+		$query = $this->db->query("SELECT * FROM users WHERE roleid='$roleid'");
 		return $query->result();
 	}
 
@@ -37,6 +43,37 @@ class RostersModel extends CI_Model {
 		$this->load->database();
 		$rosterid = uniqid();
 		$this->db->query("INSERT INTO rosters VALUES('$rosterid','$userid','$startDate','$endDate','$centerid','Draft')");
+		return $rosterid;
+	}
+
+	public function createNewShift($rosterid,$date,$userid,$startTime,$endTime,$roleid){
+		$this->load->database();
+		$shiftid = uniqid();
+		$this->db->query("INSERT INTO shift VALUES('$shiftid','$rosterid','$date','$userid',$startTime,$endTime,$roleid,1)");
+		return $shiftid;
+	}
+
+	public function getRosterFromId($rosterid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM rosters WHERE id = '$rosterid'");
+		return $query->row();
+	}
+
+	public function getAllEmployeesFromRole($roleid,$rosterid){
+		$this->load->database();
+		$query = $this->db->query("SELECT DISTINCT(userid) FROM shift WHERE roleid	= $roleid AND roasterId = '$rosterid'");
+		return $query->result();
+	}
+
+	public function getAllShiftsFromEmployee($rosterid,$userid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM shift WHERE roasterId = '$rosterid' AND userid = '$userid' ORDER BY rosterDate");
+		return $query->result();
+	}
+
+	public function updateShift($shiftid,$startTime,$endTime,$roleid,$status){
+		$this->load->database();
+		$query = $this->db->query("UPDATE shift SET startTime = $startTime, endTime = $endTime,roleid = $roleid,status = $status WHERE id = '$shiftid'");
 	}
 
 
