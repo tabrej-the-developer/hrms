@@ -72,8 +72,11 @@ class Rosters extends CI_Controller {
 						$endDate = date( "Y-m-d", strtotime( "$startDate +5 day" ));
 						$currentRoster = $this->rostersModel->createNewRoster($userid,$startDate,$endDate,$centerid);
 						$allAreas = $this->rostersModel->getAllAreas($centerid);
+						$data['id'] = $currentRoster;
+						$data['rosterStartDate'] = $startDate;
+						$data['rosterEndDate'] = $endDate;
+						$data['status'] = "Draft";
 						$data['roster'] = [];
-						$data['rosterid'] = $currentRoster;
 						foreach ($allAreas as $area) {
 							$var['areaId'] = $area->areaid;
 							$var['areaName'] = $area->areaName;
@@ -110,6 +113,7 @@ class Rosters extends CI_Controller {
 										$shiftObj['roleName'] = $role->roleName;
 										$shiftObj['startTime'] = "0900";
 										$shiftObj['endTime'] = "1700";
+										$shiftObj['status'] = "Added";
 										$shiftObj['shiftid'] = $this->rostersModel->createNewShift($currentRoster,$shiftObj['currentDate'],$employee->id,$shiftObj['startTime'],$shiftObj['endTime'],$role->roleid);
 										array_push($rav['shifts'],$shiftObj);
 										$day++;
@@ -152,8 +156,11 @@ class Rosters extends CI_Controller {
 				$roster = $this->rostersModel->getRosterFromId($rosterid);
 				$allAreas = $this->rostersModel->getAllAreas($roster->centerid);
 				$userDetails = $this->authModel->getUserDetails($userid);
+				$data['id'] = $roster->id;
+				$data['rosterStartDate'] = $roster->startDate;
+				$data['rosterEndDate'] = $roster->endDate;
+				$data['status'] = $roster->status;
 				$data['roster'] = [];
-				$data['rosterid'] = $roster->id;
 				foreach ($allAreas as $area) {
 					$var['areaId'] = $area->areaid;
 					$var['areaName'] = $area->areaName;
@@ -192,6 +199,7 @@ class Rosters extends CI_Controller {
 									$shiftObj['startTime'] = $shiftOb->startTime;
 									$shiftObj['endTime'] = $shiftOb->endTime;
 									$shiftObj['shiftid'] = $shiftOb->id;
+									$shiftObj['status'] = $shiftOb->status == 1 ? "Added" : ($shiftOb->status == 2 ? "Published" : "Accepted");
 									array_push($rav['shifts'],$shiftObj);
 								}
 								array_push($var['roles'],$rav);
