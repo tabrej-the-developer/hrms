@@ -76,5 +76,21 @@ class RostersModel extends CI_Model {
 		$query = $this->db->query("UPDATE shift SET startTime = $startTime, endTime = $endTime,roleid = $roleid,status = $status WHERE id = '$shiftid'");
 	}
 
+	public function updateRoster($rosterid,$status){
+		$this->load->database();
+		$this->db->query("UPDATE rosters SET status = '$status' WHERE id = '$rosterid'");
+	}
+
+	public function deleteRoster($rosterid){
+		$this->load->database();
+		$this->db->query("DELETE FROM shift WHERE roasterId='$rosterid'");
+		$this->db->query("DELETE FROM rosters WHERE id='$rosterid'");
+	}
+
+	public function publishRoster($rosterid){
+		$this->load->database();
+		$this->db->query("UPDATE rosters SET status = 'Published' WHERE id = '$rosterid'");
+		$this->db->query("UPDATE shift SET status = 2 WHERE roasterId = '$rosterid'");
+	}
 
 }

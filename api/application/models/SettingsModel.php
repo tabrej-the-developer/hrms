@@ -31,4 +31,10 @@ class SettingsModel extends CI_Model {
 		$this->load->database();
 		$this->db->query("INSERT INTO orgchartroles VALUES(0,$areaid,'$roleName')");
 	}
+
+	public function getRolesFromArea($areaid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM orgchartroles where areaid = $areaid");
+		return $query->result();
+	}
 }

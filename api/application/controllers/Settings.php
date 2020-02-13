@@ -102,14 +102,23 @@ class Settings extends CI_Controller {
 		}
 	}
 
-	public function getOrgChart($centerid){
+	public function getOrgChart($centerid,$userid){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			if($res != null && $res->userid == $userid){
 				$this->load->model('settingsModel');
-				$data['areas'] = $this->settingsModel->getAllAreas($centerid);
+				$allAreas = $this->settingsModel->getAllAreas($centerid);
+				$data['orgchart'] = [];
+				foreach ($allAreas as $area) {
+					$var['areaId'] = $area->areaid;
+					$var['centerid'] = $area->centerid;
+					$var['areaName'] = $area->areaName;
+					$var['isARoomYN'] = $area->isARoomYN;
+					$var['roles'] = $this->settingsModel->getRolesFromArea($area->areaid);
+					array_push($data['orgchart'],$var);
+				}
 				http_response_code(200);
 				echo json_encode($data);
 			}

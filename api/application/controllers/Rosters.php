@@ -73,8 +73,9 @@ class Rosters extends CI_Controller {
 						$currentRoster = $this->rostersModel->createNewRoster($userid,$startDate,$endDate,$centerid);
 						$allAreas = $this->rostersModel->getAllAreas($centerid);
 						$data['id'] = $currentRoster;
-						$data['rosterStartDate'] = $startDate;
-						$data['rosterEndDate'] = $endDate;
+						$data['startDate'] = $startDate;
+						$data['endDate'] = $endDate;
+						$data['centerid'] = $centerid;
 						$data['status'] = "Draft";
 						$data['roster'] = [];
 						foreach ($allAreas as $area) {
@@ -157,9 +158,10 @@ class Rosters extends CI_Controller {
 				$allAreas = $this->rostersModel->getAllAreas($roster->centerid);
 				$userDetails = $this->authModel->getUserDetails($userid);
 				$data['id'] = $roster->id;
-				$data['rosterStartDate'] = $roster->startDate;
-				$data['rosterEndDate'] = $roster->endDate;
+				$data['startDate'] = $roster->startDate;
+				$data['endDate'] = $roster->endDate;
 				$data['status'] = $roster->status;
+				$data['centerid'] = $roster->centerid;
 				$data['roster'] = [];
 				foreach ($allAreas as $area) {
 					$var['areaId'] = $area->areaid;
@@ -237,6 +239,45 @@ class Rosters extends CI_Controller {
 					$shiftid != null && $shiftid != "" && $roleid != null && $roleid != "" && $status != null && $status != ""){
 					$this->load->model('rostersModel');
 					$this->rostersModel->updateShift($shiftid,$startTime,$endTime,$roleid,$status);
+					$data['Status'] = 'SUCCESS';
+					http_response_code(200);
+					echo json_encode($data);
+				}
+				else{
+					$data['Status'] = 'ERROR';
+					$data['Message'] = "Invalid Parameters";
+					http_response_code(200);
+					echo json_encode($data);
+				}
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
+	public function updateRoster(){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $json->userid){
+				$rosterid = $json->rosterid;
+				$status = $json->status;
+				$userid = $json->userid;
+				if($rosterid != null && $rosterid != "" && $status != null && $status != "" &&
+					$userid != null && $userid != ""){
+					$this->load->model('rostersModel');
+					if($status == "Discarded")
+						$this->rostersModel->deleteRoster($rosterid);
+					else if($status == "Published")
+						$this->rostersModel->publishRoster($rosterid);
+					else
+						$this->rostersModel->updateRoster($roster,$status);
 					$data['Status'] = 'SUCCESS';
 					http_response_code(200);
 					echo json_encode($data);
