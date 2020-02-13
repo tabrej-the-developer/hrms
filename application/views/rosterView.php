@@ -7,6 +7,7 @@
 	<link href="https//:maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="https//:maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="https//:cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 <style type="text/css">
 		thead{
 			background:rgba(0,0,0,0.2);
@@ -57,7 +58,88 @@
 		.data-buttons{
 			padding:10px;
 		}
+		/* The Modal (background) */
+.modal {
+  display: none; 
+  position: fixed;
+  z-index: 1; 
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.4); 
+}
 
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#ui-datepicker-div{
+	background:white;
+	color:black;
+	background: white;
+    padding: 50px;
+    border-radius: 30px;
+}
+.ui-state-default{
+	color:black;
+	font-size:20px;
+}
+.ui-datepicker-prev{
+margin:20px;
+padding:10px;
+background:#e0e0e0;
+border-top-left-radius: 20px;
+border-bottom-left-radius: 20px;
+}
+.ui-datepicker-next{
+	margin: 20px;
+	padding:10px;
+	background:#e0e0e0;
+border-top-right-radius: 20px;
+border-bottom-right-radius: 20px;
+}
+.ui-datepicker-title{
+	text-align: center;
+	margin:30px;
+}
+#down-arrow::after{
+		position:relative;
+        content: " \2193";
+        top: 0px;
+        right: 20px;
+        height: 10px;
+        width: 20px;
+}
+.ui-datepicker-current-day{
+	background:green;
+}
+.ui-datepicker-today{
+	background:skyblue;
+}
 </style>
 </head>
 <body>
@@ -69,16 +151,18 @@
 				<span class="col">Sort&nbsp;by</span>
 				<span class="col"><img src="../assets/images/filter-icon.png" height="20px"></span>
 			</div>
+				<?php if($this->session->userdata('UserType') == SUPERADMIN){?> 
 				<div class="center-list " id="center-list">
 						<?php $centers = json_decode($centers);
 						
 						for($i=0;$i<count($centers->centers);$i++){
 					?>
-					<a href="javascript:void(0)" class="center-class" id="<?php echo $i;?>">Center <?php echo $i+1?></a>
+					<a href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid-1 ?>"><?php echo $centers->centers[$i]->name?></a>
 				<?php } ?>
 				</div>
+			<?php } ?>
 		</span>
-		<span class="btn ml-auto d-flex align-self-center create"><span style="margin:0 10px 0 10px"><img src="../assets/images/plus.png" ></span>Create&nbsp;new&nbsp;roster</span>
+		<span class="btn ml-auto d-flex align-self-center create"><a href="javascript:void(0)" id="create-new-roster"><span style="margin:0 10px 0 10px"><img src="../assets/images/plus.png" ></span>Create&nbsp;new&nbsp;roster</a></span>
 	</div>
 	<div class="table-div">
 		<table class="table">
@@ -89,9 +173,23 @@
 				<th>End Date</th>
 				<th>Status</th>
 			</thead>
+			<?php if($this->session->userdata('UserType') !=STAFF){?>
 			<tbody id="tbody">
-				
+				<?php $centerId = $centerId;?>
+
+				<?php $roster = json_decode($rosters);
+				for($i=0;$i<count($roster->rosters);$i++){
+				?>
+				<tr id="<?php echo $roster->rosters[$i]->id?>">
+					<td><?php echo $i+1 ?></td>
+					<td><?php echo $centers->centers[$centerId]->name ?></td>
+					<td><?php echo $roster->rosters[$i]->startDate ?></td>
+					<td><?php echo $roster->rosters[$i]->endDate ?></td>
+					<td><?php echo $roster->rosters[$i]->status ?></td>
+					</tr>
+<?php } ?>
 			</tbody>
+		<?php }?>
 		</table>
 		
 	</div>
@@ -102,69 +200,49 @@
 	</div>
 </div>
 </div>
-<?php $userId = json_decode($userId); ?>
-<script type="text/javascript">
-	<?php $rosters = json_encode($rosters);?>
-	
-	var rosters = JSON.parse(<?php echo $rosters?>);
-	var dataSize = rosters['rosters'].length;
-	var dataPerPage = 10;
-	var pageNumber = 1;
-	$(document).ready(function(){
-		changePage(1)
-	})
 
-	function nextPage(pageNumber){
-		if(pageNumber< totalPages()){
-			pageNumber++;
-			changePage(pageNumber);
-			}
-	}
+<div id="myModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+   <span>
+    <span class="close" style="display:flex;justify-content:flex-end;float:right">&times;</span>
+</span>
 
-	function previousPage(pageNumber){
-		if(pageNumber > 1){
-			pageNumber--;
-			changePage(pageNumber);
-			}
-	}
+ 	<form id="create-roster-form" method="POST" action=<?php echo base_url()."roster/createRoster" ?>>
+ 		<span id="down-arrow"><input  name="roster-date" id="roster-date" autocomplete="off"></span>
+ 		<input type="text" name="userId" id="userId" style="display:none" value="<?php echo $userId?>">
+ 		
+ 		<input type="text" name="centerId" id="center-id" value="<?php echo $centerId;?>" style="display:none">
+ 		<input type="submit" name="roster-submit" id="roster-submit">
+ 		<input type="reset" name="" id="">
+ 	</form>
+ 	<p id="alert-data"></p>
+  </div>
+</div>
 
-	function changePage(pageNumber){
-		var tBody = document.getElementById('tbody')
-		var dataSno = document.getElementById('data-sno')
-		var dataName = document.getElementById('data-name')
-		var dataStartDate = document.getElementById('data-start-date')
-		var dataEndDate = document.getElementById('data-end-date')
-		var dataStatus = document.getElementById('data-status')
-		tBody.innerHTML = "";
-		   for (var i = (pageNumber-1) * dataPerPage; i < (pageNumber * dataPerPage) && i < (dataSize); i++) {
-        tBody.innerHTML = tBody.innerHTML +"<tr><td>"+(i+1)+"</td>"+"<td>"+rosters['rosters'][i]['id']+"</td><td>"+ rosters['rosters'][i]['startDate'] +"</td>"+"<td>"+ rosters['rosters'][i]['endDate'] +"</td>"+"<td>"+ rosters['rosters'][i]['status'] +"</td>"+"</tr>"+ "<br>";
-    }
-    	document.getElementById('page-start').innerHTML = i;
-    document.getElementById('page-end').innerHTML = pageNumber * dataPerPage;
-    document.getElementById('data-total').innerHTML = dataSize;
-	}
 
-	function totalPages(){
-		var totalPages = Math.ceil(dataSize/dataPerPage);
-		return totalPages;
-	}
-	
-	
-</script>
+
+
 <script type="text/javascript">
 	$(document).ready(function(){
 		$(document).on('click','.center-class',function(){
 			var id = $(this).prop('id');
-		var url = "http://localhost/PN101/roster/roster_dashboard/"+id;
+		var url = "http://localhost/PN101/roster/roster_dashboard?center="+id;
 		$.ajax({
 			url:url,
 			type:'GET',
 			success:function(response){
-				$('body').html(response);
-				
+				$('#tbody').html($(response).find('#tbody').html());
+				document.getElementById('center-id').value = id+1;
 			}
 		});
 	});
+
+		$(document).on('click','tr',function(){
+			var rosterId = $(this).prop('id')
+	var url = "http://localhost/PN101/roster/getRoster?rosterId="+rosterId;
+			window.location.href=url;
+		})
 })
 </script>
 <script type="text/javascript">
@@ -178,6 +256,40 @@
 			toBeModifiedWidth.style.width = originalWidth+"px";
 		}
 	
+</script>
+<script type="text/javascript">
+	var modal = document.getElementById("myModal");
+
+	$(document).on('click','#create-new-roster',function(){
+		 modal.style.display = "block";
+	})
+
+	$(document).on('click','.close',function(){
+		 modal.style.display = "none";
+	})
+
+</script>
+<script type="text/javascript">
+	 $(function() {
+	 	
+$("#roster-date").datepicker();
+	 });
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(document).on('click','#roster-submit',function(e){
+			var a = $('#roster-date').val();
+			var b = a.split("/");
+			var date = new Date(b).getDay();
+			if(date != 1){
+				var alert = "Please select a monday";
+				document.getElementById('alert-data').style.color = "red";
+				document.getElementById('alert-data').innerHTML = alert;
+				e.preventDefault();
+			}
+
+		})
+	})
 </script>
 </body>
 </html>
@@ -198,11 +310,5 @@
 		})
 	})
 		})
-<tr>
-<td><?php// $id+1 ?></td>
-<td><?php $roster->roster[$i]->id ?></td>
-<td><?php $roster->roster[$i]->startDate ?></td>
-<td><?php $roster->roster[$i]->EndDate ?></td>
-<td><?php $roster->roster[$i]->status ?></td>
-</tr>
+
 </script>-->
