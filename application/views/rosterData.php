@@ -143,6 +143,35 @@ max-width:30vw;
 	<div class="containers" id="containers">
 		<div class="heading">Rosters</div>
 		<div class="roster-dates"><?php 
+function timex( $x)
+{ 
+    $output;
+    if(($x/100) < 12){
+        if(($x%100)==0){
+         $output = $x/100 . ":00 AM";
+        }
+    if(($x%100)!=0){
+        $output = $x/100 .":". $x%100 . "AM";
+        }
+    }
+else if(($x/100)>12){
+    if(($x%100)==0){
+    $output = ($x/100)-12 . ":00 PM";
+    }
+    if(($x%100)!=0){
+    $output = ($x/100)-12 .":". $x%100 . "PM";
+    }
+}
+else{
+if(($x%100)==0){
+     $output = ($x/100) . ": 00 PM";
+    }
+    if(($x%100)!=0){
+    $output = ($x/100) . ":". $x%100 . "PM";
+    }
+}
+return $output;
+}
 		 $str1 = $rosterDetails->roster[0]->occupancy[0]->date;
 		 $str2 = $rosterDetails->roster[0]->occupancy[4]->date; 
 		 $v1 = explode("-",$str1);
@@ -204,15 +233,15 @@ max-width:30vw;
 					</td>
 					<?php $weeklyTotal=0; ?>
 					<td class="shift-edit cell-boxes count-1"  style="width:13vw"  name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->shiftid?>"  name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->roleid ?>"
-						name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime)/100; ?>" stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime?>" etime="<?php $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime?>"><?php echo intval($rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime)/(100).":00". "-" .($rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime)/(100).":00";
+						name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime)/100; ?>" stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime?>" etime="<?php $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime?>"><?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime)). "-" .timex( intval($rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime));
 					  $weeklyTotal = $weeklyTotal + $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime)/100; ?></td>
-					<td class="shift-edit cell-boxes count-2" style="width:13vw"  name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[1]->shiftid?>"  name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[1]->roleid ?>" name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[1]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[1]->startTime)/100; ?>" stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime?>" etime="<?php $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime?>"><?php echo ($rosterDetails->roster[$x]->roles[$counter]->shifts[1]->startTime)/(100).":00". "-" .($rosterDetails->roster[$x]->roles[$counter]->shifts[1]->endTime)/(100).":00";
+					<td class="shift-edit cell-boxes count-2" style="width:13vw"  name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[1]->shiftid?>"  name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[1]->roleid ?>" name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[1]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[1]->startTime)/100; ?>" stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime?>" etime="<?php $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime?>"><?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[1]->startTime)). "-" .timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[1]->endTime));
 					  $weeklyTotal = $weeklyTotal + $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[1]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[1]->startTime)/100; ?></td>
-					<td class="shift-edit cell-boxes count-3" style="width:13vw"  name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[2]->shiftid?>"  name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[2]->roleid ?>"  name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[2]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[2]->startTime)/100; ?>" stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime?>" etime="<?php $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime?>"><?php echo ($rosterDetails->roster[$x]->roles[$counter]->shifts[2]->startTime)/(100).":00". "-" .($rosterDetails->roster[$x]->roles[$counter]->shifts[2]->endTime)/(100).":00";
+					<td class="shift-edit cell-boxes count-3" style="width:13vw"  name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[2]->shiftid?>"  name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[2]->roleid ?>"  name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[2]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[2]->startTime)/100; ?>" stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime?>" etime="<?php $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime?>"><?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[2]->startTime)). "-" .timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[2]->endTime));
 					  $weeklyTotal = $weeklyTotal + $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[2]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[2]->startTime)/100; ?></td>
-					<td class="shift-edit cell-boxes count-4" style="width:13vw"  name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[3]->shiftid?>"  name2="<?php echo$rosterDetails->roster[$x]->roles[$counter]->shifts[3]->roleid ?>" name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[3]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[3]->startTime)/100; ?>" stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime?>" etime="<?php $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime?>"><?php echo ($rosterDetails->roster[$x]->roles[$counter]->shifts[3]->startTime)/(100).":00". "-" .($rosterDetails->roster[$x]->roles[$counter]->shifts[3]->endTime)/(100).":00";
+					<td class="shift-edit cell-boxes count-4" style="width:13vw"  name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[3]->shiftid?>"  name2="<?php echo$rosterDetails->roster[$x]->roles[$counter]->shifts[3]->roleid ?>" name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[3]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[3]->startTime)/100; ?>" stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime?>" etime="<?php $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime?>"><?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[3]->startTime)). "-" .timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[3]->endTime));
 					  $weeklyTotal = $weeklyTotal + $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[3]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[3]->startTime)/100; ?></td>
-					<td class="shift-edit cell-boxes count-5" style="width:13vw"  name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[4]->shiftid?>"  name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[4]->roleid ?>" name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[4]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[4]->startTime)/100; ?>" stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime?>" etime="<?php $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime?>"><?php echo ($rosterDetails->roster[$x]->roles[$counter]->shifts[4]->startTime)/(100).":00". "-" .($rosterDetails->roster[$x]->roles[$counter]->shifts[4]->endTime)/(100).":00";
+					<td class="shift-edit cell-boxes count-5" style="width:13vw"  name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[4]->shiftid?>"  name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[4]->roleid ?>" name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[4]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[4]->startTime)/100; ?>" stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime?>" etime="<?php $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime?>"><?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[4]->startTime)). "-" .timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[4]->endTime));
 					  $weeklyTotal = $weeklyTotal + $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[4]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[4]->startTime)/100; ?></td>
 					<td class=" " style="width:13vw"><?php echo $weeklyTotal;?></td>
 				</tr>
