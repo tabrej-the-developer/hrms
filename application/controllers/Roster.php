@@ -19,6 +19,7 @@ public function roster_dashboard(){
 							$id = intval($id)-1;
 							$oldid = $id;
 						}
+		$var['id'] = $id;
 		$var['centerId'] = $oldid;
 		$var['userId'] 	= $this->session->userdata('LoginId');
 		$var['centers'] = $this->getAllCenters();
