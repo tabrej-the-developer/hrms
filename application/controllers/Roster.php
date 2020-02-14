@@ -34,7 +34,10 @@ public function roster_dashboard(){
 		$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[$id]->centerid);
 			}
 	else{
+		$var['centerId'] = 0;
 		$var['userId'] 	= $this->session->userdata('LoginId');
+				$var['centers'] = $this->getAllCenters();
+
 		$var['rosters'] = $this->getPastRosters(json_decode($var['centers']));
 
 			}
