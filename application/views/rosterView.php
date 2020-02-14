@@ -147,22 +147,25 @@ border-bottom-right-radius: 20px;
 	<div class="d-flex">
 		<span class="m-3" style="font-size: 30px;font-weight: bold">Rosters</span>
 		<span class="btn sort-by m-3 ">
+			<?php if($this->session->userdata('UserType') == SUPERADMIN){?> 
 			<div class="filter-icon row">
 				<span class="col">Sort&nbsp;by</span>
 				<span class="col"><img src="../assets/images/filter-icon.png" height="20px"></span>
 			</div>
+		<?php } ?>
 				<?php if($this->session->userdata('UserType') == SUPERADMIN){?> 
 				<div class="center-list " id="center-list">
 						<?php $centers = json_decode($centers);
 						
 						for($i=0;$i<count($centers->centers);$i++){
 					?>
-					<a href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid-1 ?>"><?php echo $centers->centers[$i]->name?></a>
+					<a href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>"><?php echo $centers->centers[$i]->name?></a>
 				<?php } ?>
 				</div>
-			<?php } ?>
+			
 		</span>
 		<span class="btn ml-auto d-flex align-self-center create"><a href="javascript:void(0)" id="create-new-roster"><span style="margin:0 10px 0 10px"><img src="../assets/images/plus.png" ></span>Create&nbsp;new&nbsp;roster</a></span>
+		<?php } ?>
 	</div>
 	<div class="table-div">
 		<table class="table">
@@ -175,14 +178,14 @@ border-bottom-right-radius: 20px;
 			</thead>
 			<?php if($this->session->userdata('UserType') !=STAFF){?>
 			<tbody id="tbody">
-				<?php $centerId = $centerId;?>
+				<?php $centerId = intval($centerId);?>
 
 				<?php $roster = json_decode($rosters);
 				for($i=0;$i<count($roster->rosters);$i++){
 				?>
 				<tr id="<?php echo $roster->rosters[$i]->id?>">
 					<td><?php echo $i+1 ?></td>
-					<td><?php echo $centers->centers[$centerId]->name ?></td>
+					<td><?php echo $roster->rosters[$i]->id ?></td>
 					<td><?php echo $roster->rosters[$i]->startDate ?></td>
 					<td><?php echo $roster->rosters[$i]->endDate ?></td>
 					<td><?php echo $roster->rosters[$i]->status ?></td>
@@ -194,10 +197,7 @@ border-bottom-right-radius: 20px;
 		
 	</div>
 	<div>
-	<div class="d-flex data-buttons">
-		<span class="ml-auto ">Viewing <span id="page-start">1</span>-<span id="page-end">8</span> of <span id="data-total">1</span></span>
-		<span><b><</b><b>></b></span>
-	</div>
+	
 </div>
 </div>
 
@@ -227,20 +227,23 @@ border-bottom-right-radius: 20px;
 	$(document).ready(function(){
 		$(document).on('click','.center-class',function(){
 			var id = $(this).prop('id');
+			if(id == null || id == ""){
+				id=1;
+			}
 		var url = "http://localhost/PN101/roster/roster_dashboard?center="+id;
 		$.ajax({
 			url:url,
 			type:'GET',
 			success:function(response){
 				$('#tbody').html($(response).find('#tbody').html());
-				document.getElementById('center-id').value = id+1;
+				document.getElementById('center-id').value = parseInt(id);
 			}
 		});
 	});
 
 		$(document).on('click','tr',function(){
 			var rosterId = $(this).prop('id')
-	var url = "http://localhost/PN101/roster/getRoster?rosterId="+rosterId;
+	var url = "http://localhost/PN101/roster/getRosterDetails?rosterId="+rosterId;
 			window.location.href=url;
 		})
 })
