@@ -13,11 +13,13 @@ public function roster_dashboard(){
 	if($this->session->userdata('UserType') == SUPERADMIN ){
 		if(!isset($_GET['center'])){
 							$id = 0;
+							$oldid=1;
 						}else{
 							$id = $_GET['center'];
 							$id = intval($id)-1;
+							$oldid = $id;
 						}
-		$var['centerId'] = $id;
+		$var['centerId'] = $oldid;
 		$var['userId'] 	= $this->session->userdata('LoginId');
 		$var['centers'] = $this->getAllCenters();
 		$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[$id]->centerid);
@@ -115,12 +117,13 @@ public function roster_dashboard(){
 				'x-device-id: '.$this->session->userdata('x-device-id'),
 				'x-token: '.$this->session->userdata('AuthToken')
 			));
-		$server_output = curl_exec($ch);
-		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			if($httpcode == 200){
-		$jsonOutput = json_decode($server_output);
+				$jsonOutput = json_decode($server_output);
 				curl_close ($ch);
-				redirect(base_url()."/roster/roster_dashboard");
+				redirect(base_url()."roster/roster_dashboard");
 			}
 			else if($httpcode == 401){
 
