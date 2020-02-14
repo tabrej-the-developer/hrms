@@ -184,7 +184,7 @@ border-bottom-right-radius: 20px;
 				?>
 				<tr id="<?php echo $roster->rosters[$i]->id?>">
 					<td><?php echo $i+1 ?></td>
-					<td><?php echo $centers->centers[$centerId]->name ?></td>
+					<td><?php echo $centers->centers[$id]->name ?></td>
 					<td><?php echo $roster->rosters[$i]->startDate ?></td>
 					<td><?php echo $roster->rosters[$i]->endDate ?></td>
 					<td><?php echo $roster->rosters[$i]->status ?></td>
