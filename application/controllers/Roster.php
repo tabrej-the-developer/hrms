@@ -15,6 +15,7 @@ public function roster_dashboard(){
 							$id = 0;
 						}else{
 							$id = $_GET['center'];
+							$id = intval($id)-1;
 						}
 		$var['centerId'] = $id;
 		$var['userId'] 	= $this->session->userdata('LoginId');
@@ -66,8 +67,8 @@ public function roster_dashboard(){
 	public function getRosterDetails(){
 		$data['rosterid'] = $this->input->get('rosterId');
 		$data['userid'] = $this->session->userdata('LoginId');
-		$data['rosterDetails'] = $this->getRoster($data['rosterid'],$data['userid'])
-		$this->load->view('rosterData',$data);
+		$data['rosterDetails'] = $this->getRoster($data['rosterid'],$data['userid']);
+			$this->load->view('rosterData',$data);
 	}
 
 	 function getRoster($rosterid,$userid){
@@ -85,10 +86,9 @@ public function roster_dashboard(){
 		if($httpcode == 200){
 			return $server_output;
 			curl_close ($ch);
-			
 		}
 		else if($httpcode == 401){
-			// $this->load->view('rosterData');
+
 		}
 		
 		}
@@ -117,7 +117,7 @@ public function roster_dashboard(){
 			if($httpcode == 200){
 		$jsonOutput = json_decode($server_output);
 				curl_close ($ch);
-				$this->load->view('createRosterView',$data);
+				redirect(base_url()."/roster/roster_dashboard");
 			}
 			else if($httpcode == 401){
 
@@ -148,11 +148,12 @@ public function roster_dashboard(){
 		}
 	}
 
-	function updateShift(){
+public	function updateShift(){
 			$data['startTime'] = $this->input->post('startTime');
 			$data['endTime'] = $this->input->post('endTime');
 			$data['status'] = $this->input->post('status');
 			$data['roleid'] = $this->input->post('roleId');
+			$data['shiftid'] = $this->input->post('shiftId');
 			$data['userid'] = $this->session->userdata('LoginId');
 			$url = BASE_API_URL."rosters/updateShift";
 			$ch = curl_init($url);
@@ -167,7 +168,7 @@ public function roster_dashboard(){
 			 curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			if($httpcode == 200){
-				$this->load->view('createRosterView');
+				
 				curl_close ($ch);
 			}
 			else if($httpcode == 401){
@@ -195,6 +196,30 @@ public function roster_dashboard(){
 
 		}
 	}
+
+public function updateRoster(){
+	$data['rosterid'] = $this->input->post();
+	$data['centerid'] = $this->input->post();
+	$data['userid'] = $this->input->post();	
+	$url = BASE_API_URL."rosters/updateRoster";
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+		$jsonOutput = json_decode($server_output);
+				curl_close ($ch);
+			}
+			else if($httpcode == 401){
+
+			}
+}
 
 
 
