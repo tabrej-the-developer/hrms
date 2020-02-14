@@ -178,14 +178,13 @@ border-bottom-right-radius: 20px;
 			</thead>
 			<?php if($this->session->userdata('UserType') !=STAFF){?>
 			<tbody id="tbody">
-				<?php $centerId = intval($centerId);?>
 
 				<?php $roster = json_decode($rosters);
 				for($i=0;$i<count($roster->rosters);$i++){
 				?>
 				<tr id="<?php echo $roster->rosters[$i]->id?>">
 					<td><?php echo $i+1 ?></td>
-					<td><?php echo $roster->rosters[$i]->id ?></td>
+					<td><?php echo $centers->centers[$centerId]->name ?></td>
 					<td><?php echo $roster->rosters[$i]->startDate ?></td>
 					<td><?php echo $roster->rosters[$i]->endDate ?></td>
 					<td><?php echo $roster->rosters[$i]->status ?></td>
