@@ -263,6 +263,7 @@ max-width:30vw;
 
 	$(document).on('click','.close',function(){
 		 modal.style.display = "none";
+		$('$roster-form').trigger('reset');
 	})
 
 </script>
@@ -355,6 +356,7 @@ function mouseLeave(){
 				success:function(response){
 						var modal = document.getElementById("myModal");
 						modal.style.display="none";
+					$('$roster-form').trigger('reset');
 				}
 			})
 		})
