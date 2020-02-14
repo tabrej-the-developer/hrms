@@ -184,6 +184,12 @@ max-width:30vw;
 .day{
 	padding:10px;
 }
+.icon-parent{
+	display: flex;
+	align-content: center;
+	justify-content: center
+	padding:0;
+}
 @media only screen and (max-width: 600px) {
 .modal-content{
 	min-width:100vw;
@@ -291,7 +297,7 @@ if(count($str) >1 ){
 				<tr  class="table-row">
 					<td   style="width:18vw" class=" cell-boxes left-most">
 						<span class="row" style="padding:0;margin:0;">
-							<span class="col-3 icon"><?php echo icon($rosterDetails->roster[$x]->roles[$counter]->empName)?></span>
+							<span class="col-3 icon-parent"><span class=" icon"><?php echo icon($rosterDetails->roster[$x]->roles[$counter]->empName)?></span></span>
 							<span class="col-6 name-role">
 								<span class="empname row"><?php echo $rosterDetails->roster[$x]->roles[$counter]->empName?></span>
 								<span class="title row"><?php echo $rosterDetails->roster[$x]->roles[$counter]->empTitle ?></span>
