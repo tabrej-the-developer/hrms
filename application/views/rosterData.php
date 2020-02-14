@@ -142,9 +142,17 @@ max-width:30vw;
 	<?php $rosterDetails = json_decode($rosterDetails); ?>
 	<div class="containers" id="containers">
 		<div class="heading">Rosters</div>
-		<div class="roster-dates"><?php echo  $rosterDetails->roster[0]->occupancy[0]->date."-".$rosterDetails->roster[0]->occupancy[4]->date; ?> </div>
-		<div class="table-div" style="max-height:70vh;overflow-y:scroll">
+		<div class="roster-dates"><?php 
+		 $str1 = $rosterDetails->roster[0]->occupancy[0]->date;
+		 $str2 = $rosterDetails->roster[0]->occupancy[4]->date; 
+		 $v1 = explode("-",$str1);
+		 $v2 = explode("-",$str2);
+		 echo date("d-M-Y",mktime(0,0,0,$v1[1],intval($v1[2]),(intval($v1[0]))))." to ". 
+		 date("d-M-Y",mktime(0,0,0,$v2[1],intval($v2[2]),(intval($v2[0]))))
+		 ?> </div>
+		<div class="table-div" style="">
 			<table>
+				<?php if($this->session->userdata('UserType') == SUPERADMIN || $this->session->userdata('UserType') == ADMIN){?>
 				<tr>
 					<td id="table-id-1" class="day">Employees</td>	<?php $x=0;?>
 					<td id="table-id-2" class="day">Monday <?php $rosterDetails->roster[$x]->occupancy[0]->date ?></td>
@@ -159,6 +167,8 @@ max-width:30vw;
 						</span>
 					</td>
 				</tr>
+			<?php } ?>
+			
 				<?php 
 				$count = count($rosterDetails->roster);
 
@@ -194,15 +204,15 @@ max-width:30vw;
 					</td>
 					<?php $weeklyTotal=0; ?>
 					<td class="shift-edit cell-boxes count-1"  style="width:13vw"  name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->shiftid?>"  name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->roleid ?>"
-						name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime)/100; ?>" ><?php echo intval($rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime)/(100).":00". "-" .($rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime)/(100).":00";
+						name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime)/100; ?>" stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime?>" etime="<?php $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime?>"><?php echo intval($rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime)/(100).":00". "-" .($rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime)/(100).":00";
 					  $weeklyTotal = $weeklyTotal + $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime)/100; ?></td>
-					<td class="shift-edit cell-boxes count-2" style="width:13vw"  name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[1]->shiftid?>"  name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[1]->roleid ?>" name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[1]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[1]->startTime)/100; ?>"><?php echo ($rosterDetails->roster[$x]->roles[$counter]->shifts[1]->startTime)/(100).":00". "-" .($rosterDetails->roster[$x]->roles[$counter]->shifts[1]->endTime)/(100).":00";
+					<td class="shift-edit cell-boxes count-2" style="width:13vw"  name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[1]->shiftid?>"  name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[1]->roleid ?>" name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[1]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[1]->startTime)/100; ?>" stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime?>" etime="<?php $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime?>"><?php echo ($rosterDetails->roster[$x]->roles[$counter]->shifts[1]->startTime)/(100).":00". "-" .($rosterDetails->roster[$x]->roles[$counter]->shifts[1]->endTime)/(100).":00";
 					  $weeklyTotal = $weeklyTotal + $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[1]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[1]->startTime)/100; ?></td>
-					<td class="shift-edit cell-boxes count-3" style="width:13vw"  name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[2]->shiftid?>"  name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[2]->roleid ?>"  name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[2]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[2]->startTime)/100; ?>"><?php echo ($rosterDetails->roster[$x]->roles[$counter]->shifts[2]->startTime)/(100).":00". "-" .($rosterDetails->roster[$x]->roles[$counter]->shifts[2]->endTime)/(100).":00";
+					<td class="shift-edit cell-boxes count-3" style="width:13vw"  name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[2]->shiftid?>"  name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[2]->roleid ?>"  name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[2]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[2]->startTime)/100; ?>" stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime?>" etime="<?php $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime?>"><?php echo ($rosterDetails->roster[$x]->roles[$counter]->shifts[2]->startTime)/(100).":00". "-" .($rosterDetails->roster[$x]->roles[$counter]->shifts[2]->endTime)/(100).":00";
 					  $weeklyTotal = $weeklyTotal + $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[2]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[2]->startTime)/100; ?></td>
-					<td class="shift-edit cell-boxes count-4" style="width:13vw"  name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[3]->shiftid?>"  name2="<?php echo$rosterDetails->roster[$x]->roles[$counter]->shifts[3]->roleid ?>" name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[3]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[3]->startTime)/100; ?>"><?php echo ($rosterDetails->roster[$x]->roles[$counter]->shifts[3]->startTime)/(100).":00". "-" .($rosterDetails->roster[$x]->roles[$counter]->shifts[3]->endTime)/(100).":00";
+					<td class="shift-edit cell-boxes count-4" style="width:13vw"  name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[3]->shiftid?>"  name2="<?php echo$rosterDetails->roster[$x]->roles[$counter]->shifts[3]->roleid ?>" name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[3]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[3]->startTime)/100; ?>" stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime?>" etime="<?php $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime?>"><?php echo ($rosterDetails->roster[$x]->roles[$counter]->shifts[3]->startTime)/(100).":00". "-" .($rosterDetails->roster[$x]->roles[$counter]->shifts[3]->endTime)/(100).":00";
 					  $weeklyTotal = $weeklyTotal + $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[3]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[3]->startTime)/100; ?></td>
-					<td class="shift-edit cell-boxes count-5" style="width:13vw"  name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[4]->shiftid?>"  name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[4]->roleid ?>" name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[4]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[4]->startTime)/100; ?>"><?php echo ($rosterDetails->roster[$x]->roles[$counter]->shifts[4]->startTime)/(100).":00". "-" .($rosterDetails->roster[$x]->roles[$counter]->shifts[4]->endTime)/(100).":00";
+					<td class="shift-edit cell-boxes count-5" style="width:13vw"  name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[4]->shiftid?>"  name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[4]->roleid ?>" name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[4]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[4]->startTime)/100; ?>" stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime?>" etime="<?php $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime?>"><?php echo ($rosterDetails->roster[$x]->roles[$counter]->shifts[4]->startTime)/(100).":00". "-" .($rosterDetails->roster[$x]->roles[$counter]->shifts[4]->endTime)/(100).":00";
 					  $weeklyTotal = $weeklyTotal + $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[4]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[4]->startTime)/100; ?></td>
 					<td class=" " style="width:13vw"><?php echo $weeklyTotal;?></td>
 				</tr>
@@ -228,7 +238,7 @@ max-width:30vw;
 			<button id="publish-roster" class="button">Publish</button>
 		</div>
 	</div>
-	<div id="myModal" class="modal">
+<div id="myModal" class="modal">
   <!-- Modal content -->
   <div class="modal-content">
     <span class="close" style="padding:30px">&times;</span>
@@ -253,90 +263,91 @@ max-width:30vw;
 
 	}
 	</script>
+	<?php if($this->session->userdata('UserType') == STAFF){?>
+<div id="mxModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" style="padding:30px">&times;</span>
+    <form  id="user-form">
+    	<div>
+ 			<label>Start Time</label>	
+ 			<input type="text" name="start-Time" id="start-Time"  style="margin:30px">
+		</div>
+		<div>
+			<label>End Time</label>
+			<input type="text" name="end-Time" id="end-Time" style="margin:30px">
+		</div>
+ 		<input type="text" name="shiftId"  id="shift-Id" style="display:none">
+ 		<input type="text" name="roleId" id="role-Id" style="display:none">
+ 		<input type="text" name="status" value="3"  id="sta-tus" style="display:none">
+ 		<input type="text" name="userId"   id="user-Id" style="display:none">
+ 		<input type="button" name="user-submit" id="user-submit" value="send" style="margin:30px">
+ 		<input type="button" name="user-deny" id="user-deny" style="margin:30px">
+ 	</form>
+  </div>
+</div>
+<?php } ?>
 
+<?php if($this->session->userdata('UserType') == STAFF ){?>
 <script type="text/javascript">
-	var modal = document.getElementById("myModal");
+				var modal = document.getElementById("mxModal");
 
-	$(document).on('click','.shift-edit',function(){
-		 modal.style.display = "block";
-	})
+				$(document).on('click','.shift-edit',function(){
+					 modal.style.display = "block";
+				})
 
-	$(document).on('click','.close',function(){
-		 modal.style.display = "none";
-		$('$roster-form').trigger('reset');
-	})
+				$(document).on('click','.close',function(){
+					 modal.style.display = "none";
+					 $('#user-decision').trigger('reset');
+				})
 
+			</script>
+			<script type="text/javascript">
+				$(document).ready(function(){
+			    $("#user-deny").click(function(){
+				 modal = document.getElementById("mxModal");
+					 modal.style.display = "none";
+			        $("#user-form").trigger("reset");
+			    });
+			});
+</script>	
+
+<?php  } ?>
+<?php if($this->session->userdata('UserType') == ADMIN || $this->session->userdata('UserType') == SUPERADMIN){?>
+<script type="text/javascript">
+				var modal = document.getElementById("myModal");
+
+				$(document).on('click','.shift-edit',function(){
+					 modal.style.display = "block";
+				})
+
+				$(document).on('click','.close',function(){
+					 modal.style.display = "none";
+					 $('$roster-form').trigger('reset');
+				})
+
+			</script>
+			<script type="text/javascript">
+				$(document).ready(function(){
+			    $("#shift-submit").click(function(){
+			        $("#roster-form").trigger("reset");
+			    });
+			});
 </script>
 <script type="text/javascript">
-	$(document).ready(function(){
-    $("#shift-submit").click(function(){
-        $("#roster-form").trigger("reset");
-    });
-});
-</script>
-<script type="text/javascript">
-	function uiFunction(){
-  if(screen.width > 768){
-    var sideNav = document.getElementsByClassName('side-nav')[0].offsetWidth
-    document.getElementById('containers').style.paddingLeft = 60+"px"
-    document.getElementsByClassName("side-nav")[0].addEventListener("mouseover", mouseOver);
-    document.getElementsByClassName("side-nav")[0].addEventListener("mouseleave", mouseLeave);
-  }
-}
-function mouseOver(){
-      document.getElementById('containers').style.paddingLeft = 200+"px"
-}
-function mouseLeave(){
-      document.getElementById('containers').style.paddingLeft = 60+"px"
-}
-// calling the function
-  uiFunction();
-</script>
-<script type="text/javascript">
-	$(document).ready(function(){
-	var	total = 0;
-	var count = $('.count-1').length
-	for(var i=0;i<count;i++){
-	total = total + parseInt($('.count-1').eq(i).attr('name3'))
-}
-	$('#count-1').html('$'+total)
-	//
-	total = 0;
-	 count = $('.count-2').length
-	for( i=0;i<count;i++){
-	total = total + parseInt($('.count-2').eq(i).attr('name3'))
-}
-	$('#count-2').html('$'+total)
-	//
-	total = 0;
-	 count = $('.count-3').length
-	for( i=0;i<count;i++){
-	total = total + parseInt($('.count-3').eq(i).attr('name3'))
-}
-	$('#count-3').html('$'+total)
-	//
-	total = 0;
-	 count = $('.count-4').length
-	for( i=0;i<count;i++){
-	total = total + parseInt($('.count-4').eq(i).attr('name3'))
-}
-	$('#count-4').html('$'+total)
-	//
-	total = 0;
-	 count = $('.count-5').length
-	for( i=0;i<count;i++){
-	total = total + parseInt($('.count-5').eq(i).attr('name3'))
-}
-	$('#count-5').html('$'+total)
-	})
-</script>
-
-		<script type="text/javascript">
 	$(document).ready(function(){
 		
-		$(document).on('click','#shift-submit',function(){
-			var startTime = document.getElementById('startTime').value ;
-			var endTime = document.getElementById('endTime').value;
+		$(document).on('click','#user-submit',function(){
+			var startingTime = document.getElementById('start-Time').getAttribute('stime') ;
+			var endingTime = document.getElementById('end-Time').getAttribute('etime');
+			var alpha = startingTime;
+			var beta = alpha.split(':')
+			var gamma = parseInt(beta[0]+beta[1]);
+			var alphas = endingTime;
+			var betas = alphas.split(':')
+			var gammas = parseInt(betas[0]+betas[1]);
+			var startTime = gamma;
+			var endTime = gammas;
 			var shiftid = $(this).attr('name4');
 			var status = document.getElementById('status').value;
 			var userid = "<?php echo $userid ?>";
@@ -354,27 +365,138 @@ function mouseLeave(){
 					userid:userid
 				},
 				success:function(response){
-						var modal = document.getElementById("myModal");
-						modal.style.display="none";
+											var modal = document.getElementById("myModal");
+																	modal.style.display="none";
+
 					$('$roster-form').trigger('reset');
+
 				}
 			})
 		})
 		
 	})
 </script>
+<?php }?>
 <script type="text/javascript">
-	$(document).ready(function(){
-		$(document).on('click','.cell-boxes',function(){
-			
-			document.getElementById('shiftId').value = $(this).attr('name4');
-			document.getElementById('userId').value = "<?php echo $userid ?>";
-			document.getElementById('roleId').value = $(this).attr('name2');
-			})
-	})
-				
+				function uiFunction(){
+			  if(screen.width > 768){
+			    var sideNav = document.getElementsByClassName('side-nav')[0].offsetWidth
+			    document.getElementById('containers').style.paddingLeft = 60+"px"
+			    document.getElementsByClassName("side-nav")[0].addEventListener("mouseover", mouseOver);
+			    document.getElementsByClassName("side-nav")[0].addEventListener("mouseleave", mouseLeave);
+			  }
+			}
+			function mouseOver(){
+			      document.getElementById('containers').style.paddingLeft = 200+"px"
+			}
+			function mouseLeave(){
+			      document.getElementById('containers').style.paddingLeft = 60+"px"
+			}
+			// calling the function
+			  uiFunction();
+</script>
+
+
+
+
+<script type="text/javascript">
+				$(document).ready(function(){
+				var	total = 0;
+				var count = $('.count-1').length
+				for(var i=0;i<count;i++){
+				total = total + parseInt($('.count-1').eq(i).attr('name3'))
+			}
+				$('#count-1').html('$'+total)
+				//
+				total = 0;
+				 count = $('.count-2').length
+				for( i=0;i<count;i++){
+				total = total + parseInt($('.count-2').eq(i).attr('name3'))
+			}
+				$('#count-2').html('$'+total)
+				//
+				total = 0;
+				 count = $('.count-3').length
+				for( i=0;i<count;i++){
+				total = total + parseInt($('.count-3').eq(i).attr('name3'))
+			}
+				$('#count-3').html('$'+total)
+				//
+				total = 0;
+				 count = $('.count-4').length
+				for( i=0;i<count;i++){
+				total = total + parseInt($('.count-4').eq(i).attr('name3'))
+			}
+				$('#count-4').html('$'+total)
+				//
+				total = 0;
+				 count = $('.count-5').length
+				for( i=0;i<count;i++){
+				total = total + parseInt($('.count-5').eq(i).attr('name3'))
+			}
+				$('#count-5').html('$'+total)
+				})
+</script>
+
+
+
+<?php if($this->session->userdata('UserType') == SUPERADMIN || $this->session->userdata('UserType') == ADMIN){ ?>
+<script type="text/javascript">
+				$(document).ready(function(){
+					$(document).on('click','.cell-boxes',function(){
+						
+						document.getElementById('shiftId').value = $(this).attr('name4');
+						document.getElementById('userId').value = "<?php echo $userid ?>";
+						document.getElementById('roleId').value = $(this).attr('name2');
+						})
+				})
+							
 
 </script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		
+		$(document).on('click','#shift-submit',function(){
+			var startingTime = document.getElementById('startTime').value ;
+			var endingTime = document.getElementById('endTime').value;
+			var alpha = startingTime;
+			var beta = alpha.split(':')
+			var gamma = parseInt(beta[0]+beta[1]);
+			var alphas = endingTime;
+			var betas = alphas.split(':')
+			var gammas = parseInt(betas[0]+betas[1]);
+			var startTime = gamma;
+			var endTime = gammas;
+			var shiftid = $(this).attr('name4');
+			var status = document.getElementById('status').value;
+			var userid = "<?php echo $userid ?>";
+			var roleid = $(this).attr('name2');
+			url = window.location.origin+"/PN101/roster/updateShift";
+			$.ajax({
+				url:url,
+				type:'POST',
+				data:{
+					startTime:startTime,
+					endTime:endTime,
+					shiftid:shiftid,
+					roleid:roleid,
+					status:status,
+					userid:userid
+				},
+				success:function(response){
+											var modal = document.getElementById("myModal");
+																	modal.style.display="none";
+
+					$('$roster-form').trigger('reset');
+
+				}
+			})
+		})
+		
+	})
+</script>
+
+
 <script type="text/javascript">
 	$(document).ready(function(){
 		$(document).on('click','.button',function(){
@@ -428,6 +550,6 @@ console.log(response)					}
 		})
 	})
 </script>
-
+<?php }?>
 </body>
 </html>
