@@ -251,6 +251,10 @@ max-width:30vw;
 .modal-content{
 	min-width:100vw;
 }
+.containers {
+     width: 100%;
+    margin: 0px;
+}
 }
 </style>
 </head>
