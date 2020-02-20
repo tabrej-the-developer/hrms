@@ -5,9 +5,11 @@
 		<?php $this->load->view('header'); ?>
 <meta content="width=device-width, initial-scale=1" name="viewport" />
 	<title>Roster</title>
-	<link href="https//:maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="https//:maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="https//:cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!--	
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 <style type="text/css">
 	*{
@@ -156,23 +158,18 @@ max-width:30vw;
   margin: 2px
 }
 .cell-back-1{
-	background:rgba(0,150,150,0.3);
 	margin:0 10px 0 10px;
 }
 .cell-back-2{
-	background:rgba(100,100,100,0.3);
 	margin:0 10px 0 10px;
 }
 .cell-back-3{
-	background:yellow;
 	margin:0 10px 0 10px;
 }
 .cell-back-4{
-	background:yellow;
 	margin:0 10px 0 10px;
 }
 .cell-back-5{
-	background:yellow;
 	margin:0 10px 0 10px;
 }
 .cell-boxes{
@@ -240,7 +237,16 @@ max-width:30vw;
   display: inline-block;
   margin: 2px
 }
+.Added{
+	background: #9E9E9E
+}
 
+.Published{
+	background:#9C27B0;
+}
+.Accepted{
+	background:#4CAF50;
+}
 @media only screen and (max-width: 600px) {
 .modal-content{
 	min-width:100vw;
@@ -250,7 +256,9 @@ max-width:30vw;
 </head>
 <body>
 
-	<?php $rosterDetails = json_decode($rosterDetails); ?>
+	<?php $rosterDetails = json_decode($rosterDetails); 
+
+	?>
 	<div class="containers" id="containers">
 		<div class="heading">Rosters</div>
 		<div class="roster-dates"><?php 
@@ -308,7 +316,7 @@ function icon($str){
 		 $v1 = explode("-",$str1);
 		 $v2 = explode("-",$str2);
 		 echo date("M d",mktime(0,0,0,$v1[1],intval($v1[2]),(intval($v1[0]))))." to ". 
-		 date("M d , Y",mktime(0,0,0,$v2[1],intval($v2[2]),(intval($v2[0]))))
+		 date("M d , Y",mktime(0,0,0,$v2[1],intval($v2[2]),(intval($v2[0]))));
 		 ?> </div>
 		<div class="table-div" style="">
 			<table>
@@ -328,8 +336,9 @@ function icon($str){
 			
 				<?php 
 				$count = count($rosterDetails->roster);
-
+if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){
 				for($x=0;$x<$count;$x++){ 
+
 					if($rosterDetails->roster[$x]->isRoomYN == "Y")
 						{?>
 				<tr >
@@ -346,10 +355,17 @@ function icon($str){
 					<td> </td>
 				</tr>
 				<?php 
+				if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){
 				$value = count($rosterDetails->roster[$x]->roles);
+		}
+		else{
+			$value=1;
+		}
 				for($counter=0;$counter<$value;$counter++){ ?>
 				<tr  class="table-row">
 					<td   style="width:18vw" class=" cell-boxes left-most">
+						<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
+
 						<span class="row" style="padding:0;margin:0;">
 							<span class="col-3 icon-parent"><span class=" icon"><?php echo icon($rosterDetails->roster[$x]->roles[$counter]->empName)?></span></span>
 							<span class="col-6 name-role">
@@ -358,22 +374,81 @@ function icon($str){
 							</span>
 							<span class="hourly col-3"><?php echo  $rosterDetails->roster[$x]->roles[$counter]->hourlyRate ?></span>
 						</span>
+					<?php } ?>
 					</td>
+				
 					<?php $weeklyTotal=0; ?>
-					<td class="shift-edit cell-boxes count-1"  style="width:13vw"  name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->shiftid?>"  name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->roleid ?>"
-						name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime)/100; ?>" stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime?>" etime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime?>" name="<?php echo $rosterDetails->roster[$x]->roles[$counter]->empName?>"><div class="cell-back-1"><?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime)). "-" .timex( intval($rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime));
-					  $weeklyTotal = $weeklyTotal + $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime)/100; ?> </div></td>
-					<td class="shift-edit cell-boxes count-2" style="width:13vw"  name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[1]->shiftid?>"  name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[1]->roleid ?>" name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[1]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[1]->startTime)/100; ?>" stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime?>" etime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime?>" name="<?php echo $rosterDetails->roster[$x]->roles[$counter]->empName?>"><div class="cell-back-2"><?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[1]->startTime)). "-" .timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[1]->endTime));
-					  $weeklyTotal = $weeklyTotal + $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[1]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[1]->startTime)/100; ?></div></td>
-					<td class="shift-edit cell-boxes count-3" style="width:13vw"  name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[2]->shiftid?>"  name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[2]->roleid ?>"  name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[2]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[2]->startTime)/100; ?>" stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime?>" etime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime?>" name="<?php echo $rosterDetails->roster[$x]->roles[$counter]->empName?>"><div class="cell-back-3"><?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[2]->startTime)). "-" .timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[2]->endTime));
-					  $weeklyTotal = $weeklyTotal + $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[2]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[2]->startTime)/100; ?></div></td>
-					<td class="shift-edit cell-boxes count-4" style="width:13vw"  name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[3]->shiftid?>"  name2="<?php echo$rosterDetails->roster[$x]->roles[$counter]->shifts[3]->roleid ?>" name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[3]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[3]->startTime)/100; ?>" stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime?>" etime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime?>" name="<?php echo $rosterDetails->roster[$x]->roles[$counter]->empName?>"><div class="cell-back-4"><?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[3]->startTime)). "-" .timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[3]->endTime));
-					  $weeklyTotal = $weeklyTotal + $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[3]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[3]->startTime)/100; ?></div></td>
-					<td class="shift-edit cell-boxes count-5" style="width:13vw"  name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[4]->shiftid?>"  name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[4]->roleid ?>" name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[4]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[4]->startTime)/100; ?>" stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->startTime?>" etime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[0]->endTime?>" name="<?php echo $rosterDetails->roster[$x]->roles[$counter]->empName?>"><div class="cell-back-5"><?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[4]->startTime)). "-" .timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[4]->endTime));
-					  $weeklyTotal = $weeklyTotal + $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[4]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[4]->startTime)/100; ?></div></td>
+					<?php for($p=0;$p<5;$p++){?>
+					<td class="shift-edit cell-boxes count-<?php echo $p+1;?>"  style="width:13vw" 
+					 name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->shiftid?>"  
+					 name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleid ?>"
+					 name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?>" 
+					 stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime?>" etime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime?>" 
+					 name="<?php echo $rosterDetails->roster[$x]->roles[$counter]->empName?>"
+					 status="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"><div class="cell-back-1 <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"><?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)). "-" .timex( intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime));
+					  $weeklyTotal = $weeklyTotal + $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?> </div></td>
+
+					  <?php } ?>
 					<td class=" " style="width:13vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
+
 				</tr>
-			<?php } } }?>
+			<?php } } } }?>
+
+
+	<?php 
+				$count = count($rosterDetails->roster);
+if($this->session->userdata('UserType')==STAFF){
+				for($x=0;$x<1;$x++){ 
+					
+					if($rosterDetails->roster[$x]->isRoomYN == "Y")
+						{?>
+				<tr >
+					<td colspan="7" class="area-name"><?php echo $rosterDetails->roster[$x]->areaName ?></td>
+				</tr>
+				<?php $occupancy = 0; ?>
+				<tr>
+					<td></td>
+					<td><?php echo $rosterDetails->roster[$x]->occupancy[0]->occupancy?></td>
+					<td><?php echo $rosterDetails->roster[$x]->occupancy[1]->occupancy?></td>
+					<td><?php echo $rosterDetails->roster[$x]->occupancy[2]->occupancy?></td>
+					<td><?php echo $rosterDetails->roster[$x]->occupancy[3]->occupancy?></td>
+					<td><?php echo $rosterDetails->roster[$x]->occupancy[4]->occupancy?></td>
+					<td> </td>
+				</tr>
+				<?php 
+				if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){
+				$value = count($rosterDetails->roster[$x]->roles);
+		}
+		else{
+			$value=1;
+		}
+				for($counter=0;$counter<$value;$counter++){ ?>
+				<tr  class="table-row">
+					<td   style="width:18vw" class=" cell-boxes left-most">
+						
+					</td>
+				
+					<?php $weeklyTotal=0; ?>
+					<?php for($p=0;$p<5;$p++){?>
+					<td class="shift-edit cell-boxes count-<?php echo $p+1;?>"  style="width:13vw" 
+					 name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->shiftid?>"  
+					 name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleid ?>"
+					 name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?>" 
+					 stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime?>" etime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime?>" 
+					 name="<?php echo $rosterDetails->roster[$x]->roles[$counter]->empName?>"
+					 status="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"><div class="cell-back-1 <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"><?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)). "-" .timex( intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime));
+					  $weeklyTotal = $weeklyTotal + $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?> </div></td>
+
+					  <?php } ?>
+					<td class=" " style="width:13vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
+
+				</tr>
+			<?php } } } }?>
+
+
+
+
+
 			</table>
 		</div>
 		<div class="total-budget" >
@@ -389,11 +464,22 @@ function icon($str){
 				</tr>
 			</table>
 		</div>
+<?php if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){ ?>
+
+		<?php if($rosterDetails->status === 'Draft'){ ?>
 		<div class="buttons d-flex justify-content-end">
 			<button id="discard-roster" class="button">Discard</button>
 			<button id="draft-roster" class="button">Save Draft</button>
 			<button id="publish-roster" class="button">Publish</button>
 		</div>
+	<?php } ?>
+	<?php if($rosterDetails->status === 'Published') {?>
+	<div class="buttons d-flex justify-content-end">
+		<button id="discard-roster" class="button">Discard</button>
+		<button id="publish-roster" class="button">Save</button>
+	</div>
+	<?php } ?>
+<?php } ?>
 	</div>
 <!--This is meant for admin-->
 <?php if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){ ?>
@@ -421,14 +507,13 @@ function icon($str){
 	 		<input type="text" name="roleId" id="roleId" style="display:none">
 	 		<input type="text" name="status" value="2"  id="status" style="display:none">
 	 		<input type="text" name="userId"   id="userId" style="display:none">
-	 		<input type="button" name="shift-submit" id="shift-submit" value="send" style="margin:30px">
+	 		<input type="button" name="shift-submit" id="shift-submit" value="Save" style="margin:30px" class="button">
 	 	</form>
 	  </div>
 </div>
 <?php } ?>
 <!-- Till here -->>
 
-<!-- This is meant for staff -->
 <?php if($this->session->userdata('UserType') == STAFF){?>
 <div id="mxModal" class="modal">
  
@@ -441,12 +526,13 @@ function icon($str){
 		 	<span class="close col-2" >&times;</span>
 		</div>
 		   <form  id="user-form">	
+		   		<input type="text"  name="" id="starts" style="display: none">
+		   		<input type="text"  name="" id="ends" style="display:none">
 		 		<input type="text" name="shiftId"  id="shift-Id" style="display:none">
 		 		<input type="text" name="roleId" id="role-Id" style="display:none">
-		 		<input type="text" name="status" value="3"  id="sta-tus" style="display:none">
 		 		<input type="text" name="userId"   id="user-Id" style="display:none">
-		 		<input type="button" name="user-submit" id="user-submit" value="Accept" style="margin:30px">
-		 		<input type="button" name="user-deny" id="user-deny" style="margin:30px" value="Deny">
+		 		<input type="button" name="user-submit" id="user-submit" value="Accept" style="margin:30px" class="button">
+		 		<input type="button" name="user-deny" id="user-deny" style="margin:30px" value="Deny" class="button">
 		 	</form>
 	  </div>
 </div>
@@ -463,30 +549,35 @@ function icon($str){
 
 				$(document).on('click','.close',function(){
 					 model.style.display = "none";
-					 $('#user-form').trigger('reset');
+					 ('#user-form').trigger('reset');
 				})
-				$(document).on('click','#user-deny',function(){
-					 model.style.display = "none";
-					 $('#user-form').trigger('reset');
-				})
+				
 
 			</script>
 
 <script type="text/javascript">
 	$(document).on('click','.shift-edit',function(){
+		var starts = $(this).attr('stime');
+		var ends = $(this).attr('etime');
 	var timings = $(this).text();
 	var name = $(this).index();
 	var role = 4;
-	var status = 3;
 	var userid = "<?php echo $userid ?>";
 	var shiftid = $(this).attr('name4');
-	
 	document.getElementsByClassName('box-name')[0].innerHTML = $('th').eq(name).html();
 	document.getElementsByClassName('box-space')[0].innerHTML = timings;
+	document.getElementById('starts').value = starts; 
+	document.getElementById('ends').value = ends;
+	document.getElementById('role-Id').value = role;
+	document.getElementById('shift-Id').value = shiftid;
 	})
 </script>
+
+
 <?php  } ?>
 <!-- Till here -->
+
+
 
 
 <!-- This is meant for staff -->
@@ -496,13 +587,15 @@ function icon($str){
 <script type="text/javascript">
 	$(document).ready(function(){
 		
-		$(document).on('click','#user-submit',function(){
-			var startingTime = document.getElementById('start-Time').getAttribute('stime') ;
-			var endingTime = document.getElementById('end-Time').getAttribute('etime');
-			var shiftid = $(this).attr('name4');
-			var status = 3;
+		$(document).on('click','.button',function(){
+			var startTime = parseInt($('#starts').prop('value')) ;
+			var endTime = parseInt($('#ends').prop('value'));
+			
+
+			var shiftid = $('#shift-Id').prop('value');
+			var status = $(this).prop('value');
 			var userid = "<?php echo $userid ?>";
-			var roleid = $(this).attr('name2');
+			var roleid = $('#role-Id').prop('value');
 			url = window.location.origin+"/PN101/roster/updateShift";
 			$.ajax({
 				url:url,
@@ -516,10 +609,7 @@ function icon($str){
 					userid:userid
 				},
 				success:function(response){
-						var modal = document.getElementById("mxModal");
-						modal.style.display="none";
-
-					$('user-form').trigger('reset');
+						console.log(response)
 
 				}
 			})
@@ -532,78 +622,22 @@ function icon($str){
 <!-- Till here -->
 
 
-
-
-
-
-
-
-
-
 <?php if($this->session->userdata('UserType') == ADMIN || $this->session->userdata('UserType') == SUPERADMIN){?>
 <script type="text/javascript">
 				var modal = document.getElementById("myModal");
 
 				$(document).on('click','.shift-edit',function(){
+					if($(this).attr('status')=='Published' || $(this).attr('status')=='Added'){
 					 modal.style.display = "block";
+					}
 				})
 
 				$(document).on('click','.close',function(){
 					 modal.style.display = "none";
 					 $('#roster-form').trigger('reset');
 				})
-
-			</script>
-			<script type="text/javascript">
-				$(document).ready(function(){
-			    $("#shift-submit").click(function(){
-			        $("#roster-form").trigger("reset");
-			    });
-			});
 </script>
-<script type="text/javascript">
 
-$(document).ready(function(){
-		
-		$(document).on('click','#shift-submit',function(){
-			var startingTime = document.getElementById('startTime').value ;
-			var endingTime = document.getElementById('endTime').value;
-			var alpha = startingTime;
-			var beta = alpha.split(':')
-			var gamma = parseInt(beta[0]+beta[1]);
-			var alphas = endingTime;
-			var betas = alphas.split(':')
-			var gammas = parseInt(betas[0]+betas[1]);
-			var startTime = gamma;
-			var endTime = gammas;
-			var shiftid = $(this).attr('name4');
-			var status = document.getElementById('status').value;
-			var userid = "<?php echo $userid ?>";
-			var roleid = $(this).attr('name2');
-			url = window.location.origin+"/PN101/roster/updateShift";
-			$.ajax({
-				url:url,
-				type:'POST',
-				data:{
-					startTime:startTime,
-					endTime:endTime,
-					shiftid:shiftid,
-					roleid:roleid,
-					status:status,
-					userid:userid
-				},
-				success:function(response){
-						var modal = document.getElementById("myModal");
-						modal.style.display="none";
-
-					$('#roster-form').trigger('reset');
-
-				}
-			})
-		})
-		
-	})
-</script>
 <?php }?>
 <script type="text/javascript">
 	function uiFunction(){
@@ -671,19 +705,20 @@ $(document).ready(function(){
 <?php if($this->session->userdata('UserType') == SUPERADMIN || $this->session->userdata('UserType') == ADMIN){ ?>
 <script type="text/javascript">
 	$(document).ready(function(){
+
+
 		$(document).on('click','.cell-boxes',function(){
 			document.getElementsByClassName('box-name')[0].innerHTML = $(this).attr('name');
 			var indexVal = $(this).index();
 			document.getElementsByClassName('box-space')[0].innerHTML = $('th').eq(indexVal).html()
+			var xvalue = $(this).attr('stime');
+			var yvalue = $(this).attr('etime');
+			document.getElementById('startTime').value = timer(parseInt(xvalue));
+			document.getElementById('endTime').value = timer(parseInt(yvalue));
 			document.getElementById('userId').value = "<?php echo $userid ?>";
 			document.getElementById('roleId').value = $(this).attr('name2');
+			document.getElementById('shiftId').value = $(this).attr('name4');
 						})
-				})
-							
-
-</script>
-<script type="text/javascript">
-	$(document).ready(function(){
 		
 		$(document).on('click','#shift-submit',function(){
 			var startingTime = document.getElementById('startTime').value ;
@@ -696,11 +731,12 @@ $(document).ready(function(){
 			var gammas = parseInt(betas[0]+betas[1]);
 			var startTime = gamma;
 			var endTime = gammas;
-			var shiftid = $(this).attr('name4');
+			var shiftid = $('#shiftId').val();
 			var status = document.getElementById('status').value;
 			var userid = "<?php echo $userid ?>";
-			var roleid = $(this).attr('name2');
+			var roleid = $('#roleId').val();
 			url = window.location.origin+"/PN101/roster/updateShift";
+			console.log(startTime + " "+ endTime +" "+ shiftid+" "+roleid+" "+status +" "+userid)
 			$.ajax({
 				url:url,
 				type:'POST',
@@ -713,10 +749,8 @@ $(document).ready(function(){
 					userid:userid
 				},
 				success:function(response){
-											var modal = document.getElementById("myModal");
-																	modal.style.display="none";
-
-					$('$roster-form').trigger('reset');
+											console.log(response)
+											$('#roster-form').trigger('reset');
 
 				}
 			})
@@ -754,7 +788,7 @@ $(document).ready(function(){
 					data:{
 						userid: userid,
 						rosterid: rosterid,
-						status: 'Drafted'
+						status: 2
 					},
 					success:function(response){
 window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";					}
@@ -771,6 +805,7 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 						status: 'Published'
 					},
 					success:function(response){
+						console.log(response);
 						window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";
 					}
 
@@ -781,7 +816,49 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 </script>
 <?php }?>
 
+<script type="text/javascript">
+	function timer( x)
+	{ 
+	    var output="";
+	    if((x/100) < 12){
+	        if((x%100)==0 ){
+	        	if((x/100)<10){
+	         output = "0"+String(x/100) + ":00" ;
+	     }
+	     if((x/100)>9){
+	     	output = String(x/100) + ":00" ;
+	     }
+	        }
+	    if((x%100)!=0){
+	        if((x/100)<10){
+	         output = "0"+String(x/100) + ":" + String(x%100) ;
+	        }
+	    }
+	     if((x/100)>10){
+	         output = String(x/100) + ":" + String(x%100) ;
+	        }
+	    }
+	
+	else if((x/100)>12){
+	    if((x%100)==0){
+	    output = x/100 + ":00";
+	    }
+	    if((x%100)!=0){
+	    output = x/100 +":" + x%100 ;
+	    }
+	}
+	else{
+	if((x%100)==0){
+	     output = parseInt(x/100) + ":00";
+	    }
+	    if((x%100)!=0){
+	    output = parseInt(x/100) + ":" + x%100;
+	    }
+	}
+	return output;
+}
 
+</script>
 
 </body>
 </html>
