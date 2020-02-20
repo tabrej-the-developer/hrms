@@ -480,6 +480,11 @@ if($this->session->userdata('UserType')==STAFF){
 	</div>
 	<?php } ?>
 <?php } ?>
+<?php if($this->session->userdata('UserType') == STAFF){?>
+<div class="buttons d-flex justify-content-end">
+		<button id="publish-roster" class="button">Save</button>
+</div>
+	<?php } ?>
 	</div>
 <!--This is meant for admin-->
 <?php if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){ ?>
@@ -552,6 +557,9 @@ if($this->session->userdata('UserType')==STAFF){
 					 ('#user-form').trigger('reset');
 				})
 				
+				$(document).on('click','.buttons',function(){
+					window.location.href = window.location.origin+"/PN101/roster/roster_dashboard"
+				})
 
 			</script>
 
