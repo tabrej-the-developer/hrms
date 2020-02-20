@@ -4,10 +4,8 @@
 	<?php $this->load->view('header'); ?>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Roster</title>
-	<link href="https//:maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="https//:maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="https//:cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+	
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 <style type="text/css">
 		thead{
 			background:rgba(0,0,0,0.2);
@@ -17,6 +15,7 @@
 		}
 		.table-div{
 			height:70vh;
+			overflow-y: scroll;
 			box-shadow:0px 0px 5px 5px rgb(242, 242, 242);
 		}	
 		.sort-by{
@@ -124,7 +123,7 @@ border-bottom-right-radius: 20px;
 }
 .ui-datepicker-title{
 	text-align: center;
-	margin:30px;
+	margin:30px 30px 10px 30px;
 }
 #down-arrow::after{
 		position:relative;
@@ -140,20 +139,39 @@ border-bottom-right-radius: 20px;
 .ui-datepicker-today{
 	background:skyblue;
 }
+.ui-datepicker-calendar thead tr{
+	background: #80B9FF
+}
+.ui-datepicker-calendar thead th{
+	margin:5px;
+}
+.ui-datepicker-calendar tbody tr:nth-child(even){
+	background: white
+}
+	.button{
+		background-color: #9E9E9E;
+  border: none;
+  color: white;
+  padding: 10px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 2px
+}
+
 </style>
 </head>
 <body>
 <div class="container">
 	<div class="d-flex">
 		<span class="m-3" style="font-size: 30px;font-weight: bold">Rosters</span>
-		<span class="btn sort-by m-3 ">
+		<span class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
 			<?php if($this->session->userdata('UserType') == SUPERADMIN){?> 
 			<div class="filter-icon row">
 				<span class="col">Sort&nbsp;by</span>
 				<span class="col"><img src="../assets/images/filter-icon.png" height="20px"></span>
 			</div>
-		<?php } ?>
-				<?php if($this->session->userdata('UserType') == SUPERADMIN){?> 
+		
 				<div class="center-list " id="center-list">
 						<?php $centers = json_decode($centers);
 						
@@ -161,9 +179,10 @@ border-bottom-right-radius: 20px;
 					?>
 					<a href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>"><?php echo $centers->centers[$i]->name?></a>
 				<?php } ?>
-				</div>
-			
+				</div>	
 		</span>
+		<?php } ?>
+		<?php if($this->session->userdata('UserType') == SUPERADMIN || $this->session->userdata('UserType') == ADMIN ){?>
 		<span class="btn ml-auto d-flex align-self-center create"><a href="javascript:void(0)" id="create-new-roster"><span style="margin:0 10px 0 10px"><img src="../assets/images/plus.png" ></span>Create&nbsp;new&nbsp;roster</a></span>
 		<?php } ?>
 	</div>
@@ -171,27 +190,45 @@ border-bottom-right-radius: 20px;
 		<table class="table">
 			<thead>
 				<th>S.No</th>
+				<?php if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')== ADMIN) {?>
 				<th>Roster Name</th>
+			<?php } ?>
 				<th>Start Date</th>
 				<th>End Date</th>
 				<th>Status</th>
 			</thead>
-			<?php if($this->session->userdata('UserType') !=STAFF){?>
+			
 			<tbody id="tbody">
 
+				<?php $centerId?>
 				<?php $roster = json_decode($rosters);
 				for($i=0;$i<count($roster->rosters);$i++){
 				?>
+				<?php if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')== ADMIN) {?>
 				<tr id="<?php echo $roster->rosters[$i]->id?>">
 					<td><?php echo $i+1 ?></td>
+					<?php if($this->session->userdata('UserType') == ADMIN ){?>
+						<td><?php print_r(json_decode($centers)->centers[0]->name) ?></td>
+					<?php } ?>
+					<?php if($this->session->userdata('UserType') ==SUPERADMIN ) { ?>
 					<td><?php echo $centers->centers[$id]->name ?></td>
+				<?php }?>
 					<td><?php echo $roster->rosters[$i]->startDate ?></td>
 					<td><?php echo $roster->rosters[$i]->endDate ?></td>
 					<td><?php echo $roster->rosters[$i]->status ?></td>
 					</tr>
+				<?php }?>
+			<?php if($this->session->userdata('UserType') == STAFF ) { ?>
+					<tr id="<?php echo $roster->rosters[$i]->id?>">
+					<td><?php echo $i+1 ?></td>
+					<td><?php echo $roster->rosters[$i]->startDate ?></td>
+					<td><?php echo $roster->rosters[$i]->endDate ?></td>
+					<td><?php echo $roster->rosters[$i]->status ?></td>
+					</tr>
+				<?php } ?>
 <?php } ?>
 			</tbody>
-		<?php }?>
+		
 		</table>
 		
 	</div>
@@ -203,18 +240,24 @@ border-bottom-right-radius: 20px;
 <div id="myModal" class="modal">
   <!-- Modal content -->
   <div class="modal-content">
-   <span>
-    <span class="close" style="display:flex;justify-content:flex-end;float:right">&times;</span>
-</span>
-
- 	<form id="create-roster-form" method="POST" action=<?php echo base_url()."roster/createRoster" ?>>
- 		<span id="down-arrow"><input  name="roster-date" id="roster-date" autocomplete="off"></span>
+   <div class="row" style="background: #307bd3;padding: 0;margin: 0;position: absolute;top:0;width:100%;left:0;padding:10px">
+   	<span class="col-10 text-center" style="color:white;font-size:25px">Create New Roster </span>
+    <span class="close col-2" style="display:flex;justify-content:flex-end;float:right">&times;</span>
+</div>
+<div style="position: relative;margin-top:40px ">
+ 	<form id="create-roster-form"  method="POST" action=<?php echo base_url()."roster/createRoster" ?>>
+ 		<span id="down-arrow" style="display:flex;justify-content: center;margin:20px"><input  name="roster-date" id="roster-date" autocomplete="off"></span>
  		<input type="text" name="userId" id="userId" style="display:none" value="<?php echo $userId?>">
  		
- 		<input type="text" name="centerId" id="center-id" value="<?php echo $centerId;?>" style="display:none">
- 		<input type="submit" name="roster-submit" id="roster-submit">
- 		<input type="reset" name="" id="">
+ 		<?php if($this->session->userdata('UserType')==ADMIN) {?><input type="text" name="centerId" id="center-id" value="<?php echo $cents;?>" style="display:none">
+ 	<?php } ?>
+ 		<?php if($this->session->userdata('UserType')==SUPERADMIN){ ?><input type="text" name="centerId" id="center-id" value="<?php echo $centerId;?>" style="display:none"><?php } ?>
+ 		<div class="text-center">
+ 		<input type="submit" name="roster-submit" id="roster-submit" class="button" value="Create">
+ 		<input type="reset" name="" id="" class="button" value="Reset">
+ 	</div>
  	</form>
+ </div>
  	<p id="alert-data"></p>
   </div>
 </div>
@@ -224,6 +267,7 @@ border-bottom-right-radius: 20px;
 
 <script type="text/javascript">
 	$(document).ready(function(){
+		<?php if($this->session->userdata('UserType')==SUPERADMIN){?>
 		$(document).on('click','.center-class',function(){
 			var id = $(this).prop('id');
 			if(id == null || id == ""){
@@ -239,6 +283,7 @@ border-bottom-right-radius: 20px;
 			}
 		});
 	});
+	<?php } ?>
 
 		$(document).on('click','tr',function(){
 			var rosterId = $(this).prop('id')
@@ -248,6 +293,7 @@ border-bottom-right-radius: 20px;
 })
 </script>
 <script type="text/javascript">
+	<?php if($this->session->userdata('UserType')==SUPERADMIN){?>
 	$(document).ready(function(){
 			equalElements('sort-by','center-list');
 		})
@@ -257,7 +303,7 @@ border-bottom-right-radius: 20px;
 			var toBeModifiedWidth =document.getElementById(toBeModified);
 			toBeModifiedWidth.style.width = originalWidth+"px";
 		}
-	
+	<?php } ?>
 </script>
 <script type="text/javascript">
 	var modal = document.getElementById("myModal");
