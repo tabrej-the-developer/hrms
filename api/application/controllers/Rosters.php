@@ -69,7 +69,7 @@ class Rosters extends CI_Controller {
 					$existingRoster = $this->rostersModel->getRosterFromDate($startDate,$centerid);
 					if($existingRoster == null){
 						$startDate = date('Y-m-d', strtotime($startDate));
-						$endDate = date( "Y-m-d", strtotime( "$startDate +5 day" ));
+						$endDate = date( "Y-m-d", strtotime( "$startDate +4 day" ));
 						$currentRoster = $this->rostersModel->createNewRoster($userid,$startDate,$endDate,$centerid);
 						$allAreas = $this->rostersModel->getAllAreas($centerid);
 						$data['id'] = $currentRoster;
@@ -277,7 +277,7 @@ class Rosters extends CI_Controller {
 					else if($status == "Published")
 						$this->rostersModel->publishRoster($rosterid);
 					else
-						$this->rostersModel->updateRoster($roster,$status);
+						$this->rostersModel->updateRoster($rosterid,$status);
 					$data['Status'] = 'SUCCESS';
 					http_response_code(200);
 					echo json_encode($data);

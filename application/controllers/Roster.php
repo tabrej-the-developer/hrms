@@ -23,7 +23,7 @@ public function roster_dashboard(){
 		$var['centerId'] = $oldid;
 		$var['userId'] 	= $this->session->userdata('LoginId');
 		$var['centers'] = $this->getAllCenters();
-		$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[$id]->centerid);
+		$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[0]->centerid);
 	}
 	else if($this->session->userdata('UserType') == ADMIN ){
 			if(!isset($_GET['center'])){
@@ -34,17 +34,15 @@ public function roster_dashboard(){
 		$var['centerId'] = $id;
 		$var['userId'] 	= $this->session->userdata('LoginId');
 		$var['centers'] = $this->getAllCenters();
-		$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[$id]->centerid);
+		$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[0]->centerid);
 			}
 	else{
 		$var['centerId'] = 0;
 		$var['userId'] 	= $this->session->userdata('LoginId');
-				$var['centers'] = $this->getAllCenters();
-
-		$var['rosters'] = $this->getPastRosters(json_decode($var['centers']));
-
-			}
-			$this->load->view('rosterView',$var);
+		$var['centers'] = $this->getAllCenters();
+		$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[0]->centerid);
+	}
+	$this->load->view('rosterView',$var);
 
 }
 

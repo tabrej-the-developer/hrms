@@ -22,4 +22,16 @@ class Welcome extends CI_Controller {
 	{
 		$this->load->view('welcome_message');
 	}
+
+	public function temp(){
+
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM users WHERE role != 1");
+		$allUsers = $query->result();
+		foreach ($allUsers as $user) {
+			var_dump($user);
+			$userid = $user->id;
+			$this->db->query("INSERT INTO leavebalance VALUES(0,'$userid',2,12,20,1,'2020-01-01')");
+		}
+	}
 }

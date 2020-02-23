@@ -25,27 +25,23 @@ class Util extends CI_Controller {
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			if($res != null && $res->userid == $userid){
 				$userDetails = $this->authModel->getUserDetails($userid);
-				if($userDetails->role != 4){
-					$this->load->model('utilModel');
-					$centers = $this->utilModel->getAllCenters($userid);
-					$data = array();
-					foreach($centers as $cen){
-						$var['centerid'] = $cen->centerid;
-						$var['addStreet'] = $cen->addStreet;
-						$var['addCity'] = $cen->addCity;
-						$var['addState'] = $cen->addState;
-						$var['addZip'] = $cen->addZip;
-						$var['name'] = $cen->name;
-						$var['logo'] = $cen->logo;
-						array_push($data,$var);
-					}
-					$mdata['centers'] = $data;
-					http_response_code(200);
-					echo json_encode($mdata);
+				$this->load->model('utilModel');
+				$centers = $this->utilModel->getAllCenters($userid);
+				$data = array();
+				foreach($centers as $cen){
+					$var['centerid'] = $cen->centerid;
+					$var['addStreet'] = $cen->addStreet;
+					$var['addCity'] = $cen->addCity;
+					$var['addState'] = $cen->addState;
+					$var['addZip'] = $cen->addZip;
+					$var['name'] = $cen->name;
+					$var['logo'] = $cen->logo;
+					array_push($data,$var);
 				}
-				else{
-					http_response_code(401);
-				}
+				$mdata['centers'] = $data;
+				http_response_code(200);
+				echo json_encode($mdata);
+			
 			}
 			else{
 				http_response_code(401);

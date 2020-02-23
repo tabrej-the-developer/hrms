@@ -179,14 +179,19 @@ border-bottom-right-radius: 20px;
 			<?php if($this->session->userdata('UserType') !=STAFF){?>
 			<tbody id="tbody">
 
-				<?php $roster = json_decode($rosters);
+				<?php 
+					$roster = json_decode($rosters);
+					function dateToDay($date){
+						$date = explode("-",$date);
+						return date("M d",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
+					}
 				for($i=0;$i<count($roster->rosters);$i++){
 				?>
 				<tr id="<?php echo $roster->rosters[$i]->id?>">
 					<td><?php echo $i+1 ?></td>
-					<td><?php echo $centers->centers[$id]->name ?></td>
-					<td><?php echo $roster->rosters[$i]->startDate ?></td>
-					<td><?php echo $roster->rosters[$i]->endDate ?></td>
+					<td><?php echo dateToDay($roster->rosters[$i]->startDate)." Roster"; ?></td>
+					<td><?php echo dateToDay($roster->rosters[$i]->startDate) ?></td>
+					<td><?php echo dateToDay($roster->rosters[$i]->endDate) ?></td>
 					<td><?php echo $roster->rosters[$i]->status ?></td>
 					</tr>
 <?php } ?>
