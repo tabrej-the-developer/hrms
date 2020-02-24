@@ -162,16 +162,7 @@ class Settings extends CI_Controller {
 						$roleModel = $this->rostersModel->getRole($roleid);
 
 						if($roleModel != null){ 
-							$firebaseData = array(
-								'email'=>$email,
-								'verified'=>'N',
-								'password'=>$password,
-								'name'=>$name
-							);
-
-							$firebaseUser = $this->firebase->createUser($firebaseData);
-							$userid = $this->authModel->insertUser($email,$password,$name,$role,$roleModel->roleName,$center,$manager,$firebaseUser->uid,$userid,$roleid,$maxHoursPerWeek,$hourlyRate);
-							// $this->authModel->insertEmployee($userid,$roleid,$maxHoursPerWeek,$hourlyRate);
+							$userid = $this->authModel->insertUser($email,$password,$name,$role,$roleModel->roleName,$center,$manager,$userid,$roleid,$maxHoursPerWeek,$hourlyRate);
 							
 							//todo send mail
 							$token = uniqid();

@@ -36,7 +36,50 @@ class Attendance extends CI_Controller {
 	
 	}
 
-	public function insertLog(){
+	public function sendNotification(){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $json->userid){
+				$clockedTime = $json->clockedTime;
+				$signInDate = $json->signInDate;
+				$memberId = $json->memberId;
+				$centerId = $json->centerId;
+				$sendNotificationYN = $json->sendNotificationYN;
+				$this->load->model('attendanceModel');
+				$this->load->model('utilModel');
+				$visit = $this->attendanceModel->getVisitEntry($memberId,$centerId,$signInDate);
+				$center = $this->utilModel->getCenterById($centerId);
+				$user = $this->authModel->getUserDetails($memberId);
+				$data['centerName'] = $center->name;
+				$data['centerId'] = $centerId;
+				$data['userId'] = $memberId;
+				$data['userName'] = $user->name;
+				$data['signInTime'] = $clockedTime;
+				if($visit != null){
+					$data['visitId'] = $visit->id;
+					$data['signInTime'] = $visit->signInTime;
+					$data['signOutTime'] = $clockedTime;
+					$data['reason'] = $visit->reason;
+				}
+				$data['type'] = "attendance";
+				if($sendNotificationYN == "Y")
+					$this->firebase->sendMessage('New Login','You were logged in',$data,$memberId);
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
+	public function signIn(){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
@@ -44,11 +87,38 @@ class Attendance extends CI_Controller {
 			$json = json_decode(file_get_contents('php://input'));
 			if($json!= null && $res != null && $res->userid == $json->userid){
 				$startTime = $json->startTime;
-				$endTime = $json->endTime;
 				$signInDate = $json->signInDate;
 				$reason = $json->reason;
+				$memberid = $json->memberid;
+				$centerid = $json->centerid;
 				$this->load->model('attendanceModel');
-				$this->attendanceModel->insertLog($json->userid,$startTime,$endTime,$signInDate,$reason);
+				$this->attendanceModel->insertLog($memberid,$centerid,$startTime,$signInDate,$reason);
+				$data['Status'] = "SUCCESS";
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
+
+	public function signOut(){
+
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $json->userid){
+				$visitId = $json->visitId;
+				$signOutTime = $json->signOutTime;
+				$this->load->model('attendanceModel');
+				$this->attendanceModel->updateLog($visitId,$signOutTime);
 				$data['Status'] = "SUCCESS";
 				http_response_code(200);
 				echo json_encode($data);

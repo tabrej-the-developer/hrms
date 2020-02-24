@@ -5,7 +5,7 @@ use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
 use Kreait\Firebase\Messaging\CloudMessage;
 
-class Firebase{
+class MyFirebase{
     protected $config   = array();
     protected $serviceAccount;
 
@@ -40,9 +40,8 @@ class Firebase{
 
 
     public function sendMessage($title,$body,$payload,$userid){
+        $messaging = (new Firebase\Factory())->createMessaging();
 
-        $firebaseVal = $this->init();
-        $messaging = $firebaseVal->getMessaging();
         $message = CloudMessage::withTarget('topic', $userid)
             ->withNotification(['title'=>$title,'body'=>$body])
             ->withData($payload);
