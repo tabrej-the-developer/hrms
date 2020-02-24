@@ -72,4 +72,10 @@ class AuthModel extends CI_Model {
 		$query = $this->db->query("DELETE FROM logins WHERE userid = '$userid'");
 		$query = $this->db->query("INSERT INTO logins VALUES(0,'$userid','now()','$deviceid','$token','N')");
 	}
+
+	public function getPermissions($userid){
+		$his->load->database();
+		$query = $this->db->query("SELECT * FROM permissions WHERE userid = '$userid'");
+		return $query->row();
+	}
 }

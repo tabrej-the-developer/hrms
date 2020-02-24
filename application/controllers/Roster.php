@@ -23,26 +23,22 @@ public function roster_dashboard(){
 		$var['centerId'] = $oldid;
 		$var['userId'] 	= $this->session->userdata('LoginId');
 		$var['centers'] = $this->getAllCenters();
-		$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[0]->centerid);
+		$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[$id]->centerid);
 	}
 	else if($this->session->userdata('UserType') == ADMIN ){
-			if(!isset($_GET['center'])){
-					$id = 0;
-			}else{
-					$id = $_GET['center'];
-			}
-		$var['centerId'] = $id;
+		
 		$var['userId'] 	= $this->session->userdata('LoginId');
 		$var['centers'] = $this->getAllCenters();
 		$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[0]->centerid);
+		$var['cents'] = json_decode($var['centers'])->centers[0]->centerid;
 			}
 	else{
-		$var['centerId'] = 0;
 		$var['userId'] 	= $this->session->userdata('LoginId');
+		$var['userType'] = $this->session->userdata('UserType');
 		$var['centers'] = $this->getAllCenters();
-		$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[0]->centerid);
-	}
-	$this->load->view('rosterView',$var);
+		$var['rosters'] = $this->getPastRosters("1");
+			}
+			$this->load->view('rosterView',$var);
 
 }
 
@@ -148,7 +144,6 @@ $server_output = curl_exec($ch);
 			curl_close ($ch);
 		}
 		else if($httpcode == 401){
-			$this->load->view('welcome_message');
 
 		}
 	}
@@ -157,15 +152,14 @@ public	function updateShift(){
 			$data['startTime'] = $this->input->post('startTime');
 			$data['endTime'] = $this->input->post('endTime');
 			$data['status'] = $this->input->post('status');
-			$data['roleid'] = $this->input->post('roleId');
-			$data['shiftid'] = $this->input->post('shiftId');
+			$data['roleid'] = $this->input->post('roleid');
+			$data['shiftid'] = $this->input->post('shiftid');
 			$data['userid'] = $this->session->userdata('LoginId');
 			$url = BASE_API_URL."rosters/updateShift";
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
 				'x-device-id: '.$this->session->userdata('x-device-id'),
 				'x-token: '.$this->session->userdata('AuthToken')
@@ -203,9 +197,9 @@ public	function updateShift(){
 	}
 
 public function updateRoster(){
-	$data['rosterid'] = $this->input->post();
-	$data['centerid'] = $this->input->post();
-	$data['userid'] = $this->input->post();	
+	$data['userid'] = $this->input->post('userid');
+	$data['rosterid'] = $this->input->post('rosterid');
+	$data['status'] = $this->input->post('status');	
 	$url = BASE_API_URL."rosters/updateRoster";
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);

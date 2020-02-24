@@ -2,6 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Auth extends CI_Controller {
+	
 	function __construct() {
 
 		header('Access-Control-Allow-Origin: *');
@@ -42,6 +43,12 @@ class Auth extends CI_Controller {
 					$data['manager'] = $user->manager;
 					$data['firebaseid'] = $user->firebaseid;
 					$data['isVerified'] = $user->isVerified;
+					$permissions = $this->authModel->getPermissions($user->id);
+					$var = [];
+					if($permissions != null){
+						$var['isQrReaderYN'] = $permissions->isQrReaderYN;
+					}
+					$data['permissions'] = $var;
 				}
 			}
 			else{
@@ -55,7 +62,6 @@ class Auth extends CI_Controller {
 			http_response_code(401);
 		}
 	}
-
 
 
 	public function forgotPassword(){
