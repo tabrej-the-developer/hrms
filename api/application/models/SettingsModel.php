@@ -49,7 +49,7 @@ class SettingsModel extends CI_Model {
 		$this->db->query("INSERT INTO orgchartroles VALUES(0,$areaid,'$roleName')");
 	}
 
-	public function updateRole($areaid,$roleName){
+	public function updateRole($roleid,$roleName){
 		$this->load->database();
 		$this->db->query("UPDATE orgchartroles SET roleName = '$roleName' WHERE roleid = $roleid");
 	}

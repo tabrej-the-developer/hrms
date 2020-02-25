@@ -62,7 +62,7 @@ class Settings extends CI_Controller {
 				$isRoomYN = $json->isRoomYN;
 				$this->load->model('settingsModel');
 				$area = $this->settingsModel->getAreaExists($areaName,$areaid);
-				if($area == null){
+				if($area == null || (strtolower($areaName) == strtolower($area->areaName))){
 					$area = $this->settingsModel->updateArea($areaid,$areaName,$isRoomYN);
 					$data['Status'] = "SUCCESS";
 				}
@@ -125,7 +125,7 @@ class Settings extends CI_Controller {
 				$this->load->model('settingsModel');
 				$role = $this->settingsModel->getRoleExists($roleName,$roleid);
 				if($role == null){
-					$role = $this->settingsModel->updateRole($areaid,$roleName);
+					$role = $this->settingsModel->updateRole($roleid,$roleName);
 					$data['Status'] = "SUCCESS";
 				}
 				else{
