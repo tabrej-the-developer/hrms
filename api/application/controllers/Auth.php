@@ -47,6 +47,7 @@ class Auth extends CI_Controller {
 					$var = [];
 					if($permissions != null){
 						$var['isQrReaderYN'] = $permissions->isQrReaderYN;
+						$var['updateTimesheetYN'] = $permissions->updateTimesheetYN;
 					}
 					$data['permissions'] = $var;
 				}

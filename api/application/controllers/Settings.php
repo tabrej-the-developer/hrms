@@ -50,14 +50,26 @@ class Settings extends CI_Controller {
 		}
 	}
 
-	public function getAreas($centerid,$userid){
+	public function updateArea(){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
-			if($res != null && $res->userid == $userid){
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $json->userid){
+				$areaid = $json->areaid;
+				$areaName = $json->areaName;
+				$isRoomYN = $json->isRoomYN;
 				$this->load->model('settingsModel');
-				$data['areas'] = $this->settingsModel->getAllAreas($centerid);
+				$area = $this->settingsModel->getAreaExists($areaName,$areaid);
+				if($area == null){
+					$area = $this->settingsModel->updateArea($areaid,$areaName,$isRoomYN);
+					$data['Status'] = "SUCCESS";
+				}
+				else{
+					$data['Status'] = "ERROR";
+					$data['Message'] = "Area with the same name already exists";
+				}
 				http_response_code(200);
 				echo json_encode($data);
 			}
@@ -69,7 +81,6 @@ class Settings extends CI_Controller {
 			http_response_code(401);
 		}
 	}
-
 
 	public function addRole(){
 		$headers = $this->input->request_headers();
@@ -88,7 +99,38 @@ class Settings extends CI_Controller {
 				}
 				else{
 					$data['Status'] = "ERROR";
-					$data['Message'] = "Area with the same name already exists";
+					$data['Message'] = "Role with the same name already exists";
+				}
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
+	public function updateRole(){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $json->userid){
+				$roleid = $json->roleid;
+				$roleName = $json->roleName;
+				$this->load->model('settingsModel');
+				$role = $this->settingsModel->getRoleExists($roleName,$roleid);
+				if($role == null){
+					$role = $this->settingsModel->updateRole($areaid,$roleName);
+					$data['Status'] = "SUCCESS";
+				}
+				else{
+					$data['Status'] = "ERROR";
+					$data['Message'] = "Role with the same name already exists";
 				}
 				http_response_code(200);
 				echo json_encode($data);
@@ -131,6 +173,25 @@ class Settings extends CI_Controller {
 		}
 	}
 
+	public function changePassword(){
+		//todo
+	}
+
+	public function addRoom(){
+		//todo
+	}
+
+	public function editRoom(){
+		//todo
+	}
+
+	public function addCenter(){
+		//todo
+	}
+
+	public function updateCenter(){
+		//todo
+	}
 
 	public function addEmployee(){
 		$json = json_decode(file_get_contents('php://input'));
