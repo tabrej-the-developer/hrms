@@ -106,7 +106,13 @@ class Timesheet extends CI_Controller{
 				$timesheet = $this->timesheetModel->getTimesheet($timesheetid);
 				if($timesheet != null){
 					$currentDay = 0;
+					$data['startDate'] = $timesheet->startDate;
+					$data['endDate'] = $timesheet->endDate;
+					$data['id'] = $timesheet->id;
+					$data['isEditYN'] = $timesheet->createdBy == $userid ? "Y" : "N";
+					$data['status'] = $timesheet->status;
 					$data['timesheet'] = array();
+					
 					while ($currentDay < 14) {
 						$currentDate = date( "Y-m-d", strtotime( "$timesheet->startDate +$currentDay day" ));
 						$payrollEntities = $this->timesheetModel->getPayrollShifts($currentDate,$timesheet->id);

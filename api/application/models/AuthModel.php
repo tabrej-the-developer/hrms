@@ -67,6 +67,12 @@ class AuthModel extends CI_Model {
 		return $query->row();
 	}
 
+	public function getAuthUser($userid,$password){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM users WHERE id='$userid' AND password = '$password'");
+		return $query->row();
+	}
+
 	public function insertLogin($userid,$deviceid,$token){
 		$this->load->database();
 		$query = $this->db->query("DELETE FROM logins WHERE userid = '$userid'");
@@ -74,7 +80,7 @@ class AuthModel extends CI_Model {
 	}
 
 	public function getPermissions($userid){
-		$his->load->database();
+		$this->load->database();
 		$query = $this->db->query("SELECT * FROM permissions WHERE userid = '$userid'");
 		return $query->row();
 	}

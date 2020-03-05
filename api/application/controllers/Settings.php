@@ -174,11 +174,88 @@ class Settings extends CI_Controller {
 	}
 
 	public function changePassword(){
-		//todo
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $json->userid){
+				$oldPassword = $json->oldPassword;
+				$newPassword = $json->newPassword;
+				$userid = $json->userid;
+				$this->load->model('authModel');
+
+				$oldAuthUser = $this->authModel->getAuthUser($userid,$oldPassword);
+				if($oldAuthUser != null){
+					$this->authModel->updatePassword($userid,$newPassword);
+					$data['Status'] = "SUCCESS";
+					//todo get template
+					// $this->load->library('email');
+					// $config = array(
+					//     'protocol'  => 'smtp',
+					//     'smtp_host' => 'ssl://smtp.zoho.com',
+					//     'smtp_port' => 465,
+					//     'smtp_user' => SMTP_EMAIL,
+					//     'smtp_pass' => SMTP_PASSWORD,
+					//     'mailtype'  => 'html',
+					//     'charset'   => 'utf-8'
+					// );
+					// $this->email->initialize($config);
+					// $this->email->set_mailtype("html");
+					// $this->email->set_newline("\r\n");
+					// $htmlContent = $this->load->view('template/signupEmail',$mData,true);
+					// $this->email->to($email);
+					// $this->email->from($config['smtp_user'],$mData['appName'].' Support');
+					// $this->email->subject('Hello from '.$mData['appName']);
+					// $this->email->message($htmlContent);
+					// $this->email->send();
+				}
+				else{
+
+					$data['Status'] = "ERROR";
+					$data['Message'] = "Invalid old password";
+				}
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
 	}
 
 	public function addRoom(){
-		//todo
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $json->userid){
+
+				$centerid = $json->centerid;
+				$name = $json->name;
+				$careAgeFrom = $json->careAgeFrom;
+				$careAgeTo = $json->careAgeTo;
+				$capacity = $json->capacity;
+				$studentRatio = $json->studentRatio;
+				$this->load->model('settingsModel');
+				$roomid = $this->settingsModel->addRoom($centerid,$name,$careAgeFrom,$careAgeTo,$capacity,$studentRatio);
+				$this->settingsModel->createArea($centerid,$name,'Y');
+				$data['Status'] = "SUCCESS";
+
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
 	}
 
 	public function editRoom(){
@@ -248,7 +325,7 @@ class Settings extends CI_Controller {
 							$this->email->from($config['smtp_user'],$mData['appName'].' Support');
 							$this->email->subject('Hello from '.$mData['appName']);
 							$this->email->message($htmlContent);
-							//$this->email->send();
+							$this->email->send();
 
 
 							$data['Status'] = 'SUCCESS';

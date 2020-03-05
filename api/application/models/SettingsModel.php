@@ -59,4 +59,11 @@ class SettingsModel extends CI_Model {
 		$query = $this->db->query("SELECT * FROM orgchartroles where areaid = $areaid");
 		return $query->result();
 	}
+
+	public function addRoom($centerid,$name,$careAgeFrom,$careAgeTo,$capacity,$studentRatio){
+		$this->load->database();
+		$roomid = uniqid();
+		$query = $this->db->query("INSERT INTO room VALUES('$roomid','$centerid','$name',$careAgeFrom,$careAgeTo,$capacity,$studentRatio)");
+		return $roomid;
+	}
 }
