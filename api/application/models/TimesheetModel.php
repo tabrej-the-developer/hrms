@@ -29,17 +29,17 @@ class TimesheetModel extends CI_Model {
 		return $query->row();
 	}
 
-	public function getPayrollShifts($startDate,$timesheetId){
+	public function getPayrollShifts($startDate,$timesheetId,$userid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM payrollshift WHERE timesheetId = '$timesheetId' AND shiftDate = '$startDate'");
+		$query = $this->db->query("SELECT * FROM payrollshift WHERE timesheetId = '$timesheetId' AND shiftDate = '$startDate' AND userid = '$userid'");
 		return $query->result();
 	}
 
-	public function getVisitsNotOnDate($shiftDate,$centerid,$timesheetId){
-		$this->load->database();
-		$query = $this->db->query("SELECT DISTINCT(userid) as userid FROM visitis WHERE centerid = '$centerid' AND signInDate = '$shiftDate' AND userid NOT IN (SELECT userid from payrollshift WHERE timesheetId = '$timesheetId' AND shiftDate = '$shiftDate')");
-		return $query->result();
-	}
+	// public function getVisitsNotOnDate($shiftDate,$centerid,$timesheetId){
+	// 	$this->load->database();
+	// 	$query = $this->db->query("SELECT DISTINCT(userid) as userid FROM visitis WHERE centerid = '$centerid' AND signInDate = '$shiftDate' AND userid NOT IN (SELECT userid from payrollshift WHERE timesheetId = '$timesheetId' AND shiftDate = '$shiftDate')");
+	// 	return $query->result();
+	// }
 
 	public function getAllVisits($userid,$shiftDate,$centerid){
 		$this->load->database();
@@ -52,8 +52,21 @@ class TimesheetModel extends CI_Model {
 		$query = $this->db->query("UPDATE visitis SET status = '$status',signInTime = $startTime,signOutTime = $endTime WHERE id = $visitId");
 	}
 
-	public function createPayrollEntry($timesheetid,$empid,$shiftDate,$regularHours,$overtimeHours,$approvedBy){
+	public function createPayrollEntry($timesheetid,$empid,$shiftDate,$startTime,$endTime,$approvedBy,$payTypeId){
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO payrollshift VALUES(0,'$timesheetid','$empid','$shiftDate',$regularHours,$overtimeHours,'$approvedBy',now(),'Published')");
+		$query = $this->db->query("INSERT INTO payrollshift VALUES(0,'$timesheetid','$empid','$shiftDate',$startTime,$endTime,'$approvedBy',now(),'Added',$payTypeId)");
 	}
+
+	public function getUniqueVisitorsWithRoster($currentDate,$centerid){
+		$this->load->database();
+		$query = $this->db->query("SELECT DISTINCT(userid) as users FROM shift WHERE rosterDate = '$currentDate' AND roasterId = (SELECT ros.id FROM rosters as ros WHERE '$currentDate' BETWEEN ros.startDate and ros.endDate and ros.centerid = '$centerid')");
+		return $query->result();
+	}
+
+	public function getUniqueVisitorsWithoutRoster($currentDate,$centerid){
+		$this->load->database();
+		$query = $this->db->query("SELECT DISTINCT(userid) as users from visitis WHERE userid not in (SELECT userid FROM shift WHERE shift.roasterId = (SELECT ros.id FROM rosters as ros WHERE '$currentDate' BETWEEN ros.startDate and ros.endDate and ros.centerid = '$centerid'))");
+		return $query->result();
+	}
+
 }
