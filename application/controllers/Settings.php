@@ -88,6 +88,40 @@ class Settings extends CI_Controller {
 		$this->load->view('createCenterProfile');
 	}
 
+	public function createCenterProfile(){
+		$input = $this->input->post();
+		if($input != null){
+			$data['userid'] = $this->session->userdata('LoginId');
+			$data['centerid'] = $this->load->post('centerid');
+			$data['addStreet'] = $this->load->post('addStreet');
+			$data['addCity'] = $this->load->post('addCity');
+			$data['addState'] = $this->load->post('addState');
+			$data['addZip'] = $this->load->post('addZip');
+			$data['name'] = $this->load->post('name');
+			$data['logo'] = $this->load->post('logo');
+		$url = BASE_API_URL."/settings/addCenter.";
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				return $server_output;
+				curl_close ($ch);
+
+			}
+			else if($httpcode == 401){
+
+			}			
+		}
+	}
+
 	public function centerProfile($centerid = 1){
 		if($this->input->get('centerid') != null){
 			$centerid = $this->input->get('centerid');
