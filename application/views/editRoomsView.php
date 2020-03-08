@@ -128,7 +128,7 @@
       var capacity  = $(this).parent().parent().parent().children('.min').val();
       var studentRatio  = $(this).parent().parent().parent().children('.ratio').val();
       var roomId  = $(this).parent().parent().parent().children('.id').val();
-      var code = "<td><label>Room Name</label><input type='text' class=\"name\"></td><td><label>Room Capacity</label><input type=\"number\" class=\"capacity\"></td><td><label>Min age in months</label><input type=\"number\" class=\"min\"></td><td><label>Max-age in months</label><input type=\"number\" class=\"max\"></td><td><label>Ratio</label><input type=\"number\" class=\"ratio\"></td><label style=\"display:none\">Room Id</label><input type=\"text\" class=\"id\" style=\"display:none\"><td><button class=\"subm\">submit</button></td><td><button class=\"cancel\">cancel</button></td>"
+      var code = "<td class=\"r-name\"><label>Room Name</label><input type='text' class=\"name\"></td><td class=\"r-capacity\"><label>Room Capacity</label><input type=\"number\" class=\"capacity\"></td><td class=\"min-age\"><label>Min age in months</label><input type=\"number\" class=\"min\"></td><td class=\"max-age\"><label>Max-age in months</label><input type=\"number\" class=\"max\"></td><td class=\"s-ratio\"><label>Ratio</label><input type=\"number\" class=\"ratio\"></td><label style=\"display:none\">Room Id</label><input type=\"text\" class=\"id\" style=\"display:none\"><td class=\"s-button\"><button class=\"submit\">submit</button></td><td class=\"c-button\"><button class=\"cancel\">cancel</button></td>"
       parent.html(code);      
       $('.cancel').on('click',function(){
         $(this).parent().parent().html(parentHtml);
@@ -136,15 +136,15 @@
     })  
   </script>
   <script type="text/javascript">
-    $(document).on('click','.subm',function(){
+    $(document).on('click','.submit',function(){
     var response = 'edit';
     var centerid = <?php echo $centerid;?>;
-    var name = $(this).parent().parent().children().children('.name').val();
-    var careAgeFrom = $(this).parent().parent().children().next().next().next().children('.min').val();
-    var careAgeTo = $(this).parent().parent().children().next().next().children('.max').val();
-    var capacity = $(this).parent().parent().children().next().children('.capacity').val();
-     var studentRatio = $(this).parent().parent().children().next().next().next().next().children('.ratio').val();
-     var roomId = $(this).parent().prev().val();
+    var name = $(this).parent().parent().children('.r-name').children('.name').val();
+    var careAgeFrom = $(this).parent().parent().children('.min-age').children('.min').val();
+    var careAgeTo = $(this).parent().parent().children('.max-age').children('.max').val();
+    var capacity = $(this).parent().parent().children('.r-capacity').children('.capacity').val();
+     var studentRatio = $(this).parent().parent().children('.s-ratio').children('.ratio').val();
+     var roomId = $(this).parent().parent().children('.id').val();
      var url = "http://localhost/PN101/updateRoom"
      $.ajax({
           url : url,
