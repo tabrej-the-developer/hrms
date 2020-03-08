@@ -149,8 +149,11 @@
 }
 </script>
 <script type="text/javascript">
+  
+</script>
+<script type="text/javascript">
   $('.add-center').on('click',function(){
-    window.location.href="http://localhost/PN101/settings/createCenter;"
+    window.location.href="http://localhost/PN101/settings/createCenter"
   })
 </script>
 </body>
