@@ -315,8 +315,8 @@ function icon($str){
 
 //PHP functions //
 
-		 $str1 = $rosterDetails->roster[0]->occupancy[0]->date;
-		 $str2 = $rosterDetails->roster[0]->occupancy[4]->date; 
+		 $str1 = $rosterDetails->startDate;
+		 $str2 = $rosterDetails->endDate; 
 		 $v1 = explode("-",$str1);
 		 $v2 = explode("-",$str2);
 		 echo date("M d",mktime(0,0,0,$v1[1],intval($v1[2]),(intval($v1[0]))))." to ". 
@@ -325,12 +325,22 @@ function icon($str){
 		<div class="table-div" style="">
 			<table>
 				<tr>
-					<th id="table-id-1" class="day">Employees</th>	<?php $x=0;?>
-					<th id="table-id-2" class="day">Mon <?php echo dateToDay($rosterDetails->roster[$x]->occupancy[0]->date) ?></th>
-					<th id="table-id-3" class="day">Tue <?php echo dateToDay($rosterDetails->roster[$x]->occupancy[1]->date) ?></th>
-					<th id="table-id-4" class="day">Wed <?php echo dateToDay($rosterDetails->roster[$x]->occupancy[2]->date) ?></th>
-					<th id="table-id-5" class="day">Thu <?php echo dateToDay($rosterDetails->roster[$x]->occupancy[3]->date) ?></th>
-					<th id="table-id-6" class="day">Fri <?php echo dateToDay($rosterDetails->roster[$x]->occupancy[4]->date) ?></th>
+					<th id="table-id-1" class="day">Employees</th>	<?php $x=0;
+						$startDate = date('Y-m-d', strtotime($rosterDetails->startDate));
+						?>
+					<th id="table-id-2" class="day">Mon <?php echo dateToDay($rosterDetails->startDate) ?></th>
+					<th id="table-id-3" class="day">Tue <?php  
+						$endDate = date( "Y-m-d", strtotime( "$startDate +1 day" ));
+						echo dateToDay($endDate); ?></th>
+					<th id="table-id-4" class="day">Wed <?php 
+						$endDate = date( "Y-m-d", strtotime( "$startDate +2 day" ));
+						echo dateToDay($endDate); ?></th>
+					<th id="table-id-5" class="day">Thu <?php 
+						$endDate = date( "Y-m-d", strtotime( "$startDate +3 day" ));
+						echo dateToDay($endDate); ?></th>
+					<th id="table-id-6" class="day">Fri <?php 
+						$endDate = date( "Y-m-d", strtotime( "$startDate +4 day" ));
+						echo dateToDay($endDate); ?></th>
 					<th id="table-id-7" class="day">
 						<span class=" d-flex justify-content-center">
 							<span class="row">Budget (Emp wise)</span>

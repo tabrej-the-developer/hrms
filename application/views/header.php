@@ -65,52 +65,41 @@
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav animate side-nav">
           <li class="nav-item">
-            <a class="nav-link" href="<?php echo site_url('main/enter') ?>" title="Dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard <i class="fas fa-tachometer-alt shortmenu animate"></i></a>
+            <a class="nav-link" href="#" title="Dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard <i class="fas fa-tachometer-alt shortmenu animate"></i></a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="<?php echo site_url('messenger') ?>" title="Cart"><i class="fas fa-envelope"></i> Messanger <i class="fas fa-envelope shortmenu animate"></i></a>
-          </li>
-		  <?php $username= $this->session->userdata('email'); ?>
-		  <?php if($username == 'admin@gmail.com'): ?>
-          <li class="nav-item">
-            <a class="nav-link" href="<?php echo site_url('leaves_approval_controller') ?>" title="Leaves"><i class="fas fa-suitcase"></i> Leaves <i class="fas fa-suitcase shortmenu animate"></i></a>
-          </li>
-		  <?php elseif($username == 'arpitasaxena555@gmail.com'): ?>
-          <li class="nav-item">
-            <a class="nav-link" href="<?php echo site_url('test_api_controller/leaves_tracking') ?>" title="Leaves"><i class="fas fa-suitcase"></i> Leaves <i class="fas fa-suitcase shortmenu animate"></i></a>
-          </li>
-		  <?php else: ?>
-		  <li class="nav-item">
-            <a class="nav-link" href="<?php echo site_url('leave') ?>" title="Leaves"><i class="fas fa-suitcase"></i> Leaves <i class="fas fa-suitcase shortmenu animate"></i></a>
-          </li>
-		  <?php endif; ?>
-		  
-		  
-		  
-		  <li class="nav-item">
-            <a class="nav-link" href="#" title="Settings"><i class="fas fa-cogs"></i> Settings <i class="fas fa-cogs shortmenu animate"></i></a>
-          </li>
-		  <li class="nav-item">
-            <a class="nav-link" href="#" title="payroll"><i class="fas fa-dollar-sign"></i> Payroll <i class="fas fa-dollar-sign shortmenu animate"></i></a>
-          </li>
-		  <li class="nav-item">
-            <a class="nav-link" href="<?php echo site_url('notice') ?>" title="Notices"><i class="fas fa-comment"></i> Notices <i class="fas fa-comment shortmenu animate"></i></a>
-          </li>
-		  <li class="nav-item">
+      <li class="nav-item">
             <a class="nav-link" href="<?php echo site_url('roster/roster_dashboard') ?>" title="roster"><i class="fas fa-calendar-alt"></i> Roster <i class="fas fa-calendar-alt shortmenu animate"></i></a>
           </li>
-		  
-		  <?php $username= $this->session->userdata('email'); ?>
-		  <?php if($username == 'admin@gmail.com'): ?>
           <li class="nav-item">
-            <a class="nav-link" href="<?php echo site_url('timesheet/open_timesheet') ?>" title="Leaves"><i class="fas fa-suitcase"></i> Timesheet <i class="fas fa-suitcase shortmenu animate"></i></a>
+            <a class="nav-link" href="#" title="Leaves"><i class="fas fa-suitcase"></i> Timesheet <i class="fas fa-suitcase shortmenu animate"></i></a>
           </li>
-		  <?php else: ?>
+      <li class="nav-item">
+            <a class="nav-link" href="#" title="payroll"><i class="fas fa-dollar-sign"></i> Payroll <i class="fas fa-dollar-sign shortmenu animate"></i></a>
+          </li>
+		      <li class="nav-item">
+            <a class="nav-link" href="<?php echo site_url('leave') ?>" title="Leaves"><i class="fas fa-suitcase"></i> Leaves <i class="fas fa-suitcase shortmenu animate"></i></a>
+          </li>
+		  
+          <li class="nav-item">
+            <a class="nav-link" href="#" title="Cart"><i class="fas fa-lightbulb-o"></i> Jobs <i class="fas fa-lightbulb-o shortmenu animate"></i></a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="<?php echo site_url('messenger') ?>" title="Cart"><i class="fas fa-envelope"></i> Messenger <i class="fas fa-envelope shortmenu animate"></i></a>
+          </li>
+      <li class="nav-item">
+            <a class="nav-link" href="<?php echo site_url('notice') ?>" title="Notices"><i class="fas fa-comment"></i> Notices <i class="fas fa-comment shortmenu animate"></i></a>
+          </li>
+		  
+      <li class="nav-item">
+            <a class="nav-link" href="#" title="Settings"><i class="fas fa-file"></i> Reports <i class="fas fa-file shortmenu animate"></i></a>
+          </li>
 		  
 		  <li class="nav-item">
-            <a class="nav-link" href="<?php echo site_url('timesheet/timesheet1') ?>" title="roster"><i class="fas fa-clock"></i> TImesheet <i class="fas fa-clock shortmenu animate"></i></a>
+            <a class="nav-link" href="<?php echo site_url('settings') ?>" title="Settings"><i class="fas fa-cogs"></i> Settings <i class="fas fa-cogs shortmenu animate"></i></a>
           </li>
-		  <?php endif; ?>
+
+		  
 		  
         </ul>
         <ul class="navbar-nav ml-md-auto d-md-flex">

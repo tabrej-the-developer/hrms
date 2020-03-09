@@ -408,7 +408,7 @@ input.rounded:focus {
     );
 });
 
-  $(document).ready(function(){
+  (document).ready(function(){
     $(document).on("mouseover",".dropdowns", function() {
             $( ".dropdown-menus").css("display","block")
         });         
@@ -451,7 +451,7 @@ input.rounded:focus {
       }else{
               chatId= window.location.href+ '/' + noticeid;
       }
-      alert(chatId)
+      //alert(chatId)
     $(document).ready(function(){
       $.ajax({
       url:chatId,

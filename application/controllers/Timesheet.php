@@ -5,10 +5,10 @@ class Timesheet extends CI_Controller {
 
 	public function index(){
 		
-		redirect(base_url().'Timesheet/TimesheetDashboard');
+		redirect(base_url().'timesheet/timesheetDashboard');
 	}
 
-		public function TimesheetDashboard(){
+		public function timesheetDashboard(){
 			if(!isset($_GET['center'])){
 							$id = 0;
 							$oldid=1;

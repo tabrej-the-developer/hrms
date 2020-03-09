@@ -53,8 +53,9 @@
             </thead>
             <tbody id="filterList" > 
                   <?php
-                      $room = json_decode($rooms);
-            $count = count($room->rooms);
+                    $room = json_decode($rooms);
+                    if($room != null){
+                    $count = count($room->rooms);
               for($i=0;$i<$count;$i++) { 	?>
                 <tr >
                   <td ><span id="<?php echo 'roomName'.$room->rooms[$i]->name;?>" class="name">
@@ -86,7 +87,7 @@
                           <span style="cursor: pointer;"><i class="fas fa-trash-alt" style="color: #ff3b30;"></i> Delete</span>
                         </td>
                       </tr>
-                    <?php }?> 
+                    <?php }}?> 
                   <tr id="addRoomValue"></tr>
             </tbody>
           </table>
