@@ -27,7 +27,7 @@ class Notice extends CI_Controller {
 	{
 		$data['allNotices'] = array();
 		$allNotices = json_decode($this->getAllNotices());
-		if($noticeStatus == 'Inbox'){
+		if($noticeStatus == 'Inbox' && $allNotices != null){
 			foreach ($allNotices->notices as $notice) {
 				if($notice->status != "2" && $notice->senderId != $this->session->userdata('LoginId')){
 					array_push($data['allNotices'],$notice);
