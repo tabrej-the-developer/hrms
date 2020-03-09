@@ -20,7 +20,7 @@ class Notice extends CI_Controller {
 	 */
 	public function index()
 	{
-		redirect(base_url().'notice/notices');
+		redirect(base_url().'notice/notices/Inbox');
 	}
 
 	public function notices($noticeStatus = 'Inbox',$currentNoticeId=null)
