@@ -99,6 +99,7 @@
 		  <li class="nav-item">
             <a class="nav-link" href="<?php echo site_url('roster/roster_dashboard') ?>" title="roster"><i class="fas fa-calendar-alt"></i> Roster <i class="fas fa-calendar-alt shortmenu animate"></i></a>
           </li>
+        
 		  
 		  <?php $username= $this->session->userdata('email'); ?>
 		  <?php if($username == 'admin@gmail.com'): ?>
@@ -111,7 +112,9 @@
             <a class="nav-link" href="<?php echo site_url('timesheet/timesheet1') ?>" title="roster"><i class="fas fa-clock"></i> TImesheet <i class="fas fa-clock shortmenu animate"></i></a>
           </li>
 		  <?php endif; ?>
-		  
+      <li class="nav-item">
+            <a class="nav-link" href="<?php echo site_url('mom/') ?>" title="roster"><i class="fas fa-calendar-alt"></i> MOM <i class="fas fa-calendar-alt shortmenu animate"></i></a>
+          </li>
         </ul>
         <ul class="navbar-nav ml-md-auto d-md-flex">
           <li class="nav-item">
