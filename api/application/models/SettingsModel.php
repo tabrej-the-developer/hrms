@@ -60,10 +60,36 @@ class SettingsModel extends CI_Model {
 		return $query->result();
 	}
 
-	public function addRoom($centerid,$name,$careAgeFrom,$careAgeTo,$capacity,$studentRatio){
+	public function changePassword($userid,$password,$passcode){
 		$this->load->database();
-		$roomid = uniqid();
-		$query = $this->db->query("INSERT INTO room VALUES('$roomid','$centerid','$name',$careAgeFrom,$careAgeTo,$capacity,$studentRatio)");
-		return $roomid;
+		$this->db->query("UPDATE users SET password = '$password' WHERE id = '$userid' and password = '$passcode'");
 	}
+
+	public function updateCenterProfile($centerid,$logo,$name,$addStreet,$addCity,$addState,$addZip){
+		$this->load->database();
+		$this->db->query("UPDATE centers SET 	 logo = '$logo',name = '$name', addStreet = '$addStreet', addCity = '$addCity',addState = '$addState' , addZip = '$addZip' where centerid = '$centerid'");
+	}
+
+	public function addCenter($centerid,$logo,$name,$addStreet,$addCity,$addState,$addZip){
+		$this->load->database();
+		$this->db->query("INSERT INTO centers (centerid,logo,name,addStreet,addCity,addState,addZip) values('$centerid','$logo','$name', '$addStreet', '$addCity', '$addState' , '$addZip')");
+	}
+
+	public function getRooms($centerid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM room where centerid = $centerid");
+		return $query->result();
+	}
+
+	public function editRoom($centerid,$name,$careAgeFrom,$careAgeTo,$capacity,$studentRatio,$roomId){
+		$this->load->database();
+		$this->db->query("UPDATE room SET  name='$name', careAgeFrom='$careAgeFrom', careAgeTo='$careAgeTo', capacity='$capacity', studentRatio='$studentRatio' where centerid='$centerid' and roomId = '$roomId'");
+	}
+
+		public function deleteRoom($roomId){
+		$this->load->database();
+		$this->db->query("DELETE from room where roomId = '$roomId'");
+	}
+
+
 }

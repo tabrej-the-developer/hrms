@@ -93,4 +93,10 @@ class RostersModel extends CI_Model {
 		$this->db->query("UPDATE shift SET status = 2 WHERE roasterId = '$rosterid'");
 	}
 
+	public function getShiftDetails($userid,$currentDate){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM shift WHERE userid = '$userid' AND rosterDate = '$currentDate'");
+		return $query->row();
+	}
+
 }

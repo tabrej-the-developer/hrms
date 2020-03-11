@@ -144,88 +144,7 @@ class Settings extends CI_Controller {
 		}
 	}
 
-	public function getOrgChart($centerid,$userid){
-		$headers = $this->input->request_headers();
-		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
-			$this->load->model('authModel');
-			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
-			if($res != null && $res->userid == $userid){
-				$this->load->model('settingsModel');
-				$allAreas = $this->settingsModel->getAllAreas($centerid);
-				$data['orgchart'] = [];
-				foreach ($allAreas as $area) {
-					$var['areaId'] = $area->areaid;
-					$var['centerid'] = $area->centerid;
-					$var['areaName'] = $area->areaName;
-					$var['isARoomYN'] = $area->isARoomYN;
-					$var['roles'] = $this->settingsModel->getRolesFromArea($area->areaid);
-					array_push($data['orgchart'],$var);
-				}
-				http_response_code(200);
-				echo json_encode($data);
-			}
-			else{
-				http_response_code(401);
-			}
-		}
-		else{
-			http_response_code(401);
-		}
-	}
 
-	public function changePassword(){
-		$headers = $this->input->request_headers();
-		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
-			$this->load->model('authModel');
-			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
-			$json = json_decode(file_get_contents('php://input'));
-			if($json!= null && $res != null && $res->userid == $json->userid){
-				$oldPassword = $json->oldPassword;
-				$newPassword = $json->newPassword;
-				$userid = $json->userid;
-				$this->load->model('authModel');
-
-				$oldAuthUser = $this->authModel->getAuthUser($userid,$oldPassword);
-				if($oldAuthUser != null){
-					$this->authModel->updatePassword($userid,$newPassword);
-					$data['Status'] = "SUCCESS";
-					//todo get template
-					// $this->load->library('email');
-					// $config = array(
-					//     'protocol'  => 'smtp',
-					//     'smtp_host' => 'ssl://smtp.zoho.com',
-					//     'smtp_port' => 465,
-					//     'smtp_user' => SMTP_EMAIL,
-					//     'smtp_pass' => SMTP_PASSWORD,
-					//     'mailtype'  => 'html',
-					//     'charset'   => 'utf-8'
-					// );
-					// $this->email->initialize($config);
-					// $this->email->set_mailtype("html");
-					// $this->email->set_newline("\r\n");
-					// $htmlContent = $this->load->view('template/signupEmail',$mData,true);
-					// $this->email->to($email);
-					// $this->email->from($config['smtp_user'],$mData['appName'].' Support');
-					// $this->email->subject('Hello from '.$mData['appName']);
-					// $this->email->message($htmlContent);
-					// $this->email->send();
-				}
-				else{
-
-					$data['Status'] = "ERROR";
-					$data['Message'] = "Invalid old password";
-				}
-				http_response_code(200);
-				echo json_encode($data);
-			}
-			else{
-				http_response_code(401);
-			}
-		}
-		else{
-			http_response_code(401);
-		}
-	}
 
 	public function addRoom(){
 		$headers = $this->input->request_headers();
@@ -259,15 +178,231 @@ class Settings extends CI_Controller {
 	}
 
 	public function editRoom(){
-		//todo
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+		
+		if($json!= null && $res != null && $res->userid == $json->userid){
+			if($json->response == 'edit'){
+				$roomId =$json->roomId;
+				$centerid = $json->centerid;
+				$name = $json->name;
+				$careAgeFrom = $json->careAgeFrom;
+				$careAgeTo = $json->careAgeTo;
+				$capacity = $json->capacity;
+				$studentRatio = $json->studentRatio;
+				$this->load->model('settingsModel');
+		$roomid = $this->settingsModel->editRoom($centerid,$name,$careAgeFrom,$careAgeTo,$capacity,$studentRatio,$roomId);
+				$data['Status'] = 'SUCCESS';
+				}
+		if($json->response == 'delete'){
+					$roomId =$json->roomId;
+				$this->load->model('settingsModel');
+				$roomid = $this->settingsModel->deleteRoom($roomId);
+				$data['Status'] = 'DELETED _ SUCCESS';
+				}
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
 	}
 
+
+
+	public function getRooms($centerid,$userid){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+				$this->load->model('settingsModel');
+				$allRooms = $this->settingsModel->getRooms($centerid);
+				$data['rooms'] = [];
+				foreach ($allRooms as $room) {
+					$var['roomId'] = $room->roomId;
+					$var['name'] = $room->name;
+					$var['careAgeFrom'] = $room->careAgeFrom;
+					$var['careAgeTo'] = $room->careAgeTo;
+					$var['capacity'] = $room->capacity;
+					$var['studentRatio'] = $room->studentRatio;
+					array_push($data['rooms'],$var);
+				}
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
+	public function changePassword(){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $json->userid){
+				$userid = $json->userid;
+				$password = md5($json->password);
+				$passcode = md5($json->passcode);
+				$this->load->model('settingsModel');
+				$role = $this->authModel->getUserDetails($userid);
+				if($role != null){
+				$role = $this->settingsModel->changePassword($userid,$password,$passcode);
+					$data['Status'] = "SUCCESS";
+				}
+				else{
+					$data['Status'] = "ERROR";
+					$data['Message'] = "Error password change";
+				}
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
+		
 	public function addCenter(){
-		//todo
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			//$newR = $this->UtilModel->getCenterById($json->centerid);
+			if($json!= null && $res != null && $res->userid == $json->userid){
+				$addStreet = $json->addStreet;
+				$addCity = $json->addCity;
+				$addState = $json->addState;
+				$addZip = $json->addZip;
+				$name = $json->name;
+				$logo = $json->logo;
+				$centerid = $json->centerid;
+				$rooms = $json->rooms;
+				if($logo == null){
+					$logo = "http://vizytor.todquest.com/images/logo/amiga.png";
+				}else{
+				$destFile = "assets/images/".$_FILES['file']['name'];
+				$logo = basename($_FILES['file']['name']);
+				move_uploaded_file( $_FILES['file']['tmp_name'], $destFile );
+				}
+				//$this->load->model('UtilModel');
+				$this->load->model('settingsModel');
+				foreach ($rooms as $r) {
+					
+					if($r->name != null ){
+						$name = $r->name;
+						$careAgeFrom = $r->careAgeFrom;
+						$careAgeTo = $r->careAgeTo;
+						$capacity = $r->capacity;
+						$studentRatio = $r->studentRatio;
+		$room = $this->settingsModel->addRoom($centerid,$name,$careAgeFrom,$careAgeTo,$capacity,$studentRatio);
+					}
+				}
+				$center = $this->settingsModel->addCenter($centerid,$logo,$name,$addStreet,$addCity,$addState,$addZip);
+					$data['Status'] = "SUCCESS";
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
 	}
 
 	public function updateCenter(){
-		//todo
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			//$newR = $this->UtilModel->getCenterById($json->centerid);
+			if($json!= null && $res != null && $res->userid == $json->userid){
+				$addStreet = $json->addStreet;
+				$addCity = $json->addCity;
+				$addState = $json->addState;
+				$addZip = $json->addZip;
+				$name = $json->name;
+				$logo = $json->logo;
+				$centerid = $json->centerid;
+				if($logo == null){
+					$logo = "http://vizytor.todquest.com/images/logo/amiga.png";
+				}else{
+				$destFile = "assets/images/".$_FILES['file']['name'];
+				move_uploaded_file( $_FILES['file']['tmp_name'], $destFile );
+				}
+				$this->load->model('UtilModel');
+				$center = $this->UtilModel->getCenterById($centerid);
+				if($center != null){
+				$this->load->model('settingsModel');
+				$center = $this->settingsModel->updateCenterProfile($centerid,$logo,$name,$addStreet,$addCity,$addState,$addZip);
+					$data['Status'] = "SUCCESS";
+				}
+				else{
+					$data['Status'] = "ERROR";
+					$data['Message'] = "Center doesnot exist";
+				}
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
+
+
+		public function getOrgChart($centerid,$userid){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+				$this->load->model('settingsModel');
+				$allAreas = $this->settingsModel->getAllAreas($centerid);
+				$data['orgchart'] = [];
+				foreach ($allAreas as $area) {
+					$var['areaId'] = $area->areaid;
+					$var['centerid'] = $area->centerid;
+					$var['areaName'] = $area->areaName;
+					$var['isARoomYN'] = $area->isARoomYN;
+					$var['roles'] = $this->settingsModel->getRolesFromArea($area->areaid);
+					array_push($data['orgchart'],$var);
+				}
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
 	}
 
 	public function addEmployee(){
@@ -325,7 +460,7 @@ class Settings extends CI_Controller {
 							$this->email->from($config['smtp_user'],$mData['appName'].' Support');
 							$this->email->subject('Hello from '.$mData['appName']);
 							$this->email->message($htmlContent);
-							$this->email->send();
+							//$this->email->send();
 
 
 							$data['Status'] = 'SUCCESS';

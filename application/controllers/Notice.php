@@ -20,14 +20,14 @@ class Notice extends CI_Controller {
 	 */
 	public function index()
 	{
-		redirect(base_url().'notice/notices');
+		redirect(base_url().'notice/notices/Inbox');
 	}
 
 	public function notices($noticeStatus = 'Inbox',$currentNoticeId=null)
 	{
 		$data['allNotices'] = array();
 		$allNotices = json_decode($this->getAllNotices());
-		if($noticeStatus == 'Inbox'){
+		if($noticeStatus == 'Inbox' && $allNotices != null){
 			foreach ($allNotices->notices as $notice) {
 				if($notice->status != "2" && $notice->senderId != $this->session->userdata('LoginId')){
 					array_push($data['allNotices'],$notice);
