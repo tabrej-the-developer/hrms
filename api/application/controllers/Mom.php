@@ -17,9 +17,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           if($headers != null && array_key_exists('x-device-id',$headers) && array_key_exists('x-token',$headers) ){
               $this->load->model('MeetingModel');
               $json = json_decode(file_get_contents('php://input'));
-              $meetingTitle = $json->name;
-              $invites =  $json->invite;
-              $date = $json->time;
+              $meetingTitle = $json->title;
+              $location = $json->location;
+              $collab = $json->collab;
+              $invites =  $json->invites;
+              $date = $json->date;
+              $time = $json->time;
+              $agenda = $json->agenda;
               $id = uniqid();
             $response =   $this->meetingModel->addMeeting($id,$meetingTitle,$invites,$date);
                  if($response){

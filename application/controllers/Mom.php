@@ -42,10 +42,16 @@ class Mom extends CI_CONTROLLER{
 
     public function addMeeting(){
        $form_data = $this->input->post();
+       
+       
        if($form_data != null ){
-           $data['title']   =    $form_data['meetingTitle'];
-           $data['invites'] =    $form_data['invites'];
-           $data['time']    =    $form_data['time'];
+           $data['title']         =      $form_data['meetingTitle'];
+           $data['location']      =      $form_data['meetingLocation'];
+           $data['date']          =      $form_data['date'];
+           $data['time']          =      $form_data['time'];
+           $data['agenda']        =      $form_data['meetingAgenda'];
+           $data['collab']        =      $form_data['meetingCollob'];
+           $data['invites']       =      $form_data['invites'];
            $url = "http://todquest.com/PN101/api/mom/addMeeting";
            $ch = curl_init($url);
 

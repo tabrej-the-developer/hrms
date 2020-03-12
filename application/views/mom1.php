@@ -266,12 +266,12 @@ svg:not(:root).svg-inline--fa {
                         </div>
                 <div class="modal-body">
 					<div class="col-md-12 col-xl-12">	
-					<form  method="POST" action="">
+					<form  method="POST" action="<?php echo base_url() ?>mom/addMeeting">
 						
 
 						<div class="form-group">
 						  <label>New Meeting</label>
-						  <input type="text" class="form-control" id="leaveName" placeholder="Enter Meeting Title" name="meetingTitle" >
+						  <input type="text" class="form-control" id="meetingTitle" placeholder="Enter Meeting Title" name="meetingTitle" >
 						  <span id="meeting_error" class="text-danger"></span>
 						</div>
 
@@ -285,13 +285,13 @@ svg:not(:root).svg-inline--fa {
 
 						<div class="form-group">
 							<label>Date</label>
-							<input type="text" class="form-control" name="meetingLocation" id="date" placeholder="Date"  >
+							<input type="text" class="form-control" name="meetingDate" id="date" placeholder="Date"  >
 						  <span id="date_error" class="text-danger"></span>
 						</div>
 
 						<div class="form-group">
 							<label>Time</label>
-							<input type="text" class="form-control" name="meetingLocation" id="time" placeholder="Time"  >
+							<input type="text" class="form-control" name="meetingTime" id="time" placeholder="Time"  >
 						  <span id="time_error" class="text-danger"></span>
 						</div>
  
@@ -299,8 +299,8 @@ svg:not(:root).svg-inline--fa {
 						<div class="col-md-8" id="agendaMore">
 						<div class="form-group">
 							<label>Agenda</label>
-							<input type="text" class="form-control" name="meetingAgenda" id="agenda" placeholder="Agenda"  >
-						  <span id="time_error" class="text-danger"></span>
+							<input type="text" class="form-control" name="meetingAgenda[]" id="agenda1" placeholder="Agenda"  >
+						  <span id="agenda_error" class="text-danger"></span>
 						</div>
 						</div>
 						<div class="col-md-4">
@@ -317,7 +317,7 @@ svg:not(:root).svg-inline--fa {
 							<option value="m">Monthly</option>
 							<option value="w">Weekly</option>
 							</select>
-						  <span id="time_error" class="text-danger"></span>
+						  <span id="collab_error" class="text-danger"></span>
 						</div>
 						
                          
@@ -356,7 +356,7 @@ svg:not(:root).svg-inline--fa {
                     <tr>
                         <td> 
 						<label class="checkbox">
-                            <input type="checkbox" name="<?php echo $chat->userid;?>" id="<?php echo $chat->userid;?>" />
+                            <input type="checkbox" value="<?php echo $chat->userid; ?>" name="invites[]" id="invites" />
                             <span class="default"></span>
                         </label>
 						</td>
@@ -410,7 +410,7 @@ svg:not(:root).svg-inline--fa {
 						<button class="btn btn-danger rounded-0" type="button" onclick="deleteLeave()">Delete</button> 
 						</div>
 						<div class="form-group text-center" id="addLeaveType" style="display: block;">
-						<button class="btn btn-secondary rounded-0" type="button" onclick="addLeave()">Add</button>
+						<button class="btn btn-secondary rounded-0" type="button" onclick="addMeeting()">Add</button>
 						</div>
 				  </form>	
 					</div>
@@ -521,7 +521,70 @@ $('#toggle').remove();
 		}
 
 		
-		
+	 function addMeeting(){
+		 var meetingTitle = $('#meetingTitle').val();
+		 if(meetingTitle == ""){
+			 $('#meeting_error').text('Please Enter meeting Title')
+			 return false;
+		 } 
+		 else{
+			$('#meeting_error').text(' ');
+		}
+		 var meetingLocation = $('#location').val();
+		   if(meetingLocation == ""){
+			   $('#location_error').text('please Enter the text');
+			   return false;
+		   }
+		   else{
+			$('#location_error').text(' ');
+		}
+
+
+         var meetingDate = $('#date').val();
+		 if(meetingDate == ""){
+			 $('#date_error').text('Please enter the date');
+			 return false;
+		 }
+		 else{
+			$('date_error').text(' ');
+		}
+		 var meetingTime =  $('#time').val();
+		 if(meetingTime == ""){
+			 $('#time_error').text('please enter the time');
+			 return false;
+		 }
+		 else{
+			$('#time_error').text(' ');
+		}
+         var meetingAgenda = $('#agenda1').val();
+		 if(meetingAgenda == ""){
+			 
+           $('#agenda_error').text('please enter the agenda');
+		   return false;
+		 }
+		 else{
+			$('#agenda_error').text(' ');
+		}
+		 var meetingCollab = $('#colab').val();
+		 if(meetingCollab == ''){
+			 $('#collab_error').text('please enter the collab type');
+		     return false;
+		 }
+		 else{
+			$('#collab_error').text(' ');
+		}
+		var meetinginvites = $('#invites').val();
+		 if(meetinginvites == ""){
+			 alert('please add atleat one employee');
+			
+			 return false;
+		 }
+		 else{
+			 alert(meetinginvites);
+		 }
+
+		$('form').submit();
+	 }
 		
 	</script>
 	
