@@ -129,11 +129,23 @@ nav > div a.nav-item.nav-link:focus
 .toggle-switchArea { margin: 10px 0 10px 0; }
 /* Toggle end */
 		/*leaves balance bar*/
+
+		.checkbox{background-color:#fff;display:inline-block;height:18px;margin:0.6em 0 0 0;width:18px;border-radius:0;border:1px solid #ccc;float:right}
+  .checkbox span{display:block;height:20px;position:relative;width:20px;padding:0}
+  .checkbox span:after{-moz-transform:scaleX(-1) rotate(135deg);-ms-transform:scaleX(-1) rotate(135deg);-webkit-transform:scaleX(-1) rotate(135deg);transform:scaleX(-1) rotate(135deg);-moz-transform-origin:left top;-ms-transform-origin:left top;-webkit-transform-origin:left top;transform-origin:left top;border-right:3px solid #fff;border-top:3px solid #fff;content:'';display:block;height:13px;left:0;position:absolute;top:8px;width:8px}
+  
+  .checkbox input{display:none}
+.checkbox input:checked + .default:after{border-color:#242121ad}
 .chat_people{ overflow:hidden; clear:both;}
 .chat_list {
   border-bottom: 1px solid #c4c4c4;
   margin: 0;
   padding: 18px 16px 10px;
+}
+
+input::placeholder {
+  font-size: 0.9rem;
+  color: #999;
 }
 .chat_img {
   float: left;
@@ -180,6 +192,26 @@ img{ max-width:140%;}
 .carousel-control-next-icon, .carousel-control-prev-icon {
     height: 40px;
     background-color: #ccc;
+}
+
+svg:not(:root).svg-inline--fa {
+    overflow: visible;
+}
+.has-search .form-control {
+    padding-left: 2.375rem;
+}
+
+.has-search .feedback{
+	position:absolute;
+	z-index: 2;
+    display: block;
+    width: 1.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+    margin: 0 0 0 10px;
 }
 	
 /*corousol end*/		
