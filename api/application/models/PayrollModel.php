@@ -10,4 +10,10 @@ class PayrollModel extends CI_Model {
 		return $query->row();
 	}
 
+	public function getAllPayrollTypes(){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM payrollshifttype");
+		return $query->result();
+	}
+
 }
