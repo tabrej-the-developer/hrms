@@ -136,9 +136,9 @@ class Leave extends CI_Controller {
 		$form_data = $this->input->post();
 		if($form_data != null){
 			//var_dump($form_data);
-			$data['leaveId'] = $form_data['leaveId'];
-			$data['name'] = $form_data['leaveName'];
-			$data['slug'] = $form_data['leaveSlug'];
+			$data['leaveId'] =       $form_data['leaveId'];
+			$data['name']    =       $form_data['leaveName'];
+			$data['slug']    =       $form_data['leaveSlug'];
 			$data['isPaidYN'] = isset($form_data['leaveIsPaid']) ? "Y" : "N";
 			$data['userid'] = $this->session->userdata('LoginId');
 

@@ -99,8 +99,10 @@
             <a class="nav-link" href="<?php echo site_url('settings') ?>" title="Settings"><i class="fas fa-cogs"></i> Settings <i class="fas fa-cogs shortmenu animate"></i></a>
           </li>
 
-		  
-		  
+      <li class="nav-item">
+            <a class="nav-link" href="<?php echo site_url('mom/') ?>" title="roster"><i class="fas fa-calendar-alt"></i> MOM <i class="fas fa-calendar-alt shortmenu animate"></i></a>
+          </li>
+
         </ul>
         <ul class="navbar-nav ml-md-auto d-md-flex">
           <li class="nav-item">

@@ -450,7 +450,7 @@ img{ max-width:140%;}
 							<div class="row">
 	                    <div class="col-md-6"></div>
 						<div class="col-md-6 text-right">
-						<button type="button" name="add_button" id="add_button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal"  onclick="addLeaveType()"> <i class="fas fa-plus-circle"></i> Add Leave Type</button>
+						<button type="button" name="add_button" id="add_button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal"   onclick="addLeaveType()"> <i class="fas fa-plus-circle"></i> Add Leave Type</button>
 						</div>
 		                </div>
 		                </div>

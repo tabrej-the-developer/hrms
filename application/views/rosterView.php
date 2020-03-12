@@ -162,6 +162,12 @@ border-bottom-right-radius: 20px;
 </style>
 </head>
 <body>
+	<?php
+		function dateToDay($date){
+			$date = explode("-",$date);
+			return date("M d",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
+		}
+	?>
 <div class="container">
 	<div class="d-flex">
 		<span class="m-3" style="font-size: 30px;font-weight: bold">Rosters</span>
@@ -211,7 +217,7 @@ border-bottom-right-radius: 20px;
 						<td><?php print_r(json_decode($centers)->centers[0]->name) ?></td>
 					<?php } ?>
 					<?php if($this->session->userdata('UserType') ==SUPERADMIN ) { ?>
-					<td><?php echo $centers->centers[$id]->name ?></td>
+					<td><?php echo 'Roster | '.dateToDay($roster->rosters[$i]->startDate).'-'.dateToDay($roster->rosters[$i]->endDate) ?></td>
 				<?php }?>
 					<td><?php echo $roster->rosters[$i]->startDate ?></td>
 					<td><?php echo $roster->rosters[$i]->endDate ?></td>

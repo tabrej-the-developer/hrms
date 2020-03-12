@@ -294,7 +294,8 @@ class Settings extends CI_Controller {
 				$addZip = $json->addZip;
 				$name = $json->name;
 				$logo = $json->logo;
-				$centerid = $json->logo;
+				$centerid = $json->centerid;
+				$rooms = $json->rooms;
 				if($logo == null){
 					$logo = "http://vizytor.todquest.com/images/logo/amiga.png";
 				}else{
@@ -302,8 +303,19 @@ class Settings extends CI_Controller {
 				$logo = basename($_FILES['file']['name']);
 				move_uploaded_file( $_FILES['file']['tmp_name'], $destFile );
 				}
-				$this->load->model('UtilModel');
+				//$this->load->model('UtilModel');
 				$this->load->model('settingsModel');
+				foreach ($rooms as $r) {
+					
+					if($r->name != null ){
+						$name = $r->name;
+						$careAgeFrom = $r->careAgeFrom;
+						$careAgeTo = $r->careAgeTo;
+						$capacity = $r->capacity;
+						$studentRatio = $r->studentRatio;
+		$room = $this->settingsModel->addRoom($centerid,$name,$careAgeFrom,$careAgeTo,$capacity,$studentRatio);
+					}
+				}
 				$center = $this->settingsModel->addCenter($centerid,$logo,$name,$addStreet,$addCity,$addState,$addZip);
 					$data['Status'] = "SUCCESS";
 				http_response_code(200);
@@ -364,7 +376,7 @@ class Settings extends CI_Controller {
 
 
 
-	public function getOrgChart($centerid,$userid){
+		public function getOrgChart($centerid,$userid){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
