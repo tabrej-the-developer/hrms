@@ -66,9 +66,9 @@
 ?>
 <?php 
 if($aT == 'rosteredEmployees'){
-foreach($timesheetDetails->timesheet[$ya]->unrosteredEmployees[$xa]->clockedTimes as $visits){
+foreach($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes as $visits){
 	?>
-	  <div start-time="<?php echo $visits->startTime; ?>" end-time="<?php echo $visits->endTime; ?>" class="box-time" style="padding:20px" hourly="<?php echo $timesheetDetails->timesheet[$ya]->unrosteredEmployees[$xa]->hourlyRate;?>">
+	  <div start-time="<?php echo $visits->startTime; ?>" end-time="<?php echo $visits->endTime; ?>" class="box-time" style="padding:20px" hourly="<?php echo $timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->hourlyRate;?>">
 	  	<span class="group-span">
 		<span><input type="checkbox" name="" checked></span>
 		<span svalue="<?php echo $visits->startTime; ?>" evalue="<?php echo $visits->endTime; ?>" class="time-box"><?php echo timex($visits->startTime) ."-". timex($visits->endTime) ?></span>
@@ -99,7 +99,7 @@ foreach($timesheetDetails->timesheet[$ya]->unrosteredEmployees[$xa]->clockedTime
 if($aT == 'unrosteredEmployees'){
 foreach($timesheetDetails->timesheet[$ya]->unrosteredEmployees[$xa]->clockedTimes as $visits){
 	?>
-	  <div start-time="<?php echo $visits->startTime; ?>" end-time="<?php echo $visits->endTime; ?>" class="box-time" style="padding:20px">
+	  <div start-time="<?php echo $visits->startTime; ?>" end-time="<?php echo $visits->endTime; ?>" class="box-time" style="padding:20px" hourly="<?php echo $timesheetDetails->timesheet[$ya]->unrosteredEmployees[$xa]->hourlyRate;?>">
 	  	<span class="group-span">
 		<span><input type="checkbox" name="" checked></span>
 		<span svalue="<?php echo $visits->startTime; ?>" evalue="<?php echo $visits->endTime; ?>" class="time-box"><?php echo timex($visits->startTime) ."-". timex($visits->endTime) ?></span>
@@ -132,22 +132,7 @@ foreach($timesheetDetails->timesheet[$ya]->unrosteredEmployees[$xa]->clockedTime
 	</div>
 </div>
 
-<script type="text/javascript">
-	var count = $('.box-time').length;
-	var thisValue = 0;
-	var children = $('.box-time').eq(i).children().children().next();
-	for(var i=0;i<count;i++){
-		if($('.box-time').eq(i).children().children().children().prop('checked') == true){
-			if(children.next().html() == ""){
-				thisValue = thisValue + ( children.attr('evalue') - children.attr('svalue') ) * $('.fact').eq(children.next().next().children().prop('selectedIndex')).attr('factor') * JSON.parseInt($('.box-time').eq(i).attr('hourly'))
-			}
-			else{
 
-			}
-		}
-	}
-	$('.budget').html('Budget '+'$' + thisValue);
-</script>
 <!--
 <input type="time" name="stime" id="stime">
 <input type="time" name="etime" id="etime">
