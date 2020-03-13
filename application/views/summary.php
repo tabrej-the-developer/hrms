@@ -202,13 +202,16 @@ img{ max-width:140%;}
 <h1> Summary </h1>
 <hr>
  <div class="row">
+  
   <div class="col-md-2"></div>
    <div class="col-md-5">
          <h3>Agenda 1</h3>
    </div>
     <div class="col-md-5">
+ <form method="post" action="<?php echo base_url() ?>mom/addSummary">
+
          <div class="form-group">
-            <textarea name="" id="" cols="30" rows="1" class="form-control"></textarea>
+            <textarea name="summary[]" id="" cols="30" rows="1" class="form-control"></textarea>
          </div>
   
       </div>
@@ -260,7 +263,7 @@ img{ max-width:140%;}
   <div class="row">
   <div class="col-md-5"></div>
   <div class="col-md-2">
-  <a href="" class="btn btn-primary">Finish</a>
+  <button class="btn btn-primary" type="submit">Add summary</button>
   </div>
   <div class="col-md-5"></div>
   </div>

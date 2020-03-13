@@ -206,14 +206,14 @@ img{ max-width:140%;}
                 <div class="col-md-10">
                 <div class="search-list">
                 
-                <form action="">
+                <form action="<?php echo base_url() ?>mom/meetingAttendence" method="post">
                   <table class="table" id="myTable" style="border:none">
                     <thead></thead>
                     <tbody>
                       <tr>
                       <td> 
 						<label class="checkbox">
-                            <input type="checkbox" name="" id="" />
+                            <input type="checkbox" name="absent[]" value="<?php echo "2"; ?>" id="" />
                             <span class="default"></span>
                         </label>
 						</td>
@@ -376,12 +376,12 @@ img{ max-width:140%;}
                       </tr>
                     </tbody>
                   </table>
+                  <button type="submit" class="btn btn-primary">Mark Absent</button>
                    </form>
                 
 
                 </div>
                 <div>
-                <a href="<?php echo base_url() ?>mom/markPresent" class="btn btn-primary"> Mark Present </a>
                 </div>
                 </div>
                 <div class="col-md-2"></div>
