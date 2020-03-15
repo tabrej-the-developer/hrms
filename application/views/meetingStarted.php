@@ -207,27 +207,30 @@ img{ max-width:140%;}
  </div>
  <div class="col-md-3">
  <div class="form-group">
-        <form action="">
-           <select name="onboard" id="invites" class="form-control" id="">
+        <form action="<?php echo base_url() ?>mom/meetingRecord" method="post">
+           <select name="invites[]" id="invites" class="form-control" id="">
                <option value="">name1</option>
                <option value="">name2</option>
                <option value="">name3</option>
            </select>
         
-        </form>
+        
 
        </div> 
  </div>
  <div class="col-md-5">
    <div class="form-group">
-   <textarea name="" id="meetingText" cols="30" rows="1" class="form-control">
+   <textarea name="sentence[]" id="meetingText" cols="30" rows="1" class="form-control">
    
    </textarea>
    </div>
 
  </div>
+
+ 
+
 <div class="col-md-2">
-<button class="btn btn-primary" id="addmore"> Add more</button>
+<button class="btn btn-primary" id="addmore"> Add more </button>
 
 </div> 
 </div>
@@ -236,8 +239,10 @@ img{ max-width:140%;}
 
                <div class="row">
                    <div class="col-md-5"></div>
-                   <div class="col-md-"><button class="btn btn-success">Done</button></div>
-                   <div class="col-md-5"><a href="<?php echo base_url()  ?>mom/summary" class="btn btn-warning">Add Summary</a></div>
+                   <!-- <div class="col-md-2"><button class="btn btn-success">Done</button></div> -->
+                   <div class="col-md-5"><button class="btn btn-warning" type="submit">Add summary</button></div>
+
+                   </form>
 
                </div> 
           
@@ -307,8 +312,8 @@ img{ max-width:140%;}
 		}
 
         $('#addmore').on('click',function(event){
-            var div = '<div class="row"><div class="col-md-2"></div><div class="col-md-3"><div class="form-group"><form action=""><select name="onboard" class="form-control" id=""><option value="">name1</option><option value="">name2</option><option value="">name3</option></select></form></div> </div><div class="col-md-5"><div class="form-group"><textarea name="" id="meetingText" cols="30" rows="1" class="form-control"></textarea></div></div></div>';
-         //    if(event.keyCode == '13'){
+            var div = '<div class="row"><div class="col-md-2"></div><div class="col-md-3"><div class="form-group"><form action=""><select name="onboard" class="form-control" id=""><option value="">name1</option><option value="">name2</option><option value="">name3</option></select></form></div> </div><div class="col-md-5"><div class="form-group"><textarea name="sentence[]" id="meetingText" cols="30" rows="1" class="form-control"></textarea></div></div></div>';
+            // if(event.keyCode == '13'){
                 $('#addMore').after(div);
             //  }
         });
