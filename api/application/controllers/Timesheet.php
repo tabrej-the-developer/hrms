@@ -28,7 +28,7 @@ class Timesheet extends CI_Controller{
 				$timesheets = $this->timesheetModel->getAllTimesheets($centerid);
 				$data['timesheets'] = [];
 				foreach ($timesheets as $timesh) {
-					if($timesh->createdBy == $res->userid || $timesh->status == 'Published'){
+					if($timesh->createdBy == $res->userid || $timesh->status != 'Draft'){
 						$var['startDate'] = $timesh->startDate;
 						$var['endDate'] = $timesh->endDate;
 						$var['id'] = $timesh->id;
@@ -210,7 +210,7 @@ class Timesheet extends CI_Controller{
 							$userDetails = $this->authModel->getUserDetails($empId->users);
 							$var['empId'] = $userDetails->id;
 							$var['empName'] = $userDetails->name;
-							$var['hourlyRate'] = $userDetails->hourlyRate;
+							$var['level'] = $userDetails->level;
 							$var['rosterShift'] = [];
 							$rosterDetails = $this->rostersModel->getShiftDetails($empId->users,$currentDate);
 							$var['rosterShift']['startTime'] = $rosterDetails->startTime;
@@ -231,7 +231,7 @@ class Timesheet extends CI_Controller{
 								$mar['startTime'] = $paySh->startTime;
 								$mar['endTime'] = $paySh->endTime;
 								$mar['status'] = $paySh->status;
-								$mar['payrollTypeId'] = $paySh->payrollType;
+								$mar['payrollTypeId'] = $paySh->payrollTypeId;
 								$mar['payrollType'] = $this->payrollModel->getPayrollType($paySh->payrollType);
 								array_push($var['payrollShifts'],$mar);
 							}
@@ -242,7 +242,7 @@ class Timesheet extends CI_Controller{
 							$userDetails = $this->authModel->getUserDetails($empId->users);
 							$var['empId'] = $userDetails->id;
 							$var['empName'] = $userDetails->name;
-							$var['hourlyRate'] = $userDetails->hourlyRate;
+							$var['level'] = $userDetails->level;
 							$var['rosterShift'] = [];
 							$clockedTimes = $this->timesheetModel->getAllVisits($empId->users,$currentDate,$timesheet->centerid);
 							$var['clockedTimes'] = array();
@@ -302,22 +302,9 @@ class Timesheet extends CI_Controller{
 				$visits = $json->visits;
 				$this->load->model('timesheetModel');
 				foreach ($visits as $v) {
-					if($v->id != null && $v->status != null){
-						$this->timesheetModel->createPayrollEntry($timesheetid,$empId,$shiftDate,$v->startTime,$v->endTime,$userid,$v->payType);
-						//$this->timesheetModel->updateVisitStatus($v->id,$v->status,$v->startTime,$v->endTime);
-						// if($v->status == "Accepted"){
-						// 	$totalHours += ($v->endTime - $v->startTime);
-						// }
-					}
+					$this->timesheetModel->createPayrollEntry($timesheetid,$empId,$shiftDate,$v->clockedInTime,$v->clockedOutTime
+							,$v->startTime,$v->endTime,$userid,$v->payType);
 				}
-				// if($totalHours == ($regularHours + $overtimeHours)){
-				// 	$this->timesheetModel->createPayrollEntry($timesheetid,$empId,$shiftDate,$regularHours,$overtimeHours,$userid);
-				// 	$data['Status'] = 'SUCCESS';
-				// }
-				// else{
-				// 	$data['Status'] = "ERROR";
-				// 	$data['Message'] = "Data do not match";
-				// }
 				$data['Status'] = "SUCCESS";
 				http_response_code(200);
 				echo json_encode($data);

@@ -52,9 +52,9 @@ class TimesheetModel extends CI_Model {
 		$query = $this->db->query("UPDATE visitis SET status = '$status',signInTime = $startTime,signOutTime = $endTime WHERE id = $visitId");
 	}
 
-	public function createPayrollEntry($timesheetid,$empid,$shiftDate,$startTime,$endTime,$approvedBy,$payTypeId){
+	public function createPayrollEntry($timesheetid,$empid,$shiftDate,$cStartTime,$cEndTime,$startTime,$endTime,$approvedBy,$payTypeId){
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO payrollshift VALUES(0,'$timesheetid','$empid','$shiftDate',$startTime,$endTime,'$approvedBy',now(),'Added',$payTypeId)");
+		$query = $this->db->query("INSERT INTO payrollshift VALUES(0,'$timesheetid','$empid','$shiftDate',$cStartTime,$cEndTime,$startTime,$endTime,$payTypeId,'$approvedBy',now(),'Added')");
 	}
 
 	public function getUniqueVisitorsWithRoster($currentDate,$centerid){

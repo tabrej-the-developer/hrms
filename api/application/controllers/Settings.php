@@ -376,7 +376,7 @@ class Settings extends CI_Controller {
 
 
 
-		public function getOrgChart($centerid,$userid){
+	public function getOrgChart($centerid,$userid){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
@@ -420,8 +420,7 @@ class Settings extends CI_Controller {
 				$manager = $json->manager;
 				$userid = $json->userid;
 				$roleid = $json->roleid;
-				$maxHoursPerWeek = $json->maxHoursPerWeek;
-				$hourlyRate = $json->hourlyRate;
+				$levelId = $json->levelId;
 				$userDetails = $this->authModel->getUserDetails($userid);
 				if($userDetails != null && $userDetails->role == SUPERADMIN){
 					if($name != null && $name != "" &&
@@ -435,7 +434,7 @@ class Settings extends CI_Controller {
 						$roleModel = $this->rostersModel->getRole($roleid);
 
 						if($roleModel != null){ 
-							$userid = $this->authModel->insertUser($email,$password,$name,$role,$roleModel->roleName,$center,$manager,$userid,$roleid,$maxHoursPerWeek,$hourlyRate);
+							$userid = $this->authModel->insertUser($email,$password,$name,$role,$roleModel->roleName,$center,$manager,$userid,$roleid,$levelId);
 							
 							//todo send mail
 							$token = uniqid();

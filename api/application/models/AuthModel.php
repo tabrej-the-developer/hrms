@@ -12,7 +12,7 @@ class AuthModel extends CI_Model {
 
 	public function getUserDetails($userid){
 		$this->load->database();
-		$query = $this->db->query("SELECT id, email, name, imageUrl, role, title, center,manager, isVerified, created_at, created_by, roleid, maxHoursPerWeek, hourlyRate FROM users WHERE id='$userid'");
+		$query = $this->db->query("SELECT id, email, name, imageUrl, role, title, center,manager, isVerified, created_at, created_by, roleid, level FROM users WHERE id='$userid'");
 		return $query->row();
 	}
 
@@ -28,10 +28,10 @@ class AuthModel extends CI_Model {
 		return $query->row();
 	}
 
-	public function insertUser($email,$password,$name,$role,$title,$center,$manager,$createdBy,$roleid,$maxHoursPerWeek,$hourlyRate){
+	public function insertUser($email,$password,$name,$role,$title,$center,$manager,$createdBy,$roleid,$level){
 		$this->load->database();
 		$uid = uniqid();
-		$query = $this->db->query("INSERT INTO users VALUES('$uid','$email','$password','$name',null,$role,'$title','$center|','$manager','N',now(),'$createdBy',$roleid,$maxHoursPerWeek,$hourlyRate)");
+		$query = $this->db->query("INSERT INTO users VALUES('$uid','$email','$password','$name',null,$role,'$title','$center|','$manager','N',now(),'$createdBy',$roleid,$level)");
 		return $uid;
 	}
 
