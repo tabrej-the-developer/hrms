@@ -13,45 +13,66 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		parent::__construct();
 	}
      public function addMeeting(){
-
-          $headers = $this->input->request_headers();
+             $headers = $this->input->request_headers();
           if($headers != null && array_key_exists('x-device-id',$headers) && array_key_exists('x-token',$headers) ){
-              $this->load->model('MeetingModel');
+              $this->load->model('meetingModel');
               $json = json_decode(file_get_contents('php://input'));
-              $meetingTitle = $json->title;
-              $location = $json->location;
-              $collab = $json->collab;
-              $invites =  $json->invites;
-              $date = $json->date;
-              $time = $json->time;
-              $agenda = $json->agenda;
+              var_dump($json);
               $id = uniqid();
-            $response =   $this->meetingModel->addMeeting($id,$meetingTitle,$invites,$date);
-                 if($response){
-                     redirect(base_url().'mom');
-                 }
-                 else{
-                     redirect(base_url().'error');
-                 }
-
-          }
-
+              $meetingTitle = $json->title;
+              $date    = $json->date;
+              $time    = $json->time;
+              $agenda  = $json->agenda;
+              $collab  = $json->collab;
+              $invites = $json->invites;
+              $location = $json->location;
+              $userId  = $json->userId;
+              $response  =   $this->meetingModel->addMeeting($id,$meetingTitle,$date,$time,$location,$collab,$userId);
+              foreach($agenda as $a):
+              $this->meetingModel->addAgenda($id,$a);
+              endforeach;
+              foreach($invites as $i):    
+              $this->meetingModel->addParticipant($id,$i);
+              endforeach;
+              $data['Status'] = 'Success';
+              http_response_code(200);
+              echo json_encode($data);
+         
+             
      }
+         else{
+             $data['Status'] = 'ERROR';
+             http_response_code(401);
+             echo json_encode($data);
+         }
+    }
     
      public function meetingAttendence(){
+         
          $headers = $this->input->request_headers();
          if($headers != null && array_key_exists('x-device-id',$headers) && array_key_exists('x-token',$headers) ){
-             $this->load->model('MeetingModel');
+             $this->load->model('meetingModel');
              $json = json_decode(file_get_contents('php://input'));
+            
              $attendence = $json->absent;
-             $id = uniqid();
-             $result = $this->meetingmModel->addAttendence($id,$attendence);
-             if($result){
-                 redirect(base_url().'mom/onBoard');
-             }
-             else{
-                 return false;
-             }
+             $meetingId = $json->mId;
+           
+             
+             foreach($attendence as $a):
+                
+             $this->meetingModel->addAttendence($meetingId,$a);
+             endforeach;
+                $data['Status'] = 'Success';
+                http_response_code(200);
+                echo json_encode($data);
+
+             
+             
+         }
+         else{
+             $data['Status'] = 'Error';
+             http_response_code(401);
+             echo json_encode($data);
          }
      }
 
@@ -73,20 +94,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                   
          }
      }
-    public function meetingSummary(){
+    public function addSummary(){
         $headers = $this->input->request_headers();
         if($headers != null && array_key_exists('x-device-id',$headers) && array_key_exists('x-token',$headers)){
-            $this->load->model('MeetingModel');
+            $this->load->model('meetingModel');
             $json = json_decode(file_get_contents('php://input'));
             $summary = $json->summary;
             $id = uniqid();
-            $result = $this->meetingModel->meetingSummary($id,$summary);
-            if($result){
-                redirect(base_url().'mom/');
-            }
-            else{
-                return false;
-            }
+            // foreach($summary as $s):
+            // $result = $this->meetingModel->meetingSummary($id,$s);
+            // endforeach;
+            $data['Status'] = 'Success';
+            http_response_code(200);
+            echo json_encode($data);
+            
+        }
+        else{
+            $data['Status'] = 'Error';
+          echo json_encode($data);
         }
     }
 

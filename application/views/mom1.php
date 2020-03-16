@@ -256,7 +256,7 @@ svg:not(:root).svg-inline--fa {
 						<div class="modal fade" id="userModal">
                 <div class="modal-dialog">
                     
-					<form id="leaveTypeForm" action="" method="POST">
+					<form id="leaveTypeForm" action="<?php echo base_url() ?>mom/addMeeting" method="POST">
 					<div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Minutes of Meeting</h5>
@@ -427,13 +427,8 @@ svg:not(:root).svg-inline--fa {
 
 <script>
 						function addAgenda(){
-							alert('clicked');
-							
-							
-						 var div = 	$('#agenda');
-
-							div.after("<div class='row'> <div class='col-md-12'> <div class='form-group'><label>Agenda</label><input type='text' class='form-control' name='meetingLocation' id='agenda' placeholder='Agenda'  ><span id='time_error' class='text-danger'></span></div></div></div>");
-
+							var div = 	$('#agenda');
+							div.after("<div class='row'> <div class='col-md-12'> <div class='form-group'><label>Agenda</label><input type='text' class='form-control' name='meetingAgenda[]' id='agenda' placeholder='Agenda'  ><span id='time_error' class='text-danger'></span></div></div></div>");
 							
 						}
 

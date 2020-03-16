@@ -225,7 +225,7 @@ img{ max-width:140%;}
    </div>
     <div class="col-md-5">
          <div class="form-group">
-            <textarea name="" id="" cols="30" rows="1" class="form-control"></textarea>
+            <textarea name="summary[]" id="" cols="30" rows="1" class="form-control"></textarea>
          </div>
   
       </div>
@@ -239,7 +239,7 @@ img{ max-width:140%;}
    </div>
     <div class="col-md-5">
          <div class="form-group">
-            <textarea name="" id="" cols="30" rows="1" class="form-control"></textarea>
+            <textarea name="summary[]" id="" cols="30" rows="1" class="form-control"></textarea>
          </div>
   
       </div>
@@ -253,7 +253,7 @@ img{ max-width:140%;}
    </div>
     <div class="col-md-5">
          <div class="form-group">
-            <textarea name="" id="" cols="30" rows="1" class="form-control"></textarea>
+            <textarea name="summary[]" id="" cols="30" rows="1" class="form-control"></textarea>
          </div>
   
       </div>
@@ -340,7 +340,7 @@ img{ max-width:140%;}
 		}
 
         $('#addmore').on('click',function(event){
-            var div = '<div class="row"><div class="col-md-2"></div><div class="col-md-3"><div class="form-group"><form action=""><select name="onboard" class="form-control" id=""><option value="">name1</option><option value="">name2</option><option value="">name3</option></select></form></div> </div><div class="col-md-5"><div class="form-group"><textarea name="" id="meetingText" cols="30" rows="1" class="form-control"></textarea></div></div></div>';
+            var div = '<div class="row"><div class="col-md-2"></div><div class="col-md-3"><div class="form-group"><form action=""><select name="onboard" class="form-control" id=""><option value="">name1</option><option value="">name2</option><option value="">name3</option></select></form></div> </div><div class="col-md-5"><div class="form-group"><textarea name="summary[]" id="meetingText" cols="30" rows="1" class="form-control"></textarea></div></div></div>';
          //    if(event.keyCode == '13'){
                 $('#addMore').after(div);
             //  }

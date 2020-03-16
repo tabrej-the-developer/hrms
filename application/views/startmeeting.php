@@ -213,7 +213,7 @@ img{ max-width:140%;}
                       <tr>
                       <td> 
 						<label class="checkbox">
-                            <input type="checkbox" name="absent[]" value="<?php echo "2"; ?>" id="" />
+                            <input type="checkbox" name="absent[]" value="<?php echo '5e41ac6510'; ?>"  />
                             <span class="default"></span>
                         </label>
 						</td>
@@ -238,7 +238,7 @@ img{ max-width:140%;}
                       <tr>
                       <td> 
 						<label class="checkbox">
-                            <input type="checkbox" name="" id="" />
+                            <input type="checkbox" name="absent[]" value="<?php echo '5e41ac9f8d'; ?>"  />
                             <span class="default"></span>
                         </label>
 						</td>
@@ -261,7 +261,7 @@ img{ max-width:140%;}
                       </tr><tr>
                       <td> 
 						<label class="checkbox">
-                            <input type="checkbox" name="" id="" />
+                            <input type="checkbox" name="absent[]" value="<?php echo 4; ?> " />
                             <span class="default"></span>
                         </label>
 						</td>
@@ -284,7 +284,7 @@ img{ max-width:140%;}
                       </tr><tr>
                       <td> 
 						<label class="checkbox">
-                            <input type="checkbox" name="" id="" />
+                            <input type="checkbox" name="absent[]" value="<?php echo 5; ?>"  />
                             <span class="default"></span>
                         </label>
 						</td>
@@ -307,7 +307,7 @@ img{ max-width:140%;}
                       </tr><tr>
                       <td> 
 						<label class="checkbox">
-                            <input type="checkbox" name="" id="" />
+                            <input type="checkbox" name="absent[]" value="<?php echo 6; ?>"  />
                             <span class="default"></span>
                         </label>
 						</td>
@@ -330,7 +330,7 @@ img{ max-width:140%;}
                       </tr><tr>
                       <td> 
 						<label class="checkbox">
-                            <input type="checkbox" name="" id="" />
+                            <input type="checkbox" name="absent[]" value="<?php echo 7; ?>"  />
                             <span class="default"></span>
                         </label>
 						</td>
@@ -353,7 +353,7 @@ img{ max-width:140%;}
                       </tr><tr>
                       <td> 
 						<label class="checkbox">
-                            <input type="checkbox" name="" id="" />
+                            <input type="checkbox" name="absent[]" value="<?php echo 7; ?>  />
                             <span class="default"></span>
                         </label>
 						</td>
