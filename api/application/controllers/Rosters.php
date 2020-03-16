@@ -189,7 +189,7 @@ class Rosters extends CI_Controller {
 								$empDetails = $this->authModel->getUserDetails($employeeid->userid);
 								$rav['empName'] = $empDetails->name;
 								$rav['empTitle'] = $empDetails->title;
-								$rav['hourlyRate'] = $empDetails->hourlyRate;
+								$rav['level'] = $empDetails->level;
 								$rav['maxHoursPerWeek'] = $empDetails->maxHoursPerWeek;
 								$rav['shifts'] = [];
 								$allShifts = $this->rostersModel->getAllShiftsFromEmployee($rosterid,$employeeid->userid);
