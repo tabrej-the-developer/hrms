@@ -3,30 +3,118 @@
 class Mom extends CI_CONTROLLER{
     public function index(){
 			$data['users'] = $this->getUsers();
-
+            $data['meetings'] = $this->getMeetings();
         $this->load->view('mom1',$data);
     }
 
-
-
-    public function startMeeting(){
-        $this->load->view('startmeeting');
+    public function getMeetings(){
+        $url =  BASE_API_URL."mom/getMeetings/".$this->session->userdata('LoginId');
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_URL,$url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER,array(
+            'x-device-id: '.$this->session->userdata('x-device-id'),
+            'x-token: '.$this->session->userdata('AuthToken')
+        ));
+        $server_output = curl_exec($ch);
+        $httpcode = curl_getinfo($ch , CURLINFO_HTTP_CODE);
+        if($httpcode == 200){
+            return $server_output;
+            curl_close($ch);
+        }
+        else if($httpcode == 401){
+                }
     }
 
+    public function startMeeting($mId){
+        $data['partcipants'] = $this->getParticipant($mId); 
+        $data['mId'] = $mId;
+        $this->load->view('startmeeting',$data);
+    }
+
+    public function getParticipant($id){
+        $url = BASE_API_URL."mom/getParticipant/".$id;
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_URL,$url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);  
+        curl_setopt($ch,CURLOPT_HTTPHEADER,array(
+            'x-device-id: '.$this->session->userdata('x-device-id'),
+            'x-token: '.$this->session->userdata('AuthToken')
+        ));
+        
+        $server_output = curl_exec($ch);
+        // echo "<pre>"; 
+       // var_dump($server_output);
+        // exit;
+        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        //var_dump($httpcode);
+        
+        
+        if($httpcode == 200){
+            return $server_output;
+            curl_close($ch);
+        }
+        else if($httpcode == 401){
+
+        }
+    }
 
     public function createMeeting(){
         $this->load->view('createMeeting');
     }
 
 
-    public function onBoard(){
-        $this->load->view('meetingStarted');
+    public function onBoard($mId){
+        $data['mId'] = $mId;
+        $data['present'] = $this->getPresent($mId);
+        $this->load->view('meetingStarted',$data);
+    }
+
+    public function getPresent($id){
+        $url = BASE_API_URL."/mom/Present/".$id;
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			return $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+
+		}
     }
 
 
     
-    public function summary(){
-        $this->load->view('summary');
+    public function summary($id){
+        $data['mId'] = $id;
+        $data['summary'] = $this->getSummary($id);
+        $this->load->view('summary',$data);
+    }
+
+    public function getSummary($id){
+        $url =  BASE_API_URL."mom/getSummary/".$id;
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_URL,$url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER,array(
+            'x-device-id: '.$this->session->userdata('x-device-id'),
+            'x-token: '.$this->session->userdata('AuthToken')
+        ));
+        $server_output = curl_exec($ch);
+        $httpcode = curl_getinfo($ch , CURLINFO_HTTP_CODE);
+        if($httpcode == 200){
+            return $server_output;
+            curl_close($ch);
+        }
+        else if($httpcode == 401){
+                }
     }
 
     function getUsers(){
@@ -101,19 +189,20 @@ class Mom extends CI_CONTROLLER{
 
     }
 
-   public function meetingAttendence(){
+   public function meetingAttendence($mId){
     //       echo "<pre>";
     //    print_r($this->input->post());
     //    exit;
        $form_data = $this->input->post(); 
-       $form_data['mId'] = '5e6f74a8f1';
+  //$form_data['mId'] = '5e6f74a8f1';
        
     
        if($form_data != null){
-           $data['mId'] = '5e6f7b2d5b';
+           $data['mId'] = $mId;
            $data['absent'] = $form_data['absent'];
-   echo json_encode($data);
-       exit;
+    //    echo json_encode($data);
+    //    exit;
+    //var_dump(json_encode($data));
 
            $url = "http://localhost/PN101/api/mom/meetingAttendence";
            $ch = curl_init($url);
@@ -121,20 +210,24 @@ class Mom extends CI_CONTROLLER{
            curl_setopt($ch, CURLOPT_POST, 1);
            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
            curl_setopt($ch, CURLOPT_HTTPHEADER,array(
-               'x-device-id :'.$this->session->userdata('x-device-id'),
-               'x-token: '.$this->session->userdata('AuthToken')
+               'x-device-id:127.0.0.1:4000',
+               'x-token:ajav45'
+               //'x-device-id :'.$this->session->userdata('x-device-id'),
+               //'x-token: '.$this->session->userdata('AuthToken')
            ));
            curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
            $server_output = curl_exec($ch);
+          // var_dump($server_output);
         //    json_decode($server_output);
         //    exit;
         $httpcode = curl_getinfo($ch,CURLINFO_HTTP_CODE);
-        
+        // echo $httpcode ;
+        // exit;
            
           if($httpcode == 200){
              $jsonOutput = json_decode($server_output);
              curl_close($ch);
-             redirect(base_url().'mom/onBoard');
+             redirect(base_url().'mom/onBoard/'.$mId);
            }
            else{
                redirect(base_url().'mom/startMeeting');
@@ -144,52 +237,68 @@ class Mom extends CI_CONTROLLER{
 
 
    }
-   public function meetingRecord(){
+   public function meetingRecord($id){
        $form_data = $this->input->post();
+    //    echo "<pre>";
+    //    var_dump($form_data);
+    //    exit;
        if($form_data != null){
+           
            $data['invites']  = $form_data['invites'];
            $data['sentence'] = $form_data['sentence'];
-           $url = "http://todquest.com/PN101/api/mom/meetingRecord";
-           $ch = curl_inti($url);
+           
+           $url = "http://localhost/PN101/api/mom/meetingRecord";
+           $ch = curl_init($url);
            curl_setopt($ch, CURLOPT_URL,$url);
            curl_setopt($ch, CURLOPT_POST,1);
-           curl_setopt($ch, CURL_POSTFIELDS,json_encode($data));
+           curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
            curl_setopt($ch, CURLOPT_HTTPHEADER,array(
-               'x-device-id :'.$this->session->userdata('x-device-id'),
-               'x-token :'.$this->session->userdata('AuthToken')
+            'x-device-id:127.0.0.1:4000',
+            'x-token:ajav45'  
+            // 'x-device-id :'.$this->session->userdata('x-device-id'),
+               //'x-token :'.$this->session->userdata('AuthToken')
            ));
            curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
-           $server_output = curl_exec($ch);
+          $server_output = curl_exec($ch);
            $httpcode = curl_getinfo($ch,CURLINFO_HTTP_CODE);
+        //    echo $httpcode;
+        //    exit;
            if($httpcode == 200){
                $jsonOutput = json_decode($server_output);
                curl_close($ch);
-               redirect(base_url().'mom/summary');
+               redirect(base_url().'mom/summary/'.$id);
            }
        }
    }
 
-   public function addSummary(){
+   public function addSummary($id){
        $form_data = $this->input->post();
-       
+      
        if($form_data != null){
          
         $data['summary'] = $form_data['summary'];
+        $data['mId'] = $id;
+        $data['id'] = $form_data['id'];
         
+    //    echo json_encode($data);
+    //     exit;
         // echo json_encode($data);
         // exit;
            $url = "http://localhost/PN101/api/mom/addSummary";
            $ch = curl_init($url);
            curl_setopt($ch, CURLOPT_URL,$url);
            curl_setopt($ch, CURLOPT_POST,1);
-           curl_setopt($ch,CURLOPT_POSTFIELDS,json_encode($data));
-           curl_setopt($ch,CURLOPT_HTTPHEADER,array(
-               'x-device-id :'.$this->session->userdata('x-device-id'),
-               'x-token :'.$this->session->userdata('AuthToken')
+           curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+           curl_setopt($ch, CURLOPT_HTTPHEADER,array(
+             
+             'x-device-id :'.$this->session->userdata('x-device-id'),
+              'x-token :'.$this->session->userdata('AuthToken')
            ));
            curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
            $server_output = curl_exec($ch);
+           
            $httpcode = curl_getinfo($ch,CURLINFO_HTTP_CODE);
+         
            if($httpcode == 200){
                $jsonOutput = json_decode($server_output);
                curl_close($ch);

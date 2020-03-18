@@ -200,16 +200,28 @@ img{ max-width:140%;}
 
 
 <h1> Summary </h1>
+<?php 
+//   echo "<pre>";
+//   var_dump(json_decode($summary));
+//    exit;
+  $summary = json_decode($summary);
+?>
 <hr>
+<form method="post" action="<?php echo base_url() ?>mom/addSummary/<?php echo $mId; ?>">
+ <?php 
+ 
+ $len = count($summary);
+ for($i = 0; $i < $len; $i++){
+ 
+ ?>
  <div class="row">
   
   <div class="col-md-2"></div>
    <div class="col-md-5">
-         <h3>Agenda 1</h3>
+         <h3><?php echo $summary[$i]->text ?></h3>
    </div>
     <div class="col-md-5">
- <form method="post" action="<?php echo base_url() ?>mom/addSummary">
-
+         <input type="hidden" value="<?php  echo $summary[$i]->id;?>" name="id[]">
          <div class="form-group">
             <textarea name="summary[]" id="" cols="30" rows="1" class="form-control"></textarea>
          </div>
@@ -217,50 +229,13 @@ img{ max-width:140%;}
       </div>
 
  </div>
- <hr>
- <div class="row">
-  <div class="col-md-2"></div>
-   <div class="col-md-5">
-         <h3>Agenda 2</h3>
-   </div>
-    <div class="col-md-5">
-         <div class="form-group">
-            <textarea name="summary[]" id="" cols="30" rows="1" class="form-control"></textarea>
-         </div>
-  
-      </div>
-
- </div>
- <hr>
- <div class="row">
-  <div class="col-md-2"></div>
-   <div class="col-md-5">
-         <h3>Agenda 3</h3>
-   </div>
-    <div class="col-md-5">
-         <div class="form-group">
-            <textarea name="summary[]" id="" cols="30" rows="1" class="form-control"></textarea>
-         </div>
-  
-      </div>
-
- </div>
- <hr>
- <div class="row">
-  <div class="col-md-2"></div>
-   <div class="col-md-5">
-         <h3>Agenda 4</h3>
-   </div>
-    <div class="col-md-5">
-         <div class="form-group">
-            <textarea name="summary[]" id="" cols="30" rows="1" class="form-control"></textarea>
-         </div>
-  
-      </div>
-      
+ 
+<?php } ?>
+ <hr>     
 
  </div>
   <div class="row">
+
   <div class="col-md-5"></div>
   <div class="col-md-2">
   <button class="btn btn-primary" type="submit">Add summary</button>
@@ -268,7 +243,7 @@ img{ max-width:140%;}
   <div class="col-md-5"></div>
   </div>
 
-  
+  </form>
 </div>
 
      

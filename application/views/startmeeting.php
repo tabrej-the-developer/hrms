@@ -200,160 +200,38 @@ img{ max-width:140%;}
 
 
 <h1>Attendence</h1>
-
+      <?php 
+      
+      // echo $mId;
+      // exit;
+      //echo "<pre>";
+      //print_r($partcipants);
+     $partcipants = json_decode($partcipants);
+     $len = count($partcipants);
+    //  for($i = 0; $i < $len;$i++){
+    //    echo $partcipants[$i]->uid;
+    //    echo "<br>";
+    //  }
+    //  exit;
+      
+      ?>
 			<div class="row">
                 <div class="col-md-2"></div>
                 <div class="col-md-10">
                 <div class="search-list">
                 
-                <form action="<?php echo base_url() ?>mom/meetingAttendence" method="post">
+                <form action="<?php echo base_url() ; ?>mom/meetingAttendence/<?php echo $mId; ?>" method="post">
                   <table class="table" id="myTable" style="border:none">
                     <thead></thead>
                     <tbody>
-                      <tr>
-                      <td> 
-						<label class="checkbox">
-                            <input type="checkbox" name="absent[]" value="<?php echo '5e41ac6510'; ?>"  />
-                            <span class="default"></span>
-                        </label>
-						</td>
-                        <td>
-							<a href="javascript:void(0);" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people">
-							  <div class="media">
-							  <div class="icon-container">
-							  <img src="" alt="user" width="30" class="rounded-circle">
-							  <div class='status-circle-online'></div>
-							  </div>
-								<div class="media-body ml-4">
-								  <div class="d-flex align-items-center justify-content-between ">
-									<h6 class="mb-0">sample</h6>
-								  </div>
-								  
-								</div>
-							  </div>
-							</a>
-						</td>
-                      </tr>
+                    <?php 
+                    for($i = 0; $i < $len; $i++){ ?>
 
+                    
                       <tr>
                       <td> 
 						<label class="checkbox">
-                            <input type="checkbox" name="absent[]" value="<?php echo '5e41ac9f8d'; ?>"  />
-                            <span class="default"></span>
-                        </label>
-						</td>
-                        <td>
-							<a href="javascript:void(0);" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people">
-							  <div class="media">
-							  <div class="icon-container">
-							  <img src="" alt="user" width="30" class="rounded-circle">
-							  <div class='status-circle-online'></div>
-							  </div>
-								<div class="media-body ml-4">
-								  <div class="d-flex align-items-center justify-content-between ">
-									<h6 class="mb-0">sample</h6>
-								  </div>
-								  
-								</div>
-							  </div>
-							</a>
-						</td>
-                      </tr><tr>
-                      <td> 
-						<label class="checkbox">
-                            <input type="checkbox" name="absent[]" value="<?php echo 4; ?> " />
-                            <span class="default"></span>
-                        </label>
-						</td>
-                        <td>
-							<a href="javascript:void(0);" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people">
-							  <div class="media">
-							  <div class="icon-container">
-							  <img src="" alt="user" width="30" class="rounded-circle">
-							  <div class='status-circle-online'></div>
-							  </div>
-								<div class="media-body ml-4">
-								  <div class="d-flex align-items-center justify-content-between ">
-									<h6 class="mb-0">sample</h6>
-								  </div>
-								  
-								</div>
-							  </div>
-							</a>
-						</td>
-                      </tr><tr>
-                      <td> 
-						<label class="checkbox">
-                            <input type="checkbox" name="absent[]" value="<?php echo 5; ?>"  />
-                            <span class="default"></span>
-                        </label>
-						</td>
-                        <td>
-							<a href="javascript:void(0);" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people">
-							  <div class="media">
-							  <div class="icon-container">
-							  <img src="" alt="user" width="30" class="rounded-circle">
-							  <div class='status-circle-online'></div>
-							  </div>
-								<div class="media-body ml-4">
-								  <div class="d-flex align-items-center justify-content-between ">
-									<h6 class="mb-0">sample</h6>
-								  </div>
-								  
-								</div>
-							  </div>
-							</a>
-						</td>
-                      </tr><tr>
-                      <td> 
-						<label class="checkbox">
-                            <input type="checkbox" name="absent[]" value="<?php echo 6; ?>"  />
-                            <span class="default"></span>
-                        </label>
-						</td>
-                        <td>
-							<a href="javascript:void(0);" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people">
-							  <div class="media">
-							  <div class="icon-container">
-							  <img src="" alt="user" width="30" class="rounded-circle">
-							  <div class='status-circle-online'></div>
-							  </div>
-								<div class="media-body ml-4">
-								  <div class="d-flex align-items-center justify-content-between ">
-									<h6 class="mb-0">sample</h6>
-								  </div>
-								  
-								</div>
-							  </div>
-							</a>
-						</td>
-                      </tr><tr>
-                      <td> 
-						<label class="checkbox">
-                            <input type="checkbox" name="absent[]" value="<?php echo 7; ?>"  />
-                            <span class="default"></span>
-                        </label>
-						</td>
-                        <td>
-							<a href="javascript:void(0);" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people">
-							  <div class="media">
-							  <div class="icon-container">
-							  <img src="" alt="user" width="30" class="rounded-circle">
-							  <div class='status-circle-online'></div>
-							  </div>
-								<div class="media-body ml-4">
-								  <div class="d-flex align-items-center justify-content-between ">
-									<h6 class="mb-0">sample</h6>
-								  </div>
-								  
-								</div>
-							  </div>
-							</a>
-						</td>
-                      </tr><tr>
-                      <td> 
-						<label class="checkbox">
-                            <input type="checkbox" name="absent[]" value="<?php echo 7; ?>  />
+                            <input type="checkbox" name="absent[]" value="<?php echo $partcipants[$i]->uid; ?>"  />
                             <span class="default"></span>
                         </label>
 						</td>
@@ -374,6 +252,161 @@ img{ max-width:140%;}
 							</a>
 						</td>
                       </tr>
+                      <?php 
+                    }
+                      ?>
+<!-- 
+                      <tr>
+                      <td> 
+						<label class="checkbox">
+                            <input type="checkbox" name="absent[]" value="<?php // echo '5e41ac9f8d'; ?>"  />
+                            <span class="default"></span>
+                        </label>
+						</td>
+                        <td>
+							<a href="javascript:void(0);" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people">
+							  <div class="media">
+							  <div class="icon-container">
+							  <img src="" alt="user" width="30" class="rounded-circle">
+							  <div class='status-circle-online'></div>
+							  </div>
+								<div class="media-body ml-4">
+								  <div class="d-flex align-items-center justify-content-between ">
+									<h6 class="mb-0">sample</h6>
+								  </div>
+								  
+								</div>
+							  </div>
+							</a>
+						</td>
+                      </tr>
+                      -->
+                      <!-- <tr> 
+                      <td> 
+						<label class="checkbox">
+                            <input type="checkbox" name="absent[]" value="<?php //echo 4; ?> " />
+                            <span class="default"></span>
+                        </label>
+						</td>
+                        <td>
+							<a href="javascript:void(0);" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people">
+							  <div class="media">
+							  <div class="icon-container">
+							  <img src="" alt="user" width="30" class="rounded-circle">
+							  <div class='status-circle-online'></div>
+							  </div>
+								<div class="media-body ml-4">
+								  <div class="d-flex align-items-center justify-content-between ">
+									<h6 class="mb-0">sample</h6>
+								  </div>
+								  
+								</div>
+							  </div>
+							</a>
+						</td>
+                      </tr> -->
+                      
+                      
+                      <!-- <tr>
+                      <td> 
+						<label class="checkbox">
+                            <input type="checkbox" name="absent[]" value="<?php // echo 5; ?>"  />
+                            <span class="default"></span>
+                        </label>
+						</td>
+                        <td>
+							<a href="javascript:void(0);" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people">
+							  <div class="media">
+							  <div class="icon-container">
+							  <img src="" alt="user" width="30" class="rounded-circle">
+							  <div class='status-circle-online'></div>
+							  </div>
+								<div class="media-body ml-4">
+								  <div class="d-flex align-items-center justify-content-between ">
+									<h6 class="mb-0">sample</h6>
+								  </div>
+								  
+								</div>
+							  </div>
+							</a>
+						</td>
+                      </tr> -->
+                      
+                      <!-- <tr>
+                      <td> 
+						<label class="checkbox">
+                            <input type="checkbox" name="absent[]" value="<? // echo 6; ?>"  />
+                            <span class="default"></span>
+                        </label>
+						</td>
+                        <td>
+							<a href="javascript:void(0);" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people">
+							  <div class="media">
+							  <div class="icon-container">
+							  <img src="" alt="user" width="30" class="rounded-circle">
+							  <div class='status-circle-online'></div>
+							  </div>
+								<div class="media-body ml-4">
+								  <div class="d-flex align-items-center justify-content-between ">
+									<h6 class="mb-0">sample</h6>
+								  </div>
+								  
+								</div>
+							  </div>
+							</a>
+						</td>
+                      </tr>
+                       -->
+                      
+                      <!-- <tr>
+                      <td> 
+						<label class="checkbox">
+                            <input type="checkbox" name="absent[]" value="<?php // echo 7; ?>"  />
+                            <span class="default"></span>
+                        </label>
+						</td>
+                        <td>
+							<a href="javascript:void(0);" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people">
+							  <div class="media">
+							  <div class="icon-container">
+							  <img src="" alt="user" width="30" class="rounded-circle">
+							  <div class='status-circle-online'></div>
+							  </div>
+								<div class="media-body ml-4">
+								  <div class="d-flex align-items-center justify-content-between ">
+									<h6 class="mb-0">sample</h6>
+								  </div>
+								  
+								</div>
+							  </div>
+							</a>
+						</td>
+                      </tr> -->
+                      
+                      <!-- <tr>
+                      <td> 
+						<label class="checkbox">
+                            <input type="checkbox" name="absent[]" value="<?php // echo 7; ?>  />
+                            <span class="default"></span>
+                        </label>
+						</td>
+                        <td>
+							<a href="javascript:void(0);" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people">
+							  <div class="media">
+							  <div class="icon-container">
+							  <img src="" alt="user" width="30" class="rounded-circle">
+							  <div class='status-circle-online'></div>
+							  </div>
+								<div class="media-body ml-4">
+								  <div class="d-flex align-items-center justify-content-between ">
+									<h6 class="mb-0">sample</h6>
+								  </div>
+								  
+								</div>
+							  </div>
+							</a>
+						</td>
+                      </tr> -->
                     </tbody>
                   </table>
                   <button type="submit" class="btn btn-primary">Mark Absent</button>

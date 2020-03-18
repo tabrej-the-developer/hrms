@@ -234,20 +234,43 @@ svg:not(:root).svg-inline--fa {
 	                        <thead>
 	                            <tr class="text-muted">
 	                            <th>Title</th>
-	                            <th>Number of days to start</th>
+	                            <th>Date</th>
 	                            <th>Location</th>
-	                            <th>Total Invites</th>
+	                            <th>Time</th>
 	                           
 	                            </tr>
 	                        </thead>
 	                        <tbody>
-							<tr>
+							<!-- <tr>
 							<td>Child Care</td>
 							<td>45</td>
 							<td>Nashville</td>
 							<td>12</td>
-							<td><a href="<?php echo base_url() ?>mom/startMeeting" class="btn btn-success">Start</a></td>
-							</tr>
+							<td><a href="<?php // echo base_url() ?>mom/startMeeting" class="btn btn-success">Start</a></td>
+							</tr> -->
+							<?php
+							
+							 $meetings = json_decode($meetings);
+							//  echo "<pre>";
+							//  print_r($meetings[0]);
+							// exit;
+							$len  = count($meetings);
+							// echo $len;
+							// exit;
+							for($i = 0; $i < $len;$i++) { ?>
+                              
+						      <tr>
+							  <td><?php echo $meetings[$i]->title ?></td>
+							  <td><?php echo $meetings[$i]->date?></td>
+							  <td><?php echo $meetings[$i]->location?></td>
+							  <td><?php echo $meetings[$i]->time?></td>
+							  <td><a href="<?php base_url(); ?>mom/startmeeting/<?php echo $meetings[$i]->mid ?>" class="btn btn-success">Start</a></td>
+							  </tr>	
+						<?php	
+					    	
+							}
+							
+							?>
 							</tbody>
 							</table>
 							</div>

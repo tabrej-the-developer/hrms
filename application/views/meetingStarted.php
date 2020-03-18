@@ -200,6 +200,14 @@ img{ max-width:140%;}
 
 
 <h1>On Board </h1>
+<?php 
+
+$present = json_decode($present);
+ //var_dump($present[0]->uid);
+ //exit;
+ $len = count($present);
+?>
+        <form action="<?php echo base_url() ?>mom/meetingRecord/<?php echo $mId; ?>" method="post">
 
 <div class="row" id="addMore">
  <div class="col-md-2">
@@ -207,12 +215,14 @@ img{ max-width:140%;}
  </div>
  <div class="col-md-3">
  <div class="form-group">
-        <form action="<?php echo base_url() ?>mom/meetingRecord" method="post">
            <select name="invites[]" id="invites" class="form-control" id="">
-               <option value="">name1</option>
-               <option value="">name2</option>
-               <option value="">name3</option>
-           </select>
+          <?php for($i = 0; $i < $len ; $i++){ ?>
+
+           
+               <option value="<?php  echo $present[$i]->uid; ?>">name1</option>
+          <?php } 
+          ?>
+                         </select>
         
         
 
@@ -230,7 +240,7 @@ img{ max-width:140%;}
  
 
 <div class="col-md-2">
-<button class="btn btn-primary" id="addmore"> Add more </button>
+<button class="btn btn-primary" type="button" id="addmore"> Add more </button>
 
 </div> 
 </div>
@@ -242,11 +252,11 @@ img{ max-width:140%;}
                    <!-- <div class="col-md-2"><button class="btn btn-success">Done</button></div> -->
                    <div class="col-md-5"><button class="btn btn-warning" type="submit">Add summary</button></div>
 
-                   </form>
 
                </div> 
           
           
+               </form>
 
 
 </body>
@@ -312,7 +322,7 @@ img{ max-width:140%;}
 		}
 
         $('#addmore').on('click',function(event){
-            var div = '<div class="row"><div class="col-md-2"></div><div class="col-md-3"><div class="form-group"><form action=""><select name="onboard" class="form-control" id=""><option value="">name1</option><option value="">name2</option><option value="">name3</option></select></form></div> </div><div class="col-md-5"><div class="form-group"><textarea name="sentence[]" id="meetingText" cols="30" rows="1" class="form-control"></textarea></div></div></div>';
+        var div = '<div class="row"><div class="col-md-2"></div><div class="col-md-3"><div class="form-group"><select name="invites[]" class="form-control" id=""><?php for($j = 0;$j < $len ;$j++) { ?> <option value="<?php echo $present[$j]->uid; ?>">name1</option> <?php } ?></select></div> </div><div class="col-md-5"><div class="form-group"><textarea name="sentence[]" id="meetingText" cols="30" rows="1" class="form-control"></textarea></div></div></div>';
             // if(event.keyCode == '13'){
                 $('#addMore').after(div);
             //  }

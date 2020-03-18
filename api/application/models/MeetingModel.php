@@ -30,7 +30,42 @@ class MeetingModel extends CI_MODEL{
         $this->db->update('participants',$data);
         //$this->db->query('update participants set status="A" where user_id=$participantId and m_id=$mId');
   }
-
+  public function addMeetingRecord($mId,$user,$text){
+      $this->load->database();
+      $this->db->query("insert into mom(m_id,user_id,text) values('$mId','$user','$text')");
+  }
+  public function meetingSummary($mid,$text){
+      $this->load->database();
+      $data = [
+          'summary' => $text
+      ];
+      $this->db->where('id',$mid);
+      $this->db->update('agenda',$data);
+  }
+  public function getMeeting($id){
+     $this->load->database();
+      $sql = "select * from meeting where loginid = '$id'";
+      $q = $this->db->query($sql);
+      return $q->result();
+  }
+  public function getPartcipant($id){
+      $this->load->database();
+      $query = "select * from participants where m_id='$id'";
+      $q1 = $this->db->query($query);
+      return $q1->result();
+  }
+  public function getPresent($id){
+      $this->load->database();
+      $query = "select * from participants where status IS NULL and m_id='$id' ";
+      $result = $this->db->query($query);
+      return $result->result();
+  }
+  public function getSummary($mid){
+      $this->load->database();
+      $query = "select * from agenda where m_id = '$mid'";
+      $result = $this->db->query($query);
+      return $result->result();
+  }
 }
 
 ?>
