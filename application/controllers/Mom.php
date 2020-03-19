@@ -154,7 +154,7 @@ class Mom extends CI_CONTROLLER{
            $data['date']          =      $form_data['meetingDate'];
            $data['time']          =      $form_data['meetingTime'];
            $data['agenda']        =      $form_data['meetingAgenda'];
-           $data['collab']        =      $form_data['meetingcollob'];
+           $data['collab']        =      $form_data['meetingcollab'];
            $data['invites']       =      $form_data['invites'];
            $url = "http://localhost/PN101/api/mom/addMeeting";
            $ch = curl_init($url);

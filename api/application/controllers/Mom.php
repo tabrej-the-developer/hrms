@@ -178,7 +178,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                   
          }
          else{
-             $data['Status'] = 'Error';
+             $data['Status'] = 'Error'; 
              http_response_code(401);
              echo json_encode($data);
          }

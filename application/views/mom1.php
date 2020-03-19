@@ -334,7 +334,7 @@ svg:not(:root).svg-inline--fa {
 
 						<div class="form-group">
 							<label>Meeting Collab Type</label>
-							<select type="time" name="meetingcollob" id="colab" class="form-control">
+							<select type="time" name="meetingcollab" id="colab" class="form-control">
 							<option value="">Select Type</option>
 							<option value="y">Yearly</option>
 							<option value="m">Monthly</option>
