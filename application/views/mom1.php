@@ -264,6 +264,7 @@ svg:not(:root).svg-inline--fa {
 							  <td><?php echo $meetings[$i]->date?></td>
 							  <td><?php echo $meetings[$i]->location?></td>
 							  <td><?php echo $meetings[$i]->time?></td>
+							  <td> <a href="<?php base_url(); ?>mom/meetingInfo/<?php echo $meetings[$i]->mid ?>" class="btn btn-primary">View Info</a> </td>
 							  <td><a href="<?php base_url(); ?>mom/startmeeting/<?php echo $meetings[$i]->mid ?>" class="btn btn-success">Start</a></td>
 							  </tr>	
 						<?php	

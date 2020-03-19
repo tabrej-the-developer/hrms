@@ -66,6 +66,19 @@ class MeetingModel extends CI_MODEL{
       $result = $this->db->query($query);
       return $result->result();
   }
+
+   public function getMeetingInfo($mId){
+       $this->load->database();
+       $query = "select * from mom where m_id = '$mId'";
+       $result = $this->db->query($query);
+       return $result->result();
+   }
+  public function getAgendaInfo($mId){
+      $this->load->database();
+      $query = "select * from agenda where m_id = '$mId'";
+      $result = $this->db->query($query);
+      return $result->result();
+  }
 }
 
 ?>

@@ -207,7 +207,7 @@ img{ max-width:140%;}
   $summary = json_decode($summary);
 ?>
 <hr>
-<form method="post" action="<?php echo base_url() ?>mom/addSummary/<?php echo $mId; ?>">
+<form method="post" action="<?php echo base_url() ?>mom/addSummary">
  <?php 
  
  $len = count($summary);
