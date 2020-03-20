@@ -264,6 +264,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           }
           foreach($participants as $p){
               $var1['userid'] = $p->user_id;
+              $var1['status'] = 'present';
               array_push($mdata['participant'],$var1);
           }
            $mdata['Success'] = 'Success';
