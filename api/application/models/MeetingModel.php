@@ -79,6 +79,21 @@ class MeetingModel extends CI_MODEL{
       $result = $this->db->query($query);
       return $result->result();
   }
+  public function getTitle($id){
+      $this->load->database();
+      $query = "select title from meeting where id = '$id'";
+      $result = $this->db->query($query);
+      return $result->result();
+
+  }
+   
+  public function getParticipate($id){
+      $this->load->database();
+      $query = "select * from participants where user_id='$id'";
+      $result = $this->db->query($query);
+      return $result->result();
+  }
+
 }
 
 ?>

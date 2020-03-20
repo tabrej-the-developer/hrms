@@ -19,16 +19,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
        if($headers != null && array_key_exists('x-device-id',$headers) && array_key_exists('x-token',$headers)){
            $this->load->model('meetingModel');
             $meetings = $this->meetingModel->getMeeting($id);
-            $mdata= [];
+            $participant = $this->meetingModel->getParticipate($id);
+            $mdata['data'] = [];
+            $mdata['toParticipate'] = [];
             foreach($meetings as $m){
+                $var['role'] = 'creator';
                 $var['mid'] = $m->id;
                 $var['userid'] = $m->loginid;
                 $var['title'] = $m->title;
                 $var['date'] = $m->date;
                 $var['time'] = $m->time;
                 $var['location'] = $m->location;
-                array_push($mdata,$var);
+                array_push($mdata['data'],$var);
 
+            }
+            foreach($participant as $p){
+                $var1['meetingId'] = $p->m_id;
+                array_push($mdata['toParticipate'],$var1);
             }
             http_response_code(200);
             echo json_encode($mdata);
@@ -97,13 +104,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             //   exit;
               //var_dump($json);
               $id = uniqid();
-              $meetingTitle = $json->meetingTitle;
-              $date    = $json->meetingDate;
-              $time    = $json->meetingTime;
-              $agenda  = $json->meetingAgenda;
-              $collab  = $json->meetingcollab;
+              $meetingTitle = $json->title;
+              $date    = $json->date;
+              $time    = $json->time;
+              $agenda  = $json->agenda;
+              $collab  = $json->collab;
               $invites = $json->invites;
-              $location = $json->meetingLocation;
+              $location = $json->location;
               $userId  = $json->userId;
               $response  =   $this->meetingModel->addMeeting($id,$meetingTitle,$date,$time,$location,$collab,$userId);
               foreach($agenda as $a):
@@ -248,7 +255,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             // exit;
             $agenda = $this->meetingModel->getAgendaInfo($mId);
             $participants = $this->meetingModel->getPresent($mId);
+            $title = $this->meetingModel->getTitle($mId);
+        //    print_r($title);
+        //    exit;
             $mdata = [];
+           // $mdata['title'] = $title->title;
            $mdata['mom'] = [];
            $mdata['agenda'] = [];
            $mdata['participant'] = [];
