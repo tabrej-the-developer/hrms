@@ -173,12 +173,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             
              $invites =  $json->invites;
              $sentence = $json->sentence;
+             $remark = $json->remark;
            
              $mId = $id;
              $len = count($invites);
              for($it = 0; $it < $len;$it++){
                 
-             $this->meetingModel->addMeetingRecord($mId,$invites[$it],$sentence[$it]);
+             $this->meetingModel->addMeetingRecord($mId,$invites[$it],$sentence[$it],$remark[$it]);
          }
             
              $data['Status'] = 'Success';
@@ -265,6 +266,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
            $mdata['participant'] = [];
            foreach($data as $d){
               $var['text'] = $d->text;
+              $var['remark'] = $d->remark;
              $var['userid'] = $d->user_id;
               array_push($mdata['mom'],$var);
           }

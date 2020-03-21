@@ -252,24 +252,24 @@ svg:not(:root).svg-inline--fa {
 							
 							 $meetings = json_decode($meetings);
 							//  echo "<pre>";
-							//  print_r($meetings[0]);
+							//  print_r($meetings->data);
 							// exit;
-							$len  = count($meetings);
+							// $len  = count($meetings);
 							// echo $len;
 							// exit;
-							for($i = 0; $i < $len;$i++) { ?>
+							foreach($meetings->data as $m): ?>
                               
 						      <tr>
-							  <td><?php echo $meetings[$i]->title ?></td>
-							  <td><?php echo $meetings[$i]->date?></td>
-							  <td><?php echo $meetings[$i]->location?></td>
-							  <td><?php echo $meetings[$i]->time?></td>
-							  <td> <a href="<?php base_url(); ?>mom/meetingInfo/<?php echo $meetings[$i]->mid ?>" class="btn btn-primary">View Info</a> </td>
-							  <td><a href="<?php base_url(); ?>mom/startmeeting/<?php echo $meetings[$i]->mid ?>" class="btn btn-success">Start</a></td>
+							  <td><?php echo $m->title ?></td>
+							  <td><?php echo $m->date?></td>
+							  <td><?php echo $m->location?></td>
+							  <td><?php echo $m->time?></td>
+							  <td> <a href="<?php echo base_url(); ?>mom/meetingInfo/<?php echo $m->mid ?>" class="btn btn-primary">View Info</a> </td>
+							  <td><a href="<?php echo  base_url(); ?>mom/startmeeting/<?php echo $m->mid ?>" class="btn btn-success">Start</a></td>
 							  </tr>	
 						<?php	
 					    	
-							}
+							endforeach;
 							
 							?>
 							</tbody>

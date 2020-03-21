@@ -251,7 +251,8 @@ class Mom extends CI_CONTROLLER{
            
            $data['invites']  = $form_data['invites'];
            $data['sentence'] = $form_data['sentence'];
-           
+           $data['remark']   = $form_data['remark'];
+            
            $url = "http://localhost/PN101/api/mom/meetingRecord/".$id;
            $ch = curl_init($url);
            curl_setopt($ch, CURLOPT_URL,$url);

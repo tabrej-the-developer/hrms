@@ -228,7 +228,7 @@ $present = json_decode($present);
 
        </div> 
  </div>
- <div class="col-md-5">
+ <div class="col-md-3">
    <div class="form-group">
    <textarea name="sentence[]" id="meetingText" cols="30" rows="1" class="form-control">
    
@@ -236,7 +236,11 @@ $present = json_decode($present);
    </div>
 
  </div>
-
+ <div class="col-md-2">
+ <div class="form-group">
+ <input type="text" name="remark[]" class="form-control" placeholder="Add a Remark">
+ </div>
+ </div>
  
 
 <div class="col-md-2">
@@ -322,7 +326,7 @@ $present = json_decode($present);
 		}
 
         $('#addmore').on('click',function(event){
-        var div = '<div class="row"><div class="col-md-2"></div><div class="col-md-3"><div class="form-group"><select name="invites[]" class="form-control" id=""><?php for($j = 0;$j < $len ;$j++) { ?> <option value="<?php echo $present[$j]->uid; ?>">name1</option> <?php } ?></select></div> </div><div class="col-md-5"><div class="form-group"><textarea name="sentence[]" id="meetingText" cols="30" rows="1" class="form-control"></textarea></div></div></div>';
+        var div = '<div class="row"><div class="col-md-2"></div><div class="col-md-3"><div class="form-group"><select name="invites[]" class="form-control" id=""><?php for($j = 0;$j < $len ;$j++) { ?> <option value="<?php echo $present[$j]->uid; ?>">name1</option> <?php } ?></select></div> </div><div class="col-md-3"><div class="form-group"><textarea name="sentence[]" id="meetingText" cols="30" rows="1" class="form-control"></textarea></div></div> <div class="col-md-2">  <input class="form-control" type="text" placeholder="Add a Remark" name="remark[]">  </div> </div>';
             // if(event.keyCode == '13'){
                 $('#addMore').after(div);
             //  }

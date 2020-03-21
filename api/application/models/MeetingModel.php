@@ -30,9 +30,9 @@ class MeetingModel extends CI_MODEL{
         $this->db->update('participants',$data);
         //$this->db->query('update participants set status="A" where user_id=$participantId and m_id=$mId');
   }
-  public function addMeetingRecord($mId,$user,$text){
+  public function addMeetingRecord($mId,$user,$text,$remark){
       $this->load->database();
-      $this->db->query("insert into mom(m_id,user_id,text) values('$mId','$user','$text')");
+      $this->db->query("insert into mom(m_id,user_id,text,remark) values('$mId','$user','$text','$remark')");
   }
   public function meetingSummary($mid,$text){
       $this->load->database();
