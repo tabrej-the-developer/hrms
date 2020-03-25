@@ -30,7 +30,7 @@
     <div class="container" style="margin-top: 65px;">
         <div class="row">
           <div class="col-lg-6 offset-lg-3 card_future" style="padding: 20px;">
-            <h4><a href="<?php echo base_url();?>center/settings"><button class="btn back-button"> <img src="<?php echo base_url();?>/images/back.png"  > </button></a> Change Password</h4>
+            <h4><a href="<?php echo base_url();?>/settings"><button class="btn back-button"> <img src="<?php echo base_url();?>/images/back.png"  > </button></a> Change Password</h4>
             <label>Current Password</label>
 
         <input class="form-control" type="password" name="currentPassword" id="currentPassword" placeholder="Current Password" required>

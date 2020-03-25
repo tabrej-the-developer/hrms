@@ -43,7 +43,7 @@ class LeaveModel extends CI_Model {
 
 	public function getAllLeavesByUser($userid,$startDate = null,$endDate = null){
 		$this->load->database();
-		$queryTxt = "SELECT * FROM leaveapplication WHERE userid = '$userid'";
+		$queryTxt = "SELECT * FROM leaveapplication WHERE userid IN (SELECT id FROM users WHERE id = '$userid' OR manager = '$userid')";
 		if($startDate != null)
 			$queryTxt .= " AND startDate <= $startDate";
 		if($endDate != null)
@@ -52,15 +52,33 @@ class LeaveModel extends CI_Model {
 		return $query->result();
 	}
 
-	public function applyLeave($userid,$leaveId,$startDate,$endDate,$notes){
+	public function applyLeave($userid,$leaveId,$noOfHours,$startDate,$endDate,$notes){
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO leaveapplication VALUES(0,'$userid',CURDATE(),$leaveId,'$startDate','$endDate',1,'$notes')");
+		$query = $this->db->query("INSERT INTO leaveapplication VALUES(0,'$userid',CURDATE(),$leaveId,$noOfHours,'$startDate','$endDate',1,'$notes')");
 	}
 
-	public function getLeaveBalance($userid){
+	// public function getLeaveBalance($userid){
+	// 	$this->load->database();
+	// 	$query = $this->db->query("SELECT * FROM leavebalance WHERE userid = '$userid'");
+	// 	return $query->result();
+	// }
+
+	public function getAccruedLeaves($userid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM leavebalance WHERE userid = '$userid'");
+		$query = $this->db->query("SELECT * FROM leaveaccrual WHERE userid='$userid'");
 		return $query->result();
+	}
+
+	public function getTotalOrdinaryHorusWorked($userid,$startDate){
+		$this->load->database();
+		$query = $this->db->query("SELECT SUM(endTime - startTime)/60 as sum FROM payrollshift WHERE userid = '$userid' AND shiftDate >= '$startDate'");
+		return $query->row();
+	}
+
+	public function getSumOfLeave($userid,$leaveid,$startDate){
+		$this->load->database();
+		$query = $this->db->query("SELECT SUM(noOfHours) as sum FROM leaveapplication WHERE userid = '$userid' AND startDate >= '$startDate' AND leaveId = $leaveid");
+		return $query->row();
 	}
 
 	public function updateLeave($leaveApp,$status){

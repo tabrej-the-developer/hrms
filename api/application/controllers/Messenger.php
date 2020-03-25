@@ -428,6 +428,28 @@ class Messenger extends CI_Controller {
 				$mediaContent = $json->mediaContent;
 				$this->load->model('messengerModel');
 				$this->messengerModel->PostChat($senderId,$receiverId,$isGroupYN,$chatText,$mediaContent);
+				$senderDetails = $this->authModel->getUserDetails($senderId);
+
+				$mdata['senderName'] = $senderDetails->name;
+				$mdata['senderId'] = $senderId;
+				$mdata['isGroupYN'] = $isGroupYN;
+				$mdata['type'] = "chat";
+				$mdata['message'] = $chatText;
+				
+				if($isGroupYN == "Y"){
+					$gDetails = $this->messengerModel->GetGroupInfo($receiverId);
+					$allMembers = $this->messengerModel->GetAllMemberDetails($receiverId);
+					$mdata['groupId'] = $receiverId;	
+					$mdata['groupName'] = $gDetails->groupName;
+					foreach ($allMembers as $mem) {
+						$this->firebase->sendMessage('New message from '.$senderDetails->name.' in '.$gDetails->groupName,'Click to view message',$mdata,$mem->id);
+					}
+				}
+				else{
+					$this->firebase->sendMessage('New message from '.$senderDetails->name,'Click to view message',$mdata,$receiverId);
+				}
+
+
 				$data['Status'] = 'SUCCESS';
 				http_response_code(200);
 				echo json_encode($data);
