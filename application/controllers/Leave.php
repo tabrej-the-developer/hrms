@@ -13,6 +13,7 @@ class Leave extends CI_Controller {
 				$data['leaves'] = $this->getLeaveByCenter($centers[0]->centerid);
 			}
 		}
+		// else{
 		else if($this->session->userdata('UserType') == STAFF){
 			$data['balance'] = $this->getLeaveBalance();
 			$data['leaves'] = $this->getAllLeavesByUser();
