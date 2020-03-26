@@ -5,6 +5,7 @@
 <title>Leaves</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  
   <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
   <style>
   
@@ -191,76 +192,64 @@ img{ max-width:140%;}
 /*corousol end*/		
 		
 </style>
+
 </head>
 <body>
 <div class="container">
-
-            
-						
-
-
-<h1>On Board </h1>
-<?php 
-
-$present = json_decode($present);
- //var_dump($present[0]->uid);
- //exit;
- $len = count($present);
-?>
-        <form action="<?php echo base_url() ?>mom/meetingRecord/<?php echo $mId; ?>" method="post">
-
-<div class="row" id="addMore">
- <div class="col-md-2">
- 
- </div>
- <div class="col-md-3">
- <div class="form-group">
-           <select name="invites[]" id="invites" class="form-control" id="">
-          <?php for($i = 0; $i < $len ; $i++){ ?>
-
-           
-               <option value="<?php  echo $present[$i]->uid; ?>">name1</option>
-          <?php } 
-          ?>
-                         </select>
-        
-        
-
-       </div> 
- </div>
- <div class="col-md-3">
-   <div class="form-group">
-   <textarea name="sentence[]" id="meetingText" cols="30" rows="1" class="form-control">
-   
-   </textarea>
-   </div>
-
- </div>
- <div class="col-md-2">
- <div class="form-group">
- <input type="text" name="remark[]" class="form-control" placeholder="Add a Remark">
- </div>
- </div>
- 
-
-<div class="col-md-2">
-<button class="btn btn-primary" type="button" id="addmore"> Add more </button>
-
-</div> 
+<div class="row">
+ <div class="col-md-6">
+   <h4>Agenda and Summary</h4>
+   <?php
+   $info = json_decode($info);
+    ?>
+   <?php foreach($info->agenda as $a): ?>
+    <div class="card border-success mb-3" style="max-width: 18rem;">
+  
+  <div class="card-body text-success">
+    <h5 class="card-title"><?php echo $a->text; ?></h5>
+    <p class="card-text"><?php echo $a->summary; ?></p>
+  </div>
 </div>
 
-                </div>
-
-               <div class="row">
-                   <div class="col-md-5"></div>
-                   <!-- <div class="col-md-2"><button class="btn btn-success">Done</button></div> -->
-                   <div class="col-md-5"><button class="btn btn-warning" type="submit">Add summary</button></div>
+<?php endforeach; ?>
 
 
-               </div> 
-          
-          
-               </form>
+    
+ </div>
+ <div class="col-md-6">
+ <h3>Minutes of Meeting</h3>
+ <table class="table table-borderless table-dark">
+  <thead>
+    <tr>
+     
+      <th scope="col">User</th>
+      <th scope="col">Text</th>
+     
+    </tr>
+  </thead>
+  <tbody>
+  <?php foreach($info->mom as $m): ?>
+    <tr>
+      <td><?php echo $m->userid; ?></td>
+      <td><?php echo $m->text; ?> </td>
+    </tr>
+  <?php endforeach; ?>
+   
+    
+  </tbody>
+</table>
+  
+ </div>
+  </div>
+<div class="jumbotron">
+ <h3>Meeting Attendence</h3>
+ <ul class="list-group">
+  <?php foreach($info->participant as $p): ?>
+  <li class="list-group-item disabled" aria-disabled="true"><?php echo $p->userid; ?></li>
+  <?php endforeach; ?>
+</ul>
+</div>
+</div>
 
 
 </body>
@@ -326,8 +315,8 @@ $present = json_decode($present);
 		}
 
         $('#addmore').on('click',function(event){
-        var div = '<div class="row"><div class="col-md-2"></div><div class="col-md-3"><div class="form-group"><select name="invites[]" class="form-control" id=""><?php for($j = 0;$j < $len ;$j++) { ?> <option value="<?php echo $present[$j]->uid; ?>">name1</option> <?php } ?></select></div> </div><div class="col-md-3"><div class="form-group"><textarea name="sentence[]" id="meetingText" cols="30" rows="1" class="form-control"></textarea></div></div> <div class="col-md-2">  <input class="form-control" type="text" placeholder="Add a Remark" name="remark[]">  </div> </div>';
-            // if(event.keyCode == '13'){
+            var div = '<div class="row"><div class="col-md-2"></div><div class="col-md-3"><div class="form-group"><form action=""><select name="onboard" class="form-control" id=""><option value="">name1</option><option value="">name2</option><option value="">name3</option></select></form></div> </div><div class="col-md-5"><div class="form-group"><textarea name="summary[]" id="meetingText" cols="30" rows="1" class="form-control"></textarea></div></div></div>';
+         //    if(event.keyCode == '13'){
                 $('#addMore').after(div);
             //  }
         });

@@ -30,9 +30,9 @@ class MeetingModel extends CI_MODEL{
         $this->db->update('participants',$data);
         //$this->db->query('update participants set status="A" where user_id=$participantId and m_id=$mId');
   }
-  public function addMeetingRecord($mId,$user,$text){
+  public function addMeetingRecord($mId,$user,$text,$remark){
       $this->load->database();
-      $this->db->query("insert into mom(m_id,user_id,text) values('$mId','$user','$text')");
+      $this->db->query("insert into mom(m_id,user_id,text,remark) values('$mId','$user','$text','$remark')");
   }
   public function meetingSummary($mid,$text){
       $this->load->database();
@@ -66,6 +66,34 @@ class MeetingModel extends CI_MODEL{
       $result = $this->db->query($query);
       return $result->result();
   }
+
+   public function getMeetingInfo($mId){
+       $this->load->database();
+       $query = "select * from mom where m_id = '$mId'";
+       $result = $this->db->query($query);
+       return $result->result();
+   }
+  public function getAgendaInfo($mId){
+      $this->load->database();
+      $query = "select * from agenda where m_id = '$mId'";
+      $result = $this->db->query($query);
+      return $result->result();
+  }
+  public function getTitle($id){
+      $this->load->database();
+      $query = "select title from meeting where id = '$id'";
+      $result = $this->db->query($query);
+      return $result->result();
+
+  }
+   
+  public function getParticipate($id){
+      $this->load->database();
+      $query = "select * from participants where user_id='$id'";
+      $result = $this->db->query($query);
+      return $result->result();
+  }
+
 }
 
 ?>
