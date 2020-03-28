@@ -76,7 +76,7 @@
 		<?php $orgChart = json_decode($orgChart);
 		foreach($orgChart->orgchart as $orgChart){ ?>
 			<div id="<?php echo $orgChart->areaId .'-'.$orgChart->areaName?>" class="area-id">
-				<div id="areas-roles" areaId="<?php echo $orgChart->areaId; ?>" YN="<?php echo $orgChart->isARoomYN; ?>">
+				<div id="areas-roles" areaId="<?php echo $orgChart->areaId; ?>" YN="<?php echo $orgChart->isRoomYN; ?>">
 					<span class="area-name"><?php echo $orgChart->areaName."<br>"; ?></span>
 					<span  class="newRole"><a href="javascript:void(0)">Add Role</a></span>
 					<span class="editArea"><a href="javascript:void(0)">Edit Area</a></span>

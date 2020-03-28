@@ -389,7 +389,7 @@ class Settings extends CI_Controller {
 					$var['areaId'] = $area->areaid;
 					$var['centerid'] = $area->centerid;
 					$var['areaName'] = $area->areaName;
-					$var['isARoomYN'] = $area->isARoomYN;
+					$var['isRoomYN'] = $area->isARoomYN;
 					$var['roles'] = $this->settingsModel->getRolesFromArea($area->areaid);
 					array_push($data['orgchart'],$var);
 				}
