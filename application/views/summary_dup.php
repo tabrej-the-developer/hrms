@@ -7,32 +7,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="https://kit.fontawesome.com/ca2871ad31.js" crossorigin="anonymous"></script>
   <style>
   
+  
 
-        .card-header {
+        /* .card-header {
             padding: 0.2rem 1.25rem;
             /* margin-bottom: 0; */
-            background-color: #ffffff;
-            border-bottom: 0px;
-        }
+           
+        /* }  */
         
-        .card-body {
+        /* .card-body {
             padding: 0rem 1.25rem;
-        }
+        } */
         
         p {
             margin-top: 0;
             margin-bottom: 10px;
         }
-        
+/*         
         .card {
             border-radius: 0px;
             padding-top: 15px;
             padding-bottom: 15px;
 			border:none;
 			box-shadow: none;
-        }
+        } */
         
         .flex-wrap {
             margin-bottom: -35px;
@@ -73,11 +74,11 @@
 			border-top-right-radius:0;
 			background-color: #307bd3;
 			color: #fff;
+           
 		}
 		.modal-content {
 			border-radius:0;	
 		}
-		
 		
 		/* tabs */
 nav > div a.nav-item.nav-link,
@@ -213,241 +214,322 @@ svg:not(:root).svg-inline--fa {
     color: #aaa;
     margin: 0 0 0 10px;
 }
+.body{
+    /* background-color:#8798ab26;  */
+}
+.container{
+    /* background-color:#8798ab26; */
+}
+table#main-table tr:nth-child(even){
+   background-color:#eee;
+   
+   color:black;
+   font-size:18px; 
+}
+table#main-table{
+    box-shadow: 0px 2px 4px;
+}
+table#main-table tr:nth-child(odd){
+    background-color:white;
+    padding:25px;
+    color:black;
+    font-weight:bold;
+}
+ .row {
+  /* background-color: #607d8b; */
+  display:block;
+  margin-top:15px;
+}
+.row h3{
+    color:black;
+}
+.left{
+    float:left;
+    margin-left:35px;
+    margin-top:15px;
+    margin-bottom:15px;
+   
+}
+.right{
+    float:right;
+    margin-top:15px;
+    margin-bottom:15px;
+
+}
+#mom_search{
+    border-radius:25px;
+}
+#mom_button{
+    border-radius:25px;
+    background-color:#2196f3;
+    color:white;
+}
+/* .container{
+    background-color:#607d8bc9 !important;
+} */
 	
 /*corousol end*/		
-		
+	#participant img{
+        border:1px solid black;
+        border-radius:50px;
+        height:25px;
+        background-color:skyblue;
+        display:inline-block;
+    }
+
+    #participant1{
+        border:1px solid black;
+        border-radius:50px;
+        background-color:skyblue;
+        height:25px;
+        width:25px;
+        margin-left:-17px;
+        z-index:-1;
+        display:inline-block;
+    }
+
+    #participant1:nth-last-child(1){
+        border:1px solid black;
+        border-radius:50px;
+        background-color:lightblue;
+        height:25px;
+        width:25px;
+        margin-left:-17px;
+        z-index:-1;
+        display:inline-block;
+    }
+
+    #participant2{
+        border:1px solid black;
+        border-radius:50px;
+        height:25px;
+        width:25px;
+        background-color:lightblue;
+        color:white;
+        margin-right:-12px;
+        display:inline-block;
+    }
+    .modal-header{
+        text-align:left;
+    }
+    .modal{
+ padding: 0 !important;
+}
+.modal-dialog {
+  max-width: 60% !important;
+  /* height: 100%; */
+  padding: 0;
+  margin:auto;
+}
+
+.modal-content {
+  border-radius: 0 !important;
+  /* height: 100%; */
+}
+input#add_meeting{
+    background-color:#eee;
+    color:black;
+}
+
+.footer div{
+   
+    display:inline-block;
+    margin:5px;
+    float:right;
+
+}
+.footer button{
+    background-color:white;
+    border:1px solid black;
+    color:black;
+}
+
+.dropbtn {
+  /* background-color: #4CAF50;
+  color: white; */
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  
+}
+
+/* .dropbtn:hover, .dropbtn:focus {
+  background-color: #3e8e41;
+} */
+
+.dropdown {
+  float: right;
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 160px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  right: 0;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* .dropdown a:hover {background-color: #ddd;} */
+
+.show {display: block;}
+.card-header{
+    color:white;
+    font-size:28px;
+}
+.user{
+    display:block;
+    margin:auto;
+    margin-bottom:45px;
+
+    
+}
+.user div{
+    float:left;
+    display:block;
+    
+    margin-left:45px;
+}
+input[type=checkbox] {
+         position: relative;
+	       cursor: pointer;
+    }
+    input[type=checkbox]:before {
+         content: "";
+         display: block;
+         position: absolute;
+         width: 20px;
+         height: 20px;
+         top: 0;
+         left: 0;
+         background-color:#e9e9e9;
+}
+input[type=checkbox]:checked:before {
+         content: "";
+         display: block;
+         position: absolute;
+         width: 20px;
+         height: 20px;
+         top: 0;
+         left: 0;
+         background-color:#1E80EF;
+}
+    input[type=checkbox]:checked:after {
+         content: "";
+         display: block;
+         width: 5px;
+         height: 10px;
+         border: solid white;
+         border-width: 0 2px 2px 0;
+         -webkit-transform: rotate(45deg);
+         -ms-transform: rotate(45deg);
+         transform: rotate(45deg);
+         position: absolute;
+         top: 2px;
+         left: 6px;
+}
+.user div img{
+    height:25px;
+    width:25px;
+    border-radius:50px;
+}
 </style>
 </head>
-<body>
-<div class="container">
+<body style="background-color:#eee;">
+ <div class="container">
+ <div class="card">
+  <div class="card-header bg-primary">
+    Minutes of Meeting Agenda
+  </div>
+  <?php 
+//   echo "<pre>";
+//   var_dump(json_decode($summary));
+//    exit;
+  $summary = json_decode($summary);
+?>
+  <form action="<?php echo base_url() ?>mom/addSummary" method="post">
+  
+  <div class="card-body">
+     <table class="table table-borderless">
+     <thead>
+     <tr>
+     <td class="text-center h5">Agenda</td>
+     <td class="text-center h5">Agenda Summary</td>
+     </tr>
+     </thead>
+     <tbody>
+     <?php
+      
+      // echo "<pre>";
+      // var_dump($summary);
+      // exit;
+      
+      $summary = json_decode(json_encode($summary,true));
+      
+      
 
-              <div class="row">
-                <div class="col-sm-12 ">
-				<div class="row">
-                    <div class="col-md-10"><h4>Minutes of Meeting</h4></div>
-					<div class="col-md-2">
-					<button type="button" name="add_button" id="add_button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal"   onclick="addLeaveType()"> <i class="fas fa-plus-circle"></i> Add  Meeting</button>
-				
-					</div>
-                </div>
-				<table class="table table-striped table-borderless table-hover border-shadow mt-2" id="example1" style="width:100%;">
-	                        <thead>
-	                            <tr class="text-muted">
-	                            <th>Title</th>
-	                            <th>Date</th>
-	                            <th>Location</th>
-	                            <th>Time</th>
-	                           
-	                            </tr>
-	                        </thead>
-	                        <tbody>
-							<!-- <tr>
-							<td>Child Care</td>
-							<td>45</td>
-							<td>Nashville</td>
-							<td>12</td>
-							<td><a href="<?php // echo base_url() ?>mom/startMeeting" class="btn btn-success">Start</a></td>
-							</tr> -->
-							<?php
-							
-							 $meetings = json_decode($data);
-							//  echo "<pre>";
-							//  print_r($meetings->data);
-							// exit;
-							// $len  = count($meetings);
-							// echo $len;
-							// exit;
-							foreach($meetings->data as $m): ?>
-                              
-						      <tr>
-							  <td><?php echo $m->title ?></td>
-							  <td><?php echo $m->date?></td>
-							  <td><?php echo $m->location?></td>
-							  <td><?php echo $m->time?></td>
-							  <td> <a href="<?php echo base_url(); ?>mom/meetingInfo/<?php echo $m->mid ?>" class="btn btn-primary">View Info</a> </td>
-							  <td><a href="<?php echo  base_url(); ?>mom/startmeeting/<?php echo $m->mid ?>" class="btn btn-success">Start</a></td>
-							  </tr>	
-						<?php	
-					    	
-							endforeach;
-							
-							?>
-							</tbody>
-							</table>
-							</div>
-						</div>	
-
-						<div class="modal fade" id="userModal">
-                <div class="modal-dialog">
-                    
-					<form id="leaveTypeForm" action="<?php echo base_url() ?>mom/addMeeting" method="POST">
-					<div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Minutes of Meeting</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                <div class="modal-body">
-					<div class="col-md-12 col-xl-12">	
-					<form  method="POST" action="<?php echo base_url() ?>mom/addMeeting">
-						
-
-						<div class="form-group">
-						  <label>New Meeting</label>
-						  <input type="text" class="form-control" id="meetingTitle" placeholder="Enter Meeting Title" name="meetingTitle" >
-						  <span id="meeting_error" class="text-danger"></span>
-						</div>
-
-						<span style="color: red" id="leaveNameError"></span>
-						 
-						<div class="form-group">
-							<label>Location</label>
-							<input type="text" class="form-control" name="meetingLocation" id="location" placeholder="Location"  >
-						  <span id="location_error" class="text-danger"></span>
-						</div>
-
-						<div class="form-group">
-							<label>Date</label>
-							<input type="text" class="form-control" name="meetingDate" id="date" placeholder="Date"  >
-						  <span id="date_error" class="text-danger"></span>
-						</div>
-
-						<div class="form-group">
-							<label>Time</label>
-							<input type="text" class="form-control" name="meetingTime" id="time" placeholder="Time"  >
-						  <span id="time_error" class="text-danger"></span>
-						</div>
+      $len = count($summary);
+      
+      for($i = 0; $i < $len; $i++){
+     
+     ?>
+       <tr>
+         <td class="text-center font-weight-bold"><?php echo $summary[$i]->text ?></td>
+         <td>
+          <div class="form-group">
+          <input type="hidden" value="<?php  echo $summary[$i]->id;?>" name="id[]">
+          <input type="text" name="summary[]" class="form-control">
+          </div>
+         </td>
+       </tr>
+      <?php } ?>
+     </tbody>
+     </table>
+  </div>
+      
  
-						<div class="row" id="agenda">
-						<div class="col-md-8" id="agendaMore">
-						<div class="form-group">
-							<label>Agenda</label>
-							<input type="text" class="form-control" name="meetingAgenda[]" id="agenda1" placeholder="Agenda"  >
-						  <span id="agenda_error" class="text-danger"></span>
-						</div>
-						</div>
-						<div class="col-md-4">
-						<div class="btn btn-primary" onclick="addAgenda()">Add Agenda</div>
-						</div>
-						</div>
 
 
-						<div class="form-group">
-							<label>Meeting Collab Type</label>
-							<select type="time" name="meetingcollab" id="colab" class="form-control">
-							<option value="">Select Type</option>
-							<option value="y">Yearly</option>
-							<option value="m">Monthly</option>
-							<option value="w">Weekly</option>
-							</select>
-						  <span id="collab_error" class="text-danger"></span>
-						</div>
-						
-                         
-                        <div class="search-table">
-							<div class="search-box">
-                <div class="row mb-2">
-                    <div class="col-sm-12 has-search">
-					<i class="fas fa-search feedback"></i>
-                        <input type="text" id="myInput" class="form-control rounded-0" placeholder="Search Employee">
-                        <script>
-                            $(document).ready(function () {
-                                $("#myInput").on("keyup", function () {
-                                    var value = $(this).val().toLowerCase();
-                                    $("#myTable tr").filter(function () {
-                                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                                    });
-                                });
-                            });
-                        </script>
-                    </div> 
-                </div>
-            </div>
-			<div class="search-list">
-                <table class="table" id="myTable" style="border:none;">
-                    <thead>
-                        <tr></tr>
-                    </thead>
-                    <tbody class="tbodyscroll">  
-					<?php
-					 $users = json_decode($users);
-                     foreach ($users->users as $chat) {
-                      if($chat->imageUrl == null || $chat->imageUrl == ""){
-                        $chat->imageUrl = base_url().'assets/images/defaultUser.png';
-                      }
-                    ?>					
-                    <tr>
-                        <td> 
-						<label class="checkbox">
-                            <input type="checkbox" value="<?php echo $chat->userid; ?>" name="invites[]" id="invites" />
-                            <span class="default"></span>
-                        </label>
-						</td>
-                        <td>
-							<a href="javascript:void(0);" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people">
-							  <div class="media">
-							  <div class="icon-container">
-							  <img src="<?php echo $chat->imageUrl;?>" alt="user" width="30" class="rounded-circle">
-							  <div class='status-circle-online'></div>
-							  </div>
-								<div class="media-body ml-4">
-								  <div class="d-flex align-items-center justify-content-between ">
-									<h6 class="mb-0"><?php echo $chat->username;?></h6>
-								  </div>
-								  
-								</div>
-							  </div>
-							</a>
-						</td>
-                    </tr>
-					<?php }	?>
-                    
-                    </tbody>
-                </table>
+  <div class="card-footer bg-default">
+       <button type="submit" class="btn btn-primary">End</button>
+  </div>
+</form>
+</div>
+ </div>
+<body>
+<script>
 
-            </div>
-						  </div>
+function myFunction(value) {
+    
+  document.getElementById("myDropdown"+value.id).classList.toggle("show");
+}
 
-                        
-
-                        
-						
-
-
-
-
-						<span style="color: red" id="leaveSlugError"></span>
-						
-						<div class="form-group" id="toggle">
-						<label for="leaveIsPaid">IsPaid</label><br>
-						<div class="outerDivFull" >
-						<div class="switchToggle">
-						
-							<input type="checkbox" id="switch" name="leaveIsPaid">
-							<label for="switch">Toggle</label>
-						</div>
-						</div>
-						</div>
-						<div class="form-group text-center" id="updateLeaveType" style="display: none;">
-						<button class="btn btn-secondary rounded-0" type="button" onclick="addLeave()">Update</button>
-						<button class="btn btn-danger rounded-0" type="button" onclick="deleteLeave()">Delete</button> 
-						</div>
-						<div class="form-group text-center" id="addLeaveType" style="display: block;">
-						<button class="btn btn-secondary rounded-0" type="button" onclick="addMeeting()">Add</button>
-						</div>
-				  </form>	
-					</div>
-					</div>
-					
-                    </div>
-					</form>
-                </div>
-            </div>
-          
-
-
-</body>
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+    
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+</script>
 
 <script>
 						function addAgenda(){
@@ -532,12 +614,7 @@ $('#toggle').remove();
 
 	<script type="text/javascript">
 		
-		function addLeaveType(){
-			
-			jQuery(function($) {
-		        $("#userModal").modal('show');
-		    });
-		}
+		
 
 		
 	 function addMeeting(){

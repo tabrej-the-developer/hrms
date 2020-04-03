@@ -22,14 +22,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $participant = $this->meetingModel->getParticipate($id);
             $mdata['data'] = [];
             $mdata['toParticipate'] = [];
+            $mdata['participants'] = [];
             foreach($meetings as $m){
                 $var['role'] = 'creator';
                 $var['mid'] = $m->id;
                 $var['userid'] = $m->loginid;
+                $boardMembers = $this->meetingModel->getMembers($m->id);
+                foreach($boardMembers as $b){
+                    $var2['participateEmail'] = $b->user_id;
+                    array_push($mdata['participants'],$var2);
+                }
                 $var['title'] = $m->title;
                 $var['date'] = $m->date;
                 $var['time'] = $m->time;
                 $var['location'] = $m->location;
+                $var['participates'] = $mdata['participants'];
+                $mdata['participants'] = [];
                 array_push($mdata['data'],$var);
 
             }
@@ -58,6 +66,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $mdata = [];
             foreach($participants as $p){
                 $var['uid'] = $p->user_id;
+                
                 array_push($mdata,$var);
             }
            

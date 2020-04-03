@@ -29,6 +29,7 @@ class Messenger extends CI_Controller {
 					$var['username'] = $u->name;
 					$var['imageUrl'] = $u->imageUrl;
 					$var['designation'] = $u->title;
+					$var['email'] = $u->email;
 					array_push($data,$var);
 				}
 				$mdata['users'] = $data;
