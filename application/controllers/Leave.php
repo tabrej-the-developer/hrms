@@ -12,11 +12,7 @@ class Leave extends CI_Controller {
 				$centers = json_decode($data['centers'])->centers;
 				$data['leaves'] = $this->getLeaveByCenter($centers[0]->centerid);
 			}
-		}
-		else if($this->session->userdata('UserType') == STAFF){
-			$data['balance'] = $this->getLeaveBalance();
-			$data['leaves'] = $this->getAllLeavesByUser();
-		}
+		} 
 		else{
 			$data['balance'] = $this->getLeaveBalance();
 			$data['centers'] = $this->getAllCenters();
@@ -136,9 +132,9 @@ class Leave extends CI_Controller {
 		$form_data = $this->input->post();
 		if($form_data != null){
 			//var_dump($form_data);
-			$data['leaveId'] =       $form_data['leaveId'];
-			$data['name']    =       $form_data['leaveName'];
-			$data['slug']    =       $form_data['leaveSlug'];
+			$data['leaveId'] = $form_data['leaveId'];
+			$data['name'] = $form_data['leaveName'];
+			$data['slug'] = $form_data['leaveSlug'];
 			$data['isPaidYN'] = isset($form_data['leaveIsPaid']) ? "Y" : "N";
 			$data['userid'] = $this->session->userdata('LoginId');
 
@@ -247,6 +243,7 @@ class Leave extends CI_Controller {
 			$data['endDate'] = $form_data['applyLeaveToDate'];
 			$data['notes'] = $form_data['applyLeaveNotes'];
 			$data['userid'] = $this->session->userdata('LoginId');
+			$data['hours'] = $form_data['total-leave-hours'];
 
 			$url = "http://todquest.com/PN101/api/leave/applyLeave";
 

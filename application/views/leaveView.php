@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -226,7 +228,7 @@ img{ max-width:140%;}
                  <div class="col-4 float-left">
 					<div class="text-center">
 						<div class="c100 p12 small green">
-							<span><?php echo $balance->balance[$i + $var]->closingBalance;?></span>
+							<span><?php echo sprintf('%.2f',$balance->balance[$i + $var]->leavesRemaining);?></span>
 							<div class="slice">
 								<div class="bar"></div>
 								<div class="fill"></div>
@@ -383,7 +385,7 @@ img{ max-width:140%;}
 			                        <thead>
 			                            <tr class="text-muted">
 	                            	<?php
-	                            		if($this->session->userdata('UserType') == SUPERADMIN){ ?>
+	                            		if($this->session->userdata('UserType') == SUPERADMIN ){ ?>
 			                            <th>Emp Name</th>
 			                            <th>Emp Designation</th>
 			                        <?php }?>
@@ -401,10 +403,11 @@ img{ max-width:140%;}
 			                        	foreach ($leaves->leaves as $l) { ?>
 										<tr>
 	                            		<?php
-	                            			if($this->session->userdata('UserType') == SUPERADMIN){ ?>
+	                            			if($this->session->userdata('UserType') == SUPERADMIN || $this->session->userdata('UserType') == ADMIN ){ ?>
 											<td><?php echo $l->name;?></td>
+								<?php if($l->title != "Centre Manager"){ ?>
 											<td><?php echo $l->title;?></td>
-			                       		<?php }?>
+			                       		<?php } else {echo "<td>--</td>";} }?>
 											<td><?php echo $l->leaveTypeSlug;?></td>
 											<td><?php
 												$date = date_create($l->startDate);
@@ -556,7 +559,25 @@ img{ max-width:140%;}
 										<textarea id="applyLeaveNotes" name="applyLeaveNotes" class="form-control" placeholder="Reason" ></textarea>
 										
 									</div>	
-						</div>	
+						</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="md-form">
+					<label>Total leave hours</label>
+				<span class="row pl-5">
+					<select name="total-leave-hours">
+						<?php
+						for($v = 0; $v < 10; $v+=0.5){
+						?>
+						<option value="<?php echo $v;?>"><?php echo $v; ?></option>
+						<?php
+							}
+						?>
+					</select>
+				</span>		
+				</div>
+			</div>
+		</div>	
 					</div>
 					<div class="text-center mt-2 mb-4">
 						<button class="btn btn-secondary rounded-0" type="button" onclick="applyLeave()">Apply</button>
@@ -737,6 +758,7 @@ img{ max-width:140%;}
 			var leaveId = document.getElementById("applyLeaveId").value;
 			var startDate = document.getElementById("applyLeaveFromDate").value;
 			var endDate = document.getElementById("applyLeaveToDate").value;
+			var hours = document.getElementById('total-leave-hours').value;
 			var notes = document.getElementById("applyLeaveNotes").value;
 			console.log(leaveId);
 			console.log(startDate);

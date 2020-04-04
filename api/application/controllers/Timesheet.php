@@ -232,7 +232,7 @@ class Timesheet extends CI_Controller{
 								$mar['endTime'] = $paySh->endTime;
 								$mar['status'] = $paySh->status;
 								$mar['payrollTypeId'] = $paySh->payrollTypeId;
-								$mar['payrollType'] = $this->payrollModel->getPayrollType($paySh->payrollType);
+								$mar['payrollType'] = $this->payrollModel->getPayrollType($paySh->payrollTypeId);
 								array_push($var['payrollShifts'],$mar);
 							}
 							array_push($mData['rosteredEmployees'],$var);
