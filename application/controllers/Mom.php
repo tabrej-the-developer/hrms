@@ -4,9 +4,13 @@ class Mom extends CI_CONTROLLER{
     public function index(){
 			$data['users'] = $this->getUsers();
             $data['meetings'] = $this->getMeetings();
-        $this->load->view('mom1',$data);
+        $this->load->view('mom1_dup',$data);
     }
-
+   public function attendence($mId){
+    $data['partcipants'] = $this->getParticipant($mId); 
+    $data['mId'] = $mId;
+       $this->load->view('attendence',$data);
+   }
     public function getMeetings(){
         $url =  BASE_API_URL."mom/getMeetings/".$this->session->userdata('LoginId');
         $ch = curl_init($url);
@@ -67,7 +71,11 @@ class Mom extends CI_CONTROLLER{
     public function onBoard($mId){
         $data['mId'] = $mId;
         $data['present'] = $this->getPresent($mId);
-        $this->load->view('meetingStarted',$data);
+        $this->load->view('meetingstarted_dup',$data);
+    }
+
+    public function onBoardDup(){
+        $this->load->view('meetingstarted_dup');
     }
 
     public function getPresent($id){
@@ -93,9 +101,9 @@ class Mom extends CI_CONTROLLER{
 
     
     public function summary($id){
-        $data['mId'] = $id;
-        $data['summary'] = $this->getSummary($id);
-        $this->load->view('summary',$data);
+        $data1['mId'] = $id;
+        $data1['summary'] = $this->getSummary($id);
+        $this->load->view('summary_dup',$data1);
     }
 
     public function getSummary($id){
