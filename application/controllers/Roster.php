@@ -24,6 +24,7 @@ public function roster_dashboard(){
 		$var['userId'] 	= $this->session->userdata('LoginId');
 		$var['centers'] = $this->getAllCenters();
 		$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[$id]->centerid);
+		$var['entitlement'] = $this->getAllEntitlements($var['userId']);
 	}
 	else if($this->session->userdata('UserType') == ADMIN ){
 		
@@ -31,12 +32,14 @@ public function roster_dashboard(){
 		$var['centers'] = $this->getAllCenters();
 		$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[0]->centerid);
 		$var['cents'] = json_decode($var['centers'])->centers[0]->centerid;
+		$var['entitlement'] = $this->getAllEntitlements($var['userId']);
 			}
 	else{
 		$var['userId'] 	= $this->session->userdata('LoginId');
 		$var['userType'] = $this->session->userdata('UserType');
 		$var['centers'] = $this->getAllCenters();
 		$var['rosters'] = $this->getPastRosters("1");
+		$var['entitlement'] = $this->getAllEntitlements($var['userId']);
 	}
 			$this->load->view('rosterView',$var);
 
@@ -67,6 +70,7 @@ public function roster_dashboard(){
 	public function getRosterDetails(){
 		$data['rosterid'] = $this->input->get('rosterId');
 		$data['userid'] = $this->session->userdata('LoginId');
+		$data['entitlements'] = $this->getAllEntitlements($data['userid']);
 		$data['rosterDetails'] = $this->getRoster($data['rosterid'],$data['userid']);
 			$this->load->view('rosterData',$data);
 	}
@@ -219,6 +223,27 @@ public function updateRoster(){
 
 			}
 }
+
+
+	function getAllEntitlements($userid){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+				$this->load->model('payrollModel');
+				$mdata['entitlements'] = $this->payrollModel->getAllEntitlements();
+				http_response_code(200);
+				echo json_encode($mdata);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
 
 
 
