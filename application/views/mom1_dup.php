@@ -257,7 +257,7 @@ table#main-table tr:nth-child(odd){
     background-color:white;
     padding:25px;
     color:black;
-    font-weight:bold;
+    /* font-weight:bold; */
 }
  .row {
   /* background-color: #607d8b; */
@@ -548,7 +548,7 @@ let autocomplete;
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">Date</span>
                         </div>
-                        <input type="date" name="meetingDate" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                        <input type="date" id="date" name="meetingDate" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
                         </div>
                 </td>
                
@@ -557,7 +557,7 @@ let autocomplete;
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">Time</span>
                     </div>
-                    <input type="time" name="meetingTime" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                    <input type="time" name="meetingTime" id="time" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
                     </div>
                 
                 </td>
@@ -570,7 +570,7 @@ let autocomplete;
                    <td class="text-center">Where</td>
                     <td>
                       <div class="form-group">
-                       <input type="text" class="form-control" id="autocomplete" placeholder="Type Address...">
+                       <input id="location" type="text" class="form-control" id="autocomplete" placeholder="Type Address...">
                       </div>
                       <div class="form-group">
                        <input type="hidden">
@@ -592,7 +592,7 @@ let autocomplete;
                    <td class="text-center">Agenda</td>
                    <td>
                     <div class="form-group">
-                   <textarea name="meetingAgenda[]" id="" class="form-control" style="background-color:#eee"></textarea>
+                   <textarea name="meetingAgenda[]" id="agenda" class="form-control" style="background-color:#eee"></textarea>
                     </div>  
                    </td>
                </tr>
@@ -600,7 +600,7 @@ let autocomplete;
                   <td class="text-center">Meeting Collab Type</td>
                   <td>
                    <div class="form-group">
-                   <select name="" id="" class="form-control">
+                   <select name="" id="collab" class="form-control">
                       <option value="y">Yearly</option>
                       <option value="m">Monthly</option>
                       <option value="w">Weekly</option>
@@ -615,7 +615,7 @@ let autocomplete;
                     <div class="form-group">
                     <!-- <input type="text" id="add_meeting" class="form-control"> -->
                     
-                     <select name="invites[]" class="demo" multiple  id="">
+                     <select name="invites[]" class="demo" multiple  id="demo">
                        <?php 
                          foreach($users->users as $m):
                        ?>  
@@ -688,11 +688,24 @@ let autocomplete;
         <td><?php echo $u->time; ?></td>
         <td><?php echo $u->location; ?></td>
         <td><?php echo "upcoming"; ?></td>
+        <script>
+        var arr = [];
+        </script>
         <td>
-        <?php foreach($u->participates as $p): ?>
-        <div id="participant1"></div>
         
-        <?php endforeach; ?>
+        <?php foreach($u->participates as $p): 
+        // var_dump($p);
+        // exit;
+        
+?>
+        
+        
+         <input type="hidden" id="p"  name="p[]" value="<?php echo $p->participateEmail; ?>" >
+        <div id="participant1"></div>
+         
+        <?php endforeach;
+        
+        ?>
         <!-- <div id="participant2">+5</div> -->
         </td>
         <td><a href="<?php echo base_url() ?>mom/attendence/<?php echo $u->mid ?>" class="btn btn-primary ">start</a></td>
@@ -700,8 +713,8 @@ let autocomplete;
         <div class="dropdown">
   <a href="#" onclick="myFunction(this)" id="<?php echo $i; ?>" class="dropbtn"><i   class="fas fa-ellipsis-v"></i></a>
   <div id="myDropdown<?php echo $i; ?>" class="dropdown-content">
-    <a href="#home">Edit</a>
-    <a href="#about">Delete</a>
+    <a   class="btn btn-default" id="update"  data-toggle="modal" data-target="#myModal">Edit</a>
+    <!-- <a href="#">Delete</a> -->
     </div>
       </div>
       </td>
@@ -736,7 +749,6 @@ let autocomplete;
 
 
 
-
 <script>
 
  $(document).ready(function(){
@@ -762,7 +774,80 @@ window.onclick = function(event) {
     }
   }
 }
+
+
+
 </script>
+
+
+
+
+<script>
+$(document).ready(function(){
+      $('#mom_button').click(function(){
+        $("form").each(function(){
+    $(this).find(':input').val(""); 
+    $(this).find(':textarea').val("");
+});
+            
+      });
+});
+
+$(document).ready(function(){
+
+  $('a#update').click(function() {
+    $('.tokens-container').remove('li');
+    var  value  = $(this).closest('tr').children('td:eq(0)').text();
+    var  value1 = $(this).closest('tr').children('td:eq(1)').text();
+    var  value2 = $(this).closest('tr').children('td:eq(2)').text();
+    var  value3 = $(this).closest('tr').children('td:eq(3)').text();
+    var  value4 = $(this).closest('tr').children('td:eq(4)').text();
+    var  value5 = $(this).closest('tr').children('td:eq(5)').find('input').each(function(){
+      //alert(this.value);
+      var email = this.value;
+      console.log(email);
+      //$('.tokens-container').append(`<li class="token" data-value="${email}"><a class="dismiss" onclick="remove()"></a><span> ${email} </span></li>`); 
+         $('#demo').append(`<option value="${email}" selected> ${email} </option>`);
+           
+        });
+    
+    
+    // working
+    // $('input[type="hidden"').each(function(){
+    //   alert(this.value);
+    // })
+  //  $(this).closest('#p').each(function(){
+  //     alert(this.value);
+  //   })
+    var  value6 = $(this).closest('tr').children('td:eq(6)').text();
+    var  value7 = $(this).closest('tr').children('td:eq(7)').text();
+  
+     
+    //alert(value5);
+    
+   $('#add_meeting').val(value);
+   $('#date').val(value1);
+   $('#time').val(value2);
+   $('#location').val(value3);
+   $('#agenda').val(value5);
+   $('#collab').val(value6);
+});
+
+ function remove(){
+   alert('hello');
+ }
+
+});
+ 
+</script>
+
+<script>
+
+$('.tokens-container a.dismiss').live('click', function(){
+  $(this).parent().remove();
+});
+</script>
+
 
 <script>
 
