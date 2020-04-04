@@ -34,6 +34,9 @@
 .header-top{box-shadow: 0 3px 5px rgba(0,0,0,.1)}
 .leftmenutrigger, .navbar-nav li a .shortmenu{display: none}
 .card-title{ font-size: 28px}
+.bg-info{
+  background:#307bd3 !important;
+}
 @media(min-width:992px) {
 #wrapper{padding: 46px 15px 15px 75px; }
 .navbar-nav.side-nav:hover {left:0;}
@@ -41,6 +44,9 @@
 .navbar-nav li a .shortmenu {float: right;display: block;opacity: 1}
 .navbar-nav.side-nav:hover li a .shortmenu{opacity: 0}
 .navbar-nav.side-nav{background: #f5f5f5; box-shadow: 2px 1px 2px rgba(0,0,0,.1); position:fixed; top:56px; flex-direction: column!important;left:-140px;width:200px;overflow-y:auto;bottom:0;overflow-x:hidden;padding-bottom:40px}
+.bg-info{
+  background:#307bd3 !important;
+}
 }
 .animate{-webkit-transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;-ms-transition:all .2s ease-in-out;transition:all .2s ease-in-out}
 .navbar-nav li a svg{font-size: 20px;float: left;margin: 0 12px 0 5px;}
