@@ -263,7 +263,7 @@ max-width:30vw;
 <body>
 
 	<?php $timesheetDetails = json_decode($timesheetDetails); 
-
+			$entitlements = json_decode($entitlements);
 	?>
 	<div class="containers" id="containers" style="overflow-x:scroll">
 		<div class="heading">Timesheets</div>
@@ -309,6 +309,9 @@ function dateToDay($date){
 function icon($str){
 	$str = explode(" ",$str);
 	if(count($str) >1 ){
+		if($str[0][0]=="" || $str[0][0]==null){
+			return strtoupper($str[0][0]);
+		}
 	    return strtoupper($str[0][0].$str[1][0]);
 	}else{
 	    return strtoupper($str[0][0]);
@@ -327,25 +330,99 @@ function icon($str){
 		<div class="table-div" >
 			<table style="">
 				<tr>
+					<?php $p =0; ?>
 					<th id="table-id-1" class="day">Employees</th>	<?php $x=0;?>
 					<?php foreach($timesheetDetails->timesheet as $timesheet) {
+						$p++;
 						$original = explode('-',$timesheet->currentDate);
 						$datts = $original[2].".".$original[1].".".$original[0]; 
 					 	 ?>
 					<th  class="day"><?php  echo date("D",strtotime($datts)); echo " ".dateToDay($timesheet->currentDate) ?></th>
 					<?php } ?>
-					<th>
-						<span class=" d-flex justify-content-center">
-							<span class="row">Budget (Emp wise)</span>
-						</span>
-					</th>
+
 				</tr>
 			
 				<?php 
-				$count = count($timesheetDetails->timesheet[0]->employees);
+				$count = count($timesheetDetails->timesheet[0]->rosteredEmployees);
 if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){
 	// $x is the total number of employees loop value;
-				for($x=0;$x<$count;$x++){ 
+	$r = $timesheetDetails->timesheet[0]->rosteredEmployees;
+	$x=0;
+				foreach($r as $p){
+				
+					?>
+				<?php 
+				if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){
+				$value = count($timesheetDetails->timesheet);
+		}
+		else{
+			$value=1;
+		}
+		// This value should be changed to $value;
+		// Counter is the total number of days;
+				//for($counter=0;$counter<1;$counter++){ ?>
+		<tr  class="table-row">
+			<td   style="min-width:18vw" class=" cell-boxes left-most">
+				<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
+				<span class="row" style="padding:0;margin:0;">
+					<span class="col-3 icon-parent"><span class=" icon"><?php echo icon($timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName)?></span></span>
+					<span class="col-6 name-role">
+					<span class="empname row"><?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName?></span>
+					<span class="title row"><?php //echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empTitle ?></span>
+					</span>
+
+					<?php
+					$variable = 0; 
+						$userLevel = $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->level;
+						foreach ($entitlements as $e) {
+							if($e[0]->id == $userLevel){
+								$variable = $e[0]->hourlyRate;
+							}
+
+						}
+
+					?>
+					<span class="hourly col-3"><?php echo  $variable; ?></span>
+						</span>
+					<?php } ?>
+					</td>
+				
+					<?php $weeklyTotal=0; 
+					// to be changed to $value
+					?>
+
+					<?php for($p=0;$p<14;$p++){?>
+		<td style="min-width:13vw;padding:7px" class="shift-edit" name="<?php  echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName ?>"  cal-x="<?php echo $x; ?>" cal-p="<?php echo $p; ?>" array-type="rosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empId?>" curr-date="<?php echo $timesheetDetails->timesheet[$x]->currentDate?>" timesheet-id="<?php echo $timesheetDetails->id;?>">
+		<div style="background:pink;border-radius: 5px;padding:3px">
+		<div style="display:flex;flex-direction: column;background:#307bd3;color:white;border-radius: 5px">
+					<?php 
+						// $timesheetDetails->timesheet[$p]->employees[$x];
+			$times = $timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes;
+			$totalTime = 0;
+			foreach($times as $time){
+				$totalTime = $totalTime + $time->endTime - $time->startTime;
+			}
+					$number = 0;
+	foreach($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes as $visits){$number++;}
+				$totalVisits = $number;
+			?>
+							<span>Total Hours : <?php echo  intVal($totalTime/100) .".". $totalTime%100; ?></span>
+							<span>Total visits : <?php echo $totalVisits; ?></span>
+						</div>
+					</div>
+				</td>
+			 <?php } ?>
+			<td class=" " style="min-width:18vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
+		</tr>
+			<?php } 
+			$count = count($timesheetDetails->timesheet[0]->unrosteredEmployees);
+			for($x=0;$x<$count;$x++){ 
+				$userLevel = $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->level;
+						foreach ($entitlements as $e) {
+							if($e[0]->id == $userLevel){
+								$variable = $e[0]->hourlyRate;
+							}
+						}
 					?>
 				<?php 
 				if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){
@@ -362,12 +439,12 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 						<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
 
 						<span class="row" style="padding:0;margin:0;">
-							<span class="col-3 icon-parent"><span class=" icon"><?php echo icon($timesheetDetails->timesheet[0]->employees[$x]->empName)?></span></span>
+							<span class="col-3 icon-parent"><span class=" icon"><?php echo icon($timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName)?></span></span>
 							<span class="col-6 name-role">
-								<span class="empname row"><?php echo $timesheetDetails->timesheet[0]->employees[$x]->empName?></span>
-								<span class="title row"><?php echo $timesheetDetails->timesheet[0]->employees[$x]->empTitle ?></span>
+								<span class="empname row"><?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName?></span>
+								
 							</span>
-							<span class="hourly col-3"><?php echo  $timesheetDetails->timesheet[0]->employees[$x]->hourlyRate ?></span>
+							<span class="hourly col-3"><?php echo  $variable ?></span>
 						</span>
 					<?php } ?>
 					</td>
@@ -377,29 +454,26 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					?>
 
 					<?php for($p=0;$p<1;$p++){?>
-					<td style="min-width:13vw;padding:7px" class="shift-edit" name="<?php  echo $timesheetDetails->timesheet[0]->employees[$x]->empName ?>" role="<?php  echo $timesheetDetails->timesheet[0]->employees[$x]->empTitle?>" cal-x="<?php echo $x; ?>"
-						cal-p="<?php echo $p; ?>">
+		<td style="min-width:13vw;padding:7px" class="shift-edit" name="<?php  echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName ?>"  cal-x="<?php echo $x; ?>"cal-p="<?php echo $p; ?>" array-type="unrosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empId?>" curr-date="<?php echo $timesheetDetails->timesheet[$x]->empId?>" timesheet-id="<?php echo $timesheetDetails->id;?>">
 						<div style="background:pink;border-radius: 5px;padding:3px">
 							<div style="display:flex;flex-direction: column;background:#307bd3;color:white;border-radius: 5px">
 					<?php 
 						// $timesheetDetails->timesheet[$p]->employees[$x];
-				
-				$totalTime = $timesheetDetails->timesheet[$p]->employees[$x]->payrollShift->regularHours 
-															+ 
-							$timesheetDetails->timesheet[$p]->employees[$x]->payrollShift->overtimeHours;
+				$times = $timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes;
+				$totalTime = 0;
+				foreach($times as $time){
+					$totalTime = $totalTime + $time->endTime - $time->startTime;
+				}
 						$number = 0;
-						foreach($timesheetDetails->timesheet[$p]->employees[$x]->visits as $visits)
-							{$number++;}
-				$totalVisits = $number;
+						foreach($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes as $visits){$number++;}
 
-				$totalBudget = ( $timesheetDetails->timesheet[$p]->employees[$x]->payrollShift->regularHours ) * $timesheetDetails->timesheet[$p]->employees[$x]->hourlyRate ;	
+				$totalVisits = $number;
+				
 					?>
 								<span>Total Hours : <?php echo  $totalTime/100 .".". $totalTime%100; ?></span>
 								<span>Total visits : <?php echo $totalVisits; ?></span>
 							</div>
-							<div style="">
-								Total Budget: <?php echo "$" . $totalBudget; ?>
-							</div>
+							
 						</div>
 					</td>
 
@@ -407,7 +481,12 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					<td class=" " style="min-width:18vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
 
 				</tr>
-			<?php }  } //}?>
+			<?php 
+			$x++; 
+		} 
+
+
+			 } //}?>
 		</table>
 	</div>
 		<div class="total-budget" >
@@ -461,14 +540,20 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 				var htmlVal = $('timesheet-form').html()
 				$(document).on('click','.shift-edit',function(){
 					 modal.style.display = "block";
-					 var v = $(this).attr('name');
-					 var x = $(this).attr('cal-x');
-					 var y = $(this).attr('cal-p');
+					var arrayType = $(this).attr('array-type');
+					var v = $(this).attr('name');
+					var w = $('.day').eq($(this).index()).html();
+					var x = $(this).attr('cal-x');
+					var y = $(this).attr('cal-p');
+					var eId = $('#employee-id').val($('this').attr('emp-id'))
+					var sDate = $('#start-date').val($(this).attr('curr-date'))
+					var tId = $('#timesheet-id').val($(this).attr('timesheet-id'))
 					 $.ajax({
-					 	url : "http://localhost/PN101/timesheet/getTimesheetDetailsModal?timesheetId="+"<?php echo $timesheetid; ?>&x="+x+"&y="+y,
+					 	url : location.origin+"/PN101/timesheet/getTimesheetDetailsModal?timesheetId="+"<?php echo $timesheetid; ?>&x="+x+"&y="+y+"&aT="+arrayType,
 					 	type : 'GET',
 					 	success : function(response){
 					 		$('.box-name').html(v)
+					 		$('.box-space').html(w)
 					 		$('#timesheet-form').html(response)
 					 	}
 					 })
@@ -476,7 +561,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 
 				$(document).on('click','.close',function(){
 					 modal.style.display = "none";
-					 $('timesheet-form').html(htmlVal)
+					 $('timesheet-form').html(htmlVal);
 					 $('#timesheet-form').trigger('reset');
 				})
 </script>
@@ -501,14 +586,124 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 			// calling the function
 			  uiFunction();
 </script>
+	<script type="text/javascript">
+	function timer( x)
+	{ 
+	    var output="";
+	    if((x/100) < 12){
+	        if((x%100)==0 ){
+	        	if((x/100)<10){
+	         output = "0"+String(x/100) + ":00" ;
+	     }
+	     if((x/100)>9){
+	     	output = String(x/100) + ":00" ;
+	     }
+	        }
+	    if((x%100)!=0){
+	        if((x/100)<10){
+	         output = "0"+String(x/100) + ":" + String(x%100) ;
+	        }
+	    }
+	     if((x/100)>10){
+	         output = String(x/100) + ":" + String(x%100) ;
+	        }
+	    }
+	
+	else if((x/100)>12){
+	    if((x%100)==0){
+	    output = x/100 + ":00";
+	    }
+	    if((x%100)!=0){
+	    output = Math.floor(x/100) +":" + x%100 ;
+	    }
+	}
+	else{
+	if((x%100)==0){
+	     output = Math.floor(parseInt(x/100)) + ":00";
+	    }
+	    if((x%100)!=0){
+	    output = Math.floor(parseInt(x/100)) + ":" + x%100;
+	    }
+	}
+	return output;
+}
 
+</script>
+<script type="text/javascript">
+	$(document).on('click','.time-box',function(){
+		var thisValue = $(this).children('.time-box').html();
+		var parentHTML = $('timesheet-form').html();
+		var stime = $(this).attr('start-time');
+		var code = "<input type=\"time\" class=\"sclass\"> - <input type=\"time\" class=\"eclass\"> <input type=\"text\" id=\"employee-id\" style=\"display:none\"> <input type=\"text\" id=\"start-date\" style=\"display:none\"> <input type=\"text\" id=\"timesheet-id\" style=\"display:none\">"
+		$(this).empty();
+		$(this).next().html(code)
+		$(this).next().children('.sclass').val(timer($(this).attr('svalue')))
+		$(this).next().children('.eclass').val(timer($(this).attr('evalue')))
 
+		//$(this).html(code)
+		//$(this).children().val(timer(500))
+		//$(this).children('.time-box').html($(this).attr('start-time'))
+	})
+</script>
+<script type="text/javascript">
+	$(document).on('click','.buttonn',function(e){
+		e.preventDefault();
+		var i = $(".box-time").length;
+		var values = [];
+		var object = {};
+		var url = location.origin+"/PN101/timesheet/createPayroll";
+		for(var a=0;a<i;a++){
+		if($('.box-time').eq(a).children().children().children().prop('checked') == true){
+			if($('.time-box').eq(a).text() != ""){
+				object.startTime = $('.time-box').eq(a).attr('svalue');
+				object.endTime = $('.time-box').eq(a).attr('evalue');
+				object.payType = $('.new-time-box').next().children().val();
+			}
+			else{
+				object.startTime = $('.new-time-box').eq(a).children('.sclass').val();
+				object.endTime = $('.new-time-box').eq(a).children('.eclass').val();
+				object.payType = $('.new-time-box').next().children().val();
+			}
+		}
+			values.push(object)
+	}
+		$.ajax({
+			url : url,
+			type : 'POST',
+			data : {
+				empId : $('#employee-id').val(),
+				userid : <?php echo $this->session->userdata($userid); ?>,
+				shiftDate : $('#start-date').val(),
+				timesheetid : $('#timesheet-id').val(), 
+				visits : values
+			},
+			success : function(response){
 
+			}
+		})
+		})
+</script>
 
+	<script type="text/javascript">
+		$('#stime').val(timer($('.box-time').attr('start-time')))
+	</script>
 
-
-
-
-
+<script type="text/javascript">
+	var count = $('.box-time').length;
+	var thisValue = 0;
+	
+	for(var i=0;i<count;i++){
+		var children = $('.box-time').eq(i).children().children().next();
+		if($('.box-time').eq(i).children().children().children().prop('checked') == true){
+			if(children.next().html() == ""){
+				thisValue = thisValue + ( parseInt(children.attr('evalue')) - parseInt(children.attr('svalue')) ) * $('select option:selected').eq(i).attr('factor') * parseInt($('.box-time').eq(i).attr('hourly'))
+			}
+			else{
+				thisValue = thisValue + parseInt(String(children.next().children('eclass').val()).replace(":","")) - parseInt(String(children.next().children('sclass').val()).replace(":",""))
+			}
+		}
+	}
+	$('.budget').html('Budget '+'$' + thisValue);
+</script>
 </body>
 </html>
