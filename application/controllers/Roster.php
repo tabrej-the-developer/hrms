@@ -224,24 +224,23 @@ public function updateRoster(){
 			}
 }
 
-
-	function getAllEntitlements($userid){
-		$headers = $this->input->request_headers();
-		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
-			$this->load->model('authModel');
-			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
-			if($res != null && $res->userid == $userid){
-				$this->load->model('payrollModel');
-				$mdata['entitlements'] = $this->payrollModel->getAllEntitlements();
-				http_response_code(200);
-				echo json_encode($mdata);
-			}
-			else{
-				http_response_code(401);
-			}
+function getAllEntitlements($userid){
+		$url = BASE_API_URL."payroll/getAllEntitlements/".$this->session->userdata('LoginId');
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			return $server_output;
+			curl_close ($ch);
 		}
-		else{
-			http_response_code(401);
+		else if($httpcode == 401){
+
 		}
 	}
 
