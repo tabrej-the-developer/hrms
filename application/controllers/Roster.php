@@ -36,8 +36,9 @@ public function roster_dashboard(){
 		$var['userId'] 	= $this->session->userdata('LoginId');
 		$var['userType'] = $this->session->userdata('UserType');
 		$var['centers'] = $this->getAllCenters();
-		$var['rosters'] = $this->getPastRosters("1");
+		$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[0]->centerid);
 	}
+
 			$this->load->view('rosterView',$var);
 
 }

@@ -104,8 +104,8 @@ class Rosters extends CI_Controller {
 									$empDetails = $this->authModel->getUserDetails($employee->id);
 									$rav['empName'] = $empDetails->name;
 									$rav['empTitle'] = $empDetails->title;
-									$rav['hourlyRate'] = $employee->hourlyRate;
-									$rav['maxHoursPerWeek'] = $employee->maxHoursPerWeek;
+									$rav['level'] = $employee->level;
+									//$rav['maxHoursPerWeek'] = $employee->maxHoursPerWeek;
 									$rav['shifts'] = [];
 									$day = 0;
 									while($day < 5){
@@ -190,7 +190,7 @@ class Rosters extends CI_Controller {
 								$rav['empName'] = $empDetails->name;
 								$rav['empTitle'] = $empDetails->title;
 								$rav['level'] = $empDetails->level;
-								$rav['maxHoursPerWeek'] = $empDetails->maxHoursPerWeek;
+								//$rav['maxHoursPerWeek'] = $empDetails->maxHoursPerWeek;
 								$rav['shifts'] = [];
 								$allShifts = $this->rostersModel->getAllShiftsFromEmployee($rosterid,$employeeid->userid);
 								foreach ($allShifts as $shiftOb) {
