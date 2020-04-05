@@ -24,6 +24,7 @@ public function roster_dashboard(){
 		$var['userId'] 	= $this->session->userdata('LoginId');
 		$var['centers'] = $this->getAllCenters();
 		$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[$id]->centerid);
+		$var['entitlement'] = $this->getAllEntitlements($var['userId']);
 	}
 	else if($this->session->userdata('UserType') == ADMIN ){
 		
@@ -31,12 +32,16 @@ public function roster_dashboard(){
 		$var['centers'] = $this->getAllCenters();
 		$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[0]->centerid);
 		$var['cents'] = json_decode($var['centers'])->centers[0]->centerid;
+		$var['entitlement'] = $this->getAllEntitlements($var['userId']);
 			}
 	else{
 		$var['userId'] 	= $this->session->userdata('LoginId');
 		$var['userType'] = $this->session->userdata('UserType');
 		$var['centers'] = $this->getAllCenters();
 		$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[0]->centerid);
+
+		$var['entitlement'] = $this->getAllEntitlements($var['userId']);
+
 	}
 
 			$this->load->view('rosterView',$var);
@@ -68,6 +73,7 @@ public function roster_dashboard(){
 	public function getRosterDetails(){
 		$data['rosterid'] = $this->input->get('rosterId');
 		$data['userid'] = $this->session->userdata('LoginId');
+		$data['entitlements'] = $this->getAllEntitlements($data['userid']);
 		$data['rosterDetails'] = $this->getRoster($data['rosterid'],$data['userid']);
 			$this->load->view('rosterData',$data);
 	}
@@ -220,6 +226,26 @@ public function updateRoster(){
 
 			}
 }
+
+function getAllEntitlements($userid){
+		$url = BASE_API_URL."payroll/getAllEntitlements/".$this->session->userdata('LoginId');
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			return $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+
+		}
+	}
 
 
 

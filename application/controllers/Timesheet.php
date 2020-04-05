@@ -30,15 +30,19 @@ class Timesheet extends CI_Controller {
 		$data['timesheetid'] = $this->input->get('timesheetId');
 		$data['userid'] = $this->session->userdata('LoginId');
 		$data['timesheetDetails'] = $this->gettimesheet($data['timesheetid'],$data['userid']);
+		$data['entitlements'] = $this->getAllEntitlements($data['userid']);
 			$this->load->view('timesheetView',$data);
 	}
 
 		public function getTimesheetDetailsModal(){
 		$data['timesheetid'] = $this->input->get('timesheetId');
-		$data['x'] = $this->input->get('x');
-		$data['y'] = $this->input->get('y');
+		$data['xa'] = $this->input->get('x');
+		$data['ya'] = $this->input->get('y');
 		$data['userid'] = $this->session->userdata('LoginId');
+		$data['aT'] = $this->input->get('aT');
+		$data['entitlements'] = $this->getAllEntitlements($data['userid']);
 		$data['timesheetDetails'] = $this->gettimesheet($data['timesheetid'],$data['userid']);
+		$data['shift'] = $this->getShiftType($data['userid']);
 			$this->load->view('timesheetModal',$data);
 	}
 
@@ -161,6 +165,43 @@ $server_output = curl_exec($ch);
 		}
 	}
 
+	function getAllEntitlements($userid){
+		$url = BASE_API_URL."payroll/getAllEntitlements/".$this->session->userdata('LoginId');
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			return $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
 
+		}
+	}
 
+		public function getShiftType($userid){
+		$url = BASE_API_URL."/payroll/getAllPayrollTypes/".$userid;
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			return $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+
+			}		
+		}
 }

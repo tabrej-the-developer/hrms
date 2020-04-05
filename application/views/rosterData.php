@@ -260,8 +260,9 @@ max-width:30vw;
 </head>
 <body>
 
-	<?php $rosterDetails = json_decode($rosterDetails); 
-
+	<?php 
+		$rosterDetails = json_decode($rosterDetails); 
+		$entitlement = json_decode($entitlements);
 	?>
 	<div class="containers" id="containers">
 		<div class="heading">Rosters</div>
@@ -305,11 +306,11 @@ function dateToDay($date){
 }
 
 function icon($str){
-	$str = explode(" ",$str);
-	if(count($str) >1 ){
-	    return strtoupper($str[0][0].$str[1][0]);
+	$val = explode(" ",$str);
+	if(count($val) >2 ){
+	    return strtoupper($val[0][0].$val[1][0]);
 	}else{
-	    return strtoupper($str[0][0]);
+	    return strtoupper($val[0][0]);
 	}
 }
 
@@ -375,7 +376,16 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 		else{
 			$value=1;
 		}
-				for($counter=0;$counter<$value;$counter++){ ?>
+				for($counter=0;$counter<$value;$counter++){ 
+					
+					$variable = 0;
+		$userLevel = $rosterDetails->roster[$x]->roles[$counter]->level;
+		foreach($entitlement->entitlements as $e){
+			if($e->id == $rosterDetails->roster[$x]->roles[$counter]->level ){
+				$variable = $e->hourlyRate;
+			}
+		}
+					?>
 				<tr  class="table-row">
 					<td   style="width:18vw" class=" cell-boxes left-most">
 						<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
@@ -386,21 +396,28 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 								<span class="empname row"><?php echo $rosterDetails->roster[$x]->roles[$counter]->empName?></span>
 								<span class="title row"><?php echo $rosterDetails->roster[$x]->roles[$counter]->empTitle ?></span>
 							</span>
-							<span class="hourly col-3"><?php echo  $rosterDetails->roster[$x]->roles[$counter]->hourlyRate ?></span>
+							<span class="hourly col-3"><?php echo  $variable;?></span>
 						</span>
 					<?php } ?>
 					</td>
 				
 					<?php $weeklyTotal=0; ?>
-					<?php for($p=0;$p<5;$p++){?>
+					<?php for($p=0;$p<5;$p++){
+						$variable = 0;
+		$userLevel = $rosterDetails->roster[$x]->roles[$counter]->level;
+		foreach($entitlement->entitlements as $e){
+			if($e->id == $userLevel ){
+				$variable = $e->hourlyRate;
+			}
+		}?>
 					<td class="shift-edit cell-boxes count-<?php echo $p+1;?>"  style="width:13vw" 
 					 name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->shiftid?>"  
 					 name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleid ?>"
-					 name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?>" 
+					 name3="<?php echo $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?>" 
 					 stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime?>" etime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime?>" 
 					 name="<?php echo $rosterDetails->roster[$x]->roles[$counter]->empName?>"
 					 status="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"><div class="cell-back-1 <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"><?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)). "-" .timex( intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime));
-					  $weeklyTotal = $weeklyTotal + $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?> </div></td>
+					  $weeklyTotal = $weeklyTotal + $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?> </div></td>
 
 					  <?php } ?>
 					<td class=" " style="width:13vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
@@ -444,14 +461,21 @@ if($this->session->userdata('UserType')==STAFF){
 				
 					<?php $weeklyTotal=0; ?>
 					<?php for($p=0;$p<5;$p++){?>
+						$variable = 0;
+		$userLevel = $rosterDetails->roster[$x]->roles[$counter]->level;
+		foreach($entitlement as $e){
+			if($e->id == $userLevel ){
+				$variable = $e->hourlyRate;
+			}
+		}
 					<td class="shift-edit cell-boxes count-<?php echo $p+1;?>"  style="width:13vw" 
 					 name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->shiftid?>"  
 					 name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleid ?>"
-					 name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?>" 
+					 name3="<?php echo $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?>" 
 					 stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime?>" etime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime?>" 
 					 name="<?php echo $rosterDetails->roster[$x]->roles[$counter]->empName?>"
 					 status="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"><div class="cell-back-1 <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"><?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)). "-" .timex( intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime));
-					  $weeklyTotal = $weeklyTotal + $rosterDetails->roster[$x]->roles[$counter]->hourlyRate * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?> </div></td>
+					  $weeklyTotal = $weeklyTotal + $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?> </div></td>
 
 					  <?php } ?>
 					<td class=" " style="width:13vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>

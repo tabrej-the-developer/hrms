@@ -396,8 +396,8 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 				 
 				 		
 				 	<?php 
-				 			$pay = $payroll->payrollType;
-				 	 $payroll->payrollType;?>
+				 			$pay = $payroll->payrollTypeId;
+				 	 //$payroll->payrollType;?>
 				 	
 				 		<?php 
 				 	$payTime = $payroll->endTime - $payroll->startTime;

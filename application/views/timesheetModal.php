@@ -33,6 +33,7 @@
 	<?php 
 	$shift = json_decode($shift);
 		$timesheetDetails = json_decode($timesheetDetails);
+		$entitlements = json_decode($entitlements);
 		//print_r($timesheetDetails->timesheet[$ya]->employees[$xa]->empName);
 		function timex( $x)
 	{ 
@@ -42,7 +43,7 @@
 	         $output = $x/100 . ":00 AM";
 	        }
 	    if(($x%100)!=0){
-	        $output = $x/100 .":". $x%100 . "AM";
+	        $output = intval($x/100) .":". $x%100 . "AM";
 	        }
 	    }
 	else if(($x/100)>12){
@@ -50,7 +51,7 @@
 	    $output = ($x/100)-12 . ":00 PM";
 	    }
 	    if(($x%100)!=0){
-	    $output = ($x/100)-12 .":". $x%100 . "PM";
+	    $output = intval($x/100)-12 .":". $x%100 . "PM";
 	    }
 	}
 	else{
@@ -58,7 +59,7 @@
 	     $output = ($x/100) . ": 00 PM";
 	    }
 	    if(($x%100)!=0){
-	    $output = ($x/100) . ":". $x%100 . "PM";
+	    $output = intval(var)($x/100) . ":". $x%100 . "PM";
 	    }
 	}
 	return $output;
@@ -66,9 +67,17 @@
 ?>
 <?php 
 if($aT == 'rosteredEmployees'){
+	$variable = 0;
 foreach($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes as $visits){
+	$userLevel = $timesheetDetails->timesheet[0]->rosteredEmployees[$xa]->level;
+						foreach ($entitlements as $e) {
+							if($e[0]->id == $userLevel){
+								$variable = $e[0]->hourlyRate;
+							}
+						}
+
 	?>
-	  <div start-time="<?php echo $visits->startTime; ?>" end-time="<?php echo $visits->endTime; ?>" class="box-time" style="padding:20px" hourly="<?php echo $timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->hourlyRate;?>">
+	  <div start-time="<?php echo $visits->startTime; ?>" end-time="<?php echo $visits->endTime; ?>" class="box-time" style="padding:20px" hourly="<?php echo $variable;?>">
 	  	<span class="group-span">
 		<span><input type="checkbox" name="" checked></span>
 		<span svalue="<?php echo $visits->startTime; ?>" evalue="<?php echo $visits->endTime; ?>" class="time-box"><?php echo timex($visits->startTime) ."-". timex($visits->endTime) ?></span>
@@ -94,12 +103,21 @@ foreach($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes 
 	<?php
 		}
 	}
+
 	?>
 <?php 
 if($aT == 'unrosteredEmployees'){
 foreach($timesheetDetails->timesheet[$ya]->unrosteredEmployees[$xa]->clockedTimes as $visits){
+
+						$variable = 0;
+						$userLevel = $rosterDetails->roster[$xa]->roles[$counter]->level;
+						foreach($entitlement as $e){
+								if($e->id == $userLevel ){
+									$variable = $e->hourlyRate;
+								}
+							}
 	?>
-	  <div start-time="<?php echo $visits->startTime; ?>" end-time="<?php echo $visits->endTime; ?>" class="box-time" style="padding:20px" hourly="<?php echo $timesheetDetails->timesheet[$ya]->unrosteredEmployees[$xa]->hourlyRate;?>">
+	  <div start-time="<?php echo $visits->startTime; ?>" end-time="<?php echo $visits->endTime; ?>" class="box-time" style="padding:20px" hourly="<?php echo $variable;?>">
 	  	<span class="group-span">
 		<span><input type="checkbox" name="" checked></span>
 		<span svalue="<?php echo $visits->startTime; ?>" evalue="<?php echo $visits->endTime; ?>" class="time-box"><?php echo timex($visits->startTime) ."-". timex($visits->endTime) ?></span>
