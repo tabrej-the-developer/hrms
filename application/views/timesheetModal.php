@@ -43,7 +43,7 @@
 	         $output = $x/100 . ":00 AM";
 	        }
 	    if(($x%100)!=0){
-	        $output = $x/100 .":". $x%100 . "AM";
+	        $output = intval($x/100) .":". $x%100 . "AM";
 	        }
 	    }
 	else if(($x/100)>12){
@@ -51,7 +51,7 @@
 	    $output = ($x/100)-12 . ":00 PM";
 	    }
 	    if(($x%100)!=0){
-	    $output = ($x/100)-12 .":". $x%100 . "PM";
+	    $output = intval($x/100)-12 .":". $x%100 . "PM";
 	    }
 	}
 	else{
@@ -59,7 +59,7 @@
 	     $output = ($x/100) . ": 00 PM";
 	    }
 	    if(($x%100)!=0){
-	    $output = ($x/100) . ":". $x%100 . "PM";
+	    $output = intval(var)($x/100) . ":". $x%100 . "PM";
 	    }
 	}
 	return $output;
@@ -69,7 +69,7 @@
 if($aT == 'rosteredEmployees'){
 	$variable = 0;
 foreach($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes as $visits){
-	$userLevel = $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->level;
+	$userLevel = $timesheetDetails->timesheet[0]->rosteredEmployees[$xa]->level;
 						foreach ($entitlements as $e) {
 							if($e[0]->id == $userLevel){
 								$variable = $e[0]->hourlyRate;
@@ -110,7 +110,7 @@ if($aT == 'unrosteredEmployees'){
 foreach($timesheetDetails->timesheet[$ya]->unrosteredEmployees[$xa]->clockedTimes as $visits){
 
 						$variable = 0;
-						$userLevel = $rosterDetails->roster[$x]->roles[$counter]->level;
+						$userLevel = $rosterDetails->roster[$xa]->roles[$counter]->level;
 						foreach($entitlement as $e){
 								if($e->id == $userLevel ){
 									$variable = $e->hourlyRate;
