@@ -267,6 +267,7 @@ max-width:50vw;
 	<?php 
 		$payrollShifts = json_decode($payrollShifts); 
 		$payrollTypes = json_decode($payrollTypes);
+		$entitlements = json_decode($entitlements);
 	?>
 	<div class="containers" id="containers" style="overflow-x:scroll">
 		<div class="heading">Payroll Shifts</div>
@@ -301,6 +302,18 @@ function timex( $x){
 	    }
 	}
 	return $output;
+}
+
+function toMinutes($number){
+	$number = intval($number);
+    if($number%100 == 0){
+        $minutes = $number/100*60;
+    }
+    else{
+      $variable =  intval($number/100);
+        $minutes = $variable*60 + $number % 100;   
+    }
+     return $minutes;
 }
 
 function dateToDay($date){
@@ -362,7 +375,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 				<div style="background:#307bd3;color:white;border-radius: 5px" class="row m-0 d-flex">
 					<div class="col-6">
 						<span class="row m-0"><?php  echo $payrollShifts->employees[$x]->userDetails->name; ?></span>
-						<?php $entitlements = json_decode($entitlements); $v=0;?>
+						<?php  $v=0;?>
 						<span class="row m-0"><?php 
 
 				foreach($entitlements->entitlements as $ent){
@@ -376,11 +389,12 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 						<span class="row m-0">
 							<?php
 							$rate = 0;
-							 foreach($entitlements->entitlements as $entitlements){
-							 	if($entitlements->id == $payrollShifts->employees[$x]->userDetails->level)
+
+							 foreach($entitlements->entitlements as $ent){
+							 	if($ent->id == $payrollShifts->employees[$x]->userDetails->level)
 							 	{
-							 		$rate = $entitlements->hourlyRate;
-							 		echo "$".$entitlements->hourlyRate."/hr";
+							 		$rate = $ent->hourlyRate;
+							 		echo "$".$ent->hourlyRate."/hr";
 							 	}
 							 }
 							 ?>	
@@ -391,24 +405,18 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 				<div><?php
 				$arr = [];
 				$payValue= 0;
+					$paytm = 0;
 				 foreach($payrollShifts->employees[$x]->payrollShifts as $payroll){
-				 	?>
-				 
-				 		
-				 	<?php 
-				 			$pay = $payroll->payrollTypeId;
-				 	 //$payroll->payrollType;?>
-				 	
-				 		<?php 
-				 	$payTime = $payroll->endTime - $payroll->startTime;
-				 	$payroll->endTime - $payroll->startTime;
+				 	$pay = $payroll->payrollTypeId;
+				 	$payTime = toMinutes($payroll->endTime) - toMinutes($payroll->startTime);
+				 	$paytm = intval($paytm) + intval($payTime);
 				 	  ?>
 				 	
 				 		<?php 
 				 		$payKey = "";
 				 			foreach($payrollTypes->payrollTypes as $payrollTy){
 				 				if($pay == $payrollTy->id){
-				 					$payValue = $payrollTy->factor * $payTime/100 * $rate; 
+				 					$payValue = $payrollTy->factor * $payTime/60 * $rate; 
 				 					$payKey = $payrollTy->type;
 				 				}
 				 			}
@@ -424,16 +432,17 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 				 }	
 				 foreach($arr as $key => $a){
 				 	?>
-				 	<div class="row"><?php echo "<span class=\"col-6 d-flex justify-content-start\">".$key."</span>"."<span class=\"col-6\">". str_replace("-","",$a)."</span>"; ?></div>
+				 	<div class="row"><?php echo "<span class=\"col-6 d-flex justify-content-start\">".$key."</span>"."<span class=\"col-6\">". $paytm/60 ."</span>"; ?></div>
 				 	<?php
 				 }			 	
 				?>  </div>
-				<div>Total pay <?php 
-				$vr = 0;
-					foreach($arr as $va){
+				<div>Total pay 
+					<?php 
+						$vr = 0;
+						foreach($arr as $va){
 						$vr = $vr + intval($va);
 					}
-					echo $vr;
+					echo "$".$vr;
 				?></div>
 			</div>
 			</td>
@@ -533,18 +542,28 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 	        if((x%100)==0 ){
 	        	if((x/100)<10){
 	         output = "0"+String(x/100) + ":00" ;
-	     }
-	     if((x/100)>9){
-	     	output = String(x/100) + ":00" ;
-	     }
-	        }
+	   		 }
+		    if((x/100)>9){
+		    	output = String(x/100) + ":00" ;
+		    }
+	    }
 	    if((x%100)!=0){
 	        if((x/100)<10){
-	         output = "0"+String(x/100) + ":" + String(x%100) ;
+	        	if(x%100 <10){
+	        		 output = "0"+String(x/100) + ":0" + String(x%100) ;
+	        	}
+	        	else{
+	        		 output = "0"+String(x/100) + ":" + String(x%100) ;
+	        	}
 	        }
 	    }
 	     if((x/100)>10){
-	         output = String(x/100) + ":" + String(x%100) ;
+	         if(x%100 <10){
+	        		 output = String(x/100) + ":0" + String(x%100) ;
+	        	}
+	        	else{
+	        		 output = String(x/100) + ":" + String(x%100) ;
+	        	}
 	        }
 	    }
 	
@@ -553,7 +572,13 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 	    output = x/100 + ":00";
 	    }
 	    if((x%100)!=0){
-	    output = Math.floor(x/100) +":" + x%100 ;
+	    	if(x%100 <10){
+	        		 output = Math.floor(x/100) +":0" + x%100 ;
+	        	}
+	        	else{
+	        		 output = Math.floor(x/100) +":" + x%100 ;
+	        	}
+	    
 	    }
 	}
 	else{
@@ -561,11 +586,17 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 	     output = Math.floor(parseInt(x/100)) + ":00";
 	    }
 	    if((x%100)!=0){
-	    output = Math.floor(parseInt(x/100)) + ":" + x%100;
+	    	if(x%100 <10){
+	        		 output = Math.floor(x/100) +":0" + x%100 ;
+	        	}
+	        	else{
+	        		 output = Math.floor(x/100) +":" + x%100 ;
+	        	}
 	    }
 	}
 	return output;
 }
+
 
 </script>
 
