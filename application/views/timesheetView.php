@@ -412,7 +412,9 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 			 <?php }} ?>
 			<td class=" " style="min-width:18vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
 		</tr>
-			<?php } 
+
+			<?php $x = $x+1;
+		} 
 			$count = count($timesheetDetails->timesheet[0]->unrosteredEmployees);
 			for($x=0;$x<$count;$x++){ 
 				$userLevel = $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->level;
@@ -546,8 +548,9 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					var eId = $('#employee-id').val($('this').attr('emp-id'))
 					var sDate = $('#start-date').val($(this).attr('curr-date'))
 					var tId = $('#timesheet-id').val($(this).attr('timesheet-id'))
+	var url = "http://localhost/PN101/timesheet/getTimesheetDetailsModal?timesheetId="+"<?php echo $timesheetid;?>&x="+x+"&y="+y+"&aT="+arrayType ;
 					 $.ajax({
-					 	url : location.origin+"/PN101/timesheet/getTimesheetDetailsModal?timesheetId="+"<?php echo $timesheetid; ?>&x="+x+"&y="+y+"&aT="+arrayType,
+					 	url : url,
 					 	type : 'GET',
 					 	success : function(response){
 					 		$('.box-name').html(v)
@@ -592,18 +595,28 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 	        if((x%100)==0 ){
 	        	if((x/100)<10){
 	         output = "0"+String(x/100) + ":00" ;
-	     }
-	     if((x/100)>9){
-	     	output = String(x/100) + ":00" ;
-	     }
-	        }
+	   		 }
+		    if((x/100)>9){
+		    	output = String(x/100) + ":00" ;
+		    }
+	    }
 	    if((x%100)!=0){
 	        if((x/100)<10){
-	         output = "0"+String(x/100) + ":" + String(x%100) ;
+	        	if(x%100 <10){
+	        		 output = "0"+String(x/100) + ":0" + String(x%100) ;
+	        	}
+	        	else{
+	        		 output = "0"+String(x/100) + ":" + String(x%100) ;
+	        	}
 	        }
 	    }
 	     if((x/100)>10){
-	         output = String(x/100) + ":" + String(x%100) ;
+	         if(x%100 <10){
+	        		 output = String(x/100) + ":0" + String(x%100) ;
+	        	}
+	        	else{
+	        		 output = String(x/100) + ":" + String(x%100) ;
+	        	}
 	        }
 	    }
 	
@@ -612,7 +625,13 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 	    output = x/100 + ":00";
 	    }
 	    if((x%100)!=0){
-	    output = Math.floor(x/100) +":" + x%100 ;
+	    	if(x%100 <10){
+	        		 output = Math.floor(x/100) +":0" + x%100 ;
+	        	}
+	        	else{
+	        		 output = Math.floor(x/100) +":" + x%100 ;
+	        	}
+	    
 	    }
 	}
 	else{
@@ -620,7 +639,12 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 	     output = Math.floor(parseInt(x/100)) + ":00";
 	    }
 	    if((x%100)!=0){
-	    output = Math.floor(parseInt(x/100)) + ":" + x%100;
+	    	if(x%100 <10){
+	        		 output = Math.floor(x/100) +":0" + x%100 ;
+	        	}
+	        	else{
+	        		 output = Math.floor(x/100) +":" + x%100 ;
+	        	}
 	    }
 	}
 	return output;
@@ -649,7 +673,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 		var i = $(".box-time").length;
 		var values = [];
 		var object = {};
-		var url = location.origin+"/PN101/timesheet/createPayroll";
+		var url = window.location.origin+"/PN101/timesheet/createPayroll";
 		for(var a=0;a<i;a++){
 		if($('.box-time').eq(a).children().children().children().prop('checked') == true){
 			if($('.time-box').eq(a).text() != ""){
