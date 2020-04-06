@@ -323,7 +323,7 @@ function dateToDay($date){
 
 function icon($str){
 	$str = explode(" ",$str);
-	if(count($str) >1 ){
+	if(count($str) >2 ){
 	    return strtoupper($str[0][0].$str[1][0]);
 	}else{
 	    return strtoupper($str[0][0]);
