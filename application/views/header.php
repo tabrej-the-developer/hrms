@@ -108,7 +108,9 @@
       <li class="nav-item">
             <a class="nav-link" href="<?php echo site_url('mom/') ?>" title="roster"><i class="fas fa-calendar-alt"></i> MOM <i class="fas fa-calendar-alt shortmenu animate"></i></a>
           </li>
-
+          <li class="nav-item">
+            <a class="nav-link" href="<?php echo site_url('job') ?>" title="roster"><i class="fas fa-calendar-alt"></i> Job Adder <i class="fas fa-calendar-alt shortmenu animate"></i></a>
+          </li>
         </ul>
         <ul class="navbar-nav ml-md-auto d-md-flex">
           <li class="nav-item">
