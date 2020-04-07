@@ -18,11 +18,13 @@ class Auth extends CI_Controller {
 	public function login()
 	{
 		$json = json_decode(file_get_contents('php://input'));
+		
 		if($json != null){
 			$email = $json->email;
 			$password = $json->password;
 			$deviceid = $json->deviceid;
 			if($email != "" && $email != null && $password != "" && $password != null && $deviceid != "" && $deviceid != null){
+				
 				$this->load->model('authModel');
 				$user = $this->authModel->getUser($email,$password);
 				if($user == null){
@@ -41,6 +43,7 @@ class Auth extends CI_Controller {
 					$data['role'] = $user->role;
 					$data['title'] = $user->title;
 					$data['manager'] = $user->manager;
+					$data['firebaseid'] = $user->firebaseid;
 					$data['isVerified'] = $user->isVerified;
 					$permissions = $this->authModel->getPermissions($user->id);
 					$var = [];

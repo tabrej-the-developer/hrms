@@ -66,7 +66,7 @@ class JobAdder extends CI_Controller {
 				'Content-Type:application/vnd.seek.advertisement+json; version=1; charset=utf-8
 				 Authorization:Bearer b635a7ea-1361-4cd8-9a07-bc3c12b2cf9e
 				 Accept:application/vnd.seek.advertisement+json; version=1; charset=utf-8, application/vnd.seek.advertisement-error+json; version=1; charset=utf-8' )
-			));
+			);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 			$server_output = curl_exec($ch);
@@ -94,7 +94,7 @@ class JobAdder extends CI_Controller {
 				'Content-Type:application/vnd.seek.advertisement+json; version=1; charset=utf-8
 				 Authorization:Bearer b635a7ea-1361-4cd8-9a07-bc3c12b2cf9e
 				 Accept:application/vnd.seek.advertisement+json; version=1; charset=utf-8, application/vnd.seek.advertisement-error+json; version=1; charset=utf-8' )
-			));
+			);
 			$server_output = curl_exec($ch);
 			//var_dump($server_output);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -119,7 +119,7 @@ class JobAdder extends CI_Controller {
 				'Content-Type:application/vnd.seek.advertisement+json; version=1; charset=utf-8
 				 Authorization:Bearer b635a7ea-1361-4cd8-9a07-bc3c12b2cf9e
 				 Accept:application/vnd.seek.advertisement+json; version=1; charset=utf-8, application/vnd.seek.advertisement-error+json; version=1; charset=utf-8' )
-			));
+			);
 			$server_output = curl_exec($ch);
 			//var_dump($server_output);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
