@@ -679,13 +679,8 @@ let autocomplete;
          <?php 
          $i = 0;
            $meetings = json_decode($meetings);
-          //  print_r($meetings);
-          //  exit;
-          var_dump($data->meetings);
-          exit;
-          
-
-         foreach($meetings->meetings as $u): 
+           if($meetings != null){
+         foreach($meetings->data as $u): 
            $i = $i + 1;
          ?>
         <tr>
@@ -725,7 +720,7 @@ let autocomplete;
       </div>
       </td>
           </tr>
-                         <?php endforeach; ?>
+                         <?php endforeach;} ?>
       
        
 
