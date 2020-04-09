@@ -8,7 +8,9 @@
 <head>
 <?php $this->load->view('header'); ?>
 <style>
-.container{max-width:1150px; margin:auto;}
+.container{
+  max-width:100%;
+   margin:auto;}
 
 img{ max-width:75%;}
 
@@ -466,5 +468,10 @@ input.rounded:focus {
     function updateStatus(){
       document.getElementById('statusForm').submit();
     }
+  </script>
+  <script type="text/javascript">
+    $(document).ready(()=>{
+      $('.container').css('paddingLeft',$('.side-nav').width());
+  });
   </script>
     </html>
