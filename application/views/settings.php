@@ -82,7 +82,7 @@
 		</div>
 	</div>
 </div>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 	if($(window).width() > '720'){
 	var widthOfNav = $('.navbar-nav').width();
 	$('.containers').css('padding-left','60px');
@@ -93,6 +93,12 @@ $(document).on('mouseleave','.navbar-nav',function(){
 		$('.containers').css('padding-left','60px');
 	})
 }
-</script>
+</script> -->
+  <script type="text/javascript">
+    $(document).ready(()=>{
+      $('.container').css('paddingLeft',$('.side-nav').width());
+  });
+  </script>
+
 </body>
 </html>
