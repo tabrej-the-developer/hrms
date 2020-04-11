@@ -342,6 +342,11 @@ $("#timesheet-date").datepicker();
 		})
 	})
 </script>
+<script type="text/javascript">
+	$(document).ready(()=>{
+    $('.container').css('paddingLeft',$('.side-nav').width());
+});
+</script>
 </body>
 </html>
 <!--<script type="text/javascript">
