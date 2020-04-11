@@ -79,7 +79,7 @@ img{ max-width:75%;}
   margin: 0;
   padding: 10px 16px 5px;
 }
-.inbox_chat { height: 570px; overflow-y: scroll;  background: #cccccc73;}
+.inbox_chat { height: 570px; overflow-y: auto;  background: #cccccc73;}
 
 .active_chat{ background:#ebebeb;}
 
@@ -123,6 +123,8 @@ img{ max-width:75%;}
             }
             .gedf-card {
                 margin-bottom: 2.77rem;
+                border-bottom-left-radius: 10px;
+                border-bottom-right-radius: 10px
             }
         }
 
@@ -296,7 +298,7 @@ input.rounded:focus {
 <div class="container">
 <nav>
   <ul class="list-group">
-  <li class="list-group-item d-flex justify-content-between align-items-center" style="background-color:#cccccc74;border-radius:0;border:none;font-size:20px;font-weight:500;">
+  <li class="list-group-item d-flex justify-content-between align-items-center" style="background-color:#cccccc74;border-top-left-radius:10px;border-top-right-radius:10px;border:none;font-size:20px;font-weight:500;">
     Notices
     <span class="badge badge-default badge-pill"><a href="<?php echo site_url('notice/createNotice')?>" style="font-size:15px;text-decoration:none;"><i class="fas fa-plus-circle"></i> Create notice</a></span>
   </li>
