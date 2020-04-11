@@ -62,26 +62,35 @@
 
     <script type="text/javascript">
       $(document).on('click','.btn-success',function(){
-        
-           var url = "http://localhost/PN101/settings/changePassword";
-           var current = document.getElementById('currentPassword').value;
-            var newP = document.getElementById("newPassword1").value;
-
-            $.ajax({
-              url : url,
-              type : 'POST',
-              //processData: false,
-              data : {
-                password : newP,
-                passcode : current,
-                
-              },
-              success:function(response){
-                console.log(response)
-                }
-            }).fail(function(res){
-              console.log('fail')
-            })
+        var current = document.getElementById('currentPassword').value;
+        var newP2 = document.getElementById("newPassword1").value;
+        var newP = document.getElementById("newPassword2").value;
+        if(newP === newP2)
+          { 
+            var url = "http://localhost/PN101/settings/changePassword";
+                      $.ajax({
+                        url : url,
+                        type : 'POST',
+                        //processData: false,
+                        data : {
+                          password : newP,
+                          passcode : current,
+                          
+                        },
+                        success:function(response){
+                          console.log("SUCCESS")
+                          }
+                      }).fail(function(res){
+                        console.log('fail')
+                      })
+              }
+              else{
+                $('#passwordError').html('Passwords do not match');
+                var explode = function(){
+                            $('#passwordError').html(' ');
+                          };
+                   setTimeout(explode, 5000);
+              }
           })
     </script>
     <script type="text/javascript">
