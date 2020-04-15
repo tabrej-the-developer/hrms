@@ -43,7 +43,7 @@ class Auth extends CI_Controller {
 					$data['role'] = $user->role;
 					$data['title'] = $user->title;
 					$data['manager'] = $user->manager;
-					$data['firebaseid'] = $user->firebaseid;
+					//$data['firebaseid'] = $user->firebaseid;
 					$data['isVerified'] = $user->isVerified;
 					$permissions = $this->authModel->getPermissions($user->id);
 					$var = [];

@@ -196,7 +196,7 @@ img{ max-width:140%;}
      <div class="modal-header bg-primary">
       <h4>Add Job</h4>
      </div>
-     <form action="<?php echo base_url();?>job/addJob" method="POST">
+     <form id="job" action="<?php echo base_url();?>job/addJob" method="POST">
      <div class="modal-body">
            <div class="row">
            
@@ -204,7 +204,7 @@ img{ max-width:140%;}
             <tr>
               <td class="text-center">Title</td>
               <td>
-               <input type="text" name="jobTitle" class="form-control">
+               <input type="text" name="jobTitle" id="title" class="form-control">
               </td>
             </tr>
             <tr>
@@ -270,21 +270,29 @@ img{ max-width:140%;}
                   </select>
               </td>
             </tr>
+          
             <tr>
               <td class="text-center">Flatform</td>
               <td>
-               <select name="flatform" id="" class="form-control">
-                   <option value="">Indeed</option>
-                   <option value="">Naukri</option>
-                   <option value="">Jobfinder</option>
-                   <option value="">Dummy portal</option>
-               </select>
+              <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" id="customRadioInline1" value="indeed" name="portals" class="custom-control-input">
+                  <label class="custom-control-label" for="customRadioInline1">Indeed</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" id="customRadioInline2" value="jazz" name="portals" class="custom-control-input">
+                  <label class="custom-control-label" for="customRadioInline2">Jazz HR</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" id="customRadioInline3" value="naukri" name="portals" class="custom-control-input">
+                  <label class="custom-control-label" for="customRadioInline3">Naukri</label>
+                </div>
               </td>
             </tr>
             <tr>
               <td class="text-center">Expiry Date</td>
               <td>
-               <input type="date" name="expiryDate" class="form-control">
+            
+               <input type="date" name="expiryDate" id="date" class="form-control">
               </td>
             </tr>
             
@@ -312,12 +320,18 @@ img{ max-width:140%;}
 </div>
 
 <!-- Small modal -->
-
+    <?php 
+    $jobs = json_decode($jobs);
+    // echo json_encode($jobs->data);
+    // exit;
+     
+    
+    ?>
          <div class="row">
              <div class="col-md-5"></div>
             <div class="col-md-5"></div>
             <div class="col-md-2">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Add Job</button>
+            <button type="button" id="add" class="btn btn-primary" onclick="add()" data-toggle="modal" data-target=".bd-example-modal-lg">Add Job</button>
 
             </div>
          </div>
@@ -325,74 +339,72 @@ img{ max-width:140%;}
           <thead class="text-center">
           <tr>
           <td>Title</td>
-          <td>ExpiryDate</td>
           <td>Platforms</td>
+          <td>ExpiryDate</td>
           <td>Edit</td>
           <td>Delete</td>
           </tr>
           </thead>
+          <tbody>
+          <?php foreach($jobs->data as $u): ?>
           <tr>
-           <td>lorem</td>
-           <td>lorem</td>
-           <td>lorem</td>
-           <td><button class="btn btn-primary">Edit</button></td>
-           <td><button class="btn btn-danger">Delete</button></td>
+           <td class="text-center">
+            <input type="hidden" value="<?php echo $u->id; ?>">
+           <?php echo $u->title; ?></td>
+           <td class="text-center"><?php echo $u->platform; ?></td>
+           <td class="text-center"><?php echo $u->enddate; ?></td>
+          <td>
+            <div class="text-center">
+            <button id="update" type="button" class="btn btn-primary"   class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Edit</button>
+            </div>
+            </td>
+            
+            
+           <td>
+            <div class="text-center">
+            <button class="btn btn-danger">Delete</button>
+            </div>
+            </td>
            </tr>
-           <tr>
-           <td>lorem</td>
-           <td>lorem</td>
-           <td>lorem</td>
-           <td><button class="btn btn-primary">Edit</button></td>
-           <td><button class="btn btn-danger">Delete</button></td>
-           </tr>
-           <tr>
-           <td>lorem</td>
-           <td>lorem</td>
-           <td>lorem</td>
-           <td><button class="btn btn-primary">Edit</button></td>
-           <td><button class="btn btn-danger">Delete</button></td>
-           </tr>
-           <tr>
-           <td>lorem</td>
-           <td>lorem</td>
-           <td>lorem</td>
-           <td><button class="btn btn-primary">Edit</button></td>
-           <td><button class="btn btn-danger">Delete</button></td>
-           </tr><tr>
-           <td>lorem</td>
-           <td>lorem</td>
-           <td>lorem</td>
-           <td><button class="btn btn-primary">Edit</button></td>
-           <td><button class="btn btn-danger">Delete</button></td>
-           </tr><tr>
-           <td>lorem</td>
-           <td>lorem</td>
-           <td>lorem</td>
-           <td><button class="btn btn-primary">Edit</button></td>
-           <td><button class="btn btn-danger">Delete</button></td>
-           </tr><tr>
-           <td>lorem</td>
-           <td>lorem</td>
-           <td>lorem</td>
-           <td><button class="btn btn-primary">Edit</button></td>
-           <td><button class="btn btn-danger">Delete</button></td>
-           </tr><tr>
-           <td>lorem</td>
-           <td>lorem</td>
-           <td>lorem</td>
-           <td><button class="btn btn-primary">Edit</button></td>
-           <td><button class="btn btn-danger">Delete</button></td>
-           </tr><tr>
-           <td>lorem</td>
-           <td>lorem</td>
-           <td>lorem</td>
-           <td><button class="btn btn-primary">Edit</button></td>
-           <td><button class="btn btn-danger">Delete</button></td>
-           </tr>
+          <?php endforeach; ?>
+           </tbody>
+          
          </table>
     </div>       
 
+ 
+<script>
+   $(document).ready(function(){
+     
+          $('button#update').on('click',function(){
+             $('form#job').removeAttr('action');
+            var id = $(this).closest('tr').find('input[type="hidden"]').val();
+             
+             $('form#job').attr('action',`http://localhost/PN101/job/updateJob/${id}`);
+             $('.modal-footer').empty();
+             $('.modal-footer').append('<button type="submit" onclick="update()" class="btn btn-primary">Update Job</button><button type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>');
+            var  value  = $(this).closest('tr').children('td:eq(0)').text();
+            var  value1 = $(this).closest('tr').children('td:eq(1)').text();
+            var  value2 = $(this).closest('tr').children('td:eq(2)').text();
+            $('#title').val(value);
+            $('#date').val(value2);
+            alert(id);
+           
+        })
+     
+    
+        $('#add').on('click',function(){
+          $('form#job').removeAttr('action');
+        $('form#job').attr('action','http://localhost/PN101/job/addJob');
+          $('.modal-footer').empty();
+             $('.modal-footer').append('<button type="submit"  class="btn btn-primary">Add Job</button><button type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>');
+      
+        });
+    
+        
 
+   });
+</script>
 </body>
 
 </html>

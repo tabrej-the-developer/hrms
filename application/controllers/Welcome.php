@@ -43,8 +43,8 @@ class Welcome extends CI_Controller {
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			//echo "hello";
-			// echo "<pre>";
-			// echo $httpcode;
+			echo "<pre>";
+			var_dump($server_output);
 			//echo json_encode($data);
 			//var_dump($data);
 			//exit;
