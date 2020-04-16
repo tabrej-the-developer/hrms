@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+!DOCTYPE html>
 <html>
 <head>
 	<title></title>
@@ -323,7 +324,7 @@ function dateToDay($date){
 
 function icon($str){
 	$str = explode(" ",$str);
-	if(count($str) >2 ){
+	if(count($str) >1 ){
 	    return strtoupper($str[0][0].$str[1][0]);
 	}else{
 	    return strtoupper($str[0][0]);
@@ -515,25 +516,12 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 </script>
 
 <?php }?>
+	<script type="text/javascript">
+		$(document).ready(()=>{
+	    $('.containers').css('paddingLeft',$('.side-nav').width());
+	});
+	</script>
 
-<script type="text/javascript">
-	function uiFunction(){
-  if(screen.width > 768){
-	    var sideNav = document.getElementsByClassName('side-nav')[0].offsetWidth
-	    document.getElementById('containers').style.paddingLeft = 60+"px"
-	    document.getElementsByClassName("side-nav")[0].addEventListener("mouseover", mouseOver);
-	    document.getElementsByClassName("side-nav")[0].addEventListener("mouseleave", mouseLeave);
-	  }
-			}
-			function mouseOver(){
-			      document.getElementById('containers').style.paddingLeft = 200+"px"
-			}
-			function mouseLeave(){
-			      document.getElementById('containers').style.paddingLeft = 60+"px"
-			}
-			// calling the function
-			  uiFunction();
-</script>
 	<script type="text/javascript">
 	function timer( x)
 	{ 

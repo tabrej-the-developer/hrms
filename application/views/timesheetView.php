@@ -569,7 +569,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 
 <?php }?>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 	function uiFunction(){
   if(screen.width > 768){
 	    var sideNav = document.getElementsByClassName('side-nav')[0].offsetWidth
@@ -586,7 +586,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 			}
 			// calling the function
 			  uiFunction();
-</script>
+</script> -->
 	<script type="text/javascript">
 	function timer( x)
 	{ 
@@ -726,6 +726,11 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 		}
 	}
 	$('.budget').html('Budget '+'$' + thisValue);
+</script>
+<script type="text/javascript">
+	$(document).ready(()=>{
+    $('.containers').css('paddingLeft',$('.side-nav').width());
+});
 </script>
 </body>
 </html>

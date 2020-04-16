@@ -15,7 +15,7 @@
 		}
 		.table-div{
 			height:70vh;
-			overflow-y: scroll;
+			overflow-y: auto;
 			box-shadow:0px 0px 5px 5px rgb(242, 242, 242);
 		}	
 		.sort-by{
@@ -167,6 +167,10 @@ border-bottom-right-radius: 20px;
 			$date = explode("-",$date);
 			return date("M d",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
 		}
+		function dateToDayAndYear($date){
+			$date = explode("-",$date);
+			return date("M d,Y",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
+		}
 	?>
 <div class="container">
 	<div class="d-flex">
@@ -219,8 +223,8 @@ border-bottom-right-radius: 20px;
 					<?php if($this->session->userdata('UserType') ==SUPERADMIN ) { ?>
 					<td><?php echo 'Roster | '.dateToDay($roster->rosters[$i]->startDate).'-'.dateToDay($roster->rosters[$i]->endDate) ?></td>
 				<?php }?>
-					<td><?php echo $roster->rosters[$i]->startDate ?></td>
-					<td><?php echo $roster->rosters[$i]->endDate ?></td>
+					<td><?php echo dateToDayAndYear($roster->rosters[$i]->startDate) ?></td>
+					<td><?php echo dateToDayAndYear($roster->rosters[$i]->endDate) ?></td>
 					<td><?php echo $roster->rosters[$i]->status ?></td>
 					</tr>
 				<?php }?>
@@ -344,6 +348,11 @@ $("#roster-date").datepicker();
 
 		})
 	})
+</script>
+<script type="text/javascript">
+	$(document).ready(()=>{
+    $('.container').css('paddingLeft',$('.side-nav').width());
+});
 </script>
 </body>
 </html>
