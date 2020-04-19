@@ -74,19 +74,20 @@
                       <?php echo $room->rooms[$i]->careAgeTo;?>
                          </span>
                     </td>
-                    <td ><span id="<?php echo 'studentRatio'.$room->rooms[$i]->studentRatio;?>" class="ratio">
+                    <td >
+                      <span id="<?php echo 'studentRatio'.$room->rooms[$i]->studentRatio;?>" class="ratio">
                       <?php echo $room->rooms[$i]->studentRatio;?>
-                         </span>
+                      </span>
                     </td>
                     <td>
-                       <span style="cursor: pointer;">
-                         <div><i class="fas fa-pencil-alt" style="color: #0077ff;"></i> Edit</div>
-                          </span>
-                        </td>
-                        <td>
-                          <span style="cursor: pointer;"><i class="fas fa-trash-alt" style="color: #ff3b30;"></i> Delete</span>
-                        </td>
-                      </tr>
+                        <span style="cursor: pointer;">
+                         <div><i class="fas fa-pencil-alt" style="color: #0077ff;" i-v="<?php echo $room->rooms[$i]->roomId ?>"></i> Edit</div>
+                        </span>
+                    </td>
+                    <td>
+                        <span style="cursor: pointer;"><i class="fas fa-trash-alt" style="color: #ff3b30;" d-v="<?php echo $room->rooms[$i]->roomId ; ?>"></i> Delete</span>
+                    </td>
+                    </tr>
                     <?php }}?> 
                   <tr id="addRoomValue"></tr>
             </tbody>
@@ -123,13 +124,13 @@
     $(document).on('click','.fa-pencil-alt',function(){
       var parent = $(this).parent().parent().parent().parent();
       var parentHtml = parent.html();
-      var name = $(this).parent().parent().parent().children('.name').val();
-       var careAgeFrom  = $(this).parent().parent().parent().children('.capacity').val();
-      var careAgeTo  = $(this).parent().parent().parent().children('.max').val();
-      var capacity  = $(this).parent().parent().parent().children('.min').val();
-      var studentRatio  = $(this).parent().parent().parent().children('.ratio').val();
-      var roomId  = $(this).parent().parent().parent().children('.id').val();
-      var code = "<td class=\"r-name\"><label>Room Name</label><input type='text' class=\"name\"></td><td class=\"r-capacity\"><label>Room Capacity</label><input type=\"number\" class=\"capacity\"></td><td class=\"min-age\"><label>Min age in months</label><input type=\"number\" class=\"min\"></td><td class=\"max-age\"><label>Max-age in months</label><input type=\"number\" class=\"max\"></td><td class=\"s-ratio\"><label>Ratio</label><input type=\"number\" class=\"ratio\"></td><label style=\"display:none\">Room Id</label><input type=\"text\" class=\"id\" style=\"display:none\"><td class=\"s-button\"><button class=\"submit\">submit</button></td><td class=\"c-button\"><button class=\"cancel\">cancel</button></td>"
+      var name = $(this).parent().parent().parent().parent().children().children('.name').text();
+       var careAgeFrom  = $(this).parent().parent().parent().parent().children('td').eq(2).children('.min').text();
+      var careAgeTo  = $(this).parent().parent().parent().parent().children('td').eq(3).children('.max').text();
+      var capacity  = $(this).parent().parent().parent().parent().children('td').eq(1).children('.capacity').text();
+      var studentRatio  = $(this).parent().parent().parent().parent().children('td').eq(4).children('.ratio').text();
+      var roomId  = $(this).attr('i-v');
+      var code = "<td class=\"r-name\"><label>Room Name</label><input type='text' class=\"name\" placeholder="+name+"></td><td class=\"r-capacity\"><label>Room Capacity</label><input type=\"number\" class=\"capacity\" placeholder="+capacity+"></td><td class=\"min-age\"><label>Min age in months</label><input type=\"number\" class=\"min\" placeholder="+careAgeFrom+"></td><td class=\"max-age\"><label>Max-age in months</label><input type=\"number\" class=\"max\" placeholder="+careAgeTo+"></td><td class=\"s-ratio\"><label>Ratio</label><input type=\"number\" class=\"ratio\" placeholder="+studentRatio+"></td><label style=\"display:none\">Room Id</label><input type=\"text\" class=\"id\" style=\"display:none\"><td class=\"s-button\"><button class=\"submit\" i-v="+roomId+">submit</button></td><td class=\"c-button\"><button class=\"cancel\" >cancel</button></td>"
       parent.html(code);      
       $('.cancel').on('click',function(){
         $(this).parent().parent().html(parentHtml);
@@ -145,29 +146,35 @@
     var careAgeTo = $(this).parent().parent().children('.max-age').children('.max').val();
     var capacity = $(this).parent().parent().children('.r-capacity').children('.capacity').val();
      var studentRatio = $(this).parent().parent().children('.s-ratio').children('.ratio').val();
-     var roomId = $(this).parent().parent().children('.id').val();
+     var roomId = $(this).attr('i-v');
      var url = "http://localhost/PN101/updateRoom"
-     $.ajax({
-          url : url,
-          type : 'POST',
-          data :{
-                roomId :roomId,
-                centerid  : centerid,
-                name : name ,
-                careAgeTo :careAgeTo,
-                careAgeFrom : careAgeFrom,
-                capacity :capacity,
-                studentRatio :studentRatio,
-                response : response
-              },
-          success:function(response){
-            alert('success')
-          }
-     })
+      console.log(name)
 
     })
   </script>
-
+  <script type="text/javascript">
+    $(document).ready(function(){
+        $(document).on('click','.fa-trash-alt',function(){
+          var id = $(this).attr('d-v'),
+          var url = "http://localhost/PN101/settings/deleteRoom",
+          $.ajax({
+            url : url,
+            type : 'POST',
+            data : {
+              id : id
+            },
+            success : function(response){
+              location.reload();
+            }
+          })
+        })
+    })
+  </script>
+<script type="text/javascript">
+  $(document).ready(()=>{
+    $('#wrappers').css('paddingLeft',$('.side-nav').width());
+});
+</script>
 
    
 </body>

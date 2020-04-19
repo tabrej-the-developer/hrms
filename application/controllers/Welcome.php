@@ -33,6 +33,7 @@ class Welcome extends CI_Controller {
 			$data['password'] = md5($form_data['password']);
 			$data['deviceid'] = $this->getIpAddress();
 			$url = BASE_API_URL.'auth/login';
+
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -41,6 +42,12 @@ class Welcome extends CI_Controller {
 
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			//echo "hello";
+			echo "<pre>";
+			var_dump($server_output);
+			//echo json_encode($data);
+			//var_dump($data);
+			//exit;
 			if($httpcode == 200){
 				$jsonOutput = json_decode($server_output);
 				if($jsonOutput->Status == "SUCCESS"){

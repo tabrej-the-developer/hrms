@@ -48,7 +48,7 @@
 </head>
 <body>
 <?php $this->load->view('header'); ?>
-<div class="containers">
+<div class="containers m-2">
 	<div class="ps-os-view">
 		<div class="top-box d-flex justify-content-around">
 			<div class="tile-box">
@@ -79,10 +79,16 @@
 					<a href="<?php echo base_url()?>settings/editRooms">Room Settings</a>
 				</div>
 			</div>
+			<div class="tile-box">
+				<div>Entitlement settings</div>
+				<div>
+					<a href="<?php echo base_url()?>settings/viewEntitlements">Entitlement Settings</a>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 	if($(window).width() > '720'){
 	var widthOfNav = $('.navbar-nav').width();
 	$('.containers').css('padding-left','60px');
@@ -93,6 +99,12 @@ $(document).on('mouseleave','.navbar-nav',function(){
 		$('.containers').css('padding-left','60px');
 	})
 }
-</script>
+</script> -->
+  <script type="text/javascript">
+    $(document).ready(()=>{
+      $('.containers').css('paddingLeft',$('.side-nav').width());
+  });
+  </script>
+
 </body>
 </html>
