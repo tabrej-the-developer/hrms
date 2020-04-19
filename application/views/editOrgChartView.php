@@ -35,8 +35,8 @@
 	.newRole:after{
 		content:' | ';
 	}
-	.editArea{
-		content:" ";
+	.editArea:after{
+		content:" |";
 	}
 	.editRole{
 		cursor: pointer;
@@ -80,11 +80,12 @@
 					<span class="area-name"><?php echo $orgChart->areaName."<br>"; ?></span>
 					<span  class="newRole"><a href="javascript:void(0)">Add Role</a></span>
 					<span class="editArea"><a href="javascript:void(0)">Edit Area</a></span>
+					<span><a class="delete-area" href="javascript:void(0)" d-val="<?php echo $orgChart->areaId ?>">Delete Area</a></span>
 				</div>
 				<div areaId="<?php echo $orgChart->areaId;?>"></div>
 				<div>
 					<?php foreach($orgChart->roles as $roles){
-					echo "<li class='li-c'><span class=\"roleIdClass\">".$roles->roleid."</span> <span>". $roles->areaid."</span> <span class=\"roleNameClass\">".$roles->roleName."</span> <span class=\"editRole\" >&nbsp; &nbsp;Edit Here</span></li>"."<br>";
+					echo "<li class='li-c'><span class=\"roleIdClass\">".$roles->roleid."</span> <span>". $roles->areaid."</span> <span class=\"roleNameClass\">".$roles->roleName."</span> <span class=\"editRole\" >&nbsp; &nbsp;Edit Here</span><span class=\"delete-role\" d-val=\"$roles->roleid\">&nbsp; &nbsp;Delete&nbsp;Role</span></li>"."<br>";
 					}
 					?>
 				</div>
@@ -264,10 +265,44 @@
 				$('.thisOne').html($(response).find('.thisOne').html())
 			} 
 		}).fail(function(){
-			alert('bisc')
+			alert('Failed')
+		})
+	})
+
+	$(document).on('click','.delete-role',function(){
+		var url = "http://localhost/PN101/settings/deleteRole"
+		var id = $(this).attr('d-val');
+		$.ajax({
+			url : url ,
+			type: 'POST',
+			data : {
+				id : id
+			},
+			success : function(response){
+				location.reload();
+			}
+		})
+	})
+
+	$(document).on('click','.delete-area',function(){
+		var url = "http://localhost/PN101/settings/deleteArea"
+		var id = $(this).attr('d-val');
+		$.ajax({
+			url : url ,
+			type: 'POST',
+			data : {
+				id : id
+			},
+			success : function(response){
+				location.reload();
+			}
 		})
 	})
 </script>
+<script type="text/javascript">
+	$(document).ready(()=>{
+    $('.container').css('paddingLeft',$('.side-nav').width());
+});
+</script>
 </body>
-	
 </html>
