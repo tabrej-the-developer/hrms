@@ -255,12 +255,12 @@ class Settings extends CI_Controller {
 			$json = json_decode(file_get_contents('php://input'));
 			if($json!= null && $res != null && $res->userid == $json->userid){
 				$userid = $json->userid;
-				$password = $json->password;
-				$passcode = $json->passcode;
+				$password = md5($json->password);
+				$passcode = md5($json->passcode);
 				$this->load->model('settingsModel');
-				$role = $this->authModel->getUserDetails($userid);
-				if($role != null){
-				$role = $this->settingsModel->changePassword($userid,$password,$passcode);
+				$user = $this->authModel->getUserDetails($userid);
+				if($user != null){
+				$user = $this->settingsModel->changePassword($userid,$password,$passcode);
 					$data['Status'] = "SUCCESS";
 				}
 				else{
@@ -389,7 +389,7 @@ class Settings extends CI_Controller {
 					$var['areaId'] = $area->areaid;
 					$var['centerid'] = $area->centerid;
 					$var['areaName'] = $area->areaName;
-					$var['isRoomYN'] = $area->isARoomYN;
+					$var['isARoomYN'] = $area->isARoomYN;
 					$var['roles'] = $this->settingsModel->getRolesFromArea($area->areaid);
 					array_push($data['orgchart'],$var);
 				}
@@ -404,6 +404,63 @@ class Settings extends CI_Controller {
 			http_response_code(401);
 		}
 	}
+
+	public function deleteRoom($roomid,$userid){
+		$headers = $this->input->request_headers();
+		   if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+				$this->load->model('settingsModel');
+					$this->settingsModel->deleteRoom($roomid);
+					$data['status'] = 'SUCCESS';
+				}
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+
+		public function deleteArea($areaid,$userid){
+		$headers = $this->input->request_headers();
+		   if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+				$this->load->model('settingsModel');
+					$this->settingsModel->deleteArea($areaid);
+					$data['status'] = 'SUCCESS';
+				}
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+
+
+	public function deleteRole($roleid,$userid){
+		$headers = $this->input->request_headers();
+		   if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+				$this->load->model('settingsModel');
+					$this->settingsModel->deleteRole($roleid);
+					$data['status'] = 'SUCCESS';
+				}
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+
+		
 
 	public function addEmployee(){
 		$json = json_decode(file_get_contents('php://input'));
@@ -489,6 +546,5 @@ class Settings extends CI_Controller {
 		}
 	
 	}
-
 
 }
