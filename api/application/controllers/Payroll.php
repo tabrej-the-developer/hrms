@@ -74,8 +74,6 @@ class Payroll extends CI_Controller{
 					$this->load->model('payrollModel');
 					$this->payrollModel->addEntitlement($name,$rate,$userid);
 					$data['Status'] = 'SUCCESS';
-					http_response_code(200);
-					echo json_encode($data);
 				}
 				else{
 

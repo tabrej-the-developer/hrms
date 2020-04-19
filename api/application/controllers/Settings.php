@@ -82,6 +82,8 @@ class Settings extends CI_Controller {
 		}
 	}
 
+
+
 	public function addRole(){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
@@ -255,8 +257,8 @@ class Settings extends CI_Controller {
 			$json = json_decode(file_get_contents('php://input'));
 			if($json!= null && $res != null && $res->userid == $json->userid){
 				$userid = $json->userid;
-				$password = md5($json->password);
-				$passcode = md5($json->passcode);
+				$password = $json->password;
+				$passcode = $json->passcode;
 				$this->load->model('settingsModel');
 				$role = $this->authModel->getUserDetails($userid);
 				if($role != null){

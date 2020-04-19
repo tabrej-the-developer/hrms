@@ -117,8 +117,10 @@ class Attendance extends CI_Controller {
 			if($json!= null && $res != null && $res->userid == $json->userid){
 				$visitId = $json->visitId;
 				$signOutTime = $json->signOutTime;
+				$leftCampus = $json->leftCampus;
+				$reason = $json->reason;
 				$this->load->model('attendanceModel');
-				$this->attendanceModel->updateLog($visitId,$signOutTime);
+				$this->attendanceModel->updateLog($visitId,$signOutTime,$reason,$leftCampus);
 				$data['Status'] = "SUCCESS";
 				http_response_code(200);
 				echo json_encode($data);

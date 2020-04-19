@@ -1,0 +1,6 @@
+: deleteArea
+: deleteRole
+: deleteRoom
+: updateEntitlement
+: deleteEntitlement
+: getEntitledEmployees
