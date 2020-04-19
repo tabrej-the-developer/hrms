@@ -86,9 +86,19 @@ class SettingsModel extends CI_Model {
 		$this->db->query("UPDATE room SET  name='$name', careAgeFrom='$careAgeFrom', careAgeTo='$careAgeTo', capacity='$capacity', studentRatio='$studentRatio' where centerid='$centerid' and roomId = '$roomId'");
 	}
 
-		public function deleteRoom($roomId){
+	public function deleteRoom($roomid){
 		$this->load->database();
-		$this->db->query("DELETE from room where roomId = '$roomId'");
+		$this->db->query("DELETE from room where roomId = '$roomid'");
+	}
+
+	public function deleteArea($areaid){
+		$this->load->database();
+		$this->db->query("DELETE from orgchartareas where areaid = '$areaid'");
+	}
+
+	public function deleteRole($roleid){
+		$this->load->database();
+		$this->db->query("DELETE from orgchartroles where roleid = '$roleid'");
 	}
 
 
