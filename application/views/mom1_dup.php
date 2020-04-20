@@ -426,7 +426,21 @@ margin-top:-3px;
   margin-top:2px;
 }
 
+#addagenda{
+  background-color:skyblue;
+  width:45px;
+  height:45px;
+  text-align:center;
+  color:white;
+  float:right;
+  margin-top:-70px;
+  margin-right:20px;
+  border-radius:50px;
+}
 
+#addagenda h5{
+  margin-top:10px;
+}
 
 
 </style>
@@ -536,7 +550,7 @@ let autocomplete;
           <h3 class="modal-title">Schedule New Meeting</h3>
         </div>
         <div class="modal-body container">
-             <form method="post" action="<?php echo base_url() ?>mom/addMeeting">
+             <form method="post" id="mom" action="<?php echo base_url() ?>mom/addMeeting">
               <div class="form-group">
                     <input type="text" name="meetingTitle" id="add_meeting" class="form-control" placeholder="Add Meeting Title">  
               </div>
@@ -570,7 +584,7 @@ let autocomplete;
                    <td class="text-center">Where</td>
                     <td>
                       <div class="form-group">
-                       <input id="location" type="text" class="form-control" id="autocomplete" placeholder="Type Address...">
+                       <input id="location" name="meetingLocation" type="text" class="form-control"  placeholder="Type Address...">
                       </div>
                       <div class="form-group">
                        <input type="hidden">
@@ -588,14 +602,19 @@ let autocomplete;
                     </div>  
                    </td>
                </tr>
-               <tr>
+               
+               <tr id="addMoreAgenda">
                    <td class="text-center">Agenda</td>
                    <td>
-                    <div class="form-group">
-                   <textarea name="meetingAgenda[]" id="agenda" class="form-control" style="background-color:#eee"></textarea>
+                    <div class="form-group" style="width:75%">
+                   <input name="meetingAgenda[]" id="agenda" class="form-control" style="background-color:#eee">
                     </div>  
+                    <div id="addagenda"> 
+                      <h5>+</h5>
+                    </div>
                    </td>
                </tr>
+               
                 <tr>
                   <td class="text-center">Meeting Collab Type</td>
                   <td>
@@ -678,17 +697,42 @@ let autocomplete;
         <tbody>
          <?php 
          $i = 0;
+         
            $meetings = json_decode($meetings);
-           if($meetings != null){
+           
+
+            if($meetings != null){
          foreach($meetings->data as $u): 
+         $date = strtotime($u->date);
+         $date2  =ceil(($date-time())/60/60/24);
            $i = $i + 1;
          ?>
         <tr>
-        <td><?php echo $u->title; ?></td>
+        <td>
+         <input type="hidden" value="<?php  echo $u->mid; ?>" id="id">
+        <?php echo $u->title; ?></td>
         <td><?php echo $u->date; ?></td>
         <td><?php echo $u->time; ?></td>
         <td><?php echo $u->location; ?></td>
-        <td><?php echo "upcoming"; ?></td>
+        <td>
+        <?php
+        if($date2 > 0){ ?>
+          <button type="button" class="btn btn-success">
+  Days Left <span class="badge badge-light"><?php echo $date2 ?></span>
+</button>
+          
+     <?php   }
+        else{ ?>
+          <button type="button" class="btn btn-danger">
+            Meeting Over
+   </button>
+        <?php }
+          ?>
+          
+        
+        
+        
+        </td>
         <script>
         var arr = [];
         </script>
@@ -784,6 +828,24 @@ window.onclick = function(event) {
 
 
 <script>
+
+ $(document).ready(function(){
+   $('#addagenda').click(function(){
+      $('tr#addMoreAgenda').after('<tr id="addMoreAgenda"><td class="text-center"></td><td><div class="form-group" style="width:75%"><input name="meetingAgenda[]" id="agenda" class="form-control" style="background-color:#eee"></div><div id="addagenda"><h5>+</h5></div></td></tr>');
+   })
+ })
+
+$(document).ready(function(){
+    $('#mom_button').click(function(){
+      $('.token').remove();
+       $('form#mom').removeAttr('action');
+       $('form#mom').attr('action','http://localhost/PN101/mom/addMeeting');
+       $('.modal-footer').empty();
+       $('.modal-footer').append('<div class="m_footer" style="margin:auto"><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button><button class="btn btn-primary">Submit</button></div>');
+
+    });
+});
+
 $(document).ready(function(){
       $('#mom_button').click(function(){
         $("form").each(function(){
@@ -797,6 +859,10 @@ $(document).ready(function(){
 $(document).ready(function(){
 
   $('a#update').click(function() {
+    $('form#mom').removeAttr('action');
+    var id = $(this).closest('tr').find('input#id').val();
+    alert(id);
+    $('form#mom').attr('action',`http://localhost/PN101/mom/updateMeeting/${id}`);
     $('.tokens-container').remove('li');
     var  value  = $(this).closest('tr').children('td:eq(0)').text();
     var  value1 = $(this).closest('tr').children('td:eq(1)').text();
@@ -805,11 +871,20 @@ $(document).ready(function(){
     var  value4 = $(this).closest('tr').children('td:eq(4)').text();
     var  value5 = $(this).closest('tr').children('td:eq(5)').find('input').each(function(){
       //alert(this.value);
+      //alert(value4);
       var email = this.value;
       console.log(email);
+      $('#demo').tokenize2().trigger('tokenize:tokens:add', [`${email}`, `${email}`, true]);
+      $('.modal-footer').empty();
+       $('.modal-footer').append('<div class="m_footer" style="margin:auto"><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button><button class="btn btn-primary">Update</button></div>');
+
       //$('.tokens-container').append(`<li class="token" data-value="${email}"><a class="dismiss" onclick="remove()"></a><span> ${email} </span></li>`); 
-         $('#demo').append(`<option value="${email}" selected> ${email} </option>`);
-           
+       //  $('#demo').append(`<option value="${email}" selected> ${email} </option>`);
+       
+//       $('#collab').on('tokenize:tokens:add',function(e, value, text, force){
+//             console.log('hello');
+// });
+        
         });
     
     
