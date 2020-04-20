@@ -39,4 +39,20 @@ class PayrollModel extends CI_Model {
 		return $query->result();
 	}
 
+	public function deleteEntitlement($entitlementId){
+		$this->load->database();
+		$query = $this->db->query("DELETE from entitlements where id='$entitlementId'");
+	}
+
+	public function updateEntitlement($entitlementId,$name,$hourlyRate){
+		$this->load->database();
+		$query = $this->db->query("UPDATE entitlements SET name='$name', hourlyRate = '$hourlyRate' where id ='$entitlementId' ");
+	}
+
+	public function getUserLevels($level){
+		$this->load->database();
+		$query = $this->db->query("SELECT * from users where level = $level");
+		return $query->result();
+	}
+
 }
