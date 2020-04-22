@@ -339,5 +339,60 @@ class Mom extends CI_CONTROLLER{
     {
             }
     }
+    public function updateMeeting($id){
+        $form_data = $this->input->post();
+        // echo json_encode($form_data);
+        // exit;
+        
+        if($form_data != null ){
+        
+            $data['userId']        =      $this->session->userdata('LoginId');
+            $data['title']         =      $form_data['meetingTitle'];
+            $data['location']      =      $form_data['meetingLocation'];
+            $data['date']          =      $form_data['meetingDate'];
+            $data['time']          =      $form_data['meetingTime'];
+            $data['agenda']        =      $form_data['meetingAgenda'];
+            $data['collab']        =      $form_data['meetingcollab'];
+            $data['invites']       =      $form_data['invites'];
+         //    echo "<pre>";
+         //    var_dump($data);
+         //    exit;
+            $url = "http://localhost/PN101/api/mom/updateMeeting/".$id;
+            $ch = curl_init($url);
+         //   echo json_encode($data);
+         //   exit;
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'x-device-id: '.$this->session->userdata('x-device-id'),
+                'x-token: '.$this->session->userdata('AuthToken')
+            ));
+            
+          curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+           
+            $server_output = curl_exec($ch);
+           $httpcode = curl_getinfo($ch,CURLINFO_HTTP_CODE);
+         //   echo json_encode($httpcode);
+         //   exit;
+ 
+             if($httpcode == 200){
+                 $jsonOutput = json_decode($server_output);
+                 curl_close($ch);
+                
+                 redirect(base_url().'mom');
+             }
+             else if($httpcode == 401){
+                      json_encode(['error'=>'Error']);
+                               }
+ 
+         }
+ 
+
+
+
+    }
+   
+
   }
 ?>                   

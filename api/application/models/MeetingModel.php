@@ -99,6 +99,29 @@ class MeetingModel extends CI_MODEL{
       $result = $this->db->query($query);
       return $result->result();
   }
+  public function updateMeeting($id,$mTitle,$mdate,$mtime,$location,$collab,$uid){
+    $this->load->database();
+    $data = [
+        'title' => $mTitle,
+        'date' => $mdate,
+        'time' => $mtime,
+        'location' => $location,
+        'loginid' =>$uid
+    ];
+    $this->db->where('id',$id);
+    $this->db->update('meeting',$data);
+  }
+
+  public function deleteAgenda($id){
+      $this->load->database();
+      $this->db->where('m_id',$id);
+      $this->db->delete('agenda');
+  }
+  public function deleteParticipant($id){
+    $this->load->database();
+    $this->db->where('m_id',$id);
+    $this->db->delete('participants');
+}
 
 }
 

@@ -299,6 +299,47 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             echo json_encode($data);
         }
     }
+  
+      public function updateMeeting($id){
+        $headers = $this->input->request_headers();
+        if($headers != null && array_key_exists('x-device-id',$headers) && array_key_exists('x-token',$headers) ){
+            $this->load->model('meetingModel');
+            $json = json_decode(file_get_contents('php://input'));
+          //   print_r($json);
+          //   exit;
+            //var_dump($json);
+            //$id = uniqid();
+            $meetingTitle = $json->title;
+            $date    = $json->date;
+            $time    = $json->time;
+            $agenda  = $json->agenda;
+            $collab  = $json->collab;
+            $invites = $json->invites;
+            $location = $json->location;
+            $userId  = $json->userId;
+            $response  =   $this->meetingModel->updateMeeting($id,$meetingTitle,$date,$time,$location,$collab,$userId);
+            $deleteAgenda = $this->meetingModel->deleteAgenda($id);
+            $deleteParticipnts = $this->meetingModel->deleteParticipant($id);  
+                   
+            foreach($agenda as $a):
+            $this->meetingModel->addAgenda($id,$a);
+            endforeach;
+            foreach($invites as $i):    
+            $this->meetingModel->addParticipant($id,$i);
+            endforeach;
+            $data['Status'] = 'Success';
+            http_response_code(200);
+            echo json_encode($data);
+       
+           
+   }
+       else{
+           $data['Status'] = 'ERROR';
+           http_response_code(401);
+           echo json_encode($data);
+       }
+      }
+
  }
 
 ?>
