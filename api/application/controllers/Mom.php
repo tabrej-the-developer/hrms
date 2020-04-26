@@ -4,57 +4,63 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  class Mom extends CI_CONTROLLER{
     
   function __construct() {
-		header('Access-Control-Allow-Origin: *');
-		header("Access-Control-Allow-Headers: X-DEVICE-ID,X-TOKEN, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
-		header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
-		$method = $_SERVER['REQUEST_METHOD'];
-		if($method == "OPTIONS") {
-		die();
-		}
-		parent::__construct();
+    header('Access-Control-Allow-Origin: *');
+    header("Access-Control-Allow-Headers: X-DEVICE-ID,X-TOKEN, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
+    header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+    $method = $_SERVER['REQUEST_METHOD'];
+    if($method == "OPTIONS") {
+    die();
     }
+    parent::__construct();
+  }
     
     public function getMeetings($id){
        $headers = $this->input->request_headers();
        if($headers != null && array_key_exists('x-device-id',$headers) && array_key_exists('x-token',$headers)){
-           $this->load->model('meetingModel');
-            $meetings = $this->meetingModel->getMeeting($id);
-            $participant = $this->meetingModel->getParticipate($id);
-            $mdata['data'] = [];
-            $mdata['toParticipate'] = [];
-            $mdata['participants'] = [];
-            foreach($meetings as $m){
-                $var['role'] = 'creator';
-                $var['mid'] = $m->id;
-                $var['userid'] = $m->loginid;
-                $boardMembers = $this->meetingModel->getMembers($m->id);
-                foreach($boardMembers as $b){
-                    $var2['participateEmail'] = $b->user_id;
-                    array_push($mdata['participants'],$var2);
-                }
-                $var['title'] = $m->title;
-                $var['date'] = $m->date;
-                $var['time'] = $m->time;
-                $var['location'] = $m->location;
-                $var['participates'] = $mdata['participants'];
-                $mdata['participants'] = [];
-                array_push($mdata['data'],$var);
-
+          $this->load->model('meetingModel');
+          $this->load->model('authModel');
+          $meetings = $this->meetingModel->getMeeting($id);
+          $mdata['data'] = array();
+          foreach($meetings as $m){
+            if($m->loginid == $id)
+              $var['role'] = 'Creator';
+            else $var['role'] = 'Participant';
+            $var['mid'] = $m->id;
+            $var['userid'] = $m->loginid;            
+            $var['title'] = $m->title;
+            $var['date'] = $m->date;
+            $var['time'] = $m->time;
+            $var['location'] = $m->location;
+            $var['summary'] = $m->summary;
+            $var['status'] = $m->status;
+            $var['period'] = $m->period;
+            $var['created_at'] = $m->created_at;
+            $var['m_previd'] = $m->m_previd;
+            $var['participants'] = array();
+            $boardMembers = $this->meetingModel->getMembers($m->id);
+            foreach($boardMembers as $b){
+                $userDetails = $this->authModel->getUserDetails($b->user_id);
+                $var2['participateId'] = $b->id;
+                $var2['participateUserId'] = $userDetails->id;
+                $var2['participateEmail'] = $userDetails->email;
+                $var2['participateName'] = $userDetails->name;
+                $var2['participateImgUrl'] = $userDetails->imageUrl;
+                $var2['participateStatus'] = $b->status;
+                array_push($var['participants'],$var2);
             }
-            foreach($participant as $p){
-                $var1['meetingId'] = $p->m_id;
-                array_push($mdata['toParticipate'],$var1);
-            }
-            http_response_code(200);
-            echo json_encode($mdata);
-            
+            $var['agendas'] = $this->meetingModel->getAgendaInfo($m->id);
+            array_push($mdata['data'],$var);
+          }
+          http_response_code(200);
+          echo json_encode($mdata);
        }
        else{
-           $data['Message'] = "Something Went Wrong";
            http_response_code(401);
            echo json_encode($data);
        }
     }
+
+
     public function getParticipant($mid){
        
         $headers = $this->input->request_headers();
@@ -104,133 +110,177 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     }
 
-     public function addMeeting(){
-             $headers = $this->input->request_headers();
-          if($headers != null && array_key_exists('x-device-id',$headers) && array_key_exists('x-token',$headers) ){
-              $this->load->model('meetingModel');
-              $json = json_decode(file_get_contents('php://input'));
-            //   print_r($json);
-            //   exit;
-              //var_dump($json);
-              $id = uniqid();
-              $meetingTitle = $json->title;
-              $date    = $json->date;
-              $time    = $json->time;
-              $agenda  = $json->agenda;
-              $collab  = $json->collab;
-              $invites = $json->invites;
-              $location = $json->location;
-              $userId  = $json->userId;
-              $response  =   $this->meetingModel->addMeeting($id,$meetingTitle,$date,$time,$location,$collab,$userId);
-              foreach($agenda as $a):
+    public function AddMeeting(){
+      $headers = $this->input->request_headers();
+      if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+        $this->load->model('authModel');
+        $res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+        $json = json_decode(file_get_contents('php://input'));
+        if($json!= null && $res != null && $res->userid == $json->userid){
+          $this->load->model('meetingModel');
+          $id = uniqid();
+          $meetingTitle = $json->title;
+          $date    = $json->date;
+          $time    = $json->time;
+          $agenda  = $json->agenda;
+          $invites = $json->invites;
+          $location = $json->location;
+          $userid  = $json->userid;
+          $period = $json->period;
+          //$offset = $json->offset;
+          $this->meetingModel->addMeeting($id,$meetingTitle,$date,$time,$location,$period,null,$userid);
+          foreach($agenda as $a):
+            $this->meetingModel->addAgenda($id,$a);
+          endforeach;
+          foreach($invites as $i):    
+            $this->meetingModel->addParticipant($id,$i);
+          endforeach;
+          //$currentDate = date("Y-m-d", strtotime($date));
+          $currentDate = date_create($date);
+          $currentMeetingId = $id;
+
+          if($period == 'A'){
+            //annual meeting
+            $id = uniqid();
+            //echo $currentDate;
+            $dateOfMeeting = date_add($currentDate, date_interval_create_from_date_string('+1 year'));
+            $this->meetingModel->addMeeting($id,$meetingTitle,date_format($dateOfMeeting,'Y-m-d'),$time,$location,$period,$currentMeetingId,$userid);
+
+            foreach($agenda as $a):
               $this->meetingModel->addAgenda($id,$a);
+            endforeach;
+            foreach($invites as $i):    
+              $this->meetingModel->addParticipant($id,$i);
+            endforeach;
+            //$afterOneYear = date("Y-m-d",$currentDate . " +1 year");
+          }
+          else if($period == 'W'){
+            //weekly meeting
+            $index = 0;
+            $dateOfMeeting = $currentDate;
+            while($index < 53){
+              $id = uniqid();
+              $dateOfMeeting = date_add($currentDate, date_interval_create_from_date_string('+7 day'));
+              //$dateOfMeeting = date("Y-m-d",$dateOfMeeting . " +7 day");
+              $this->meetingModel->addMeeting($id,$meetingTitle,date_format($dateOfMeeting,'Y-m-d'),$time,$location,$period,$currentMeetingId,$userid);
+
+              foreach($agenda as $a):
+                $this->meetingModel->addAgenda($id,$a);
               endforeach;
               foreach($invites as $i):    
-              $this->meetingModel->addParticipant($id,$i);
+                $this->meetingModel->addParticipant($id,$i);
               endforeach;
-              $data['Status'] = 'Success';
-              http_response_code(200);
-              echo json_encode($data);
-         
-             
-     }
-         else{
-             $data['Status'] = 'ERROR';
-             http_response_code(401);
-             echo json_encode($data);
-         }
-    }
-    
-     public function meetingAttendence(){
-         
-         $headers = $this->input->request_headers();
-         //var_dump($headers);
-         if($headers != null && array_key_exists('x-device-id',$headers) && array_key_exists('x-token',$headers) ){
-           // echo "h"; 
-            $this->load->model('meetingModel');
-           // var_dump(file_get_contents('php://input'));
-             $json = json_decode(file_get_contents('php://input'));
-            //var_dump($json);
-             $attendence = $json->absent;
-             $meetingId = $json->mId;
-           
-             
-             foreach($attendence as $a):
-                
-             $this->meetingModel->addAttendence($meetingId,$a);
-             endforeach;
-                $data['Status'] = 'Success';
-                http_response_code(200);
-                echo json_encode($data);
+              $currentMeetingId = $id;
+              $index ++;
+            }
+          }
+          else if($period == 'M'){
+            //monthly meeting
+            $index = 0;
+            $dateOfMeeting = $currentDate;
+            while($index < 12){
+              $id = uniqid();
+              $dateOfMeeting = date_add($currentDate, date_interval_create_from_date_string('+1 month'));
+              //$dateOfMeeting = date("Y-m-d",$dateOfMeeting . " +1 month");
+              $this->meetingModel->addMeeting($id,$meetingTitle,date_format($dateOfMeeting,'Y-m-d'),$time,$location,$period,$currentMeetingId,$userid);
 
-             
-             
-         }
-         else{
-            $data['Status'] = 'Error';
-             http_response_code(401);
-             echo json_encode($data);
-         }
-     }
+              foreach($agenda as $a):
+                $this->meetingModel->addAgenda($id,$a);
+              endforeach;
+              foreach($invites as $i):    
+                $this->meetingModel->addParticipant($id,$i);
+              endforeach;
+              $currentMeetingId = $id;
+              $index ++;
+            }
+          }
 
-     public function meetingRecord($id){
-         $headers = $this->input->request_headers();
-        
-         if($headers != null && array_key_exists('x-device-id',$headers) && array_key_exists('x-token',$headers) ){
-             $this->load->model('meetingModel');
-             $json = json_decode(file_get_contents('php://input'));
-            
-             $invites =  $json->invites;
-             $sentence = $json->sentence;
-             $remark = $json->remark;
-           
-             $mId = $id;
-             $len = count($invites);
-             for($it = 0; $it < $len;$it++){
-                
-             $this->meetingModel->addMeetingRecord($mId,$invites[$it],$sentence[$it],$remark[$it]);
-         }
-            
-             $data['Status'] = 'Success';
-             http_response_code(200);
-             echo json_encode($data);
-                  
-         }
-         else{
-             $data['Status'] = 'Error'; 
-             http_response_code(401);
-             echo json_encode($data);
-         }
-     }
-    public function addSummary(){
-        $headers = $this->input->request_headers();
-        // var_dump($headers);
-        // exit;
-       
-        if($headers != null && array_key_exists('x-device-id',$headers) && array_key_exists('x-token',$headers)){
-            $this->load->model('meetingModel');
-            $json = json_decode(file_get_contents('php://input'));
-            // var_dump($json);
-            // exit;
-            $summary = $json->summary;
-            $t = $json->id;
-            $len = count($summary);
-            for($k = 0; $k < $len; $k++){
-            
-            $this->meetingModel->meetingSummary($t[$k],$summary[$k]);
-            
-        }
-            $data['Status'] = 'Success';
-            $data['respons_code'] = http_response_code(200);
-            http_response_code(200);
-            echo json_encode($data);
-            
+          $data['Status'] = 'Success';
+          http_response_code(200);
+          echo json_encode($data);
         }
         else{
-            $data['Status'] = 'Error';
-            http_response_code(401);
-            echo json_encode($data);
+          http_response_code(401);
         }
+      }
+      else{
+        http_response_code(401);
+      }
+    }
+    
+    public function meetingAttendence(){
+      $headers = $this->input->request_headers();
+      if($headers != null && array_key_exists('x-device-id',$headers) && array_key_exists('x-token',$headers) ){
+      $this->load->model('meetingModel');
+      $json = json_decode(file_get_contents('php://input'));
+      $attendence = $json->absent;
+      $meetingId = $json->mId;
+      foreach($attendence as $a): 
+        $this->meetingModel->addAttendence($meetingId,$a);
+      endforeach;
+
+      $this->meetingModel->updateMeetingStatus($meetingId,'Attendance');
+
+      $data['Status'] = 'SUCCESS';
+      http_response_code(200);
+      echo json_encode($data); 
+      }
+      else{
+        $data['Status'] = 'ERROR';
+         http_response_code(401);
+         echo json_encode($data);
+      }
+    }
+
+    public function meetingRecord(){
+      $headers = $this->input->request_headers();
+
+      if($headers != null && array_key_exists('x-device-id',$headers) && array_key_exists('x-token',$headers) ){
+        $this->load->model('meetingModel');
+        $json = json_decode(file_get_contents('php://input'));
+        $invites =  $json->invites;
+        $sentence = $json->sentence;
+        $remark = $json->remark;
+        $mId = $json->meetingId;
+        $len = count($invites);
+        for($it = 0; $it < $len;$it++){
+          $this->meetingModel->addMeetingRecord($mId,$invites[$it],$sentence[$it],$remark[$it]);
+        }
+        $this->meetingModel->updateMeetingStatus($mId,'MOM');
+        $data['Status'] = 'Success';
+        http_response_code(200);
+        echo json_encode($data);        
+      }
+      else{
+        $data['Status'] = 'Error'; 
+        http_response_code(401);
+        echo json_encode($data);
+      }
+    }
+
+    public function addSummary(){
+      $headers = $this->input->request_headers();
+      if($headers != null && array_key_exists('x-device-id',$headers) && array_key_exists('x-token',$headers)){
+        $this->load->model('meetingModel');
+        $json = json_decode(file_get_contents('php://input'));
+        $summary = $json->summary;
+        $t = $json->id;
+        $mId = $json->meetingId;
+        $len = count($summary);
+        for($k = 0; $k < $len; $k++){
+          $this->meetingModel->meetingSummary($t[$k],$summary[$k]);          
+        }
+        $this->meetingModel->updateMeetingStatus($mId,'Summary');
+        $data['Status'] = 'Success';
+        $data['respons_code'] = http_response_code(200);
+        http_response_code(200);
+        echo json_encode($data);  
+      }
+      else{
+        $data['Status'] = 'Error';
+        http_response_code(401);
+        echo json_encode($data);
+      }
     }
 
     public function getSummary($mid){
@@ -256,6 +306,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             echo json_encode($data);
         }
     }
+
     public function getMeetingInfo($mId){
         $headers = $this->input->request_headers();
         if($headers != null && array_key_exists('x-device-id',$headers) && array_key_exists('x-token',$headers)){
@@ -263,7 +314,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $data = $this->meetingModel->getMeetingInfo($mId);
             // var_dump($participants);
             // exit;
-            $agenda = $this->meetingModel->getAgendaInfo($mId);
             $participants = $this->meetingModel->getPresent($mId);
             $title = $this->meetingModel->getTitle($mId);
         //    print_r($title);
@@ -271,7 +321,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $mdata = [];
            // $mdata['title'] = $title->title;
            $mdata['mom'] = [];
-           $mdata['agenda'] = [];
+            $agenda = $this->meetingModel->getAgendaInfo($mId);
            $mdata['participant'] = [];
            foreach($data as $d){
               $var['text'] = $d->text;
@@ -279,14 +329,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
              $var['userid'] = $d->user_id;
               array_push($mdata['mom'],$var);
           }
-          foreach($agenda as $a){
-              $var['text'] = $a->text;
-              $var['summary'] = $a->summary;
-              array_push($mdata['agenda'],$var);
-          }
+          // foreach($agenda as $a){
+          //     $var['text'] = $a->text;
+          //     $var['summary'] = $a->summary;
+          //     array_push($mdata['agenda'],$var);
+          // }
           foreach($participants as $p){
               $var1['userid'] = $p->user_id;
-              $var1['status'] = 'present';
+              $var1['status'] = $p->status;
               array_push($mdata['participant'],$var1);
           }
            $mdata['Success'] = 'Success';
@@ -300,24 +350,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
     }
   
-      public function updateMeeting($id){
+      public function updateMeeting(){
         $headers = $this->input->request_headers();
         if($headers != null && array_key_exists('x-device-id',$headers) && array_key_exists('x-token',$headers) ){
             $this->load->model('meetingModel');
             $json = json_decode(file_get_contents('php://input'));
-          //   print_r($json);
-          //   exit;
-            //var_dump($json);
-            //$id = uniqid();
+
             $meetingTitle = $json->title;
             $date    = $json->date;
             $time    = $json->time;
             $agenda  = $json->agenda;
-            $collab  = $json->collab;
             $invites = $json->invites;
             $location = $json->location;
-            $userId  = $json->userId;
-            $response  =   $this->meetingModel->updateMeeting($id,$meetingTitle,$date,$time,$location,$collab,$userId);
+            $userId  = $json->userid;
+            $period = $json->period;
+            $id = $json->meetingId;
+
+            $response  =   $this->meetingModel->updateMeeting($id,$meetingTitle,$date,$time,$location,$period);
             $deleteAgenda = $this->meetingModel->deleteAgenda($id);
             $deleteParticipnts = $this->meetingModel->deleteParticipant($id);  
                    

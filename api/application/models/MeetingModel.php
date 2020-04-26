@@ -3,10 +3,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MeetingModel extends CI_MODEL{
 
- public function addMeeting($id,$meetingTitle,$date,$time,$location,$collab,$userId){
+ public function addMeeting($id,$meetingTitle,$date,$time,$location,$period,$mPrevid,$userId){
     $this->load->database();
     
-     $query = $this->db->query("insert into meeting(id,title,date,time,location,loginid) values('$id','$meetingTitle','$date','$time','$location','$userId')");
+     $query = $this->db->query("insert into meeting(id,title,date,time,location,period,loginid,m_previd) values('$id','$meetingTitle','$date','$time','$location','$period','$userId','$mPrevid')");
     
 
    
@@ -18,7 +18,7 @@ class MeetingModel extends CI_MODEL{
 
   public function addParticipant($id,$invites){
       $this->load->database();
-      $this->db->query("insert into participants(m_id,user_id) values('$id','$invites')");
+      $this->db->query("insert into participants(m_id,user_id,status) values('$id','$invites','P')");
   }
   public function addAttendence($mId,$participantId){
         $this->load->database();
@@ -44,7 +44,8 @@ class MeetingModel extends CI_MODEL{
   }
   public function getMeeting($id){
      $this->load->database();
-      $sql = "select * from meeting where loginid = '$id'";
+      //$sql = "select * from meeting where loginid = '$id'";
+      $sql = "SELECT * FROM meeting WHERE id IN (SELECT m_id FROM participants WHERE user_id = '$id') ORDER BY date DESC";
       $q = $this->db->query($sql);
       return $q->result();
   }
@@ -71,7 +72,7 @@ class MeetingModel extends CI_MODEL{
        $this->load->database();
        $query = "select * from mom where m_id = '$mId'";
        $result = $this->db->query($query);
-       return $result->result();
+       return $result->row();
    }
   public function getAgendaInfo($mId){
       $this->load->database();
@@ -99,14 +100,15 @@ class MeetingModel extends CI_MODEL{
       $result = $this->db->query($query);
       return $result->result();
   }
-  public function updateMeeting($id,$mTitle,$mdate,$mtime,$location,$collab,$uid){
+
+  public function updateMeeting($id,$mTitle,$mdate,$mtime,$location,$period){
     $this->load->database();
     $data = [
         'title' => $mTitle,
         'date' => $mdate,
         'time' => $mtime,
         'location' => $location,
-        'loginid' =>$uid
+        'period' => $period
     ];
     $this->db->where('id',$id);
     $this->db->update('meeting',$data);
@@ -121,7 +123,13 @@ class MeetingModel extends CI_MODEL{
     $this->load->database();
     $this->db->where('m_id',$id);
     $this->db->delete('participants');
-}
+  }
+
+  public function updateMeetingStatus($mid,$status){
+    $this->load->database();
+    $query = $this->db->query("UPDATE meeting SET status = '$status' WHERE id = '$mid'");
+  }
+
 
 }
 
