@@ -409,58 +409,58 @@ class Settings extends CI_Controller {
 
 	public function deleteRoom($roomid,$userid){
 		$headers = $this->input->request_headers();
-		   if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
-			$this->load->model('authModel');
-			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
-			if($res != null && $res->userid == $userid){
-				$this->load->model('settingsModel');
-					$this->settingsModel->deleteRoom($roomid);
-					$data['status'] = 'SUCCESS';
-				}
-				http_response_code(200);
-				echo json_encode($data);
+	   if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+		$this->load->model('authModel');
+		$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+		if($res != null && $res->userid == $userid){
+			$this->load->model('settingsModel');
+				$this->settingsModel->deleteRoom($roomid);
+				$data['status'] = 'SUCCESS';
 			}
-			else{
-				http_response_code(401);
-			}
+			http_response_code(200);
+			echo json_encode($data);
 		}
+		else{
+			http_response_code(401);
+		}
+	}
 
-		public function deleteArea($areaid,$userid){
+	public function deleteArea($areaid,$userid){
 		$headers = $this->input->request_headers();
-		   if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
-			$this->load->model('authModel');
-			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
-			if($res != null && $res->userid == $userid){
-				$this->load->model('settingsModel');
-					$this->settingsModel->deleteArea($areaid);
-					$data['status'] = 'SUCCESS';
-				}
-				http_response_code(200);
-				echo json_encode($data);
+	   if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+		$this->load->model('authModel');
+		$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+		if($res != null && $res->userid == $userid){
+			$this->load->model('settingsModel');
+				$this->settingsModel->deleteArea($areaid);
+				$data['status'] = 'SUCCESS';
 			}
-			else{
-				http_response_code(401);
-			}
+			http_response_code(200);
+			echo json_encode($data);
 		}
+		else{
+			http_response_code(401);
+		}
+	}
 
 
 	public function deleteRole($roleid,$userid){
 		$headers = $this->input->request_headers();
-		   if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
-			$this->load->model('authModel');
-			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
-			if($res != null && $res->userid == $userid){
-				$this->load->model('settingsModel');
-					$this->settingsModel->deleteRole($roleid);
-					$data['status'] = 'SUCCESS';
-				}
-				http_response_code(200);
-				echo json_encode($data);
+	   if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+		$this->load->model('authModel');
+		$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+		if($res != null && $res->userid == $userid){
+			$this->load->model('settingsModel');
+				$this->settingsModel->deleteRole($roleid);
+				$data['status'] = 'SUCCESS';
 			}
-			else{
-				http_response_code(401);
-			}
+			http_response_code(200);
+			echo json_encode($data);
 		}
+		else{
+			http_response_code(401);
+		}
+	}
 
 		
 
