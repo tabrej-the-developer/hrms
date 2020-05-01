@@ -244,16 +244,16 @@ svg:not(:root).svg-inline--fa {
 .container{
     /* background-color:#8798ab26; */
 }
-table#main-table tr:nth-child(even){
+table.main-table tr:nth-child(even){
    background-color:#eee;
    
    color:black;
    font-size:18px; 
 }
-table#main-table{
+table.main-table{
     box-shadow: 0px 2px 4px;
 }
-table#main-table tr:nth-child(odd){
+table.main-table tr:nth-child(odd){
     background-color:white;
     padding:25px;
     color:black;
@@ -425,21 +425,12 @@ margin-top:-3px;
 #main-table_paginate{
   margin-top:2px;
 }
-
-#addagenda{
-  background-color:skyblue;
-  width:45px;
-  height:45px;
-  text-align:center;
-  color:white;
-  float:right;
-  margin-top:-70px;
-  margin-right:20px;
-  border-radius:50px;
+.modal-body{
+  padding:0;
 }
 
-#addagenda h5{
-  margin-top:10px;
+.containers{
+  max-width:80vw;
 }
 
 
@@ -532,7 +523,7 @@ let autocomplete;
           // print_r($users->users[0]);
          //exit;
    ?>
-<div class="container">
+<div class="containers">
 <!-- Button trigger modal -->
 
 
@@ -550,7 +541,7 @@ let autocomplete;
           <h3 class="modal-title">Schedule New Meeting</h3>
         </div>
         <div class="modal-body container">
-             <form method="post" id="mom" action="<?php echo base_url() ?>mom/addMeeting">
+             <form method="post" action="<?php echo base_url() ?>mom/addMeeting">
               <div class="form-group">
                     <input type="text" name="meetingTitle" id="add_meeting" class="form-control" placeholder="Add Meeting Title">  
               </div>
@@ -584,7 +575,7 @@ let autocomplete;
                    <td class="text-center">Where</td>
                     <td>
                       <div class="form-group">
-                       <input id="location" name="meetingLocation" type="text" class="form-control"  placeholder="Type Address...">
+                       <input id="location" type="text" class="form-control" id="autocomplete" placeholder="Type Address...">
                       </div>
                       <div class="form-group">
                        <input type="hidden">
@@ -594,35 +585,31 @@ let autocomplete;
                 </tr>
               
                
-               <tr>
+<!--                <tr>
                    <td class="text-center">Calender</td>
                    <td>
                     <div class="form-group">
                     <input type="text" id="add_meeting" class="form-control">
                     </div>  
                    </td>
-               </tr>
-               
-               <tr id="addMoreAgenda">
-                   <td class="text-center">Agenda</td>
-                   <td>
-                    <div class="form-group" style="width:75%">
-                   <input name="meetingAgenda[]" id="agenda" class="form-control" style="background-color:#eee">
-                    </div>  
-                    <div id="addagenda"> 
-                      <h5>+</h5>
-                    </div>
-                   </td>
-               </tr>
-               
-                <tr>
-                  <td class="text-center">Meeting Collab Type</td>
+               </tr> -->
+     <tr>
+        <td class="text-center">Agenda</td>
+          <td>
+            <div class="form-group">
+                <textarea name="meetingAgenda[]" id="agenda" class="form-control" style="background-color:#eee"></textarea>
+            </div>  
+          </td>
+      </tr>
+              <tr>
+                  <td class="text-center">Period</td>
                   <td>
                    <div class="form-group">
                    <select name="" id="collab" class="form-control">
-                      <option value="y">Yearly</option>
-                      <option value="m">Monthly</option>
-                      <option value="w">Weekly</option>
+                      <option value="O">Once</option>
+                      <option value="A">Annual</option>
+                      <option value="M">Monthly</option>
+                      <option value="W">Weekly</option>
                    </select>
                    
                    </div>
@@ -636,9 +623,10 @@ let autocomplete;
                     
                      <select name="invites[]" class="demo" multiple  id="demo">
                        <?php 
+                       
                          foreach($users->users as $m):
                        ?>  
-                       <option value="<?php echo $m->email ?>"><?php echo $m->email; ?></option>
+                       <option value="<?php echo $m->username ?>"><?php echo $m->username; ?></option>
                          <?php  endforeach; ?>
                      </select>
                     </div>  
@@ -667,7 +655,7 @@ let autocomplete;
     </div>
   </div>
 
-
+    <div class="shift-bar d-flex " ><span class="prevv btn btn-primary">Previous Meetings</span><span class="futt btn btn-primary">Upcoming Meetings</span></div>
 
 
 <div class="row">
@@ -681,7 +669,8 @@ let autocomplete;
        <button id="mom_button" type="button"  class="btn btn-info" data-toggle="modal" data-target="#myModal">+ Schedule New Meeting</button>
        </div>        
   </div>
-  <table class="table table-borderless" id="main-table">
+  <table class="table table-borderless past main-table" >
+
         <thead>
         <tr>
          <td>Title</td>
@@ -697,55 +686,31 @@ let autocomplete;
         <tbody>
          <?php 
          $i = 0;
-         
            $meetings = json_decode($meetings);
-           
-
-            if($meetings != null){
+            // print_r($meetings);
          foreach($meetings->data as $u): 
-         $date = strtotime($u->date);
-         $date2  =ceil(($date-time())/60/60/24);
+          if($u->date <= date('Y-m-d')){
            $i = $i + 1;
          ?>
         <tr>
-        <td>
-         <input type="hidden" value="<?php  echo $u->mid; ?>" id="id">
-        <?php echo $u->title; ?></td>
-        <td><?php echo $u->date; ?></td>
+        <td><?php echo $u->title; ?></td>
+        <td class="table-date"><?php echo $u->date; ?></td>
         <td><?php echo $u->time; ?></td>
         <td><?php echo $u->location; ?></td>
-        <td>
-        <?php
-        if($date2 > 0){ ?>
-          <button type="button" class="btn btn-success">
-  Days Left <span class="badge badge-light"><?php echo $date2 ?></span>
-</button>
-          
-     <?php   }
-        else{ ?>
-          <button type="button" class="btn btn-danger">
-            Meeting Over
-   </button>
-        <?php }
-          ?>
-          
-        
-        
-        
-        </td>
+        <td><?php echo $u->status; ?></td>
         <script>
         var arr = [];
         </script>
         <td>
         
-        <?php foreach($u->participates as $p): 
+        <?php foreach($u->participants as $p): 
         // var_dump($p);
         // exit;
         
 ?>
         
         
-         <input type="hidden" id="p"  name="p[]" value="<?php echo $p->participateEmail; ?>" >
+         <input type="hidden" id="p"  name="p[]" value="<?php echo $p->participateName; ?>" >
         <div id="participant1"></div>
          
         <?php endforeach;
@@ -753,7 +718,11 @@ let autocomplete;
         ?>
         <!-- <div id="participant2">+5</div> -->
         </td>
-        <td><a href="<?php echo base_url() ?>mom/attendence/<?php echo $u->mid ?>" class="btn btn-primary ">start</a></td>
+        <td>
+          
+     <!--      <a href="<?php echo base_url() ?>mom/attendence/<?php echo $u->mid ?>" class="btn btn-primary btn-p ">start</a>
+         -->
+        </td>
         <td>
         <div class="dropdown">
   <a href="#" onclick="myFunction(this)" id="<?php echo $i; ?>" class="dropbtn"><i   class="fas fa-ellipsis-v"></i></a>
@@ -764,13 +733,83 @@ let autocomplete;
       </div>
       </td>
           </tr>
-                         <?php endforeach;} ?>
+                         <?php } endforeach; ?>
       
        
 
         </tbody>
   </table>
+     
+    <table class="table table-borderless future main-table"  style="">
+        <thead>
+         <td>Title</td>
+         <td>Start Date</td>
+         <td>Time</td>
+         <td>Location</td>
+         <td>Status</td>
+         <td>Attendees</td>
+        <td></td>
+        <td></td>
+        </tr>
+        </thead>
+        <tbody>
+         <?php 
+         $i = 0;
+           // $meetings = json_decode($meetings);
+            // print_r($meetings);
+         foreach($meetings->data as $u): 
+          if($u->date > date('Y-m-d')){
+           $i = $i + 1;
+         ?>
+        <tr>
+        <td><?php echo $u->title; ?></td>
+        <td class="table-date"><?php echo $u->date; ?></td>
+        <td><?php echo $u->time; ?></td>
+        <td><?php echo $u->location; ?></td>
+        <td><?php echo $u->status; ?></td>
+        <script>
+        var arr = [];
+        </script>
+        <td>
+        
+        <?php foreach($u->participants as $p): 
+        // var_dump($p);
+        // exit;
+        
+?>
+        
+        
+         <input type="hidden" id="p"  name="p[]" value="<?php echo $p->participateName; ?>" >
+        <div id="participant1"></div>
          
+        <?php endforeach;
+        
+        ?>
+        <!-- <div id="participant2">+5</div> -->
+        </td>
+        <td>
+          <?php if($u->status == 'Summary'){?>
+            <a href="<?php echo base_url() ?>mom/attendence/<?php echo $u->mid ?>" class="btn btn-primary btn-p disabled">start</a>
+          <?php } ?>
+          </td>
+        <td>
+        <div class="dropdown">
+          <a href="#" onclick="myFunction(this)" id="<?php echo $i; ?>" class="dropbtn">
+            <i class="fas fa-ellipsis-v"></i>
+          </a>
+          <div id="myDropdown<?php echo $i; ?>" class="dropdown-content">
+            <a   class="btn btn-default" id="update"  data-toggle="modal" data-target="#myModal">Edit</a>
+              <!-- <a href="#">Delete</a> -->
+          </div>
+        </div>
+        </td>
+          </tr>
+                         <?php } endforeach; ?>
+      
+       
+
+        </tbody>
+  </table>    
    <!-- <div class="footer">
    <div class="dataTables_paginate paging_simple_numbers">
    <button class="paginate_button previous disabled" aria-controls="main-table" data-dt-idx="0" tabindex="-1" id="main-table_previous"><</button>
@@ -801,7 +840,6 @@ let autocomplete;
  })
 
 function myFunction(value) {
-    
   document.getElementById("myDropdown"+value.id).classList.toggle("show");
 }
 
@@ -828,41 +866,18 @@ window.onclick = function(event) {
 
 
 <script>
-
- $(document).ready(function(){
-   $('#addagenda').click(function(){
-      $('tr#addMoreAgenda').after('<tr id="addMoreAgenda"><td class="text-center"></td><td><div class="form-group" style="width:75%"><input name="meetingAgenda[]" id="agenda" class="form-control" style="background-color:#eee"></div><div id="addagenda"><h5>+</h5></div></td></tr>');
-   })
- })
-
 $(document).ready(function(){
-    $('#mom_button').click(function(){
-      $('.token').remove();
-       $('form#mom').removeAttr('action');
-       $('form#mom').attr('action','http://localhost/PN101/mom/addMeeting');
-       $('.modal-footer').empty();
-       $('.modal-footer').append('<div class="m_footer" style="margin:auto"><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button><button class="btn btn-primary">Submit</button></div>');
-
+          $('#mom_button').click(function(){
+          $("form").each(function(){
+          $(this).find(':input').val(""); 
+          $(this).find(':textarea').val("");
+      });    
     });
-});
-
-$(document).ready(function(){
-      $('#mom_button').click(function(){
-        $("form").each(function(){
-    $(this).find(':input').val(""); 
-    $(this).find(':textarea').val("");
-});
-            
-      });
-});
+  });
 
 $(document).ready(function(){
 
   $('a#update').click(function() {
-    $('form#mom').removeAttr('action');
-    var id = $(this).closest('tr').find('input#id').val();
-    alert(id);
-    $('form#mom').attr('action',`http://localhost/PN101/mom/updateMeeting/${id}`);
     $('.tokens-container').remove('li');
     var  value  = $(this).closest('tr').children('td:eq(0)').text();
     var  value1 = $(this).closest('tr').children('td:eq(1)').text();
@@ -871,23 +886,11 @@ $(document).ready(function(){
     var  value4 = $(this).closest('tr').children('td:eq(4)').text();
     var  value5 = $(this).closest('tr').children('td:eq(5)').find('input').each(function(){
       //alert(this.value);
-      //alert(value4);
       var email = this.value;
       console.log(email);
-      $('#demo').tokenize2().trigger('tokenize:tokens:add', [`${email}`, `${email}`, true]);
-      $('.modal-footer').empty();
-       $('.modal-footer').append('<div class="m_footer" style="margin:auto"><button type="button" class="btn btn-danger" data-dismiss="modal">Close</button><button class="btn btn-primary">Update</button></div>');
-
       //$('.tokens-container').append(`<li class="token" data-value="${email}"><a class="dismiss" onclick="remove()"></a><span> ${email} </span></li>`); 
-       //  $('#demo').append(`<option value="${email}" selected> ${email} </option>`);
-       
-//       $('#collab').on('tokenize:tokens:add',function(e, value, text, force){
-//             console.log('hello');
-// });
-        
-        });
-    
-    
+         $('#demo').append(`<option value="${email}" selected> ${email} </option>`);   
+      });
     // working
     // $('input[type="hidden"').each(function(){
     //   alert(this.value);
@@ -896,11 +899,8 @@ $(document).ready(function(){
   //     alert(this.value);
   //   })
     var  value6 = $(this).closest('tr').children('td:eq(6)').text();
-    var  value7 = $(this).closest('tr').children('td:eq(7)').text();
-  
-     
-    //alert(value5);
-    
+    var  value7 = $(this).closest('tr').children('td:eq(7)').text(); 
+    //alert(value5);    
    $('#add_meeting').val(value);
    $('#date').val(value1);
    $('#time').val(value2);
@@ -1081,13 +1081,12 @@ $('#toggle').remove();
 	</script>
 	<script>
   $(document).ready( function () {
-    $('#main-table').dataTable({
+    $('.main-table').dataTable({
      pageLength:10,
      "columnDefs": [
         { "orderable": false, "targets": [0, 1,2,3,4, 5, 6] },
         { "orderable": false, "targets": [] }
-    ],
-      search:true
+    ]
     });
 } );
 
@@ -1161,6 +1160,61 @@ $('#toggle').remove();
  
 
   </script>
-
-  
+<script type="text/javascript">
+  $(document).ready(()=>{
+    $('.containers').css('paddingLeft',($('.side-nav').width() + 30));
+});
+</script>
+<script type="text/javascript">
+  $(document).ready(()=>{
+    var count = $('.table-date').length;
+    for(var i=0;i<count;i++){
+    var date = $('.table-date').eq(i).text();
+    var today = new Date(); 
+    var dd = today.getDate(); 
+    var mm = today.getMonth() + 1; 
+    var yyyy = today.getFullYear(); 
+        if (dd < 10) { 
+            dd = '0' + dd; 
+        } 
+        if (mm < 10) { 
+            mm = '0' + mm; 
+        } 
+        var tod = yyyy + '-' + mm + '-' + dd; 
+    if(date < tod){
+      $('.table-date').eq(i).closest('.btn-p').remove();
+      console.log( $('.table-date').eq(i).text());
+      // console.log(today);
+    }
+  }
+  })
+</script>
+  <script type="text/javascript">
+      $(document).ready(()=>{
+        var past = $('.past').html()
+        var future = $('.future ').hide()
+        $('#DataTables_Table_1_wrapper').hide()
+        $('#DataTables_Table_1_wrapper label').remove();
+        $('#DataTables_Table_0_wrapper label').remove();
+        $('#DataTables_Table_0_wrapper').prepend($('.shift-bar').html())
+        $('#DataTables_Table_1_wrapper').prepend($('.shift-bar').html())
+        $('.shift-bar').eq(2).hide();
+        $('.shift-bar').eq(0).remove();
+       // $('.past').html(future)
+       $('.futt').on('click',function(){ 
+         $('.future ').show()   
+         $('.past ').hide()            
+          $('#DataTables_Table_1_wrapper').show()
+          $('#DataTables_Table_0_wrapper').hide()
+          $('.shift-bar').eq(1).hide();
+      });
+     $('.prevv').on('click',function(){ 
+         $('.future ').hide()   
+         $('.past ').show()            
+          $('#DataTables_Table_1_wrapper').hide()
+          $('#DataTables_Table_0_wrapper').show()
+          $('.shift-bar').eq(2).hide();
+      });
+    });
+  </script>
 </html>
