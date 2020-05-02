@@ -307,11 +307,24 @@ function dateToDay($date){
 }
 
 function icon($str){
-	$val = explode(" ",$str);
-	if(count($val) >2 ){
-	    return strtoupper($val[0][0].$val[1][0]);
+	if (strpos($str, '.') !== false) {
+	$str = explode(".",$str);
+	if(count($str) >1 ){
+	    return strtoupper($str[0][0].$str[1][0]);
 	}else{
-	    return strtoupper($val[0][0]);
+	    return strtoupper($str[0]);
+	}
+}
+	if (strpos($str, ' ') !== false) {
+	$str = explode(" ",$str);
+	if(count($str) >1 ){
+	    return strtoupper($str[0][0]);
+	}else{
+	    return strtoupper($str[0][0]);
+	}
+}
+	if (strpos($str, ' ') == false && strpos($str, '.') == false) {
+		return $str[0];
 	}
 }
 
