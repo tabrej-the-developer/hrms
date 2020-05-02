@@ -17,6 +17,7 @@
 			height:70vh;
 			overflow-y: auto;
 			box-shadow:0px 0px 5px 5px rgb(242, 242, 242);
+			border-radius:10px;
 		}	
 		.sort-by{
 
