@@ -323,11 +323,24 @@ function dateToDay($date){
 }
 
 function icon($str){
-	$str = explode(" ",$str);
+	if (strpos($str, '.') !== false) {
+	$str = explode(".",$str);
 	if(count($str) >1 ){
 	    return strtoupper($str[0][0].$str[1][0]);
 	}else{
+	    return strtoupper($str[0]);
+	}
+}
+	if (strpos($str, ' ') !== false) {
+	$str = explode(" ",$str);
+	if(count($str) >1 ){
 	    return strtoupper($str[0][0]);
+	}else{
+	    return strtoupper($str[0][0]);
+	}
+}
+	if (strpos($str, ' ') == false && strpos($str, '.') == false) {
+		return $str[0];
 	}
 }
 
