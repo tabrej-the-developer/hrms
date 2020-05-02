@@ -693,7 +693,7 @@ let autocomplete;
            $i = $i + 1;
          ?>
         <tr>
-        <td><?php echo $u->title; ?></td>
+        <td class="title-td" m-id="<?php echo $u->mid; ?>"><?php echo $u->title; ?></td>
         <td class="table-date"><?php echo $u->date; ?></td>
         <td><?php echo $u->time; ?></td>
         <td><?php echo $u->location; ?></td>
@@ -762,7 +762,7 @@ let autocomplete;
            $i = $i + 1;
          ?>
         <tr>
-        <td><?php echo $u->title; ?></td>
+        <td class="title-td" m-id="<?php echo $u->mid; ?>"><?php echo $u->title; ?></td>
         <td class="table-date"><?php echo $u->date; ?></td>
         <td><?php echo $u->time; ?></td>
         <td><?php echo $u->location; ?></td>
@@ -1215,6 +1215,13 @@ $('#toggle').remove();
           $('#DataTables_Table_0_wrapper').show()
           $('.shift-bar').eq(2).hide();
       });
+    });
+  </script>
+  <script type="text/javascript">
+  $(document).on('click','.title-td',function(){
+      var mId = $(this).prop('m-id')
+  var url = "http://localhost/PN101/MOM/meetingInfo/"+mId;
+      window.location.href=url;
     });
   </script>
 </html>
