@@ -1,15 +1,26 @@
 <?php
 
 class Mom extends CI_CONTROLLER{
+
     public function index(){
+      if($this->session->has_userdata('LoginId')){
 			$data['users'] = $this->getUsers();
-            $data['meetings'] = $this->getMeetings();
+      $data['meetings'] = $this->getMeetings();
         $this->load->view('mom1_dup',$data);
+                }
+    else{
+      $this->load->view('redirectToLogin');
+    }
     }
    public function attendence($mId){
+    if($this->session->has_userdata('LoginId')){
     $data['partcipants'] = $this->getParticipant($mId); 
     $data['mId'] = $mId;
        $this->load->view('attendence',$data);
+              }
+    else{
+      $this->load->view('redirectToLogin');
+    }
    }
     public function getMeetings(){
         $url =  BASE_API_URL."mom/getMeetings/".$this->session->userdata('LoginId');
@@ -31,9 +42,14 @@ class Mom extends CI_CONTROLLER{
     }
 
     public function startMeeting($mId){
+      if($this->session->has_userdata('LoginId')){
         $data['partcipants'] = $this->getParticipant($mId); 
         $data['mId'] = $mId;
         $this->load->view('startmeeting',$data);
+                }
+    else{
+      $this->load->view('redirectToLogin');
+    }
     }
 
     public function getParticipant($id){
@@ -64,18 +80,33 @@ class Mom extends CI_CONTROLLER{
     }
 
     public function createMeeting(){
+      if($this->session->has_userdata('LoginId')){
         $this->load->view('createMeeting');
+                }
+    else{
+      $this->load->view('redirectToLogin');
+    }
     }
 
 
     public function onBoard($mId){
+      if($this->session->has_userdata('LoginId')){
         $data['mId'] = $mId;
         $data['present'] = $this->getPresent($mId);
         $this->load->view('meetingstarted_dup',$data);
+                }
+    else{
+      $this->load->view('redirectToLogin');
+    }
     }
 
     public function onBoardDup(){
+      if($this->session->has_userdata('LoginId')){
         $this->load->view('meetingstarted_dup');
+                }
+    else{
+      $this->load->view('redirectToLogin');
+    }
     }
 
     public function getPresent($id){
@@ -101,9 +132,14 @@ class Mom extends CI_CONTROLLER{
 
     
     public function summary($id){
+      if($this->session->has_userdata('LoginId')){
         $data1['mId'] = $id;
         $data1['summary'] = $this->getSummary($id);
         $this->load->view('summary_dup',$data1);
+                }
+    else{
+      $this->load->view('redirectToLogin');
+    }
     }
 
     public function getSummary($id){
@@ -317,8 +353,13 @@ class Mom extends CI_CONTROLLER{
        }
    }
    public function meetingInfo($mId){
+    if($this->session->has_userdata('LoginId')){
        $data['info'] = $this->getInfo($mId); 
        $this->load->view('meetingInfo',$data);
+              }
+    else{
+      $this->load->view('redirectToLogin');
+    }
    }
   public function getInfo($id){
     $url =  BASE_API_URL."mom/getMeetingInfo/".$id;
@@ -339,60 +380,5 @@ class Mom extends CI_CONTROLLER{
     {
             }
     }
-    public function updateMeeting($id){
-        $form_data = $this->input->post();
-        // echo json_encode($form_data);
-        // exit;
-        
-        if($form_data != null ){
-        
-            $data['userId']        =      $this->session->userdata('LoginId');
-            $data['title']         =      $form_data['meetingTitle'];
-            $data['location']      =      $form_data['meetingLocation'];
-            $data['date']          =      $form_data['meetingDate'];
-            $data['time']          =      $form_data['meetingTime'];
-            $data['agenda']        =      $form_data['meetingAgenda'];
-            $data['collab']        =      $form_data['meetingcollab'];
-            $data['invites']       =      $form_data['invites'];
-         //    echo "<pre>";
-         //    var_dump($data);
-         //    exit;
-            $url = "http://localhost/PN101/api/mom/updateMeeting/".$id;
-            $ch = curl_init($url);
-         //   echo json_encode($data);
-         //   exit;
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                'x-device-id: '.$this->session->userdata('x-device-id'),
-                'x-token: '.$this->session->userdata('AuthToken')
-            ));
-            
-          curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-           
-            $server_output = curl_exec($ch);
-           $httpcode = curl_getinfo($ch,CURLINFO_HTTP_CODE);
-         //   echo json_encode($httpcode);
-         //   exit;
- 
-             if($httpcode == 200){
-                 $jsonOutput = json_decode($server_output);
-                 curl_close($ch);
-                
-                 redirect(base_url().'mom');
-             }
-             else if($httpcode == 401){
-                      json_encode(['error'=>'Error']);
-                               }
- 
-         }
- 
-
-
-
-    }
-   
-
   }
 ?>                   
