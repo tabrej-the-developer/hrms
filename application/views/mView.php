@@ -513,11 +513,14 @@ p.ovrflowtext {
   width: 88%;
 }
 .pointer {cursor: pointer;}
+.container{
+  max-width:95%;
+}
 </style>
 </head>
 
 <body>
-<div class="container">
+<div class="container mr-0">
  
 
   <div class="row rounded-lg overflow-hidden shadow">
@@ -583,26 +586,26 @@ p.ovrflowtext {
 		 <div class="individual-box">
 			<?php
 			$users = json_decode($users);
-			foreach ($users->users as $chat) { ?>
-			<div onclick="loadNewChat('<?php echo $chat->userid;?>','N')" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people pointer">
-              <div class="media">
-			  <div class="icon-container">
-			  <?php
-					if($chat->imageUrl == null || $chat->imageUrl == "") {
-					$chat->imageUrl = base_url().'assets/images/defaultUser.png';
-					}
-				?>
-				<img src="<?php echo $chat->imageUrl;?>" alt="user" width="30" class="rounded-circle">
-			  </div>
+			if(isset($users->users)){
+        foreach ($users->users as $chat) { ?>
+          <div onclick="loadNewChat('<?php echo $chat->userid;?>','N')" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people pointer">
+            <div class="media">
+              <div class="icon-container">
+              <?php
+                if($chat->imageUrl == null || $chat->imageUrl == "") {
+                $chat->imageUrl = base_url().'assets/images/defaultUser.png';
+                }
+              ?>
+              <img src="<?php echo $chat->imageUrl;?>" alt="user" width="30" class="rounded-circle">
+              </div>
                 <div class="media-body ml-4">
                   <div class="d-flex align-items-center justify-content-between mb-1">
                     <h6 class="mb-0"><?php echo $chat->username;?></h6>
                   </div>
-                 
                 </div>
               </div>
             </div>
-			<?php }?>
+            <?php }}?>
 			
 		 </div>
 		 
@@ -621,34 +624,35 @@ p.ovrflowtext {
 		<div class="individual-box">
 		 <?php
 			$groups = json_decode($groups);
-			foreach ($groups->groups as $group) 
-			{ 
-         ?>
-			<div onclick="loadNewChat('<?php echo $group->groupid;?>','Y')" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people pointer">
-              <div class="media">
-			   
-                <div class="media-body ml-4">
-                  <div class="d-flex align-items-center justify-content-between mb-1">
-                    <h6 class="mb-0"><?php echo $group->groupName;?></h6>
-                  </div>
-                </div>
-			<!-- 	<div class="col-md-6 avatar-group text-right">
-                        <a href="#" class="avatar avatar-sm" data-toggle="tooltip" data-original-title="Ryan Tompson">
-                          <img alt="Image placeholder" src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" class="rounded-circle" width="30">
-                        </a>
-                        <a href="#" class="avatar avatar-sm" data-toggle="tooltip" data-original-title="Romina Hadid">
-                          <img alt="Image placeholder" src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" class="rounded-circle" width="30">
-                        </a>
-                        <a href="#" class="avatar avatar-sm" data-toggle="tooltip" data-original-title="Alexander Smith">
-                          <img alt="Image placeholder" src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" class="rounded-circle" width="30">
-                        </a>
-                        <a href="#" class="avatar avatar-sm" data-toggle="tooltip" data-original-title="Alexander Smith">
-                          <img alt="Image placeholder" src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" class="rounded-circle" width="30">
-                        </a>
-					</div> -->
-              </div>
-            </div>
-			<?php } ?>
+			if(isset($groups->groups)){
+        foreach ($groups->groups as $group) 
+             { 
+                ?>
+             <div onclick="loadNewChat('<?php echo $group->groupid;?>','Y')" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people pointer">
+                     <div class="media">
+                
+                       <div class="media-body ml-4">
+                         <div class="d-flex align-items-center justify-content-between mb-1">
+                           <h6 class="mb-0"><?php echo $group->groupName;?></h6>
+                         </div>
+                       </div>
+             <!--   <div class="col-md-6 avatar-group text-right">
+                               <a href="#" class="avatar avatar-sm" data-toggle="tooltip" data-original-title="Ryan Tompson">
+                                 <img alt="Image placeholder" src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" class="rounded-circle" width="30">
+                               </a>
+                               <a href="#" class="avatar avatar-sm" data-toggle="tooltip" data-original-title="Romina Hadid">
+                                 <img alt="Image placeholder" src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" class="rounded-circle" width="30">
+                               </a>
+                               <a href="#" class="avatar avatar-sm" data-toggle="tooltip" data-original-title="Alexander Smith">
+                                 <img alt="Image placeholder" src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" class="rounded-circle" width="30">
+                               </a>
+                               <a href="#" class="avatar avatar-sm" data-toggle="tooltip" data-original-title="Alexander Smith">
+                                 <img alt="Image placeholder" src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" class="rounded-circle" width="30">
+                               </a>
+                 </div> -->
+                     </div>
+                   </div>
+             <?php }} ?>
 			
             
 		 </div>
@@ -663,18 +667,25 @@ p.ovrflowtext {
    <a href="javascript:void(0);" id="contact_us">
 		<?php
             $currentUserInfo = json_decode($currentUserInfo);
-            if($currentUserInfo->avatarUrl == null || $currentUserInfo->avatarUrl == ""){
-              $currentUserInfo->avatarUrl = base_url().'assets/images/defaultUser.png';
+            if(isset($currentUserInfo->avatarUrl)){
+              if($currentUserInfo->avatarUrl == null || $currentUserInfo->avatarUrl == ""){
+                $currentUserInfo->avatarUrl = base_url().'assets/images/defaultUser.png';
+              }
             }
           ?>
-	<img src="<?php echo $currentUserInfo->avatarUrl;?>" alt="user" width="35" class="rounded-circle">
+	<img src="<?php if(isset($currentUserInfo->avatarUrl)){echo $currentUserInfo->avatarUrl;}?>" alt="user" width="35" class="rounded-circle">
 	</a>
 	<p class="text-capitalize" style="margin:0; font-size:18px; font-weight:500; padding:3px 0 0 10px; color:#307bd3;">
 		<?php 
           if($isGroupYN == "N")
-            echo $currentUserInfo->memberName;
+            if(isset($currentUserInfo->memberName))
+            {
+              echo $currentUserInfo->memberName;
+            }
           else
-            echo $currentUserInfo->groupName;
+            if(isset($currentUserInfo->groupName)){
+               echo $currentUserInfo->groupName;
+            }
           ?>
 	</p>
     </div>
@@ -683,19 +694,21 @@ p.ovrflowtext {
         <!-- Sender Message-->
 		<?php
               $currentChat = json_decode($currentChat);
-              foreach ($currentChat->chats as $chats) { ?>
-        <div class="media w-50 mb-3">
-<!-- 		<img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="30" class="rounded-circle"> -->
+    if(isset($currentChat->chats)){
+      foreach ($currentChat->chats as $chats) { ?>
+          <div class="media w-50 mb-3">
+        <!--     <img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="30" class="rounded-circle"> -->
           <div class="media-body ml-3">
-		  <?php $date=date_create($chats->sentDateTime);?>
-		  <p class="text-small mb-0 text-muted text-muted font-weight-bold"><?php echo 'name';?> 
-		  <small class="text-muted"><?php echo date_format($date,"d M y | H:i A");?></small></p>
-            <div class="bg-light rounded py-2 px-3 mb-2">
+           <?php $date=date_create($chats->sentDateTime);?>
+             <p class="text-small mb-0 text-muted text-muted font-weight-bold"><?php echo 'name';?> 
+               <small class="text-muted"><?php echo date_format($date,"d M y | H:i A");?></small>
+             </p>
+          <div class="bg-light rounded py-2 px-3 mb-2">
               <p class="text-small mb-0 text-muted"><?php echo $chats->chatText;?></p>
-            </div>
           </div>
         </div>
-		<?php }?>	
+      </div>
+      <?php }}?>	
         <!-- Reciever Message-->
         <!--<div class="media w-50 ml-auto mb-3">
           <div class="media-body">
@@ -983,7 +996,14 @@ p.ovrflowtext {
 		<!-- add to group model end -->
 </body>
 
-
+<script type="text/javascript">
+  // height , width of the container
+  $(document).ready(()=>{
+    $('.container').css('paddingLeft',$('.side-nav').width());
+    var containerHeight = "100vh" - $('.header-top').height();
+   document.getElementsByClassName("container").style.maxHeight = "50vh"
+  })
+</script>
 <script>
 	
 	// dropdowns
@@ -1068,4 +1088,5 @@ $('.save').click(function(){
       }
     }
   </script>
+  
     </html>
