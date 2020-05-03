@@ -276,7 +276,7 @@ border-bottom-right-radius: 20px;
 			if(id == null || id == ""){
 				id=1;
 			}
-		var url = "<?php echo base_url();?>payroll/payrollList?center="+id;
+		var url = "http://localhost/PN101/payroll/payrollList?center="+id;
 		$.ajax({
 			url:url,
 			type:'GET',
@@ -290,7 +290,7 @@ border-bottom-right-radius: 20px;
 
 		$(document).on('click','tr',function(){
 			var timesheetId = $(this).prop('id')
-	var url = "<?php echo base_url();?>payroll/payrollShifts?timesheetId="+timesheetId;
+	var url = "http://localhost/PN101/payroll/payrollShifts?timesheetId="+timesheetId;
 			window.location.href=url;
 		})
 })
