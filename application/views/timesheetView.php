@@ -241,7 +241,9 @@ max-width:30vw;
 .Added{
 	background: #9E9E9E
 }
-
+.nav-link{
+	text-align:left;
+}
 .Published{
 	background:#9C27B0;
 }
@@ -430,7 +432,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 		} 
 			$count = count($timesheetDetails->timesheet[0]->unrosteredEmployees);
 			for($x=0;$x<$count;$x++){ 
-				$userLevel = $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->level;
+				$userLevel = $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->level;
 						foreach ($entitlements as $e) {
 							if($e[0]->id == $userLevel){
 								$variable = $e[0]->hourlyRate;
@@ -466,32 +468,31 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					// to be changed to $value
 					?>
 
-					<?php for($p=0;$p<1;$p++){?>
-		<td style="min-width:13vw;padding:7px" class="shift-edit" name="<?php  echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName ?>"  cal-x="<?php echo $x; ?>"cal-p="<?php echo $p; ?>" array-type="unrosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empId?>" curr-date="<?php echo $timesheetDetails->timesheet[$x]->empId?>" timesheet-id="<?php echo $timesheetDetails->id;?>">
-						<div style="background:pink;border-radius: 5px;padding:3px">
-							<div style="display:flex;flex-direction: column;background:#307bd3;color:white;border-radius: 5px">
-					<?php 
-						// $timesheetDetails->timesheet[$p]->employees[$x];
-				$times = $timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes;
-				$totalTime = 0;
-				foreach($times as $time){
-					$totalTime = $totalTime + $time->endTime - $time->startTime;
-				}
-						$number = 0;
-						foreach($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes as $visits){$number++;}
+				<?php for($p=0;$p<1;$p++){?>
+	<td style="min-width:13vw;padding:7px" class="shift-edit" name="<?php  echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName ?>"  cal-x="<?php echo $x; ?>"cal-p="<?php echo $p; ?>" array-type="unrosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empId?>"  timesheet-id="<?php echo $timesheetDetails->id;?>">
+					<div style="background:pink;border-radius: 5px;padding:3px">
+						<div style="display:flex;flex-direction: column;background:#307bd3;color:white;border-radius: 5px">
+				<?php 
+					// $timesheetDetails->timesheet[$p]->employees[$x];
+			$times = $timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes;
+			$totalTime = 0;
+			foreach($times as $time){
+				$totalTime = $totalTime + $time->endTime - $time->startTime;
+			}
+					$number = 0;
+					foreach($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes as $visits){$number++;}
 
-				$totalVisits = $number;
-				
-					?>
-								<span>Total Hours : <?php echo  $totalTime/100 .".". $totalTime%100; ?></span>
-								<span>Total visits : <?php echo $totalVisits; ?></span>
-							</div>
-							
+			$totalVisits = $number;
+			
+				?>
+							<span>Total Hours : <?php echo  $totalTime/100 .".". $totalTime%100; ?></span>
+							<span>Total visits : <?php echo $totalVisits; ?></span>
 						</div>
-					</td>
+						
+					</div>
+				</td>
 
-					  <?php } ?>
-					<td class=" " style="min-width:18vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
+				  <?php } ?>
 
 				</tr>
 			<?php 
