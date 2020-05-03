@@ -8,6 +8,16 @@
       #wrappers{
         padding:0;
       }
+      .submit,.cancel{
+            background-color: #9E9E9E;
+  border: none;
+  color: white;
+  padding: 10px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 2px
+      }
     </style>
   </head>
 
