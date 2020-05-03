@@ -15,7 +15,7 @@
 		}
 		.table-div{
 			height:70vh;
-			overflow-y: scroll;
+			overflow-y: auto;
 			box-shadow:0px 0px 5px 5px rgb(242, 242, 242);
 		}	
 		.sort-by{
@@ -162,6 +162,12 @@ border-bottom-right-radius: 20px;
 </style>
 </head>
 <body>
+	<?php
+		function dateToDayAndYear($date){
+			$date = explode("-",$date);
+			return date("M d,Y",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
+		}
+	?>
 <div class="container">
 	<div class="d-flex">
 		<span class="m-3" style="font-size: 30px;font-weight: bold">Timesheet</span>
@@ -215,8 +221,8 @@ border-bottom-right-radius: 20px;
 					<td><?php echo $centers->centers[$id]->name ?></td>
 					<td><?php echo $timesheet->timesheets[$i]->isEditYN ?></td>
 				<?php }?>
-					<td><?php echo $timesheet->timesheets[$i]->startDate ?></td>
-					<td><?php echo $timesheet->timesheets[$i]->endDate ?></td>
+					<td><?php echo dateToDayAndYear($timesheet->timesheets[$i]->startDate) ?></td>
+					<td><?php echo dateToDayAndYear($timesheet->timesheets[$i]->endDate) ?></td>
 					<td><?php echo $timesheet->timesheets[$i]->status ?></td>
 					</tr>
 				<?php }?>
@@ -340,6 +346,11 @@ $("#timesheet-date").datepicker();
 
 		})
 	})
+</script>
+<script type="text/javascript">
+	$(document).ready(()=>{
+    $('.container').css('paddingLeft',$('.side-nav').width());
+});
 </script>
 </body>
 </html>
