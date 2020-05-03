@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Spotlist</title>
+	<title>PN101</title>
 	<meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">  
 </head>
@@ -134,6 +134,11 @@
 		}) 
 		})
 	})
+</script>
+<script type="text/javascript">
+  $(document).ready(()=>{
+    $('#wrapper').css('paddingLeft',$('.side-nav').width());
+});
 </script>
 </body>
 </html>
