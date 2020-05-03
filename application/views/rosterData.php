@@ -247,6 +247,9 @@ max-width:30vw;
 .Accepted{
 	background:#4CAF50;
 }
+.nav-link{
+	text-align:left;
+}
 @media only screen and (max-width: 600px) {
 .modal-content{
 	min-width:100vw;
@@ -328,18 +331,21 @@ function icon($str){
 }
 
 //PHP functions //
-
-		 $str1 = $rosterDetails->startDate;
+		if(isset($rosterDetails->startDate)){
+			$str1 = $rosterDetails->startDate;
+		if(isset($rosterDetails->endDate)){
 		 $str2 = $rosterDetails->endDate; 
-		 $v1 = explode("-",$str1);
-		 $v2 = explode("-",$str2);
+			 $v1 = explode("-",$str1);
+			 $v2 = explode("-",$str2);
 		 echo date("M d",mktime(0,0,0,$v1[1],intval($v1[2]),(intval($v1[0]))))." to ". 
 		 date("M d , Y",mktime(0,0,0,$v2[1],intval($v2[2]),(intval($v2[0]))));
+		}}
 		 ?> </div>
 		<div class="table-div" style="">
 			<table>
 				<tr>
 					<th id="table-id-1" class="day">Employees</th>	<?php $x=0;
+					if(isset($rosterDetails->startDate)){
 						$startDate = date('Y-m-d', strtotime($rosterDetails->startDate));
 						?>
 					<th id="table-id-2" class="day">Mon <?php echo dateToDay($rosterDetails->startDate) ?></th>
@@ -354,7 +360,7 @@ function icon($str){
 						echo dateToDay($endDate); ?></th>
 					<th id="table-id-6" class="day">Fri <?php 
 						$endDate = date( "Y-m-d", strtotime( "$startDate +4 day" ));
-						echo dateToDay($endDate); ?></th>
+						echo dateToDay($endDate); }?></th>
 					<th id="table-id-7" class="day">
 						<span class=" d-flex justify-content-center">
 							<span class="row">Budget (Emp wise)</span>
@@ -363,7 +369,10 @@ function icon($str){
 				</tr>
 			
 				<?php 
-				$count = count($rosterDetails->roster);
+				if(isset($rosterDetails->roster)){
+						$count = count($rosterDetails->roster);
+					}
+					else $count = 0;
 if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){
 				for($x=0;$x<$count;$x++){ 
 
@@ -442,7 +451,9 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 
 
 	<?php 
-				$count = count($rosterDetails->roster);
+	if(isset($rosterDetails->roster)){
+		$count = count($rosterDetails->roster);
+	}
 if($this->session->userdata('UserType')==STAFF){
 				for($x=0;$x<1;$x++){ 
 					
@@ -520,19 +531,21 @@ if($this->session->userdata('UserType')==STAFF){
 		</div>
 <?php if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){ ?>
 
-		<?php if($rosterDetails->status === 'Draft'){ ?>
+		<?php 
+	if(isset($rosterDetails->status)){
+			if($rosterDetails->status === 'Draft'){ ?>
+			<div class="buttons d-flex justify-content-end">
+				<button id="discard-roster" class="button">Discard</button>
+				<button id="draft-roster" class="button">Save Draft</button>
+				<button id="publish-roster" class="button">Publish</button>
+			</div>
+		<?php } ?>
+		<?php if($rosterDetails->status === 'Published') {?>
 		<div class="buttons d-flex justify-content-end">
 			<button id="discard-roster" class="button">Discard</button>
-			<button id="draft-roster" class="button">Save Draft</button>
-			<button id="publish-roster" class="button">Publish</button>
+			<button id="publish-roster" class="button">Save</button>
 		</div>
-	<?php } ?>
-	<?php if($rosterDetails->status === 'Published') {?>
-	<div class="buttons d-flex justify-content-end">
-		<button id="discard-roster" class="button">Discard</button>
-		<button id="publish-roster" class="button">Save</button>
-	</div>
-	<?php } ?>
+		<?php } }?>
 <?php } ?>
 <?php if($this->session->userdata('UserType') == STAFF){?>
 <div class="buttons d-flex justify-content-end">
@@ -701,7 +714,7 @@ if($this->session->userdata('UserType')==STAFF){
 </script>
 
 <?php }?>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 	function uiFunction(){
   if(screen.width > 768){
 	    var sideNav = document.getElementsByClassName('side-nav')[0].offsetWidth
@@ -720,7 +733,7 @@ if($this->session->userdata('UserType')==STAFF){
 			  uiFunction();
 </script>
 
-
+ -->
 
 
 <script type="text/javascript">
