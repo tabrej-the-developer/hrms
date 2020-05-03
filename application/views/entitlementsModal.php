@@ -27,6 +27,9 @@
 			font-size:1.1rem;
 			font-weight:bolder;
 		}
+		.d-flex{
+			padding-bottom:5px;
+		}
 	</style>
 
 	<script
@@ -39,22 +42,23 @@
 
 	<div class="d-flex row m-0">
 		<span class="head head-th col-3">Name</span>
-		<span class="head head-th col-2">Bonus Rate</span>
+		<span class="head head-th col-2">Level</span>
 		<span class="head head-th col-3">Center</span>
 		<span class="head head-th col-2">Title</span>
 	</div>
 	<?php 
 		$users = json_decode($users);
-		$count = count($users->users)
-	 ?>
-	<?php for($x=0;$x<$count;$x++){ ?>
-	<div class="d-flex row m-0">
-		<span class="head col-3"><?php echo $users->users[$x]->name?></span>
-		<span class="head col-2"><?php echo $users->users[$x]->bonusRate; ?></span>
-		<span class="head col-3"><?php echo $users->users[$x]->center; ?></span>
-		<span class="head col-2"><?php echo $users->users[$x]->title; ?></span>
-	</div>
-	<?php } ?>
+		if(isset($users->users)){
+			$count = count($users->users);
+		 ?>
+		<?php for($x=0;$x<$count;$x++){ ?>
+		<div class="d-flex row m-0">
+			<span class="head col-3"><?php echo $users->users[$x]->name?></span>
+			<span class="head col-2"><?php echo $users->users[$x]->level; ?></span>
+			<span class="head col-3"><?php echo $users->users[$x]->center; ?></span>
+			<span class="head col-2"><?php echo $users->users[$x]->title; ?></span>
+		</div>
+			<?php } }?>
 </div>
 
 
