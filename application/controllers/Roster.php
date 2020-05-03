@@ -4,12 +4,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Roster extends CI_Controller {
 
 	public function index(){
-		
-		$this->load->view(base_url().'roster/roster_dashboard');
+		if($this->session->has_userdata('LoginId')){
+			$this->load->view(base_url().'roster/roster_dashboard');
+				}
+		else{
+			$this->load->view('redirectToLogin');
+		}
 	}
 
 public function roster_dashboard(){
-
+  if($this->session->has_userdata('LoginId')){
 	if($this->session->userdata('UserType') == SUPERADMIN ){
 		if(!isset($_GET['center'])){
 							$id = 0;
@@ -38,17 +42,16 @@ public function roster_dashboard(){
 		$var['userId'] 	= $this->session->userdata('LoginId');
 		$var['userType'] = $this->session->userdata('UserType');
 		$var['centers'] = $this->getAllCenters();
-		$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[0]->centerid);
-
+		$var['rosters'] = $this->getPastRosters("1");
 		$var['entitlement'] = $this->getAllEntitlements($var['userId']);
-
 	}
-
 			$this->load->view('rosterView',$var);
 
-}
-
-
+	}
+		else{
+			$this->load->view('redirectToLogin');
+		}
+	}
 
 	function getPastRosters($centerId = 1){
 		$url = BASE_API_URL."/rosters/getPastRosters/".$centerId."/".$this->session->userdata('LoginId');
@@ -70,12 +73,17 @@ public function roster_dashboard(){
 		}
 	}
 
-	public function getRosterDetails(){
+public function getRosterDetails(){
+	if($this->session->has_userdata('LoginId')){
 		$data['rosterid'] = $this->input->get('rosterId');
 		$data['userid'] = $this->session->userdata('LoginId');
 		$data['entitlements'] = $this->getAllEntitlements($data['userid']);
 		$data['rosterDetails'] = $this->getRoster($data['rosterid'],$data['userid']);
 			$this->load->view('rosterData',$data);
+		}
+		else{
+			$this->load->view('redirectToLogin');
+		}
 	}
 
 	 function getRoster($rosterid,$userid){
@@ -101,7 +109,8 @@ public function roster_dashboard(){
 		}
 
 
-	public function createRoster(){
+public function createRoster(){
+		if($this->session->has_userdata('LoginId')){
 		$this->load->helper('form');
 		$form_data = $this->input->post();
 		if($form_data != null){
@@ -131,7 +140,11 @@ $server_output = curl_exec($ch);
 
 			}
 
+		}
 	}
+		else{
+			$this->load->view('redirectToLogin');
+		}
 }
 		
 		
@@ -156,6 +169,8 @@ $server_output = curl_exec($ch);
 	}
 
 public	function updateShift(){
+
+		if($this->session->has_userdata('LoginId')){
 			$data['startTime'] = $this->input->post('startTime');
 			$data['endTime'] = $this->input->post('endTime');
 			$data['status'] = $this->input->post('status');
@@ -182,6 +197,10 @@ public	function updateShift(){
 
 			}
 		}
+		else{
+			$this->load->view('redirectToLogin');
+		}
+		}
 
 	function getUsers(){
 		$url = BASE_API_URL."messenger/getUsers/".$this->session->userdata('LoginId');
@@ -204,27 +223,32 @@ public	function updateShift(){
 	}
 
 public function updateRoster(){
-	$data['userid'] = $this->input->post('userid');
-	$data['rosterid'] = $this->input->post('rosterid');
-	$data['status'] = $this->input->post('status');	
-	$url = BASE_API_URL."rosters/updateRoster";
+	if($this->session->has_userdata('LoginId')){
+		$data['userid'] = $this->input->post('userid');
+		$data['rosterid'] = $this->input->post('rosterid');
+		$data['status'] = $this->input->post('status');	
+		$url = BASE_API_URL."rosters/updateRoster";
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-				'x-device-id: '.$this->session->userdata('x-device-id'),
-				'x-token: '.$this->session->userdata('AuthToken')
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
 			));
 		$server_output = curl_exec($ch);
 		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			if($httpcode == 200){
+		if($httpcode == 200){
 		$jsonOutput = json_decode($server_output);
-				curl_close ($ch);
-			}
-			else if($httpcode == 401){
-
-			}
+		curl_close ($ch);
+		}
+		else if($httpcode == 401){
+	
+		}
+	}
+		else{
+			$this->load->view('redirectToLogin');
+		}
 }
 
 function getAllEntitlements($userid){
