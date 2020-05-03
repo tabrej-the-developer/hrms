@@ -59,7 +59,7 @@
 	     $output = ($x/100) . ": 00 PM";
 	    }
 	    if(($x%100)!=0){
-	    $output = intval(var)($x/100) . ":". $x%100 . "PM";
+	    $output = intval($x/100) . ":". $x%100 . "PM";
 	    }
 	}
 	return $output;
@@ -84,13 +84,13 @@ foreach($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes 
 		<span class="new-time-box"></span>
 		<span>
 			<select class="shift-type-select" >
-				<?php foreach($shift->payrollTypes as $shift){
-					if($shift->id == "3"){?>
-				<option value="<?php echo $shift->type; ?>" selected factor="<?php echo $shift->factor; ?>" class="fact"><?php echo $shift->type ?></option>
+				<?php foreach($shift->payrollTypes as $shifts){
+					if($shifts->id == "3"){?>
+				<option value="<?php echo $shifts->type; ?>" selected factor="<?php echo $shifts->factor; ?>" class="fact"><?php echo $shifts->type ?></option>
 			<?php 
 					}
 					else{ ?>
-				<option value="<?php echo $shift->type; ?>" ><?php echo $shift->type ?></option>	
+				<option value="<?php echo $shifts->type; ?>" ><?php echo $shifts->type ?></option>	
 					<?php 
 					}
 				} ?>
@@ -108,14 +108,14 @@ foreach($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes 
 <?php 
 if($aT == 'unrosteredEmployees'){
 foreach($timesheetDetails->timesheet[$ya]->unrosteredEmployees[$xa]->clockedTimes as $visits){
-
-						$variable = 0;
-						$userLevel = $rosterDetails->roster[$xa]->roles[$counter]->level;
-						foreach($entitlement as $e){
-								if($e->id == $userLevel ){
-									$variable = $e->hourlyRate;
-								}
-							}
+		$variable = 0;
+	if(isset($rosterDetails->roster[$xa])){
+		$userLevel = $rosterDetails->roster[$xa]->roles[$counter]->level;
+			foreach($entitlement as $e){
+				if($e->id == $userLevel ){
+					$variable = $e->hourlyRate;
+				}}
+		}
 	?>
 	  <div start-time="<?php echo $visits->startTime; ?>" end-time="<?php echo $visits->endTime; ?>" class="box-time" style="padding:20px" hourly="<?php echo $variable;?>">
 	  	<span class="group-span">
