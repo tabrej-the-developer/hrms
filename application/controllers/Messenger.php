@@ -29,18 +29,21 @@ class Messenger extends CI_Controller {
 		if($this->session->has_userdata('LoginId')){
 			$data['recentChats'] = $this->getRecentChats();
 			if($currentUserId == null){
-				$currentUserId = (json_decode($data['recentChats'])->chats);
-				if($currentUserId != null){
-					$currentUserId = $currentUserId[0];
-					$isGroupYN = $currentUserId->isGroupYN;
-					$currentUserId = $currentUserId->id;
+				if((json_decode($data['recentChats'])->chats) != null){
+				$currentUserId = (json_decode($data['recentChats'])->chats)[0];
+			}
+			if(isset( $currentUserId->isGroupYN )){
+				$isGroupYN = $currentUserId->isGroupYN;
+			}
+			if(isset($currentUserId->id)){
+				$currentUserId = $currentUserId->id;
 				}
 			}
 			if($isGroupYN == "N"){
 				$data['currentChat'] = $this->getUserChat($currentUserId);
 				$data['currentUserInfo'] = $this->getUserInfo($currentUserId);
 			}
-			else if($isGroupYN == "Y"){
+			else{
 				$data['currentChat'] = $this->getGroupChat($currentUserId);
 				$data['currentUserInfo'] = $this->getGroupInfo($currentUserId);
 			}
@@ -51,7 +54,7 @@ class Messenger extends CI_Controller {
 			$this->load->view('mView',$data);
 		}
 		else{
-			$this->load->view('notAllowedView');
+			$this->load->view('redirectToLogin');
 		}
 	}
 
@@ -84,7 +87,6 @@ class Messenger extends CI_Controller {
 				redirect(base_url().'messenger/chats/'.$data['receiverId'].'/'.$data['isGroupYN']);
 			}
 			else if($httpcode == 401){
-
 			}
 		}
 	}
@@ -201,8 +203,6 @@ class Messenger extends CI_Controller {
 
 	function getRecentChats(){
 		$url = BASE_API_URL."messenger/recentChats/".$this->session->userdata('LoginId');
-		//echo($url);
-		//var_dump($this->session);
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -211,7 +211,6 @@ class Messenger extends CI_Controller {
 			'x-token: '.$this->session->userdata('AuthToken')
 		));
 		$server_output = curl_exec($ch);
-		//var_dump($server_output);
 		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		if($httpcode == 200){
 			return $server_output;
@@ -283,7 +282,6 @@ class Messenger extends CI_Controller {
 	}
 
 	function getGroupChat($groupid){
-		var_dump($groupid);
 		$url = BASE_API_URL."messenger/getGroupChats/".$this->session->userdata('LoginId')."/".$groupid;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
@@ -392,5 +390,10 @@ class Messenger extends CI_Controller {
 	// 	curl_close ($ch);
 	// }
 
+	public function x(){
+		require('Library.php');
+		$footprint = new Library();
+		$footprint->footprint();
+	}
 
 }
