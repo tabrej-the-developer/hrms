@@ -9,6 +9,7 @@ class Payroll extends CI_Controller {
 	}
 
 	public function payrollList(){
+	if($this->session->has_userdata('LoginId')){
 		if(!isset($_GET['center'])){
 							$id = 0;
 							$oldid=1;
@@ -23,6 +24,10 @@ class Payroll extends CI_Controller {
 		$var['centers'] = $this->getAllCenters();
 		$var['payrolls'] = $this->getPastPayrolls(json_decode($var['centers'])->centers[$id]->centerid);
 			$this->load->view('payrollList',$var);
+					}
+		else{
+			$this->load->view('redirectToLogin');
+			}
 	}
 
 		 function getPastPayrolls($centerid){
@@ -45,7 +50,8 @@ class Payroll extends CI_Controller {
 		}
 	}
 
-		public function payrollShifts(){
+	public function payrollShifts(){
+		if($this->session->has_userdata('LoginId')){
 			$postData = $this->input->get();
 			if($postData != null ){
 				$data['userId'] = $this->session->userdata('LoginId');
@@ -55,9 +61,14 @@ class Payroll extends CI_Controller {
 				$data['entitlements'] = $this->getAllEntitlements($data['userId']);
 			}
 			$this->load->view('payrollData',$data);
+				}
+		else{
+			$this->load->view('redirectToLogin');
+			}
 		}
 
 		public function payrollShiftsModal(){
+		if($this->session->has_userdata('LoginId')){
 			$postData = $this->input->get();
 			if($postData != null ){
 				$data['x'] = $this->input->get('x');
@@ -68,6 +79,10 @@ class Payroll extends CI_Controller {
 				$data['entitlements'] = $this->getAllEntitlements($data['userId']);
 			}
 			$this->load->view('payrollModal',$data);
+				}
+		else{
+			$this->load->view('redirectToLogin');
+			}
 		}
 
 		 function getAllPayrollShifts($timesheetid,$userid){
