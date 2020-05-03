@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Leave extends CI_Controller {
 
 	public function index(){
-
+	  if($this->session->has_userdata('LoginId')){
 		if($this->session->userdata('UserType') == SUPERADMIN){
 			$data['leaveType'] = $this->getLeaveType();
 			$data['centers'] = $this->getAllCenters();
@@ -22,8 +22,11 @@ class Leave extends CI_Controller {
 				$data['leaveRequests'] = $this->getLeaveByCenter($centers[0]->centerid);
 			}
 		}
-
 		$this->load->view('leaveView',$data);
+				}
+		else{
+			$this->load->view('redirectToLogin');
+			}
 	}
 
 
