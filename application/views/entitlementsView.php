@@ -43,22 +43,32 @@
   text-decoration: none;
   cursor: pointer;
 }
+.ent-btn{
+      background-color: #9E9E9E;
+  border: none;
+  color: white;
+  padding: 10px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 2px;
+}
     </style>
   </head>
 
   <body id="page-top">    
     <div id="wrappers">
 
-      <div id="content-wrappers" style="margin-top: 90px;
+      <div id="content-wrappers" style="margin-top: 30px;
     background: white;" class="container">
         <div class="row">
-           <h4 class="col-12"><a href="<?php echo base_url();?>center/settings"><button class="btn back-button"> <img src="<?php echo base_url();?>/images/back.png" > </button></a> &nbsp; Edit Entitlements</h4>
-          <div class="col-12">
-        Entitlements
-      </div>
+           <h4 class="col-12"><a href="<?php echo base_url();?>center/settings"><button class="btn back-button"> <img src="<?php echo base_url();?>/images/back.png" > </button></a> &nbsp; Entitlements</h4>
+<!--           <div class="col-12">
+            Entitlements
+          </div> -->
       <div class="col-12" style="padding: 10px;"></div>
-      <div class="col-lg-3 create-ent" style="cursor: pointer">
-       <button> Create Entitlement</button>
+      <div class=" create-ent" style="cursor: pointer;width: 90%;display: flex;justify-content: flex-end">
+       <button class="ent-btn"> Create Entitlement</button>
       </div>
           <div class="col-lg-9 text-right"> 
           <button onclick="addRoom()" class="btn btn-success" style="background-color: transparent;background-image: url(<?php echo base_url();?>images/button.png);
@@ -79,33 +89,34 @@
                   <?php
                     $entitlement = json_decode($entitlements);
                     if($entitlement != null){
-                     $count = count($entitlement->entitlements);
-              for($i=0;$i<$count;$i++) { 	?>
-                <tr >
-                  <td ><span id="" class="id">
-                          <?php echo $entitlement->entitlements[$i]->id?>
-                      </span>
-                   </td> 
-                  <td class="name-parent"><span id="" class="names">
-                          <a href="javascript:void(0)"><?php echo $entitlement->entitlements[$i]->name?></a>
-                      </span>
-                   </td> 
-                    <td class="hourly-rate-parent"><span id="" class="hourly-rate">
-                          <?php echo $entitlement->entitlements[$i]->hourlyRate?>
-                         </span>
-                    </td>
+              if(isset($entitlements->entitlements)){
+     $count = count($entitlement->entitlements);
+            for($i=0;$i<$count;$i++) {   ?>
+              <tr >
+                <td ><span id="" class="id">
+                        <?php echo $entitlement->entitlements[$i]->id?>
+                    </span>
+                 </td> 
+                <td class="name-parent"><span id="" class="names">
+                        <a href="javascript:void(0)"><?php echo $entitlement->entitlements[$i]->name?></a>
+                    </span>
+                 </td> 
+                  <td class="hourly-rate-parent"><span id="" class="hourly-rate">
+                        <?php echo $entitlement->entitlements[$i]->hourlyRate?>
+                       </span>
+                  </td>
 
 
-                    <td>
-                        <span style="cursor: pointer;">
-                         <div><i class="fas fa-pencil-alt" style="color: #0077ff;" u-v="<?php echo $entitlement->entitlements[$i]->id;?>"></i> Edit</div>
-                        </span>
-                    </td>
-                    <td>
-                        <span style="cursor: pointer;"><i class="fas fa-trash-alt" style="color: #ff3b30;" d-v="<?php echo $entitlement->entitlements[$i]->id;?>"></i> Delete</span>
-                    </td>
-                    </tr>
-                    <?php }}?> 
+                  <td>
+                      <span style="cursor: pointer;">
+                       <div><i class="fas fa-pencil-alt" style="color: #0077ff;" u-v="<?php echo $entitlement->entitlements[$i]->id;?>"></i> Edit</div>
+                      </span>
+                  </td>
+                  <td>
+                      <span style="cursor: pointer;"><i class="fas fa-trash-alt" style="color: #ff3b30;" d-v="<?php echo $entitlement->entitlements[$i]->id;?>"></i> Delete</span>
+                  </td>
+                  </tr>
+                  <?php }}}?> 
             </tbody>
           </table>
         </div>
@@ -198,7 +209,7 @@
       });
   </script>
     <script type="text/javascript">
- $(document).on('click','.create-ent',function(){
+ $(document).on('click','.ent-btn',function(){
         if($('#a1').length){}
    else{
              var code = `<tr >
