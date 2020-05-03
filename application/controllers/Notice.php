@@ -25,6 +25,8 @@ class Notice extends CI_Controller {
 
 	public function notices($noticeStatus = 'Inbox',$currentNoticeId=null)
 	{
+
+	if($this->session->has_userdata('LoginId')){
 		$data['allNotices'] = array();
 		$allNotices = json_decode($this->getAllNotices());
 		if($noticeStatus == 'Inbox' && $allNotices != null){
@@ -64,8 +66,14 @@ class Notice extends CI_Controller {
 		//var_dump($data);
 		$this->load->view('noticeView',$data);
 	}
+		else{
+			$this->load->view('redirectToLogin');
+		}
+	}
 
 	public function createNotice(){
+
+	if($this->session->has_userdata('LoginId')){
 		$data['users'] = $this->getUsers();
 		$this->load->helper('form');
 		$form_data = $this->input->post();
@@ -103,6 +111,10 @@ class Notice extends CI_Controller {
 			}
 		}
 		$this->load->view('createNoticeView',$data);
+			}
+		else{
+			$this->load->view('redirectToLogin');
+		}
 	}
 
 	public function dataReady($data){
