@@ -105,7 +105,9 @@ nav > div a.nav-item.nav-link.active:after
     line-height: 25px;
     padding:30px 25px;
 }
-
+.nav-item{
+	color:white !important;
+}
 nav > div a.nav-item.nav-link:hover,
 nav > div a.nav-item.nav-link:focus
 {
@@ -782,4 +784,9 @@ img{ max-width:140%;}
 		}
 
 	</script>
+<script type="text/javascript">
+	$(document).ready(()=>{
+    $('.container').css('paddingLeft',$('.side-nav').width());
+});
+</script>
 </html>
