@@ -4,7 +4,18 @@
 	<?php $this->load->view('header.php');?>
 	<title>Center Profile</title>
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  	
+  	<style type="text/css">
+     .add-center,.add-employee{
+          background-color: #9E9E9E;
+  border: none;
+  color: white;
+  padding: 10px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 2px
+     } 
+    </style>
 </head>
 <body id="page-top">  
 	<div id="wrapper">
@@ -31,6 +42,7 @@
             </select>
           </div>
           <div><button class="add-center">Add Center</button></div>
+          <div><button class="add-employee">Add Employee</button></div>
         </div>
 
   <form class="row form-group " name ="mainForm" id="mainForm" method="post" enctype="multipart/form-data" >
@@ -155,6 +167,16 @@
   $('.add-center').on('click',function(){
     window.location.href="http://localhost/PN101/settings/createCenter"
   })
+</script>
+<script type="text/javascript">
+  $('.add-employee').on('click',function(){
+    window.location.href="http://localhost/PN101/settings/addEmployee"
+  })
+</script>
+<script type="text/javascript">
+  $(document).ready(()=>{
+    $('.container').css('paddingLeft',$('.side-nav').width());
+});
 </script>
 </body>
 </html>
