@@ -4,11 +4,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Timesheet extends CI_Controller {
 
 	public function index(){
-		
+		if($this->session->has_userdata('LoginId')){
 		redirect(base_url().'timesheet/timesheetDashboard');
+			}
+		else{
+			$this->load->view('redirectToLogin');
+		}
 	}
 
-		public function timesheetDashboard(){
+	public function timesheetDashboard(){
+		if($this->session->has_userdata('LoginId')){
 			if(!isset($_GET['center'])){
 							$id = 0;
 							$oldid=1;
@@ -23,27 +28,40 @@ class Timesheet extends CI_Controller {
 		$var['centers'] = $this->getAllCenters();
 		$var['timesheets'] = $this->getPasttimesheets(json_decode($var['centers'])->centers[$id]->centerid);
 			$this->load->view('getPastTimesheetsView',$var);
-
+				}
+		else{
+			$this->load->view('redirectToLogin');
+		}
 	}
 
 	public function getTimesheetDetails(){
+	if($this->session->has_userdata('LoginId')){
 		$data['timesheetid'] = $this->input->get('timesheetId');
 		$data['userid'] = $this->session->userdata('LoginId');
 		$data['timesheetDetails'] = $this->gettimesheet($data['timesheetid'],$data['userid']);
 		$data['entitlements'] = $this->getAllEntitlements($data['userid']);
 			$this->load->view('timesheetView',$data);
+			}
+		else{
+			$this->load->view('redirectToLogin');
+		}
 	}
 
 		public function getTimesheetDetailsModal(){
-		$data['timesheetid'] = $this->input->get('timesheetId');
-		$data['xa'] = $this->input->get('x');
-		$data['ya'] = $this->input->get('y');
-		$data['userid'] = $this->session->userdata('LoginId');
-		$data['aT'] = $this->input->get('aT');
-		$data['entitlements'] = $this->getAllEntitlements($data['userid']);
-		$data['timesheetDetails'] = $this->gettimesheet($data['timesheetid'],$data['userid']);
-		$data['shift'] = $this->getShiftType($data['userid']);
-			$this->load->view('timesheetModal',$data);
+		if($this->session->has_userdata('LoginId')){
+			$data['timesheetid'] = $this->input->get('timesheetId');
+			$data['xa'] = $this->input->get('x');
+			$data['ya'] = $this->input->get('y');
+			$data['userid'] = $this->session->userdata('LoginId');
+			$data['aT'] = $this->input->get('aT');
+			$data['entitlements'] = $this->getAllEntitlements($data['userid']);
+			$data['timesheetDetails'] = $this->gettimesheet($data['timesheetid'],$data['userid']);
+			$data['shift'] = $this->getShiftType($data['userid']);
+				$this->load->view('timesheetModal',$data);
+				}
+		else{
+			$this->load->view('redirectToLogin');
+		}
 	}
 
 
@@ -58,8 +76,8 @@ class Timesheet extends CI_Controller {
 			'x-device-id: '.$this->session->userdata('x-device-id'),
 			'x-token: '.$this->session->userdata('AuthToken')
 		));
-		$server_output = curl_exec($ch);
-		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		if($httpcode == 200){
 			return $server_output;
 			curl_close ($ch);
