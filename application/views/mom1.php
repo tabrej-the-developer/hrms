@@ -5,10 +5,13 @@
 <title>Leaves</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <style>
-  
+<!--   <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+ -->  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<style type="text/css">
+	*{
+font-family: 'Open Sans', sans-serif;
+	}
 
         .card-header {
             padding: 0.2rem 1.25rem;
