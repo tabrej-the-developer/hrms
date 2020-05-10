@@ -5,7 +5,12 @@
 <meta charset="UTF-8">	
   <meta name="keywords" content="HTML,CSS,XML,JavaScript">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<style type="text/css">
+  *{
+    text-align: center;
+font-family: 'Open Sans', sans-serif;
+  }
 
 body {
 
