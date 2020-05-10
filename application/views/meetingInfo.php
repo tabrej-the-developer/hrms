@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style type="text/css">
   *{
+    text-align: center;
 font-family: 'Open Sans', sans-serif;
   }
    .card-header {
@@ -205,7 +206,7 @@ img{ max-width:140%;}
    $info = json_decode($info);
    // print_r($info);
     ?>
-   <?php foreach($info->agenda as $a): ?>
+<!--     <?php foreach($info->mom as $a): ?>
     <div class="card border-success mb-3" style="max-width: 18rem;">
   
   <div class="card-body text-success">
@@ -214,7 +215,7 @@ img{ max-width:140%;}
   </div>
 </div>
 
-<?php endforeach; ?>
+<?php endforeach; ?>  -->
 
 
     
@@ -233,10 +234,10 @@ img{ max-width:140%;}
   <tbody>
   <?php foreach($info->mom as $m): ?>
     <tr>
-      <td><?php echo $m->userid; ?></td>
+      <td><?php echo $m->user_id; ?></td>
       <td><?php echo $m->text; ?> </td>
     </tr>
-  <?php endforeach; ?>
+  <?php endforeach; ?> 
    
     
   </tbody>
@@ -246,11 +247,11 @@ img{ max-width:140%;}
   </div>
 <div class="jumbotron">
  <h3>Meeting Attendence</h3>
- <ul class="list-group">
+<!--  <ul class="list-group">
   <?php foreach($info->participant as $p): ?>
   <li class="list-group-item disabled" aria-disabled="true"><?php echo $p->userid; ?></li>
   <?php endforeach; ?>
-</ul>
+</ul> -->
 </div>
 </div>
 

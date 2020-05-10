@@ -13,6 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style type="text/css">
 	*{
+		text-align: center;
 font-family: 'Open Sans', sans-serif;
 	}
 	body{
@@ -411,8 +412,9 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					?>
 
 					<?php 
-					for($p=0;$p<14;$p++){ if($timesheetDetails->timesheet[$p]->rosteredEmployees != null){?>
-		<td style="min-width:13vw;padding:7px" class="shift-edit" name="<?php  echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName ?>"  cal-x="<?php echo $x; ?>" cal-p="<?php echo $p; ?>" array-type="rosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empId?>" curr-date="<?php echo $timesheetDetails->timesheet[$x]->currentDate?>" timesheet-id="<?php echo $timesheetDetails->id;?>">
+		for($p=0;$p<14;$p++){
+		    if($timesheetDetails->timesheet[$p]->rosteredEmployees != null){?>
+		<td style="min-width:13vw;padding:7px" class="shift-edit" name="<?php  echo $timesheetDetails->timesheet[0]->rosteredEmployees[$p]->empName ?>"  cal-x="<?php echo $x; ?>" cal-p="<?php echo $p; ?>" array-type="rosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$p]->empId?>" curr-date="<?php echo $timesheetDetails->timesheet[$p]->currentDate?>" timesheet-id="<?php echo $timesheetDetails->id;?>">
 		<div style="background:pink;border-radius: 5px;padding:3px">
 		<div style="display:flex;flex-direction: column;background:#307bd3;color:white;border-radius: 5px">
 					<?php 
@@ -432,8 +434,8 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					</div>
 				</td>
 			 <?php }} ?>
-			<td class=" " style="min-width:18vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
-		</tr>
+<!-- 			<td class=" " style="min-width:18vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
+ -->		</tr>
 
 			<?php $x = $x+1;
 		} 

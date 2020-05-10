@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style type="text/css">
 	*{
+		text-align: center;
 font-family: 'Open Sans', sans-serif;
 	}
 	.top-box{
@@ -89,6 +90,13 @@ font-family: 'Open Sans', sans-serif;
 					<a href="<?php echo base_url()?>settings/viewEntitlements">Entitlement Settings</a>
 				</div>
 			</div>
+			<div class="tile-box">
+				<div>Add Employee</div>
+				<div>
+					<a href="<?php echo base_url()?>settings/addEmployee">Add Employee</a>
+				</div>
+			</div>
+			<!-- <button class="add-employee">Add Employee</button></div> -->
 		</div>
 	</div>
 </div>

@@ -20,6 +20,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style type="text/css">
   *{
+    text-align: center;
 font-family: 'Open Sans', sans-serif;
   }
   .placePickerUIButton{
@@ -247,8 +248,7 @@ svg:not(:root).svg-inline--fa {
 table.main-table tr:nth-child(even){
    background-color:#eee;
    
-   color:black;
-   font-size:18px; 
+   color:black; 
 }
 table.main-table{
     box-shadow: 0px 2px 4px;
@@ -459,7 +459,9 @@ margin-top:-3px;
 .table{
   border-radius:10px;
 }
-
+.dataTables_paginate{
+  margin:0 !important;
+}
 </style>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/tokenize2.css">
@@ -1233,6 +1235,8 @@ $('#toggle').remove();
         $('.shift-bar').eq(0).remove();
        // $('.past').html(future)
        $('.futt').on('click',function(){ 
+        $('.futt').css('background','rgba(48,123,211,0.5)');
+        $('.prevv').css('background','rgba(48,123,211,1)');
          $('.future ').show()   
          $('.past ').hide()            
           $('#DataTables_Table_1_wrapper').show()
@@ -1240,6 +1244,8 @@ $('#toggle').remove();
           $('.shift-bar').eq(1).hide();
       });
      $('.prevv').on('click',function(){ 
+              $('.futt').css('background','rgba(48,123,211,1)');
+        $('.prevv').css('background','rgba(48,123,211,0.5)');
          $('.future ').hide()   
          $('.past ').show()            
           $('#DataTables_Table_1_wrapper').hide()
@@ -1250,7 +1256,8 @@ $('#toggle').remove();
   </script>
   <script type="text/javascript">
   $(document).on('click','.title-td',function(){
-      var mId = $(this).prop('m-id')
+      var mId = $(this).attr('m-id');
+
   var url = "http://localhost/PN101/MOM/meetingInfo/"+mId;
       window.location.href=url;
     });
