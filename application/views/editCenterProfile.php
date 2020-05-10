@@ -4,8 +4,11 @@
 	<?php $this->load->view('header.php');?>
 	<title>Center Profile</title>
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  	<style type="text/css">
-     .add-center,.add-employee{
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<style type="text/css">
+  *{
+font-family: 'Open Sans', sans-serif;
+  }     .add-center,.add-employee{
           background-color: #9E9E9E;
   border: none;
   color: white;
@@ -19,7 +22,7 @@
 </head>
 <body id="page-top">  
 	<div id="wrapper">
-      <div id="content-wrapper container-styled" class=" container card_future" style="padding-top: 0px;padding: 20px;Sfont-size: 0.9rem;">
+      <div id="content-wrapper container-styled" class=" container card_future" style="padding-top: 0px;padding: 20px;font-size: 0.9rem;">
         <div class="row">
           <div class="col-12"><a href="<?php echo base_url();?>settings">
             <button class="btn back-button">

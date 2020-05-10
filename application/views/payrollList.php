@@ -6,7 +6,11 @@
 	<title>Timesheet</title>
 	
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style type="text/css">
+	*{
+font-family: 'Open Sans', sans-serif;
+	}
 		thead{
 			background:rgba(0,0,0,0.2);
 		}
@@ -17,6 +21,7 @@
 			height:70vh;
 			overflow-y: scroll;
 			box-shadow:0px 0px 5px 5px rgb(242, 242, 242);
+			border-radius: 10px;
 		}	
 		.sort-by{
 
@@ -158,7 +163,21 @@ border-bottom-right-radius: 20px;
   display: inline-block;
   margin: 2px
 }
-
+@media only screen and (max-width:1024px) {
+.modal-content{
+	min-width:100vw;
+}
+.containers {
+     width: 100%;
+    margin: 0px;
+    padding:0;
+}
+.container {
+     width: 100%;
+    margin: 0px;
+    padding:0;
+}
+}
 </style>
 </head>
 <body>
@@ -344,7 +363,9 @@ $("#timesheet-date").datepicker();
 </script>
 <script type="text/javascript">
 	$(document).ready(()=>{
-    $('.container').css('paddingLeft',$('.side-nav').width());
+		if($(document).width() > 1024){
+		    $('.container').css('paddingLeft',$('.side-nav').width());
+		}
 });
 </script>
 </body>

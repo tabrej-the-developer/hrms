@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <?php $this->load->view('header'); ?>
 <meta charset="UTF-8">	
   <meta name="keywords" content="HTML,CSS,XML,JavaScript">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<style type="text/css">
+  *{
+font-family: 'Open Sans', sans-serif;
+  }
 body {
 
   min-height: 100vh;
@@ -173,9 +177,7 @@ thead, tbody tr {
     display:table;
     table-layout:fixed;
 }
-thead {
-    width: calc( 100% - 1em )
-}
+
 table {
     width:400px;
 }
@@ -517,7 +519,8 @@ p.ovrflowtext {
 </head>
 
 <body>
-
+<div class="containers">
+  
 <div class="row">
  <div class="col-md-10">
  </div>
@@ -532,57 +535,57 @@ p.ovrflowtext {
    
    </div>
   <div class="col-md-9">
-  <table class="table table-striped table-borderless table-hover border-shadow" id="example3" style="width:100%;">
-			                        <thead>
-			                            <tr class="text-muted">
-	                       
-			                            <th>Meeting</th>
-			                            <th>Invited</th>
-			                       
-			                            <th>Date</th>
-			                            <th>Agenda</th>
-			                            
-			                            </tr>
-			                        </thead>
-			                        <tbody>
-			                        	
-									
-										
-			                        </tbody>
-			                    </table>
+  <table class="table table-striped table-borderless table-hover border-shadow" id="example3" >
+                              <thead>
+                                  <tr class="text-muted">
+                         
+                                  <th>Meeting</th>
+                                  <th>Invited</th>
+                             
+                                  <th>Date</th>
+                                  <th>Agenda</th>
+                                  
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                
+                  
+                    
+                              </tbody>
+                          </table>
   </div>
 </div>
 
 
 
-		<!-- add to group model -->
-			<div class="modal fade" id="addtogroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-					  <div class="modal-dialog modal-dialog-centered" role="document">
-						<div class="modal-content">
-						  <div class="modal-header" style="border-bottom:none;">
-							<h5 class="modal-title" id="exampleModalLongTitle" style="color: #2196f3;">Add New Group</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							  <span aria-hidden="true">&times;</span>
-							</button>
-						  </div>
-					<div class="modal-body">
-					  <div class="container-fluid">
-						<form id="groupForm" method="post" action="<?php echo base_url().'messenger/creategroup';?>">
-						  <div class="form-group">
-						  <div class="row">
-						 
-							 <div class="col-md-4"><label for="recipient-name" class="col-form-label"  style="float:right;">Group Name</label></div>
-							 <div class="col-md-8" style="float:left;"><input type="text" class="form-control" name="recipient-name" id="recipient-name" required style="border-radius:0;background-color:#9e9e9e33;border:none;">
-							  <div class="col-md-12" style="color: red;" id="groupNameErr"></div>
-							 </div>
-						  </div>
-						  </div>
-						  <hr>
-						  <div class="search-table">
-							<div class="search-box">
+    <!-- add to group model -->
+      <div class="modal fade" id="addtogroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header" style="border-bottom:none;">
+              <h5 class="modal-title" id="exampleModalLongTitle" style="color: #2196f3;">Add New Group</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+            <form id="groupForm" method="post" action="<?php echo base_url().'messenger/creategroup';?>">
+              <div class="form-group">
+              <div class="row">
+             
+               <div class="col-md-4"><label for="recipient-name" class="col-form-label"  style="float:right;">Group Name</label></div>
+               <div class="col-md-8" style="float:left;"><input type="text" class="form-control" name="recipient-name" id="recipient-name" required style="border-radius:0;background-color:#9e9e9e33;border:none;">
+                <div class="col-md-12" style="color: red;" id="groupNameErr"></div>
+               </div>
+              </div>
+              </div>
+              <hr>
+              <div class="search-table">
+              <div class="search-box">
                 <div class="row mb-2">
                     <div class="col-sm-12 has-search">
-					<i class="fas fa-search feedback"></i>
+          <i class="fas fa-search feedback"></i>
                         <input type="text" id="myInput" class="form-control rounded-0" placeholder="Search Employee">
                         <script>
                             $(document).ready(function () {
@@ -597,66 +600,66 @@ p.ovrflowtext {
                     </div> 
                 </div>
             </div>
-			<div class="search-list">
+      <div class="search-list">
                 <table class="table" id="myTable" style="border:none;">
                     <thead>
                         <tr></tr>
                     </thead>
                     <tbody class="tbodyscroll">  
-					<?php
+          <?php
                      foreach ($users->users as $chat) {
                       if($chat->imageUrl == null || $chat->imageUrl == ""){
                         $chat->imageUrl = base_url().'assets/images/defaultUser.png';
                       }
-                    ?>					
+                    ?>          
                     <tr>
                         <td> 
-						<label class="checkbox">
+            <label class="checkbox">
                             <input type="checkbox" name="<?php echo $chat->userid;?>" id="<?php echo $chat->userid;?>" />
                             <span class="default"></span>
                         </label>
-						</td>
+            </td>
                         <td>
-							<a href="javascript:void(0);" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people">
-							  <div class="media">
-							  <div class="icon-container">
-							  <img src="<?php echo $chat->imageUrl;?>" alt="user" width="30" class="rounded-circle">
-							  <div class='status-circle-online'></div>
-							  </div>
-								<div class="media-body ml-4">
-								  <div class="d-flex align-items-center justify-content-between ">
-									<h6 class="mb-0"><?php echo $chat->username;?></h6>
-								  </div>
-								  
-								</div>
-							  </div>
-							</a>
-						</td>
+              <a href="javascript:void(0);" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people">
+                <div class="media">
+                <div class="icon-container">
+                <img src="<?php echo $chat->imageUrl;?>" alt="user" width="30" class="rounded-circle">
+                <div class='status-circle-online'></div>
+                </div>
+                <div class="media-body ml-4">
+                  <div class="d-flex align-items-center justify-content-between ">
+                  <h6 class="mb-0"><?php echo $chat->username;?></h6>
+                  </div>
+                  
+                </div>
+                </div>
+              </a>
+            </td>
                     </tr>
-					<?php }	?>
+          <?php } ?>
                     
                     </tbody>
                 </table>
 
             </div>
-						  </div>
-						  
-					<div class="text-center mt-2 mb-4">
-						<button class="btn btn-secondary rounded-0" type="button" onclick="saveGroup()">Save</button>
-						<button class="btn btn-secondary rounded-0" type="button" data-dismiss="modal">Cancel</button> 
-					</div> 
-						  
-						</form>
-					  </div>
-					  
-					</div>
-					
-						  
-						  
-						</div>
-					  </div>
-				</div>
-		<!-- add to group model end -->
+              </div>
+              
+          <div class="text-center mt-2 mb-4">
+            <button class="btn btn-secondary rounded-0" type="button" onclick="saveGroup()">Save</button>
+            <button class="btn btn-secondary rounded-0" type="button" data-dismiss="modal">Cancel</button> 
+          </div> 
+              
+            </form>
+            </div>
+            
+          </div>
+          
+              
+              
+            </div>
+            </div>
+        </div>
+    <!-- add to group model end -->
 
 
 
@@ -672,6 +675,7 @@ p.ovrflowtext {
 
 
 
+</div>
 </body>
 
 
@@ -759,4 +763,10 @@ $('.save').click(function(){
       }
     }
   </script>
+
+  <script type="text/javascript">
+  $(document).ready(()=>{
+    $('.containers').css('paddingLeft',$('.side-nav').width());
+  });
+</script>
     </html>

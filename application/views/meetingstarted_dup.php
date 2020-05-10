@@ -8,10 +8,11 @@
   <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="https://kit.fontawesome.com/ca2871ad31.js" crossorigin="anonymous"></script>
-  <style>
-  
-  
-
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<style type="text/css">
+  *{
+font-family: 'Open Sans', sans-serif;
+  }
         /* .card-header {
             padding: 0.2rem 1.25rem;
             /* margin-bottom: 0; */

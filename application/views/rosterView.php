@@ -4,9 +4,13 @@
 	<?php $this->load->view('header'); ?>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Roster</title>
-	
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">	
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style type="text/css">
+	*{
+font-family: 'Open Sans', sans-serif;
+	}
 		thead{
 			background:rgba(0,0,0,0.2);
 		}
