@@ -11,12 +11,10 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style type="text/css">
 	*{
-		text-align: center;
-		font-family: 'Roboto', sans-serif;
-
+font-family: 'Open Sans', sans-serif;
 	}
 	body{
 		background:#EAE6FF;
@@ -81,7 +79,8 @@ table,tr,td{
 .table-div{
 	background:white;
 	display: flex;
-	justify-content: center
+	justify-content: center;
+	padding:10px;
 }
 .area-name{
 	background:#307bd3;
@@ -252,13 +251,27 @@ max-width:50vw;
 	background:#4CAF50;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width:1024px) {
 .modal-content{
 	min-width:100vw;
 }
 .containers {
      width: 100%;
     margin: 0px;
+    padding:0;
+}
+.container {
+     width: 100%;
+    margin: 0px;
+    padding:0;
+}
+.name-space{
+	display: block;
+	width: 100%;
+	justify-content: center
+}
+.icon-parent{
+	max-width: 100%;
 }
 }
 </style>
@@ -370,10 +383,10 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 	// $x is the total number of employees loop value;
 				for($x=0;$x<$count;$x++){ 
 					?>
-		<tr  class="table-row" cal-x="<?php echo $x;?>">
+		<tr  class="table-row " cal-x="<?php echo $x;?>">
 			<td   style="min-width:20vw" class=" cell-boxes left-most">
 				<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
-				<span class="row" style="padding:0;margin:0;">
+				<span class="row name-space" style="padding:0;margin:0;">
 					<span class="col-5 icon-parent justify-content-center"><span class=" icon"><?php echo  icon($payrollShifts->employees[$x]->userDetails->name)?></span></span>
 					<span class="col-7 name-role">
 					<span class="empname row"><?php echo $payrollShifts->employees[$x]->userDetails->name ?></span>
@@ -532,8 +545,10 @@ if(isset($payroll->payrollTypeId)){
 
 <?php }?>
 	<script type="text/javascript">
-		$(document).ready(()=>{
-	    $('.containers').css('paddingLeft',$('.side-nav').width());
+	$(document).ready(()=>{
+	if($(document).width() > 1024){
+		$('.containers').css('paddingLeft',$('.side-nav').width());					
+		}
 	});
 	</script>
 
