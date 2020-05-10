@@ -8,7 +8,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style type="text/css">
     *{
-        text-align: center;
 font-family: 'Open Sans', sans-serif;
     }
 
