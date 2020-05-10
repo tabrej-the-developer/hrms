@@ -2,11 +2,16 @@
 <html>
 <head>
 <?php $this->load->view('header'); ?>
+<script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
+
 <meta charset="UTF-8">	
   <meta name="keywords" content="HTML,CSS,XML,JavaScript">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<style type="text/css">
+  *{
+font-family: 'Open Sans', sans-serif;
+  }
 body {
 
   min-height: 100vh;
@@ -1088,5 +1093,9 @@ $('.save').click(function(){
       }
     }
   </script>
-  
+  <script type="text/javascript">
+    messaging.onMessage(function(payload){
+      console.log('wow');
+    })
+  </script>
     </html>
