@@ -5,8 +5,11 @@
 	<title>Organizational Chart</title>
 	  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	  	<script src='https://kit.fontawesome.com/a076d05399.js'></script>
-
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style type="text/css">
+	*{
+font-family: 'Open Sans', sans-serif;
+	}
 	.area-id::before{
 		content: url(../assets/images/arrow-f.svg);
 		position: absolute;
