@@ -10,12 +10,10 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style type="text/css">
 	*{
-		text-align: center;
-		font-family: 'Roboto', sans-serif;
-
+font-family: 'Open Sans', sans-serif;
 	}
 	body{
 		background:#EAE6FF;
@@ -259,6 +257,15 @@ max-width:30vw;
      width: 100%;
     margin: 0px;
 }
+.name-space{
+	display: block;
+	width: 100%;
+	justify-content: center;
+
+}
+td{
+	max-width: 30vw
+}
 }
 </style>
 </head>
@@ -376,7 +383,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 		<tr  class="table-row">
 			<td   style="min-width:18vw" class=" cell-boxes left-most">
 				<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
-				<span class="row" style="padding:0;margin:0;">
+				<span class="row name-space" style="padding:0;margin:0;">
 					<span class="col-3 icon-parent"><span class=" icon"><?php echo icon($timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName)?></span></span>
 					<span class="col-6 name-role">
 					<span class="empname row"><?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName?></span>
