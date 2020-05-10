@@ -4,7 +4,11 @@
 	<title>Edit Rooms</title>
 		<?php $this->load->view('header'); ?>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.js"></script>
-    <style type="text/css">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<style type="text/css">
+  *{
+font-family: 'Open Sans', sans-serif;
+  }
       #wrappers{
         padding:0;
       }
