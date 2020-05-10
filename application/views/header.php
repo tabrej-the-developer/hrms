@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
   <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/bootstrap.min.css');?>">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="<?php echo base_url('assets/js/bootstrap.min.js');?>"></script>
 
@@ -26,7 +25,11 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.20/b-1.6.1/b-colvis-1.6.1/b-html5-1.6.1/b-print-1.6.1/r-2.2.3/datatables.min.css" />  
   <!--datatable css end -->
   <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/circle.css');?>">
-<style>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<style type="text/css">
+  *{
+font-family: 'Open Sans', sans-serif;
+  }
 
  body{/* background:#f9f9f9; */}
 #wrapper{padding:32px 15px;}
@@ -51,7 +54,7 @@
 .nav-item a{
 
   color:white !important;
-  font-family: 'Roboto', sans-serif;
+/*  font-family: 'Roboto', sans-serif;*/
   font-size: 0.75rem;
 }
 .navbar-nav{
@@ -62,7 +65,7 @@
   padding: 0 0 0 20px;
 }
 .navbar-nav li a svg{font-size: 20px;float: left;margin: 0 12px 0 5px;}
-.side-nav li { border-bottom: 1px solid #607d8bc9;}
+.side-nav li {}
 .navbar-dark .navbar-nav .nav-link {
     color: #607d8bc9;
 }
