@@ -6,7 +6,11 @@
 	<title>Timesheet</title>
 	
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style type="text/css">
+	*{
+font-family: 'Open Sans', sans-serif;
+	}
 		thead{
 			background:rgba(0,0,0,0.2);
 		}
@@ -17,6 +21,7 @@
 			height:70vh;
 			overflow-y: auto;
 			box-shadow:0px 0px 5px 5px rgb(242, 242, 242);
+						border-radius:10px;
 		}	
 		.sort-by{
 
