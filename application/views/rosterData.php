@@ -10,19 +10,18 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style type="text/css">
 	*{
-		text-align: center;
-		font-family: 'Roboto', sans-serif;
-
+font-family: 'Open Sans', sans-serif;
 	}
 	body{
 		background:#EAE6FF;
 	}
-.containers{
+.containers{/*
 	width:95%;
-	
+	*/
 	margin-left:20px;
 }
 			/* The Modal (background) */
@@ -76,6 +75,7 @@ table,tr,td{
 	padding-bottom:10px;
 	padding-top:10px;
 	font-weight:bolder;
+	border-radius:5px;
 }
 .table-div{
 	background:white;
@@ -83,6 +83,8 @@ table,tr,td{
 .area-name{
 	background:#307bd3;
 	color:white;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
 }
 .day{
 	background:#C2E7F0;
@@ -238,25 +240,36 @@ max-width:30vw;
   margin: 2px
 }
 .Added{
-	background: #9E9E9E
+	background: rgba(158,158,158,0.5);
+	border-radius: 3px;
 }
 
 .Published{
-	background:#9C27B0;
+	background:rgba(156,39,1760.5);
+	border-radius: 3px;
 }
 .Accepted{
-	background:#4CAF50;
+	background:rgba(76,175,80,0.8);
+	border-radius: 3px;
 }
 .nav-link{
 	text-align:left;
 }
-@media only screen and (max-width: 600px) {
+
+@media only screen and (max-width: 1050px) {
 .modal-content{
 	min-width:100vw;
 }
 .containers {
      width: 100%;
     margin: 0px;
+}
+.name-space{
+	display: block
+}
+.icon-parent{
+	max-width:100%;
+	justify-content: center
 }
 }
 </style>
@@ -403,7 +416,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					<td   style="width:18vw" class=" cell-boxes left-most">
 						<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
 
-						<span class="row" style="padding:0;margin:0;">
+						<span class="row name-space" style="padding:0;margin:0;">
 							<span class="col-3 icon-parent"><span class=" icon"><?php echo icon($rosterDetails->roster[$x]->roles[$counter]->empName)?></span></span>
 							<span class="col-6 name-role">
 								<span class="empname row"><?php echo $rosterDetails->roster[$x]->roles[$counter]->empName?></span>
