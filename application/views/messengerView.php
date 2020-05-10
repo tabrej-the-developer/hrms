@@ -7,7 +7,11 @@
 <html>
 <head>
 <?php $this->load->view('header'); ?>
-<style>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<style type="text/css">
+  *{
+font-family: 'Open Sans', sans-serif;
+  }
   body{
     overflow-y:hidden;
   }
