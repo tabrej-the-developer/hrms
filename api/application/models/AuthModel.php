@@ -28,10 +28,10 @@ class AuthModel extends CI_Model {
 		return $query->row();
 	}
 
-	public function insertUser($email,$password,$name,$role,$title,$center,$manager,$createdBy,$roleid,$level){
+	public function insertUser($email,$password,$name,$role,$title,$center,$manager,$createdBy,$roleid,$level,$bonusRate){
 		$this->load->database();
 		$uid = uniqid();
-		$query = $this->db->query("INSERT INTO users VALUES('$uid','$email','$password','$name',null,$role,'$title','$center|','$manager','N',now(),'$createdBy',$roleid,$level)");
+		$query = $this->db->query("INSERT INTO users VALUES('$uid','$email','$password','$name',null,$role,'$title','$center|','$manager','N',now(),'$createdBy',$roleid,$level,$bonusRate)");
 		return $uid;
 	}
 

@@ -33,6 +33,8 @@ class Leave extends CI_Controller{
 					$var['name'] = $lt->name;
 					$var['slug'] = $lt->slug;
 					$var['isPaidYN'] = $lt->isPaidYN;
+					$var['showOnPaySlipYN'] = $lt->showOnPaySlipYN;
+					$var['currentRecordYN'] = $lt->currentRecordYN;
 					array_push($data,$var);
 				}
 				$mdata['leaveTypes'] = $data;
@@ -58,14 +60,38 @@ class Leave extends CI_Controller{
 				$name = $json->name;
 				$slug = $json->slug;
 				$isPaidYN = $json->isPaidYN;
+				$showOnPaySlipYN = $json->showOnPaySlipYN;
 				$userid = $json->userid;
 				$userDetails = $this->authModel->getUserDetails($userid);
+				$this->load->model('xeroModel');
 				if($userDetails != null && $userDetails->role == SUPERADMIN){
-					$this->load->model('leaveModel');
-					$this->leaveModel->createLeaveType($name,$isPaidYN,$slug,$userid);
-					$data['Status'] = 'SUCCESS';
-					http_response_code(200);
-					echo json_encode($data);
+
+					//xero 
+					$xeroTokens = $this->xeroModel->getXeroToken();
+					if($xeroTokens != null){
+						$access_token = $xeroTokens->access_token;
+						$tenant_id = $xeroTokens->tenant_id;
+						$data['Name'] = $name;
+						$data['TypeOfUnits'] = "Hours";
+						$data['IsPaidLeave'] = $isPaidYN == "Y";
+						$data['ShowOnPayslip'] = $showOnPaySlipYN == "Y";
+						$mdata['LeaveTypes'] = array();
+						array_push($mdata['LeaveTypes'], $data);
+						$val = $this->postCreateLeaveType($access_token,$tenant_id,json_encode($mdata));
+						$val = json_decode($val);
+						var_dump($val);
+						if($val->Status == 401){
+							$refresh = $this->refreshXeroToken($access_token);
+							var_dump($refresh);
+						}
+					}
+
+
+					// $this->load->model('leaveModel');
+					// $this->leaveModel->createLeaveType($name,$isPaidYN,$slug,$userid);
+					// $data['Status'] = 'SUCCESS';
+					// http_response_code(200);
+					// echo json_encode($data);
 				}
 				else{
 
@@ -363,4 +389,40 @@ class Leave extends CI_Controller{
 		}
 	}
 
+
+
+	function postCreateLeaveType($access_token,$tenant_id,$postData){
+		$url = "https://api.xero.com/payroll.xro/1.0/PayItems";
+		$ch =  curl_init($url);
+       	curl_setopt($ch, CURLOPT_URL,$url);
+       	curl_setopt($ch, CURLOPT_POST,1);
+       	curl_setopt($ch, CURLOPT_POSTFIELDS,$postData);
+       	curl_setopt($ch, CURLOPT_HTTPHEADER,  array(
+           'Content-Type:application/json',
+           'Authorization:Bearer '.$access_token,
+           'Xero-tenant-id:'.$tenant_id
+       	));
+       	curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+		$server_output = curl_exec($ch);
+		return $server_output;
+	}
+
+	function refreshXeroToken($access_token){
+
+		$postData = "grant_type=refresh_token";
+		$postData .= "&refresh_token=".$access_token;
+
+		$url = "https://identity.xero.com/connect/token";
+		$ch =  curl_init($url);
+       	curl_setopt($ch, CURLOPT_URL,$url);
+       	curl_setopt($ch, CURLOPT_POST,1);
+       	curl_setopt($ch, CURLOPT_POSTFIELDS,$postData);
+       	curl_setopt($ch, CURLOPT_HTTPHEADER,  array(
+           'Content-Type:application/x-www-form-urlencoded',
+           'Authorization:Basic '.base64_encode(XERO_CLIENT_ID.":".XERO_CLIENT_SECRET)
+       	));
+       	curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+		$server_output = curl_exec($ch);
+		return $server_output;
+	}
 }

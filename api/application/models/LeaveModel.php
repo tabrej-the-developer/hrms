@@ -3,14 +3,20 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class LeaveModel extends CI_Model {
-	public function createLeaveType($name,$isPaidYN,$slug,$superadminId){
+	public function createLeaveType($leaveTypeId,$name,$isPaidYN,$slug,$showOnPaySlip,$currentRecord,$superadminId){
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO leaves VALUES(0,'$name','$isPaidYN','$slug','$superadminId')");
+		$query = $this->db->query("INSERT INTO leaves VALUES('$leaveTypeId','$name','$isPaidYN','$slug','$showOnPaySlip','$currentRecord'
+			,now(),'$superadminId')");
 	}
 
 	public function editLeaveType($leaveId,$name,$isPaidYN,$slug){
 		$this->load->database();
 		$query = $this->db->query("UPDATE leaves SET name='$name',isPaidYN='$isPaidYN',slug='$slug' WHERE id=$leaveId");
+	}
+
+	public function deleteAllLeaveTypes(){
+		$this->load->database();
+		$query = $this->db->query("DELETE FROM leaves");
 	}
 
 	public function deleteLeaveType($leaveId){
@@ -57,17 +63,34 @@ class LeaveModel extends CI_Model {
 		$query = $this->db->query("INSERT INTO leaveapplication VALUES(0,'$userid',CURDATE(),$leaveId,$noOfHours,'$startDate','$endDate',1,'$notes')");
 	}
 
-	// public function getLeaveBalance($userid){
-	// 	$this->load->database();
-	// 	$query = $this->db->query("SELECT * FROM leavebalance WHERE userid = '$userid'");
-	// 	return $query->result();
-	// }
-
-	public function getAccruedLeaves($userid){
+	public function getLeaveBalance($userid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM leaveaccrual WHERE userid='$userid'");
+		$query = $this->db->query("SELECT * FROM leavebalance WHERE userid = '$userid'");
 		return $query->result();
 	}
+
+	public function insertIntoLeaveBalance($userid,$leaveTypeId,$leaveBalance){
+		$this->load->database();
+		$query = $this->db->query("INSERT INTO leavebalance VALUES(0,'$userid','$leaveTypeId',$leaveBalance)");
+	}
+
+	// public function getGetLeaveBalanceByLeaveId($userid,$leaveId){
+	// 	$this->load->database();
+	// 	$query = $this->db->query("SELECT * FROM leavebalance WHERE userid = '$userid' and leaveId = '$leaveId'");
+	// 	return $query->row();
+	// }
+
+	public function deleteAllUserLeaveBalance($userid)
+	{
+		$this->load->database();
+		$query = $this->db->query("DELETE FROM leavebalance WHERE userid = '$userid'");
+	}
+
+	// public function getAccruedLeaves($userid){
+	// 	$this->load->database();
+	// 	$query = $this->db->query("SELECT * FROM leaveaccrual WHERE userid='$userid'");
+	// 	return $query->result();
+	// }
 
 	public function getTotalOrdinaryHorusWorked($userid,$startDate){
 		$this->load->database();

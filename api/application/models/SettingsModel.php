@@ -67,7 +67,7 @@ class SettingsModel extends CI_Model {
 
 	public function updateCenterProfile($centerid,$logo,$name,$addStreet,$addCity,$addState,$addZip){
 		$this->load->database();
-		$this->db->query("UPDATE centers SET 	 logo = '$logo',name = '$name', addStreet = '$addStreet', addCity = '$addCity',addState = '$addState' , addZip = '$addZip' where centerid = '$centerid'");
+		$this->db->query("UPDATE centers SET logo = '$logo',name = '$name', addStreet = '$addStreet', addCity = '$addCity',addState = '$addState' , addZip = '$addZip' where centerid = '$centerid'");
 	}
 
 	public function addCenter($centerid,$logo,$name,$addStreet,$addCity,$addState,$addZip){
@@ -83,7 +83,7 @@ class SettingsModel extends CI_Model {
 
 	public function editRoom($centerid,$name,$careAgeFrom,$careAgeTo,$capacity,$studentRatio,$roomId){
 		$this->load->database();
-		$this->db->query("UPDATE room SET  name='$name', careAgeFrom='$careAgeFrom', careAgeTo='$careAgeTo', capacity='$capacity', studentRatio='$studentRatio' where centerid='$centerid' and roomId = '$roomId'");
+		$this->db->query("UPDATE room SET name='$name', careAgeFrom='$careAgeFrom', careAgeTo='$careAgeTo', capacity='$capacity', studentRatio='$studentRatio' where centerid='$centerid' and roomId = '$roomId'");
 	}
 
 	public function deleteRoom($roomid){
