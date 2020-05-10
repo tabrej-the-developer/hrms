@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
-
-
-
-<html>
 <head>
 <?php $this->load->view('header'); ?>
-<style>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<style type="text/css">
+  *{
+font-family: 'Open Sans', sans-serif;
+  }
 .container{
   max-width:100%;
    margin:auto;}
