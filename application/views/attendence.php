@@ -8,7 +8,12 @@
   <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="https://kit.fontawesome.com/ca2871ad31.js" crossorigin="anonymous"></script>
-  <style>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<style type="text/css">
+  *{
+    text-align: center;
+font-family: 'Open Sans', sans-serif;
+  }
   
   
 
@@ -447,7 +452,7 @@ input[type=checkbox]:checked:before {
 </style>
 </head>
 <body style="background-color:#eee;">
- <div class="container">
+<div class="container">
  <div class="card">
   <div class="card-header bg-primary">
     Minutes of Meeting Attendence
@@ -481,9 +486,9 @@ input[type=checkbox]:checked:before {
   <div class="card-footer bg-default">
        <button type="submit" class="btn btn-primary">Mark Absent</a>
   </div>
-</form>
-</div>
+ </form>
  </div>
+</div>
 <body>
 <script>
 
@@ -660,5 +665,10 @@ $('#toggle').remove();
 	 }
 		
 	</script>
-	
+	<script type="text/javascript">
+  $(document).ready(()=>{
+    $('.container').css('paddingLeft',$('.side-nav').width());
+});
+</script>
+
 </html>
