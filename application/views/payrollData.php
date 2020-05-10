@@ -15,6 +15,8 @@
 <style type="text/css">
 	*{
 font-family: 'Open Sans', sans-serif;
+
+
 	}
 	body{
 		background:#EAE6FF;
