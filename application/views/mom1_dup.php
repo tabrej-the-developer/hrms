@@ -17,11 +17,11 @@
   <script src="https://kit.fontawesome.com/ca2871ad31.js" crossorigin="anonymous"></script>
   <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
 
-
-
-
-
-  <style>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<style type="text/css">
+  *{
+font-family: 'Open Sans', sans-serif;
+  }
   .placePickerUIButton{
     position:absolute;
     z-index:1000;
@@ -30,7 +30,7 @@
   }
   .form-signin {
     width: 100%;
-    max-width: 630px;
+    max-width: 70vw;
     padding: 15px;
     margin: 0 auto;
 }
@@ -432,7 +432,33 @@ margin-top:-3px;
 .containers{
   max-width:80vw;
 }
+.shift-bar-tab{
+  text-align: center;
+  color:white;
+}
+.prevv{
+  background:#307bd3 ;
+  padding:10px 0 10px 0;
+  cursor:pointer;
+}
+.prevv:hover{
+  background:rgba(48, 123, 211,0.7);
+}
+.futt{
+  background:#307bd3 ;
+  padding:10px 0 10px 0;
+  cursor:pointer;
+}
+.futt:after{
+  content:'';
 
+}
+.futt:hover{
+    background:rgba(48, 123, 211,0.7);
+}
+.table{
+  border-radius:10px;
+}
 
 </style>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css">
@@ -655,7 +681,12 @@ let autocomplete;
     </div>
   </div>
 
-    <div class="shift-bar d-flex " ><span class="prevv btn btn-primary">Previous Meetings</span><span class="futt btn btn-primary">Upcoming Meetings</span></div>
+    <div class="shift-bar " >
+      <span class="shift-bar-tab d-flex" >
+        <span class="prevv ">Previous Meetings</span>
+        <span class="futt ">Upcoming Meetings</span>
+      </span>
+    </div>
 
 
 <div class="row">
@@ -1223,5 +1254,15 @@ $('#toggle').remove();
   var url = "http://localhost/PN101/MOM/meetingInfo/"+mId;
       window.location.href=url;
     });
+  </script>
+  <script type="text/javascript">
+    $(document).ready(()=>{
+      var length = $('.shift-bar-tab').length ;
+      for(var i=0;i<length;i++){
+      $('.shift-bar-tab').eq(i).width($('table').eq(2).width());
+      $('.prevv').eq(i).width(($('table').eq(2).width())/2);
+      $('.futt').eq(i).width(($('table').eq(2).width())/2);
+      }
+    })
   </script>
 </html>
