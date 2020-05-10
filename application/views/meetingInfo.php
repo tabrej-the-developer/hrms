@@ -6,11 +6,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
-  <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
-  <style>
-  
-
-        .card-header {
+ <!--  <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'> -->
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<style type="text/css">
+  *{
+font-family: 'Open Sans', sans-serif;
+  }
+   .card-header {
             padding: 0.2rem 1.25rem;
             /* margin-bottom: 0; */
             background-color: #ffffff;
@@ -201,6 +203,7 @@ img{ max-width:140%;}
    <h4>Agenda and Summary</h4>
    <?php
    $info = json_decode($info);
+   // print_r($info);
     ?>
    <?php foreach($info->agenda as $a): ?>
     <div class="card border-success mb-3" style="max-width: 18rem;">
