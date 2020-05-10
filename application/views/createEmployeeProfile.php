@@ -3,7 +3,13 @@
 <head>
 	<title>PN101</title>
 	<meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">  
+  <meta name="viewport" content="width=device-width, initial-scale=1"> 
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<style type="text/css">
+	*{
+font-family: 'Open Sans', sans-serif;
+	}
+</style> 
 </head>
 <body id="page-top">
 	   <?php require_once('header.php') ?>
@@ -18,7 +24,8 @@
 					</button></a> Enter Employee Details
 			</div>
 		</h4>	
-		<form name ="userinput" action="http://localhost/PN101/createEmployeeProfile" method="post" enctype="multipart/form-data" >
+		<form name ="userinput" action="http://localhost/PN101/createEmployeeProfile" method="post" 
+		enctype="multipart/form-data" >
 			<hr>
 		 	<span id="employeeDetailsYo">
 		 		<div class="row">
