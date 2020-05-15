@@ -315,7 +315,7 @@ class Settings extends CI_Controller {
 						$careAgeTo = $r->careAgeTo;
 						$capacity = $r->capacity;
 						$studentRatio = $r->studentRatio;
-		$room = $this->settingsModel->addRoom($centerid,$name,$careAgeFrom,$careAgeTo,$capacity,$studentRatio);
+						$room = $this->settingsModel->addRoom($centerid,$name,$careAgeFrom,$careAgeTo,$capacity,$studentRatio);
 					}
 				}
 				$center = $this->settingsModel->addCenter($centerid,$logo,$name,$addStreet,$addCity,$addState,$addZip);

@@ -9,9 +9,9 @@ class LeaveModel extends CI_Model {
 			,now(),'$superadminId')");
 	}
 
-	public function editLeaveType($leaveId,$name,$isPaidYN,$slug){
+	public function editLeaveType($leaveId,$name,$isPaidYN,$slug,$showOnPaySlip){
 		$this->load->database();
-		$query = $this->db->query("UPDATE leaves SET name='$name',isPaidYN='$isPaidYN',slug='$slug' WHERE id=$leaveId");
+		$query = $this->db->query("UPDATE leaves SET name='$name',isPaidYN='$isPaidYN',slug='$slug',showOnPaySlipYN='$showOnPaySlip' WHERE id='$leaveId'");
 	}
 
 	public function deleteAllLeaveTypes(){
@@ -21,18 +21,18 @@ class LeaveModel extends CI_Model {
 
 	public function deleteLeaveType($leaveId){
 		$this->load->database();
-		$query = $this->db->query("DELETE FROM leaves WHERE id=$leaveId");
+		$query = $this->db->query("DELETE FROM leaves WHERE id='$leaveId'");
 	}
 
 	public function getLeaveType($leaveId){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM leaves WHERE id=$leaveId");
+		$query = $this->db->query("SELECT * FROM leaves WHERE id='$leaveId'");
 		return $query->row();
 	}
 
 	public function getLeaveTypeBySuperadmin($userid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM leaves WHERE superAdminId = '$userid'");
+		$query = $this->db->query("SELECT * FROM leaves WHERE created_by = '$userid'");
 		return $query->result();
 	}
 
@@ -60,7 +60,7 @@ class LeaveModel extends CI_Model {
 
 	public function applyLeave($userid,$leaveId,$noOfHours,$startDate,$endDate,$notes){
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO leaveapplication VALUES(0,'$userid',CURDATE(),$leaveId,$noOfHours,'$startDate','$endDate',1,'$notes')");
+		$query = $this->db->query("INSERT INTO leaveapplication VALUES(0,'$userid',CURDATE(),'$leaveId',$noOfHours,'$startDate','$endDate',1,'$notes')");
 	}
 
 	public function getLeaveBalance($userid){
@@ -107,5 +107,10 @@ class LeaveModel extends CI_Model {
 	public function updateLeave($leaveApp,$status){
 		$this->load->database();
 		$this->db->query("UPDATE leaveapplication SET status = $status WHERE applicationId=$leaveApp");
+	}
+
+	public function updateLeaveBalance($userid,$leaveId,$toUpdate){
+		$this->load->database();
+		$this->db->query("UPDATE leaveBalance SET leaveBalance = leaveBalance + $toUpdate WHERE userid = '$userid' AND leaveId = '$leaveId'");
 	}
 }

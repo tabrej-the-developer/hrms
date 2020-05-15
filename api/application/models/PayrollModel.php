@@ -65,4 +65,13 @@ class PayrollModel extends CI_Model {
 		$this->db->query("INSERT INTO superfund VALUES(0,'$abn','$usi','$type','$name','$bsb','$accountNumber','$accountName','$eServiceAdd','$employeeNo',now(),'$userid')");
 	}
 
+	public function deleteAllPayrollShiftTypes(){
+		$this->load->database();
+		$this->db->query("DELETE FROM payrollshifttype_v1");
+	}
+	
+	public function deleteAllSuperFunds(){
+		$this->load->database();
+		$this->db->query("DELETE FROM superfund");
+	}
 }

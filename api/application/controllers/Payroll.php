@@ -193,6 +193,102 @@ class Payroll extends CI_Controller{
 		}
 	}
 
+	// public function CreateAwardType(){
+	// 	$headers = $this->input->request_headers();
+	// 	if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+	// 		$this->load->model('authModel');
+	// 		$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+	// 		$json = json_decode(file_get_contents('php://input'));
+	// 		if($json!= null && $res != null && $res->userid == $json->userid){
+	// 			$name = $json->name;
+	// 			$isExemptFromTaxYN = $json->isExemptFromTaxYN;
+	// 			$isExemptFromSuperYN = $json->isExemptFromSuperYN;
+	// 			$isReportableAsW1 = $json->isReportableAsW1;
+	// 			$earningType = $json->earningType;
+	// 			$rateType = $json->rateType;
+	// 			$multiplier_amount = $json->multiplier_amount;
+	// 			$userid = $json->userid;
+	// 			$userDetails = $this->authModel->getUserDetails($userid);
+	// 			if($userDetails != null && $userDetails->role == SUPERADMIN){
+	// 				$this->load->model('xeroModel');
+	// 				$this->load->model('payrollModel');
+	// 				//xero 
+	// 				$xeroTokens = $this->xeroModel->getXeroToken();
+	// 				if($xeroTokens != null){
+	// 					$access_token = $xeroTokens->access_token;
+	// 					$tenant_id = $xeroTokens->tenant_id;
+	// 					$refresh_token = $xeroTokens->refresh_token;
+	// 					$data['Name'] = $name;
+	// 					$data['AccountCode'] = XERO_ACCOUNT_CODE;
+	// 					$data['IsExemptFromTax'] = $isExemptFromTaxYN == "Y";
+	// 					$data['IsExemptFromSuper'] = $isExemptFromSuperYN == "Y";
+	// 					$data['IsReportableAsW1'] = $isReportableAsW1 == "Y";
+	// 					$data['RateType'] = $rateType;
+	// 					if($rateType == "MULTIPLE") {
+	// 						$data['Multiplier'] = $multiplier_amount;
+	// 					}
+	// 					else {
+	// 						$data['Amount'] = $multiplier_amount;
+	// 					}
+	// 					$data['CurrentRecord'] = true;
+	// 					$mdata['EarningsRates'] = array();
+	// 					array_push($mdata['EarningsRates'], $data);
+	// 					$url = XERO_PAY_ITEMS_URL;
+	// 					$val = $this->postXero($url,$access_token,$tenant_id,json_encode($mdata));
+	// 					$val = json_decode($val);
+	// 					var_dump($val);
+	// 					if($val != NULL){
+	// 						if($val->Status == 401){
+	// 							$refresh = $this->refreshXeroToken($refresh_token);
+	// 							$refresh = json_decode($refresh);
+	// 							$access_token = $refresh->access_token;
+	// 							$expires_in = $refresh->expires_in;
+	// 							$refresh_token = $refresh->refresh_token;
+	// 							$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in);
+	// 							$val = $this->postXero($url,$access_token,$tenant_id,json_encode($mdata));
+	// 							$val = json_decode($val);
+	// 						}
+	// 					}
+	// 					if($val == NULL){
+	// 						$payItems = $this->getXero($url,$access_token,$tenant_id);
+	// 						$earningType = json_decode($payItems)->PayItems->EarningsRates;
+	// 						for($i=0;$i<count($earningType);$i++){
+	// 							print_r($earningType[$i]);
+	// 							if($earningType[$i]->Name == $name){
+	// 								$EarningsRateID = $earningType[$i]->EarningsRateID;
+	// 								$this->payrollModel->insertPayrollShifts($EarningsRateID,$name,$isExemptFromTaxYN,$isExemptFromSuperYN,$isReportableAsW1,$earningType,$rateType,$multiplier_amount,"Y",$userid);
+	// 								//$this->leaveModel->createLeaveType($LeaveTypeID,$data['Name'],$isPaidYN,$slug,$showOnPaySlipYN,"Y",$userid);
+	// 								break;
+	// 							}
+	// 						}
+	// 						$data = [];
+	// 						$data['Status'] = 'SUCCESS';
+	// 					}
+	// 					else{
+	// 						$data['Status'] = "ERROR";
+	// 						$data['Message'] = "An unknown error occured";
+	// 					}
+	// 				}
+	// 			}
+	// 			else{
+
+	// 				$data['Status'] = 'ERROR';
+	// 				$data['Message'] = "You are not allowed";
+	// 			}
+	// 			http_response_code(200);
+	// 			echo json_encode($data);
+	// 		}
+	// 		else{
+	// 			echo "Hello";
+	// 			http_response_code(401);
+	// 		}
+	// 	}
+	// 	else{
+	// 		echo "What";
+	// 		http_response_code(401);
+	// 	}
+	// }
+
 	// public function updateEntitlement($entitlementId){
 	// 	$headers = $this->input->request_headers();
 	// 	   if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
@@ -215,4 +311,53 @@ class Payroll extends CI_Controller{
 	// 			echo 'ERROR';
 	// 		}
 	// 	}
+
+
+	function postXero($url,$access_token,$tenant_id,$postData){
+		$ch =  curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_POST,1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS,$postData);
+		curl_setopt($ch, CURLOPT_HTTPHEADER,  array(
+			'Content-Type:application/json',
+			'Authorization:Bearer '.$access_token,
+			'Xero-tenant-id:'.$tenant_id
+		));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+		$server_output = curl_exec($ch);
+		return $server_output;
+	}
+
+	function getXero($url,$access_token,$tenant_id){
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+           'Accept:application/json',
+           'Authorization:Bearer '.$access_token,
+           'Xero-tenant-id:'.$tenant_id
+		));
+		$server_output = curl_exec($ch);
+		return $server_output;
+	}
+
+	function refreshXeroToken($access_token){
+
+		$postData = "grant_type=refresh_token";
+		$postData .= "&refresh_token=".$access_token;
+
+		$url = "https://identity.xero.com/connect/token";
+		$ch =  curl_init($url);
+       	curl_setopt($ch, CURLOPT_URL,$url);
+       	curl_setopt($ch, CURLOPT_POST,1);
+       	curl_setopt($ch, CURLOPT_POSTFIELDS,$postData);
+       	curl_setopt($ch, CURLOPT_HTTPHEADER,  array(
+           'Content-Type:application/x-www-form-urlencoded',
+           'Authorization:Basic '.base64_encode(XERO_CLIENT_ID.":".XERO_CLIENT_SECRET)
+       	));
+       	curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+		$server_output = curl_exec($ch);
+		return $server_output;
+	}
+
 }

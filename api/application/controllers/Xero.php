@@ -38,39 +38,37 @@ class Xero extends CI_Controller{
 			
 			$access_token = $json->access_token;
 			$id_token = $json->id_token;
+			$refresh_token = $json->refresh_token;
 			$expires_in = $json->expires_in;
 
 			$tenant = $this->getTenant($access_token);
 			$tjson = json_decode($tenant);
 			$tenant_id = $tjson[0]->tenantId;
 
-			$this->xeroModel->insertNewToken($access_token,$tenant_id,$expires_in);
-
-			// $access_token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFDQUY4RTY2NzcyRDZEQzAyOEQ2NzI2RkQwMjYxNTgxNTcwRUZDMTkiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJISy1PWm5jdGJjQW8xbkp2MENZVmdWY09fQmsifQ.eyJuYmYiOjE1ODkwNzg4MjUsImV4cCI6MTU4OTA4MDYyNSwiaXNzIjoiaHR0cHM6Ly9pZGVudGl0eS54ZXJvLmNvbSIsImF1ZCI6Imh0dHBzOi8vaWRlbnRpdHkueGVyby5jb20vcmVzb3VyY2VzIiwiY2xpZW50X2lkIjoiRTJGRTBENEUwMzM1NDFFOTlFNkRBOTRBMjVFRjk1RjEiLCJzdWIiOiJhMmJjZTkyZGM4NjI1OTM3OWU0MzVmOGFlOGJhMjgxZSIsImF1dGhfdGltZSI6MTU4OTA3ODgxMCwieGVyb191c2VyaWQiOiJhODBiYmJlMS0yODIxLTQ0ODgtODNjMC0xZmUyYTQxNjdjZjciLCJnbG9iYWxfc2Vzc2lvbl9pZCI6ImVkMjFiNDdiMjIyYzQzNGJiMGE2YjJiYTZhN2EwYmJkIiwianRpIjoiY2Q4YTdiMDU4YWY5MTM0NmZjZWEwNTBmNjYzY2I4ZWQiLCJzY29wZSI6WyJlbWFpbCIsInByb2ZpbGUiLCJvcGVuaWQiLCJwYXlyb2xsLmVtcGxveWVlcyIsInBheXJvbGwucGF5cnVucyIsInBheXJvbGwucGF5c2xpcCIsInBheXJvbGwudGltZXNoZWV0cyIsInBheXJvbGwuc2V0dGluZ3MiXX0.v2ta1eohju3Z1p1W0LjtSHcWyY0rWJnzJW3bFC25F2sb_ifuL-UMlj9VMwBD4ciHISnVP32mdstVyab1q1ZTqn27SggEYqY51F9QxIo_F719aWr-ZvJXWGWjD59NFbv4v3794U1d8YjhghP0qW_yvDtXMvKMav9_Gp7UUhRNbH6hkDmdzWR4MpWwXDVyylgztLIezwhxX84uRwmHtjMO763I2vhO8Nuuuplrzc0Zj7x_o7AkMOgn9YMqaSSSJnhgGokIUumhAI7nfT-fQjkhAlT3PVp2PznQGr5HU_A41qgPscFMd30c9JTPmLZp2kjskwbi3ftUucIrKTXdQ-B_cg";
-
-			// $tenant_id = "672f5e44-4e79-4a2f-9a5e-94fadb2bbbbd";
+			$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in);
 
 			$payItems = $this->getPayItems($access_token,$tenant_id);
 
 			$this->load->model('payrollModel');
 			//earning rates
 			$earningRates = json_decode($payItems)->PayItems->EarningsRates;
+			$this->payrollModel->deleteAllPayrollShiftTypes();
 			for($i = 0; $i < count($earningRates); $i++){
 				$RateType = $earningRates[$i]->RateType;
-				if($RateType != "RATEPERUNIT"){
-					$EarningsRateID = $earningRates[$i]->EarningsRateID;
-					$Name = addslashes($earningRates[$i]->Name);
-					$EarningsType = $earningRates[$i]->EarningsType;
-					$IsExemptFromTax = $earningRates[$i]->IsExemptFromTax ? "Y" : "N";
-					$IsExemptFromSuper = $earningRates[$i]->IsExemptFromSuper ? "Y" : "N";
-					$IsReportableAsW1 = $earningRates[$i]->IsReportableAsW1 ? "Y" : "N";
-					$CurrentRecord = $earningRates[$i]->CurrentRecord ? "Y" : "N";
-					if($RateType == "FIXEDAMOUNT")
-						$Multiplier_Amount = isset($earningRates[$i]->Amount) ? $earningRates[$i]->Amount : 0;
-					else
-						$Multiplier_Amount = $earningRates[$i]->Multiplier;
-					$this->payrollModel->insertPayrollShifts($EarningsRateID,$Name,$IsExemptFromTax,$IsExemptFromSuper,$IsReportableAsW1,$EarningsType,$RateType,$Multiplier_Amount,$CurrentRecord,$userid);
-				}
+				$EarningsRateID = $earningRates[$i]->EarningsRateID;
+				$Name = addslashes($earningRates[$i]->Name);
+				$EarningsType = $earningRates[$i]->EarningsType;
+				$IsExemptFromTax = $earningRates[$i]->IsExemptFromTax ? "Y" : "N";
+				$IsExemptFromSuper = $earningRates[$i]->IsExemptFromSuper ? "Y" : "N";
+				$IsReportableAsW1 = $earningRates[$i]->IsReportableAsW1 ? "Y" : "N";
+				$CurrentRecord = $earningRates[$i]->CurrentRecord ? "Y" : "N";
+				if($RateType == "FIXEDAMOUNT")
+					$Multiplier_Amount = isset($earningRates[$i]->Amount) ? $earningRates[$i]->Amount : 0;
+				else if($RateType == "MULTIPLE")
+					$Multiplier_Amount = $earningRates[$i]->Multiplier;
+				else
+					$Multiplier_Amount = 0;
+				$this->payrollModel->insertPayrollShifts($EarningsRateID,$Name,$IsExemptFromTax,$IsExemptFromSuper,$IsReportableAsW1,$EarningsType,$RateType,$Multiplier_Amount,$CurrentRecord,$userid);		
 			}
 
 			$this->load->model('leaveModel');
@@ -87,7 +85,7 @@ class Xero extends CI_Controller{
  				$this->leaveModel->createLeaveType($LeaveTypeID,$Name,$IsPaidLeave,$slug,$ShowOnPayslip,$CurrentRecord,$userid);
 			}
 
-
+			//superfunds
 			$superFunds = $this->getSuperfunds($access_token,$tenant_id);
 			$superFunds = json_decode($superFunds)->SuperFunds;
 			for($i=0;$i<count($superFunds);$i++){
@@ -104,6 +102,7 @@ class Xero extends CI_Controller{
 				$this->payrollModel->insertSuperfund($ABN,$USI,$Type,$Name,$BSB,$AccountNumber,$AccountName,$ElectronicServiceAddress,$EmployerNumber,$userid);
 			}
 
+			//employees
 			$employees = $this->getEmployees($access_token,$tenant_id);
 			$employees = json_decode($employees)->Employees;
 			
@@ -158,7 +157,7 @@ class Xero extends CI_Controller{
 					$myUserid = $myUser->id;
 				}
 
-				$myEmployee = $this->employeeModel->getUserFromId($userid);
+				$myEmployee = $this->employeeModel->getUserFromId($myUserid);
 				if($myEmployee == null){
 					//insert 
 					$this->employeeModel->insertEmployee($myUserid,$employeeId,$Title,$FirstName,$MiddleNames,$LastName,$Status,$Email,$DateOfBirth,$JobTitle,$Gender,$AddressLine1,$AddressLine2,$City,$Region,$PostalCode,$Country,$Phone,$Mobile,$StartDate,$TerminationDate,$OrdinaryEarningsRateID,$PayrollCalendarID,$userid);
@@ -199,7 +198,7 @@ class Xero extends CI_Controller{
 					$this->employeeModel->insertIntoBankAccount($employeeId,$StatementText,$AccountName,$BSB,$AccountNumber,$Remainder,$Amount);
 				}
 
-				//super funds
+				//super fund memberships
 				foreach ($empDetails->SuperMemberships as $superMembership) {
 					$SuperMembershipID = $superMembership->SuperMembershipID;
 					$SuperFundID = $superMembership->SuperFundID;
@@ -215,10 +214,225 @@ class Xero extends CI_Controller{
 					$this->leaveModel->insertIntoLeaveBalance($myUserid,$LeaveTypeID,$NumberOfUnits);
 				}
 
-				//leave Application
-				//todo
-
 			}
+		}
+	}
+
+
+	public function syncXeroAwards(){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $json->userid){
+				$userid = $json->userid;
+				$userDetails = $this->authModel->getUserDetails($userid);
+				if($userDetails != null && $userDetails->role == SUPERADMIN){
+					$this->load->model('xeroModel');
+					$this->load->model('payrollModel');
+					//xero 
+					$xeroTokens = $this->xeroModel->getXeroToken();
+					if($xeroTokens != null){
+						$access_token = $xeroTokens->access_token;
+						$tenant_id = $xeroTokens->tenant_id;
+						$refresh_token = $xeroTokens->refresh_token;
+						$val = $this->getPayItems($access_token,$tenant_id);
+						$val = json_decode($val);
+						if($val->Status == 401){
+							$refresh = $this->refreshXeroToken($refresh_token);
+							$refresh = json_decode($refresh);
+							$access_token = $refresh->access_token;
+							$expires_in = $refresh->expires_in;
+							$refresh_token = $refresh->refresh_token;
+							$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in);
+							$val = $this->getPayItems($access_token,$tenant_id);
+							$val = json_decode($val);
+						}
+						
+						if($val->Status == "OK"){
+							$this->payrollModel->deleteAllPayrollShiftTypes();
+							$earningRates = $val->PayItems->EarningsRates;
+							for($i=0;$i<count($earningRates);$i++){
+								$RateType = $earningRates[$i]->RateType;
+								$EarningsRateID = $earningRates[$i]->EarningsRateID;
+								$Name = addslashes($earningRates[$i]->Name);
+								$EarningsType = $earningRates[$i]->EarningsType;
+								$IsExemptFromTax = $earningRates[$i]->IsExemptFromTax ? "Y" : "N";
+								$IsExemptFromSuper = $earningRates[$i]->IsExemptFromSuper ? "Y" : "N";
+								$IsReportableAsW1 = $earningRates[$i]->IsReportableAsW1 ? "Y" : "N";
+								$CurrentRecord = $earningRates[$i]->CurrentRecord ? "Y" : "N";
+								if($RateType == "FIXEDAMOUNT")
+									$Multiplier_Amount = isset($earningRates[$i]->Amount) ? $earningRates[$i]->Amount : 0;
+								else if($RateType == "MULTIPLE")
+									$Multiplier_Amount = $earningRates[$i]->Multiplier;
+								else
+									$Multiplier_Amount = 0;
+								$this->payrollModel->insertPayrollShifts($EarningsRateID,$Name,$IsExemptFromTax,$IsExemptFromSuper,$IsReportableAsW1,$EarningsType,$RateType,$Multiplier_Amount,$CurrentRecord,$userid);
+							}
+							$data['Status'] = 'SUCCESS';
+						}
+						else{
+							$data['Status'] = "ERROR";
+							$data['Message'] = "An unknown error occured";
+						}
+					}
+				}
+				else{
+
+					$data['Status'] = 'ERROR';
+					$data['Message'] = "You are not allowed";
+				}
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
+	public function syncXeroLeaves(){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $json->userid){
+				$userid = $json->userid;
+				$userDetails = $this->authModel->getUserDetails($userid);
+				if($userDetails != null && $userDetails->role == SUPERADMIN){
+					$this->load->model('xeroModel');
+					$this->load->model('leaveModel');
+					//xero 
+					$xeroTokens = $this->xeroModel->getXeroToken();
+					if($xeroTokens != null){
+						$access_token = $xeroTokens->access_token;
+						$tenant_id = $xeroTokens->tenant_id;
+						$refresh_token = $xeroTokens->refresh_token;
+						$val = $this->getPayItems($access_token,$tenant_id);
+						$val = json_decode($val);
+						if($val->Status == 401){
+							$refresh = $this->refreshXeroToken($refresh_token);
+							$refresh = json_decode($refresh);
+							$access_token = $refresh->access_token;
+							$expires_in = $refresh->expires_in;
+							$refresh_token = $refresh->refresh_token;
+							$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in);
+							$val = $this->getPayItems($access_token,$tenant_id);
+							$val = json_decode($val);
+						}
+						
+						if($val->Status == "OK"){
+							$leaveTypes = $val->PayItems->LeaveTypes;
+							$this->leaveModel->deleteAllLeaveTypes();
+							for($i=0;$i<count($leaveTypes);$i++){
+								$LeaveTypeID = $leaveTypes[$i]->LeaveTypeID;
+								$Name = addslashes($leaveTypes[$i]->Name);
+								$IsPaidLeave = $leaveTypes[$i]->IsPaidLeave ? "Y" : "N";
+								$ShowOnPayslip = $leaveTypes[$i]->ShowOnPayslip ? "Y" : "N";
+								$CurrentRecord = $leaveTypes[$i]->CurrentRecord ? "Y" : "N";
+								$slug = $Name[0];
+								$this->leaveModel->createLeaveType($LeaveTypeID,$Name,$IsPaidLeave,$slug,$ShowOnPayslip,$CurrentRecord,$userid);
+							}
+							$data['Status'] = 'SUCCESS';
+						}
+						else{
+							$data['Status'] = "ERROR";
+							$data['Message'] = "An unknown error occured";
+						}
+					}
+				}
+				else{
+
+					$data['Status'] = 'ERROR';
+					$data['Message'] = "You are not allowed";
+				}
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
+	public function syncXeroSuperfunds(){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $json->userid){
+				$userid = $json->userid;
+				$userDetails = $this->authModel->getUserDetails($userid);
+				if($userDetails != null && $userDetails->role == SUPERADMIN){
+					$this->load->model('xeroModel');
+					$this->load->model('payrollModel');
+					//xero 
+					$xeroTokens = $this->xeroModel->getXeroToken();
+					if($xeroTokens != null){
+						$access_token = $xeroTokens->access_token;
+						$tenant_id = $xeroTokens->tenant_id;
+						$refresh_token = $xeroTokens->refresh_token;
+						$val = $this->getSuperfunds($access_token,$tenant_id);
+						$val = json_decode($val);
+						if($val->Status == 401){
+							$refresh = $this->refreshXeroToken($refresh_token);
+							$refresh = json_decode($refresh);
+							$access_token = $refresh->access_token;
+							$expires_in = $refresh->expires_in;
+							$refresh_token = $refresh->refresh_token;
+							$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in);
+							$val = $this->getSuperfunds($access_token,$tenant_id);
+							$val = json_decode($val);
+						}
+					
+
+						if($val->Status == "OK"){
+							$superFunds = $val->SuperFunds;
+							$this->payrollModel->deleteAllSuperFunds();
+							for($i=0;$i<count($superFunds);$i++){
+								$SuperFundID = $superFunds[$i]->SuperFundID;
+								$Name = addslashes($superFunds[$i]->Name);
+								$ABN = isset($superFunds[$i]->ABN) ? $superFunds[$i]->ABN : "";
+								$BSB = isset($superFunds[$i]->BSB) ? $superFunds[$i]->BSB : "";
+								$USI = isset($superFunds[$i]->USI) ? $superFunds[$i]->USI : "";
+								$AccountNumber = isset($superFunds[$i]->AccountNumber) ? $superFunds[$i]->AccountNumber : "";
+								$AccountName = isset($superFunds[$i]->AccountName) ? $superFunds[$i]->AccountName : "";
+								$ElectronicServiceAddress = isset($superFunds[$i]->ElectronicServiceAddress) ? $superFunds[$i]->ElectronicServiceAddress : "";
+								$EmployerNumber = isset($superFunds[$i]->EmployerNumber) ? $superFunds[$i]->EmployerNumber : "";
+								$Type = $superFunds[$i]->Type;
+								$this->payrollModel->insertSuperfund($ABN,$USI,$Type,$Name,$BSB,$AccountNumber,$AccountName,$ElectronicServiceAddress,$EmployerNumber,$userid);
+							}
+							$data['Status'] = 'SUCCESS';
+						}
+						else{
+							$data['Status'] = "ERROR";
+							$data['Message'] = "An unknown error occured";
+						}
+					}
+				}
+				else{
+
+					$data['Status'] = 'ERROR';
+					$data['Message'] = "You are not allowed";
+				}
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
 		}
 	}
 

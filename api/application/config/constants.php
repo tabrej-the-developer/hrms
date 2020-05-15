@@ -99,3 +99,7 @@ define('GROUP_IMAGE_PATH','uploads/images/groups/');
 
 define('XERO_CLIENT_ID','E2FE0D4E033541E99E6DA94A25EF95F1');
 define('XERO_CLIENT_SECRET','MyXjgfnLaHRe4t9Aku5qlrYdaPltJGB5FKhxxaYSZNLjDKTG');
+define('XERO_ACCOUNT_CODE','477');
+
+
+define('XERO_PAY_ITEMS_URL','https://api.xero.com/payroll.xro/1.0/PayItems');
