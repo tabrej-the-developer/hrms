@@ -11,17 +11,30 @@
 	*{
 font-family: 'Open Sans', sans-serif;
 	}
+		.containers{
+		background:	rgb(243, 244, 247);
+	}
 		thead{
 			background:rgba(0,0,0,0.2);
 		}
 		tr:nth-child(even){
-			background:rgba(0,0,0,0.3);
+			background:rgb(255,255,255);
+		}
+		tr:nth-child(odd){
+
+			background:rgb(243, 244, 247);
+		}
+		th{
+			background: white
+		}
+		.table  td,.table th{
+			padding: 1rem;
+			border: none;
 		}
 		.table-div{
 			height:70vh;
 			overflow-y: auto;
-			box-shadow:0px 0px 5px 5px rgb(242, 242, 242);
-						border-radius:10px;
+			padding: 0 20px 0 20px;
 		}	
 		.sort-by{
 
@@ -48,9 +61,11 @@ font-family: 'Open Sans', sans-serif;
 			position:absolute;
 						
 		}
-
+		table{
+			box-shadow: 0 0 20px 2px #eeeff2;
+		}
 		.filter-icon{
-			border:3px solid rgb(242, 242, 242);
+			border:1px solid rgb(0,0,0);
 			padding:8px;
 			border-radius: 20px
 		}
@@ -58,6 +73,10 @@ font-family: 'Open Sans', sans-serif;
 			border:3px solid rgb(242, 242, 242);
 			border-radius: 20px;
 			padding:8px;
+			background: rgb(75, 144, 226);
+		}
+		.create a{
+		    color: white !important;
 		}
 		.data-buttons{
 			padding:10px;
@@ -163,7 +182,9 @@ border-bottom-right-radius: 20px;
   display: inline-block;
   margin: 2px
 }
-
+		.heading-bar{
+			padding: 0 20px 0 20px;
+		}
 </style>
 </head>
 <body>
@@ -173,8 +194,8 @@ border-bottom-right-radius: 20px;
 			return date("M d,Y",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
 		}
 	?>
-<div class="container">
-	<div class="d-flex">
+<div class="containers">
+	<div class="d-flex heading-bar">
 		<span class="m-3" style="font-size: 30px;font-weight: bold">Timesheet</span>
 		<span class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
 			<?php if($this->session->userdata('UserType') == SUPERADMIN){?> 
@@ -298,7 +319,7 @@ border-bottom-right-radius: 20px;
 	});
 	<?php } ?>
 
-		$(document).on('click','tr',function(){
+		$(document).on('click','#tbody tr',function(){
 			var timesheetId = $(this).prop('id')
 	var url = "http://localhost/PN101/timesheet/gettimesheetDetails?timesheetId="+timesheetId;
 			window.location.href=url;
@@ -354,7 +375,7 @@ $("#timesheet-date").datepicker();
 </script>
 <script type="text/javascript">
 	$(document).ready(()=>{
-    $('.container').css('paddingLeft',$('.side-nav').width());
+    $('.containers').css('paddingLeft',$('.side-nav').width());
 });
 </script>
 </body>

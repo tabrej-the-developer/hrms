@@ -24,7 +24,6 @@ class Messenger extends CI_Controller {
 	}
 
 	public function chats($currentUserId=null,$isGroupYN=null){
-
 		if($currentUserId != null && $isGroupYN == null) return;
 		if($this->session->has_userdata('LoginId')){
 			$data['recentChats'] = $this->getRecentChats();
@@ -217,6 +216,7 @@ class Messenger extends CI_Controller {
 			curl_close ($ch);
 		}
 		else if($httpcode == 401){
+							redirect(base_url().'roster/roster_dashboard');
 
 		}
 	}

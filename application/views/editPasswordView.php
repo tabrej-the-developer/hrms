@@ -101,9 +101,7 @@ font-family: 'Open Sans', sans-serif;
       $(document).on('click','.fa-fw',function(){
         
         if($(this).prev().attr('type') == 'text'){
-          
              $(this).prev().attr('type','password')
-         
         }
         else{
           $(this).prev().attr('type','text')

@@ -15,8 +15,7 @@ class Auth extends CI_Controller {
 		parent::__construct();
 	}
 
-	public function login()
-	{
+	public function login(){
 		$json = json_decode(file_get_contents('php://input'));
 		
 		if($json != null){

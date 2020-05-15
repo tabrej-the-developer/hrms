@@ -33,7 +33,6 @@ class Welcome extends CI_Controller {
 			$data['password'] = md5($form_data['password']);
 			$data['deviceid'] = $this->getIpAddress();
 			$url = BASE_API_URL.'auth/login';
-
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -42,12 +41,6 @@ class Welcome extends CI_Controller {
 
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			//echo "hello";
-			echo "<pre>";
-			var_dump($server_output);
-			//echo json_encode($data);
-			//var_dump($data);
-			//exit;
 			if($httpcode == 200){
 				$jsonOutput = json_decode($server_output);
 				if($jsonOutput->Status == "SUCCESS"){
@@ -80,9 +73,34 @@ class Welcome extends CI_Controller {
 	}
 
 	public function logout(){
-		$this->session->sess_destroy();
-		redirect(base_url().'welcome/login');
+		if($this->session->userdata('AuthToken') != null){
+			$sessionId = $this->session->userdata('AuthToken');
+			$this->logoutSession($sessionId);
+		}
+			$this->session->sess_destroy();
+			redirect(base_url().'welcome/login');
 	}
+
+	function logoutSession($id){
+			$url = BASE_API_URL."Auth/logoutSession";
+			$data['id'] = $id;
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				
+			}
+			else if($httpcode == 401){
+			}
+		}
 
 	function getIpAddress(){
 		if (!empty($_SERVER['HTTP_CLIENT_IP']))   

@@ -5,6 +5,9 @@
 <title>Notices</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="text/javascript" href="https://code.jquery.com/jquery-3.4.1.js"></script>
+<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/tokenize2.css">
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tokenize2.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style type="text/css">
     *{
@@ -25,8 +28,7 @@ font-family: 'Open Sans', sans-serif;
 input[type="email"].form-control,
 input[type="text"].form-control,
 input[type="search"].form-control{
-    border:none;
-    border-bottom:1px dotted #CFCFCF;
+    max-width:100%;
 }
 textarea {
     border:1px dotted #CFCFCF!important;
@@ -111,6 +113,18 @@ ul.mail-list li span.mail-message-preview{
     color: white;
     border: 1px solid #e2e2e2;
 }
+    .button{
+    background-color: #9E9E9E;
+    border: none;
+    color: white;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 2px;
+    border-radius: 0 !important
+    }
+
 
 .pagination a:hover:not(.active) {background-color: #ddd;}
 /*pagination end*/
@@ -119,11 +133,11 @@ ul.mail-list li span.mail-message-preview{
 
 <!-- text editor-->
     <script type="text/javascript" src="http://js.nicedit.com/nicEdit-latest.js"></script> <script type="text/javascript">
-	//<![CDATA[
+    //<![CDATA[
         bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
-	//]]>
-	</script>
-	<!-- text editor end-->
+    //]]>
+    </script>
+    <!-- text editor end-->
 
 <script>
 
@@ -158,8 +172,8 @@ $(function() {
 <!-- upload js end-->
 
 
-<!-- checkbox js -->
-	$(document).ready(function(){
+// checkbox js -->
+    $(document).ready(function(){
 $("#mytable #checkall").click(function () {
         if ($("#mytable #checkall").is(':checked')) {
             $("#mytable input[type=checkbox]").each(function () {
@@ -175,32 +189,34 @@ $("#mytable #checkall").click(function () {
     
     $("[data-toggle=tooltip]").tooltip();
 });
-<!-- checkbox js end-->
+// checkbox js end
+
+
 </script>
 </head>
 <body>
-<div class="container">
-  <ul class="nav nav-tabs" role="tablist">
+<div class="containers">
+<!--   <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item">
       <a class="nav-link active" data-toggle="tab" href="#home"><i class="fas fa-plus-square"></i> New</a>
     </li>
-  </ul>
-
+  </ul> -->
+<div><h3 style="padding-left:5%">Create New Notice</h3></div>
   <!-- Tab panes -->
   <div class="tab-content">
     <div id="home" class="container tab-pane active">
-	<div class="container">
+    <div class="container">
     <div class="content-container clearfix" >
         <div class="col-md-8 col-md-offset-2">
-			
-			<?php if($error = $this->session->flashdata('msg')){ ?>
-			   <p style="color: green;"><?php echo  $error; ?><p>
-		  <?php } ?>
-		
+            
+            <?php if($error = $this->session->flashdata('msg')){ ?>
+               <p style="color: green;"><?php echo  $error; ?><p>
+          <?php } ?>
+        
             <form action="<?php echo base_url().'notice/createNotice';?>" method="post">
                 <div class="search-table">
                             <div class="search-box">
-                <div class="row">
+<!--                 <div class="row">
                     <div class="col-sm-12">
                         <input type="text" id="myInput" onkeyup="myFunction()" class="form-control" placeholder="Search Employee">
                         <script>
@@ -214,62 +230,58 @@ $("#mytable #checkall").click(function () {
                             });
                         </script>
                     </div> 
-                </div>
+                </div> -->
             </div>
-            <div class="search-list">
-                <table class="table" id="myTable" style="border:none;">
-                    <thead>
-                        <tr></tr>
-                    </thead>
-                    <tbody class="tbodyscroll">    
+ 
+                <label>To:</label>
+                    <select class="demo" multiple >  
                     <?php
-                    $users = json_decode($users);
-                     foreach ($users->users as $chat) {
-                      if($chat->imageUrl == null || $chat->imageUrl == ""){
-                        $chat->imageUrl = base_url().'assets/images/defaultUser.png';
-                      }
-                    ?>              
-                    <tr>
-                        <td><input type="checkbox" name="<?php echo $chat->userid;?>" id="<?php echo $chat->userid;?>"></td>
-                        <td>
-                            <div class="chat_people">
-                            <div class="chat_img">
-                            </div>
-                            <div class="chat_ib"><h5><?php echo $chat->username;?></h5></div>
-                            </div>
-                        </td>
-                    </tr><?php }?>
-
-                    
-                    </tbody>
-                </table>
-
-            </div>
+                        $users = json_decode($users);
+                         foreach ($users->users as $chat) {
+                          if($chat->imageUrl == null || $chat->imageUrl == ""){
+                            $chat->imageUrl = base_url().'assets/images/defaultUser.png';
+                          }
+                        ?>       
+                        <option value="<?php echo $chat->userid;?>"><?php echo $chat->username;?></option>
+                            <?php }?>
+                    </select>
+   
                           </div>
             
-            
-			<div class="form-group">
-                <input type="text" name="subject" class="form-control" placeholder="Subject" required />
+            <label>Subject</label>
+            <div class="form-group">
+                <input type="text" name="subject" class="form-control"  required />
             </div>
 
-			<br>
-			<div class="form-group"> 
-			<textarea name="message"  class="form-control" style="width: 700px; height: 210px;" required> Lorem ipsum </textarea>
-			</div>	
-		   
-			<div class="form-group ">
-				<button class="btn btn-primary" type="submit">SEND</button>
+            <br>
+            <label>Message:</label>
+            <div class="form-group"> 
+            <textarea name="message"  class="form-control"  required>  </textarea>
+            </div>  
+           
+            <div class="form-group " style="display: flex;justify-content: flex-end;">
+                <button class="btn button" type="submit">SEND</button>
             </div>
-			</form>
+            </form>
         </div>
-		</div>
-	</div>
-	</div>
+        </div>
+    </div>
+    </div>
    </div>
 </div>
 
 
 </body>
-
-
+<script type="text/javascript">
+    $(document).ready(()=>{
+    $('.containers').css('paddingLeft',$('.side-nav').width());
+});
+</script>
+<script type="text/javascript">
+//tokenize2
+    $(document).ready(function(){
+        $('.demo').tokenize2();
+    });
+//tokenize2
+</script>
 </html>

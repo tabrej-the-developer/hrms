@@ -11,19 +11,27 @@
 	*{
 font-family: 'Open Sans', sans-serif;
 	}
+	.containers{
+		background:	rgb(243, 244, 247);
+	}
 		thead{
-			background:rgba(0,0,0,0.2);
+			background:rgba(255,255,255);
 		}
 		tr:nth-child(even){
-			background:rgba(0,0,0,0.3);
+			background:rgba(255,255,255);
+		}
+		.table  td,.table th{
+			padding: 1rem;
+			border: none;
+		}
+		.sort-by{
+
+		}
+		table{
+			box-shadow: 0 0 20px 2px #eeeff2;
 		}
 		.table-div{
-			height:70vh;
-			overflow-y: auto;
-			box-shadow:0px 0px 5px 5px rgb(242, 242, 242);
-			border-radius:10px;
-		}	
-		.sort-by{
+			padding: 0 20px 0 20px;
 
 		}
 		.center-list{
@@ -45,8 +53,10 @@ font-family: 'Open Sans', sans-serif;
 			padding:10px;
 		}
 		.sort-by:hover::after{
-			position:absolute;
-						
+			position:absolute;	
+		}
+		.heading-bar{
+			padding: 0 20px 0 20px;
 		}
 
 		.filter-icon{
@@ -57,7 +67,11 @@ font-family: 'Open Sans', sans-serif;
 		.create{
 			border:3px solid rgb(242, 242, 242);
 			border-radius: 20px;
-			padding:8px;
+		    background: rgb(75, 144, 226);
+		    color: white;
+		}
+		#create-new-roster{
+			color:white;
 		}
 		.data-buttons{
 			padding:10px;
@@ -177,8 +191,8 @@ border-bottom-right-radius: 20px;
 			return date("M d,Y",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
 		}
 	?>
-<div class="container">
-	<div class="d-flex">
+<div class="containers">
+	<div class="d-flex heading-bar">
 		<span class="m-3" style="font-size: 30px;font-weight: bold">Rosters</span>
 		<span class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
 			<?php if($this->session->userdata('UserType') == SUPERADMIN){?> 
@@ -300,9 +314,9 @@ border-bottom-right-radius: 20px;
 	});
 	<?php } ?>
 
-		$(document).on('click','tr',function(){
+		$(document).on('click','#tbody tr',function(){
 			var rosterId = $(this).prop('id')
-	var url = "http://localhost/PN101/roster/getRosterDetails?rosterId="+rosterId;
+			var url = "http://localhost/PN101/roster/getRosterDetails?rosterId="+rosterId;
 			window.location.href=url;
 		})
 })
@@ -356,7 +370,7 @@ $("#roster-date").datepicker();
 </script>
 <script type="text/javascript">
 	$(document).ready(()=>{
-    $('.container').css('paddingLeft',$('.side-nav').width());
+    $('.containers').css('paddingLeft',$('.side-nav').width());
 });
 </script>
 </body>

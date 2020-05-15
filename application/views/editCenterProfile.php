@@ -8,7 +8,8 @@
 <style type="text/css">
   *{
 font-family: 'Open Sans', sans-serif;
-  }     .add-center,.add-employee{
+  } 
+      .add-center,.add-employee{
           background-color: #9E9E9E;
   border: none;
   color: white;
@@ -44,8 +45,8 @@ font-family: 'Open Sans', sans-serif;
                 ?>
             </select>
           </div>
-          <div><button class="add-center">Add Center</button></div>
-          <div><button class="add-employee">Add Employee</button></div>
+          <div><button class="add-center">Add Center</button></div><!-- 
+          <div><button class="add-employee">Add Employee</button></div> -->
         </div>
 
   <form class="row form-group " name ="mainForm" id="mainForm" method="post" enctype="multipart/form-data" >
@@ -171,11 +172,11 @@ font-family: 'Open Sans', sans-serif;
     window.location.href="http://localhost/PN101/settings/createCenter"
   })
 </script>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
   $('.add-employee').on('click',function(){
     window.location.href="http://localhost/PN101/settings/addEmployee"
   })
-</script>
+</script> -->
 <script type="text/javascript">
   $(document).ready(()=>{
     $('.container').css('paddingLeft',$('.side-nav').width());
