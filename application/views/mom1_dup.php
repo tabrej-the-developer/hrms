@@ -644,10 +644,10 @@ let autocomplete;
                    </td>
                </tr> -->
      <tr>
-        <td class="text-center">Agenda <span class="click-add">+</span></td>
+        <td class="text-center">Agenda <span class="click-add">+</span><span class="click-remove">-</span></td>
           <td>
             <div class="form-group agenda-class">
-                <textarea name="meetingAgenda[]" id="agenda" class="form-control" style="background-color:#eee"></textarea>
+                <textarea name="meetingAgenda[]" id="agenda" class="form-control agenda" style="background-color:#eee"></textarea>
             </div>  
           </td>
       </tr>
@@ -1306,7 +1306,13 @@ $('#toggle').remove();
   </script>
   <script type="text/javascript">
     $('.click-add').click(function(){
-        $('.agenda-class').append($('.agenda-class .agenda').html())
+        $('.agenda-class').append($('.agenda-class ').html())
+    })
+    $('.click-remove').click(function(){
+      if(($('.agenda').length) > 1){
+        $('.agenda').last().remove();
+        // alert( $('.agenda').length )
+      }
     })
   </script>
 </html>
