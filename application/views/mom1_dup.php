@@ -484,6 +484,35 @@ table.dataTable thead th, table.dataTable thead td{
     border-top: 20px solid #899097;
     border-left: 10px solid transparent;
 }
+.modal-logout {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1.1);
+    transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+    text-align: center;
+}
+.modal-content-logout {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 1rem 1.5rem;
+    width: 50%;
+    border-radius: 0.5rem;
+}
+.show-modal {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1.0);
+    transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+}
 </style>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/tokenize2.css">
@@ -563,7 +592,11 @@ let autocomplete;
 
 </head>
 <body style="background-color:#eee">
-<?php $users =   json_decode($users);
+
+<?php 
+  if(isset($users)){
+$users =   json_decode($users);
+}
           //  echo "<pre>";
              // foreach($users->users as $m):
 //echo "<br>"; 
@@ -741,6 +774,7 @@ let autocomplete;
         <tbody>
          <?php 
          $i = 0;
+         if(isset($meetings)){
            $meetings = json_decode($meetings);
             // print_r($meetings);
          foreach($meetings->data as $u): 
@@ -788,7 +822,7 @@ let autocomplete;
       </div>
       </td>
           </tr>
-                         <?php } endforeach; ?>
+                         <?php } endforeach; } ?>
       
        
 
@@ -812,6 +846,7 @@ let autocomplete;
          $i = 0;
            // $meetings = json_decode($meetings);
             // print_r($meetings);
+         if(isset($meetings)){
          foreach($meetings->data as $u): 
           if($u->date > date('Y-m-d')){
            $i = $i + 1;
@@ -837,7 +872,7 @@ let autocomplete;
          <input type="hidden" id="p"  name="p[]" value="<?php echo $p->participateName; ?>" >
         <div id="participant1"></div>
          
-        <?php endforeach;
+        <?php endforeach; 
         
         ?>
         <!-- <div id="participant2">+5</div> -->
@@ -859,7 +894,7 @@ let autocomplete;
         </div>
         </td>
           </tr>
-                         <?php } endforeach; ?>
+                         <?php } endforeach; } ?>
       
        
 
@@ -875,14 +910,17 @@ let autocomplete;
    <p>Viewing page 1-20 of 36</p>
    
    </div> -->
-   
-   </div>
-
+    </div>
   </div>
+</div>
 
+<div class="modal-logout">
+  <div class="modal-content-logout">
+    <h3>You have been logged out!!</h3>
+    <h4><a href="<?php echo base_url(); ?>">Click here</a> to login</h4>
+  </div>
 </div>
   
-    
 <body>
 
 
@@ -1315,4 +1353,17 @@ $('#toggle').remove();
       }
     })
   </script>
+<?php if( isset($error) ){ ?>
+<script type="text/javascript">
+  var modal = document.querySelector(".modal-logout");
+    function toggleModal() {
+        modal.classList.toggle("show-modal");
+    }
+  $(document).ready(function(){
+      toggleModal();  
+    })
+    </script>
+  <?php }
+?>
+  
 </html>

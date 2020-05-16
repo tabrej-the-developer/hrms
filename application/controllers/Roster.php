@@ -26,8 +26,13 @@ public function roster_dashboard(){
 		$var['id'] = $id;
 		$var['centerId'] = $oldid;
 		$var['userId'] 	= $this->session->userdata('LoginId');
-		$var['centers'] = $this->getAllCenters();
-		$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[$id]->centerid);
+		if( $this->getAllCenters() != 'error'){
+			$var['centers'] = $this->getAllCenters();
+			$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[$id]->centerid);
+			}
+			else{
+				$var['error'] = 'error';
+			}
 		$var['entitlement'] = $this->getAllEntitlements($var['userId']);
 	}
 	else if($this->session->userdata('UserType') == ADMIN ){
@@ -69,7 +74,7 @@ public function roster_dashboard(){
 			curl_close ($ch);
 		}
 		else if($httpcode == 401){
-
+			return 'failed';
 		}
 	}
 
@@ -164,8 +169,8 @@ $server_output = curl_exec($ch);
 			curl_close ($ch);
 		}
 		else if($httpcode == 401){
-
-		}
+			return 'error';
+		}	
 	}
 
 public	function updateShift(){

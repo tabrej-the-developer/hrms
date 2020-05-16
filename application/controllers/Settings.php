@@ -5,7 +5,13 @@ class Settings extends CI_Controller {
 
 public function index(){
 	if($this->session->has_userdata('LoginId')){
-		$this->load->view('settings');
+		if($this->getAllCenters() != 'error'){
+			$this->load->view('settings');
+			}
+			else{
+				$data['error'] = 'error';
+				$this->load->view('settings',$data);
+			}
 		}
 	else{
 		$this->load->view('redirectToLogin');
@@ -227,7 +233,7 @@ public function editRooms(){
 			curl_close ($ch);
 		}
 		else if($httpcode == 401){
-
+			return 'error';
 		}
 	}
 

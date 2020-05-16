@@ -21,8 +21,13 @@ class Payroll extends CI_Controller {
 		$var['id'] = $id;
 		$var['centerId'] = $oldid;
 		$var['userId'] 	= $this->session->userdata('LoginId');
-		$var['centers'] = $this->getAllCenters();
-		$var['payrolls'] = $this->getPastPayrolls(json_decode($var['centers'])->centers[$id]->centerid);
+		if( $this->getAllCenters() != 'error'){
+			$var['centers'] = $this->getAllCenters();
+			$var['payrolls'] = $this->getPastPayrolls(json_decode($var['centers'])->centers[$id]->centerid);
+		}
+		else{
+			$var['error'] = 'error';
+		}
 			$this->load->view('payrollList',$var);
 					}
 		else{
@@ -161,7 +166,7 @@ class Payroll extends CI_Controller {
 				curl_close ($ch);
 			}
 			else if($httpcode == 401){
-
+				return 'error';
 			}
 		}
 

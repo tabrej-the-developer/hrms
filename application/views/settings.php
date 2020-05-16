@@ -21,7 +21,7 @@ font-family: 'Open Sans', sans-serif;
 		flex-wrap: wrap
 	}
 	.containers{
-		width:100vw;
+		width:100%;
 		padding-top:10px;
 		padding-bottom:10px;
 		padding-right:10px;
@@ -52,7 +52,35 @@ font-family: 'Open Sans', sans-serif;
     	max-width: 50%;
     	text-align: center
     	}
-
+.modal-logout {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1.1);
+    transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+    text-align: center;
+}
+.modal-content-logout {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 1rem 1.5rem;
+    width: 50%;
+    border-radius: 0.5rem;
+}
+.show-modal {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1.0);
+    transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+}
 	@media only screen and (max-width: 600px) {
 		.title-box{
 			display:block;
@@ -109,6 +137,12 @@ font-family: 'Open Sans', sans-serif;
 		</div>
 	</div>
 </div>
+<div class="modal-logout">
+    <div class="modal-content-logout">
+        <h3>You have been logged out!!</h3>
+        <h4><a href="<?php echo base_url(); ?>">Click here</a> to login</h4>
+    </div>
+</div>
 <!-- <script type="text/javascript">
 	if($(window).width() > '720'){
 	var widthOfNav = $('.navbar-nav').width();
@@ -126,6 +160,19 @@ $(document).on('mouseleave','.navbar-nav',function(){
       $('.containers').css('paddingLeft',$('.side-nav').width());
   });
   </script>
+
+<?php if( isset($error) ){ ?>
+<script type="text/javascript">
+  var modal = document.querySelector(".modal-logout");
+    function toggleModal() {
+        modal.classList.toggle("show-modal");
+    }
+	$(document).ready(function(){
+	  	toggleModal();	
+	  })
+		</script>
+	<?php }
+?>
 
 </body>
 </html>

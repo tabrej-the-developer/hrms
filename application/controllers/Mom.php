@@ -4,10 +4,16 @@ class Mom extends CI_CONTROLLER{
 
     public function index(){
       if($this->session->has_userdata('LoginId')){
-			$data['users'] = $this->getUsers();
-      $data['meetings'] = $this->getMeetings();
+        if($this->getUsers() != 'error'){
+              $data['users'] = $this->getUsers();
+              $data['meetings'] = $this->getMeetings();
         $this->load->view('mom1_dup',$data);
-                }
+      }
+          else{
+            $data['error'] = 'error';
+            $this->load->view('mom1_dup',$data);
+          }
+        }
     else{
       $this->load->view('redirectToLogin');
     }
@@ -177,7 +183,7 @@ class Mom extends CI_CONTROLLER{
 			curl_close ($ch);
 		}
 		else if($httpcode == 401){
-
+      return 'error';
 		}
 	}
 
