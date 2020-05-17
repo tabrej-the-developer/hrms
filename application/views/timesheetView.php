@@ -248,7 +248,35 @@ max-width:30vw;
 .Accepted{
 	background:#4CAF50;
 }
-
+   .modal-logout {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        visibility: hidden;
+        transform: scale(1.1);
+        transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+        text-align: center;
+    }
+    .modal-content-logout {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 1rem 1.5rem;
+        width: 50%;
+        border-radius: 0.5rem;
+    }
+    .show-modal {
+        opacity: 1;
+        visibility: visible;
+        transform: scale(1.0);
+        transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+    }
 @media only screen and (max-width: 600px) {
 .modal-content{
 	min-width:100vw;
@@ -511,6 +539,8 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 			 } //}?>
 		</table>
 	</div>
+
+
 		<div class="total-budget" >
 			<table>
 				<tr class="total-budget-row">
@@ -554,7 +584,15 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 <?php } ?>
 <!-- Till here -->>
 
-
+<!-- Logout Modal -->
+   <div class="modal-logout">
+        <div class="modal-content-logout">
+            <h3>You have been logged out!!</h3>
+            <h4><a href="">Click here</a> to login</h4>
+            
+        </div>
+    </div>
+<!-- Logout Modal -->
 
 <?php if($this->session->userdata('UserType') == ADMIN || $this->session->userdata('UserType') == SUPERADMIN){?>
 <script type="text/javascript">
@@ -754,5 +792,18 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
     $('.containers').css('paddingLeft',$('.side-nav').width());
 });
 </script>
+<?php if( isset($error) ){ ?>
+<script type="text/javascript">
+  var modal = document.querySelector(".modal-logout");
+    function toggleModal() {
+        modal.classList.toggle("show-modal");
+    }
+	$(document).ready(function(){
+	  	toggleModal();	
+	  })
+		</script>
+	<?php }
+?>
+
 </body>
 </html>

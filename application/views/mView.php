@@ -521,6 +521,35 @@ p.ovrflowtext {
 .container{
   max-width:95%;
 }
+   .modal-logout {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        visibility: hidden;
+        transform: scale(1.1);
+        transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+        text-align: center;
+    }
+    .modal-content-logout {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 1rem 1.5rem;
+        width: 50%;
+        border-radius: 0.5rem;
+    }
+    .show-modal {
+        opacity: 1;
+        visibility: visible;
+        transform: scale(1.0);
+        transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+    }
 </style>
 </head>
 
@@ -556,6 +585,7 @@ p.ovrflowtext {
         <div class="messages-box" id="get_users">
           <div class="list-group rounded-0 ">
             <?php
+            if(isset($recentChats)){
               $recents = json_decode($recentChats);
               foreach($recents->chats as $rc){ 
             ?>
@@ -580,7 +610,7 @@ p.ovrflowtext {
                 </div>
               </div>
             </div>
-			  <?php } ?>
+			  <?php } }?>
           
 
           </div>
@@ -999,6 +1029,15 @@ p.ovrflowtext {
 					  </div>
 				</div>
 		<!-- add to group model end -->
+
+  <div class="modal-logout">
+    <div class="modal-content-logout">
+      <h3>You have been logged out!!</h3>
+      <h4><a href="<?php echo base_url(); ?>">Click here</a> to login</h4>      
+    </div>
+  </div>
+
+
 </body>
 
 <script type="text/javascript">
@@ -1098,4 +1137,24 @@ $('.save').click(function(){
       console.log('wow');
     })
   </script>
+
+<?php if( isset($error) != null){ ?>
+ <script type="text/javascript">
+    
+   var modal = document.querySelector(".modal-logout");
+   
+    function toggleModal() {
+        modal.classList.toggle("show-modal");
+    }
+
+$(document).ready(function(){
+    toggleModal();  
+  })
+  </script>
+<?php }
+else{
+
+};
+?>
+
     </html>

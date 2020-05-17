@@ -28,7 +28,12 @@ class Notice extends CI_Controller {
 
 	if($this->session->has_userdata('LoginId')){
 		$data['allNotices'] = array();
-		$allNotices = json_decode($this->getAllNotices());
+		if($this->getAllNotices() != 'error'){
+				$allNotices = json_decode($this->getAllNotices());
+			}
+			else{
+				$data['error'] = 'error';
+			}
 		if($noticeStatus == 'Inbox' && $allNotices != null){
 			foreach ($allNotices->notices as $notice) {
 				if($notice->status != "2" && $notice->senderId != $this->session->userdata('LoginId')){
@@ -172,7 +177,7 @@ class Notice extends CI_Controller {
 			curl_close ($ch);
 		}
 		else if($httpcode == 401){
-
+			return 'error';
 		}
 	}
 

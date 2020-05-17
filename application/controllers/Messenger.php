@@ -26,11 +26,16 @@ class Messenger extends CI_Controller {
 	public function chats($currentUserId=null,$isGroupYN=null){
 		if($currentUserId != null && $isGroupYN == null) return;
 		if($this->session->has_userdata('LoginId')){
-			$data['recentChats'] = $this->getRecentChats();
+			if($this->getRecentChats() != 'error'){
+					$data['recentChats'] = $this->getRecentChats();
+				}
+				else{
+					$data['error'] = 'error';
+				}
 			if($currentUserId == null){
-				if((json_decode($data['recentChats'])->chats) != null){
+				if(isset($data['recentChats'])){
 				$currentUserId = (json_decode($data['recentChats'])->chats)[0];
-			}
+					}
 			if(isset( $currentUserId->isGroupYN )){
 				$isGroupYN = $currentUserId->isGroupYN;
 			}
@@ -216,8 +221,7 @@ class Messenger extends CI_Controller {
 			curl_close ($ch);
 		}
 		else if($httpcode == 401){
-							redirect(base_url().'roster/roster_dashboard');
-
+			return 'error';
 		}
 	}
 

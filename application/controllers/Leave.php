@@ -6,7 +6,10 @@ class Leave extends CI_Controller {
 	public function index(){
 	  if($this->session->has_userdata('LoginId')){
 		if($this->session->userdata('UserType') == SUPERADMIN){
-			$data['leaveType'] = $this->getLeaveType();
+			if($this->getLeaveType() == 'failed'){
+				$data['error'] = 'failed';
+			}
+				$data['leaveType'] = $this->getLeaveType();
 			$data['centers'] = $this->getAllCenters();
 			if($data['centers'] != null){
 				$centers = json_decode($data['centers'])->centers;
@@ -14,6 +17,7 @@ class Leave extends CI_Controller {
 			}
 		} 
 		else{
+			
 			$data['balance'] = $this->getLeaveBalance();
 			$data['centers'] = $this->getAllCenters();
 			$data['leaves'] = $this->getAllLeavesByUser();
@@ -46,7 +50,7 @@ class Leave extends CI_Controller {
 			curl_close ($ch);
 		}
 		else if($httpcode == 401){
-
+			return 'failed';
 		}
 	}
 

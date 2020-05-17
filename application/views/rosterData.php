@@ -15,6 +15,7 @@
 <style type="text/css">
 	*{
 font-family: 'Open Sans', sans-serif;
+text-align:center;
 	}
 	body{
 		background:#EAE6FF;
@@ -161,6 +162,8 @@ max-width:30vw;
 }
 .cell-back-1{
 	margin:0 10px 0 10px;
+	font-size: 0.75rem;
+	padding:0.2rem;
 }
 .cell-back-2{
 	margin:0 10px 0 10px;
