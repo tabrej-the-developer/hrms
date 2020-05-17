@@ -20,7 +20,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style type="text/css">
   *{
-    text-align: center;
 font-family: 'Open Sans', sans-serif;
   }
   .placePickerUIButton{
@@ -84,13 +83,13 @@ font-family: 'Open Sans', sans-serif;
 			font-size: .875rem;
 			line-height: 1.5;
 			border-radius: 1.2rem;
-			border: 1px solid #ccc;
+/*			border: 1px solid #ccc;*/
 		}
 		#example_filter input {
 		  border-radius: 1.2rem;
 		}
 		.border-shadow{
-			    box-shadow: 0 3px 10px rgba(0,0,0,.1);
+			    /*box-shadow: 0 3px 10px rgba(0,0,0,.1);*/
 
 		}
 		.modal-header {
@@ -123,7 +122,7 @@ nav > div a.nav-item.nav-link.active:after
   position: relative;
   bottom: -46px;
   left: -10%;
-  border: 15px solid transparent;
+/*  border: 15px solid transparent;*/
   border-top-color: #ddd ;
 }
 .tab-content{
@@ -156,7 +155,7 @@ nav > div a.nav-item.nav-link:focus
 /* Toggle end */
 		/*leaves balance bar*/
 
-		.checkbox{background-color:#fff;display:inline-block;height:18px;margin:0.6em 0 0 0;width:18px;border-radius:0;border:1px solid #ccc;float:right}
+		.checkbox{background-color:#fff;display:inline-block;height:18px;margin:0.6em 0 0 0;width:18px;border-radius:0;float:right}
   .checkbox span{display:block;height:20px;position:relative;width:20px;padding:0}
   .checkbox span:after{-moz-transform:scaleX(-1) rotate(135deg);-ms-transform:scaleX(-1) rotate(135deg);-webkit-transform:scaleX(-1) rotate(135deg);transform:scaleX(-1) rotate(135deg);-moz-transform-origin:left top;-ms-transform-origin:left top;-webkit-transform-origin:left top;transform-origin:left top;border-right:3px solid #fff;border-top:3px solid #fff;content:'';display:block;height:13px;left:0;position:absolute;top:8px;width:8px}
   
@@ -164,7 +163,7 @@ nav > div a.nav-item.nav-link:focus
 .checkbox input:checked + .default:after{border-color:#242121ad}
 .chat_people{ overflow:hidden; clear:both;}
 .chat_list {
-  border-bottom: 1px solid #c4c4c4;
+ /* border-bottom: 1px solid #c4c4c4;*/
   margin: 0;
   padding: 18px 16px 10px;
 }
@@ -245,13 +244,17 @@ svg:not(:root).svg-inline--fa {
 .container{
     /* background-color:#8798ab26; */
 }
-table.main-table tr:nth-child(even){
-   background-color:#eee;
-   
+table.main-table tr:nth-child(odd){
+   background-color:#eee !important;
    color:black; 
 }
+thead tr td{
+  background:white !important;
+  font-weight:bolder;
+}
+
 table.main-table{
-    box-shadow: 0px 2px 4px;
+    /*box-shadow: 0px 2px 4px;*/
 }
 table.main-table tr:nth-child(odd){
     background-color:white;
@@ -294,7 +297,7 @@ table.main-table tr:nth-child(odd){
 	
 /*corousol end*/		
 	#participant{
-        border:1px solid black;
+       /* border:1px solid black;*/
         border-radius:50px;
         height:25px;
         background-color:skyblue;
@@ -302,7 +305,7 @@ table.main-table tr:nth-child(odd){
     }
 
     #participant1{
-        border:1px solid black;
+        /*border:1px solid black;*/
         border-radius:50px;
         background-color:skyblue;
         height:25px;
@@ -313,7 +316,7 @@ table.main-table tr:nth-child(odd){
     }
 
     #participant1:nth-last-child(1){
-        border:1px solid black;
+        /*border:1px solid black;*/
         border-radius:50px;
         background-color:lightblue;
         height:25px;
@@ -324,7 +327,7 @@ table.main-table tr:nth-child(odd){
     }
 
     #participant2{
-        border:1px solid black;
+        /*border:1px solid black;*/
         border-radius:50px;
         height:25px;
         width:25px;
@@ -364,7 +367,7 @@ input#add_meeting{
 }
 .footer button{
     background-color:white;
-    border:1px solid black;
+    /*border:1px solid black;*/
     color:black;
 }
 
@@ -393,7 +396,7 @@ input#add_meeting{
   background-color: white;
   min-width: 160px;
   overflow: auto;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  /*box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);*/
   right: 0;
   z-index: 1;
 }
@@ -461,6 +464,25 @@ margin-top:-3px;
 }
 .dataTables_paginate{
   margin:0 !important;
+}
+.table.dataTable.no-footer{
+  border-bottom: 0;
+}
+table.dataTable thead th, table.dataTable thead td{
+  border:0 !important;
+}
+.prevv,.futt{
+  margin-bottom: 40px
+}
+.arrow::after{
+  content: " ";
+    /* background: red; */
+    margin-top: 35px;
+    position: absolute;
+    /* width: 100px; */
+    border-right: 10px solid transparent;
+    border-top: 20px solid #899097;
+    border-left: 10px solid transparent;
 }
 </style>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css">
@@ -622,10 +644,10 @@ let autocomplete;
                    </td>
                </tr> -->
      <tr>
-        <td class="text-center">Agenda</td>
+        <td class="text-center">Agenda <span class="click-add">+</span><span class="click-remove">-</span></td>
           <td>
-            <div class="form-group">
-                <textarea name="meetingAgenda[]" id="agenda" class="form-control" style="background-color:#eee"></textarea>
+            <div class="form-group agenda-class">
+                <textarea name="meetingAgenda[]" id="agenda" class="form-control agenda" style="background-color:#eee"></textarea>
             </div>  
           </td>
       </tr>
@@ -654,8 +676,8 @@ let autocomplete;
                        
                          foreach($users->users as $m):
                        ?>  
-                       <option value="<?php echo $m->username ?>"><?php echo $m->username; ?></option>
-                         <?php  endforeach; ?>
+                       <option value="<?php echo $m->username ?>"><?php echo $m->username;?></option>
+                         <?php endforeach; ?>
                      </select>
                     </div>  
                    </td>
@@ -870,7 +892,7 @@ let autocomplete;
 
  $(document).ready(function(){
   $('.demo').tokenize2();
- })
+ });
 
 function myFunction(value) {
   document.getElementById("myDropdown"+value.id).classList.toggle("show");
@@ -938,7 +960,7 @@ $(document).ready(function(){
    $('#date').val(value1);
    $('#time').val(value2);
    $('#location').val(value3);
-   $('#agenda').val(value5);
+   $('.agenda').val(value5);
    $('#collab').val(value6);
 });
 
@@ -1233,10 +1255,15 @@ $('#toggle').remove();
         $('#DataTables_Table_1_wrapper').prepend($('.shift-bar').html())
         $('.shift-bar').eq(2).hide();
         $('.shift-bar').eq(0).remove();
+        $('.prevv').addClass('arrow');
+        $('.futt').css('background','rgba(48,123,211,1)');
+        $('.prevv').css('background','rgba(48,123,211,0.5)');
        // $('.past').html(future)
        $('.futt').on('click',function(){ 
         $('.futt').css('background','rgba(48,123,211,0.5)');
         $('.prevv').css('background','rgba(48,123,211,1)');
+        $('.futt').addClass('arrow');
+        $('.prevv').removeClass('arrow');
          $('.future ').show()   
          $('.past ').hide()            
           $('#DataTables_Table_1_wrapper').show()
@@ -1247,7 +1274,9 @@ $('#toggle').remove();
               $('.futt').css('background','rgba(48,123,211,1)');
         $('.prevv').css('background','rgba(48,123,211,0.5)');
          $('.future ').hide()   
-         $('.past ').show()            
+         $('.past ').show()   
+          $('.prevv').addClass('arrow');
+          $('.futt').removeClass('arrow');         
           $('#DataTables_Table_1_wrapper').hide()
           $('#DataTables_Table_0_wrapper').show()
           $('.shift-bar').eq(2).hide();
@@ -1269,6 +1298,20 @@ $('#toggle').remove();
       $('.shift-bar-tab').eq(i).width($('table').eq(2).width());
       $('.prevv').eq(i).width(($('table').eq(2).width())/2);
       $('.futt').eq(i).width(($('table').eq(2).width())/2);
+      }
+    })
+  </script>
+  <script type="text/javascript">
+    $('.arrow::after').css('marginTop',$('.shift-bar-tab').height())
+  </script>
+  <script type="text/javascript">
+    $('.click-add').click(function(){
+        $('.agenda-class').append($('.agenda-class ').html())
+    })
+    $('.click-remove').click(function(){
+      if(($('.agenda').length) > 1){
+        $('.agenda').last().remove();
+        // alert( $('.agenda').length )
       }
     })
   </script>

@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style type="text/css">
 	*{
+
 font-family: 'Open Sans', sans-serif;
 	}
 </style> 
@@ -14,7 +15,7 @@ font-family: 'Open Sans', sans-serif;
 <body id="page-top">
 	   <?php require_once('header.php') ?>
 	<div id="wrapper">	 
-		<div  id="content-wrapper"  style="padding-top: 0px;margin-top: 80px;padding-left: 15px;">
+		<div  id="content-wrapper"  style="padding-top: 0px;padding-left: 15px;">
 		<div class="container-fluid card_future" style="padding: 20px;">
 		<h4 class="row">
 			<div class="col-12">

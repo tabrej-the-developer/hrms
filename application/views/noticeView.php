@@ -122,8 +122,6 @@ img{ max-width:75%;}
             }
             .gedf-card {
                 margin-bottom: 2.77rem;
-                border-bottom-left-radius: 10px;
-                border-bottom-right-radius: 10px
             }
         }
 
@@ -297,7 +295,8 @@ input.rounded:focus {
 <div class="container">
 <nav>
   <ul class="list-group">
-  <li class="list-group-item d-flex justify-content-between align-items-center" style="background-color:#cccccc74;border-top-left-radius:10px;border-top-right-radius:10px;border:none;font-size:20px;font-weight:500;">
+  <li class="list-group-item d-flex justify-content-between align-items-center" style="background-color:#cccccc74;border:none;font-size:20px;font-weight:500;border-bottom-right-radius: 0rem;
+    border-bottom-left-radius: 0rem;">
     Notices
     <span class="badge badge-default badge-pill"><a href="<?php echo site_url('notice/createNotice')?>" style="font-size:15px;text-decoration:none;"><i class="fas fa-plus-circle"></i> Create notice</a></span>
   </li>
@@ -332,7 +331,7 @@ input.rounded:focus {
               <div class="chat_people">
                 <div class="chat_img"> <img src="<?php echo base_url().'assets/images/defaultUser.png';?>" alt="user photo"> </div>
                 <div class="chat_ib">
-                  <h5><div class="text-muted h7 mb-2"><?php echo $notice->senderName;?></div><span class="chat_date"><?php echo date_format($date,"d/m/Y");?></span></h5>
+                  <h5><div class="text-muted h7 mb-2"><?php echo $notice->senderName;?></div><span class="chat_date"><?php echo dateToDay(date_format($date,"d/m/Y"));?></span></h5>
 				   <h5 class="card-title"><?php echo $notice->subject;?></h5>
                 </div>
               </div>
@@ -382,7 +381,7 @@ input.rounded:focus {
                         <div class="text-muted h7 mb-2"> <i class="fas fa-clock"></i>
                           <?php
                           $date = date_create($currentNotice->date);
-                          echo date_format($date,'d/m/Y');?>
+                          echo dateToDay(date_format($date,'d/m/Y'));?>
                         </div>
                         
                             <h5 class="card-title"><?php echo $currentNotice->subject;?></h5>
@@ -476,3 +475,18 @@ input.rounded:focus {
   });
   </script>
     </html>
+
+<?php
+  function dateToDay($date){
+  if($date == date("d/m/Y",strtotime('Today'))){
+    return "Today";
+  }
+  else if($date == date("d/m/Y",strtotime('Yesterday'))){
+    return "Yesterday";
+  }
+  else{
+    $date = explode("/",$date);
+    return date("M d,Y",mktime(0,0,0,intval($date[1]),intval($date[0]),intval($date[2])));
+  }
+}
+?>

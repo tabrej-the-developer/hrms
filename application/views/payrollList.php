@@ -9,22 +9,32 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style type="text/css">
 	*{
-font-family: 'Open Sans', sans-serif;
+		font-family: 'Open Sans', sans-serif;
 	}
-		thead{
-			background:rgba(0,0,0,0.2);
+		thead tr{
+			background:rgba(255,255,255,1) !important;
 		}
 		tr:nth-child(even){
-			background:rgba(0,0,0,0.3);
+			background:rgb(255,255,255);
+		}
+		tr:nth-child(odd){
+
+			background:rgb(243, 244, 247);
 		}
 		.table-div{
 			height:70vh;
-			overflow-y: scroll;
-			box-shadow:0px 0px 5px 5px rgb(242, 242, 242);
-			border-radius: 10px;
+			overflow-y: auto;
+			padding: 0 20px;
 		}	
+		.table  td,.table th{
+			padding: 1rem;
+			border: none;
+		}
 		.sort-by{
 
+		}
+		table{
+			box-shadow: 0 0 20px 2px #eeeff2;
 		}
 		.center-list{
 			display:none;
@@ -172,7 +182,7 @@ border-bottom-right-radius: 20px;
     margin: 0px;
     padding:0;
 }
-.container {
+.containers {
      width: 100%;
     margin: 0px;
     padding:0;
@@ -187,7 +197,7 @@ border-bottom-right-radius: 20px;
 			return date("M d",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
 		}
 	?>
-<div class="container">
+<div class="containers">
 	<div class="d-flex">
 		<span class="m-3" style="font-size: 30px;font-weight: bold">Payrolls</span>
 		<span class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
@@ -307,7 +317,7 @@ border-bottom-right-radius: 20px;
 	});
 	<?php } ?>
 
-		$(document).on('click','tr',function(){
+		$(document).on('click','#tbody tr',function(){
 			var timesheetId = $(this).prop('id')
 	var url = "http://localhost/PN101/payroll/payrollShifts?timesheetId="+timesheetId;
 			window.location.href=url;
@@ -364,7 +374,7 @@ $("#timesheet-date").datepicker();
 <script type="text/javascript">
 	$(document).ready(()=>{
 		if($(document).width() > 1024){
-		    $('.container').css('paddingLeft',$('.side-nav').width());
+		    $('.containers').css('paddingLeft',$('.side-nav').width());
 		}
 });
 </script>

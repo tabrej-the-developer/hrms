@@ -13,7 +13,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style type="text/css">
 	*{
-		text-align: center;
 font-family: 'Open Sans', sans-serif;
 	}
 	body{
@@ -350,10 +349,10 @@ function icon($str){
 		<div class="table-div" >
 			<table style="">
 				<tr>
-					<?php $p =0; ?>
+					<?php //$p =0; ?>
 					<th id="table-id-1" class="day">Employees</th>	<?php $x=0;?>
 					<?php foreach($timesheetDetails->timesheet as $timesheet) {
-						$p++;
+						//$p++;
 						$original = explode('-',$timesheet->currentDate);
 						$datts = $original[2].".".$original[1].".".$original[0]; 
 					 	 ?>

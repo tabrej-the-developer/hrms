@@ -10,11 +10,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style type="text/css">
 	*{
-		text-align: center;
 font-family: 'Open Sans', sans-serif;
 	}
 	.top-box{
 		width:100%;
+	}
+	.top-box-bottom{
+		width:100%;
+		display: flex;
+		flex-wrap: wrap
 	}
 	.containers{
 		width:100vw;
@@ -42,6 +46,11 @@ font-family: 'Open Sans', sans-serif;
 		width: 100%;
     display: flex;
     justify-content: center;
+    	}
+    	.top-box-bottom .tile-box{
+		min-width: 50%;
+    	max-width: 50%;
+    	text-align: center
     	}
 
 	@media only screen and (max-width: 600px) {
@@ -71,10 +80,10 @@ font-family: 'Open Sans', sans-serif;
 		</div>
 	</div>
 	<div class="cp-rs-view">
-		<div class="top-box d-flex justify-content-around">
+		<div class="top-box top-box-bottom justify-content-right">
 			<div class="tile-box">
 				<div>Center Profile</div>
-					<div class="d-flex ">
+					<div class="">
 						<a href="<?php echo base_url()?>settings/centerProfile">Center Profile</a>
 					</div>
 				</div>

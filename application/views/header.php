@@ -11,7 +11,6 @@
   <script src="<?php echo base_url('assets/js/bootstrap.min.js');?>"></script>
 
   <!-- icons css-->
-  <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>  
  
   
   <!--datepicker css -->

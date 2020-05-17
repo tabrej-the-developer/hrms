@@ -2,7 +2,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style type="text/css">
 	*{
-		font-family: 'Open Sans', sans-serif;
+font-family: 'Open Sans', sans-serif;
 	}
 	.page{
 	 display: flex;
