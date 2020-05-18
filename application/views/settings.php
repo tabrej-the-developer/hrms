@@ -143,7 +143,7 @@ font-family: 'Open Sans', sans-serif;
 			<div class="tile-box">
 				<div>Awards settings</div>
 				<div>
-					<a href="<?php echo base_url()?>settings/awardsSettings">Awards settings</a>
+					<a href="<?php echo base_url()?>settings/awardSettings">Awards settings</a>
 				</div>
 			</div>
 			<div class="tile-box">

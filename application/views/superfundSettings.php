@@ -3,7 +3,7 @@
 <head>
 	<?php $this->load->view('header'); ?>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Timesheet</title>
+	<title>Superfund Settings</title>
 	
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
@@ -259,20 +259,20 @@ border-bottom-right-radius: 20px;
 			<tbody id="tbody">
 
 				<?php 
-				$superfunds = json_decode($superFunds);
-				foreach($superfunds as $superfund){
+				$superfunds = json_decode($superfunds);
+				foreach($superfunds->superfunds as $superfund){
 				?>
 				<tr >
 					<td>S.No</td>
-					<td>$superfund->abn</td>
-					<td>$superfund->usi</td>
-					<td>$superfund->type</td>
-					<td>$superfund->name</td>
-					<td>$superfund->bsb</td>
-					<td>$superfund->accountNumber</td>
-					<td>$superfund->accountName</td>
-					<td>$superfund->eServiceAddress</td>
-					<td>$superfund->employeeNo</td>
+					<td><?php echo $superfund->abn;?> </td>
+					<td><?php echo $superfund->usi;?> </td>
+					<td><?php echo $superfund->type;?> </td>
+					<td><?php echo $superfund->name;?> </td>
+					<td><?php echo $superfund->bsb;?>  </td>
+					<td><?php echo $superfund->accountNumber;?> </td>
+					<td><?php echo $superfund->accountName;?> </td>
+					<td><?php echo $superfund->eServiceAddress;?> </td>
+					<td><?php echo $superfund->employeeNo;?> </td>
 				</tr>
 				<?php  }?>
 			</tbody>
@@ -293,60 +293,6 @@ border-bottom-right-radius: 20px;
         <h4><a href="<?php echo base_url(); ?>">Click here</a> to login</h4>
     </div>
 </div>
-
-
-<script type="text/javascript">
-	$(document).ready(function(){
-		<?php if($this->session->userdata('UserType')==SUPERADMIN){?>
-		$(document).on('click','.center-class',function(){
-			var id = $(this).prop('id');
-			if(id == null || id == ""){
-				id=1;
-			}
-		var url = "http://localhost/PN101/superfund/superfundList?center="+id;
-		$.ajax({
-			url:url,
-			type:'GET',
-			success:function(response){
-				$('#tbody').html($(response).find('#tbody').html());
-				document.getElementById('center-id').value = parseInt(id);
-			}
-		});
-	});
-	<?php } ?>
-
-		$(document).on('click','#tbody tr',function(){
-			var timesheetId = $(this).prop('id')
-	var url = "http://localhost/PN101/superfund/superFundshifts?timesheetId="+timesheetId;
-			window.location.href=url;
-		})
-})
-</script>
-<script type="text/javascript">
-	<?php if($this->session->userdata('UserType')==SUPERADMIN){?>
-	$(document).ready(function(){
-			equalElements('sort-by','center-list');
-		})
-		function equalElements(original,toBeModified){
-			var originalHeight = document.getElementsByClassName(original)[0].offsetHeight;
-			var originalWidth = document.getElementsByClassName(original)[0].offsetWidth;
-			var toBeModifiedWidth =document.getElementById(toBeModified);
-			toBeModifiedWidth.style.width = originalWidth+"px";
-		}
-	<?php } ?>
-</script>
-<script type="text/javascript">
-	var modal = document.getElementById("myModal");
-
-	$(document).on('click','#create-new-timesheet',function(){
-		 modal.style.display = "block";
-	})
-
-	$(document).on('click','.close',function(){
-		 modal.style.display = "none";
-	})
-
-</script>
 
 <script type="text/javascript">
 	$(document).ready(()=>{

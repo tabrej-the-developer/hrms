@@ -3,7 +3,7 @@
 <head>
 	<?php $this->load->view('header'); ?>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Timesheet</title>
+	<title>Awards Settings</title>
 	
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
@@ -259,17 +259,25 @@ border-bottom-right-radius: 20px;
 			<tbody id="tbody">
 <?php
 	$awards = json_decode($awards);
-	foreach($awards as $award){
+	
+	$x=1;
+	foreach($awards->awards as $award){
 ?>
-				<td>$awards->name</td>
-				<td>$awards->isExemptFromTaxYN</td>
-				<td>$awards->isExemptFromSuperYN</td>
-				<td>$awards->isReportableAsW1</td>
-				<td>$awards->earningType</td>
-				<td>$awards->rateType</td>
-				<td>$awards->multiplier_amount</td>
-				<td>$awards->currentRecordYN</td>
-			<?php } ?>
+		<tr>
+				<td class="s-no"><?php echo $x; ?></td>
+				<td><?php echo $award->name; ?></td>
+				<td><?php echo $award->isExemptFromTaxYN; ?></td>
+				<td><?php echo $award->isExemptFromSuperYN; ?></td>
+				<td><?php echo $award->isReportableAsW1; ?></td>
+				<td><?php echo $award->earningType; ?></td>
+				<td><?php echo $award->rateType; ?></td>
+				<td><?php echo $award->multiplier_amount; ?></td>
+				<td><?php echo $award->currentRecordYN; ?></td>
+			<?php 
+			$x++;
+			?>
+			</tr>
+			<?php		} ?>
 			</tbody>
 		
 		</table>
@@ -288,53 +296,7 @@ border-bottom-right-radius: 20px;
     </div>
 </div>
 
-<script type="text/javascript">
-	<?php if($this->session->userdata('UserType')==SUPERADMIN){?>
-	$(document).ready(function(){
-			equalElements('sort-by','center-list');
-		})
-		function equalElements(original,toBeModified){
-			var originalHeight = document.getElementsByClassName(original)[0].offsetHeight;
-			var originalWidth = document.getElementsByClassName(original)[0].offsetWidth;
-			var toBeModifiedWidth =document.getElementById(toBeModified);
-			toBeModifiedWidth.style.width = originalWidth+"px";
-		}
-	<?php } ?>
-</script>
-<script type="text/javascript">
-	var modal = document.getElementById("myModal");
 
-	$(document).on('click','#create-new-timesheet',function(){
-		 modal.style.display = "block";
-	})
-
-	$(document).on('click','.close',function(){
-		 modal.style.display = "none";
-	})
-
-</script>
-<script type="text/javascript">
-	 $(function() {
-	 	
-$("#timesheet-date").datepicker();
-	 });
-</script>
-<script type="text/javascript">
-	$(document).ready(function(){
-		$(document).on('click','#timesheet-submit',function(e){
-			var a = $('#timesheet-date').val();
-			var b = a.split("/");
-			var date = new Date(b).getDay();
-			if(date != 1){
-				var alert = "Please select a monday";
-				document.getElementById('alert-data').style.color = "red";
-				document.getElementById('alert-data').innerHTML = alert;
-				e.preventDefault();
-			}
-
-		})
-	})
-</script>
 <script type="text/javascript">
 	$(document).ready(()=>{
 		if($(document).width() > 1024){
