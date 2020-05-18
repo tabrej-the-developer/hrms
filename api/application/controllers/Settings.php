@@ -249,6 +249,80 @@ class Settings extends CI_Controller {
 		}
 	}
 
+	public function getSuperfunds($userid){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+				$this->load->model('settingsModel');
+				$superfunds = $this->settingsModel->getSuperfunds();
+				$data['superfunds'] = [];
+				foreach ($superfunds as $superfund) {
+					$var['id']= $superfund->id;
+					$var['abn']= $superfund->abn;
+					$var['usi']= $superfund->usi;
+					$var['type']= $superfund->type;
+					$var['name']= $superfund->name;
+					$var['bsb']= $superfund->bsb;
+					$var['accountNumber']= $superfund->accountNumber;
+					$var['accountName']= $superfund->accountName;
+					$var['eServiceAddress']= $superfund->eServiceAddress;
+					$var['employeeNo']= $superfund->employeeNo;
+					$var['created_at']= $superfund->created_at;
+					$var['created_by']= $superfund->created_by;
+					array_push($data['superfunds'],$var);
+				}
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
+
+	public function getAwardSettings($userid){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+				$this->load->model('settingsModel');
+					$awards = $this->settingsModel->getAwards();
+					$data['awards'] = [];
+					foreach ($awards as $award) {
+						$var['id'] = $award->id;
+						$var['earningRateId'] = $award->earningRateId;
+						$var['name'] = $award->name;
+						$var['isExemptFromTaxYN'] = $award->isExemptFromTaxYN;
+						$var['isExemptFromSuperYN'] = $award->isExemptFromSuperYN;
+						$var['isReportableAsW1'] = $award->isReportableAsW1;
+						$var['earningType'] = $award->earningType;
+						$var['rateType'] = $award->rateType;
+						$var['multiplier_amount'] = $award->multiplier_amount;
+						$var['currentRecordYN'] = $award->currentRecordYN;
+						$var['created_by'] = $award->created_by;
+						$var['created_at'] = $award->created_at;
+					array_push($data['awards'],$var);
+				}
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
+
 	public function changePassword(){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){

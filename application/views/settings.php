@@ -134,8 +134,27 @@ font-family: 'Open Sans', sans-serif;
 				</div>
 			</div>
 			<!-- <button class="add-employee">Add Employee</button></div> -->
+			<div class="tile-box">
+				<div>Xero settings</div>
+				<div>
+					<a href="<?php echo base_url()?>api/xero/startOauth">Xero settings</a>
+				</div>
+			</div>
+			<div class="tile-box">
+				<div>Awards settings</div>
+				<div>
+					<a href="<?php echo base_url()?>settings/awardsSettings">Awards settings</a>
+				</div>
+			</div>
+			<div class="tile-box">
+				<div>Superfunds settings</div>
+				<div>
+					<a href="<?php echo base_url()?>settings/superfundsSettings">Superfunds settings</a>
+				</div>
+			</div>
 		</div>
 	</div>
+
 </div>
 <div class="modal-logout">
     <div class="modal-content-logout">

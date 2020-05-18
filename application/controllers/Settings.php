@@ -681,9 +681,119 @@ $server_output = curl_exec($ch);
 			}			
 		}
 	}
+
+// Xero settings
+
+			// Award settings 
+
+	public function awardSettings(){
+		$data['userid'] = $this->session->userdata('LoginId');
+		$data['awards'] = $this->getAwardSettings($data['userid']);
+		$this->load->view('awardSettings',$data);
+	}
+
+	function getAwardSettings($userid){
+		$url = BASE_API_URL."/settings/getAwardSettings/".$userid;
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			return $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+
+		}
+	}
+
+	public function syncXeroAwards(){
+		$data['userid'] = $this->session->userdata('LoginId');
+		$url = BASE_API_URL."/xero/syncXeroAwards";
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				return $server_output;
+				curl_close ($ch);
+
+			}
+			else if($httpcode == 401){
+
+		}
+	}
+
+			// Award settings end
+
+			// Superfunds settings
+
+	public function superfundsSettings(){
+		$data['userid'] = $this->session->userdata('LoginId');
+		$data['superfunds'] = $this->getSuperfunds($data['userid']);
+		$this->load->view('superfundSettings',$data);
+	}
+
+	function getSuperfunds($userid){
+		$url = BASE_API_URL."settings/getSuperfunds/".$userid;
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			return $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+
+		}
+	}
+
+	public function  syncXeroSuperfunds(){
+		$data['userid'] = $this->session->userdata('LoginId');
+		$url = BASE_API_URL."/xero/syncXeroSuperfunds";
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				return $server_output;
+				curl_close ($ch);
+
+			}
+			else if($httpcode == 401){
+
+		}
+	}
+
+			// Super funds end
+
+// Xero settings
+
 }
-
-
-
 
 
