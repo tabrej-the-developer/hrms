@@ -113,4 +113,34 @@ class SettingsModel extends CI_Model {
 		return $query->result();
 	}
 
+	public function addEmployeeToEmployee($xeroEmployeeId,$userid,$title,$fname,$mname,$lname,$status,$emails,$dateOfBirth,$jobTitle,$gender,$homeAddLine1,$homeAddLine2,$homeAddCity,$homeAddRegion ,$homeAddPostal,$homeAddCountry,$phone,$mobile,$startDate,$terminationDate,$ordinaryEarningRateId,$payrollCalendarId,$created_by){
+		$this->load->database();
+		$query = $this->db->query("INSERT INTO employee (xeroEmployeeId, userid, title ,fname ,mname ,lname ,status ,emails ,dateOfBirth ,jobTitle ,gender ,homeAddLine1 ,homeAddLine2 ,homeAddCity ,homeAddRegion ,homeAddPostal ,homeAddCountry ,phone ,mobile ,startDate ,terminationDate ,ordinaryEarningRateId ,payrollCalendarId ,created_at ,created_by) VALUES   ('$xeroEmployeeId','$userid','$title','$fname','$mname','$lname','$status','$emails','$dateOfBirth','$jobTitle','$gender','$homeAddLine1','$homeAddLine2','$homeAddCity','$homeAddRegion' ,'$homeAddPostal','$homeAddCountry','$phone','$mobile','$startDate','$terminationDate','$ordinaryEarningRateId','$payrollCalendarId',now(),'$created_by') ");
+	}
+	public function addEmployeeToEmployeeBankAccount($employeeId,$statementText,$accountName,$bsb,$accountNumber,$remainderYN,$amount){
+		$this->load->database();
+		$query = $this->db->query("INSERT INTO employeebankaccount (employeeId,statementText,accountName,bsb,accountNumber,remainderYN,amount) VALUES ('$employeeId','$statementText','$accountName','$bsb','$accountNumber','$remainderYN','$amount')");
+	}
+	public function addEmployeeToEmployeeSuperfund($employeeId,$superFundId,$employeeNumber,$superMembershipId){
+		$this->load->database();
+		$query = $this->db->query("INSERT INTO employeesuperfund (employeeId, superFundId, employeeNumber, superMembershipId) VALUES ('$employeeId','$superFundId','$employeeNumber','$superMembershipId')");
+	}
+	public function addEmployeeToEmployeeTaxDeclaration($employeeId,$employmentBasis,$tfnExemptionType,$taxFileNumber,$australiantResidentForTaxPurposeYN,$residencyStatue,$taxFreeThresholdClaimedYN,$taxOffsetEstimatedAmount,$hasHELPDebtYN,$hasSFSSDebtYN,$hasTradeSupportLoanDebtYN,$upwardVariationTaxWitholdingAmount,$eligibleToReceiveLeaveLoadingYN,$approvedWitholdingVariationPercentage){
+		$this->load->database();
+		$query = $this->db->query("INSERT INTO employeetaxdeclaration (employeeId, employmentBasis, tfnExemptionType, taxFileNumber, australiantResidentForTaxPurposeYN, residencyStatue, taxFreeThresholdClaimedYN, taxOffsetEstimatedAmount, hasHELPDebtYN, hasSFSSDebtYN, hasTradeSupportLoanDebtYN, upwardVariationTaxWitholdingAmount, eligibleToReceiveLeaveLoadingYN, approvedWitholdingVariationPercentage) VALUES ('$employeeId','$employmentBasis','$tfnExemptionType','$taxFileNumber','$australiantResidentForTaxPurposeYN','$residencyStatue','$taxFreeThresholdClaimedYN','$taxOffsetEstimatedAmount','$hasHELPDebtYN','$hasSFSSDebtYN','$hasTradeSupportLoanDebtYN','$upwardVariationTaxWitholdingAmount','$eligibleToReceiveLeaveLoadingYN','$approvedWitholdingVariationPercentage')");
+	}
+
+	// public function addEmployeeToUsers(){
+	// 	$this->load->database();
+	// 	$query = $this->db->query("INSERT INTO users () VALUES ()");
+	// }
+
 }
+
+
+
+
+	
+
+
+

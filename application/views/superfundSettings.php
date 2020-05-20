@@ -239,7 +239,7 @@ border-bottom-right-radius: 20px;
 <div class="containers">
 	<div class="d-flex">
 		<span class="m-3" style="font-size: 30px;font-weight: bold">Superfunds</span>
-		<span class="d-flex align-items-center"><button>Sync Xero Superfunds</button></span>
+		<span class="d-flex align-items-center"><button id="superfunds">Sync Xero Superfunds</button></span>
 	</div>
 	<div class="table-div">
 		<table class="table">
@@ -260,10 +260,12 @@ border-bottom-right-radius: 20px;
 
 				<?php 
 				$superfunds = json_decode($superfunds);
+				$x=1;
 				foreach($superfunds->superfunds as $superfund){
+					
 				?>
 				<tr >
-					<td>S.No</td>
+					<td><?php echo $x; ?></td>
 					<td><?php echo $superfund->abn;?> </td>
 					<td><?php echo $superfund->usi;?> </td>
 					<td><?php echo $superfund->type;?> </td>
@@ -274,7 +276,9 @@ border-bottom-right-radius: 20px;
 					<td><?php echo $superfund->eServiceAddress;?> </td>
 					<td><?php echo $superfund->employeeNo;?> </td>
 				</tr>
-				<?php  }?>
+				<?php  
+				$x++;
+			} ?>
 			</tbody>
 		
 		</table>
@@ -315,5 +319,19 @@ border-bottom-right-radius: 20px;
 	<?php }
 ?>
 
+<script type="text/javascript">
+	$(document).ready(function(){
+	$('#superfunds').click(function(){
+		var url = window.location.origin + "/PN101/settings/syncXeroSuperfunds" ;
+		$.ajax({
+				url:url,
+				type:'GET',
+				success:function(){
+					window.location.reload();
+				}
+			})
+		})
+	})
+</script>
 </body>
 </html>

@@ -637,16 +637,18 @@ $server_output = curl_exec($ch);
 			}	
 		}
 
-	public function addEmployee(){
+		// Old addEmployee 
+
+	public function oldAddEmployee(){
 		if($this->session->has_userdata('LoginId')){
-			$this->load->view('createEmployeeProfile');
+			$this->load->view('oldCreateEmployeeProfile');
 		}
 		else{
 			$this->load->view('redirectToLogin');
 		}
 	}
 
-	public function createEmployeeProfile(){
+	public function oldCreateEmployeeProfile(){
 		$input = $this->input->post();
 		if($input != null){
 			$data['email'] = $this->load->post('email');
@@ -681,6 +683,96 @@ $server_output = curl_exec($ch);
 			}			
 		}
 	}
+
+		// Old add employee 
+
+	// New add Employee
+
+		public function addEmployee(){
+			if($this->session->has_userdata('LoginId')){
+				$data['userid'] = $this->session->userdata('LoginId');
+				$data['ordinaryEarningRate'] = $this->getAwardSettings($data['userid']);
+				
+				$this->load->view('addEmployee',$data);
+			}
+			else{
+				$this->load->view('redirectToLogin');
+			}
+		}
+
+		public function createEmployeeProfile(){
+		$form_data = $this->input->post();
+		if($form_data != null){
+	$data['userid'] = $this->session->userdata('LoginId');;
+	$data['xeroEmployeeId'] = $this->load->input('xeroEmployeeId');
+	$data['title'] = $this->load->input('title');
+	$data['fname'] = $this->load->input('fname');
+	$data['mname'] = $this->load->input('mname');
+	$data['lname'] = $this->load->input('lname');
+	$data['status'] = $this->load->input('status');
+	$data['emails'] = $this->load->input('emails');
+	$data['dateOfBirth'] = $this->load->input('dateOfBirth');
+	$data['jobTitle'] = $this->load->input('jobTitle');
+	$data['gender'] = $this->load->input('gender');
+	$data['homeAddLine1'] = $this->load->input('homeAddLine1');
+	$data['homeAddLine2'] = $this->load->input('homeAddLine2');
+	$data['homeAddCity'] = $this->load->input('homeAddCity');
+	$data['homeAddRegion'] = $this->load->input('homeAddRegion');
+	$data['homeAddPostal'] = $this->load->input('homeAddPostal');
+	$data['homeAddCountry'] = $this->load->input('homeAddCountry');
+	$data['phone'] = $this->load->input('phone');
+	$data['mobile'] = $this->load->input('mobile');
+	$data['startDate'] = $this->load->input('startDate');
+	$data['terminationDate'] = $this->load->input('terminationDate');
+	$data['ordinaryEarningRateId'] = $this->load->input('ordinaryEarningRateId');
+	$data['payrollCalendarId'] = $this->load->input('payrollCalendarId');
+	$data['employeeId'] = $this->load->input('employeeId');
+	$data['bankAccount'] = $this->load->input('bankAccount');
+	$data['employeeId'] = $this->load->input('employeeId');
+	$data['superFundId'] = $this->load->input('superFundId');
+	$data['employeeNumber'] = $this->load->input('employeeNumber');
+	$data['superMembershipId'] = $this->load->input('superMembershipId');
+	$data['employeeId'] = $this->load->input('employeeId');
+	$data['employmentBasis'] = $this->load->input('employmentBasis');
+	$data['tfnExemptionType'] = $this->load->input('tfnExemptionType');
+	$data['taxFileNumber'] = $this->load->input('taxFileNumber');
+	$data['australiantResidentForTaxPurposeYN'] = $this->load->input('australiantResidentForTaxPurposeYN');
+	$data['residencyStatue'] = $this->load->input('residencyStatue');
+	$data['taxFreeThresholdClaimedYN'] = $this->load->input('taxFreeThresholdClaimedYN');
+	$data['taxOffsetEstimatedAmount'] = $this->load->input('taxOffsetEstimatedAmount');
+	$data['hasHELPDebtYN'] = $this->load->input('hasHELPDebtYN');
+	$data['hasSFSSDebtYN'] = $this->load->input('hasSFSSDebtYN');
+	$data['hasTradeSupportLoanDebtYN'] = $this->load->input('hasTradeSupportLoanDebtYN');
+	$data['upwardVariationTaxWitholdingAmount'] = $this->load->input('upwardVariationTaxWitholdingAmount');
+	$data['eligibleToReceiveLeaveLoadingYN'] = $this->load->input('eligibleToReceiveLeaveLoadingYN');
+$data['approvedWitholdingVariationPercentage']=$this->load->input('approvedWitholdingVariationPercentage');
+	 		$url = BASE_API_URL."";
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'x-device-id:'.$this->session->userdata('x-device-id'),
+					'x-token:'.$this->session->userdata('AuthToken')
+				));
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				return $server_output;
+				curl_close ($ch);
+
+			}
+			else if($httpcode == 401){
+
+			}
+		}
+		}
+
+		function ordinaryEarningRate(){
+
+		}
+	//	New Add Employee
 
 // Xero settings
 

@@ -517,7 +517,6 @@ class Settings extends CI_Controller {
 		}
 	}
 
-
 	public function deleteRole($roleid,$userid){
 		$headers = $this->input->request_headers();
 	   if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
@@ -536,6 +535,77 @@ class Settings extends CI_Controller {
 		}
 	}
 
+
+
+	public function createEmployeeProfile(){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $json->userid){
+		$userid = $json->userid; 
+		$xeroEmployeeId = $json->xeroEmployeeId; 
+		$title = $json->title; 
+		$fname = $json->fname; 
+		$mname = $json->mname; 
+		$lname = $json->lname; 
+		$status = $json->status; 
+		$emails = $json->emails; 
+		$dateOfBirth = $json->dateOfBirth; 
+		$jobTitle = $json->jobTitle; 
+		$gender = $json->gender; 
+		$homeAddLine1 = $json->homeAddLine1; 
+		$homeAddLine2 = $json->homeAddLine2; 
+		$homeAddCity = $json->homeAddCity; 
+		$homeAddRegion = $json->homeAddRegion; 
+		$homeAddPostal = $json->homeAddPostal; 
+		$homeAddCountry = $json->homeAddCountry; 
+		$phone = $json->phone; 
+		$mobile = $json->mobile; 
+		$startDate = $json->startDate; 
+		$terminationDate = $json->terminationDate; 
+		$ordinaryEarningRateId = $json->ordinaryEarningRateId; 
+		$payrollCalendarId = $json->payrollCalendarId; 
+		$employeeId = $json->employeeId; 
+		$bankAccount = $json->bankAccount;
+		$employeeId = $json->employeeId; 
+		$superFundId = $json->superFundId; 
+		$employeeNumber = $json->employeeNumber; 
+		$superMembershipId = $json->superMembershipId; 
+		$employeeId = $json->employeeId; 
+		$employmentBasis = $json->employmentBasis; 
+		$tfnExemptionType = $json->tfnExemptionType; 
+		$taxFileNumber = $json->taxFileNumber; 
+		$australiantResidentForTaxPurposeYN = $json->australiantResidentForTaxPurposeYN; 
+		$residencyStatue = $json->residencyStatue; 
+		$taxFreeThresholdClaimedYN = $json->taxFreeThresholdClaimedYN; 
+		$taxOffsetEstimatedAmount = $json->taxOffsetEstimatedAmount; 
+		$hasHELPDebtYN = $json->hasHELPDebtYN; 
+		$hasSFSSDebtYN = $json->hasSFSSDebtYN; 
+		$hasTradeSupportLoanDebtYN = $json->hasTradeSupportLoanDebtYN; 
+		$upwardVariationTaxWitholdingAmount = $json->upwardVariationTaxWitholdingAmount; 
+		$eligibleToReceiveLeaveLoadingYN = $json->eligibleToReceiveLeaveLoadingYN; 
+		$approvedWitholdingVariationPercentage = $json->approvedWitholdingVariationPercentage; 
+				$this->load->model('settingsModel');
+		foreach($data['bankAccount'] as $account){
+			$statementText = $account->statementText;
+			$accountName = $account->accountName;
+			$bsb = $account->bsb;
+			$accountNumber = $account->accountNumber;
+			$remainderYN = $account->remainderYN;
+			$amount = $account->amount;
+			$this->load->addEmployeeToEmployeeBankAccount("statementText","accountName","bsb","accountNumber","remainderYN","amount");
+		} 
+		$this->load->employee($xeroEmployeeId,$title,$fname,$mname,$lname,$status,$emails,$dateOfBirth,$jobTitle,$gender,$homeAddLine1,$homeAddLine2,$homeAddCity,$homeAddRegion,$homeAddPostal,$homeAddCountry,$phone,$mobile,$startDate,$terminationDate,$ordinaryEarningRateId,$payrollCalendarId);
+		$this->load->addEmployeeToEmployeeSuperfund($employeeId,$superFundId,$employeeNumber,$superMembershipId);
+		$this->load->addEmployeeToEmployeeTaxDeclaration($employeeId,$employmentBasis,$tfnExemptionType,$taxFileNumber,$australiantResidentForTaxPurposeYN,$residencyStatue,$taxFreeThresholdClaimedYN,$taxOffsetEstimatedAmount,$hasHELPDebtYN,$hasSFSSDebtYN,$hasTradeSupportLoanDebtYN,$upwardVariationTaxWitholdingAmount,$eligibleToReceiveLeaveLoadingYN,$approvedWitholdingVariationPercentage);
+		$this->load->addEmployeeToUsers();
+			//To Do
+
+			}
+		}
+	}
 		
 
 	public function addEmployee(){
@@ -624,3 +694,4 @@ class Settings extends CI_Controller {
 	}
 
 }
+

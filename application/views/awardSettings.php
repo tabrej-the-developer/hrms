@@ -239,7 +239,7 @@ border-bottom-right-radius: 20px;
 <div class="containers">
 	<div class="d-flex">
 		<span class="m-3" style="font-size: 30px;font-weight: bold">Awards</span>
-		<span class="d-flex align-items-center"><button>Sync Xero Awards</button></span>
+		<span class="d-flex align-items-center"><button id="awards">Sync Xero Awards</button></span>
 
 	</div>
 	<div class="table-div">
@@ -297,6 +297,20 @@ border-bottom-right-radius: 20px;
 </div>
 
 
+<script type="text/javascript">
+	$(document).ready(function(){
+	$('#superfunds').click(function(){
+		var url = window.location.origin + "/PN101/settings/syncXeroAwards" ;
+		$.ajax({
+				url:url,
+				type:'GET',
+				success:function(){
+					window.location.reload();
+				}
+			})
+		})
+	})
+</script>
 <script type="text/javascript">
 	$(document).ready(()=>{
 		if($(document).width() > 1024){
