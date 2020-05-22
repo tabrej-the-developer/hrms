@@ -50,6 +50,7 @@
 		}
 		.nav-button{
 			padding-right:15px;
+			position: relative;
 		}
 		.nav-button > span{
 /*			border:1px solid #307bd3;
@@ -122,6 +123,24 @@
 		.row{
 			margin-left: 0 !important;
 			margin-right: 0 !important
+		}
+		.arrow{
+
+		    background: white;
+		    color:  #307bd3;
+		    padding:3px;
+		    border-radius:5px;
+		}
+		.arrow::after{
+			content: " ";
+		    /* background: red; */
+		    margin-top: 34px;
+		    position: absolute;
+		    width: 0;
+		    border-right: 10px solid transparent;
+		    border-top: 10px solid #899097;
+		    border-left: 10px solid transparent;
+		    left:50%;
 		}
 	</style>
 </head>
@@ -801,6 +820,47 @@ $(document).ready(function(){
 		$('.superfund-parent').append(superfundHTML);
 		})
 	})
+</script>
+
+<script type="text/javascript">
+	$(document).ready(()=>{
+		$('.e-s span').addClass('arrow');
+        $('.e-s').click(function(){
+        	$('.e-s span').addClass('arrow');
+					$('.e-b-a-s span').removeClass('arrow');
+					$('.e-s-s span').removeClass('arrow');
+					$('.e-t-d-s span').removeClass('arrow');
+					$('.e-u-s span').removeClass('arrow');
+        })
+        $('.e-b-a-s').click(function(){
+        	$('.e-s span').removeClass('arrow');
+					$('.e-b-a-s span').addClass('arrow');
+					$('.e-s-s span').removeClass('arrow');
+					$('.e-t-d-s span').removeClass('arrow');
+					$('.e-u-s span').removeClass('arrow');
+        })
+        $('.e-s-s').click(function(){
+        	$('.e-s span').removeClass('arrow');
+					$('.e-b-a-s span').removeClass('arrow');
+					$('.e-s-s span').addClass('arrow');
+					$('.e-t-d-s span').removeClass('arrow');
+					$('.e-u-s span').removeClass('arrow');
+        })
+        $('.e-t-d-s').click(function(){
+        	$('.e-s span').removeClass('arrow');
+					$('.e-b-a-s span').removeClass('arrow');
+					$('.e-s-s span').removeClass('arrow');
+					$('.e-t-d-s span').addClass('arrow');
+					$('.e-u-s span').removeClass('arrow');
+        })
+        $('.e-u-s').click(function(){
+        	$('.e-s span').removeClass('arrow');
+					$('.e-b-a-s span').removeClass('arrow');
+					$('.e-s-s span').removeClass('arrow');
+					$('.e-t-d-s span').removeClass('arrow');
+					$('.e-u-s span').addClass('arrow');
+        })
+    });
 </script>
 </body>
 </html>
