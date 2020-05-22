@@ -113,4 +113,10 @@ class LeaveModel extends CI_Model {
 		$this->load->database();
 		$this->db->query("UPDATE leaveBalance SET leaveBalance = leaveBalance + $toUpdate WHERE userid = '$userid' AND leaveId = '$leaveId'");
 	}
+
+	public function getLeaveApplicationForUser($userid,$currentDate){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM `leaveapplication` WHERE startDate<='$currentDate' and endDate >= '$currentDate' AND userid = '$userid'");
+		return $query->row();
+	}
 }

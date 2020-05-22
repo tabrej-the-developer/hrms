@@ -154,6 +154,7 @@ class Rosters extends CI_Controller {
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			if($res != null && $res->userid == $userid){
 				$this->load->model('rostersModel');
+				$this->load->model('leaveModel');
 				$roster = $this->rostersModel->getRosterFromId($rosterid);
 				$allAreas = $this->rostersModel->getAllAreas($roster->centerid);
 				$userDetails = $this->authModel->getUserDetails($userid);
@@ -195,13 +196,26 @@ class Rosters extends CI_Controller {
 								$allShifts = $this->rostersModel->getAllShiftsFromEmployee($rosterid,$employeeid->userid);
 								foreach ($allShifts as $shiftOb) {
 									$shiftObj['currentDate'] = $shiftOb->rosterDate;
-									$shiftObj['roleid'] = $shiftOb->roleid;
-									$roleObj = $this->rostersModel->getRole($shiftOb->roleid);
-									$shiftObj['roleName'] = $roleObj->roleName;
-									$shiftObj['startTime'] = $shiftOb->startTime;
-									$shiftObj['endTime'] = $shiftOb->endTime;
-									$shiftObj['shiftid'] = $shiftOb->id;
-									$shiftObj['status'] = $shiftOb->status == 1 ? "Added" : ($shiftOb->status == 2 ? "Published" : "Accepted");
+									$leaveApp = $this->leaveModel->getLeaveApplicationForUser($employeeid->userid,$shiftOb->rosterDate);
+									if($leaveApp == null){
+										$shiftObj['isOnLeave'] = 'N';
+										$shiftObj['roleid'] = $shiftOb->roleid;
+										$roleObj = $this->rostersModel->getRole($shiftOb->roleid);
+										$shiftObj['roleName'] = $roleObj->roleName;
+										$shiftObj['startTime'] = $shiftOb->startTime;
+										$shiftObj['endTime'] = $shiftOb->endTime;
+										$shiftObj['shiftid'] = $shiftOb->id;
+										$shiftObj['status'] = $shiftOb->status == 1 ? "Added" : ($shiftOb->status == 2 ? "Published" : "Accepted");
+									}
+									else{
+										$shiftObj['isOnLeave'] = 'Y';
+										$shiftObj['leaveId'] = $leaveApp->leaveId;
+										$shiftObj['leaveStartDate'] = $leaveApp->startDate;
+										$shiftObj['leaveEndDate'] = $leaveApp->endDate;
+										$shiftObj['leaveNotes'] = $leaveApp->notes;
+										$shiftObj['leaveNoOfHours'] = $leaveApp->noOfHours;
+										$shiftObj['leaveStatus'] = $leaveApp->status;
+									}
 									array_push($rav['shifts'],$shiftObj);
 								}
 								array_push($var['roles'],$rav);

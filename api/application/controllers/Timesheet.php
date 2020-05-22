@@ -190,6 +190,7 @@ class Timesheet extends CI_Controller{
 				$this->load->model('timesheetModel');
 				$this->load->model('rostersModel');
 				$this->load->model('payrollModel');
+				$this->load->model('leaveModel');
 				$timesheet = $this->timesheetModel->getTimesheet($timesheetid);
 				if($timesheet != null){
 					$currentDay = 0;
@@ -212,28 +213,42 @@ class Timesheet extends CI_Controller{
 							$var['empName'] = $userDetails->name;
 							$var['level'] = $userDetails->level;
 							$var['rosterShift'] = [];
-							$rosterDetails = $this->rostersModel->getShiftDetails($empId->users,$currentDate);
-							$var['rosterShift']['startTime'] = $rosterDetails->startTime;
-							$var['rosterShift']['endTime'] = $rosterDetails->endTime;
-							$var['rosterShift']['roleName'] = $this->rostersModel->getRole($rosterDetails->roleid);
-							$clockedTimes = $this->timesheetModel->getAllVisits($empId->users,$currentDate,$timesheet->centerid);
-							$var['clockedTimes'] = array();
-							foreach ($clockedTimes as $clocks) {
-								$mar['startTime'] = $clocks->signInTime;
-								$mar['endTime'] = $clocks->signOutTime;
-								$mar['message'] = $clocks->message;
-								$mar['reason'] = $clocks->reason;
-								array_push($var['clockedTimes'],$mar);
+							$leaveApp = $this->leaveModel->getLeaveApplicationForUser($userDetails->id,$currentDate);
+							if($leaveApp != null){
+								$var['isOnLeave'] = 'Y';
+								$var['leaveDetails'] = [];
+								$var['leaveDetails']['leaveId'] = $leaveApp->leaveId;
+								$var['leaveDetails']['leaveStartDate'] = $leaveApp->startDate;
+								$var['leaveDetails']['leaveEndDate'] = $leaveApp->endDate;
+								$var['leaveDetails']['leaveNotes'] = $leaveApp->notes;
+								$var['leaveDetails']['leaveNoOfHours'] = $leaveApp->noOfHours;
+								$var['leaveDetails']['leaveStatus'] = $leaveApp->status;
 							}
-							$payedShifts = $this->timesheetModel->getPayrollShifts($currentDate,$timesheetid,$empId->users);
-							$var['payrollShifts'] = array();
-							foreach ($payedShifts as $paySh) {
-								$mar['startTime'] = $paySh->startTime;
-								$mar['endTime'] = $paySh->endTime;
-								$mar['status'] = $paySh->status;
-								$mar['payrollTypeId'] = $paySh->payrollTypeId;
-								$mar['payrollType'] = $this->payrollModel->getPayrollType($paySh->payrollTypeId);
-								array_push($var['payrollShifts'],$mar);
+							else{
+								$var['isOnLeave'] = 'N';
+								$rosterDetails = $this->rostersModel->getShiftDetails($empId->users,$currentDate);
+								$var['rosterShift']['startTime'] = $rosterDetails->startTime;
+								$var['rosterShift']['endTime'] = $rosterDetails->endTime;
+								$var['rosterShift']['roleName'] = $this->rostersModel->getRole($rosterDetails->roleid);
+								$clockedTimes = $this->timesheetModel->getAllVisits($empId->users,$currentDate,$timesheet->centerid);
+								$var['clockedTimes'] = array();
+								foreach ($clockedTimes as $clocks) {
+									$mar['startTime'] = $clocks->signInTime;
+									$mar['endTime'] = $clocks->signOutTime;
+									$mar['message'] = $clocks->message;
+									$mar['reason'] = $clocks->reason;
+									array_push($var['clockedTimes'],$mar);
+								}
+								$payedShifts = $this->timesheetModel->getPayrollShifts($currentDate,$timesheetid,$empId->users);
+								$var['payrollShifts'] = array();
+								foreach ($payedShifts as $paySh) {
+									$mar['startTime'] = $paySh->startTime;
+									$mar['endTime'] = $paySh->endTime;
+									$mar['status'] = $paySh->status;
+									$mar['payrollTypeId'] = $paySh->payrollTypeId;
+									$mar['payrollType'] = $this->payrollModel->getPayrollType($paySh->payrollTypeId);
+									array_push($var['payrollShifts'],$mar);
+								}
 							}
 							array_push($mData['rosteredEmployees'],$var);
 						}
