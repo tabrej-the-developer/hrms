@@ -409,6 +409,26 @@ $server_output = curl_exec($ch);
 		}
 	}
 
+	function getAreas($centerid=1){
+		$url = BASE_API_URL."settings/getAreas/".$centerid."/".$this->session->userdata('LoginId');
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			return $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+
+		}
+	}
+
 	public function deleteRoom(){
 		$input = $this->input->post();
 		if($input != null){
@@ -688,11 +708,14 @@ $server_output = curl_exec($ch);
 
 	// New add Employee
 
-		public function addEmployee(){
+		public function addEmployee($centerid=1){
 			if($this->session->has_userdata('LoginId')){
+				$data['centerid'] = $centerid;
 				$data['userid'] = $this->session->userdata('LoginId');
+				$data['centers'] = $this->getAllCenters();
+				$data['areas'] = $this->getAreas($data['centerid']);
 				$data['ordinaryEarningRate'] = $this->getAwardSettings($data['userid']);
-				
+				$data['levels'] = $this->getAllEntitlements($data['userid']);
 				$this->load->view('addEmployee',$data);
 			}
 			else{
