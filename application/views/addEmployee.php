@@ -63,7 +63,7 @@
 		}
 		input,select{
 			display: block;
-		    width: 300px;
+		    width: auto;
 		    height: calc(1.5em + .75rem + 2px);
 		    padding: .375rem .75rem;
 		    font-size: 1rem;
@@ -95,7 +95,7 @@
 			}
 		.span-class.row{
 			margin:0;
-			width:75%;
+			width:100%;
 		}
 		.span-class.row span input{
 			padding:10px;
@@ -115,6 +115,14 @@
 			justify-content: center;
 			margin:5%;
 		}
+		.row.ml-1 > .span-class{
+			padding:0;
+			padding-left: 10px
+		}
+		.row{
+			margin-left: 0 !important;
+			margin-right: 0 !important
+		}
 	</style>
 </head>
 <body>
@@ -131,8 +139,8 @@
 	</section>
 	<section class="employee-section">	
 		<h3>Employee Section</h3>
-		
-		<span class="span-class">
+		<span class="d-flex">
+		<span class="span-class ">
 			<label>Title</label>
 			<select placeholder="Title" id="title"  class="" type="text"> 
 				<option value="Ms">Ms</option> 
@@ -140,9 +148,9 @@
 				<option value="Mrs">Mrs</option>
 			</select>
 		</span>
-		<br>
-	<span class="span-class row">
+	<span class="span-class ">
 		<label>Name</label>
+		<span class="row ml-1 ">
 		<span class="span-class col-4 ">
 			<!-- <label>First Name</label> -->
 			<input placeholder="First Name" id="fname"  class="" type="text">
@@ -156,46 +164,47 @@
 			<input placeholder="Last Name" id="lname"  class="" type="text">
 		</span>
 	</span>
+	</span>
+</span>
 		<br>
 		<span class="span-class">
 			<label>Email</label>
 			<input placeholder="Emails" id="emails"  class="" type="text">
 		</span>
-				<br>
 		<span class="span-class">
 			<label>Date Of Birth</label>
 			<input placeholder="Date Of Birth" id="dateOfBirth"  class="" type="date">
+		</span>
+		<span class="span-class">
+			<label>Gender</label>
+			<select placeholder="Gender" id="gender"  class="" >
+				<option value="N">Not Given</option>
+				<option value="M">Male</option>
+				<option value="F">Female</option>
+				<option value="I">Non binary</option>
+			</select>
 		</span>
 				<br>
 		<span class="span-class">
 			<label>Job Title</label>
 			<input placeholder="Job Title" id="jobTitle"  class="" type="text">
 		</span>
-				<br>
-		<span class="span-class">
-			<label>Gender</label>
-			<select placeholder="Gender" id="gender"  class="" >
-				<option value="N">Non Binary</option>
-				<option value="M">Male</option>
-				<option value="F">Female</option>
-				<option value="I">I</option>
-			</select>
-		</span>	
+	
 		<span class="span-class row">
 		<label>Address</label>	
-			<span class="span-class  col-5">
+			<span class="span-class  col-4">
 				<!-- <label>Home Address Line1</label> -->
 				<input placeholder="Home Address Line1" id="homeAddLine1"  class="" type="text">
 			</span>
-			<span class="span-class col-5">
+			<span class="span-class col-4">
 				<!-- <label>Home Address Line2</label> -->
 				<input placeholder="Home Address Line2" id="homeAddLine2"  class="" type="text">
 			</span>
-			<span class="span-class col-5">
+			<span class="span-class col-4">
 				<!-- <label>City</label> -->
 				<input placeholder="City" id="homeAddCity"  class="" >
 			</span>				
-			<span class="span-class col-5">
+			<span class="span-class col-4">
 				<!-- <label>Region</label> -->
 				<select placeholder="Region" id="homeAddRegion"  class="" type="text">
 					<option value="ACT">Australian Capital Territory</option>
@@ -208,11 +217,11 @@
 					<option value="WA">Western Australia</option>
 				</select>
 			</span>
-			<span class="span-class col-5">
+			<span class="span-class col-4">
 				<!-- <label>Postal</label> -->
 				<input placeholder="Postal" id="homeAddPostal"  class="" type="text">
 			</span>
-			<span class="span-class col-5">
+			<span class="span-class col-4">
 				<!-- <label>Country</label> -->
 				<input placeholder="Country" id="homeAddCountry"  class="" type="text">
 			</span>
@@ -231,7 +240,6 @@
 			<label>Start Date</label>
 			<input placeholder="Start Date" id="startDate"  class="" type="date">
 		</span>
-				<br>
 		<span class="span-class">
 			<label>Termination Date</label>
 			<input placeholder="Termination Date" id="terminationDate"  class="" type="date">
@@ -263,27 +271,27 @@
 		<div class="parent-child">
 			<div class="child">
 				<div class="statement"></div>
-		<span class="span-class">
+			<div class="row">
+		<span class="span-class col-4">
 			<label>Statement Text</label>
 			<input placeholder="Statement Text"  class="statementText" >
 		</span>
-		<br>
-		<span class="span-class">
+		<span class="span-class col-4">
 			<label>Account Name</label>
 			<input placeholder="Account Name"  class="accountName" >
 		</span>
-		<br>
-		<span class="span-class">
+		<span class="span-class col-4">
 			<label>BSB</label>
 			<input placeholder="BSB"  class="bsb" >
 		</span>
+	</div>
 		<br>
-		<span class="span-class">
+	<span class="row">
+		<span class="span-class col-4">
 			<label>Account Number</label>
 			<input placeholder="Account Number"  class="accountNumber" >
 		</span>
-		<br>
-		<span class="span-class">
+		<span class="span-class col-4">
 			<label>Remainder</label>
 				<span>
 					<label class="yn-label">Yes</label>
@@ -294,13 +302,13 @@
 					<input value="N" class="remainderYN yn-input" type="radio" name="remainderYN">
 				</span>
 		</span>
-		<br>
-		<span class="span-class amount-class-parent">
+		<span class="span-class amount-class-parent col-4">
 			<div class="amount-class">
 				<label>Amount</label>
 				<input placeholder="Amount"  class="amount" >
 			</div>
 		</span>
+	</span>
 			</div>
 		</div>
 	</section>
@@ -314,16 +322,21 @@
 			<input placeholder="Employee Id" id="employeeId" >
 		</span> -->
 			<div class="superfund-parent">
-				<div class="superfund-child">
-					<span class="span-class">
+				<div class="superfund-child row">
+					<span class="span-class col-4">
 						<label>Super Fund Id</label>
-						<input placeholder="Super Fund Id" id="superFundId" >
+						<?php $superfunds = json_decode($superfunds); ?>
+						<select placeholder="Super Fund Id" id="superFundId" >
+							<?php foreach($superfunds->superfunds as $superfund){ ?>
+							<option value="<?php echo $superfund->usi; ?>"><?php echo $superfund->name; ?></option>
+							<?php } ?>
+						</select>
 					</span>
-					<span class="span-class">
+					<span class="span-class col-4">
 						<label>Employee Number</label>
 						<input placeholder="Employee Number" id="employeeNumber" >
 					</span>
-					<span class="span-class">
+					<span class="span-class col-4">
 						<label>Super Membership Id</label>
 						<input placeholder="Super Membership Id" id="superMembershipId" >
 					</span>
@@ -339,7 +352,7 @@
 	<section class="employee-tax-declaration-section">
 		<h3>Employee Tax Declaration Section</h3>
 
-		<span class="span-class">
+		<span class="span-class col-4">
 			<label>Employment Basis</label>
 			<select placeholder="employmentBasis" id="employmentBasis">
 				<option value="FULLTIME">FULLTIME </option>
@@ -349,8 +362,7 @@
 				<option value="SUPERINCOMEST">SUPERINCOMEST</option>
 			</select>
 		</span> 
-		<br>
-		<span class="span-class">
+		<span class="span-class col-4">
 			<label>TFN Exemption Type</label>
 			<select placeholder="tfnExemptionType" id="tfnExemptionType">
 				<option value="NONE">NONE</option>
@@ -360,22 +372,19 @@
 				<option value="UNDER18">UNDER18</option>
 			</select>
 		</span> 
-		<br>
-		<div class="tax-declaration-class">
-		<span class="span-class">
+		<div class="tax-declaration-class col-lg-12">
+		<span class="span-class col-4">
 			<label>Tax File Number</label>
 			<input placeholder="Tax File Number" id="taxFileNumber">
 		</span>
-		<br>
-		<span class="span-class">
+		<span class="span-class col-4">
 			<label>Australian Resident For TaxPurpose</label>
 			<label class="yn-label">Yes</label>
 				<input placeholder="Australian Resident For TaxPurpose" type="radio"  name="australiantResidentForTaxPurposeYN" class="australiantResidentForTaxPurposeYN yn-input">
 			<label class="yn-label">No</label>
 				<input type="radio" name="australiantResidentForTaxPurposeYN" class="australiantResidentForTaxPurposeYN yn-input">
 		</span>
-		<br>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label>Residency Statue</label>
 			<select placeholder="residencyStatue" id="residencyStatue">
 				<option value="AUSTRALIANRESIDENT">Australian Resident</option>
@@ -383,58 +392,50 @@
 				<option value="WORKINGHOLIDAY">Working Holiday</option>
 			</select>
 		</span>
-		<br> 
-		<span class="span-class">
+		<span class="span-class col-4">
 			<label>Tax Free Threshold Claimed</label>
 			<label class="yn-label">Yes</label>
 				<input placeholder="taxFreeThresholdClaimedYN" type="radio" name="taxFreeThresholdClaimedYN" class="taxFreeThresholdClaimedYN yn-input">
 			<label class="yn-label">No</label>
 				<input type="radio" name="taxFreeThresholdClaimedYN" class="taxFreeThresholdClaimedYN yn-input">
 		</span>
-		<br>
-		<span class="span-class">
+		<span class="span-class col-4">
 			<label>Tax Offset Estimated Amount</label>
 			<input placeholder="Tax Offset Estimated Amount" id="taxOffsetEstimatedAmount">
 		</span>
-		<br>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label>Has HELP Debt</label>
 			<label class="yn-label">Yes</label>
 			<input placeholder="hasHELPDebtYN" name="hasHELPDebtYN" class="hasHELPDebtYN yn-input" type="radio">
 			<label class="yn-label">No</label>
 			<input type="radio" name="hasHELPDebtYN" class="hasHELPDebtYN yn-input">	
 		</span>
-		<br>
-		<span class="span-class">
+		<span class="span-class col-4">
 			<label>Has SFSS Debt</label>
 			<label class="yn-label">Yes</label>
 			<input placeholder="hasSFSSDebtYN" type="radio" name="hasSFSSDebtYN" class="hasSFSSDebtYN yn-input">
 			<label class="yn-label">No</label>
 			<input type="radio" name="hasSFSSDebtYN" class="hasSFSSDebtYN yn-input">
 		</span>
-		<br>
-		<span class="span-class">
+		<span class="span-class col-4">
 			<label>Has Trade Support Loan Debt</label>
 			<label class="yn-label">Yes</label>
 			<input placeholder="hasTradeSupportLoanDebtYN" type="radio" name="hasTradeSupportLoanDebtYN " class="hasTradeSupportLoanDebtYN yn-input">
 			<label class="yn-label">No</label>
 			<input type="radio" name="hasTradeSupportLoanDebtYN " class="hasTradeSupportLoanDebtYN yn-input">
 		</span>
-		<br>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label>Upward Variation Tax Witholding Amount</label>
 			<input placeholder="Upward Variation Tax Witholding Amount" id="upwardVariationTaxWitholdingAmount">
 		</span>
-		<br>
-		<span class="span-class">
+		<span class="span-class col-4">
 			<label>Eligible To Receive Leave Loading</label>
 			<label class="yn-label">Yes</label>
 			<input placeholder="eligibleToReceiveLeaveLoadingYN" type="radio" class="eligibleToReceiveLeaveLoadingYN yn-input" name="eligibleToReceiveLeaveLoadingYN">
 			<label class="yn-label">No</label>
 			<input type="radio" name="eligibleToReceiveLeaveLoadingYN" class="eligibleToReceiveLeaveLoadingYN yn-input">
 		</span>
-		<br>
-		<span class="span-class">
+		<span class="span-class col-4">
 			<label>Approved Witholding Variation Percentage</label>
 			<input placeholder="Approved Witholding Variation Percentage" id="approvedWitholdingVariationPercentage">
 		</span>
@@ -453,27 +454,38 @@
 				<?php } ?>
 			</select>
 		</span>
+
+		<span class="span-class">
+			<label>Area</label>
+				<span class="" id="area-select">
+					<select placeholder="Area" id="area">
+					<?php 
+					$areas = json_decode($areas);
+					foreach($areas->areas as $area){
+					?>
+					<option value="<?php echo $area->areaId; ?>" ><?php echo $area->areaName; ?></option>
+					<?php } ?>
+				</select>
+			</span>
+		</span>
+
+		<span class="span-class">
+			<label>Role</label>
+			<select placeholder="Role" id="role">
+				<option>--select--</option>
+				<?php foreach($areas->areas as $roles){?>
+					<?php foreach($roles->roles as $role){?>
+				<option area-id="<?php print_r($role->areaid); ?>" ><?php print_r($role->roleName) ?></option>
+				<?php } } ?>
+			</select>
+		</span>
+
 		<span class="span-class">
 			<label>Manager</label>
 			<input placeholder="Manager" id="manager">
 		</span>
-		<span class="span-class">
-			<label>Role</label>
-			<input placeholder="Role" id="role">
-		</span>
-		<span class="span-class">
-			<label>Area</label>
-			<span class="" id="area-select">
-				<select placeholder="Area" id="area">
-				<?php 
-				$areas = json_decode($areas);
-				foreach($areas->areas as $area){
-				?>
-				<option><?php echo $area->areaName; ?></option>
-				<?php } ?>
-			</select>
-		</span>
-			</span>
+
+
 		<span class="span-class">
 			<label>Level</label>
 			<select placeholder="Level" id="level">
@@ -700,18 +712,20 @@
 		$(document).on('click','.add-row',function(){
 			var count = $('.statement').length;
 			if(count > 1){
-				for(i = 0 ; i < count-1 ; i++){
-					$('.remainderYN[value="N"]').eq(i).prop('checked',true);
-					$('.remainderYN[value="Y"]').eq(i).attr('name','remaindeYN-'+i)
-					$('.remainderYN[value="N"]').eq(i).attr('name','remaindeYN-'+i)
-					if($('.remainderYN[value="N"]').eq(i).prop('checked') == true){
-							$('.amount-class-parent').eq(i).empty();
-						}
+				$('.amount-class-parent').eq(0).empty();
+				$('.remainderYN[value="N"]').eq(0).prop('checked',true);
+				for(i = 1 ; i < count ; i++){
+					$('.remainderYN[value="Y"]').eq(i).attr('name','remaindeYN-'+i);
+					$('.remainderYN[value="N"]').eq(i).attr('name','remaindeYN-'+i);
+					$('.remainderYN[value="Y"]').eq(i).prop('checked',true);
+					$('.remainderYN[value="Y"]').eq(i).attr('disabled',true);
+					$('.remainderYN[value="N"]').eq(i).attr('disabled',true);
+
 					}
-					$('.remainderYN[value="Y"]').eq(count-1).prop('checked',true);
+					
 				}
 			});
-					$('.remainderYN[value="Y"]').eq(0).prop('checked',true);
+					$('.remainderYN[value="N"]').eq(0).prop('checked',true);
 		});
 </script>
 <script type="text/javascript">
@@ -719,14 +733,14 @@
 $(document).ready(function(){
 	var saved = $('.tax-declaration-class').html();
 	$(document).on('change','#tfnExemptionType',function(){
-		if($('#tfnExemptionType').val() != 'NONE'){
+		if($('#tfnExemptionType').val() == 'NONE'){
 			$('.tax-declaration-class').append(saved);
 		}
 		else{
 			$('.tax-declaration-class').empty();
 		}
 	})
-	if($('#tfnExemptionType').val() == 'NONE'){
+	if($('#tfnExemptionType').val() != 'NONE'){
 		$('.tax-declaration-class').empty();
 	}
 })
@@ -750,9 +764,40 @@ $(document).ready(function(){
 </script>
 
 <script type="text/javascript">
+		for(x=0;x<$('#role').children().length;x++){
+		if($('#role').children('option').eq(x).attr('area-id') == 1){
+			
+		}
+		else{
+			$('#role').children('option').eq(x).css('display','none')
+		}
+	}
+
+
+
+	$(document).on('change','#area',function(){
+	var areaId = this.value;
+	for(x=0;x<$('#role').children().length;x++){
+		if($('#role').children('option').eq(x).attr('area-id') == areaId){
+			$('#role').children('option').eq(x).css('display','block')
+		}
+		else{
+			$('#role').children('option').eq(x).css('display','none')
+		}
+
+		console.log($('#role').children('option').eq(x).attr('area-id'))
+			}
+		});
+
+
+</script>
+
+
+<script type="text/javascript">
 	$(document).ready(function(){
-		$(document).on('click','#superfund-add',function(){
+
 		var superfundHTML = $('.superfund-parent').html();
+		$(document).on('click','#superfund-add',function(){
 		$('.superfund-parent').append(superfundHTML);
 		})
 	})

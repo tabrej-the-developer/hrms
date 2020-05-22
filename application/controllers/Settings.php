@@ -368,8 +368,6 @@ $server_output = curl_exec($ch);
 
 
 
-
-
 	function getAllRooms($centerid = 1){
 		$url = BASE_API_URL."settings/getRooms/".$centerid."/".$this->session->userdata('LoginId');
 		$ch = curl_init($url);
@@ -716,6 +714,7 @@ $server_output = curl_exec($ch);
 				$data['areas'] = $this->getAreas($data['centerid']);
 				$data['ordinaryEarningRate'] = $this->getAwardSettings($data['userid']);
 				$data['levels'] = $this->getAllEntitlements($data['userid']);
+				$data['superfunds'] = $this->getSuperfunds($data['userid']);
 				$this->load->view('addEmployee',$data);
 			}
 			else{
