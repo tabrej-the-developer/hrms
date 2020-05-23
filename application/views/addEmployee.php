@@ -129,7 +129,7 @@
 		    background: white;
 		    color:  #307bd3;
 		    padding:3px;
-		    border-radius:5px;
+		    border-radius:;
 		}
 		.arrow::after{
 			content: " ";
@@ -345,7 +345,7 @@
 					<span class="span-class col-4">
 						<label>Super Fund Id</label>
 						<?php $superfunds = json_decode($superfunds); ?>
-						<select placeholder="Super Fund Id" id="superFundId" >
+						<select placeholder="Super Fund Id" class="superFundId" >
 							<?php foreach($superfunds->superfunds as $superfund){ ?>
 							<option value="<?php echo $superfund->usi; ?>"><?php echo $superfund->name; ?></option>
 							<?php } ?>
@@ -353,11 +353,11 @@
 					</span>
 					<span class="span-class col-4">
 						<label>Employee Number</label>
-						<input placeholder="Employee Number" id="employeeNumber" >
+						<input placeholder="Employee Number" class="employeeNumber" >
 					</span>
 					<span class="span-class col-4">
 						<label>Super Membership Id</label>
-						<input placeholder="Super Membership Id" id="superMembershipId" >
+						<input placeholder="Super Membership Id" class="superMembershipId" >
 					</span>
 				</div>
 			</div>
@@ -399,9 +399,9 @@
 		<span class="span-class col-4">
 			<label>Australian Resident For TaxPurpose</label>
 			<label class="yn-label">Yes</label>
-				<input placeholder="Australian Resident For TaxPurpose" type="radio"  name="australiantResidentForTaxPurposeYN" class="australiantResidentForTaxPurposeYN yn-input">
+				<input placeholder="Australian Resident For TaxPurpose" type="radio"  name="australiantResidentForTaxPurposeYN" class="australiantResidentForTaxPurposeYN yn-input" value="Y">
 			<label class="yn-label">No</label>
-				<input type="radio" name="australiantResidentForTaxPurposeYN" class="australiantResidentForTaxPurposeYN yn-input">
+				<input type="radio" name="australiantResidentForTaxPurposeYN" class="australiantResidentForTaxPurposeYN yn-input" value="N">
 		</span>
 		<span class="span-class col-3">
 			<label>Residency Statue</label>
@@ -414,9 +414,9 @@
 		<span class="span-class col-4">
 			<label>Tax Free Threshold Claimed</label>
 			<label class="yn-label">Yes</label>
-				<input placeholder="taxFreeThresholdClaimedYN" type="radio" name="taxFreeThresholdClaimedYN" class="taxFreeThresholdClaimedYN yn-input">
+				<input placeholder="taxFreeThresholdClaimedYN" type="radio" name="taxFreeThresholdClaimedYN" class="taxFreeThresholdClaimedYN yn-input" value="Y">
 			<label class="yn-label">No</label>
-				<input type="radio" name="taxFreeThresholdClaimedYN" class="taxFreeThresholdClaimedYN yn-input">
+				<input type="radio" name="taxFreeThresholdClaimedYN" class="taxFreeThresholdClaimedYN yn-input" value="N">
 		</span>
 		<span class="span-class col-4">
 			<label>Tax Offset Estimated Amount</label>
@@ -425,23 +425,24 @@
 		<span class="span-class col-3">
 			<label>Has HELP Debt</label>
 			<label class="yn-label">Yes</label>
-			<input placeholder="hasHELPDebtYN" name="hasHELPDebtYN" class="hasHELPDebtYN yn-input" type="radio">
+			<input placeholder="hasHELPDebtYN" name="hasHELPDebtYN" class="hasHELPDebtYN yn-input" value="Y" type="radio">
 			<label class="yn-label">No</label>
-			<input type="radio" name="hasHELPDebtYN" class="hasHELPDebtYN yn-input">	
+			<input type="radio" name="hasHELPDebtYN" class="hasHELPDebtYN yn-input" value="N">	
 		</span>
 		<span class="span-class col-4">
 			<label>Has SFSS Debt</label>
 			<label class="yn-label">Yes</label>
-			<input placeholder="hasSFSSDebtYN" type="radio" name="hasSFSSDebtYN" class="hasSFSSDebtYN yn-input">
+			<input placeholder="hasSFSSDebtYN" type="radio" name="hasSFSSDebtYN" class="hasSFSSDebtYN yn-input"
+			 value="Y">
 			<label class="yn-label">No</label>
-			<input type="radio" name="hasSFSSDebtYN" class="hasSFSSDebtYN yn-input">
+			<input type="radio" name="hasSFSSDebtYN" class="hasSFSSDebtYN yn-input" value="N">
 		</span>
 		<span class="span-class col-4">
 			<label>Has Trade Support Loan Debt</label>
 			<label class="yn-label">Yes</label>
-			<input placeholder="hasTradeSupportLoanDebtYN" type="radio" name="hasTradeSupportLoanDebtYN " class="hasTradeSupportLoanDebtYN yn-input">
+			<input placeholder="hasTradeSupportLoanDebtYN" type="radio" name="hasTradeSupportLoanDebtYN " class="hasTradeSupportLoanDebtYN yn-input" value="Y">
 			<label class="yn-label">No</label>
-			<input type="radio" name="hasTradeSupportLoanDebtYN " class="hasTradeSupportLoanDebtYN yn-input">
+			<input type="radio" name="hasTradeSupportLoanDebtYN " class="hasTradeSupportLoanDebtYN yn-input" value="N">
 		</span>
 		<span class="span-class col-3">
 			<label>Upward Variation Tax Witholding Amount</label>
@@ -450,9 +451,9 @@
 		<span class="span-class col-4">
 			<label>Eligible To Receive Leave Loading</label>
 			<label class="yn-label">Yes</label>
-			<input placeholder="eligibleToReceiveLeaveLoadingYN" type="radio" class="eligibleToReceiveLeaveLoadingYN yn-input" name="eligibleToReceiveLeaveLoadingYN">
+			<input placeholder="eligibleToReceiveLeaveLoadingYN" type="radio" class="eligibleToReceiveLeaveLoadingYN yn-input" name="eligibleToReceiveLeaveLoadingYN" value="Y">
 			<label class="yn-label">No</label>
-			<input type="radio" name="eligibleToReceiveLeaveLoadingYN" class="eligibleToReceiveLeaveLoadingYN yn-input">
+			<input type="radio" name="eligibleToReceiveLeaveLoadingYN" class="eligibleToReceiveLeaveLoadingYN yn-input" value="N">
 		</span>
 		<span class="span-class col-4">
 			<label>Approved Witholding Variation Percentage</label>
@@ -461,6 +462,8 @@
 		<br>
 	</div>
 	</section>
+
+
 	<section class="employee-details">
 		<span class="span-class">
 			<label>Center</label>
@@ -569,7 +572,7 @@
 		var ordinaryEarningRateId = $('#ordinaryEarningRateId').val();
 		// var created_at = $('#created_at').val();
 		// var created_by = $('#created_by').val();
-		var employeeId = $('#employeeId').val();
+		// var employeeId = $('#employeeId').val();
 		// var statementText = $('.statementText').val();
 		// var accountName = $('.accountName').val();
 		// var bsb = $('.bsb').val();
@@ -577,24 +580,25 @@
 		// var remainderYN = $('.remainderYN').val();
 		// var amount = $('.amount').val();
 		// var employeeId = $('#employeeId').val();
-		var superFundId = $('#superFundId').val();
-		var employeeNumber = $('#employeeNumber').val();
-		var superMembershipId = $('#superMembershipId').val();
+		// var superFundId = $('#superFundId').val();
+		// var employeeNumber = $('#employeeNumber').val();
+		// var superMembershipId = $('#superMembershipId').val();
 		// var employeeId = $('#employeeId').val();
 		var employmentBasis = $('#employmentBasis').val();
 		var tfnExemptionType = $('#tfnExemptionType').val();
 		var taxFileNumber = $('#taxFileNumber').val();
-		var australiantResidentForTaxPurposeYN = $('#australiantResidentForTaxPurposeYN').val();
+		var australiantResidentForTaxPurposeYN = $('input[name=australiantResidentForTaxPurposeYN]:checked').val()
 		var residencyStatue = $('#residencyStatue').val();
-		var taxFreeThresholdClaimedYN = $('#taxFreeThresholdClaimedYN').val();
+		var taxFreeThresholdClaimedYN = $("input[name='taxFreeThresholdClaimedYN']:checked").val()
 		var taxOffsetEstimatedAmount = $('#taxOffsetEstimatedAmount').val();
-		var hasHELPDebtYN = $('#hasHELPDebtYN').val();
-		var hasSFSSDebtYN = $('#hasSFSSDebtYN').val();
-		var hasTradeSupportLoanDebtYN = $('#hasTradeSupportLoanDebtYN').val();
-		var upwardVariationTaxWitholdingAmount = $('#upwardVariationTaxWitholdingAmount').val();
-		var eligibleToReceiveLeaveLoadingYN = $('#eligibleToReceiveLeaveLoadingYN').val();
+		var hasHELPDebtYN = $('input[name=hasHELPDebtYN]:checked').val()
+		var hasSFSSDebtYN = $('input[name=hasSFSSDebtYN]:checked').val()
+		var hasTradeSupportLoanDebtYN = $('input[name=hasTradeSupportLoanDebtYN]:checked').val()
+		var upwardVariationTaxWitholdingAmount =  $('#upwardVariationTaxWitholdingAmount').val();
+		var eligibleToReceiveLeaveLoadingYN = $('input[name=eligibleToReceiveLeaveLoadingYN]:checked').val()
 		var approvedWitholdingVariationPercentage = $('#approvedWitholdingVariationPercentage').val();
 		var bankAccount = [];
+		var superfund = [];
 		var banckAccountArray =	function(statementText,accountName,bsb,accountNumber,remainderYN,amount){
 				this.statementText = statementText;
 				this.accountName = accountName;
@@ -604,18 +608,37 @@
 				this.amount = amount;
 				return {statementText : statementText,accountName : accountName,bsb : bsb,				accountNumber : accountNumber,remainderYN : remainderYN,amount : amount}
 			}
-		var z = $('.child').length;
-			for(x=0;x<z;x++){
+		var bankAccountCount = $('.child').length;
+			for(x=0;x<bankAccountCount;x++){
 				let statementText = $('.statementText').eq(x).val();
 				let accountName = $('.accountName').eq(x).val();
 				let bsb = $('.bsb').eq(x).val();
 				let accountNumber = $('.accountNumber').eq(x).val();
-				let remainderYN = $('.remainderYN').eq(x).val();
+				let remainderYN = $('.remainderYN[name=remainderYN]:checked').eq(x).val();
 				let amount = $('.amount').eq(x).val();
 	bankAccount.push(banckAccountArray(statementText,accountName,bsb,accountNumber,remainderYN,amount));
 			}
+			var superfundArray =	function(superFundId,employeeNumber,superMembershipId){
+				this.superFundId = superFundId;
+				this.employeeNumber = employeeNumber;
+				this.superMembershipId = superMembershipId;
+				return {superFundId : superFundId,employeeNumber : employeeNumber,superMembershipId : superMembershipId}
+			}
+			var superfundCount = $('.superfund-child').length;
+			for(x=0;x<superfundCount;x++){
+				let	superFundId = $('.superFundId').eq(x).val();
+				let	employeeNumber = $('.employeeNumber').eq(x).val();
+				let	superMembershipId = $('.superMembershipId').eq(x).val();
+	superfund.push(superfundArray(superFundId,employeeNumber,superMembershipId));
+			}
+			var center = $('#center').val();
+			var area = $('#area').val();
+			var role = $('#role').val();
+			var manager = $('#manager').val();
+			var level = $('#level').val();
+			var bonusRates = $('#bonusRates').val();
 			var url = window.location.origin + "/PN101/settings/createEmployeeProfile";
-		$.ajax({
+				$.ajax({
 			url:url,
 			data:{
 				title: title,
@@ -637,15 +660,9 @@
 				startDate: startDate,
 				terminationDate: terminationDate,
 				ordinaryEarningRateId: ordinaryEarningRateId,
-				// created_at: created_at,
-				// created_by: created_by,
 				employeeId: employeeId,
 				bankAccount: bankAccount,
-			
-				superFundId: superFundId,
-				employeeNumber: employeeNumber,
-				superMembershipId: superMembershipId,
-				
+				superfund: superfund,
 				employmentBasis: employmentBasis,
 				tfnExemptionType: tfnExemptionType,
 				taxFileNumber: taxFileNumber,
@@ -658,14 +675,20 @@
 				hasTradeSupportLoanDebtYN: hasTradeSupportLoanDebtYN,
 				upwardVariationTaxWitholdingAmount: upwardVariationTaxWitholdingAmount,
 				eligibleToReceiveLeaveLoadingYN: eligibleToReceiveLeaveLoadingYN,
-				approvedWitholdingVariationPercentage: approvedWitholdingVariationPercentage
-				//To Do ,Users
+				approvedWitholdingVariationPercentage: approvedWitholdingVariationPercentage,
+				center : center,
+				area : area,
+				role : role,
+				manager : manager,
+				level : level,
+				bonusRates : bonusRates
 			},
 			method:'POST',
 			success:function(response){
 
 			}
 		})
+
 		})
 	})
 </script>

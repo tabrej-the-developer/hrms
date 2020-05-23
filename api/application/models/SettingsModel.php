@@ -130,10 +130,10 @@ class SettingsModel extends CI_Model {
 		$query = $this->db->query("INSERT INTO employeetaxdeclaration (employeeId, employmentBasis, tfnExemptionType, taxFileNumber, australiantResidentForTaxPurposeYN, residencyStatue, taxFreeThresholdClaimedYN, taxOffsetEstimatedAmount, hasHELPDebtYN, hasSFSSDebtYN, hasTradeSupportLoanDebtYN, upwardVariationTaxWitholdingAmount, eligibleToReceiveLeaveLoadingYN, approvedWitholdingVariationPercentage) VALUES ('$employeeId','$employmentBasis','$tfnExemptionType','$taxFileNumber','$australiantResidentForTaxPurposeYN','$residencyStatue','$taxFreeThresholdClaimedYN','$taxOffsetEstimatedAmount','$hasHELPDebtYN','$hasSFSSDebtYN','$hasTradeSupportLoanDebtYN','$upwardVariationTaxWitholdingAmount','$eligibleToReceiveLeaveLoadingYN','$approvedWitholdingVariationPercentage')");
 	}
 
-	// public function addEmployeeToUsers(){
-	// 	$this->load->database();
-	// 	$query = $this->db->query("INSERT INTO users () VALUES ()");
-	// }
+	public function addEmployeeToUsers($emaild,$center,$area,$role,$manager,$level,$bonusRates){
+	 	$this->load->database();
+	 	$query = $this->db->query("INSERT INTO users (center,area,role,manager,level,bonusRates) VALUES ('$center','$area','$role','$manager','$level','$bonusRates') WHERE email ='$emailid'");
+	}
 
 }
 
