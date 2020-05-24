@@ -152,6 +152,12 @@ font-family: 'Open Sans', sans-serif;
 					<a href="<?php echo base_url()?>settings/superfundsSettings">Superfunds settings</a>
 				</div>
 			</div>
+			<div class="tile-box">
+				<div>Permission settings</div>
+				<div>
+					<a href="<?php echo base_url()?>settings/permissionSettings">Permission settings</a>
+				</div>
+			</div>
 		</div>
 	</div>
 

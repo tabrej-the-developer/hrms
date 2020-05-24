@@ -135,6 +135,20 @@ class SettingsModel extends CI_Model {
 	 	$query = $this->db->query("INSERT INTO users (center,area,role,manager,level,bonusRates) VALUES ('$center','$area','$role','$manager','$level','$bonusRates') WHERE email ='$emailid'");
 	}
 
+
+	public function getPermissionForEmployee($empId){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM permissions WHERE userid = '$empId'");
+		return $query->row();
+	}
+
+	public function insertPermission($userid,$isQrReaderYN,$viewRosterYN,$editRosterYN,$viewTimesheetYN,$editTimesheetYN,$viewPayrollYN,$editPayrollYN,$editLeaveTypeYN,$viewLeaveTypeYN,$createNoticeYN,$viewOrgChartYN,$editOrgChartYN,$viewCenterProfileYN,$editCenterProfileYN,$viewRoomSettingsYN,$editRoomSettingsYN,$viewEntitlementsYN,$editEntitlementsYN,$editEmployeeYN,$xeroYN,$viewAwardsYN,$editAwardsYN,$viewSuperfundsYN,$editSuperfundsYN,$createMomYN,$editPermissionYN,$viewPermissionYN){
+
+		$this->load->database();
+		$this->db->query("DELETE FROM permissions WHERE userid = '$userid'");
+		$this->db->query("INSERT INTO permissions VALUES('$userid','$isQrReaderYN','$viewRosterYN','$editRosterYN','$viewTimesheetYN','$editTimesheetYN','$viewPayrollYN','$editPayrollYN','$editLeaveTypeYN','$viewLeaveTypeYN','$createNoticeYN','$viewOrgChartYN','$editOrgChartYN','$viewCenterProfileYN','$editCenterProfileYN','$viewRoomSettingsYN','$editRoomSettingsYN','$viewEntitlementsYN','$editEntitlementsYN','$editEmployeeYN','$xeroYN','$viewAwardsYN','$editAwardsYN','$viewSuperfundsYN','$editSuperfundsYN','$createMomYN','$editPermissionYN','$viewPermissionYN')");
+	}
+
 }
 
 

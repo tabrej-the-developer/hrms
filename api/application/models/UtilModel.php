@@ -15,4 +15,10 @@ class UtilModel extends CI_Model {
 		$query = $this->db->query("SELECT * FROM centers WHERE centerid = '$centerid'");
 		return $query->row();
 	}
+
+	public function getEmployessByCenter($centerid){
+		$this->load->database();
+		$query = $this->db->query("SELECT id,email,name,imageUrl,role,title,manager,level FROM users WHERE center LIKE '%$centerid|%'");
+		return $query->result();
+	}
 }

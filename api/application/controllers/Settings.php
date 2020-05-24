@@ -647,32 +647,20 @@ class Settings extends CI_Controller {
 		}
 	}
 
-		 function postToXero($data){
-		if($data != null){
-			$url = "https://api.xero.com/payroll.xro/1.0/Employees/";
-			$ch = curl_init($url);
-			curl_setopt($ch, CURLOPT_URL,$url);
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-				'Content-Type:application/vnd.seek.advertisement+json; version=1; charset=utf-8
-				 Authorization:Bearer b635a7ea-1361-4cd8-9a07-bc3c12b2cf9e
-				 Accept:application/vnd.seek.advertisement+json; version=1; charset=utf-8, application/vnd.seek.advertisement-error+json; version=1; charset=utf-8' )
-			));
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-			$server_output = curl_exec($ch);
-			//var_dump($server_output);
-			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			if($httpcode == 200){
-				$jsonOutput = json_decode($server_output);
-				$this->load->model('settingsModel');
-				$this->jobsModel->insertXeroId();
-			}
-			else if($httpcode == 401){
-
-			}
-		}
+ 	function postToXero($data){
+ 		$url = "https://api.xero.com/payroll.xro/1.0/Employees/";
+		$ch =  curl_init($url);
+       	curl_setopt($ch, CURLOPT_URL,$url);
+       	curl_setopt($ch, CURLOPT_POST,1);
+       	curl_setopt($ch, CURLOPT_POSTFIELDS,$postData);
+       	curl_setopt($ch, CURLOPT_HTTPHEADER,  array(
+           'Content-Type:application/json',
+           'Authorization:Bearer '.$access_token,
+           'Xero-tenant-id:'.$tenant_id
+       	));
+       	curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+		$server_output = curl_exec($ch);
+		return $server_output;
 	}
 
 		
@@ -760,6 +748,78 @@ class Settings extends CI_Controller {
 			http_response_code(401);
 		}
 	
+	}
+
+
+	public function GetPermissionForEmployee($empId,$userid){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+				$this->load->model('settingsModel');
+				$mdata['permissions'] = $this->settingsModel->getPermissionForEmployee($empId);
+				http_response_code(200);
+				echo json_encode($mdata);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
+	public function PostEmployeePermission(){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $json->userid){
+				$userid = $json->userid;
+				$empId = $json->empId;
+				$isQrReaderYN = $json->isQrReaderYN;
+				$viewRosterYN = $json->viewRosterYN;
+				$editRosterYN = $json->editRosterYN;
+				$viewTimesheetYN = $json->viewTimesheetYN;
+				$editTimesheetYN = $json->editTimesheetYN;
+				$viewPayrollYN = $json->viewPayrollYN;
+				$editPayrollYN = $json->editPayrollYN;
+				$editLeaveTypeYN = $json->editLeaveTypeYN;
+				$viewLeaveTypeYN = $json->viewLeaveTypeYN;
+				$createNoticeYN = $json->createNoticeYN;
+				$viewOrgChartYN = $json->viewOrgChartYN;
+				$editOrgChartYN = $json->editOrgChartYN;
+				$viewCenterProfileYN = $json->viewCenterProfileYN;
+				$editCenterProfileYN = $json->editCenterProfileYN;
+				$viewRoomSettingsYN = $json->viewRoomSettingsYN;
+				$editRoomSettingsYN = $json->editRoomSettingsYN;
+				$viewEntitlementsYN = $json->viewEntitlementsYN;
+				$editEntitlementsYN = $json->editEntitlementsYN;
+				$editEmployeeYN = $json->editEmployeeYN;
+				$xeroYN = $json->xeroYN;
+				$viewAwardsYN = $json->viewAwardsYN;
+				$editAwardsYN = $json->editAwardsYN;
+				$viewSuperfundsYN = $json->viewSuperfundsYN;
+				$editSuperfundsYN = $json->editSuperfundsYN;
+				$createMomYN = $json->createMomYN;
+				$editPermissionYN = $json->editPermissionYN;
+				$viewPermissionYN = $json->viewPermissionYN;
+				$this->load->model('settingsModel');
+				$this->settingsModel->insertPermission($empId,$isQrReaderYN,$viewRosterYN,$editRosterYN,$viewTimesheetYN,$editTimesheetYN,$viewPayrollYN,$editPayrollYN,$editLeaveTypeYN,$viewLeaveTypeYN,$createNoticeYN,$viewOrgChartYN,$editOrgChartYN,$viewCenterProfileYN,$editCenterProfileYN,$viewRoomSettingsYN,$editRoomSettingsYN,$viewEntitlementsYN,$editEntitlementsYN,$editEmployeeYN,$xeroYN,$viewAwardsYN,$editAwardsYN,$viewSuperfundsYN,$editSuperfundsYN,$createMomYN,$editPermissionYN,$viewPermissionYN);
+				$data['Status'] = "SUCCESS";
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
 	}
 
 }

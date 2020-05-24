@@ -51,4 +51,25 @@ class Util extends CI_Controller {
 			http_response_code(401);
 		}
 	}
+
+	public function GetAllEmployeesByCenter($centerid,$userid){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+				$this->load->model('utilModel');
+				$mdata['employees'] = $this->utilModel->getEmployessByCenter($centerid);
+				http_response_code(200);
+				echo json_encode($mdata);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
 }

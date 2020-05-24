@@ -715,6 +715,7 @@ $server_output = curl_exec($ch);
 				$data['ordinaryEarningRate'] = $this->getAwardSettings($data['userid']);
 				$data['levels'] = $this->getAllEntitlements($data['userid']);
 				$data['superfunds'] = $this->getSuperfunds($data['userid']);
+				// var_dump($data);
 				$this->load->view('addEmployee',$data);
 			}
 			else{
@@ -722,7 +723,7 @@ $server_output = curl_exec($ch);
 			}
 		}
 
-		public function createEmployeeProfile(){
+	public function createEmployeeProfile(){
 		$form_data = $this->input->post();
 		if($form_data != null){
 			$data['userid'] = $this->session->userdata('LoginId');
@@ -790,7 +791,7 @@ $server_output = curl_exec($ch);
 					$employee['StartDate'] = '/Date('.$data['startDate']->format('Uu').'+0000)/';
 					$employee['OrdinaryEarningsRateID'] = $data['ordinaryEarningRateId'];
 					$employee['PayrollCalendarID'] = "FIXED";
-					$employee['TaxDeclaration'] = []
+					$employee['TaxDeclaration'] = [];
 					$employee['TaxDeclaration']['AustralianResidentForTaxPurposes'] = $data['australiantResidentForTaxPurposeYN'];
 					$employee['TaxDeclaration']['TaxFreeThresholdClaimed'] = $data['taxFreeThresholdClaimedYN'];
 					$employee['TaxDeclaration']['HasHELPDebt'] = $data['hasHELPDebtYN'];
@@ -799,10 +800,10 @@ $server_output = curl_exec($ch);
 					$employee['TaxDeclaration']['UpdatedDateUTC'] = 
 					//$employee['TaxDeclaration']['HasStudentStartupLoan'] = 
 					$employee['TaxDeclaration']['ResidencyStatus'] = $data['residencyStatue'];
-					$employee['BankAccounts'] = []
+					$employee['BankAccounts'] = [];
 					$bankAccounts = [];
 					foreach($data['bankAccount'] as $account ){
-					$bankAccounts['StatementText'] =$account['StatementText']
+					$bankAccounts['StatementText'] =$account['StatementText'];
 					$bankAccounts['AccountName'] = $account['AccountName'];
 					$bankAccounts['BSB'] = $account['BSB'];
 					$bankAccounts['AccountNumber'] = $account['AccountNumber'];
@@ -812,7 +813,7 @@ $server_output = curl_exec($ch);
 					$employee['SuperMemberships'] = [];
 
 				foreach($data['superfund'] as $superfund){
-					$superMemberships = []
+					$superMemberships = [];
 					$superMemberships['SuperMembershipID'] = $superfund['SuperMembershipID']; 
 					$superMemberships['SuperFundID'] = $superfund['SuperFundID']; 
 					$superMemberships['EmployeeNumber'] = $superfund['EmployeeNumber']; 
@@ -842,16 +843,40 @@ $server_output = curl_exec($ch);
 
 			}
 		}
+	}
+
+	public function savePermission(){
+		$input = $this->input->post();
+		if($input != null){
+			$data = $this->input->post();
+			$data['userid'] = $this->session->userdata('LoginId');
+			$url = BASE_API_URL."/settings/PostEmployeePermission";
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'x-device-id: '.$this->session->userdata('x-device-id'),
+					'x-token: '.$this->session->userdata('AuthToken')
+				));
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				echo $server_output;
+				curl_close ($ch);
+
+			}
+			else if($httpcode == 401){
+
+			}
 		}
+	}
 
-		function ordinaryEarningRate(){
-
-		}
-	//	New Add Employee
-
-// Xero settings
-
-			// Award settings 
+	public function permissionSettings(){	
+		$data['centers'] = $this->getAllCenters();
+		$this->load->view('permission',$data);
+	}
 
 	public function awardSettings(){
 		$data['userid'] = $this->session->userdata('LoginId');
@@ -903,6 +928,9 @@ $server_output = curl_exec($ch);
 		}
 	}
 
+
+
+
 			// Award settings end
 
 			// Superfunds settings
@@ -923,6 +951,7 @@ $server_output = curl_exec($ch);
 			'x-token: '.$this->session->userdata('AuthToken')
 		));
 		$server_output = curl_exec($ch);
+		// var_dump($server_output);
 		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		if($httpcode == 200){
 			return $server_output;
@@ -957,9 +986,46 @@ $server_output = curl_exec($ch);
 		}
 	}
 
-			// Super funds end
 
-// Xero settings
+	public function getEmployeesByCenter($centerid){
+		$url = BASE_API_URL."util/GetAllEmployeesByCenter/".$centerid.'/'.$this->session->userdata('LoginId');
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			echo $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+
+		}
+	}
+
+	public function getPermissionByEmployee($empId){
+		$url = BASE_API_URL."settings/GetPermissionForEmployee/".$empId.'/'.$this->session->userdata('LoginId');
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			echo $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+
+		}
+	}
 
 }
 

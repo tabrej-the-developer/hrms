@@ -45,12 +45,12 @@ class Auth extends CI_Controller {
 					//$data['firebaseid'] = $user->firebaseid;
 					$data['isVerified'] = $user->isVerified;
 					$permissions = $this->authModel->getPermissions($user->id);
-					$var = [];
-					if($permissions != null){
-						$var['isQrReaderYN'] = $permissions->isQrReaderYN;
-						$var['updateTimesheetYN'] = $permissions->updateTimesheetYN;
-					}
-					$data['permissions'] = $var;
+					// $var = [];
+					// if($permissions != null){
+					// 	$var['isQrReaderYN'] = $permissions->isQrReaderYN;
+					// 	$var['updateTimesheetYN'] = $permissions->updateTimesheetYN;
+					// }
+					// $data['permissions'] = $var;
 				}
 			}
 			else{
