@@ -278,6 +278,7 @@ class Timesheet extends CI_Controller{
 								$mar['payrollType'] = $this->payrollModel->getPayrollType($paySh->payrollType);
 								array_push($var['payrollShifts'],$mar);
 							}
+							$var['isOnLeave'] = "N";
 							if($clockedTimes != null || $payedShifts != null)
 								array_push($mData['unrosteredEmployees'],$var);
 						}
