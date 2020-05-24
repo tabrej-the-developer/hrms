@@ -568,9 +568,8 @@ border-bottom-right-radius: 20px;
 		var xhr = new XMLHttpRequest();
 		xhr.open('POST', base_url+"settings/savePermission");
 	    xhr.onreadystatechange = function() {
-	        if (xhr.readyState>3 && xhr.status==200) { 
-	        	console.log(xhr.responseText);
-	        	// location.reload();
+	        if (xhr.readyState>3 && xhr.status==200) {
+	        	
 	        }
 	    };
 	    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
