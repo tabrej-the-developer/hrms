@@ -302,7 +302,8 @@ td{
 </head>
 <body>
 
-	<?php $timesheetDetails = json_decode($timesheetDetails); 
+	<?php 
+	$timesheetDetails = json_decode($timesheetDetails); 
 			$entitlements = json_decode($entitlements);
 	?>
 	<div class="containers" id="containers" style="overflow-x:scroll">
@@ -512,9 +513,8 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					// to be changed to $value
 					?>
 
-				<?php for($p=0;$p<1;$p++){
-					?>
-	<td style="min-width:13vw;padding:7px" class="shift-edit <?php if($timesheetDetails->timesheet[0]->unrosteredEmployees[$p]->isOnLeave == "Y"){ echo "leave";}?>" name="<?php  echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName ?>"  cal-x="<?php echo $x; ?>"cal-p="<?php echo $p; ?>" array-type="unrosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empId?>"  timesheet-id="<?php echo $timesheetDetails->id;?>">
+				<?php for($p=0;$p<1;$p++){?>
+	<td style="min-width:13vw;padding:7px" class="shift-edit <?php if($timesheetDetails->timesheet[0]->unrosteredEmployees[$p]->isOnLeave =="Y"){ echo "leave";}?>" name="<?php  echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName ?>"  cal-x="<?php echo $x; ?>"cal-p="<?php echo $p; ?>" array-type="unrosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empId?>"  timesheet-id="<?php echo $timesheetDetails->id;?>">
 		<?php if($timesheetDetails->timesheet[0]->unrosteredEmployees[$p]->isOnLeave =="N"){ ?>
 					<div style="background:pink;border-radius: 5px;padding:3px">
 						<div style="display:flex;flex-direction: column;background:#307bd3;color:white;border-radius: 5px">
