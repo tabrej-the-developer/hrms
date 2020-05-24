@@ -10,6 +10,8 @@
 <style type="text/css">
 	*{
 		font-family: 'Open Sans', sans-serif;
+		max-height: 100vw;
+		overflow-y: hidden;
 	}
 		thead tr{
 			background:rgba(255,255,255,1) !important;
@@ -22,7 +24,7 @@
 			background:rgb(243, 244, 247);
 		}
 		.table-div{
-			height:70vh;
+			height:69vh;
 			overflow-y: auto;
 			padding: 0 20px;
 		}	
@@ -212,6 +214,101 @@ border-bottom-right-radius: 20px;
         transform: scale(1.0);
         transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
     }
+    .button{
+    	background-color: #9E9E9E;
+  		border: none;
+  		color: white;
+  		padding: 5px 10px;
+  		text-align: center;
+  		text-decoration: none;
+  		display: inline-block;
+  		margin: 2px
+    }
+    .button-class{
+    	display: flex;
+    	justify-content: flex-end;
+    	margin-right:5%;
+    	height:5%;
+    	padding-bottom: 10px
+    }
+    .select-class{
+    	display: flex;
+    	justify-content: flex-end;
+    	padding-right: 5%
+    }
+    .center-class{
+    	padding-right: 2%;
+    	position: relative;
+
+    }
+    .center-class:after{
+    	background: url("../assets/images/dropdown.png");
+    	padding:10px;
+    	position:absolute;
+    	right:25px;
+    	content: " "
+    }
+    .employee-id-class{
+    	padding-right: 2%;
+    	position: relative;
+    	
+    }
+    .employee-id-class:after{
+    	background: url("../assets/images/dropdown.png");
+    	padding:10px;
+    	position:absolute;
+    	right:25px;
+    	content: " "
+    }
+    #centerValue{
+    	width:15rem;
+    	border-radius: 3px;
+    	background-color:#F0F0F0; 
+    }
+    #employeeValue{
+    	width:15rem;
+    	border-radius: 3px;
+    	background-color:#F0F0F0; 
+    }
+    select {
+    -webkit-appearance: none
+}
+input[type=checkbox] + label {
+  display: block;
+  margin: 0.2em;
+  cursor: pointer;
+  padding: 0.2em;
+}
+
+input[type=checkbox] {
+  display: none;
+}
+
+input[type=checkbox] + label:before {
+  content: "\2714";
+  border: 0.1em solid #000;
+  border-radius: 0.2em;
+  display: inline-block;
+  width: 1em;
+  height: 1.3em;
+  vertical-align: bottom;
+  color: transparent;
+  transition: .2s;
+}
+
+input[type=checkbox] + label:active:before {
+  transform: scale(0);
+}
+
+input[type=checkbox]:checked + label:before {
+  background-color: #307bd3 ;
+  border-color: #307bd3 ;
+  color: #fff;
+}
+
+
+
+
 @media only screen and (max-width:1024px) {
 .modal-content{
 	min-width:100vw;
@@ -236,7 +333,8 @@ border-bottom-right-radius: 20px;
 		<span class="m-3" style="font-size: 30px;font-weight: bold">Permissions</span>
 		<!-- <span class="d-flex align-items-center"><button id="superfunds">Sync Xero Superfunds</button></span> -->
 	</div>
-		<span class="span-class">
+	<div class="select-class">
+		<span class="span-class center-class">
 			<select placeholder="Select Center" id="centerValue" onchange="getEmployees()">
 			<?php
 				$centers = json_decode($centers);
@@ -246,11 +344,12 @@ border-bottom-right-radius: 20px;
 			<?php }?>
 			</select>
 		</span>
-		<span class="span-class">
+		<span class="span-class employee-id-class">
 			<select placeholder="Select Center" id="employeeValue" onchange="getPermissions()">
 
 			</select>
 		</span>
+	</div>
 
 	<div class="table-div">
 		<table class="table">
@@ -263,163 +362,163 @@ border-bottom-right-radius: 20px;
 				<tr>
 					<td>QR Reader</td>
 					<td>
-						<input type="checkbox" id="isQrReaderYN" checked>
+						<input type="checkbox" id="isQrReaderYN" checked><label for="isQrReaderYN"></label>
 					</td>
 				</tr>
 				<tr>
 					<td>View Roster</td>
 					<td>
-						<input type="checkbox" id="viewRosterYN" checked>
+						<input type="checkbox" id="viewRosterYN" checked><label for="viewRosterYN"></label>
 					</td>
 				</tr>
 				<tr>
 					<td>Edit Roster</td>
 					<td>
-						<input type="checkbox" id="editRosterYN" checked>
+						<input type="checkbox" id="editRosterYN" checked><label for="editRosterYN"></label>
 					</td>
 				</tr>
 				<tr>
 					<td>View Timesheet</td>
 					<td>
-						<input type="checkbox" id="viewTimesheetYN" checked>
+						<input type="checkbox" id="viewTimesheetYN" checked><label for="viewTimesheetYN"></label>
 					</td>
 				</tr>
 				<tr>
 					<td>Edit Timesheet</td>
 					<td>
-						<input type="checkbox" id="editTimesheetYN" checked>
+						<input type="checkbox" id="editTimesheetYN" checked><label for="editTimesheetYN"></label>
 					</td>
 				</tr>
 				<tr>
 					<td>View Payroll</td>
 					<td>
-						<input type="checkbox" id="viewPayrollYN" checked>
+						<input type="checkbox" id="viewPayrollYN" checked><label for="viewPayrollYN"></label>
 					</td>
 				</tr>
 				<tr>
 					<td>Edit Payroll</td>
 					<td>
-						<input type="checkbox" id="editPayrollYN" checked>
+						<input type="checkbox" id="editPayrollYN" checked><label for="editPayrollYN"></label>
 					</td>
 				</tr>
 				<tr>
 					<td>Edit Leave Types</td>
 					<td>
-						<input type="checkbox" id="editLeaveTypeYN" checked>
+						<input type="checkbox" id="editLeaveTypeYN" checked><label for="editLeaveTypeYN"></label>
 					</td>
 				</tr>
 				<tr>
 					<td>View Leave Type</td>
 					<td>
-						<input type="checkbox" id="viewLeaveTypeYN" checked>
+						<input type="checkbox" id="viewLeaveTypeYN" checked><label for="viewLeaveTypeYN"></label>
 					</td>
 				</tr>
 				<tr>
 					<td>Create Notice</td>
 					<td>
-						<input type="checkbox" id="createNoticeYN" checked>
+						<input type="checkbox" id="createNoticeYN" checked><label for="createNoticeYN"></label>
 					</td>
 				</tr>
 				<tr>
 					<td>View Org Chart</td>
 					<td>
-						<input type="checkbox" id="viewOrgChartYN" checked>
+						<input type="checkbox" id="viewOrgChartYN" checked><label for="viewOrgChartYN"></label>
 					</td>
 				</tr>
 				<tr>
 					<td>Edit OrgChart</td>
 					<td>
-						<input type="checkbox" id="editOrgChartYN" checked>
+						<input type="checkbox" id="editOrgChartYN" checked><label for="editOrgChartYN"></label>
 					</td>
 				</tr>
 				<tr>
 					<td>View Center Profile</td>
 					<td>
-						<input type="checkbox" id="viewCenterProfileYN" checked>
+						<input type="checkbox" id="viewCenterProfileYN" checked><label for="viewCenterProfileYN"></label>
 					</td>
 				</tr>
 				<tr>
 					<td>Edit Center Profile</td>
 					<td>
-						<input type="checkbox" id="editCenterProfileYN" checked>
+						<input type="checkbox" id="editCenterProfileYN" checked><label for="editCenterProfileYN"></label>
 					</td>
 				</tr>
 				<tr>
 					<td>View Room Settings</td>
 					<td>
-						<input type="checkbox" id="viewRoomSettingsYN" checked>
+						<input type="checkbox" id="viewRoomSettingsYN" checked><label for="viewRoomSettingsYN"></label>
 					</td>
 				</tr>
 				<tr>
 					<td>Edit Room Settings</td>
 					<td>
-						<input type="checkbox" id="editRoomSettingsYN" checked>
+						<input type="checkbox" id="editRoomSettingsYN" checked><label for="editRoomSettingsYN"></label>
 					</td>
 				</tr>
 				<tr>
 					<td>View Entitlements</td>
 					<td>
-						<input type="checkbox" id="viewEntitlementsYN" checked>
+						<input type="checkbox" id="viewEntitlementsYN" checked><label for="viewEntitlementsYN"></label>
 					</td>
 				</tr>
 				<tr>
 					<td>Edit Entitlements</td>
 					<td>
-						<input type="checkbox" id="editEntitlementsYN" checked>
+						<input type="checkbox" id="editEntitlementsYN" checked><label for="editEntitlementsYN"></label>
 					</td>
 				</tr>
 				<tr>
 					<td>Edit Employees</td>
 					<td>
-						<input type="checkbox" id="editEmployeeYN" checked>
+						<input type="checkbox" id="editEmployeeYN" checked><label for="editEmployeeYN"></label>
 					</td>
 				</tr>
 				<tr>
 					<td>Xero Settings</td>
 					<td>
-						<input type="checkbox" id="xeroYN" checked>
+						<input type="checkbox" id="xeroYN" checked><label for="xeroYN"></label>
 					</td>
 				</tr>
 				<tr>
 					<td>View Awards</td>
 					<td>
-						<input type="checkbox" id="viewAwardsYN" checked>
+						<input type="checkbox" id="viewAwardsYN" checked><label for="viewAwardsYN"></label>
 					</td>
 				</tr>
 				<tr>
 					<td>Edit Awards</td>
 					<td>
-						<input type="checkbox" id="editAwardsYN" checked>
+						<input type="checkbox" id="editAwardsYN" checked><label for="editAwardsYN"></label>
 					</td>
 				</tr>
 				<tr>
 					<td>View Superfunds</td>
 					<td>
-						<input type="checkbox" id="viewSuperfundsYN" checked>
+						<input type="checkbox" id="viewSuperfundsYN" checked><label for="viewSuperfundsYN"></label>
 					</td>
 				</tr>
 				<tr>
 					<td>Edit Superfunds</td>
 					<td>
-						<input type="checkbox" id="editSuperfundsYN" checked>
+						<input type="checkbox" id="editSuperfundsYN" checked><label for="editSuperfundsYN"></label>
 					</td>
 				</tr>
 				<tr>
 					<td>Create MOM</td>
 					<td>
-						<input type="checkbox" id="createMomYN" checked>
+						<input type="checkbox" id="createMomYN" checked><label for="createMomYN"></label>
 					</td>
 				</tr>
 				<tr>
 					<td>Edit Permissions</td>
 					<td>
-						<input type="checkbox" id="editPermissionYN" checked>
+						<input type="checkbox" id="editPermissionYN" checked><label for="editPermissionYN"></label>
 					</td>
 				</tr>
 				<tr>
 					<td>View Permissions</td>
 					<td>
-						<input type="checkbox" id="viewPermissionYN" checked>
+						<input type="checkbox" id="viewPermissionYN" checked><label for="viewPermissionYN"></label>
 					</td>
 				</tr>
 			</tbody>
@@ -427,8 +526,8 @@ border-bottom-right-radius: 20px;
 		</table>
 		
 	</div>
-	<div>
-	<button onclick="savePermission()">Save</button>
+<div class="button-class">
+	<button onclick="savePermission()" class="button">Save</button>
 </div>
 </div>
 

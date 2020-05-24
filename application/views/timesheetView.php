@@ -277,6 +277,9 @@ max-width:30vw;
         transform: scale(1.0);
         transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
     }
+    .leave{
+    	background:orange;
+    }
 @media only screen and (max-width: 600px) {
 .modal-content{
 	min-width:100vw;
@@ -441,7 +444,9 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					<?php 
 		for($p=0;$p<14;$p++){
 		    if($timesheetDetails->timesheet[$p]->rosteredEmployees != null){?>
-		<td style="min-width:13vw;padding:7px" class="shift-edit" name="<?php  echo $timesheetDetails->timesheet[0]->rosteredEmployees[$p]->empName ?>"  cal-x="<?php echo $x; ?>" cal-p="<?php echo $p; ?>" array-type="rosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$p]->empId?>" curr-date="<?php echo $timesheetDetails->timesheet[$p]->currentDate?>" timesheet-id="<?php echo $timesheetDetails->id;?>">
+		<td style="min-width:13vw;padding:7px" class="shift-edit <?php if($timesheetDetails->timesheet[0]->rosteredEmployees[$p]->rosterShift['isOnLeave'] =="N"){ echo "leave";}?>" name="<?php  echo $timesheetDetails->timesheet[0]->rosteredEmployees[$p]->empName ?>"  cal-x="<?php echo $x; ?>" cal-p="<?php echo $p; ?>" array-type="rosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$p]->empId?>" curr-date="<?php echo $timesheetDetails->timesheet[$p]->currentDate?>" timesheet-id="<?php echo $timesheetDetails->id;?>">
+
+			<?php if($timesheetDetails->timesheet[0]->rosteredEmployees[$p]->rosterShift['isOnLeave'] =="N"){ ?>
 		<div style="background:pink;border-radius: 5px;padding:3px">
 		<div style="display:flex;flex-direction: column;background:#307bd3;color:white;border-radius: 5px">
 					<?php 
@@ -459,6 +464,9 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 							<span>Total visits : <?php echo $totalVisits; ?></span>
 						</div>
 					</div>
+				<?php }else{
+					echo "On Leave";
+				} ?>
 				</td>
 			 <?php }} ?>
 <!-- 			<td class=" " style="min-width:18vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
@@ -505,7 +513,8 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					?>
 
 				<?php for($p=0;$p<1;$p++){?>
-	<td style="min-width:13vw;padding:7px" class="shift-edit" name="<?php  echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName ?>"  cal-x="<?php echo $x; ?>"cal-p="<?php echo $p; ?>" array-type="unrosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empId?>"  timesheet-id="<?php echo $timesheetDetails->id;?>">
+	<td style="min-width:13vw;padding:7px" class="shift-edit <?php if($timesheetDetails->timesheet[0]->unrosteredEmployees[$p]->rosterShift['isOnLeave'] =="N"){ echo "leave";}?>" name="<?php  echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName ?>"  cal-x="<?php echo $x; ?>"cal-p="<?php echo $p; ?>" array-type="unrosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empId?>"  timesheet-id="<?php echo $timesheetDetails->id;?>">
+		<?php if($timesheetDetails->timesheet[0]->unrosteredEmployees[$p]->rosterShift['isOnLeave'] =="N"){ ?>
 					<div style="background:pink;border-radius: 5px;padding:3px">
 						<div style="display:flex;flex-direction: column;background:#307bd3;color:white;border-radius: 5px">
 				<?php 
@@ -526,6 +535,9 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 						</div>
 						
 					</div>
+				<?php } else{
+					echo "On leave";
+				}?>
 				</td>
 
 				  <?php } ?>
