@@ -258,6 +258,10 @@ max-width:30vw;
 .nav-link{
 	text-align:left;
 }
+.leave{
+	background: orange;
+	content: 'On Leave'
+}
 
 @media only screen and (max-width: 1050px) {
 .modal-content{
@@ -449,15 +453,28 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 				$variable = $e->hourlyRate;
 			}
 		}
+
 		?>
+
 					<td class="shift-edit cell-boxes count-<?php echo $p+1;?>"  style="width:13vw" 
 					 name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->shiftid?>"  
 					 name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleid ?>"
 					 name3="<?php echo $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?>" 
 					 stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime?>" etime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime?>" 
 					 name="<?php echo $rosterDetails->roster[$x]->roles[$counter]->empName?>"
-					 status="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"><div class="cell-back-1 <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"><?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)). "-" .timex( intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime));
-					  $weeklyTotal = $weeklyTotal + $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?> </div></td>
+					 status="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>" >
+					 <?php if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave != "Y"){?>
+					 <div class="cell-back-1 <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?> <?php if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y"){echo 'leave'; } ?>" >
+					 	<?php if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave != "Y"){ ?>
+					 	<?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)). "-" .timex( intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime));
+					  $weeklyTotal = $weeklyTotal + $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?>
+					<?php  }else{
+						echo 'On Leave';
+					} ?>
+
+					   </div>
+					<?php } ?>
+					</td>
 
 					  <?php } ?>
 					<td class=" " style="width:13vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
@@ -511,14 +528,19 @@ if($this->session->userdata('UserType')==STAFF){
 			}
 		}
 		?>
+
 					<td class="shift-edit cell-boxes count-<?php echo $p+1;?>"  style="width:13vw" 
 					 name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->shiftid?>"  
 					 name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleid ?>"
 					 name3="<?php echo $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?>" 
 					 stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime?>" etime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime?>" 
 					 name="<?php echo $rosterDetails->roster[$x]->roles[$counter]->empName?>"
-					 status="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"><div class="cell-back-1 <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"><?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)). "-" .timex( intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime));
-					  $weeklyTotal = $weeklyTotal + $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?> </div></td>
+					 status="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>">
+		<?php if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave != "Y"){ ?>
+					 <div class="cell-back-1 <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"><?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)). "-" .timex( intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime));
+					  $weeklyTotal = $weeklyTotal + $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?> </div>
+					<?php } ?>
+					</td>
 
 					  <?php } ?>
 					<td class=" " style="width:13vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
