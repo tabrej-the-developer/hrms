@@ -522,6 +522,25 @@ class Xero extends CI_Controller{
 		return $server_output;
 	}
 
+	function refreshXeroToken($access_token){
+
+		$postData = "grant_type=refresh_token";
+		$postData .= "&refresh_token=".$access_token;
+
+		$url = "https://identity.xero.com/connect/token";
+		$ch =  curl_init($url);
+       	curl_setopt($ch, CURLOPT_URL,$url);
+       	curl_setopt($ch, CURLOPT_POST,1);
+       	curl_setopt($ch, CURLOPT_POSTFIELDS,$postData);
+       	curl_setopt($ch, CURLOPT_HTTPHEADER,  array(
+           'Content-Type:application/x-www-form-urlencoded',
+           'Authorization:Basic '.base64_encode(XERO_CLIENT_ID.":".XERO_CLIENT_SECRET)
+       	));
+       	curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+		$server_output = curl_exec($ch);
+		return $server_output;
+	}
+
 	public function startOauth(){
 		$client_id = XERO_CLIENT_ID;
 		$redirect_uri = base_url()."xero/oauth";

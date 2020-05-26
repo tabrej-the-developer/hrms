@@ -17,7 +17,7 @@ class AttendanceModel extends CI_Model {
 
 	public function getVisitEntry($userid,$centerid,$startDate){
 		$this->load->database();
-		echo "SELECT * FROM visitis WHERE userid = '$userid' AND centerid = '$centerid' and signOutTime = null";
+		//echo "SELECT * FROM visitis WHERE userid = '$userid' AND centerid = '$centerid' and signOutTime = null";
 		$query = $this->db->query("SELECT * FROM visitis WHERE userid = '$userid' AND centerid = '$centerid' and signOutTime IS null");
 		return $query->row();
 	}

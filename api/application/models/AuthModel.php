@@ -84,4 +84,5 @@ class AuthModel extends CI_Model {
 		$query = $this->db->query("SELECT * FROM permissions WHERE userid = '$userid'");
 		return $query->row();
 	}
+
 }

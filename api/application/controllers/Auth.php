@@ -153,4 +153,25 @@ class Auth extends CI_Controller {
 	}
 
 
+	public function fetchMyPermissions($userid){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+				$this->load->model('authModel');
+				$mdata['permissions'] = $this->authModel->getPermissions($userid);
+				http_response_code(200);
+				echo json_encode($mdata);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
+
 }
