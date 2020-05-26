@@ -279,6 +279,19 @@ max-width:30vw;
     }
     .leave{
     	background:orange;
+    	padding:3px;
+    	display:flex;
+    	flex-direction: column;
+    	color:white;
+    	border-radius: 5px
+    }
+    .div-box{
+    	padding:3px;
+    	display:flex;
+    	flex-direction: column;
+    	background:#307bd3;
+    	color:white;
+    	border-radius: 5px
     }
 @media only screen and (max-width: 600px) {
 .modal-content{
@@ -397,9 +410,9 @@ function icon($str){
 				$count = count($timesheetDetails->timesheet[0]->rosteredEmployees);
 if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){
 	// $x is the total number of employees loop value;
-	$r = $timesheetDetails->timesheet[0]->rosteredEmployees;
+	$rosteredEmployees = $timesheetDetails->timesheet[0]->rosteredEmployees;
 	$x=0;
-				foreach($r as $p){
+				foreach($rosteredEmployees as $rosteredEmployee){
 				
 					?>
 				<?php 
@@ -445,12 +458,13 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					<?php 
 		for($p=0;$p<14;$p++){
 		    if($timesheetDetails->timesheet[$p]->rosteredEmployees != null){?>
-		<td style="min-width:13vw;padding:7px" class="shift-edit <?php if($timesheetDetails->timesheet[0]->rosteredEmployees[$p]->isOnLeave =="Y"){ echo "leave";}?>" name="<?php  echo $timesheetDetails->timesheet[0]->rosteredEmployees[$p]->empName ?>"  cal-x="<?php echo $x; ?>" cal-p="<?php echo $p; ?>" array-type="rosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$p]->empId?>" curr-date="<?php echo $timesheetDetails->timesheet[$p]->currentDate?>" timesheet-id="<?php echo $timesheetDetails->id;?>">
+		<td style="min-width:13vw;padding:7px" class="shift-edit " name="<?php  echo $timesheetDetails->timesheet[0]->rosteredEmployees[$p]->empName ?>"  cal-x="<?php echo $x; ?>" cal-p="<?php echo $p; ?>" array-type="rosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$p]->empId?>" curr-date="<?php echo $timesheetDetails->timesheet[$p]->currentDate?>" timesheet-id="<?php echo $timesheetDetails->id;?>">
 
-			<?php if($timesheetDetails->timesheet[0]->rosteredEmployees[$p]->isOnLeave =="N"){ ?>
-		<div style="background:pink;border-radius: 5px;padding:3px">
-		<div style="display:flex;flex-direction: column;background:#307bd3;color:white;border-radius: 5px">
+			
+		<div style="border-radius: 5px;padding:3px">
+		<div  class="<?php if($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{ echo 'div-box';}?>">
 					<?php 
+					 if($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->isOnLeave =="N"){ 
 						// $timesheetDetails->timesheet[$p]->employees[$x];
 			$times = $timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes;
 			$totalTime = 0;
@@ -514,11 +528,12 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					?>
 
 				<?php for($p=0;$p<1;$p++){?>
-	<td style="min-width:13vw;padding:7px" class="shift-edit <?php if($timesheetDetails->timesheet[0]->unrosteredEmployees[$p]->isOnLeave =="Y"){ echo "leave";}?>" name="<?php  echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName ?>"  cal-x="<?php echo $x; ?>"cal-p="<?php echo $p; ?>" array-type="unrosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empId?>"  timesheet-id="<?php echo $timesheetDetails->id;?>">
+	<td style="min-width:13vw;padding:7px" class="shift-edit" name="<?php  echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName ?>"  cal-x="<?php echo $x; ?>"cal-p="<?php echo $p; ?>" array-type="unrosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empId?>"  timesheet-id="<?php echo $timesheetDetails->id;?>">
 		<?php if($timesheetDetails->timesheet[0]->unrosteredEmployees[$p]->isOnLeave =="N"){ ?>
-					<div style="background:pink;border-radius: 5px;padding:3px">
-						<div style="display:flex;flex-direction: column;background:#307bd3;color:white;border-radius: 5px">
+					<div style="border-radius: 5px;padding:3px">
+						<div  class=" <?php if($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{echo 'div-box'};?>">
 				<?php 
+				if($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave != 'Y'){ 
 					// $timesheetDetails->timesheet[$p]->employees[$x];
 			$times = $timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes;
 			$totalTime = 0;
@@ -533,6 +548,9 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 				?>
 							<span>Total Hours : <?php echo  $totalTime/100 .".". $totalTime%100; ?></span>
 							<span>Total visits : <?php echo $totalVisits; ?></span>
+				<?php		}else{
+						echo " On Leave";
+					}?>
 						</div>
 						
 					</div>
