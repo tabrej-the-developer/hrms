@@ -343,7 +343,7 @@ border-bottom-right-radius: 20px;
 			if(id == null || id == ""){
 				id=1;
 			}
-		var url = "http://localhost/PN101/timesheet/timesheetDashboard?center="+id;
+		var url = "<?php echo base_url();?>timesheet/timesheetDashboard?center="+id;
 		$.ajax({
 			url:url,
 			type:'GET',
@@ -357,7 +357,7 @@ border-bottom-right-radius: 20px;
 
 		$(document).on('click','#tbody tr',function(){
 			var timesheetId = $(this).prop('id')
-	var url = "http://localhost/PN101/timesheet/gettimesheetDetails?timesheetId="+timesheetId;
+	var url = "<?php echo base_url();?>timesheet/gettimesheetDetails?timesheetId="+timesheetId;
 			window.location.href=url;
 		})
 })

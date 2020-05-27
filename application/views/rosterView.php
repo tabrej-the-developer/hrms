@@ -338,7 +338,7 @@ border-bottom-right-radius: 20px;
 			if(id == null || id == ""){
 				id=1;
 			}
-		var url = "http://localhost/PN101/roster/roster_dashboard?center="+id;
+		var url = "<?php echo base_url();?>roster/roster_dashboard?center="+id;
 		$.ajax({
 			url:url,
 			type:'GET',
@@ -352,7 +352,7 @@ border-bottom-right-radius: 20px;
 
 		$(document).on('click','#tbody tr',function(){
 			var rosterId = $(this).prop('id')
-			var url = "http://localhost/PN101/roster/getRosterDetails?rosterId="+rosterId;
+			var url = "<?php echo base_url();?>roster/getRosterDetails?rosterId="+rosterId;
 			window.location.href=url;
 		})
 })

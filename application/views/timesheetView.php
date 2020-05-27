@@ -531,7 +531,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 	<td style="min-width:13vw;padding:7px" class="shift-edit" name="<?php  echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName ?>"  cal-x="<?php echo $x; ?>"cal-p="<?php echo $p; ?>" array-type="unrosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empId?>"  timesheet-id="<?php echo $timesheetDetails->id;?>">
 		<?php if($timesheetDetails->timesheet[0]->unrosteredEmployees[$p]->isOnLeave =="N"){ ?>
 					<div style="border-radius: 5px;padding:3px">
-						<div  class=" <?php if($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{echo 'div-box'};?>">
+						<div  class=" <?php if($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{echo 'div-box';}?>">
 				<?php 
 				if($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave != 'Y'){ 
 					// $timesheetDetails->timesheet[$p]->employees[$x];
@@ -639,7 +639,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					var eId = $('#employee-id').val($('this').attr('emp-id'))
 					var sDate = $('#start-date').val($(this).attr('curr-date'))
 					var tId = $('#timesheet-id').val($(this).attr('timesheet-id'))
-	var url = "http://localhost/PN101/timesheet/getTimesheetDetailsModal?timesheetId="+"<?php echo $timesheetid;?>&x="+x+"&y="+y+"&aT="+arrayType ;
+	var url = "<?php echo base_url();?>timesheet/getTimesheetDetailsModal?timesheetId="+"<?php echo $timesheetid;?>&x="+x+"&y="+y+"&aT="+arrayType ;
 					 $.ajax({
 					 	url : url,
 					 	type : 'GET',

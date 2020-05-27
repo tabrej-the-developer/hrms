@@ -351,7 +351,7 @@ border-bottom-right-radius: 20px;
 			if(id == null || id == ""){
 				id=1;
 			}
-		var url = "http://localhost/PN101/payroll/payrollList?center="+id;
+		var url = "<?php echo base_url();?>payroll/payrollList?center="+id;
 		$.ajax({
 			url:url,
 			type:'GET',
@@ -365,7 +365,7 @@ border-bottom-right-radius: 20px;
 
 		$(document).on('click','#tbody tr',function(){
 			var timesheetId = $(this).prop('id')
-	var url = "http://localhost/PN101/payroll/payrollShifts?timesheetId="+timesheetId;
+	var url = "<?php echo base_url();?>payroll/payrollShifts?timesheetId="+timesheetId;
 			window.location.href=url;
 		})
 })
@@ -444,7 +444,7 @@ $("#timesheet-date").datepicker();
 	$(document).ready(function(){
 		$(document).on('click','.center-class',function(){
 			var id = $(this).prop('id');
-		var url = "http://localhost/PN101/timesheet/timesheet_dashboard/"+id;
+		var url = "<?php echo base_url();?>timesheet/timesheet_dashboard/"+id;
 		$.ajax({
 			url:url,
 			type:'GET',
