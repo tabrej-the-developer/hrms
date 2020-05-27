@@ -9,8 +9,11 @@
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 -->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.css">
 <style type="text/css">
 	*{
 font-family: 'Open Sans', sans-serif;
@@ -293,6 +296,11 @@ max-width:30vw;
     	color:white;
     	border-radius: 5px
     }
+    .shift-edit{
+    	min-width:10vw;
+    	padding:7px;
+    	font-size:0.75rem
+    }
 @media only screen and (max-width: 600px) {
 .modal-content{
 	min-width:100vw;
@@ -320,7 +328,7 @@ td{
 			$entitlements = json_decode($entitlements);
 	?>
 	<div class="containers" id="containers" style="overflow-x:scroll">
-		<div class="heading">Timesheets</div>
+		<div class="heading ">Timesheets</div>
 		<div class="timesheet-dates"><?php 
 
 //PHP functions //
@@ -391,18 +399,216 @@ function icon($str){
 		 echo date("M d",mktime(0,0,0,$v1[1],intval($v1[2]),(intval($v1[0]))))." to ". 
 		 date("M d , Y",mktime(0,0,0,$v2[1],intval($v2[2]),(intval($v2[0]))));
 		 ?> </div>
+	<div class="owl-carousel">
 		<div class="table-div" >
 			<table style="">
 				<tr>
 					<?php //$p =0; ?>
-					<th id="table-id-1" class="day">Employees</th>	<?php $x=0;?>
+					<th id="table-id-1" class="day">Employees</th>	<?php $x=0;$incrementer =0;?>
 					<?php foreach($timesheetDetails->timesheet as $timesheet) {
+						if($incrementer < 7){
 						//$p++;
 						$original = explode('-',$timesheet->currentDate);
 						$datts = $original[2].".".$original[1].".".$original[0]; 
 					 	 ?>
 					<th  class="day"><?php  echo date("D",strtotime($datts)); echo " ".dateToDay($timesheet->currentDate) ?></th>
+					<?php }
+					$incrementer++;
+					 } ?>
+
+				</tr>
+			
+				<?php 
+				$count = count($timesheetDetails->timesheet[0]->rosteredEmployees);
+if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){
+	// $x is the total number of employees loop value;
+	$rosteredEmployees = $timesheetDetails->timesheet[0]->rosteredEmployees;
+	$x=0;
+				foreach($rosteredEmployees as $rosteredEmployee){
+				
+					?>
+				<?php 
+				if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){
+				$value = count($timesheetDetails->timesheet);
+		}
+		else{
+			$value=1;
+		}
+		// This value should be changed to $value;
+		// Counter is the total number of days;
+				//for($counter=0;$counter<1;$counter++){ ?>
+		<tr  class="table-row">
+			<td   style="min-width:16vw" class=" cell-boxes left-most">
+				<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
+				<span class="row name-space" style="padding:0;margin:0;">
+					<span class="col-3 icon-parent"><span class=" icon"><?php echo icon($timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName)?></span></span>
+					<span class="col-6 name-role">
+					<span class="empname row"><?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName?></span>
+					<span class="title row"><?php //echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empTitle ?></span>
+					</span>
+
+					<?php
+					$variable = 0; 
+						$userLevel = $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->level;
+						foreach ($entitlements as $e) {
+							if($e[0]->id == $userLevel){
+								$variable = $e[0]->hourlyRate;
+							}
+
+						}
+
+					?>
+					<span class="hourly col-3"><?php echo  $variable; ?></span>
+						</span>
 					<?php } ?>
+					</td>
+				
+					<?php $weeklyTotal=0; 
+					// to be changed to $value
+					?>
+
+					<?php 
+		for($p=0;$p<7;$p++){
+		    if($timesheetDetails->timesheet[$p]->rosteredEmployees != null){?>
+		<td style="" class="shift-edit " name="<?php  echo $timesheetDetails->timesheet[0]->rosteredEmployees[$p]->empName ?>"  cal-x="<?php echo $x; ?>" cal-p="<?php echo $p; ?>" array-type="rosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$p]->empId?>" curr-date="<?php echo $timesheetDetails->timesheet[$p]->currentDate?>" timesheet-id="<?php echo $timesheetDetails->id;?>">
+
+			
+		<div style="border-radius: 5px;padding:3px">
+		<div  class="<?php if($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{ echo 'div-box';}?>">
+					<?php 
+					 if($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->isOnLeave =="N"){ 
+						// $timesheetDetails->timesheet[$p]->employees[$x];
+			$times = $timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes;
+			$totalTime = 0;
+			foreach($times as $time){
+				$totalTime = $totalTime + $time->endTime - $time->startTime;
+			}
+					$number = 0;
+	foreach($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes as $visits){$number++;}
+				$totalVisits = $number;
+			?>
+							<span>Total Hours : <?php echo  intVal($totalTime/100) .".". $totalTime%100; ?></span>
+							<span>Total visits : <?php echo $totalVisits; ?></span>
+						</div>
+					</div>
+				<?php }else{
+					echo "On Leave";
+				} ?>
+				</td>
+			 <?php }
+			 else{ ?>
+			 	<td style="min-width:10vw;padding:7px" class="shift-edit ">
+			 		<div style="border-radius: 5px;padding:3px">
+						<div  class="div-box">
+							<span>Total Hours : 0</span>
+							<span>Total visits : 0</span>
+						</div>
+					</div>
+			 	</td>
+		<?php	 }} ?>
+<!-- 			<td class=" " style="min-width:18vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
+ -->		</tr>
+
+			<?php $x = $x+1;
+		} 
+			$count = count($timesheetDetails->timesheet[0]->unrosteredEmployees);
+			for($x=0;$x<$count;$x++){ 
+				$userLevel = $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->level;
+						foreach ($entitlements as $e) {
+							if($e[0]->id == $userLevel){
+								$variable = $e[0]->hourlyRate;
+							}
+						}
+					?>
+				<?php 
+				if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){
+				$value = count($timesheetDetails->timesheet);
+		}
+		else{
+			$value=1;
+		}
+		// This value should be changed to $value;
+		// Counter is the total number of days;
+				//for($counter=0;$counter<1;$counter++){ ?>
+				<tr  class="table-row">
+					<td   style="min-width:18vw" class=" cell-boxes left-most">
+						<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
+
+						<span class="row" style="padding:0;margin:0;">
+							<span class="col-3 icon-parent"><span class=" icon"><?php echo icon($timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName)?></span></span>
+							<span class="col-6 name-role">
+								<span class="empname row"><?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName?></span>
+								
+							</span>
+							<span class="hourly col-3"><?php echo  $variable ?></span>
+						</span>
+					<?php } ?>
+					</td>
+				
+					<?php $weeklyTotal=0; 
+					// to be changed to $value
+					?>
+
+				<?php for($p=0;$p<1;$p++){?>
+	<td style="min-width:10vw;padding:7px" class="shift-edit" name="<?php  echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName ?>"  cal-x="<?php echo $x; ?>"cal-p="<?php echo $p; ?>" array-type="unrosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empId?>"  timesheet-id="<?php echo $timesheetDetails->id;?>">
+		<?php if($timesheetDetails->timesheet[0]->unrosteredEmployees[$p]->isOnLeave =="N"){ ?>
+					<div style="border-radius: 5px;padding:3px">
+						<div  class=" <?php if($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{echo 'div-box';}?>">
+				<?php 
+				if($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave != 'Y'){ 
+					// $timesheetDetails->timesheet[$p]->employees[$x];
+			$times = $timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes;
+			$totalTime = 0;
+			foreach($times as $time){
+				$totalTime = $totalTime + $time->endTime - $time->startTime;
+			}
+					$number = 0;
+					foreach($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes as $visits){$number++;}
+
+			$totalVisits = $number;
+			
+				?>
+							<span>Total Hours : <?php echo  $totalTime/100 .".". $totalTime%100; ?></span>
+							<span>Total visits : <?php echo $totalVisits; ?></span>
+				<?php		}else{
+						echo " On Leave";
+					}?>
+						</div>
+						
+					</div>
+				<?php } else{
+					echo "On leave";
+				}?>
+				</td>
+
+				  <?php } ?>
+
+				</tr>
+			<?php 
+			//$x++; 
+		} 
+
+
+			 } //}?>
+			</table>
+		</div>
+	
+
+	<div class="table-div" >
+			<table style="">
+				<tr>
+					<?php //$p =0; ?>
+					<th id="table-id-1" class="day">Employees</th>	<?php $x=0; $incrementer=0;?>
+					<?php foreach($timesheetDetails->timesheet as $timesheet) {
+						if($incrementer >= 7){
+						//$p++;
+						$original = explode('-',$timesheet->currentDate);
+						$datts = $original[2].".".$original[1].".".$original[0]; 
+					 	 ?>
+					<th  class="day"><?php  echo date("D",strtotime($datts)); echo " ".dateToDay($timesheet->currentDate) ?></th>
+					<?php } 
+					$incrementer++;
+				}?>
 
 				</tr>
 			
@@ -456,9 +662,9 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					?>
 
 					<?php 
-		for($p=0;$p<14;$p++){
+		for($p=7;$p<14;$p++){
 		    if($timesheetDetails->timesheet[$p]->rosteredEmployees != null){?>
-		<td style="min-width:13vw;padding:7px" class="shift-edit " name="<?php  echo $timesheetDetails->timesheet[0]->rosteredEmployees[$p]->empName ?>"  cal-x="<?php echo $x; ?>" cal-p="<?php echo $p; ?>" array-type="rosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$p]->empId?>" curr-date="<?php echo $timesheetDetails->timesheet[$p]->currentDate?>" timesheet-id="<?php echo $timesheetDetails->id;?>">
+		<td style="min-width:10vw;padding:7px" class="shift-edit " name="<?php  echo $timesheetDetails->timesheet[0]->rosteredEmployees[$p]->empName ?>"  cal-x="<?php echo $x; ?>" cal-p="<?php echo $p; ?>" array-type="rosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$p]->empId?>" curr-date="<?php echo $timesheetDetails->timesheet[$p]->currentDate?>" timesheet-id="<?php echo $timesheetDetails->id;?>">
 
 			
 		<div style="border-radius: 5px;padding:3px">
@@ -483,7 +689,17 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					echo "On Leave";
 				} ?>
 				</td>
-			 <?php }} ?>
+			 <?php }
+			 else{ ?>
+			 	<td style="min-width:10vw;padding:7px" class="shift-edit ">
+			 		<div style="border-radius: 5px;padding:3px">
+						<div  class="div-box">
+							<span>Total Hours : 0</span>
+							<span>Total visits : 0</span>
+						</div>
+					</div>
+			 	</td>
+		<?php	 }} ?>
 <!-- 			<td class=" " style="min-width:18vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
  -->		</tr>
 
@@ -528,10 +744,10 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					?>
 
 				<?php for($p=0;$p<1;$p++){?>
-	<td style="min-width:13vw;padding:7px" class="shift-edit" name="<?php  echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName ?>"  cal-x="<?php echo $x; ?>"cal-p="<?php echo $p; ?>" array-type="unrosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empId?>"  timesheet-id="<?php echo $timesheetDetails->id;?>">
+	<td style="min-width:10vw;padding:7px" class="shift-edit" name="<?php  echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName ?>"  cal-x="<?php echo $x; ?>"cal-p="<?php echo $p; ?>" array-type="unrosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empId?>"  timesheet-id="<?php echo $timesheetDetails->id;?>">
 		<?php if($timesheetDetails->timesheet[0]->unrosteredEmployees[$p]->isOnLeave =="N"){ ?>
 					<div style="border-radius: 5px;padding:3px">
-						<div  class=" <?php if($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{echo 'div-box'};?>">
+						<div  class=" <?php if($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{echo 'div-box';}?>">
 				<?php 
 				if($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave != 'Y'){ 
 					// $timesheetDetails->timesheet[$p]->employees[$x];
@@ -570,7 +786,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 			 } //}?>
 		</table>
 	</div>
-
+</div>
 
 		<div class="total-budget" >
 			<table>
@@ -791,7 +1007,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 				visits : values
 			},
 			success : function(response){
-
+				alert('done')
 			}
 		})
 		})
@@ -836,5 +1052,17 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 	<?php }
 ?>
 
+<script type="text/javascript">
+	  $('.owl-carousel').owlCarousel({
+        items:1,
+        loop:false,
+        center:true,
+        margin:10,
+        URLhashListener:true,
+        autoplayHoverPause:true,
+        startPosition: 'URLHash'
+    });
+
+</script>
 </body>
 </html>
