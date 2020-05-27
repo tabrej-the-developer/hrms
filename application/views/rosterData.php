@@ -399,7 +399,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					if($rosterDetails->roster[$x]->isRoomYN == "Y")
 						{?>
 				<tr >
-					<td colspan="7" class="area-name"><?php echo $rosterDetails->roster[$x]->areaName ?></td>
+					<td colspan="7" class="area-name" area-value="<?php echo $rosterDetails->roster[$x]->areaId ?> "><?php echo $rosterDetails->roster[$x]->areaName ?></td>
 				</tr>
 				<?php $occupancy = 0; ?>
 				<tr>
@@ -462,7 +462,8 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					 name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?>" 
 					 stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime?>" etime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime?>" 
 					 name="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->empName?>"
-					 status="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>" >
+					 status="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>" 
+					 area-id="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->areaId;?>">
 
 					 <div class="cell-back-1 <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? 'leave' : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status;  ?>" >
 					 	<?php if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave != "Y"){ ?>
@@ -610,6 +611,16 @@ if($this->session->userdata('UserType')==STAFF){
 			<div>
 				<label>End Time</label>
 				<input type="time" name="endTime" id="endTime" style="margin:30px">
+			</div>
+			<div>
+				<label>Area</label>
+				<select  name="areaId" id="areaId">
+					<option>--modify--</option>
+				</select>
+			</div>
+			<div>
+				<label>Role</label>
+				<select  name="role" id="role">				</select>
 			</div>
 	 		<input type="text" name="shiftId"  id="shiftId" style="display:none">
 	 		<input type="text" name="roleId" id="roleId" style="display:none">
@@ -845,7 +856,17 @@ if($this->session->userdata('UserType')==STAFF){
 			var shiftid = $('#shiftId').val();
 			var status = document.getElementById('status').value;
 			var userid = "<?php echo $userid ?>";
-			var roleid = $('#roleId').val();
+			if($('#role').val() != null || $('#role').val() !=""){
+				var roleid = $('#role').val()
+			}else{			
+						var roleid = $('#roleId').val();
+					}
+			if($('#role').val() != null || $('#role').val() !=""){
+				var areaid = $('#areaId').val()
+			}else{			
+						var areaid = $(this).attr('area-id');
+					}
+
 			url = window.location.origin+"/PN101/roster/updateShift";
 			console.log(startTime + " "+ endTime +" "+ shiftid+" "+roleid+" "+status +" "+userid)
 			$.ajax({
@@ -857,7 +878,8 @@ if($this->session->userdata('UserType')==STAFF){
 					shiftid:shiftid,
 					roleid:roleid,
 					status:status,
-					userid:userid
+					userid:userid,
+					areaid:areaid
 				},
 				success:function(response){
 											console.log(response)
@@ -974,6 +996,49 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 }
 
 </script>
-
+<script type="text/javascript">
+	$(document).ready(function(){
+		// var centerid = $('#center-id-select').text();
+		// var userid = $('#user-id-select').text();
+		var url = "http://localhost/PN101/settings/getOrgCharts/1";
+		$.ajax({
+			method:'GET',
+			url:url,
+			dataType: 'JSON',
+			success:function(response){
+				response['orgchart'].forEach(function(index){
+					var data = "<option value="+index.areaId+">"+index.areaName+"</option>";
+					$('#areaId').append(data)
+				})
+			}
+		})
+	})
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(document).on('change','#areaId',function(){
+			// var centerid = $('#center-id-select').text();
+		// var userid = $('#user-id-select').text();
+		var areaId = $(this).val();
+		var url = "http://localhost/PN101/settings/getOrgCharts/1";
+		$.ajax({
+			method:'GET',
+			url:url,
+			dataType: 'JSON',
+			success:function(response){
+					$('#role').empty()
+				response['orgchart'].forEach(function(index){
+					index['roles'].forEach(function(values){
+						if(areaId == values.areaid){
+							var data = "<option value="+values.roleid+">"+values.roleName+"</option>";
+								$('#role').append(data)
+										}
+									})
+					})
+				}
+			})
+		})
+	})
+</script>
 </body>
 </html>
