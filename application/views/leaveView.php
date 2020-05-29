@@ -89,7 +89,7 @@ nav > div a.nav-item.nav-link.active
   border: none;
     padding: 10px 15px;
     color:#212528;
-    background:none;
+    background:#307bd3;
     border-radius:0;
     font-size:15px;
     font-weight:500;
@@ -114,7 +114,7 @@ nav > div a.nav-item.nav-link:hover,
 nav > div a.nav-item.nav-link:focus
 {
   border: none;
-    background: none;
+    background: #307bd3 !important;
     color:#212528;
     border-radius:0;
     transition:background 0.20s linear;
@@ -308,10 +308,7 @@ img{ max-width:140%;}
                      
                   	<a class="nav-item nav-link <?php if($this->session->userdata('UserType') == STAFF || $this->session->userdata('UserType') == SUPERADMIN) echo 'active';?>" id="nav-contact-tab1" data-toggle="tab" href="#nav-contact1" role="tab" aria-controls="nav-contact" aria-selected="false">My Leave Requests</a>
 					  
-	              <?php
-	              	if($this->session->userdata('UserType') == SUPERADMIN){ ?>
-				  	<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Manage Leave Type</a>
-					<?php }?>
+
                      
                     </div>
                   </nav>
@@ -482,53 +479,7 @@ img{ max-width:140%;}
 			            </div>
 			      </div>
               
-          	<?php
-          		if($this->session->userdata('UserType') == SUPERADMIN){ ?>
-                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-						<div class="card-header">
-							<div class="row">
-	                    <div class="col-md-6"></div>
-						<div class="col-md-6 text-right">
-						<button type="button" name="add_button" id="add_button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal"   onclick="addLeaveType()"> <i class="fas fa-plus-circle"></i> Add Leave Type</button>
-						</div>
-		                </div>
-		                </div>
-	                  	<div class="card-body">
-		                    <table class="table table-striped table-borderless table-hover border-shadow" id="example2" style="width:100%;">
-		                        <thead>
-		                            <tr class="text-muted">
-		                            <th>S.No</th>
-		                            <th>Leave Name</th>
-		                            <th>Leave Slug</th>
-		                            <th>Is Paid</th>
-		                            <th>Action</th>
-		                            </tr>
-		                        </thead>
-		                        <tbody>
-		                        	<?php
-		                        	$leaveType = json_decode($leaveType);
-		                        	$var = 0;
-		                        	foreach ($leaveType->leaveTypes as $leaveType) { 
-		                        		$var++;
-		                    		?>
-									<tr>
-										<td><?php echo $var;?></td>
-										<td id="<?php echo $leaveType->id.'name';?>"><?php echo $leaveType->name;?></td>
-										<td id="<?php echo $leaveType->id.'slug';?>"><?php echo $leaveType->slug;?></td>
-										<td id="<?php echo $leaveType->id.'isPaidYN';?>"><?php echo $leaveType->isPaidYN;?></td>
-										<td>
-										<span onclick="editLeaveType('<?php echo $leaveType->id;?>')">
-										<a href="#" title="Edit"><i class="far fa-edit" style="color:green;font-size:18px;"></i></a>
-										</td>
-									</tr>
-									<?php }?>
-									
-		                        </tbody>
-		                    </table>
-	                	</div>
-                    </div>
-                <?php }?>
-                    
+
                   </div>
                 
                 </div>
@@ -623,64 +574,7 @@ img{ max-width:140%;}
                 </div>
             </div>
             <!-- modal end here -->       
-<!-- modal start here -->
-            <div class="modal fade" id="userModal">
-                <div class="modal-dialog">
-                    
-					<form id="leaveTypeForm" action="<?php echo base_url().'leave/addLeaveType';?>" method="POST">
-					<div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Leave Type</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                <div class="modal-body">
-					<div class="col-md-12 col-xl-12">	
-					<form id="leaveType" method="POST" action="<?php echo base_url().'leave/addLeave';?>">
-						<input type="hidden" name="leaveId" id="leaveId" value="">
 
-						<div class="form-group">
-						  <label>New Leave Type</label>
-						  <input type="text" class="form-control" id="leaveName" placeholder="Enter leave name" name="leaveName" >
-						  <span id="new_leave_type_error" class="text-danger"></span>
-						</div>
-
-						<span style="color: red" id="leaveNameError"></span>
-						 
-						<div class="form-group">
-							<label>Slug</label>
-							<input type="text" class="form-control" name="leaveSlug" id="leaveSlug" placeholder="slug"  >
-						  <span id="slug_error" class="text-danger"></span>
-						</div>
-						<span style="color: red" id="leaveSlugError"></span>
-						
-						<div class="form-group">
-						<label for="leaveIsPaid">IsPaid</label><br>
-						<div class="outerDivFull" >
-						<div class="switchToggle">
-						<!--dont rename id="switch"-->
-							<input type="checkbox" id="switch" name="leaveIsPaid">
-							<label for="switch">Toggle</label>
-						</div>
-						</div>
-						</div>
-						<div class="form-group text-center" id="updateLeaveType" style="display: none;">
-						<button class="btn btn-secondary rounded-0" type="button" onclick="addLeave()">Update</button>
-						<button class="btn btn-danger rounded-0" type="button" onclick="deleteLeave()">Delete</button> 
-						</div>
-						<div class="form-group text-center" id="addLeaveType" style="display: block;">
-						<button class="btn btn-secondary rounded-0" type="button" onclick="addLeave()">Add</button>
-						</div>
-				  </form>	
-					</div>
-					</div>
-					
-                    </div>
-					</form>
-                </div>
-            </div>
-            <!-- modal end here -->
  <div class="modal-logout">
       <div class="modal-content-logout">
           <h3>You have been logged out!!</h3>

@@ -32,7 +32,6 @@ font-family: 'Open Sans', sans-serif;
 		}
 		.table-div{
 			padding: 0 20px 0 20px;
-
 		}
 		.center-list{
 			display:none;
@@ -63,6 +62,9 @@ font-family: 'Open Sans', sans-serif;
 			border:1px solid rgba(0,0,0,0.7);
 			padding:8px;
 			border-radius: 20px
+		}
+		.filter-icon span{
+			padding: 0 5px;
 		}
 		.create{
 			border:3px solid rgb(242, 242, 242);
@@ -97,7 +99,7 @@ font-family: 'Open Sans', sans-serif;
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 80%;
+  width: 50%;
 }
 
 /* The Close Button */
@@ -206,6 +208,32 @@ border-bottom-right-radius: 20px;
         transform: scale(1.0);
         transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
     }
+    @media only screen and (max-width :800px){
+    	.modal-content {
+		  background-color: #fefefe;
+		  margin: auto;
+		  padding: 20px;
+		  border: 1px solid #888;
+		  width: 80%;
+		}
+		.table-div{
+			padding: 0;
+		}
+		.sort-by{
+			margin-right:0px !important;
+			padding:0 !important;
+		}
+		#roster-heading{
+			font-size: 1.5rem !important;
+			margin: 0 !important;
+			display: flex;
+			align-items: center
+		}
+		.table  td,.table th{
+			padding: 0.75rem;
+			border: none;
+		}
+    }
 </style>
 </head>
 <body>
@@ -216,17 +244,17 @@ border-bottom-right-radius: 20px;
 		}
 		function dateToDayAndYear($date){
 			$date = explode("-",$date);
-			return date("M d,Y",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
+			return date("M d, Y",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
 		}
 	?>
 <div class="containers">
 	<div class="d-flex heading-bar">
-		<span class="m-3" style="font-size: 30px;font-weight: bold">Rosters</span>
+		<span class="m-3" id="roster-heading" style="font-size: 30px;font-weight: bold">Rosters</span>
 		<span class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
 			<?php if($this->session->userdata('UserType') == SUPERADMIN){?> 
-			<div class="filter-icon row">
-				<span class="col">Sort&nbsp;by</span>
-				<span class="col"><img src="../assets/images/filter-icon.png" height="20px"></span>
+			<div class="filter-icon d-flex">
+				<span class="">Sort&nbsp;by</span>
+				<span class=""><img src="../assets/images/filter-icon.png" height="20px"></span>
 			</div>
 		
 				<div class="center-list " id="center-list">
@@ -240,7 +268,10 @@ border-bottom-right-radius: 20px;
 		</span>
 		<?php } ?>
 		<?php if($this->session->userdata('UserType') == SUPERADMIN || $this->session->userdata('UserType') == ADMIN ){?>
-		<span class="btn ml-auto d-flex align-self-center create"><a href="javascript:void(0)" id="create-new-roster"><span style="margin:0 10px 0 10px"><img src="../assets/images/plus.png" ></span>Create&nbsp;new&nbsp;roster</a></span>
+		<span class="btn ml-auto d-flex align-self-center create"><a href="javascript:void(0)" id="create-new-roster" class="d-flex">
+			<span style="margin:0 10px 0 10px">
+				<img src="../assets/images/plus.png" >
+			</span>Create&nbsp;new&nbsp;roster</a></span>
 		<?php } ?>
 	</div>
 	<div class="table-div">

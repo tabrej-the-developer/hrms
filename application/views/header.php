@@ -12,7 +12,7 @@
 
   <!-- icons css-->
  
-  
+  <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <!--datepicker css -->
 <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
@@ -50,19 +50,39 @@ font-family: 'Open Sans', sans-serif;
 .bg-info{
   background:#307bd3 !important;
 }
-.nav-item a{
-
-  color:white !important;
-/*  font-family: 'Roboto', sans-serif;*/
+.nav-item-header a{
+  font-weight: bolder;
+  color:#a4a4a4 !important;
   font-size: 0.75rem;
 }
 .navbar-nav{
-    background:#307bd3 !important;
+    background:white !important;
 }
-.nav-item{
-    background:#307bd3 !important;
+.nav-item-header{
+    background:white !important;
   padding: 0 0 0 20px;
 }
+.nav-item-header:hover{
+  background:#ecf5fd !important;
+  padding: 0 0 0 20px;
+}
+.nav-item-header:hover::before{
+  display: flex;
+  margin-left:-15px;
+  align-items: center;
+  content: "";
+  position: absolute;
+  height: 40px;
+  padding:5px;
+  border-left:3px solid #307bd3;
+  margin-top:5px;
+}
+.nav-item-header a:hover{
+  font-weight: bolder;
+  color:#307bd3 !important;
+  font-size: 0.75rem;
+}
+
 .navbar-nav li a svg{font-size: 20px;float: left;margin: 0 12px 0 5px;}
 .side-nav li {}
 .navbar-dark .navbar-nav .nav-link {
@@ -84,52 +104,111 @@ font-family: 'Open Sans', sans-serif;
       </button>
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav animate side-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="#" title="Dashboard">Dashboard </a>
+          <li class="nav-item-header">
+            <a class="nav-link d-flex justify-content-around" href="#" title="Dashboard">
+              <span>Dashboard </span>
+              <i class="ml-auto" ><img src="../assets/images/dashboard.png" style="max-height: 1.3rem"></i>
+            </a>
           </li>
-      <li class="nav-item">
-            <a class="nav-link" href="<?php echo site_url('roster/roster_dashboard') ?>" title="roster"> Roster </a>
+      <li class="nav-item-header">
+            <a class="nav-link d-flex justify-content-around" href="<?php echo site_url('roster/roster_dashboard') ?>" title="roster">
+              <span>Roster </span>
+              <i class="ml-auto" >
+                <img src="../assets/images/roster.png" style="max-height: 1.3rem">
+              </i>
+            </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="<?php echo site_url('timesheet/timesheetDashboard'); ?>" title="Leaves"> Timesheet </a>
+          <li class="nav-item-header">
+            <a class="nav-link d-flex justify-content-around" href="<?php echo site_url('timesheet/timesheetDashboard'); ?>" title="Leaves">
+             
+             <span>Timesheet </span>
+              <i class="ml-auto" >
+                <img src="../assets/images/timesheet.png" style="max-height: 1.3rem">
+              </i>
+              </a>
           </li>
-      <li class="nav-item">
-            <a class="nav-link" href="<?php echo site_url('payroll/payrollList'); ?>" title="payroll"> Payroll </a>
+      <li class="nav-item-header">
+            <a class="nav-link d-flex justify-content-around" href="<?php echo site_url('payroll/payrollList'); ?>" title="payroll"> 
+              <span>Payroll </span>
+              <i class="ml-auto" >
+                <img src="../assets/images/payroll.png" style="max-height: 1.3rem">
+              </i>
+             </a>
           </li>
-		      <li class="nav-item">
-            <a class="nav-link" href="<?php echo site_url('leave') ?>" title="Leaves"> Leaves </a>
+		      <li class="nav-item-header">
+            <a class="nav-link d-flex justify-content-around" href="<?php echo site_url('leave') ?>" title="Leaves"> 
+              <span>Leaves </span>
+              <i class="ml-auto" >
+                <img src="../assets/images/leaves.png" style="max-height: 1.3rem">
+              </i>
+             </a>
           </li>
 		  
-          <li class="nav-item">
-            <a class="nav-link" href="#" title="Cart">Jobs </a>
+          <li class="nav-item-header ">
+            <a class="nav-link d-flex justify-content-around" href="#" title="Cart">
+              <span>Jobs </span>
+              <i class="ml-auto" >
+                <img src="../assets/images/jobs.png" style="max-height: 1.3rem">
+              </i>
+            </a>
           </li>
 
-          <li class="nav-item">
-            <a class="nav-link" href="<?php echo site_url('messenger') ?>" title="Cart"> Messenger </a>
+          <li class="nav-item-header">
+            <a class="nav-link d-flex justify-content-around" href="<?php echo site_url('messenger') ?>" title="Cart"> 
+              <span>Messenger </span>
+              <i class="ml-auto" >
+                <img src="../assets/images/messenger.png" style="max-height: 1.3rem">
+              </i>
+            </a>
           </li>
-      <li class="nav-item">
-            <a class="nav-link" href="<?php echo site_url('notice') ?>" title="Notices">Notices </a>
+      <li class="nav-item-header">
+            <a class="nav-link d-flex justify-content-around" href="<?php echo site_url('notice') ?>" title="Notices">
+              <span>Notices </span>
+              <i class="ml-auto" >
+                <img src="../assets/images/notices.png" style="max-height: 1.3rem">
+              </i>
+            </a>
           </li>
 		  
-      <li class="nav-item">
-            <a class="nav-link" href="#" title="Settings"> Reports </a>
+      <li class="nav-item-header">
+            <a class="nav-link d-flex justify-content-around" href="#" title="Settings">
+             
+           <span>Reports </span>
+              <i class="ml-auto" >
+                <img src="../assets/images/reports.png" style="max-height: 1.3rem">
+              </i>
+            </a>
           </li>
 		  
-		  <li class="nav-item">
-            <a class="nav-link" href="<?php echo site_url('settings') ?>" title="Settings"> Settings </a>
+		  <li class="nav-item-header">
+            <a class="nav-link d-flex justify-content-around" href="<?php echo site_url('settings') ?>" title="Settings">
+             
+             <span>Settings </span>
+              <i class="ml-auto" >
+                <img src="../assets/images/settings.png" style="max-height: 1.3rem">
+              </i>
+             </a>
           </li>
 
-      <li class="nav-item">
-            <a class="nav-link" href="<?php echo site_url('mom/') ?>" title="roster"> MOM </a>
+      <li class="nav-item-header">
+            <a class="nav-link d-flex justify-content-around" href="<?php echo site_url('mom/') ?>" title="roster"> 
+             
+            <span>MOM </span>
+              <i class="ml-auto" >
+                <img src="../assets/images/mom.png" style="max-height: 1.3rem">
+              </i>
+          </a>
           </li>
 
         </ul>
         <ul class="navbar-nav ml-md-auto d-md-flex">
-          <li class="nav-item">
+          <li class="nav-item-header">
             <a class="nav-link" href="javascript:void(0);" style="color:#f5f5f5;"><i class="fas fa-user-circle" style="color:#f5f5f5;"></i> <?php echo strtoupper($this->session->userdata('email')) ?></a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="<?php echo base_url();?>welcome/logout" style="color:#f5f5f5;"><i class="fas fa-sign-out-alt" style="color:#f5f5f5;"></i>Logout</a>
+          <li class="nav-item-header" style="background: #307bd3 !important">
+            <a class="nav-link" href="<?php echo base_url();?>welcome/logout" style="color:white !important;">
+              <i class="" style="color:#f5f5f5;">
+                <img src="../assets/images/logout.png" style="height:1.3rem"></i>Logout</a>
           </li>
         </ul>
       </div>

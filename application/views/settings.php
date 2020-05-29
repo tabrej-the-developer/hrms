@@ -158,6 +158,12 @@ font-family: 'Open Sans', sans-serif;
 					<a href="<?php echo base_url()?>settings/permissionSettings">Permission settings</a>
 				</div>
 			</div>
+			<div class="tile-box">
+				<div>Leave settings</div>
+				<div>
+					<a href="<?php echo base_url()?>settings/leaveSettings">Leave settings</a>
+				</div>
+			</div>
 		</div>
 	</div>
 

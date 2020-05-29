@@ -288,7 +288,7 @@ max-width:30vw;
 		$entitlement = json_decode($entitlements);
 	?>
 	<div class="containers" id="containers">
-		<div class="heading">Rosters</div>
+		<div class="heading" id="center-id" c_id="<?php echo $rosterDetails->centerid; ?>">Rosters</div>
 		<div class="roster-dates"><?php 
 
 //PHP functions //
@@ -621,6 +621,10 @@ if($this->session->userdata('UserType')==STAFF){
 			<div>
 				<label>Role</label>
 				<select  name="role" id="role">				</select>
+			</div>
+			<div>
+				<label>Message</label>
+				<input name="message" id="message">
 			</div>
 	 		<input type="text" name="shiftId"  id="shiftId" style="display:none">
 	 		<input type="text" name="roleId" id="roleId" style="display:none">
@@ -998,9 +1002,9 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 </script>
 <script type="text/javascript">
 	$(document).ready(function(){
-		// var centerid = $('#center-id-select').text();
+		var centerid = $('#center-id').attr('c_id');
 		// var userid = $('#user-id-select').text();
-		var url = "http://localhost/PN101/settings/getOrgCharts/1";
+		var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
 		$.ajax({
 			method:'GET',
 			url:url,
@@ -1017,10 +1021,10 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 <script type="text/javascript">
 	$(document).ready(function(){
 		$(document).on('change','#areaId',function(){
-			// var centerid = $('#center-id-select').text();
+		 var centerid = $('#center-id').attr('c_id');
 		// var userid = $('#user-id-select').text();
 		var areaId = $(this).val();
-		var url = "http://localhost/PN101/settings/getOrgCharts/1";
+		var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
 		$.ajax({
 			method:'GET',
 			url:url,
