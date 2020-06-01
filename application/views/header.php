@@ -177,14 +177,14 @@ font-family: 'Open Sans', sans-serif;
           <li class="nav-item-header">
             <a class="nav-link d-flex justify-content-around" href="#" title="Dashboard">
               <span>Dashboard </span>
-              <i class="ml-auto" ><img src="https://localhost/PN101/assets/images/dashboard.png" style="max-height: 1.3rem"></i>
+              <i class="ml-auto" ><img src="<?php echo base_url();?>assets/images/dashboard.png" style="max-height: 1.3rem"></i>
             </a>
           </li>
       <li class="nav-item-header">
             <a class="nav-link d-flex justify-content-around" href="<?php echo site_url('roster/roster_dashboard') ?>" title="roster">
               <span>Roster </span>
               <i class="ml-auto" >
-                <img src="https://localhost/PN101/assets/images/roster.png" style="max-height: 1.3rem">
+                <img src="<?php echo base_url();?>assets/images/roster.png" style="max-height: 1.3rem">
               </i>
             </a>
           </li>
@@ -193,7 +193,7 @@ font-family: 'Open Sans', sans-serif;
              
              <span>Timesheet </span>
               <i class="ml-auto" >
-                <img src="https://localhost/PN101/assets/images/timesheet.png" style="max-height: 1.3rem">
+                <img src="<?php echo base_url();?>assets/images/timesheet.png" style="max-height: 1.3rem">
               </i>
               </a>
           </li>
@@ -201,7 +201,7 @@ font-family: 'Open Sans', sans-serif;
             <a class="nav-link d-flex justify-content-around" href="<?php echo site_url('payroll/payrollList'); ?>" title="payroll"> 
               <span>Payroll </span>
               <i class="ml-auto" >
-                <img src="https://localhost/PN101/assets/images/payroll.png" style="max-height: 1.3rem">
+                <img src="<?php echo base_url();?>assets/images/payroll.png" style="max-height: 1.3rem">
               </i>
              </a>
           </li>
@@ -209,7 +209,7 @@ font-family: 'Open Sans', sans-serif;
             <a class="nav-link d-flex justify-content-around" href="<?php echo site_url('leave') ?>" title="Leaves"> 
               <span>Leaves </span>
               <i class="ml-auto" >
-                <img src="https://localhost/PN101/assets/images/leaves.png" style="max-height: 1.3rem">
+                <img src="<?php echo base_url();?>assets/images/leaves.png" style="max-height: 1.3rem">
               </i>
              </a>
           </li>
@@ -218,7 +218,7 @@ font-family: 'Open Sans', sans-serif;
             <a class="nav-link d-flex justify-content-around" href="#" title="Cart">
               <span>Jobs </span>
               <i class="ml-auto" >
-                <img src="https://localhost/PN101/assets/images/jobs.png" style="max-height: 1.3rem">
+                <img src="<?php echo base_url();?>assets/images/jobs.png" style="max-height: 1.3rem">
               </i>
             </a>
           </li>
@@ -227,7 +227,7 @@ font-family: 'Open Sans', sans-serif;
             <a class="nav-link d-flex justify-content-around" href="<?php echo site_url('messenger') ?>" title="Cart"> 
               <span>Messenger </span>
               <i class="ml-auto" >
-                <img src="https://localhost/PN101/assets/images/messenger.png" style="max-height: 1.3rem">
+                <img src="<?php echo base_url();?>assets/images/messenger.png" style="max-height: 1.3rem">
               </i>
             </a>
           </li>
@@ -235,7 +235,7 @@ font-family: 'Open Sans', sans-serif;
             <a class="nav-link d-flex justify-content-around" href="<?php echo site_url('notice') ?>" title="Notices">
               <span>Notices </span>
               <i class="ml-auto" >
-                <img src="https://localhost/PN101/assets/images/notices.png" style="max-height: 1.3rem">
+                <img src="<?php echo base_url();?>assets/images/notices.png" style="max-height: 1.3rem">
               </i>
             </a>
           </li>
@@ -245,7 +245,7 @@ font-family: 'Open Sans', sans-serif;
              
            <span>Reports </span>
               <i class="ml-auto" >
-                <img src="https://localhost/PN101/assets/images/reports.png" style="max-height: 1.3rem">
+                <img src="<?php echo base_url();?>assets/images/reports.png" style="max-height: 1.3rem">
               </i>
             </a>
           </li>
@@ -255,7 +255,7 @@ font-family: 'Open Sans', sans-serif;
              
              <span>Settings </span>
               <i class="ml-auto" >
-                <img src="https://localhost/PN101/assets/images/settings.png" style="max-height: 1.3rem">
+                <img src="<?php echo base_url();?>assets/images/settings.png" style="max-height: 1.3rem">
               </i>
              </a>
           </li>
@@ -265,7 +265,7 @@ font-family: 'Open Sans', sans-serif;
              
             <span>MOM </span>
               <i class="ml-auto" >
-                <img src="https://localhost/PN101/assets/images/mom.png" style="max-height: 1.3rem">
+                <img src="<?php echo base_url();?>assets/images/mom.png" style="max-height: 1.3rem">
               </i>
           </a>
           </li>
@@ -278,7 +278,7 @@ font-family: 'Open Sans', sans-serif;
           <li class="nav-item-header" style="background: #307bd3 !important">
             <a class="nav-link" href="<?php echo base_url();?>welcome/logout" style="color:white !important;">
               <i class="" style="color:#f5f5f5;">
-                <img src="https://localhost/PN101/assets/images/logout.png" class="pr-2" style="height:1.3rem"></i>Logout</a>
+                <img src="<?php echo base_url();?>assets/images/logout.png" class="pr-2" style="height:1.3rem"></i>Logout</a>
           </li>
         </ul>
       </div>
