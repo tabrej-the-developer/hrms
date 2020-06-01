@@ -217,12 +217,16 @@ class Timesheet extends CI_Controller{
 							if($leaveApp != null){
 								$var['isOnLeave'] = 'Y';
 								$var['leaveDetails'] = [];
+								$leaveDetails = $this->leaveModel->getLeaveType($leaveApp->leaveId);
 								$var['leaveDetails']['leaveId'] = $leaveApp->leaveId;
 								$var['leaveDetails']['leaveStartDate'] = $leaveApp->startDate;
 								$var['leaveDetails']['leaveEndDate'] = $leaveApp->endDate;
 								$var['leaveDetails']['leaveNotes'] = $leaveApp->notes;
 								$var['leaveDetails']['leaveNoOfHours'] = $leaveApp->noOfHours;
 								$var['leaveDetails']['leaveStatus'] = $leaveApp->status;
+								$var['leaveDetails']['leaveName'] = $leaveDetails->name;
+								$var['leaveDetails']['leavePaidYN'] = $leaveDetails->isPaidYN;
+								$var['leaveDetails']['leaveShowOnPaySlip'] = $leaveDetails->showOnPaySlipYN;
 							}
 							else{
 								$var['isOnLeave'] = 'N';
