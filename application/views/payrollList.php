@@ -36,28 +36,7 @@
 		table{
 			box-shadow: 0 0 20px 2px #eeeff2;
 		}
-		.center-list{
-			display:none;
-			box-shadow:0 0 1px 1px rgb(242, 242, 242) ;
-		}
-		.center-list a{
-			display:block;
-			position: relative;
-			text-decoration: none;
-			color:black;			
-		}
-		.sort-by:hover .center-list{
-			display:block;
-			background:white;
-			position:absolute;
-			margin-top:5px;
-			margin-left:-15px;
-			padding:10px;
-		}
-		.sort-by:hover::after{
-			position:absolute;
-						
-		}
+		
 
 		.filter-icon{
 			border:1px solid rgba(0,0,0,0.7);
@@ -238,22 +217,24 @@ border-bottom-right-radius: 20px;
 	?>
 <div class="containers">
 	<div class="d-flex">
-		<span class="m-3" style="font-size: 30px;font-weight: bold">Payrolls</span>
+		<span class="m-3" style="font-size: 2rem;font-weight: bold">Payrolls</span>
 		<span class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
 			<?php if($this->session->userdata('UserType') == SUPERADMIN){?> 
-			<div class="filter-icon row">
+<!-- 			<div class="filter-icon row">
 				<span class="col">Sort&nbsp;by</span>
 				<span class="col"><img src="../assets/images/filter-icon.png" height="20px"></span>
-			</div>
+			</div> -->
 		
-				<div class="center-list " id="center-list">
+				<select class="center-list " id="center-list">
 						<?php $centers = json_decode($centers);
 						
 						for($i=0;$i<count($centers->centers);$i++){
 					?>
-					<a href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>"><?php echo $centers->centers[$i]->name?></a>
+					<option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid ?>">
+						<?php echo $centers->centers[$i]->name?>
+					</option>
 				<?php } ?>
-				</div>	
+				</select>	
 		</span>
 		<?php } ?>
 		<?php if($this->session->userdata('UserType') == SUPERADMIN || $this->session->userdata('UserType') == ADMIN ){?>
@@ -346,18 +327,18 @@ border-bottom-right-radius: 20px;
 <script type="text/javascript">
 	$(document).ready(function(){
 		<?php if($this->session->userdata('UserType')==SUPERADMIN){?>
-		$(document).on('click','.center-class',function(){
-			var id = $(this).prop('id');
-			if(id == null || id == ""){
-				id=1;
+		$(document).on('change','.center-list',function(){
+			var val = $(this).val();
+			if(val == null || val == ""){
+				val=1;
 			}
-		var url = "<?php echo base_url();?>payroll/payrollList?center="+id;
+		var url = "<?php echo base_url();?>payroll/payrollList?center="+val;
 		$.ajax({
 			url:url,
 			type:'GET',
 			success:function(response){
 				$('#tbody').html($(response).find('#tbody').html());
-				document.getElementById('center-id').value = parseInt(id);
+				document.getElementById('center-id').value = parseInt(val);
 			}
 		});
 	});

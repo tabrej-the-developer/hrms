@@ -1,4 +1,50 @@
-<!doctype html>
+<?php
+if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') 
+    $url_page = "https"; 
+else
+    $url_page = "http"; 
+$url_page .= "://"; 
+$url_page .= $_SERVER['HTTP_HOST']; 
+$url_page .= $_SERVER['REQUEST_URI'];
+$url_page_array = explode("/",$url_page);
+$nth_child = 0;
+  switch($url_page_array[array_search("PN101",$url_page_array) + 1]){
+    case strtolower("Dashboard"):
+      $nth_child = 1;
+      break;
+    case strtolower("Roster"):
+      $nth_child = 2;
+      break;
+    case strtolower("Timesheet"):
+      $nth_child = 3;
+      break;
+    case strtolower("Payroll"):
+      $nth_child = 4;
+      break;
+    case strtolower("Leaves"):
+      $nth_child = 5;
+      break;
+    case strtolower("Jobs"):
+      $nth_child = 6;
+      break;
+    case strtolower("Messenger"):
+      $nth_child = 7;
+      break;
+    case strtolower("Notice"):
+      $nth_child = 8;
+      break;
+    case strtolower("Reports"):
+      $nth_child = 9;
+      break;
+    case strtolower("Settings"):
+      $nth_child = 10;
+      break;
+    case strtolower("MOM"):
+      $nth_child = 11;
+      break;
+  }
+?>
+<!DOCTYPE html>
 <html>
 <head>
 
@@ -83,6 +129,30 @@ font-family: 'Open Sans', sans-serif;
   font-size: 0.75rem;
 }
 
+
+
+.nav-item-header:nth-child(<?php echo $nth_child ;?>){
+  background:#ecf5fd !important;
+  padding: 0 0 0 20px;
+}
+.nav-item-header:nth-child(<?php echo $nth_child ;?>)::before{
+  display: flex;
+  margin-left:-15px;
+  align-items: center;
+  content: "";
+  position: absolute;
+  height: 40px;
+  padding:5px;
+  border-left:3px solid #307bd3;
+  margin-top:5px;
+}
+.nav-item-header a:nth-child(<?php echo $nth_child ;?>){
+  font-weight: bolder;
+  color:#307bd3 !important;
+  font-size: 0.75rem;
+}
+
+
 .navbar-nav li a svg{font-size: 20px;float: left;margin: 0 12px 0 5px;}
 .side-nav li {}
 .navbar-dark .navbar-nav .nav-link {
@@ -107,14 +177,14 @@ font-family: 'Open Sans', sans-serif;
           <li class="nav-item-header">
             <a class="nav-link d-flex justify-content-around" href="#" title="Dashboard">
               <span>Dashboard </span>
-              <i class="ml-auto" ><img src="../assets/images/dashboard.png" style="max-height: 1.3rem"></i>
+              <i class="ml-auto" ><img src="https://localhost/PN101/assets/images/dashboard.png" style="max-height: 1.3rem"></i>
             </a>
           </li>
       <li class="nav-item-header">
             <a class="nav-link d-flex justify-content-around" href="<?php echo site_url('roster/roster_dashboard') ?>" title="roster">
               <span>Roster </span>
               <i class="ml-auto" >
-                <img src="../assets/images/roster.png" style="max-height: 1.3rem">
+                <img src="https://localhost/PN101/assets/images/roster.png" style="max-height: 1.3rem">
               </i>
             </a>
           </li>
@@ -123,7 +193,7 @@ font-family: 'Open Sans', sans-serif;
              
              <span>Timesheet </span>
               <i class="ml-auto" >
-                <img src="../assets/images/timesheet.png" style="max-height: 1.3rem">
+                <img src="https://localhost/PN101/assets/images/timesheet.png" style="max-height: 1.3rem">
               </i>
               </a>
           </li>
@@ -131,7 +201,7 @@ font-family: 'Open Sans', sans-serif;
             <a class="nav-link d-flex justify-content-around" href="<?php echo site_url('payroll/payrollList'); ?>" title="payroll"> 
               <span>Payroll </span>
               <i class="ml-auto" >
-                <img src="../assets/images/payroll.png" style="max-height: 1.3rem">
+                <img src="https://localhost/PN101/assets/images/payroll.png" style="max-height: 1.3rem">
               </i>
              </a>
           </li>
@@ -139,7 +209,7 @@ font-family: 'Open Sans', sans-serif;
             <a class="nav-link d-flex justify-content-around" href="<?php echo site_url('leave') ?>" title="Leaves"> 
               <span>Leaves </span>
               <i class="ml-auto" >
-                <img src="../assets/images/leaves.png" style="max-height: 1.3rem">
+                <img src="https://localhost/PN101/assets/images/leaves.png" style="max-height: 1.3rem">
               </i>
              </a>
           </li>
@@ -148,7 +218,7 @@ font-family: 'Open Sans', sans-serif;
             <a class="nav-link d-flex justify-content-around" href="#" title="Cart">
               <span>Jobs </span>
               <i class="ml-auto" >
-                <img src="../assets/images/jobs.png" style="max-height: 1.3rem">
+                <img src="https://localhost/PN101/assets/images/jobs.png" style="max-height: 1.3rem">
               </i>
             </a>
           </li>
@@ -157,7 +227,7 @@ font-family: 'Open Sans', sans-serif;
             <a class="nav-link d-flex justify-content-around" href="<?php echo site_url('messenger') ?>" title="Cart"> 
               <span>Messenger </span>
               <i class="ml-auto" >
-                <img src="../assets/images/messenger.png" style="max-height: 1.3rem">
+                <img src="https://localhost/PN101/assets/images/messenger.png" style="max-height: 1.3rem">
               </i>
             </a>
           </li>
@@ -165,7 +235,7 @@ font-family: 'Open Sans', sans-serif;
             <a class="nav-link d-flex justify-content-around" href="<?php echo site_url('notice') ?>" title="Notices">
               <span>Notices </span>
               <i class="ml-auto" >
-                <img src="../assets/images/notices.png" style="max-height: 1.3rem">
+                <img src="https://localhost/PN101/assets/images/notices.png" style="max-height: 1.3rem">
               </i>
             </a>
           </li>
@@ -175,7 +245,7 @@ font-family: 'Open Sans', sans-serif;
              
            <span>Reports </span>
               <i class="ml-auto" >
-                <img src="../assets/images/reports.png" style="max-height: 1.3rem">
+                <img src="https://localhost/PN101/assets/images/reports.png" style="max-height: 1.3rem">
               </i>
             </a>
           </li>
@@ -185,7 +255,7 @@ font-family: 'Open Sans', sans-serif;
              
              <span>Settings </span>
               <i class="ml-auto" >
-                <img src="../assets/images/settings.png" style="max-height: 1.3rem">
+                <img src="https://localhost/PN101/assets/images/settings.png" style="max-height: 1.3rem">
               </i>
              </a>
           </li>
@@ -195,20 +265,20 @@ font-family: 'Open Sans', sans-serif;
              
             <span>MOM </span>
               <i class="ml-auto" >
-                <img src="../assets/images/mom.png" style="max-height: 1.3rem">
+                <img src="https://localhost/PN101/assets/images/mom.png" style="max-height: 1.3rem">
               </i>
           </a>
           </li>
 
         </ul>
         <ul class="navbar-nav ml-md-auto d-md-flex">
-          <li class="nav-item-header">
+<!--           <li class="nav-item-header">
             <a class="nav-link" href="javascript:void(0);" style="color:#f5f5f5;"><i class="fas fa-user-circle" style="color:#f5f5f5;"></i> <?php echo strtoupper($this->session->userdata('email')) ?></a>
-          </li>
+          </li> -->
           <li class="nav-item-header" style="background: #307bd3 !important">
             <a class="nav-link" href="<?php echo base_url();?>welcome/logout" style="color:white !important;">
               <i class="" style="color:#f5f5f5;">
-                <img src="../assets/images/logout.png" style="height:1.3rem"></i>Logout</a>
+                <img src="https://localhost/PN101/assets/images/logout.png" class="pr-2" style="height:1.3rem"></i>Logout</a>
           </li>
         </ul>
       </div>

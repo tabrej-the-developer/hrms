@@ -19,13 +19,11 @@ font-family: 'Open Sans', sans-serif;
 
 	}
 	body{
-		background:#EAE6FF;
+		background:#f3f4f7;
 	}
-/*.containers{
-	width:95%;
-	
+.containers{
 	margin-left:20px;
-}*/
+}
 			/* The Modal (background) */
 .modal {
   display: none; 
@@ -67,16 +65,18 @@ table,tr,td{
 }
 .heading{
 	text-align: left;
-	font-size:30px;
+	font-size:2rem;
+	font-weight: bold;
 	padding-left:50px;
 }
 .timesheet-dates{
 	text-align:left;
-	background-color: white;
+	background-color: #e3e9f5;
 	padding-left:50px;
 	padding-bottom:10px;
 	padding-top:10px;
 	font-weight:bolder;
+		color:#afb7cd;
 }
 .table-div{
 	background:white;
@@ -285,7 +285,7 @@ max-width:50vw;
 		$payrollTypes = json_decode($payrollTypes);
 		$entitlements = json_decode($entitlements);
 	?>
-	<div class="containers" id="containers" style="overflow-x:scroll">
+	<div class="containers" id="containers" style="overflow-x:auto">
 		<div class="heading">Payroll Shifts</div>
 		<div class="timesheet-dates"><?php 
 

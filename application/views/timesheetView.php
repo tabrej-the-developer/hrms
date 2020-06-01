@@ -1,3 +1,6 @@
+<?php
+$colors_array = ['#8dba5e','#9ebdff','#dd91ee','#f7c779','#a9bfaf','#6b88ca'];
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,13 +23,11 @@
 font-family: 'Open Sans', sans-serif;
 	}
 	body{
-		background:#EAE6FF;
+		background:#f3f4f7;
 	}
-/*.containers{
-	width:95%;
-	
-	margin-left:20px;
-}*/
+.containers{
+	margin-left:2%;
+}
 			/* The Modal (background) */
 .modal {
   display: none; 
@@ -68,20 +69,23 @@ table,tr,td{
 }
 .heading{
 	text-align: left;
-	font-size:30px;
+	font-size:2rem;
+	font-weight: bold;
 	padding-left:50px;
 }
 .timesheet-dates{
 	text-align:left;
-	background-color: white;
+	background-color: #e3e9f5;
 	padding-left:50px;
 	padding-bottom:10px;
 	padding-top:10px;
 	font-weight:bolder;
+	color: #afb7cd;
+	/*margin-left:2%;*/
 }
 .table-div > table{
 	background:white;
-	margin-left:2%;
+	/*margin-left:2%;*/
 }
 .area-name{
 	background:#307bd3;
@@ -118,7 +122,6 @@ table,tr,td{
 	display:flex;
 	justify-content:center;
 	align-self: center;
-	background:rgba(200,200,150,0.8);
 	border-radius: 50%;
 	padding:0 10px 0 10px;
 	color:white;
@@ -126,10 +129,10 @@ table,tr,td{
 
 }
 .empname{
-	font-size:15px;
+	font-size:0.75rem;
 	display:flex;
 	justify-content:center;
-	font-weight: 600;
+	font-weight: bolder;
 }
 .modal-content{
 max-width:30vw;
@@ -300,7 +303,7 @@ max-width:30vw;
     }
     .shift-edit{
     	min-width:8vw;
-    	padding:7px;
+    	padding:2px;
     	font-size:0.75rem
     }
 @media only screen and (max-width: 600px) {
@@ -402,15 +405,14 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 		// Counter is the total number of days;
 				//for($counter=0;$counter<1;$counter++){ ?>
 		<tr  class="table-row">
-			<td   style="min-width:16vw" class=" cell-boxes left-most">
+			<td   style="min-width:13vw" class=" cell-boxes left-most">
 				<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
 				<span class="row name-space" style="padding:0;margin:0;">
-					<span class="col-3 icon-parent"><span class=" icon"><?php echo icon($timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName)?></span></span>
-					<span class="col-6 name-role">
-					<span class="empname row"><?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName?></span>
-					<span class="title row"><?php //echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empTitle ?></span>
+					<span class="col-3 icon-parent">
+						<span class=" icon" style="<?php	echo "background:".$colors_array[rand(0,5)].";";?>"><?php echo icon($timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName)?></span>
 					</span>
-
+					<span class="col-9 name-role">
+					<span class="empname row"><?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName?></span>
 					<?php
 					$variable = 0; 
 						$userLevel = $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->level;
@@ -422,8 +424,9 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 						}
 
 					?>
-					<span class="hourly col-3"><?php echo  $variable; ?></span>
-						</span>
+						<span class="hourly title row "><?php echo  $variable; ?></span>
+					</span>
+				</span>
 					<?php } ?>
 					</td>
 				
@@ -451,6 +454,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 	foreach($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes as $visits){$number++;}
 				$totalVisits = $number;
 			?>
+						<span><?php echo $timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->rosterShift->roleName->roleName;?></span>
 							<span>Total Hours : <?php echo  intVal($totalTime/100) .".". $totalTime%100; ?></span>
 							<span>Total visits : <?php echo $totalVisits; ?></span>
 						</div>
@@ -499,12 +503,12 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 						<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
 
 						<span class="row" style="padding:0;margin:0;">
-							<span class="col-3 icon-parent"><span class=" icon"><?php echo icon($timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName)?></span></span>
-							<span class="col-6 name-role">
+							<span class="col-3 icon-parent"><span class=" icon" style="<?php	echo "background:".$colors_array[rand(0,5)].";";?>"><?php echo icon($timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName)?></span></span>
+							<span class="col-9 name-role">
 								<span class="empname row"><?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName?></span>
-								
+								<span class="hourly title row"><?php echo  $variable ?></span>
 							</span>
-							<span class="hourly col-3"><?php echo  $variable ?></span>
+							<span class=" "></span>
 						</span>
 					<?php } ?>
 					</td>
@@ -532,6 +536,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 			$totalVisits = $number;
 			
 				?>
+							<span><?php echo $timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->rosterShift->roleName->roleName;?></span>
 							<span>Total Hours : <?php echo  $totalTime/100 .".". $totalTime%100; ?></span>
 							<span>Total visits : <?php echo $totalVisits; ?></span>
 				<?php		}else{
@@ -599,13 +604,10 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 			<td   style="min-width:18vw" class=" cell-boxes left-most">
 				<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
 				<span class="row name-space" style="padding:0;margin:0;">
-					<span class="col-3 icon-parent"><span class=" icon"><?php echo icon($timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName)?></span></span>
-					<span class="col-6 name-role">
+					<span class="col-3 icon-parent"><span class=" icon" style="<?php	echo "background:".$colors_array[rand(0,5)].";";?>"><?php echo icon($timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName)?></span></span>
+					<span class="col-9 name-role">
 					<span class="empname row"><?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName?></span>
-					<span class="title row"><?php //echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empTitle ?></span>
-					</span>
-
-					<?php
+										<?php
 					$variable = 0; 
 						$userLevel = $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->level;
 						foreach ($entitlements as $e) {
@@ -616,7 +618,8 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 						}
 
 					?>
-					<span class="hourly col-3"><?php echo  $variable; ?></span>
+					<span class="hourly title row "><?php echo  $variable; ?></span>
+					</span>
 						</span>
 					<?php } ?>
 					</td>
@@ -645,6 +648,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 	foreach($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes as $visits){$number++;}
 				$totalVisits = $number;
 			?>
+			<span><?php echo $timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->rosterShift->roleName->roleName;?></span>
 							<span>Total Hours : <?php echo  intVal($totalTime/100) .".". $totalTime%100; ?></span>
 							<span>Total visits : <?php echo $totalVisits; ?></span>
 						</div>
@@ -693,10 +697,10 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 						<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
 
 						<span class="row" style="padding:0;margin:0;">
-							<span class="col-3 icon-parent"><span class=" icon"><?php echo icon($timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName)?></span></span>
+							<span class="col-3 icon-parent"><span class=" icon" style="<?php	echo "background:".$colors_array[rand(0,5)].";";?>"><?php echo icon($timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName)?></span></span>
 							<span class="col-6 name-role">
 								<span class="empname row"><?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName?></span>
-								
+								<span class="hourly title row "><?php echo  $variable; ?></span>
 							</span>
 							<span class="hourly col-3"><?php echo  $variable ?></span>
 						</span>
@@ -726,6 +730,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 			$totalVisits = $number;
 			
 				?>
+				<span><?php echo $timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->rosterShift->roleName->roleName;?></span>
 							<span>Total Hours : <?php echo  $totalTime/100 .".". $totalTime%100; ?></span>
 							<span>Total visits : <?php echo $totalVisits; ?></span>
 				<?php		}else{

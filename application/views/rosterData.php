@@ -1,3 +1,6 @@
+<?php
+$colors_array = ['#8dba5e','#9ebdff','#dd91ee','#f7c779','#a9bfaf','#6b88ca'];
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +21,7 @@ font-family: 'Open Sans', sans-serif;
 text-align:center;
 	}
 	body{
-		background:#EAE6FF;
+		background:#f3f4f7;
 	}
 .containers{/*
 	width:95%;
@@ -66,12 +69,14 @@ table,tr,td{
 }
 .heading{
 	text-align: left;
-	font-size:30px;
+	font-weight:bold;
+	font-size:2rem;
 	padding-left:50px;
 }
 .roster-dates{
 	text-align:left;
-	background-color: white;
+	background-color: #e3e9f5;
+	color:#afb7cd;
 	padding-left:50px;
 	padding-bottom:10px;
 	padding-top:10px;
@@ -82,13 +87,13 @@ table,tr,td{
 	background:white;
 }
 .area-name{
-	background:#307bd3;
+	background:#add8e6;
 	color:white;
 	border-bottom-left-radius: 5px;
 	border-bottom-right-radius: 5px;
 }
 .day{
-	background:#C2E7F0;
+	background:#d6e9ff;
 }
 .total-budget{
 	padding-top:10px;
@@ -118,7 +123,6 @@ table,tr,td{
 	display:flex;
 	justify-content:center;
 	align-self: center;
-	background:rgba(200,200,150,0.8);
 	border-radius: 50%;
 	padding:0 10px 0 10px;
 	color:white;
@@ -382,8 +386,9 @@ function icon($str){
 						$endDate = date( "Y-m-d", strtotime( "$startDate +4 day" ));
 						echo dateToDay($endDate); }?></th>
 					<th id="table-id-7" class="day">
-						<span class=" d-flex justify-content-center">
-							<span class="row">Budget (Emp wise)</span>
+						<span class="">
+							<span class="row d-flex justify-content-center m-0">Budget </span>
+							<span class="row d-flex justify-content-center m-0" style="font-size:0.7rem">(Emp wise)</span>
 						</span>
 					</td>
 				</tr>
@@ -420,15 +425,14 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 		}
 				for($counter=0;$counter<$value;$counter++){ ?>
 				<tr  class="table-row">
-					<td   style="width:18vw" class=" cell-boxes left-most">
+					<td   style="width:16vw" class=" cell-boxes left-most">
 						<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
 
 						<span class="row name-space" style="padding:0;margin:0;">
-							<span class="col-3 icon-parent"><span class=" icon"><?php echo icon($rosterDetails->roster[$x]->roles[$counter]->empName)?></span></span>
-							<span class="col-6 name-role">
+							<span class="col-3 icon-parent"><span class=" icon" style="
+<?php	echo "background:".$colors_array[rand(0,5)].";";?>"><?php echo icon($rosterDetails->roster[$x]->roles[$counter]->empName)?></span></span>
+							<span class="col-9 name-role">
 								<span class="empname row"><?php echo $rosterDetails->roster[$x]->roles[$counter]->empName?></span>
-								<span class="title row"><?php echo $rosterDetails->roster[$x]->roles[$counter]->empTitle ?></span>
-							</span>
 			<?php
 						$variable = 0;
 						$userLevel = $rosterDetails->roster[$x]->roles[$counter]->level;
@@ -438,7 +442,10 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 								}
 			?>
 			<?php } ?>
-							<span class="hourly col-3"><?php echo  $variable?></span>
+								<span class="title hourly row"><?php echo  $variable; // echo $rosterDetails->roster[$x]->roles[$counter]->empTitle ?></span>
+							</span>
+
+							<span class=""><?php // echo  $variable?></span>
 						</span>
 					
 					</td>
@@ -456,7 +463,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 
 		?>
 
-					<td class="shift-edit cell-boxes count-<?php echo $p+1;?>"  style="width:13vw" 
+					<td class="shift-edit cell-boxes count-<?php echo $p+1;?>"  style="width:12vw" 
 					 name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->shiftid?>"  
 					 name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleid ?>"
 					 name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?>" 
@@ -467,8 +474,10 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 
 					 <div class="cell-back-1 <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? 'leave' : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status;  ?>" >
 					 	<?php if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave != "Y"){ ?>
+					 		<span class="row m-0 d-flex justify-content-center"><?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleName;?></span>
 					 	<?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)). "-" .timex( intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime));
 					  $weeklyTotal = $weeklyTotal + $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?>
+
 					<?php  }else{
 						echo 'On Leave';
 					} ?>
@@ -476,7 +485,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					   </div>
 					</td>
 					  <?php } ?>
-					<td class=" " style="width:13vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
+					<td class=" " style="width:12vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
 
 				</tr>
 			<?php } } } } }?>
@@ -513,7 +522,7 @@ if($this->session->userdata('UserType')==STAFF){
 		}
 				for($counter=0;$counter<$value;$counter++){ ?>
 				<tr  class="table-row">
-					<td   style="width:18vw" class=" cell-boxes left-most">
+					<td   style="width:16vw" class=" cell-boxes left-most">
 						
 					</td>
 				
@@ -528,7 +537,7 @@ if($this->session->userdata('UserType')==STAFF){
 		}
 		?>
 
-					<td class="shift-edit cell-boxes count-<?php echo $p+1;?>"  style="width:13vw" 
+					<td class="shift-edit cell-boxes count-<?php echo $p+1;?>"  style="width:12vw" 
 					 name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->shiftid?>"  
 					 name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleid ?>"
 					 name3="<?php echo $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?>" 
@@ -542,7 +551,7 @@ if($this->session->userdata('UserType')==STAFF){
 					</td>
 
 					  <?php } ?>
-					<td class=" " style="width:13vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
+					<td class=" " style="width:12vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
 
 				</tr>
 			<?php } } } }?>
@@ -556,13 +565,13 @@ if($this->session->userdata('UserType')==STAFF){
 		<div class="total-budget" >
 			<table>
 				<tr class="total-budget-row">
-					<td class="total-budget-box" style="width:18vw">Total Budget</td>
-					<td class="total-budget-box" style="width:13vw" id="count-1" >$</td>
-					<td class="total-budget-box" style="width:13vw" id="count-2">$</td>
-					<td class="total-budget-box" style="width:13vw" id="count-3">$</td>
-					<td class="total-budget-box" style="width:13vw" id="count-4">$</td>
-					<td class="total-budget-box" style="width:13vw" id="count-5">$</td>
-					<td class="total-budget-box" style="width:13vw">---</td>
+					<td class="total-budget-box" style="width:16vw">Total Budget</td>
+					<td class="total-budget-box" style="width:12vw" id="count-1" >$</td>
+					<td class="total-budget-box" style="width:12vw" id="count-2">$</td>
+					<td class="total-budget-box" style="width:12vw" id="count-3">$</td>
+					<td class="total-budget-box" style="width:12vw" id="count-4">$</td>
+					<td class="total-budget-box" style="width:12vw" id="count-5">$</td>
+					<td class="total-budget-box" style="width:12vw">---</td>
 				</tr>
 			</table>
 		</div>

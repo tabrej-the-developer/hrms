@@ -39,7 +39,7 @@ font-family: 'Open Sans', sans-serif;
 		.sort-by{
 
 		}
-		.center-list{
+/*		.center-list{
 			display:none;
 			box-shadow:0 0 1px 1px rgb(242, 242, 242) ;
 		}
@@ -60,7 +60,7 @@ font-family: 'Open Sans', sans-serif;
 		.sort-by:hover::after{
 			position:absolute;
 						
-		}
+		}*/
 		table{
 			box-shadow: 0 0 20px 2px #eeeff2;
 		}
@@ -102,7 +102,7 @@ font-family: 'Open Sans', sans-serif;
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 80%;
+  width: 50%;
 }
 
 /* The Close Button */
@@ -214,6 +214,19 @@ border-bottom-right-radius: 20px;
     transform: scale(1.0);
     transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
 }
+td{
+	cursor: pointer;
+}
+@media only screen and (max-width:600px){
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+}
 </style>
 </head>
 <body>
@@ -225,22 +238,22 @@ border-bottom-right-radius: 20px;
 	?>
 <div class="containers">
 	<div class="d-flex heading-bar">
-		<span class="m-3" style="font-size: 30px;font-weight: bold">Timesheet</span>
+		<span class="m-3" style="font-size: 2rem;font-weight: bold">Timesheet</span>
 		<span class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
 			<?php if($this->session->userdata('UserType') == SUPERADMIN){?> 
-			<div class="filter-icon row">
+<!-- 			<div class="filter-icon row">
 				<span class="col">Sort&nbsp;by</span>
 				<span class="col"><img src="../assets/images/filter-icon.png" height="20px"></span>
-			</div>
+			</div> -->
 		
-				<div class="center-list " id="center-list">
+				<select class="center-list " id="center-list">
 						<?php $centers = json_decode($centers);
 						
 						for($i=0;$i<count($centers->centers);$i++){
 					?>
-					<a href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>"><?php echo $centers->centers[$i]->name?></a>
+					<option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid; ?>"><?php echo $centers->centers[$i]->name?></option>
 				<?php } ?>
-				</div>	
+				</select>	
 		</span>
 		<?php } ?>
 		<?php if($this->session->userdata('UserType') == SUPERADMIN || $this->session->userdata('UserType') == ADMIN ){?>
@@ -311,7 +324,7 @@ border-bottom-right-radius: 20px;
 <div style="position: relative;margin-top:40px ">
  	<form id="create-timesheet-form"  method="POST" action=<?php echo base_url()."timesheet/createTimesheet" ?>>
  		<span id="down-arrow" style="display:flex;justify-content: center;margin:20px"><input  name="timesheet-date" id="timesheet-date" autocomplete="off"></span>
- 		<input type="text" name="userId" id="userId" style="display:none" value="<?php echo $userId?>">
+ 		<input type="text " name="userId" id="userId" style="display:none" value="<?php echo $userId?>">
  		
  		<?php if($this->session->userdata('UserType')==ADMIN) {?><input type="text" name="centerId" id="center-id" value="<?php echo $cents;?>" style="display:none">
  	<?php } ?>
@@ -338,18 +351,18 @@ border-bottom-right-radius: 20px;
 <script type="text/javascript">
 	$(document).ready(function(){
 		<?php if($this->session->userdata('UserType')==SUPERADMIN){?>
-		$(document).on('click','.center-class',function(){
-			var id = $(this).prop('id');
-			if(id == null || id == ""){
-				id=1;
+		$(document).on('change','.center-list',function(){
+			var val = $(this).val();
+			if(val == null || val == ""){
+				val=1;
 			}
-		var url = "<?php echo base_url();?>timesheet/timesheetDashboard?center="+id;
+		var url = "<?php echo base_url();?>timesheet/timesheetDashboard?center="+val;
 		$.ajax({
 			url:url,
 			type:'GET',
 			success:function(response){
 				$('#tbody').html($(response).find('#tbody').html());
-				document.getElementById('center-id').value = parseInt(id);
+				document.getElementById('center-id').value = parseInt(val);
 			}
 		});
 	});
