@@ -51,7 +51,7 @@ text-align:center;
 }
 
 /* The Close Button */
-.close {
+/*.close {
   color: #aaaaaa;
   float: right;
   font-size: 28px;
@@ -63,6 +63,12 @@ text-align:center;
   color: #000;
   text-decoration: none;
   cursor: pointer;
+}*/
+input[type="text"],input[type=time],select{
+	background: #ebebeb;
+	border-radius: 5px;
+    padding: 5px;
+    border: 2px solid #e9e9e9 !important;
 }
 table,tr,td{
 	border:1px solid rgba(0,0,0,0.1)
@@ -75,35 +81,36 @@ table,tr,td{
 }
 .roster-dates{
 	text-align:left;
-	background-color: #e3e9f5;
-	color:#afb7cd;
+	/*background-color: #e3e9f5;*/
+	background-color:white;
+	/*color:#afb7cd;*/
+	color:black;
 	padding-left:50px;
 	padding-bottom:10px;
 	padding-top:10px;
 	font-weight:bolder;
-	border-radius:5px;
 }
 .table-div{
 	background:white;
+	margin-bottom: 200px
 }
 .area-name{
-	background:#add8e6;
+	background:#307bd3;
 	color:white;
-	border-bottom-left-radius: 5px;
-	border-bottom-right-radius: 5px;
+	padding:0.25rem 0;
 }
 .day{
-	background:#d6e9ff;
+	background:transparent;
+}
+.day-row{
+	background: #ADD8E6;
 }
 .total-budget{
 	padding-top:10px;
-
-
 }
 .hourly{
 	font-size:12px;
 	text-align: left;
-		align-self: center;
 
 }
 .hourly::before{
@@ -114,25 +121,25 @@ table,tr,td{
 }
 .title{
 	font-size:12px;
-	display:flex;
-	justify-content:center;
+	padding-left: 1rem
 	
 }
 .icon{
-	font-size:15px;
+	font-size:1rem;
 	display:flex;
 	justify-content:center;
 	align-self: center;
 	border-radius: 50%;
-	padding:0 10px 0 10px;
+	padding:0.25rem 0;
 	color:white;
-	display: flex;
-
+	height: 2rem;
+	width: 2rem;
 }
 .empname{
 	font-size:15px;
 	display:flex;
-	justify-content:center;
+	justify-content:left;
+	padding: 0 1rem;
 	font-weight: 600;
 }
 .modal-content{
@@ -151,7 +158,7 @@ max-width:30vw;
 		z-index:999;
 	}
 	.buttons{
-		padding:20px;
+		padding:10px 20px;
 		margin:2px;
 	}
 	.button{
@@ -164,25 +171,36 @@ max-width:30vw;
   display: inline-block;
   margin: 2px
 }
+	.buttonn{
+		background-color: #9E9E9E;
+  border: none;
+  color: white;
+  padding: 10px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 2px;
+       float:none; 
+     font-size: 1rem; 
+     font-weight: bolder; 
+     line-height: inherit; 
+     text-shadow: none; 
+     opacity: 1;
+}
+.buttonn:hover{
+	background-color: #9E9E9E;
+	color: white;
+}
+.shift-edit{
+	padding:10px;
+}
 .cell-back-1{
 	margin:0 10px 0 10px;
 	font-size: 0.75rem;
 	padding:0.2rem;
 }
-.cell-back-2{
-	margin:0 10px 0 10px;
-}
-.cell-back-3{
-	margin:0 10px 0 10px;
-}
-.cell-back-4{
-	margin:0 10px 0 10px;
-}
-.cell-back-5{
-	margin:0 10px 0 10px;
-}
 .cell-boxes{
-	padding:0;
+	padding:0.5rem 0;
 }
 .name-role{
 	padding:0;
@@ -232,9 +250,9 @@ max-width:30vw;
 	margin:10px;
 }
 .total-budget .total-budget-row td{
-	background:#FFFCAD;
+	background:#FFF1AE;
 	padding:10px;
-	font-weight: bolder
+	font-weight: bolder;
 }
 #shift-submit,#user-submit{
 	background-color: #9E9E9E;
@@ -264,9 +282,16 @@ max-width:30vw;
 }
 .leave{
 	background: orange;
-	content: 'On Leave'
+	content: 'On Leave';
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
-
+.budget-table-parent{
+	position: fixed;
+	bottom: 0;
+  background: #f3f4f7;
+}
 @media only screen and (max-width: 1050px) {
 .modal-content{
 	min-width:100vw;
@@ -367,7 +392,7 @@ function icon($str){
 		 ?> </div>
 		<div class="table-div" style="">
 			<table>
-				<tr>
+				<tr class="day-row">
 					<th id="table-id-1" class="day">Employees</th>	<?php $x=0;
 					if(isset($rosterDetails->startDate)){
 						$startDate = date('Y-m-d', strtotime($rosterDetails->startDate));
@@ -429,10 +454,10 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 						<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
 
 						<span class="row name-space" style="padding:0;margin:0;">
-							<span class="col-3 icon-parent"><span class=" icon" style="
+							<span class="col-4 icon-parent"><span class=" icon" style="
 <?php	echo "background:".$colors_array[rand(0,5)].";";?>"><?php echo icon($rosterDetails->roster[$x]->roles[$counter]->empName)?></span></span>
-							<span class="col-9 name-role">
-								<span class="empname row"><?php echo $rosterDetails->roster[$x]->roles[$counter]->empName?></span>
+							<span class="col-8 name-role">
+								<span class="empname row "><?php echo $rosterDetails->roster[$x]->roles[$counter]->empName?></span>
 			<?php
 						$variable = 0;
 						$userLevel = $rosterDetails->roster[$x]->roles[$counter]->level;
@@ -562,6 +587,7 @@ if($this->session->userdata('UserType')==STAFF){
 
 			</table>
 		</div>
+		<div class="budget-table-parent">
 		<div class="total-budget" >
 			<table>
 				<tr class="total-budget-row">
@@ -577,28 +603,29 @@ if($this->session->userdata('UserType')==STAFF){
 		</div>
 <?php if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){ ?>
 
-		<?php 
-	if(isset($rosterDetails->status)){
-			if($rosterDetails->status === 'Draft'){ ?>
+					<?php 
+				if(isset($rosterDetails->status)){
+						if($rosterDetails->status === 'Draft'){ ?>
+						<div class="buttons d-flex justify-content-end">
+							<button id="discard-roster" class="button">Discard</button>
+							<button id="draft-roster" class="button">Save Draft</button>
+							<button id="publish-roster" class="button">Publish</button>
+						</div>
+					<?php } ?>
+					<?php if($rosterDetails->status === 'Published') {?>
+					<div class="buttons d-flex justify-content-end">
+						<button id="discard-roster" class="button">Discard</button>
+						<button id="publish-roster" class="button">Save</button>
+					</div>
+					<?php } }?>
+			<?php } ?>
+			<?php if($this->session->userdata('UserType') == STAFF){?>
 			<div class="buttons d-flex justify-content-end">
-				<button id="discard-roster" class="button">Discard</button>
-				<button id="draft-roster" class="button">Save Draft</button>
-				<button id="publish-roster" class="button">Publish</button>
+					<button id="publish-roster" class="button">Save</button>
 			</div>
-		<?php } ?>
-		<?php if($rosterDetails->status === 'Published') {?>
-		<div class="buttons d-flex justify-content-end">
-			<button id="discard-roster" class="button">Discard</button>
-			<button id="publish-roster" class="button">Save</button>
-		</div>
-		<?php } }?>
-<?php } ?>
-<?php if($this->session->userdata('UserType') == STAFF){?>
-<div class="buttons d-flex justify-content-end">
-		<button id="publish-roster" class="button">Save</button>
+				<?php } ?>
+			</div>
 </div>
-	<?php } ?>
-	</div>
 <!--This is meant for admin-->
 <?php if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){ ?>
 	<div id="myModal" class="modal">
@@ -609,36 +636,37 @@ if($this->session->userdata('UserType')==STAFF){
 	  			<span class="box-name row"></span>
 	  			<span class="box-space row"></span>
 	  		</span>
-	  		<span class="close col-2 d-flex align-items-center" >&times;</span>
+	  		<!-- <span class="close col-2 d-flex align-items-center" >&times;</span> -->
 	  	</span>
 	    
 	    <form  id="roster-form">
-			<div>
-				<label>Start Time</label>
-				<input type="time" name="startTime" id="startTime" style="margin:30px 30px 0 30px">
+			<div class="row p-2">
+				<label class="col-4">Start Time</label>
+				<input class="col-7" type="time" name="startTime" id="startTime" >
 			</div>
-			<div>
-				<label>End Time</label>
-				<input type="time" name="endTime" id="endTime" style="margin:30px">
+			<div class="row p-2">
+				<label class="col-4">End Time</label>
+				<input class="col-7" type="time" name="endTime" id="endTime" >
 			</div>
-			<div>
-				<label>Area</label>
-				<select  name="areaId" id="areaId">
+			<div class="row p-2">
+				<label class="col-4">Area</label>
+				<select  class="col-7" name="areaId" id="areaId">
 					<option>--modify--</option>
 				</select>
 			</div>
-			<div>
-				<label>Role</label>
-				<select  name="role" id="role">				</select>
+			<div class="row p-2">
+				<label class="col-4">Role</label>
+				<select  name="role" id="role" class="col-7">				</select>
 			</div>
-			<div>
-				<label>Message</label>
-				<input name="message" id="message">
+			<div class="row p-2">
+				<label class="col-4">Message</label>
+				<input name="message" id="message" class="col-7" type="text">
 			</div>
 	 		<input type="text" name="shiftId"  id="shiftId" style="display:none">
 	 		<input type="text" name="roleId" id="roleId" style="display:none">
 	 		<input type="text" name="status" value="2"  id="status" style="display:none">
 	 		<input type="text" name="userId"   id="userId" style="display:none">
+	 		<input type="button" name="modal-cancel"  value="Cancel"  class="close buttonn">
 	 		<input type="button" name="shift-submit" id="shift-submit" value="Save" style="margin:30px" class="button">
 	 	</form>
 	  </div>
@@ -801,35 +829,60 @@ if($this->session->userdata('UserType')==STAFF){
 				var	total = 0;
 				var count = $('.count-1').length
 				for(var i=0;i<count;i++){
+					if(isNaN(parseInt($('.count-1').eq(i).attr('name3')))){
+						total = total;
+					}
+					else{
 				total = total + parseInt($('.count-1').eq(i).attr('name3'))
+				}
 			}
 				$('#count-1').html('$'+total)
 				//
 				total = 0;
 				 count = $('.count-2').length
 				for( i=0;i<count;i++){
-				total = total + parseInt($('.count-2').eq(i).attr('name3'))
+					if(isNaN(parseInt($('.count-2').eq(i).attr('name3')))){
+						total = total;
+					}
+					else{
+				total = total + parseInt($('.count-2').eq(i).attr('name3'));
+				}
 			}
 				$('#count-2').html('$'+total)
 				//
 				total = 0;
 				 count = $('.count-3').length
 				for( i=0;i<count;i++){
+					if(isNaN(parseInt($('.count-3').eq(i).attr('name3')))){
+						total = total;
+					}
+					else{
 				total = total + parseInt($('.count-3').eq(i).attr('name3'))
+					}
 			}
 				$('#count-3').html('$'+total)
 				//
 				total = 0;
 				 count = $('.count-4').length
 				for( i=0;i<count;i++){
+					if(isNaN(parseInt($('.count-4').eq(i).attr('name3')))){
+						total = total;
+					}
+					else{
 				total = total + parseInt($('.count-4').eq(i).attr('name3'))
+					}
 			}
 				$('#count-4').html('$'+total)
 				//
 				total = 0;
 				 count = $('.count-5').length
 				for( i=0;i<count;i++){
+					if(isNaN(parseInt($('.count-5').eq(i).attr('name3')))){
+						total = total;
+					}
+					else{
 				total = total + parseInt($('.count-5').eq(i).attr('name3'))
+				}
 			}
 				$('#count-5').html('$'+total)
 				})
@@ -1051,6 +1104,16 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 				}
 			})
 		})
+	})
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		let height = $('td[name2 != ""] div').eq(3).height();
+		let count =	 $('td[name2 = ""]').length;
+		for(let i=0;i<count;i++){
+		$('td[name2 = ""] .leave').eq(i).height(height);
+			}
+			console.log(height)
 	})
 </script>
 </body>
