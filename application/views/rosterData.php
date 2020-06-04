@@ -247,7 +247,8 @@ max-width:30vw;
 }
 .total-budget-row {
 		background:#FFFCAD;
-	margin:10px;
+		margin:10px;
+		color:#434040;
 }
 .total-budget .total-budget-row td{
 	background:#FFF1AE;
@@ -265,7 +266,7 @@ max-width:30vw;
   margin: 2px
 }
 .Added{
-	background: rgba(158,158,158,0.5);
+	background: #e7e7e7;
 	border-radius: 3px;
 }
 
@@ -293,6 +294,19 @@ max-width:30vw;
   background: #f3f4f7;
 }
 @media only screen and (max-width: 1050px) {
+			.header-top{
+			max-width: 100vw !important;
+		}
+		.table-div{
+			padding: 0;
+			position: relative;
+			max-width: 100vw !important;
+   			overflow-x: scroll !important;
+		}
+				.title{
+			display: flex;
+   			 justify-content: center;
+		}
 .modal-content{
 	min-width:100vw;
 }

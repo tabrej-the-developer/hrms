@@ -7,22 +7,25 @@
 	
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
 <style type="text/css">
 	*{
 font-family: 'Open Sans', sans-serif;
 	}
 		.containers{
 		background:	rgb(243, 244, 247);
+		height: calc(100vh - 50px);
 	}
 		thead{
 			background:rgba(0,0,0,0.2);
 		}
 		tr:nth-child(even){
-			background:rgb(255,255,255);
+			background:rgb(255,255,255) !important;
 		}
 		tr:nth-child(odd){
 
-			background:rgb(243, 244, 247);
+			background:rgb(243, 244, 247) !important;
 		}
 		th{
 			background: white
@@ -32,7 +35,7 @@ font-family: 'Open Sans', sans-serif;
 			border: none;
 		}
 		.table-div{
-			height:70vh;
+			height:75vh;
 			overflow-y: auto;
 			padding: 0 20px 0 20px;
 		}	
@@ -61,9 +64,6 @@ font-family: 'Open Sans', sans-serif;
 			position:absolute;
 						
 		}*/
-		table{
-			box-shadow: 0 0 20px 2px #eeeff2;
-		}
 		.filter-icon{
 			border:1px solid rgba(0,0,0,0.7);
 			padding:8px;
@@ -216,6 +216,49 @@ border-bottom-right-radius: 20px;
 }
 td{
 	cursor: pointer;
+}
+	select{
+	background: #ebebeb !important;
+	border-radius: 5px !important;
+    padding: 5px !important;
+    border: 2px solid #e9e9e9 !important;
+		}
+	.dataTables_wrapper {
+		height:95%;
+		overflow-y: hidden;
+		background: white;
+		box-shadow: 0 0 4px 1px rgba(0,0,0,0.1);
+
+	}
+		.dataTables_paginate{
+		position: fixed;
+		bottom: 0;
+		right: 0
+	}
+	.paginate_button .current{
+		background:transparent !important;
+		border:none !important;
+		border-color: transparent;
+	}
+	.dataTables_paginate span .paginate_button{
+		background:none !important;
+		border:none !important;
+		border-color: transparent
+	}
+table.dataTable tbody th, table.dataTable tbody td{
+	padding:1rem;
+	border-bottom: none;
+}
+table.dataTable thead th, table.dataTable thead td {
+    padding: 1rem;
+    border-bottom: none;
+}
+table.dataTable.no-footer{
+	border-bottom: none
+}
+table.dataTable{
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
 }
 @media only screen and (max-width:600px){
 .modal-content {
@@ -439,6 +482,23 @@ $("#timesheet-date").datepicker();
 		</script>
 	<?php }
 ?>
+<script type="text/javascript">
+	  $(document).ready( function () {
+		    $('table').dataTable({
+		     pageLength:2,
+		     ordering : false,
+		     select: false,
+		     searching : false
+		    });
+		} );
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+			$('.dataTables_length').remove()
+			$('.dataTables_info').remove()
+			$('#ui-datepicker-div').remove()
+	})
+</script>
 </body>
 </html>
 <!--<script type="text/javascript">

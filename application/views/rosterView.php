@@ -7,18 +7,28 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">	
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
 <style type="text/css">
 	*{
 font-family: 'Open Sans', sans-serif;
 	}
-	.containers{
+		.containers{
 		background:	rgb(243, 244, 247);
+		height: calc(100vh - 50px);
 	}
 		thead{
-			background:rgba(255,255,255);
+			background:rgba(0,0,0,0.2);
 		}
 		tr:nth-child(even){
-			background:rgba(255,255,255);
+			background:rgb(255,255,255) !important;
+		}
+		tr:nth-child(odd){
+
+			background:rgb(243, 244, 247) !important;
+		}
+		th{
+			background: white
 		}
 		.table  td,.table th{
 			padding: 1rem;
@@ -31,6 +41,7 @@ font-family: 'Open Sans', sans-serif;
 			box-shadow: 0 0 20px 2px #eeeff2;
 		}
 		.table-div{
+			height:75vh;
 			padding: 0 20px 0 20px;
 		}
 /*		.center-list{
@@ -215,7 +226,44 @@ border-bottom-right-radius: 20px;
     	font-size: 2rem;
     	font-weight: bold
     }
-    @media only screen and (max-width :800px){
+    select{
+	background: #ebebeb;
+	border-radius: 5px;
+    padding: 5px;
+    border: 2px solid #e9e9e9 !important;
+		}
+.dataTables_wrapper {
+	height:95%;
+	overflow-y: hidden;
+	background: white;
+	box-shadow: 0 0 4px 1px rgba(0,0,0,0.1);
+}
+table.dataTable tbody th, table.dataTable tbody td{
+	padding:1rem;
+	border-bottom: none;
+}
+table.dataTable thead th, table.dataTable thead td {
+    padding: 1rem;
+    border-bottom: none;
+}
+table.dataTable.no-footer{
+	border-bottom: none
+}
+table.dataTable{
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+}
+	.dataTables_paginate span .paginate_button{
+		background:none !important;
+		border:none !important;
+		border-color: transparent;
+	}
+	.dataTables_paginate{
+		position: fixed;
+		bottom: 0;
+		right: 0
+	}
+    @media only screen and (max-width :600px){
     	.modal-content {
 		  background-color: #fefefe;
 		  margin: auto;
@@ -223,8 +271,21 @@ border-bottom-right-radius: 20px;
 		  border: 1px solid #888;
 		  width: 80%;
 		}
+		table{
+			background: white
+		}
+		.header-top{
+			max-width: 100vw !important;
+		}
 		.table-div{
 			padding: 0;
+			position: relative;
+			max-width: 100vw !important;
+   			overflow-x: scroll !important;
+		}
+		.title{
+			display: flex;
+   			 justify-content: center;
 		}
 		.sort-by{
 			margin-right:0px !important;
@@ -459,10 +520,31 @@ $("#roster-date").datepicker();
 $(document).ready(function(){
   	toggleModal();	
   })
+
 	</script>
 <?php }
 
 ?>
+
+<script type="text/javascript">
+	  $(document).ready( function () {
+		    $('table').dataTable({
+		     pageLength:2,
+		     ordering : false,
+		     select: false,
+		     searching : false
+		    });
+		} );
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+			$('.dataTables_length').remove()
+			$('.dataTables_info').remove()
+			$('#ui-datepicker-div').remove()
+			$('.table-div').css('maxWidth','100vw')
+
+	})
+</script>
 </body>
 </html>
 <!--<script type="text/javascript">
