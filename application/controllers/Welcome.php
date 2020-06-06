@@ -18,6 +18,8 @@ class Welcome extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
+
+
 	public function index()
 	{
 		redirect(base_url().'welcome/login');
@@ -53,6 +55,8 @@ class Welcome extends CI_Controller {
 						'ImgUrl' => $jsonOutput->imageUrl,
 						'x-device-id' => $data['deviceid']
 					));
+					footprint(currentUrl(),' ',$this->session->userdata('LoginId'),'LogIn');
+               		$this->session->set_userdata('current_url', currentUrl());
 					redirect('messenger');
 				}
 				else{
@@ -70,12 +74,76 @@ class Welcome extends CI_Controller {
 
 	public function forgotPassword()
 	{
-		$this->load->view("forgot_password_request");  
+		 $this->load->view("forgot_password_request");  
 	}
+
+	public function forgotPasswordRequest(){
+		$this->load->helper('form');
+		$form_data = $this->input->post();
+		if($form_data != null){
+			$data['email'] = $this->input->post('email');
+			$url = BASE_API_URL.'auth/forgotPassword';
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				return $server_output;
+				curl_close ($ch);
+			}
+			else if($httpcode == 401){
+
+				}
+			}
+		}
+
+		public function resetPassword($userid = null,$token = null){
+			if($this->input->post('confirm_password') != null){
+					$data['password'] = $this->input->post('confirm_password');
+					$password = md5($data['password']);
+					$this->resetPasswordRequest($userid,$token,$password);
+					redirect("/welcome/login");
+				}
+			$this->load->view("forgot_password");
+		}
+
+		function resetPasswordRequest($userid,$token,$password){
+			$this->load->helper('form');
+			$form_data = $this->input->post();
+			if($form_data != null){
+				$data['password'] = $password;
+				$data['token'] = $token;
+				$data['userid'] = $userid;
+				$url = BASE_API_URL.'auth/updatePassword';
+				$ch = curl_init($url);
+				curl_setopt($ch, CURLOPT_URL,$url);
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+				$server_output = curl_exec($ch);
+				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				if($httpcode == 200){
+					return $server_output;
+					curl_close ($ch);
+				}
+				else if($httpcode == 401){
+
+					}
+				}
+			} 
 
 	public function logout(){
 		if($this->session->userdata('AuthToken') != null){
 			$sessionId = $this->session->userdata('AuthToken');
+		//footprint start
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LogOut');
+         	$this->session->unset_userdata('current_url');
+		// footprint end
 			$this->logoutSession($sessionId);
 		}
 			$this->session->sess_destroy();
@@ -104,18 +172,15 @@ class Welcome extends CI_Controller {
 		}
 
 	function getIpAddress(){
-		if (!empty($_SERVER['HTTP_CLIENT_IP']))   
-		{
+		if (!empty($_SERVER['HTTP_CLIENT_IP'])){
 			$ip_address = $_SERVER['HTTP_CLIENT_IP'];
 		}
 		//whether ip is from proxy
-		elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))  
-		{
+		elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
 			$ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
 		}
 		//whether ip is from remote address
-		else
-		{
+		else{
 			$ip_address = $_SERVER['REMOTE_ADDR'];
 		}
 		return $ip_address;

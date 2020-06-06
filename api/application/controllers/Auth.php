@@ -45,6 +45,7 @@ class Auth extends CI_Controller {
 					//$data['firebaseid'] = $user->firebaseid;
 					$data['isVerified'] = $user->isVerified;
 					$permissions = $this->authModel->getPermissions($user->id);
+					$this->logs($data);
 					// $var = [];
 					// if($permissions != null){
 					// 	$var['isQrReaderYN'] = $permissions->isQrReaderYN;
@@ -121,6 +122,7 @@ class Auth extends CI_Controller {
 			else{
 				if($authToken->isForgotYN == "Y"){
 					//todo
+					redirect(site_url("../welcome/resetPassword/").$userid."/".$token);
 				}
 				else{
 					$this->authModel->verifyUser($userid);
@@ -173,5 +175,44 @@ class Auth extends CI_Controller {
 		}
 	}
 
+	public function logoutSession(){
+		$json = json_decode(file_get_contents('php://input'));
+		$id = $json->id;
+		$this->load->model('authModel');
+		$this->authModel->logoutTime($id);
+		$data['status'] = 'SUCCESS';
+			http_response_code(200);
+			echo json_encode($data);
+	}
+
+	function logs($params){
+		$ip = $this->get_client_ip();
+		$data['usertype'] = $params['role'];
+		$data['userid'] = $params['userid'];
+		$data['login_at'] = date('Y-m-d H:i:s');
+		$data['auth_token'] = $params['AuthToken'];
+		$data['ip'] = $ip;
+		$this->load->model('authModel');
+		$this->authModel->logs($data);
+	}
+
+	function get_client_ip() {
+	    $ipaddress = '';
+	    if (getenv('HTTP_CLIENT_IP'))
+	        $ipaddress = getenv('HTTP_CLIENT_IP');
+	    else if(getenv('HTTP_X_FORWARDED_FOR'))
+	        $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
+	    else if(getenv('HTTP_X_FORWARDED'))
+	        $ipaddress = getenv('HTTP_X_FORWARDED');
+	    else if(getenv('HTTP_FORWARDED_FOR'))
+	        $ipaddress = getenv('HTTP_FORWARDED_FOR');
+	    else if(getenv('HTTP_FORWARDED'))
+	       $ipaddress = getenv('HTTP_FORWARDED');
+	    else if(getenv('REMOTE_ADDR'))
+	        $ipaddress = getenv('REMOTE_ADDR');
+	    else
+	        $ipaddress = 'UNKNOWN';
+	    return $ipaddress;
+	}
 
 }

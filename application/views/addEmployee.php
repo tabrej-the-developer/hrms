@@ -660,7 +660,6 @@
 				startDate: startDate,
 				terminationDate: terminationDate,
 				ordinaryEarningRateId: ordinaryEarningRateId,
-				employeeId: employeeId,
 				bankAccount: bankAccount,
 				superfund: superfund,
 				employmentBasis: employmentBasis,

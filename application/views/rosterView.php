@@ -529,7 +529,7 @@ $(document).ready(function(){
 <script type="text/javascript">
 	  $(document).ready( function () {
 		    $('table').dataTable({
-		     pageLength:2,
+		     pageLength:7,
 		     ordering : false,
 		     select: false,
 		     searching : false
@@ -565,3 +565,5 @@ $(document).ready(function(){
 	})
 		})
 </script>-->
+
+

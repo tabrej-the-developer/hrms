@@ -26,6 +26,12 @@ class Leave extends CI_Controller {
 				$data['leaveRequests'] = $this->getLeaveByCenter($centers[0]->centerid);
 			}
 		}
+			//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+				$this->session->set_userdata('current_url',currentUrl());
+			}
+			// footprint end
 		$this->load->view('leaveView',$data);
 				}
 		else{

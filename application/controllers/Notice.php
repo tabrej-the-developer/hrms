@@ -69,6 +69,12 @@ class Notice extends CI_Controller {
 		}
 		$data['noticeStatus'] = $noticeStatus;
 		//var_dump($data);
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 		$this->load->view('noticeView',$data);
 	}
 		else{

@@ -21,7 +21,7 @@ $nth_child = 0;
     case strtolower("Payroll"):
       $nth_child = 4;
       break;
-    case strtolower("Leaves"):
+    case strtolower("Leave"):
       $nth_child = 5;
       break;
     case strtolower("Jobs"):

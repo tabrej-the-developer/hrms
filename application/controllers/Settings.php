@@ -319,7 +319,7 @@ $server_output = curl_exec($ch);
 				'x-token: '.$this->session->userdata('AuthToken')
 			));
 					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-$server_output = curl_exec($ch);
+			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			if($httpcode == 200){
 				return $server_output;

@@ -84,5 +84,19 @@ class AuthModel extends CI_Model {
 		$query = $this->db->query("SELECT * FROM permissions WHERE userid = '$userid'");
 		return $query->row();
 	}
+	public function logs($data){
+		$this->load->database();
+		$usertype = $data['usertype'];
+		$userid = $data['userid'];
+		$login_at = $data['login_at'];
+		$ip = $data['ip'];
+		$auth = $data['auth_token'];
+		$query = $this->db->query("INSERT into log (usertype , userid , login_at , ip , auth_token) VALUES (   '$usertype', '$userid', '$login_at', '$ip', '$auth')");
+	}
+	public function logoutTime($id){
+		$this->load->database();
+		$date = date('Y-m-d H:i:s');
+		$query =  $this->db->query("UPDATE  log SET logout_at = '$date'  WHERE auth_token = '$id'");
+	}
 
 }

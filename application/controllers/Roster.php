@@ -50,6 +50,12 @@ public function roster_dashboard(){
 		$var['rosters'] = $this->getPastRosters("1");
 		$var['entitlement'] = $this->getAllEntitlements($var['userId']);
 	}
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			$this->load->view('rosterView',$var);
 
 	}
@@ -84,6 +90,12 @@ public function getRosterDetails(){
 		$data['userid'] = $this->session->userdata('LoginId');
 		$data['entitlements'] = $this->getAllEntitlements($data['userid']);
 		$data['rosterDetails'] = $this->getRoster($data['rosterid'],$data['userid']);
+			//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			$this->load->view('rosterData',$data);
 		}
 		else{

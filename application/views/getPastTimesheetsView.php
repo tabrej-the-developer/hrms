@@ -268,6 +268,9 @@ table.dataTable{
   border: 1px solid #888;
   width: 80%;
 }
+.table-div{
+	padding:0;
+}
 
 }
 </style>
@@ -300,7 +303,12 @@ table.dataTable{
 		</span>
 		<?php } ?>
 		<?php if($this->session->userdata('UserType') == SUPERADMIN || $this->session->userdata('UserType') == ADMIN ){?>
-		<span class="btn ml-auto d-flex align-self-center create"><a href="javascript:void(0)" id="create-new-timesheet"><span style="margin:0 10px 0 10px"><img src="../assets/images/plus.png" ></span>Create&nbsp;new&nbsp;Timesheet</a></span>
+		<span class="btn ml-auto d-flex align-self-center create">
+			<a href="javascript:void(0)" id="create-new-timesheet" class="d-flex">
+				<span style="margin:0 10px 0 10px">
+					<img src="../assets/images/plus.png" >
+				</span>Create&nbsp;new&nbsp;Timesheet</a>
+			</span>
 		<?php } ?>
 	</div>
 	<div class="table-div">
@@ -485,7 +493,7 @@ $("#timesheet-date").datepicker();
 <script type="text/javascript">
 	  $(document).ready( function () {
 		    $('table').dataTable({
-		     pageLength:2,
+		     pageLength:7,
 		     ordering : false,
 		     select: false,
 		     searching : false

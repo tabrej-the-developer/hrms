@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 class Messenger extends CI_Controller {
 
 	/**
@@ -55,6 +54,12 @@ class Messenger extends CI_Controller {
 			$data['isGroupYN'] = $isGroupYN;
 			$data['users'] = $this->getUsers();
 			$data['groups'] = $this->getGroups();
+			//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),"LoggedIn");
+				$this->session->set_userdata('current_url',currentUrl());
+			}
+			// footprint end
 			$this->load->view('mView',$data);
 		}
 		else{
@@ -393,11 +398,5 @@ class Messenger extends CI_Controller {
 	// 	echo $server_output;
 	// 	curl_close ($ch);
 	// }
-
-	public function x(){
-		require('Library.php');
-		$footprint = new Library();
-		$footprint->footprint();
-	}
 
 }

@@ -76,7 +76,7 @@ body{
             <div class="row d-flex justify-content-center">
                 
                 <div class="col-md-8 login-form-1 text-center">
-                    <h3>Did you forgot your password?</h3>
+                    <h3>Did you forget your password?</h3>
 					<small>Enter your email address you're using for your account below <br>and we will send you a password reset link.</small>
                     <form method="post" action="<?php echo base_url().'welcome/forgotPassword';?>"> 
                         <div class="form-group">

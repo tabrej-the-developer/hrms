@@ -68,6 +68,11 @@ font-family: 'Open Sans', sans-serif;
    
     box-shadow: none;
 }
+.forgot-password{
+    color: #444444;
+    font-size: 0.8rem;
+    font-family: : Open Sans;
+}
  </style>
  </head>  
   
@@ -89,14 +94,16 @@ font-family: 'Open Sans', sans-serif;
                             <input type="password" name="password" class="form-control" placeholder="Your Password" value="" required />
                         </div>
 
+
                         <center><span style="color: red;"><?php echo $errorText;?></span></center>
                         
                         <div class="form-group text-right">
-<!--                             <a href="<?php echo site_url('welcome/forgotPassword') ?>" class="ForgetPwd">Forgot Password?</a> -->
+                             <a href="<?php echo site_url('welcome/forgotPassword') ?>" class="ForgetPwd">Forgot Password?</a> 
                         </div>
 						<div class="form-group">
                             <input type="submit" name="insert" class="btnSubmit rounded" value="Login" />
                         </div>
+
                     </form>
                 </div>
             </div>

@@ -68,25 +68,39 @@ body{
 </style>
 </head>
 <body>
-<div class="container login-container">
-
-            <div class="row d-flex justify-content-center">
-                
-                <div class="col-md-5 login-form-1 text-center">
-                    <h3>Reset Password</h3>
-                    <form> 
-                        <div class="form-group">
-                            <input type="email" class="form-control" placeholder="Your Email" value="" required />
-                        </div>
-						<div class="form-group">
-                            <input type="password" class="form-control" placeholder="Your Password" value="" required />
-                        </div>
-						<div class="form-group">
-                            <input type="submit" class="btnSubmit rounded" value="Reset Password" />
-                        </div>
-                    </form>
+  <div class="container login-container">
+      <div class="row d-flex justify-content-center">
+          <div class="col-md-5 login-form-1 text-center">
+              <h3>Reset Password</h3>
+              <form method="post" action="<?php echo base_url().'welcome/resetPassword';?>"> 
+                <div class="form-group">
+                  <input type="password" class="form-control" placeholder="New Password" value="" required name="new_password"/>
                 </div>
-            </div>
-        </div>
-		</body>
-		</html>
+        				<div class="form-group">
+                  <input type="password" class="form-control" placeholder="Confirm Password" required name="confirm_password"/>
+                </div>
+  	       			<div class="form-group">
+                  <input type="submit" class="btnSubmit rounded" value="Reset Password" />
+                </div>
+                <span class="alert"></span>
+            </form>
+          </div>
+          
+      </div>
+  </div>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $(document).on('click','.btnSubmit',function(e){
+      if($('input[name="new_password"]').val() !== $('input[name="confirm_password"]')){
+           e.preventDefault();
+           $('.alert').text('Passwords do not match')
+           setTimeout(function(){
+            $('.alert').text(" ");
+           },"2000");
+           
+        }
+      })
+    })
+  </script>
+	</body>
+	</html>
