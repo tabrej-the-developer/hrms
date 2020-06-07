@@ -37,9 +37,7 @@ font-family: 'Open Sans', sans-serif;
 		.sort-by{
 
 		}
-		table{
-			box-shadow: 0 0 20px 2px #eeeff2;
-		}
+		
 		.table-div{
 			height:75vh;
 			padding: 0 20px 0 20px;
@@ -114,19 +112,6 @@ font-family: 'Open Sans', sans-serif;
 }
 
 /* The Close Button */
-.close {
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
-}
 
 #ui-datepicker-div{
 	background:white;
@@ -140,18 +125,20 @@ font-family: 'Open Sans', sans-serif;
 	font-size:20px;
 }
 .ui-datepicker-prev{
-margin:20px;
-padding:10px;
-background:#e0e0e0;
-border-top-left-radius: 20px;
-border-bottom-left-radius: 20px;
+	margin:20px;
+	padding:10px;
+	background:#e0e0e0;
+	border-top-left-radius: 20px;
+	border-bottom-left-radius: 20px;
+	cursor:pointer;
 }
 .ui-datepicker-next{
 	margin: 20px;
 	padding:10px;
 	background:#e0e0e0;
-border-top-right-radius: 20px;
-border-bottom-right-radius: 20px;
+	border-top-right-radius: 20px;
+	border-bottom-right-radius: 20px;
+	cursor:pointer;
 }
 .ui-datepicker-title{
 	text-align: center;
@@ -159,17 +146,25 @@ border-bottom-right-radius: 20px;
 }
 #down-arrow::after{
 		position:relative;
-        content: " \2193";
-        top: 0px;
-        right: 20px;
-        height: 10px;
-        width: 20px;
+        content: "";
+        background: url("<?php echo base_url('/assets/images/calendar.png') ?>");
+        background-repeat: no-repeat;
+        background-size: 20px;
+        padding:10px;
+        top: 5px;
+        right: 30px;
 }
+
 .ui-datepicker-current-day{
-	background:green;
-}
-.ui-datepicker-today{
 	background:skyblue;
+	color:white;
+}
+
+.ui-datepicker-today{
+	background:#307bd3;
+}
+.ui-datepicker-today a{
+	color:white !important;
 }
 .ui-datepicker-calendar thead tr{
 	background: #80B9FF
@@ -181,15 +176,27 @@ border-bottom-right-radius: 20px;
 	background: white
 }
 	.button{
-		background-color: #9E9E9E;
-  border: none;
-  color: white;
-  padding: 10px 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 2px
-}
+	  background-color: #9E9E9E;
+	  border: none;
+	  color: white !important;
+	  padding: 10px 10px;
+	  text-align: center;
+	  text-decoration: none;
+	  display: inline-block;
+	  margin: 2px
+	}
+	.close{
+		float: none; 
+	    font-size: inherit; 
+	    font-weight: inherit; 
+	    line-height: inherit; 
+	    color: inherit; 
+	    text-shadow: inherit; 
+	    opacity: inherit; 
+	}
+	.close:hover{
+		background:#9E9E9E;
+	}
    .modal-logout {
         position: fixed;
         left: 0;
@@ -218,6 +225,9 @@ border-bottom-right-radius: 20px;
         visibility: visible;
         transform: scale(1.0);
         transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+    }
+    td[data-handler="selectDay"]{
+    	text-align:center;
     }
     td:hover{
     	cursor: pointer
@@ -399,20 +409,24 @@ table.dataTable{
   <!-- Modal content -->
   <div class="modal-content">
    <div class="row" style="background: #307bd3;padding: 0;margin: 0;position: absolute;top:0;width:100%;left:0;padding:10px">
-   	<span class="col-10 text-center" style="color:white;font-size:25px">Create New Roster </span>
-    <span class="close col-2" style="display:flex;justify-content:flex-end;float:right">&times;</span>
+   	<span class="col-12 text-center" style="color:white;font-size:25px">Create New Roster </span>
+    
 </div>
 <div style="position: relative;margin-top:40px ">
- 	<form id="create-roster-form"  method="POST" action=<?php echo base_url()."roster/createRoster" ?>>
- 		<span id="down-arrow" style="display:flex;justify-content: center;margin:20px"><input  name="roster-date" id="roster-date" autocomplete="off"></span>
+ 	<form id="create-roster-form"  method="POST" action=<?php echo base_url("roster/createRoster") ?>>
+ 		<span id="down-arrow" class="row" style="display:flex;justify-content: center;margin:20px">
+ 			<input class="col-4" name="roster-date" id="roster-date" autocomplete="off" placeholder="Start Date"></span>
  		<input type="text" name="userId" id="userId" style="display:none" value="<?php echo $userId?>">
  		
- 		<?php if($this->session->userdata('UserType')==ADMIN) {?><input type="text" name="centerId" id="center-id" value="<?php echo $cents;?>" style="display:none">
+ 		<?php if($this->session->userdata('UserType')==ADMIN) {?>
+ 			<input type="text" name="centerId" id="center-id" value="<?php echo $cents;?>" style="display:none">
  	<?php } ?>
- 		<?php if($this->session->userdata('UserType')==SUPERADMIN){ ?><input type="text" name="centerId" id="center-id" value="<?php echo $centerId;?>" style="display:none"><?php } ?>
+ 		<?php if($this->session->userdata('UserType')==SUPERADMIN){ ?>
+ 			<input type="text" name="centerId" id="center-id" value="<?php echo $centerId;?>" style="display:none"><?php } ?>
  		<div class="text-center">
  		<input type="submit" name="roster-submit" id="roster-submit" class="button" value="Create">
  		<input type="reset" name="" id="" class="button" value="Reset">
+ 		<input type="button" name="cancel" value="Cancel" class="close button">
  	</div>
  	</form>
  </div>
@@ -540,10 +554,9 @@ $(document).ready(function(){
 	$(document).ready(function(){
 			$('.dataTables_length').remove()
 			$('.dataTables_info').remove()
-			$('#ui-datepicker-div').remove()
+			$('#ui-datepicker-div').hide()
 			$('.table-div').css('maxWidth','100vw')
-
-	})
+		})
 </script>
 </body>
 </html>

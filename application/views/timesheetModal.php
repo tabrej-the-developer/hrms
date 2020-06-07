@@ -149,9 +149,9 @@ foreach($timesheetDetails->timesheet[$ya]->unrosteredEmployees[$xa]->clockedTime
 	}
 	?>
 		<div class="budget">Budget : </div>
-		<div>
-		<button class="buttonn">Create Pay Roll</button>
-	</div>
+		<div class="d-flex justify-content-center">
+			<button class="buttonn ">Create Pay Roll</button>
+		</div>
 </div>
 
 

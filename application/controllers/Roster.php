@@ -131,27 +131,28 @@ public function createRoster(){
 		$this->load->helper('form');
 		$form_data = $this->input->post();
 		if($form_data != null){
-			$data['startDate'] = $this->input->post('roster-date');;
+			$date = date_create($this->input->post('roster-date'));
+			$data['startDate'] = date_format($date,"Y-m-d");
 			$data['centerid'] = $this->input->post('centerId');
 			$data['userid'] = $this->session->userdata('LoginId');
 			$data['staff'] = $this->getUsers();
 
- 		$url = BASE_API_URL."/Rosters/createRoster";
-		$ch = curl_init($url);
-		curl_setopt($ch, CURLOPT_URL,$url);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-				'x-device-id: '.$this->session->userdata('x-device-id'),
-				'x-token: '.$this->session->userdata('AuthToken')
-			));
-					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-$server_output = curl_exec($ch);
-			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		 		$url = BASE_API_URL."/Rosters/createRoster";
+				$ch = curl_init($url);
+				curl_setopt($ch, CURLOPT_URL,$url);
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+						'x-device-id: '.$this->session->userdata('x-device-id'),
+						'x-token: '.$this->session->userdata('AuthToken')
+					));
+							curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+					$server_output = curl_exec($ch);
+					$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			if($httpcode == 200){
 				$jsonOutput = json_decode($server_output);
 				curl_close ($ch);
-				redirect(base_url()."roster/roster_dashboard");
+				redirect(base_url("roster/roster_dashboard"));
 			}
 			else if($httpcode == 401){
 

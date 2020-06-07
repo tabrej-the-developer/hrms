@@ -436,34 +436,31 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 				$payValue= 0;
 					$paytm = 0;
 				 foreach($payrollShifts->employees[$x]->payrollShifts as $payroll){
-if(isset($payroll->payrollTypeId)){	
-		 	$pay = $payroll->payrollTypeId;
-			 	$payTime = toMinutes($payroll->endTime) - toMinutes($payroll->startTime);
-			 	$paytm = intval($paytm) + intval($payTime);
-			 	  ?>
-			 	
-			 		<?php 
-			 		$payKey = "";
-			 			foreach($payrollTypes->payrollTypes as $payrollTy){
-			 				if($pay == $payrollTy->id){
-			 					$payValue = $payrollTy->factor * $payTime/60 * $rate; 
-			 					$payKey = $payrollTy->type;
-			 				}
-			 			}
-			 				if(!array_key_exists($payKey,$arr)){
-			 					$arr[$payKey]  = $payValue; 
-			 				}
-			 				else{
-			 					$arr[$payKey] = $arr[$payKey] + $payValue;
-			 				}
-			 		 ?>
-			 
-			 	 	<?php
-			 	 }
+						if(isset($payroll->payrollTypeId)){	
+						 	$pay = $payroll->payrollTypeId;
+							 	$payTime = toMinutes($payroll->endTime) - toMinutes($payroll->startTime);
+							 	$paytm = intval($paytm) + intval($payTime);
+							 		$payKey = "";
+							 			foreach($payrollTypes->payrollTypes as $payrollTy){
+							 				if($pay == $payrollTy->id){
+							 					$payValue = $payrollTy->factor * $payTime/60 * $rate; 
+							 					$payKey = $payrollTy->type;
+							 				}
+							 			}
+							 				if(!array_key_exists($payKey,$arr)){
+							 					$arr[$payKey]  = $payValue; 
+							 				}
+							 				else{
+							 					$arr[$payKey] = $arr[$payKey] + $payValue;
+							 				}
+							 		 ?>
+							 
+							 	 	<?php
+							 	 }
 				 }	
 				 foreach($arr as $key => $a){
 				 	?>
-				 	<div class="row"><?php echo "<span class=\"col-6 d-flex justify-content-start\">".$key."</span>"."<span class=\"col-6\">". $paytm/60 ."</span>"; ?></div>
+				 	<div class="row"><?php echo "<span class=\"col-6 d-flex justify-content-start\">".$key."</span>"."<span class=\"col-6\">". $a/60 ."</span>"; ?></div>
 				 	<?php
 				 }			 	
 				?>  </div>

@@ -116,7 +116,8 @@ class Timesheet extends CI_Controller {
 		$this->load->helper('form');
 		$form_data = $this->input->post();
 		if($form_data != null){
-			$data['startDate'] = $this->input->post('timesheet-date');;
+			$date = date_create($this->input->post('timesheet-date'));
+			$data['startDate'] = date_format($date,"Y-m-d");
 			$data['centerid'] = $this->input->post('centerId');
 			$data['userid'] = $this->session->userdata('LoginId');
 			$data['staff'] = $this->getUsers();

@@ -25,6 +25,7 @@ font-family: 'Open Sans', sans-serif;
 	body{
 		background:#f3f4f7;
 	}
+
 .containers{
 	margin-left:2%;
 }
@@ -75,12 +76,12 @@ table,tr,td{
 }
 .timesheet-dates{
 	text-align:left;
-	background-color: #e3e9f5;
+	background-color: white;
 	padding-left:50px;
 	padding-bottom:10px;
 	padding-top:10px;
 	font-weight:bolder;
-	color: #afb7cd;
+	color: black;
 	/*margin-left:2%;*/
 }
 .table-div > table{
@@ -102,8 +103,6 @@ table,tr,td{
 .hourly{
 	font-size:12px;
 	text-align: left;
-		align-self: center;
-
 }
 .hourly::before{
 	content:'$';
@@ -113,26 +112,26 @@ table,tr,td{
 }
 .title{
 	font-size:12px;
-	display:flex;
-	justify-content:center;
+	padding-left: 1rem
 	
 }
 .icon{
-	font-size:15px;
+	font-size:1rem;
 	display:flex;
 	justify-content:center;
 	align-self: center;
 	border-radius: 50%;
-	padding:0 10px 0 10px;
+	padding:0.25rem 0;
 	color:white;
-	display: flex;
-
+	height: 2rem;
+	width: 2rem;
 }
 .empname{
-	font-size:0.75rem;
+	font-size:15px;
 	display:flex;
-	justify-content:center;
-	font-weight: bolder;
+	justify-content:left;
+	padding: 0 1rem;
+	font-weight: 600;
 }
 .modal-content{
 max-width:30vw;
@@ -291,14 +290,17 @@ max-width:30vw;
     	display:flex;
     	flex-direction: column;
     	color:white;
-    	border-radius: 5px
+    	border-radius: 5px;
+    	display:flex;
+    	justify-content: center;
+    	align-items:center;
     }
     .div-box{
     	padding:3px;
     	display:flex;
     	flex-direction: column;
-    	background:#307bd3;
-    	color:white;
+    	background:#e7e7e7;
+    	color:black;
     	border-radius: 5px
     }
     .shift-edit{
@@ -343,7 +345,7 @@ td.shift-edit{
 <body>
 
 	<?php 
-	$timesheetDetails = json_decode($timesheetDetails); 
+			$timesheetDetails = json_decode($timesheetDetails); 
 			$entitlements = json_decode($entitlements);
 	?>
 	<div class="containers" id="containers" style="overflow-x:scroll">
@@ -351,29 +353,39 @@ td.shift-edit{
 		<div class="timesheet-dates"><?php 
 
 
-
+		if(isset($timesheetDetails->timesheet[0]->currentDate)){
 		 $str1 = $timesheetDetails->timesheet[0]->currentDate;
 		 $str2 = $timesheetDetails->timesheet[13]->currentDate; 
 		 $v1 = explode("-",$str1);
 		 $v2 = explode("-",$str2);
 		 echo date("M d",mktime(0,0,0,$v1[1],intval($v1[2]),(intval($v1[0]))))." to ". 
 		 date("M d , Y",mktime(0,0,0,$v2[1],intval($v2[2]),(intval($v2[0]))));
+		}else{
+			echo "No Dates Available";
+		}
+
 		 ?> 
-		 
-		 	<a href="#week1"><button>week 1</button></a>
-		 
-		 
-		 	<a href="#week2"><button>week 2</button></a>
-		 
+			<span>
+			 	<a href="#week1">
+			 		<button>week 1</button>
+			 	</a>
+			 	<a href="#week2">
+			 		<button>week 2</button>
+			 	</a>
+			</span>
 		</div>
 	<div class="owl-carousel">
 		<div class="table-div item" data-hash="week1">
 			<table style="" >
 				<tr>
-					<?php //$p =0; ?>
-					<th id="table-id-1" class="day">Employees</th>	<?php $x=0;$incrementer =0;?>
-					<?php foreach($timesheetDetails->timesheet as $timesheet) {
-						if($incrementer < 7){
+					<?php if(isset($timesheetDetails->timesheet)){ ?>
+					<th id="table-id-1" class="day">Employees</th>
+					<?php 
+						$x=0;
+						$incrementer =0;
+						
+					 foreach($timesheetDetails->timesheet as $timesheet) {
+						if($incrementer < 5){
 						//$p++;
 						$original = explode('-',$timesheet->currentDate);
 						$datts = $original[2].".".$original[1].".".$original[0]; 
@@ -381,11 +393,12 @@ td.shift-edit{
 					<th  class="day"><?php  echo date("D",strtotime($datts)); echo " ".dateToDay($timesheet->currentDate) ?></th>
 					<?php }
 					$incrementer++;
-					 } ?>
+					 } } ?>
 
 				</tr>
 			
 				<?php 
+				if(isset($timesheetDetails->timesheet[0])){
 				$count = count($timesheetDetails->timesheet[0]->rosteredEmployees);
 if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){
 	// $x is the total number of employees loop value;
@@ -405,13 +418,13 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 		// Counter is the total number of days;
 				//for($counter=0;$counter<1;$counter++){ ?>
 		<tr  class="table-row">
-			<td   style="min-width:13vw" class=" cell-boxes left-most">
+			<td   style="min-width:18vw" class=" cell-boxes left-most">
 				<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
-				<span class="row name-space" style="padding:0;margin:0;">
-					<span class="col-3 icon-parent">
+				<span class="row name-space m-0 p-0" style="padding:0;margin:0;margin-left: 0;margin-right: 0">
+					<span class="col-12 col-md-4 icon-parent">
 						<span class=" icon" style="<?php	echo "background:".$colors_array[rand(0,5)].";";?>"><?php echo icon($timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName)?></span>
 					</span>
-					<span class="col-9 name-role">
+					<span class=" col-12 col-md-8 name-role">
 					<span class="empname row"><?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName?></span>
 					<?php
 					$variable = 0; 
@@ -435,7 +448,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					?>
 
 					<?php 
-		for($p=0;$p<7;$p++){
+		for($p=0;$p<5;$p++){
 		    if($timesheetDetails->timesheet[$p]->rosteredEmployees != null){?>
 		<td style="" class="shift-edit " name="<?php  echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName ?>"  cal-x="<?php echo $x; ?>" cal-p="<?php echo $p; ?>" array-type="rosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empId?>" curr-date="<?php echo $timesheetDetails->timesheet[$p]->currentDate?>" timesheet-id="<?php echo $timesheetDetails->id;?>">
 
@@ -468,6 +481,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 			 	<td style="min-width:8vw;padding:7px" class="shift-edit ">
 			 		<div style="border-radius: 5px;padding:3px">
 						<div  class="div-box">
+							<span>Role : - </span>
 							<span>Total Hours : 0</span>
 							<span>Total visits : 0</span>
 						</div>
@@ -558,7 +572,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 		} 
 
 
-			 } //}?>
+			 } }?>
 			</table>
 		</div>
 	
@@ -566,10 +580,14 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 	<div class="table-div item" data-hash="week2">
 			<table style="" >
 				<tr>
-					<?php //$p =0; ?>
-					<th id="table-id-1" class="day">Employees</th>	<?php $x=0; $incrementer=0;?>
+					<?php if(isset($timesheetDetails->timesheet)){ ?>
+					<th id="table-id-1" class="day">Employees</th>
+					<?php 
+						$x=0; 
+						$incrementer=0;
+					?>
 					<?php foreach($timesheetDetails->timesheet as $timesheet) {
-						if($incrementer >= 7){
+						if($incrementer >= 7 && $incrementer < 12){
 						//$p++;
 						$original = explode('-',$timesheet->currentDate);
 						$datts = $original[2].".".$original[1].".".$original[0]; 
@@ -577,11 +595,12 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					<th  class="day"><?php  echo date("D",strtotime($datts)); echo " ".dateToDay($timesheet->currentDate) ?></th>
 					<?php } 
 					$incrementer++;
-				}?>
+				} }?>
 
 				</tr>
 			
 				<?php 
+				if(isset($timesheetDetails->timesheet[0])){
 				$count = count($timesheetDetails->timesheet[0]->rosteredEmployees);
 if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){
 	// $x is the total number of employees loop value;
@@ -629,7 +648,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					?>
 
 					<?php 
-		for($p=7;$p<14;$p++){
+		for($p=7;$p<12;$p++){
 		    if($timesheetDetails->timesheet[$p]->rosteredEmployees != null){?>
 		<td style="min-width:8vw;padding:7px" class="shift-edit " name="<?php  echo $timesheetDetails->timesheet[0]->rosteredEmployees[$p]->empName ?>"  cal-x="<?php echo $x; ?>" cal-p="<?php echo $p; ?>" array-type="rosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$p]->empId?>" curr-date="<?php echo $timesheetDetails->timesheet[$p]->currentDate?>" timesheet-id="<?php echo $timesheetDetails->id;?>">
 
@@ -662,6 +681,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 			 	<td style="min-width:8vw;padding:7px" class="shift-edit ">
 			 		<div style="border-radius: 5px;padding:3px">
 						<div  class="div-box">
+							<span>Role : - </span>
 							<span>Total Hours : 0</span>
 							<span>Total visits : 0</span>
 						</div>
@@ -752,7 +772,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 		} 
 
 
-			 } //}?>
+			 } }?>
 		</table>
 	</div>
 </div>
@@ -816,6 +836,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 				var htmlVal = $('timesheet-form').html()
 				$(document).on('click','.shift-edit',function(){
 					 modal.style.display = "block";
+					 $('.budget').after("wow")
 					var arrayType = $(this).attr('array-type');
 					var v = $(this).attr('name');
 					var w = $('.day').eq($(this).index()).html();
@@ -1035,6 +1056,17 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
     });
 
 </script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		let height = $('.div-box').eq(3).height();
+		let count =	 $('.leave').length;
+		for(let i=0;i<count;i++){
+		$('.leave').eq(i).height(height);
+			}
+			console.log(height)
+	})
+</script>
+
 </body>
 </html>
 

@@ -111,7 +111,6 @@ table,tr,td{
 .hourly{
 	font-size:12px;
 	text-align: left;
-
 }
 .hourly::before{
 	content:'$';
@@ -680,8 +679,8 @@ if($this->session->userdata('UserType')==STAFF){
 	 		<input type="text" name="roleId" id="roleId" style="display:none">
 	 		<input type="text" name="status" value="2"  id="status" style="display:none">
 	 		<input type="text" name="userId"   id="userId" style="display:none">
-	 		<input type="button" name="modal-cancel"  value="Cancel"  class="close buttonn">
-	 		<input type="button" name="shift-submit" id="shift-submit" value="Save" style="margin:30px" class="button">
+	 		<input type="button" name="modal-cancel"  value="Cancel"  class="close buttonn" style="width:5rem">
+	 		<input type="button" name="shift-submit" id="shift-submit" value="Save" style="margin:30px;width:5rem" class="button">
 	 	</form>
 	  </div>
 </div>
@@ -773,6 +772,8 @@ if($this->session->userdata('UserType')==STAFF){
 			var status = $(this).prop('value');
 			var userid = "<?php echo $userid ?>";
 			var roleid = $('#role-Id').prop('value');
+			var message = $('#message').val();
+
 			url = window.location.origin+"/PN101/roster/updateShift";
 			$.ajax({
 				url:url,
@@ -783,7 +784,8 @@ if($this->session->userdata('UserType')==STAFF){
 					shiftid:shiftid,
 					roleid:roleid,
 					status:status,
-					userid:userid
+					userid:userid,
+					message:message
 				},
 				success:function(response){
 						console.log(response)
