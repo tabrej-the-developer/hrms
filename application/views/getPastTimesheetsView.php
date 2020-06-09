@@ -298,7 +298,7 @@ table.dataTable{
 	?>
 <div class="containers">
 	<div class="d-flex heading-bar">
-		<span class="m-3" style="font-size: 2rem;font-weight: bold">Timesheet</span>
+		<span class="m-3" style="font-size: 1.75rem;font-weight: bold">Timesheet</span>
 		<span class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
 			<?php if($this->session->userdata('UserType') == SUPERADMIN){?> 
 <!-- 			<div class="filter-icon row">

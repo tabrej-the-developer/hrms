@@ -9,11 +9,21 @@ class Leave extends CI_Controller {
 			if($this->getLeaveType() == 'failed'){
 				$data['error'] = 'failed';
 			}
+			if(!isset($_GET['center'])){
+							$id = 0;
+							$oldid=1;
+						}else{
+							$id = $_GET['center'];
+							$id = intval($id)-1;
+							$oldid = $id;
+						}
+					$var['id'] = $id;
+					$var['centerId'] = $oldid;
 				$data['leaveType'] = $this->getLeaveType();
-			$data['centers'] = $this->getAllCenters();
+				$data['centers'] = $this->getAllCenters();
 			if($data['centers'] != null){
 				$centers = json_decode($data['centers'])->centers;
-				$data['leaves'] = $this->getLeaveByCenter($centers[0]->centerid);
+				$data['leaves'] = $this->getLeaveByCenter($centers[$id]->centerid);
 			}
 		} 
 		else{

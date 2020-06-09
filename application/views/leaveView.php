@@ -7,21 +7,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
 <style type="text/css">
 	*{
 font-family: 'Open Sans', sans-serif;
 	}
+	.containers{
+		background:	rgb(243, 244, 247);
+		height: calc(100vh - 50px);
+	}
   
-
+		.leave-heading{
+			font-size: 1.75rem;
+			font-weight: bolder
+		}
         .card-header {
             padding: 0.2rem 1.25rem;
             /* margin-bottom: 0; */
-            background-color: #ffffff;
+            background-color: transparent;
             border-bottom: 0px;
         }
-        
+        .card{
+        	background-color: transparent;
+        }
+        .sort-by{
+        	margin:0 0 0 2rem !important;
+        }
         .card-body {
-            padding: 0rem 1.25rem;
+            padding: 0;
+            height:75vh;
         }
         
         p {
@@ -39,6 +54,10 @@ font-family: 'Open Sans', sans-serif;
         
         .flex-wrap {
             margin-bottom: -35px;
+        }
+
+        .nav-tabs{
+        	border-bottom: none;
         }
         
         div.dataTables_wrapper div.dataTables_paginate {
@@ -67,7 +86,7 @@ font-family: 'Open Sans', sans-serif;
 		  border-radius: 1.2rem;
 		}
 		.border-shadow{
-			    box-shadow: 0 3px 10px rgba(0,0,0,.1);
+			    box-shadow: 0;
 
 		}
 		.modal-header {
@@ -80,7 +99,10 @@ font-family: 'Open Sans', sans-serif;
 		.modal-content {
 			border-radius:0;	
 		}
-		
+	.row{
+		margin-right: 0px;
+   		margin-left: 0px;
+	}
 		
 		/* tabs */
 nav > div a.nav-item.nav-link,
@@ -175,8 +197,47 @@ img{ max-width:140%;}
             content: none;
             display: none;
         }
-		
-/*corousol*/	
+
+ /* Data Tables */
+     select{
+	background: #ebebeb;
+	border-radius: 5px;
+    padding: 5px;
+    border: 2px solid #e9e9e9 !important;
+		}
+.dataTables_wrapper {
+	height:95%;
+	overflow-y: hidden;
+	background: white;
+	box-shadow: 0 0 4px 1px rgba(0,0,0,0.1);
+}
+table.dataTable tbody th, table.dataTable tbody td{
+	padding:1rem;
+	border-bottom: none;
+}
+table.dataTable thead th, table.dataTable thead td {
+    padding: 1rem;
+    border-bottom: none;
+}
+table.dataTable.no-footer{
+	border-bottom: none
+}
+table.dataTable{
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+}
+	.dataTables_paginate span .paginate_button{
+		background:none !important;
+		border:none !important;
+		border-color: transparent;
+	}
+	.dataTables_paginate{
+		position: fixed;
+		bottom: 0;
+		right: 0
+	}
+ /* Data Tables */
+/*corousel*/	
 .carousel-control-next, .carousel-control-prev {
    
     width: 2%;
@@ -187,7 +248,7 @@ img{ max-width:140%;}
     background-color: #ccc;
 }
 	
-/*corousol end*/		
+/*corousel end*/		
 		
 
    .modal-logout {
@@ -223,13 +284,29 @@ img{ max-width:140%;}
 </style>
 </head>
 <body>
-<div class="container">
+<div class="containers">
 
-              <div class="row">
-                <div class="col-sm-12 ">
-				<div class="row">
-                    <div class="col-md-12"><h4>Leave Managment</h4></div>
-                </div>
+  <div class="row">
+    <div class="col-sm-12 ">
+		<div class="row d-flex">
+	    <div class="ml-3"><span class="leave-heading">Leave Management</span></div>
+	    	<div class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
+		<?php if($this->session->userdata('UserType') == SUPERADMIN){?> 
+			<!-- 			<div class="filter-icon d-flex">
+				<span class="">Sort&nbsp;by</span>
+				<span class=""><img src="../assets/images/filter-icon.png" height="20px"></span>
+			</div> -->
+
+			<select class="center-list " id="center-list">
+				<?php $centers = json_decode($centers);	
+					for($i=0;$i<count($centers->centers);$i++){
+				?>
+			<option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid; ?>"><?php echo $centers->centers[$i]->name?></option>
+		<?php } ?>
+		</select>	
+				<?php } ?>
+	</div>
+	    </div>
 
 <?php
 	if($this->session->userdata('UserType') != SUPERADMIN){ ?>
@@ -306,7 +383,7 @@ img{ max-width:140%;}
                       <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Leave Approvals</a>
                   <?php }?>
                      
-                  	<a class="nav-item nav-link <?php if($this->session->userdata('UserType') == STAFF || $this->session->userdata('UserType') == SUPERADMIN) echo 'active';?>" id="nav-contact-tab1" data-toggle="tab" href="#nav-contact1" role="tab" aria-controls="nav-contact" aria-selected="false">My Leave Requests</a>
+                  	<!-- <a class="nav-item nav-link <?php if($this->session->userdata('UserType') == STAFF || $this->session->userdata('UserType') == SUPERADMIN) echo 'active';?>" id="nav-contact-tab1" data-toggle="tab" href="#nav-contact1" role="tab" aria-controls="nav-contact" aria-selected="false">My Leave Requests</a> -->
 					  
 
                      
@@ -716,11 +793,28 @@ img{ max-width:140%;}
 				document.getElementById("applyLeaveForm").submit();
 			}
 		}
-
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$(document).on('change','.center-list',function(){
+			var val = $(this).val();
+			if(val == null || val == ""){
+				val=1;
+			}
+		var url = "<?php echo base_url();?>leave?center="+val;
+		$.ajax({
+			url:url,
+			type:'GET',
+			success:function(response){
+				$('tbody').html($(response).find('tbody').html());
+					}
+				});
+			});
+		})
 	</script>
 <script type="text/javascript">
 	$(document).ready(()=>{
-    $('.container').css('paddingLeft',$('.side-nav').width());
+    $('.containers').css('paddingLeft',$('.side-nav').width());
 });
 </script>
 <?php if( isset($error) != null){ ?>
@@ -741,4 +835,22 @@ else{
 
 };
 ?>
+<script type="text/javascript">
+	  $(document).ready( function () {
+		    $('table').dataTable({
+		     pageLength:7,
+		     ordering : false,
+		     select: false,
+		     searching : false
+		    });
+		} );
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+			$('.dataTables_length').remove()
+			$('.dataTables_info').remove()
+			$('#ui-datepicker-div').hide()
+			$('.table-div').css('maxWidth','100vw')
+		})
+</script>
 </html>

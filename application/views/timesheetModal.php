@@ -24,6 +24,22 @@ font-family: 'Open Sans', sans-serif;
 		display: inline-block;
 		margin: 2px
 		}
+		.close{
+		background-color: #9E9E9E !important;
+	 	border: none;
+	 	color: white !important;
+	 	padding: 10px 10px !important;
+	 	text-align: center;
+	 	text-decoration: none;
+	 	display: inline-block;
+	 	margin: 2px;
+	    float:none; 
+	    font-size: 1rem; 
+	    font-weight: bolder; 
+	    line-height: inherit; 
+	    text-shadow: none; 
+	    opacity: 1;
+		}
 		.time-box{
 			cursor:pointer;
 		}
@@ -150,7 +166,12 @@ foreach($timesheetDetails->timesheet[$ya]->unrosteredEmployees[$xa]->clockedTime
 	?>
 		<div class="budget">Budget : </div>
 		<div class="d-flex justify-content-center">
-			<button class="buttonn ">Create Pay Roll</button>
+			<div class="">
+				<button class="close">Close</button>
+			</div>
+			<div class="">
+				<button class="buttonn ">Create Payroll</button>
+			</div>
 		</div>
 </div>
 

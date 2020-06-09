@@ -162,6 +162,7 @@ max-width:30vw;
   display: inline-block;
   margin: 2px
 }
+
 .cell-back-1{
 	margin:0 10px 0 10px;
 }
@@ -809,12 +810,12 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 	  			<span class="box-name row"></span>
 	  			<span class="box-space row"></span>
 	  		</span>
-	  		<span class="close col-2 d-flex align-items-center" >&times;</span>
+	  		
 	  	</span>
 	    
-	    <form  id="timesheet-form">
+	    <div  id="timesheet-form">
 			
-	 	</form>
+	 	</div>
 	  </div>
 </div>
 <?php } ?>
@@ -836,20 +837,28 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 				var htmlVal = $('timesheet-form').html()
 				$(document).on('click','.shift-edit',function(){
 					 modal.style.display = "block";
-					 $('.budget').after("wow")
 					var arrayType = $(this).attr('array-type');
+					// console.log(arrayType)
 					var v = $(this).attr('name');
+					// console.log(v)
 					var w = $('.day').eq($(this).index()).html();
+					// console.log(w)
 					var x = $(this).attr('cal-x');
+					// console.log((x))
 					var y = $(this).attr('cal-p');
-					var eId = $('#employee-id').val($('this').attr('emp-id'))
+					// console.log(y)
+					var eId = $('#employee-id').val($(this).attr('emp-id'))
+					// console.log(eId)
 					var sDate = $('#start-date').val($(this).attr('curr-date'))
+					// console.log(sDate)
 					var tId = $('#timesheet-id').val($(this).attr('timesheet-id'))
+					// console.log(tId)
 	var url = "<?php echo base_url();?>timesheet/getTimesheetDetailsModal?timesheetId="+"<?php echo $timesheetid;?>&x="+x+"&y="+y+"&aT="+arrayType ;
 					 $.ajax({
 					 	url : url,
 					 	type : 'GET',
 					 	success : function(response){
+					 		console.log('success')
 					 		$('.box-name').html(v)
 					 		$('.box-space').html(w)
 					 		$('#timesheet-form').html(response)
@@ -965,8 +974,8 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 	})
 </script>
 <script type="text/javascript">
-	$(document).on('click','.buttonn',function(e){
-		e.preventDefault();
+	$(document).on('click','.buttonn',function(){
+		alert('gone')
 		var i = $(".box-time").length;
 		var values = [];
 		var object = {};
@@ -999,7 +1008,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 			success : function(response){
 				alert('done')
 			}
-		})
+		}).fail(function(){alert('failed')})
 		})
 </script>
 

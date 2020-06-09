@@ -233,7 +233,7 @@ font-family: 'Open Sans', sans-serif;
     	cursor: pointer
     }
     #roster-heading{
-    	font-size: 2rem;
+    	font-size: 1.75rem;
     	font-weight: bold
     }
     select{
@@ -343,8 +343,9 @@ table.dataTable{
 					<option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid; ?>"><?php echo $centers->centers[$i]->name?></option>
 				<?php } ?>
 				</select>	
+						<?php } ?>
 		</span>
-		<?php } ?>
+
 		<?php if($this->session->userdata('UserType') == SUPERADMIN || $this->session->userdata('UserType') == ADMIN ){?>
 		<span class="btn ml-auto d-flex align-self-center create"><a href="javascript:void(0)" id="create-new-roster" class="d-flex">
 			<span style="margin:0 10px 0 10px">
@@ -526,19 +527,14 @@ $("#roster-date").datepicker();
 	<script type="text/javascript">
 		
    var modal = document.querySelector(".modal-logout");
-   
-    function toggleModal() {
-        modal.classList.toggle("show-modal");
-    }
-
-$(document).ready(function(){
-  	toggleModal();	
-  })
-
+       function toggleModal() {
+   	     modal.classList.toggle("show-modal");
+    	}
+	$(document).ready(function(){
+  		toggleModal();	
+  		});
 	</script>
-<?php }
-
-?>
+<?php }	?>
 
 <script type="text/javascript">
 	  $(document).ready( function () {

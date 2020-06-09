@@ -38,7 +38,7 @@
     	font-weight: bold
     }
 		.table-div{
-			height:70vh;
+			height:75vh;
 			overflow-y: auto;
 			padding: 0 20px;
 		}	
@@ -48,9 +48,6 @@
 		}
 		.sort-by{
 
-		}
-		table{
-			box-shadow: 0 0 20px 2px #eeeff2;
 		}
 		
 
@@ -267,10 +264,14 @@ table.dataTable{
 			$date = explode("-",$date);
 			return date("M d",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
 		}
+		function dateToDayAndYear($date){
+			$date = explode("-",$date);
+			return date("M d, Y",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
+		}
 	?>
 <div class="containers">
 	<div class="d-flex">
-		<span class="m-3" style="font-size: 2rem;font-weight: bold">Payrolls</span>
+		<span class="m-3" style="font-size: 1.75rem;font-weight: bold">Payrolls</span>
 		<span class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
 			<?php if($this->session->userdata('UserType') == SUPERADMIN){?> 
 <!-- 			<div class="filter-icon row">
@@ -323,8 +324,8 @@ table.dataTable{
 					<?php if($this->session->userdata('UserType') ==SUPERADMIN ) { ?>
 					<td><?php echo 'Payroll | '.dateToDay($payroll->timesheets[$i]->startDate).'-'.dateToDay($payroll->timesheets[$i]->endDate) ?></td>
 				<?php }?>
-					<td><?php echo $payroll->timesheets[$i]->startDate ?></td>
-					<td><?php echo $payroll->timesheets[$i]->endDate ?></td>
+					<td><?php echo dateToDayAndYear($payroll->timesheets[$i]->startDate) ?></td>
+					<td><?php echo dateToDayAndYear($payroll->timesheets[$i]->endDate) ?></td>
 					<td><?php echo $payroll->timesheets[$i]->status ?></td>
 					</tr>
 				<?php }?>
