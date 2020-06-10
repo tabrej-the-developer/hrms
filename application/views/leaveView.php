@@ -431,7 +431,7 @@ table.dataTable{
 	                        	// print_r($leaveRequests);
 	                        		$leaveRequests = json_decode($leaveRequests);
 	                        		foreach ($leaveRequests->leaves as $leave) { 
-	                        			if($leave->userid != $this->session->userdata('LoginId')){ 
+
                         			?>
 									<tr>
 										<td><?php echo $leave->name;?></td>
@@ -459,14 +459,19 @@ table.dataTable{
 		                                    </div>
 		                                </div>
 										</td>
-										<td>
+										<td class="d-flex">
 										<?php 
-											if($leave->status == "Applied"){ ?>
-												<div onclick="updateLeaveApp('<?php echo $leave->id;?>','2')">
-													<i class="far fa-check-circle" style="color:green;font-size:18px;"></i>
+							if($leave->userid == $this->session->userdata('LoginId')){
+								echo $leave->status;
+							}else{
+											if($leave->status == "Applied"){ 
+
+												?>
+												<div onclick="updateLeaveApp('<?php echo $leave->id;?>','2')" class="pr-1">
+													<img src="<?php echo base_url("assets/images/accept.png"); ?>" style="max-width:1.3rem;cursor: pointer" />
 												</div>
-												<div onclick="updateLeaveApp('<?php echo $leave->id;?>','3')">
-													<i class="far fa-times-circle" style="color:red;font-size:18px;margin-left:10px;"></i>
+												<div onclick="updateLeaveApp('<?php echo $leave->id;?>','3')" class="pl-1">
+													<img src="<?php echo base_url("assets/images/deny.png"); ?>"  style="max-width:1.3rem;cursor: pointer">
 												</div>
 										<?php }
 											else{
@@ -475,11 +480,11 @@ table.dataTable{
 													<?php echo $leave->status;?>
 												</span>
 												<?php
-											}
+											}}
 										?>
 										</td>
 									</tr>
-								<?php }}?>
+								<?php }?>
 								
 	                        </tbody>
 	                    </table>
