@@ -438,13 +438,15 @@ function icon($str){
 					else $count = 0;
 if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){
 				for($x=0;$x<$count;$x++){ 
-
-					if($rosterDetails->roster[$x]->isRoomYN == "Y")
-						{?>
+					?>
 				<tr >
 					<td colspan="7" class="area-name" area-value="<?php echo $rosterDetails->roster[$x]->areaId ?> "><?php echo $rosterDetails->roster[$x]->areaName ?></td>
 				</tr>
 				<?php $occupancy = 0; ?>
+				<?php
+					if($rosterDetails->roster[$x]->isRoomYN == "Y")
+						{
+				?>
 				<tr>
 					<td></td>
 					<td><?php echo $rosterDetails->roster[$x]->occupancy[0]->occupancy?></td>
@@ -455,6 +457,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					<td> </td>
 				</tr>
 				<?php 
+			}
 				if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){
 				$value = count($rosterDetails->roster[$x]->roles);
 		}
@@ -526,7 +529,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					<td class=" " style="width:12vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
 
 				</tr>
-			<?php } } } } }?>
+			<?php } }  } }?>
 
 
 	<?php 

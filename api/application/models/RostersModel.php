@@ -46,10 +46,10 @@ class RostersModel extends CI_Model {
 		return $rosterid;
 	}
 
-	public function createNewShift($rosterid,$date,$userid,$startTime,$endTime,$roleid){
+	public function createNewShift($rosterid,$date,$userid,$startTime,$endTime,$roleid,$message=null){
 		$this->load->database();
 		$shiftid = uniqid();
-		$this->db->query("INSERT INTO shift VALUES('$shiftid','$rosterid','$date','$userid',$startTime,$endTime,$roleid,1)");
+		$this->db->query("INSERT INTO shift VALUES('$shiftid','$rosterid','$date','$userid',$startTime,$endTime,$roleid,1,'$message')");
 		return $shiftid;
 	}
 
