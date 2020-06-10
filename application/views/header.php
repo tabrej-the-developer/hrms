@@ -289,9 +289,6 @@ font-family: 'Open Sans', sans-serif;
 </body>
 
 
-<!-- Datatable start -->
-    
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.20/b-1.6.1/b-colvis-1.6.1/b-html5-1.6.1/b-print-1.6.1/r-2.2.3/datatables.min.js"></script>
-    <!-- Datatable end -->
+
 
 </html>

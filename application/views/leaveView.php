@@ -43,6 +43,46 @@ font-family: 'Open Sans', sans-serif;
             margin-top: 0;
             margin-bottom: 10px;
         }
+        .balance-tile{
+        	padding: 0 2rem !important;
+        	position: relative;
+        }
+        .balance-tile-div{
+        	height: 8rem;
+			    background: blue;
+			    border-radius: 5px;
+			    color: white;
+			    position: relative;
+        }
+        .leave-name{
+        	width: 100%;
+    			display: inline-block;
+        	text-align: left;
+        }
+        .leave-balance{
+        	position: absolute;
+        	bottom: 0;
+        	text-align: right;
+        	width: 100%
+        }
+        .leave-balance:before{
+        	content: 'Hrs : ';
+        	color: white;
+        }
+
+        .cardContainer {
+				  display: flex;
+				  justify-content: center;
+				}
+				.cardItem {
+				  text-align: center;
+				  transition: all 500ms ease-in-out;
+				}
+				.cardItem:hover {
+					  cursor: pointer;
+					  box-shadow: 0px 12px 30px 0px rgba(0, 0, 0, 0.2);
+					  transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
+				}
         
         .card {
             border-radius: 0px;
@@ -58,6 +98,13 @@ font-family: 'Open Sans', sans-serif;
 
         .nav-tabs{
         	border-bottom: none;
+        }
+        .heading-leave-approval{
+        	display: flex;
+        	justify-content: flex-start;
+        	color: black;
+        	font-weight: bolder;
+        	font-size: 1.5rem
         }
         
         div.dataTables_wrapper div.dataTables_paginate {
@@ -89,6 +136,9 @@ font-family: 'Open Sans', sans-serif;
 			    box-shadow: 0;
 
 		}
+		.no-gutters > div{
+			display: inline-block !important;
+		}
 		.modal-header {
 			border-bottom:none;
 			border-top-left-radius:0;
@@ -105,42 +155,13 @@ font-family: 'Open Sans', sans-serif;
 	}
 		
 		/* tabs */
-nav > div a.nav-item.nav-link,
-nav > div a.nav-item.nav-link.active
-{
-  border: none;
-    padding: 10px 15px;
-    color:#212528;
-    background:#307bd3;
-    border-radius:0;
-    font-size:15px;
-    font-weight:500;
-}
-nav > div a.nav-item.nav-link.active:after
- {
-  content: "";
-  position: relative;
-  bottom: -46px;
-  left: -10%;
-  border: 15px solid transparent;
-  border-top-color: #ddd ;
-}
+
+
 .tab-content{
     line-height: 25px;
-    padding:30px 25px;
+    padding:0 !important;
 }
-.nav-item{
-	color:white !important;
-}
-nav > div a.nav-item.nav-link:hover,
-nav > div a.nav-item.nav-link:focus
-{
-  border: none;
-    background: #307bd3 !important;
-    color:#212528;
-    border-radius:0;
-    transition:background 0.20s linear;
-}
+
 		/* tabs end */
 		
 		
@@ -313,7 +334,7 @@ table.dataTable{
 				<div class="row mt-3">
                     <div class="col-md-12"><h6>Leave Balance</h6></div>
                 </div>
-				<div class="row shadow-sm p-3 mb-4 bg-white rounded vdivide">
+				<div class="row shadow-sm mb-4 bg-white rounded vdivide">
                     
 					<!-- <div class="col-sm-3">
 					<div class="chat_people">
@@ -329,26 +350,19 @@ table.dataTable{
 			<div id="recipeCarousel" class="carousel slide w-100" data-ride="">
         <div class="carousel-inner w-100" role="listbox">
         	<?php
+        		// print_r($balance);
         		$balance = json_decode($balance);
         		for($i=0;$i<count($balance->balance);$i+=3){ ?>
-            <div class="carousel-item row no-gutters <?php if($i == 0) echo 'active';?>">
+            <div class="carousel-item row no-gutters  <?php if($i == 0) echo 'active';?>">
         	<?php 
         		$var = 0;
         		while($var < 3){ 
         			if($var+$i < count($balance->balance)){
     			?>
-                 <div class="col-4 float-left">
-					<div class="text-center">
-						<div class="c100 p12 small green">
-							<span><?php echo sprintf('%.2f',$balance->balance[$i + $var]->leavesRemaining);?></span>
-							<div class="slice">
-								<div class="bar"></div>
-								<div class="fill"></div>
-							</div>
-						</div>
-						<p><?php echo $balance->balance[$i + $var]->leaveName;?></p>
-						<small> <i class="far fa-circle rounded-circle" style=";background-color:green;color:green;"></i> Used Leaves</small><br>
-						<small> <i class="far fa-circle rounded-circle" style=";background-color:#ccc;color:#ccc;"></i> Balance Leaves</small>
+         <div class="col-md-4 balance-tile cardContainer">
+         	<div class="balance-tile-div cardItem">
+							<div class="leave-name"><?php echo $balance->balance[$i + $var]->leaveName;?></div>
+							<div class="leave-balance"><?php echo sprintf('%.2f',$balance->balance[$i + $var]->leavesRemaining);?></div>
 					</div>
 				</div> 
 			<?php 
@@ -376,11 +390,11 @@ table.dataTable{
 <?php }?>
 
                  <nav>
-                    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                    <div class="nav  nav-fill" id="nav-tab" >
 
 	              <?php
 	              	if($this->session->userdata('UserType') != STAFF && $this->session->userdata('UserType') != SUPERADMIN){ ?>
-                      <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Leave Approvals</a>
+                      <a class="nav-item nav-link heading-leave-approval" >Leave Approvals</a>
                   <?php }?>
                      
                   	<!-- <a class="nav-item nav-link <?php if($this->session->userdata('UserType') == STAFF || $this->session->userdata('UserType') == SUPERADMIN) echo 'active';?>" id="nav-contact-tab1" data-toggle="tab" href="#nav-contact1" role="tab" aria-controls="nav-contact" aria-selected="false">My Leave Requests</a> -->
@@ -414,6 +428,7 @@ table.dataTable{
 	                        </thead>
 	                        <tbody>
 	                        	<?php
+	                        	// print_r($leaveRequests);
 	                        		$leaveRequests = json_decode($leaveRequests);
 	                        		foreach ($leaveRequests->leaves as $leave) { 
 	                        			if($leave->userid != $this->session->userdata('LoginId')){ 

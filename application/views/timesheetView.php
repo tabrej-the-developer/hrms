@@ -112,8 +112,10 @@ table,tr,td{
 }
 .title{
 	font-size:12px;
-	padding-left: 1rem
-	
+	padding-left: 1rem;
+}
+table{
+	width: 100%
 }
 .icon{
 	font-size:1rem;
