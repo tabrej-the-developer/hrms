@@ -101,7 +101,12 @@ input[type="submit"]{
     text-align: left
 }
 .submit-block{
-    padding: 0 30%;
+    padding: 30% 30%;
+}
+.remember-me{
+    color: #9E9E9E;
+    font-weight: 400;
+    font-size: 13px
 }
 @media only screen and (max-width:500px){
     body{
@@ -129,7 +134,7 @@ input[type="submit"]{
                     <div class="col-md-3 login-form-2 d-flex justify-content-center">
                         <img src="<?php echo base_url();?>assets/images/Todquest_logo.png" alt="company_logo" class="img-fluid " width="200" height="200">
                     </div> 
-                    <div><h1 style="font-weight: 900;font-family: OpenSans;color: #9B9B9B">Login</h1></div>
+                    <div><h1 style="font-weight: 900;font-family: Open Sans;color: #9B9B9B">Login</h1></div>
                      <form method="post" action="<?php echo base_url('welcome/login'); ?>">    
 					  <?php  echo '<label class="text-danger">'.$this->session->flashdata("error").'</label>';  ?>
                         <div class="form-group">
@@ -142,9 +147,13 @@ input[type="submit"]{
 
                         <center><span style="color: red;"><?php echo $errorText;?></span></center>
                         
-                        <div class="form-group text-right">
+                    <div class="d-flex justify-content-around position-relative">
+                        <div class="remember-me position-absolute ml-auto" style="left:0">
+                            <input type="checkbox" name="" class=""> Remember me</div>
+                        <div class="form-group d-flex justify-content-end position-absolute mr-auto" style="right:0">
                              <a href="<?php echo site_url('welcome/forgotPassword') ?>" class="ForgetPwd">Forgot Password?</a> 
                         </div>
+                    </div>
 						<div class="form-group submit-block">
                             <input type="submit" name="insert" class="btnSubmit rounded" value="LOGIN" />
                         </div>
