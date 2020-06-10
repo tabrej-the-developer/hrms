@@ -136,6 +136,7 @@ public function createRoster(){
 			$data['centerid'] = $this->input->post('centerId');
 			$data['userid'] = $this->session->userdata('LoginId');
 			$data['staff'] = $this->getUsers();
+			$data['message'] = $this->input->post('message');
 
 		 		$url = BASE_API_URL."/Rosters/createRoster";
 				$ch = curl_init($url);
