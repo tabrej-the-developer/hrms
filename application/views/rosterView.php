@@ -273,6 +273,29 @@ table.dataTable{
 		bottom: 0;
 		right: 0
 	}
+	.loader {
+	  border: 16px solid #f3f3f3;
+	  border-radius: 50%;
+	  border-top: 16px solid #307bd3;
+	  width: 120px;
+	  height: 120px;
+	  animation: spin 2s linear infinite;
+	}
+	.loading{
+		position: fixed;
+		height: 100vh;
+		width: 100vw;
+		top: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	@keyframes spin {
+	  0% { transform: rotate(0deg); }
+	  100% { transform: rotate(360deg); }
+	}
+
     @media only screen and (max-width :600px){
     	.modal-content {
 		  background-color: #fefefe;
@@ -442,21 +465,26 @@ table.dataTable{
         
     </div>
 </div>
-
+<div class="loading">
+	<div class="loader"></div>
+</div>
 
 <script type="text/javascript">
 	$(document).ready(function(){
 		<?php if($this->session->userdata('UserType')==SUPERADMIN){?>
 		$(document).on('change','.center-list',function(){
+			
 			var val = $(this).val();
 			if(val == null || val == ""){
 				val=1;
 			}
 		var url = "<?php echo base_url();?>roster/roster_dashboard?center="+val;
+				loader_icon();
 		$.ajax({
 			url:url,
 			type:'GET',
 			success:function(response){
+				remove_loader_icon();
 				$('#tbody').html($(response).find('#tbody').html());
 				document.getElementById('center-id').value = parseInt(val);
 			}
@@ -520,6 +548,7 @@ $("#roster-date").datepicker();
 </script>
 <script type="text/javascript">
 	$(document).ready(()=>{
+		remove_loader_icon();
     $('.containers').css('paddingLeft',$('.side-nav').width());
 });
 </script>
@@ -553,6 +582,14 @@ $("#roster-date").datepicker();
 			$('#ui-datepicker-div').hide()
 			$('.table-div').css('maxWidth','100vw')
 		})
+</script>
+<script type="text/javascript">
+	function remove_loader_icon(){
+		$('.loading').hide();
+	};
+	function loader_icon(){
+		$('.loading').show();
+	};
 </script>
 </body>
 </html>

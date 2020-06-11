@@ -114,8 +114,12 @@ table,tr,td{
 	font-size:12px;
 	padding-left: 1rem;
 }
+.owl-item{
+	max-width: 100vw
+}
 table{
-	width: 100%
+	min-width: 100%;
+	max-width: 100%;
 }
 .icon{
 	font-size:1rem;
@@ -246,6 +250,7 @@ max-width:30vw;
   display: inline-block;
   margin: 2px
 }
+.nanvbar{}
 .Added{
 	background: #9E9E9E
 }
@@ -421,7 +426,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 		// Counter is the total number of days;
 				//for($counter=0;$counter<1;$counter++){ ?>
 		<tr  class="table-row">
-			<td   style="min-width:18vw" class=" cell-boxes left-most">
+			<td   style="min-width:14vw" class=" cell-boxes left-most">
 				<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
 				<span class="row name-space m-0 p-0" style="padding:0;margin:0;margin-left: 0;margin-right: 0">
 					<span class="col-12 col-md-4 icon-parent">
@@ -491,7 +496,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					</div>
 			 	</td>
 		<?php	 }} ?>
-<!-- 			<td class=" " style="min-width:18vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
+<!-- 			<td class=" " style="min-width:14vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
  -->		</tr>
 
 			<?php $x = $x+1;
@@ -516,7 +521,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 		// Counter is the total number of days;
 				//for($counter=0;$counter<1;$counter++){ ?>
 				<tr  class="table-row">
-					<td   style="min-width:18vw" class=" cell-boxes left-most">
+					<td   style="min-width:14vw" class=" cell-boxes left-most">
 						<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
 
 						<span class="row" style="padding:0;margin:0;">
@@ -623,7 +628,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 		// Counter is the total number of days;
 				//for($counter=0;$counter<1;$counter++){ ?>
 		<tr  class="table-row">
-			<td   style="min-width:18vw" class=" cell-boxes left-most">
+			<td   style="min-width:14vw" class=" cell-boxes left-most">
 				<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
 				<span class="row name-space" style="padding:0;margin:0;">
 					<span class="col-3 icon-parent"><span class=" icon" style="<?php	echo "background:".$colors_array[rand(0,5)].";";?>"><?php echo icon($timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName)?></span></span>
@@ -691,7 +696,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					</div>
 			 	</td>
 		<?php	 }} ?>
-<!-- 			<td class=" " style="min-width:18vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
+<!-- 			<td class=" " style="min-width:14vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
  -->		</tr>
 
 			<?php $x = $x+1;
@@ -716,7 +721,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 		// Counter is the total number of days;
 				//for($counter=0;$counter<1;$counter++){ ?>
 				<tr  class="table-row">
-					<td   style="min-width:18vw" class=" cell-boxes left-most">
+					<td   style="min-width:14vw" class=" cell-boxes left-most">
 						<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
 
 						<span class="row" style="padding:0;margin:0;">
