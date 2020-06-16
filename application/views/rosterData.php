@@ -470,8 +470,11 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 						<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
 
 						<span class="row name-space" style="padding:0;margin:0;">
-							<span class="col-4 icon-parent"><span class=" icon" style="
-<?php	echo "background:".$colors_array[rand(0,5)].";";?>"><?php echo icon($rosterDetails->roster[$x]->roles[$counter]->empName)?></span></span>
+							<span class="col-4 icon-parent">
+								<span class=" icon" style="
+									<?php	echo "background:".$colors_array[rand(0,5)].";";?>"><?php echo icon($rosterDetails->roster[$x]->roles[$counter]->empName)?>
+								</span>
+							</span>
 							<span class="col-8 name-role">
 								<span class="empname row "><?php echo $rosterDetails->roster[$x]->roles[$counter]->empName?></span>
 			<?php

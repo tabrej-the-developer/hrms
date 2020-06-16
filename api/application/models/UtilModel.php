@@ -37,4 +37,10 @@ class UtilModel extends CI_Model {
 		$this->load->database();
 		$query = $this->db->query("UPDATE footprints SET end_time = '$end_time' WHERE id = $id");
 	}
+
+		public function getUserDetails($userid){
+			$this->load->database();
+			$query = $this->db->query("SELECT * FROM users where id = '$userid' ");
+			return $query->result();
+		}
 }

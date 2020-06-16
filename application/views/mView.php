@@ -1,3 +1,6 @@
+<?php
+$colors_array = ['#8dba5e','#9ebdff','#dd91ee','#f7c779','#a9bfaf','#6b88ca'];
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,27 +43,31 @@ body {
 .members-box{
   height: 165px;
   overflow-y: scroll;
-    background-color:#9e9e9e33;
+    background-color:#fff;
 }
 
 .individual-box{
   height: 129px;
   overflow-y: scroll;
-    background-color:#9e9e9e33;
+    background-color:#fff;
+    padding-left: 1.5rem
 }
 .messages-box{
   height: 206px;
   overflow-y: scroll;
-    background-color:#9e9e9e33;
+  background-color:#fff;
+  padding-left: 1.5rem 
 }
 .chat-box {
   height: 550px;
   overflow-y: scroll;
-  background-color:#9e9e9e33;
+  background-color:#fff;
 }
 
 .rounded-lg {
-  border-radius: 0.5rem;
+  border-radius: 0 !important;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 input::placeholder {
@@ -72,10 +79,10 @@ padding:13px 29px 10px 20px;
  overflow:hidden; 
  }
  .headind_srch{ 
-	padding:13px 29px 10px 20px;
+	padding:0.75rem 0.5rem 0.75rem 1rem;
 	overflow:hidden;
 	background-color:#9e9e9e33; 
-	box-shadow: 0px 1px 1px #ccc;
+	box-shadow: none;
  }
 .has-search .form-control {
     padding-left: 2.375rem;
@@ -100,7 +107,7 @@ padding:13px 29px 10px 20px;
 .search-bar{
 	border-radius:15px;
 	border:none;
-	box-shadow: 1px 1px 2px #666;
+	box-shadow: none;
 }
 .form-control-sm {
     height: calc(1.5em + 0.5rem + 2px);
@@ -121,7 +128,7 @@ padding:13px 29px 10px 20px;
 }
 .msg_send_btn{
 	border: none;
-    color: #0ed9fa;
+    color: #25C14A;
     font-weight: 500;
     background-color: transparent;
     margin: 10px;
@@ -191,7 +198,7 @@ table {
 }
 p.ovrflowtext {
   white-space: nowrap; 
-  width: 250px; 
+  width: 100%; 
   overflow: hidden;
   text-overflow: ellipsis; 
   border: 1px solid #000000;
@@ -304,6 +311,78 @@ p.ovrflowtext {
 }
 .toggle.active:before{
 	content:'\f00d';
+}
+
+.left-bar{
+  max-width: 250px;
+  min-width: 250px;
+}
+.left-bar-heading{
+  font-size:0.9rem;
+  color: black;
+  font-weight: 500
+}
+.text-small{
+  font-size: 0.75rem
+}
+.text-small-chat{
+  font-size: 0.9rem;
+  color: #3D3C40;
+}
+.text-small-chat-message{
+  font-size: 0.8rem;
+  color: #3D3C40;
+}
+.left-bar-title{
+  color: #084183 !important;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+.attach_file{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 1rem
+}
+.attach_file > img{
+  height: 1.5rem;
+}
+.circle_plus{
+  display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 0.75rem
+}
+.circle_plus > img{
+  height: 1.5rem
+}
+.name-chat-box{
+  font-weight: 700;
+  color: #3D3C40 !important;
+}
+.chat-message-time{
+  color: #BABBBF;
+  font-size: 0.6rem
+}
+.bg-light{
+  background: #f2f2f2 !important;
+}
+.icon{
+  font-size:0.75rem;
+  display:flex;
+  justify-content:center;
+  align-self: center;
+  border-radius: 50%;
+  padding:0.25rem 0;
+  color:white;
+  height: 1.5rem;
+  width: 1.5rem;
+}
+.icon-parent{
+  display: flex;
+  align-content: center;
+  justify-content: center
+  padding:0;
 }
 
 
@@ -519,7 +598,7 @@ p.ovrflowtext {
 }
 .pointer {cursor: pointer;}
 .container{
-  max-width:95%;
+  max-width:100%;
 }
    .modal-logout {
         position: fixed;
@@ -550,6 +629,11 @@ p.ovrflowtext {
         transform: scale(1.0);
         transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
     }
+    @media only screen and (max-width: 600px){
+      .left-bar{
+        max-width:auto;
+      }
+    }
 </style>
 </head>
 
@@ -559,12 +643,12 @@ p.ovrflowtext {
 
   <div class="row rounded-lg overflow-hidden shadow">
     <!-- Users box-->
-    <div class="col-4 px-0" style="background-color:#ccc;">
+    <div class="col-4 px-0 left-bar" style="background-color:#ccc;">
       <div class="bg-white">
 
-        <div class="headind_srch">
+        <div class="headind_srch d-flex">
 			<div class="has-search">
-			<i class="fas fa-search feedback" style=""></i>
+			<i class="feedback" style=""></i>
 				<input type="text" class="search-bar form-control form-control-sm" placeholder="Search Employee" id="searchInput">
 						<script>
                             $(document).ready(function () {
@@ -577,9 +661,10 @@ p.ovrflowtext {
                             });
                         </script>
 			</div>
+      <div class="circle_plus" ><img src="<?php echo site_url().'assets/images/circle_plus.png'?>"></div>
         </div>
-		<div class="bg-gray px-4 py-2" style="background-color:#9e9e9e33;">
-          <p class="h6 mb-0 py-1">General</p>
+		<div class="bg-gray px-4 py-2" style="background-color:#fff;">
+          <p class="h6 left-bar-title mb-0 py-1">General</p>
         </div>
 
         <div class="messages-box" id="get_users">
@@ -592,17 +677,23 @@ p.ovrflowtext {
             <div onclick="loadNewChat('<?php echo $rc->id;?>','<?php echo $rc->isGroupYN;?>')" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people pointer <?php echo $rc->id == $currentUserId ? 'active_chat' : '';?> ">
               <div class="media">
 			 <div class="icon-container">
-			 <?php
+			 <!-- <?php
 				if($rc->imgUrl == null || $rc->imgUrl == "") {
 					$rc->imgUrl = base_url().'assets/images/defaultUser.png';
 					}
 				?>
-			  <img src="<?php echo $rc->imgUrl;?>" alt="user" width="30" class="rounded-circle">
+			  <img src="<?php echo $rc->imgUrl;?>" alt="user" width="20" class="rounded-circle"> -->
+          <span class="icon-parent">
+            <span class=" icon" style="
+              <?php echo "background:".$colors_array[rand(0,5)].";"?>">
+              <?php echo icon($rc->name)?>
+            </span>
+          </span>
 			  </div>
-                <div class="media-body ml-4">
+                <div class="media-body ml-0">
                   <div class="d-flex align-items-center justify-content-between mb-1">
                     <div class="rounded ">
-					 <h6 class="mb-0"><?php echo $rc->name;?></h6>
+					 <h6 class="mb-0 left-bar-heading"><?php echo $rc->name;?></h6>
 					  <p class="text-small mb-0 text-muted ovrflowtext"><?php echo $rc->lastText;?></p>
 					</div>
                   </div>
@@ -615,8 +706,8 @@ p.ovrflowtext {
 
           </div>
         </div>
-		<div class="bg-gray px-4 py-2" style="background-color:#9e9e9e33; border-top: 1px solid #ccc;">
-		  <a style="text-decoration: none; color:#212529;" href="<?php echo site_url('messenger_api_controller')?>"><p class="h6 mb-0 py-1">Individual</p></a>
+		<div class="bg-gray px-4 py-2" style="background-color:#fff; border-top: 1px solid #ccc;">
+		  <a style="text-decoration: none; color:#212529;" href="<?php echo site_url('messenger_api_controller')?>"><p class="h6 left-bar-title mb-0 py-1">Individual</p></a>
         </div>
 		 <div class="individual-box">
 			<?php
@@ -626,16 +717,22 @@ p.ovrflowtext {
           <div onclick="loadNewChat('<?php echo $chat->userid;?>','N')" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people pointer">
             <div class="media">
               <div class="icon-container">
-              <?php
+              <!-- <?php
                 if($chat->imageUrl == null || $chat->imageUrl == "") {
                 $chat->imageUrl = base_url().'assets/images/defaultUser.png';
                 }
               ?>
-              <img src="<?php echo $chat->imageUrl;?>" alt="user" width="30" class="rounded-circle">
+              <img src="<?php echo $chat->imageUrl;?>" alt="user" width="20" class="rounded-circle"> -->
+              <span class="icon-parent">
+                <span class=" icon" style="
+                  <?php echo "background:".$colors_array[rand(0,5)].";"?>">
+                  <?php echo icon($chat->username)?>
+                </span>
+              </span>
               </div>
-                <div class="media-body ml-4">
+                <div class="media-body ml-0">
                   <div class="d-flex align-items-center justify-content-between mb-1">
-                    <h6 class="mb-0"><?php echo $chat->username;?></h6>
+                    <h6 class="mb-0 left-bar-heading"><?php echo $chat->username;?></h6>
                   </div>
                 </div>
               </div>
@@ -644,10 +741,10 @@ p.ovrflowtext {
 			
 		 </div>
 		 
-		 <div class="row bg-gray px-4 py-2" style="background-color:#9e9e9e33; border-top: 1px solid #ccc;">
+		 <div class="row bg-gray px-4 py-2" style="background-color:#fff; border-top: 1px solid #ccc;">
 			<div class="col-md-6">
 			<a style="text-decoration: none; color:#212529;" href="javascript:void(0);">
-			<p class="h6 mb-0 py-1">Groups </p></a>
+			<p class="h6 left-bar-title mb-0 py-1">Groups </p></a>
 			</div>
 			
 			<div class="col-md-6 text-right">
@@ -666,9 +763,9 @@ p.ovrflowtext {
              <div onclick="loadNewChat('<?php echo $group->groupid;?>','Y')" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people pointer">
                      <div class="media">
                 
-                       <div class="media-body ml-4">
+                       <div class="media-body ml-0">
                          <div class="d-flex align-items-center justify-content-between mb-1">
-                           <h6 class="mb-0"><?php echo $group->groupName;?></h6>
+                           <h6 class="mb-0 left-bar-heading"><?php echo $group->groupName;?></h6>
                          </div>
                        </div>
              <!--   <div class="col-md-6 avatar-group text-right">
@@ -696,7 +793,7 @@ p.ovrflowtext {
 	 <div class="group-box"></div>
     <!-- Chat Box-->
 	
-    <div class="col-8 px-0">
+    <div class="col px-0">
 			
    <div class="media headind_srchs">
    <a href="javascript:void(0);" id="contact_us">
@@ -735,11 +832,12 @@ p.ovrflowtext {
         <!--     <img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="30" class="rounded-circle"> -->
           <div class="media-body ml-3">
            <?php $date=date_create($chats->sentDateTime);?>
-             <p class="text-small mb-0 text-muted text-muted font-weight-bold"><?php echo 'name';?> 
-               <small class="text-muted"><?php echo date_format($date,"d M y | H:i A");?></small>
+             <p class="text-small-chat mb-0 text-muted text-muted font-weight-bold">
+                <a class="name-chat-box"><?php echo ucfirst('name');?></a> 
+               <small class="text-muted chat-message-time"><?php echo date_format($date,"d M y | H:i A");?></small>
              </p>
-          <div class="bg-light rounded py-2 px-3 mb-2">
-              <p class="text-small mb-0 text-muted"><?php echo $chats->chatText;?></p>
+          <div class="bg-light rounded py-2  pl-0 mb-2">
+              <p class="text-small-chat-message mb-0 text-muted"><?php echo $chats->chatText;?></p>
           </div>
         </div>
       </div>
@@ -759,7 +857,8 @@ p.ovrflowtext {
       </div>
 
       <!-- Typing area -->
-      <form action="<?php echo base_url().'messenger/postNewMessage';?>" class="" method="post" id="chatForm">
+      <form action="<?php echo base_url().'messenger/postNewMessage';?>" class="d-flex" method="post" id="chatForm">
+        <span class="attach_file"><img src="<?php echo site_url().'assets/images/attach_file.png'; ?>"></span>
         <div class="input-group">
           <input type="text" id="chatText" name="chatText" placeholder="Type message here.."  class="form-control rounded-0 border-0 py-4 bg-white">
 		  <input type="hidden" name="receiverId" id="receiverId" value="<?php echo $currentUserId;?>">
@@ -905,7 +1004,7 @@ p.ovrflowtext {
 								  if($group->avatarUrl == null || $group->avatarUrl == "")
 									$group->avatarUrl = base_url().'assets/images/defaultUser.png';
 								  ?>
-								<img class="" src="<?php echo $group->avatarUrl;?>" alt="profile_img" width="30">
+								<img class="" src="<?php echo $group->avatarUrl;?>" alt="profile_img" width="20">
 							  </div>
 							</div>
 							</div>
@@ -944,7 +1043,7 @@ p.ovrflowtext {
 						  <div class="row">
 						 
 							 <div class="col-md-4"><label for="recipient-name" class="col-form-label"  style="float:right;">Group Name</label></div>
-							 <div class="col-md-8" style="float:left;"><input type="text" class="form-control" name="recipient-name" id="recipient-name" required style="border-radius:0;background-color:#9e9e9e33;border:none;">
+							 <div class="col-md-8" style="float:left;"><input type="text" class="form-control" name="recipient-name" id="recipient-name" required style="border-radius:0;background-color:#fff;border:none;">
 							  <div class="col-md-12" style="color: red;" id="groupNameErr"></div>
 							 </div>
 						  </div>
@@ -992,12 +1091,12 @@ p.ovrflowtext {
 							<a href="javascript:void(0);" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people">
 							  <div class="media">
 							  <div class="icon-container">
-							  <img src="<?php echo $chat->imageUrl;?>" alt="user" width="30" class="rounded-circle">
+							  <img src="<?php echo $chat->imageUrl;?>" alt="user" width="20" class="rounded-circle">
 							  <div class='status-circle-online'></div>
 							  </div>
-								<div class="media-body ml-4">
+								<div class="media-body ml-0">
 								  <div class="d-flex align-items-center justify-content-between ">
-									<h6 class="mb-0"><?php echo $chat->username;?></h6>
+									<h6 class="mb-0 left-bar-heading"><?php echo $chat->username;?></h6>
 								  </div>
 								  
 								</div>
@@ -1158,3 +1257,28 @@ else{
 ?>
 
     </html>
+
+
+<?php
+  function icon($str){
+  if (strpos($str, '.') !== false) {
+  $str = explode(".",$str);
+  if(count($str) >1 ){
+      return strtoupper($str[0][0].$str[1][0]);
+  }else{
+      return strtoupper($str[0]);
+  }
+}
+  if (strpos($str, ' ') !== false) {
+  $str = explode(" ",$str);
+  if(count($str) >1 ){
+      return strtoupper($str[0][0]);
+  }else{
+      return strtoupper($str[0][0]);
+  }
+}
+  if (strpos($str, ' ') == false && strpos($str, '.') == false) {
+    return $str[0];
+  }
+}
+?>

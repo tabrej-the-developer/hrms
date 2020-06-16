@@ -155,7 +155,9 @@ font-family: 'Open Sans', sans-serif;
   color: #307bd3 !important;
   font-size: 0.75rem;
 }
-
+.fixed-top{
+  z-index: 0 !important;
+}
 
 .navbar-nav li a svg{font-size: 20px;float: left;margin: 0 12px 0 5px;}
 .side-nav li {}
@@ -293,17 +295,18 @@ font-family: 'Open Sans', sans-serif;
               <span>MOM </span>
           </a>
           </li>
+            <li class="nav-item-header" style="border-top:1px solid white !important;position: absolute;bottom: 0;width: 100%">
+            <a class="nav-link" href="<?php echo base_url();?>welcome/logout" style="color:white !important;">
+              <i class="mr-4" style="color:#f5f5f5;">
+                <img src="<?php echo site_url();?>assets/images/navbar-icons/power.png" class="pr-2" style="height:1rem"></i>Logout</a>
+          </li>
 
         </ul>
         <!-- <ul class="navbar-nav ml-md-auto d-md-flex"> -->
 <!--           <li class="nav-item-header">
             <a class="nav-link" href="javascript:void(0);" style="color:#f5f5f5;"><i class="fas fa-user-circle" style="color:#f5f5f5;"></i> <?php echo strtoupper($this->session->userdata('email')) ?></a>
           </li> -->
-  <!--         <li class="nav-item-header" style="background: #307bd3 !important">
-            <a class="nav-link" href="<?php echo base_url();?>welcome/logout" style="color:white !important;">
-              <i class="mr-4" style="color:#f5f5f5;">
-                <img src="<?php echo base_url();?>assets/images/navbar-icons/logout.png" class="pr-2" style="height:1rem"></i>Logout</a>
-          </li>
+  <!--       
         </ul> -->
       </div>
     </nav>
