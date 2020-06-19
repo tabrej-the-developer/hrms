@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class RostersModel extends CI_Model {
 	public function getAllRosters($centerid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM rosters WHERE centerid = '$centerid'");
+		$query = $this->db->query("SELECT * FROM rosters WHERE centerid = '$centerid' ORDER BY startDate DESC");
 		return $query->result();
 	}
 
@@ -49,6 +49,7 @@ class RostersModel extends CI_Model {
 	public function createNewShift($rosterid,$date,$userid,$startTime,$endTime,$roleid,$message=null){
 		$this->load->database();
 		$shiftid = uniqid();
+		if($message == null) $message = "";
 		$this->db->query("INSERT INTO shift VALUES('$shiftid','$rosterid','$date','$userid',$startTime,$endTime,$roleid,1,'$message')");
 		return $shiftid;
 	}

@@ -574,7 +574,7 @@ if($this->session->userdata('UserType')==STAFF){
 					<?php for($p=0;$p<5;$p++){
 						$variable = 0;
 		$userLevel = $rosterDetails->roster[$x]->roles[$counter]->level;
-		foreach($entitlement as $e){
+		foreach($entitlement->entitlements as $e){
 			if($e->id == $userLevel ){
 				$variable = $e->hourlyRate;
 			}
