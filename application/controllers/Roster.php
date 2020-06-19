@@ -47,7 +47,7 @@ public function roster_dashboard(){
 		$var['userId'] 	= $this->session->userdata('LoginId');
 		$var['userType'] = $this->session->userdata('UserType');
 		$var['centers'] = $this->getAllCenters();
-		$var['rosters'] = $this->getPastRosters("1");
+		$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[0]->centerid);
 		$var['entitlement'] = $this->getAllEntitlements($var['userId']);
 	}
 	//footprint start
@@ -56,6 +56,7 @@ public function roster_dashboard(){
 		$this->session->set_userdata('current_url',currentUrl());
 	}
 	// footprint end
+		$var['permissions'] = $this->fetchPermissions();
 			$this->load->view('rosterView',$var);
 
 	}
@@ -290,6 +291,24 @@ function getAllEntitlements($userid){
 		}
 	}
 
+		function fetchPermissions(){
+			$url = BASE_API_URL."auth/fetchMyPermissions/".$this->session->userdata('LoginId');
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				return $server_output;
+				curl_close ($ch);
+			}
+			else if($httpcode == 401){
 
+			}
+		}
 
 }

@@ -147,6 +147,8 @@
 <body>
 <?php $this->load->view('header'); ?>
 <div class="containers">
+	<?php $permissions = json_decode($permissions); ?>
+<?php if(isset($permissions->permissions) ? $permissions->permissions->editEmployeeYN : "N" == "Y"){ ?>
 	<section class="tab-buttons">
 		<div class="tab-buttons-div">
 		<span class="nav-button e-s"><span>Employee Section</span></span>
@@ -526,6 +528,7 @@
 	<div class="submit-div">
 		<button id="submit">submit</button>
 	</div>
+<?php } ?>
 </div>
 <script type="text/javascript">
 	$(document).ready(()=>{
@@ -547,7 +550,7 @@
 		</script>
 	<?php }
 ?>
-
+<?php if(isset($permissions->permissions) ? $permissions->permissions->editEmployeeYN : "N" == "Y"){ ?>
 <script type="text/javascript">
 	$(document).ready(function(){
 		$(document).on('click','#submit',function(){
@@ -884,5 +887,6 @@ $(document).ready(function(){
         })
     });
 </script>
+<?php } ?>
 </body>
 </html>

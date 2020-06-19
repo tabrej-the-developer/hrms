@@ -13,8 +13,9 @@ font-family: 'Open Sans', sans-serif;
 </head>
 <body id="page-top">
 	   <?php require_once('header.php') ?>
-	<div id="wrapper">	 
-		<div  id="content-wrapper"  style="padding-top: 0px;margin-top: 80px;padding-left: 15px;">
+<?php if(isset($permissions->permissions) ? $permissions->permissions->viewCenterProfileYN : "N" == "Y"){ ?>
+	<div id="wrapper-element">	 
+		<div  id="content-wrapper-element"  style="padding-top: 0px;margin-top: 80px;padding-left: 15px;">
 		<div class="container-fluid card_future" style="padding: 20px;">
 		<h4 class="row">
 			<div class="col-12">
@@ -106,6 +107,7 @@ font-family: 'Open Sans', sans-serif;
 	</div>	
 <div style="padding: 20px;"></div>
 </div>
+<?php } ?>
 <script type="text/javascript">
 	$(document).ready(function(){
 		var newRoom = $('.room-class').html();
@@ -143,7 +145,7 @@ font-family: 'Open Sans', sans-serif;
 </script>
 <script type="text/javascript">
   $(document).ready(()=>{
-    $('#wrapper').css('paddingLeft',$('.side-nav').width());
+    $('#wrapper-element').css('paddingLeft',$('.side-nav').width());
 });
 </script>
 </body>

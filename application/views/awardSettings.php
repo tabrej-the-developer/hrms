@@ -237,10 +237,13 @@ border-bottom-right-radius: 20px;
 		}
 	?>
 <div class="containers">
+	<?php $permissions = json_decode($permissions); ?>
+<?php if((isset($permissions->permissions) ? $permissions->permissions->viewAwardsYN : "N") == "Y"){ ?>
 	<div class="d-flex">
 		<span class="m-3" style="font-size: 30px;font-weight: bold">Awards</span>
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editAwardsYN : "N") == "Y"){ ?>
 		<span class="d-flex align-items-center"><button id="awards">Sync Xero Awards</button></span>
-
+<?php } ?>
 	</div>
 	<div class="table-div">
 		<table class="table">
@@ -286,6 +289,7 @@ border-bottom-right-radius: 20px;
 	<div>
 	
 </div>
+<?php } ?>
 </div>
 
 

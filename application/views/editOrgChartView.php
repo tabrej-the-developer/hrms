@@ -10,25 +10,37 @@
 	*{
 font-family: 'Open Sans', sans-serif;
 	}
+	body{
+		background: #F2F2F2 !important;
+	}
 	.area-id::before{
 		content: url(../assets/images/arrow-f.svg);
 		position: absolute;
 		margin:0 0 -80px -30px;
 	}
 	.li-c{
-				list-style:none;
+		list-style:none;
+		background: rgba(0,0,255,0.1);
+		margin-left: 4rem;
+		border-bottom: 1px solid white;
+		position: relative;
+	}
+	.li-c:before{
+    position: absolute;
+    content: ' ';
+    padding:0.8rem;
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+    margin: -13px 0px 0px -30px;
 	}
 	.li-c span[class="roleNameClass"]{
 
-		background:#307bd3;
-		max-width:200px;
-		padding:10px;
-		border-radius:5px;
-		color:white;
 	}
 	.center-name{
 		display: inline-flex;
-		font-size:30px;
+		font-size: 1.5rem;
+		padding-left: 2rem;
+		font-weight: 700;
 	}
 	.none{
 		display:none;
@@ -40,12 +52,29 @@ font-family: 'Open Sans', sans-serif;
 	.area-name{
 		font-weight:bolder;
 		margin:10px;
+		color: #307bd3;
+		margin-left: 2rem
+	}
+	.area-name:before{
+		content: '- ';
+		color: #307bd3;
 	}
 	.newRole{
 		margin-left:auto;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 	.editArea{
-		margin:0 20px;
+		margin:0 1rem;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.delete-Area{
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 /*	.newRole:after{
 		content:' | ';
@@ -55,6 +84,10 @@ font-family: 'Open Sans', sans-serif;
 	}*/
 	.editRole{
 		cursor: pointer;
+		position: absolute;
+		right: 10px;
+		color: rgba(0,0,0,0.7);
+
 	}
 	#addAreaSubmit{
 		margin-left:auto;
@@ -64,6 +97,9 @@ font-family: 'Open Sans', sans-serif;
 	}
 	.delete-role{
 		cursor:pointer;
+		position: absolute;
+		right: 0;
+		color: rgba(0,0,0,0.7);
 	}
 	input[type="submit"],input[type="button"]{
       background-color: #9E9E9E;
@@ -75,27 +111,63 @@ font-family: 'Open Sans', sans-serif;
 	  display: inline-block;
 	  margin: 2px;
 	}
+	select{
+	background: #ebebeb;
+	border-radius: 5px;
+    padding: 5px;
+    border: 2px solid #e9e9e9 !important;
+}
 	input[type="text"]{
 		border-radius:3px;
 		border-style:solid;
 		border:none ;
 		border-width:1px; 
 		border:1px solid #cccccc;
-		padding:10px;
 	}
 	.sellect{
 		border-radius:5px;
 	}
 	.select-class{
-		display: flex;
-		justify-content: flex-end
+		padding: 1.5rem;
+	}
+	.this-one{
+		
+		padding: 3rem 2rem 2rem 1rem;
+	}
+	#areas-roles-list{
+		
+	}
+	.container-child{
+		padding: 3rem 2rem 2rem 1rem;
+	}
+	.container-actual-element{
+		background: white;
+	}
+	.center-select-span{
+		font-weight: 700;
+	}
+	label{
+		font-size:0.8rem;
+		padding-left: 1rem;
+		font-weight: 700;
 	}
 </style>
 </head>
 <body>
-<div class="container">
-
+<div class="containers">
+  <span style="position: absolute">
+	  <a href="<?php echo base_url();?>/settings">
+	    <button class="btn back-button">
+	      <img src="<?php echo base_url('assets/images/back.svg');?>"> <span style="font-size:0.8rem">Back to Settings</span>
+	    </button>
+	  </a>
+	</span>
+	<div class="container-child">
+		<div class="container-actual-element">
+	<?php $permissions = json_decode($permissions); ?>
+<?php if(isset($permissions->permissions) ? $permissions->permissions->viewOrgChartYN : "N" == "Y"){ ?>
 	<div class="select-class">
+		<span class="center-select-span">Show Chart for:</span>
 		<?php $centersList = json_decode($centers); ?>
 		<select class="sellect">
 			<option>--Select Center--</option>
@@ -111,9 +183,11 @@ font-family: 'Open Sans', sans-serif;
 				echo "<br>";
 		 		?>
 		 	</span>
+		 	<?php if(isset($permissions->permissions) ? $permissions->permissions->editOrgChartYN : "N" == "Y"){ ?>
 		 <span onclick="newArea()" style="font-size:25px">
-			<a href="javascript:void(0)" style="padding:0 0 0 20px"><i class="fas fa-plus" ></i></a>
+			<a href="javascript:void(0)" style="padding:0 0 0 20px"><button class="btn btn-primary">Add New Area</button></a>
 		 </span>
+		<?php } ?>
 		</div>
 		<div id="areas-roles-list">
 			<div id="form-space"></div>
@@ -123,14 +197,19 @@ font-family: 'Open Sans', sans-serif;
 			<div id="<?php echo $orgChart->areaId .'-'.$orgChart->areaName?>" class="area-id">
 				<div id="areas-roles" areaId="<?php echo $orgChart->areaId; ?>" YN="<?php echo $orgChart->isARoomYN; ?>">
 					<span class="area-name"><?php echo $orgChart->areaName."<br>"; ?></span>
+<?php if(isset($permissions->permissions) ? $permissions->permissions->editOrgChartYN : "N" == "Y"){ ?>
 					<span  class="newRole"><a href="javascript:void(0)"><i class="fas fa-plus" ></i></a></span>
 					<span class="editArea "><a href="javascript:void(0)"><i class="fas fa-pencil-alt"></i></a></span>
-					<span><a class="delete-area" href="javascript:void(0)" d-val="<?php echo $orgChart->areaId ?>"><i class="fas fa-trash-alt" style="color: #ff3b30;"></i></a></span>
+					<span class="delete-Area"><a class="delete-area" href="javascript:void(0)" d-val="<?php echo $orgChart->areaId ?>"><i class="fas fa-trash-alt" style="color: #ff3b30;"></i></a></span>
+				<?php } ?>
 				</div>
-				<div areaId="<?php echo $orgChart->areaId;?>"></div>
+				<div areaId="<?php echo $orgChart->areaId;?>" ></div>
 				<div>
 					<?php foreach($orgChart->roles as $roles){
-					echo "<li class='li-c'><span class=\"roleNameClass\">".$roles->roleName."</span> <span class=\"editRole\" ><i class=\"fas fa-pencil-alt\"></i>&nbsp; &nbsp;</span><span class=\"delete-role\" d-val=\"$roles->roleid\"><i class=\"fas fa-trash-alt\"></i></span></li>"."<br>";
+					echo "<li class='li-c'><span class=\"roleNameClass\">".$roles->roleName."</span>";
+					if(isset($permissions->permissions) ? $permissions->permissions->editOrgChartYN : 'N' == 'Y'){
+					echo "<span class=\"editRole\" ><i class=\"fas fa-pencil-alt\"></i>&nbsp; &nbsp;</span><span class=\"delete-role\" d-val=\"$roles->roleid\"><i class=\"fas fa-trash-alt\"></i></span></li>";
+						}
 					}
 					?>
 				</div>
@@ -139,6 +218,9 @@ font-family: 'Open Sans', sans-serif;
 	
 		}}
 		?>
+		</div>
+	</div>
+<?php  } ?>
 		</div>
 	</div>
 </div>
@@ -150,7 +232,7 @@ font-family: 'Open Sans', sans-serif;
 		insertForm.method = "POST";
 		insertForm.action = "<?php echo base_url()."/settings/addArea"?>";
 		var getForm = document.getElementById('new-area-form');
-		var code = "<div><span><label>Area Name</label><input type=\"text\" name=\"areaName\" id=\"areaName\"></span><span><label>Is room Y/N</label><select name=\"isRoomYN\" id=\"isRoomYN\"><option>select</option><option value=\"Y\">Y</option><option value=\"N\">N</option></select><input type=\"text\" name=\"\" class=\"none\"><input type=\"text\" name=\"centerid\" class=\"none\" value=\"<?php echo $centerid;?>\"></span><span><input type=\"submit\" value=\"Save\" id=\"addAreaSubmit\"></span><span><input type=\"button\" value=\"Cancel\" class=\"reset\" onclick=\"deleteAreaForm()\"></span></div>"
+		var code = "<div><span class='area-Name'><label>Area Name</label><input type=\"text\" name=\"areaName\" id=\"areaName\"></span><span><label>Is room Y/N</label><select name=\"isRoomYN\" id=\"isRoomYN\"><option>select</option><option value=\"Y\">Y</option><option value=\"N\">N</option></select><input type=\"text\" name=\"\" class=\"none\"><input type=\"text\" name=\"centerid\" class=\"none\" value=\"<?php echo $centerid;?>\"></span><span><input type=\"submit\" value=\"Save\" id=\"addAreaSubmit\"></span><span><input type=\"button\" value=\"Cancel\" class=\"reset\" onclick=\"deleteAreaForm()\"></span></div>"
 		if($("#form-space").text().length == 0){
 		formParent.insertBefore(insertForm,formParent.firstElementChild);
 		insertForm.insertAdjacentHTML('afterbegin',code)
@@ -346,7 +428,7 @@ font-family: 'Open Sans', sans-serif;
 </script>
 <script type="text/javascript">
 	$(document).ready(()=>{
-    $('.container').css('paddingLeft',$('.side-nav').width());
+    $('.containers').css('paddingLeft',$('.side-nav').width());
 });
 </script>
 </body>

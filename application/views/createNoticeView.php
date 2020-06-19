@@ -196,6 +196,8 @@ $("#mytable #checkall").click(function () {
 </head>
 <body>
 <div class="containers">
+  <?php $permissions = json_decode($permissions); ?>
+<?php if(isset($permissions->permissions) ? $permissions->permissions->createNoticeYN : "N" == "Y"){ ?>
 <!--   <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item">
       <a class="nav-link active" data-toggle="tab" href="#home"><i class="fas fa-plus-square"></i> New</a>
@@ -208,7 +210,6 @@ $("#mytable #checkall").click(function () {
     <div class="container">
     <div class="content-container clearfix" >
         <div class="col-md-8 col-md-offset-2">
-            
             <?php if($error = $this->session->flashdata('msg')){ ?>
                <p style="color: green;"><?php echo  $error; ?><p>
           <?php } ?>
@@ -268,6 +269,7 @@ $("#mytable #checkall").click(function () {
     </div>
     </div>
    </div>
+ <?php } ?>
 </div>
 
 

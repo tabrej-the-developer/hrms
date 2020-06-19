@@ -68,6 +68,7 @@ class Notice extends CI_Controller {
 			}
 		}
 		$data['noticeStatus'] = $noticeStatus;
+		$data['permissions'] = $this->fetchPermissions();
 		//var_dump($data);
 	//footprint start
 	if($this->session->has_userdata('current_url')){
@@ -189,6 +190,26 @@ class Notice extends CI_Controller {
 
 	function getUsers(){
 		$url = BASE_API_URL."messenger/getUsers/".$this->session->userdata('LoginId');
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			return $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+
+		}
+	}
+
+	 function fetchPermissions(){
+		$url = BASE_API_URL."auth/fetchMyPermissions/".$this->session->userdata('LoginId');
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

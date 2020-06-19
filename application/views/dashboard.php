@@ -2,81 +2,166 @@
 <head>
 	<title>Dashboard</title>
 <style type="text/css">
+	body{
+		background: #F2F2F2 !important;
+	}
 	.containers{
 
 	}
   .cardContainer {
   display: flex;
-  justify-content: center;
+  margin-left: 0 !important;
 	}
 	.cardItem {
-	  text-align: center;
-	  transition: all 500ms ease-in-out;
 	  height: 8rem;
+	  padding-left: 0 !important;
+	  padding-right: 0 !important;
+	}
+	.cardItem > span{
+		min-height: 100%;
+		display: block;
+	  background: white;
 	}
 	.cardItemChild{
 
 	}
-	.cardItem:hover {
-		  cursor: pointer;
-		  box-shadow: 0px 12px 30px 0px rgba(0, 0, 0, 0.2);
-		  transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
-	}
   .module-name{
 	width: 100%;
-	display: inline-block;
-	text-align: left;
+	display: block;
+	padding-left: 45%
 	}
 	.module-balance{
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		text-align: right;
-		width: 100%;
-		padding-right: 20px;
+		display: block;
+		padding-left: 45%;
+		font-size: 2rem;
 	}
 	.footprints{
-		height: calc( 100vh - 10rem);
+		height: calc( 100vh - 11rem);
 		overflow-y: scroll
+	}
+	.dashboard-icons{
+    padding: 20px;
+    border-radius: 5px;
+    position: relative;
+    top: 50;
+    left: 30;
+	}
+	.dashboard-icons > img{
+		height: 2rem;
+	}
+	.activity{
+		line-height: 2rem;
+	}
+	.activity-row{
+		line-height: 2.5rem;
+		font-size:0.8rem;
+		font-weight: 700;
+	}
+	.activity-heading{
+		font-weight: 700;
+		line-height: 2.5rem;
+	}
+	.activity-row:nth-of-type(odd){
+		background:#F5F6FA;
 	}
 </style>
 </head>
 <body>
 	<?php include 'header.php'; ?>
 	<div class="containers">
+		<?php $permissions = json_decode($permissions); ?>
 		<?php $moduleRowCount = json_decode($moduleEntryCount); ?>
-		<div class="row mr-0 ml-0 cardContainer">
-			<span class="col-4 cardItem" style="background:rgba(0,139,139)">
-				<span class="module-name">Timesheets</span>
-				<span class="module-balance"><?php echo $moduleRowCount->timesheetsCount; ?></span>
+		<div class="row mr-0 mt-3 cardContainer pl-4 pr-4">
+<?php if((isset($permissions->permissions) ? $permissions->permissions->viewTimesheetYN : "N") == "Y"){ ?>
+			<span class="col-3 cardItem pr-4" >
+				<span class="row p-0 m-0">
+					<span class="col-6 dashboard-icons" style="background:rgba(0, 84, 254,0.07)">
+						<img src="<?php echo base_url('assets/images/dashboard-icons/timesheets.png'); ?>">
+					</span>
+					<span class="col-6" >
+						<span>
+							<span class="module-balance" style="color:rgba(0, 84, 254)"><?php echo $moduleRowCount->timesheetsCount; ?></span>
+							<span class="module-name">Total Timesheets</span>
+						</span>
+					</span>
+				</span>
 			</span>
-			<span class="col-4 cardItem" style="background:rgba(220,20,60,0.8)">
-				<span class="module-name">Rosters</span>
-				<span class="module-balance"><?php echo $moduleRowCount->rostersCount; ?></span>
+<?php } ?>
+<?php if((isset($permissions->permissions) ? $permissions->permissions->viewRosterYN : "N") == "Y"){ ?>
+			<span class="col-3 cardItem pr-4" >
+				<span class="row p-0 m-0">
+					<span class="col-6 dashboard-icons" style="background:rgba(254, 237, 242)">
+						<img src="<?php echo base_url('assets/images/dashboard-icons/roster.png'); ?>">
+					</span>
+					<span class="col-6" >
+						<span>
+							<span class="module-balance" style="color:#FD5181"><?php echo $moduleRowCount->rostersCount; ?></span>
+							<span class="module-name">Total Rosters</span>
+						</span>
+					</span>
+				</span>
 			</span>
-			<span class="col-4 cardItem" style="background:	rgb(46,139,87)">
-				<span class="module-name">Payrolls</span>
-				<span class="module-balance"><?php echo $moduleRowCount->payrollsCount; ?></span>
-			</span>			
+<?php } ?>
+<?php if((isset($permissions->permissions) ? $permissions->permissions->viewPayrollYN : "N") == "Y"){ ?>
+			<span class="col-3 cardItem pr-4" >
+				<span class="row p-0 m-0">
+					<span class="col-6 dashboard-icons" style="background:rgba(233, 255, 208)">
+						<img src="<?php echo base_url('assets/images/dashboard-icons/payrolls.png'); ?>">
+					</span>
+					<span class="col-6" >
+						<span class="col-12">
+							<span class="module-balance" style="color:rgba(102, 145, 54)"><?php echo $moduleRowCount->payrollsCount; ?></span>
+							<span class="module-name">Total Payrolls</span>
+						</span>
+					</span>
+				</span>
+			</span>
+<?php } ?>
+<?php if((isset($permissions->permissions) ? $permissions->permissions->viewLeaveTypeYN : "N") == "Y"){ ?>
+			<span class="col-3 cardItem " >
+				<span class="row p-0 m-0">
+					<span class="col-6 dashboard-icons" style="background:rgba(253, 188, 0,0.18)">
+						<img src="<?php echo base_url('assets/images/dashboard-icons/onLeave.png'); ?>">
+					</span>
+					<span class="col-6" >
+						<span>
+							<span class="module-balance" style="color:rgba(253, 188, 0)"><?php echo $moduleRowCount->leavesCount; ?></span>
+							<span class="module-name">On leave</span>
+							</span>
+					</span>
+				</span>
+			</span>		
+<?php } ?>	
 		</div>
-		<div class="row mr-0 ml-0 ">
+		<div class="row mr-0 ml-3 mr-3 mt-3 ">
 			<?php $footprints = json_decode($footprints); 
 			// print_r($footprints);
 			?>
-			<span class="col-8 footprints">
-
+			<span class="col-12 footprints" style="background: white">
+				<span class="row activity" style="border-bottom:1px solid #979797;opacity:0.28">
+					<span class="mr-auto pl-3">Activity</span>
+					<span class="pr-3">Refresh</span>
+				</span>
+				<span class="row m-0 p-0 activity-heading">
+					<span class="col-2">S.No</span>
+					<span class="col-2">IP Address</span>
+					<span class="col-2">Date</span>
+					<span class="col-2">Last Activity Time</span>
+					<span class="col-3">Activity Description</span>
+				</span>
 				<?php 
-					$count = count($footprints->footprints);
+					$count = 1;
 				foreach($footprints->footprints as $footprint){?>
-					<span class="row">
-						<span class="col-1"><?php echo  $count-- ;?></span>
-				<span style="background:rgba(135,206,235,0.5);font-size:0.75rem" class="col-5 m-0 pl-2"> <?php  echo $footprint->prev_page_tag != " " ? str_replace("http://localhost/PN101/","",$footprint->prev_page_tag):"Login"; ?></span>
-				<span class="bg-info col-1 m-0 pl-2" > &nbsp; To &nbsp;</span>
-				<span style="background:rgba(135,206,235,0.5);font-size:0.75rem" class="col-5 m-0 pl-2"> <?php  echo str_replace("http://localhost/PN101/","",$footprint->page_tag); ?></span>
+					<span class="row activity-row" >
+						<span class="col-2"><?php echo  $count++ ;?></span>
+						<span class="col-2"><?php  echo $footprint->ip ?></span>
+						<span class="col-2"><?php  echo explode(" ",$footprint->start_time)[0] ?></span>
+						<span class="col-2"><?php  echo explode(" ",$footprint->start_time)[1] ?></span>
+						<span style="background:transparent;" class="col-4 "> <?php  echo $footprint->prev_page_tag != " " ? str_replace("http://localhost/PN101/","",$footprint->prev_page_tag):"Login"; ?></span>
 					</span>
 			<?php } ?>
 			</span>
-			<span class="col-4">Last login details</span>
+			
 		</div>
 	</div>
 <script type="text/javascript">

@@ -237,9 +237,13 @@ border-bottom-right-radius: 20px;
 		}
 	?>
 <div class="containers">
+	<?php $permissions = json_decode($permissions); ?>
+<?php if(isset($permissions->permissions) ? $permissions->permissions->viewPermissionYN : "N" == "Y"){ ?>
 	<div class="d-flex">
 		<span class="m-3" style="font-size: 30px;font-weight: bold">Superfunds</span>
+<?php if(isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N" == "Y"){ ?>
 		<span class="d-flex align-items-center"><button id="superfunds">Sync Xero Superfunds</button></span>
+<?php } ?>
 	</div>
 	<div class="table-div">
 		<table class="table">
@@ -287,8 +291,15 @@ border-bottom-right-radius: 20px;
 	<div>
 	
 </div>
-</div>
 
+ <?php }
+ // else{
+// 	redirect('noPermissionPage');
+// }
+
+ ?>
+
+</div>
 
 
 <div class="modal-logout">

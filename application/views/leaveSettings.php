@@ -252,14 +252,22 @@ input[class=checkbox_label]:checked + label:before {
  	<title></title>
  </head>
  <body>
+ 	<?php $permissions = json_decode($permissions); ?>
  <div class="tab-pane containers" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+ 	  <?php  if((isset($permissions->permissions) ? $permissions->permissions->viewLeaveTypeYN : "N") === "Y"){ ?>
  	<h2 class="m-2">Manage Leave Types</h2>
 	<div class="card-header">
 		<div class="row">
     <div class="col-md-4"></div>
-    <div class="col-md-2 ml-auto "><button class="btn btn-primary">Sync Xero Leaves</button></div>
+    <div class="col-md-2 ml-auto ">
+<?php if(isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N" === "Y"){ ?>
+    	<button class="btn btn-primary">Sync Xero Leaves</button>
+<?php } ?>
+    </div>
 	<div class="col-md-2 text-right ml-auto">
+<?php if(isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N" === "Y"){ ?>
 	<button type="button" name="add_button" id="add_button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal"   onclick="addLeaveType()"> <i class="fas fa-plus-circle"></i> Add Leave Type</button>
+<?php } ?>
 	</div>
     </div>
     </div>
@@ -287,8 +295,10 @@ input[class=checkbox_label]:checked + label:before {
 					<td id="<?php echo $leaveType->id.'slug';?>"><?php echo $leaveType->slug;?></td>
 					<td id="<?php echo $leaveType->id.'isPaidYN';?>"><?php echo $leaveType->isPaidYN;?></td>
 					<td>
+<?php if(isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N" == "Y"){ ?>
 					<span onclick="editLeaveType('<?php echo $leaveType->id;?>')">
 					<a href="#" title="Edit"><i class="far fa-edit" style="color:green;font-size:18px;"></i></a>
+	<?php }else{ echo "-"; } ?>
 					</td>
 				</tr>
 				<?php }?>
@@ -296,49 +306,45 @@ input[class=checkbox_label]:checked + label:before {
             </tbody>
         </table>
 	</div>
+<?php } ?>
 </div>
 <!-- modal start here -->
-            <div class="modal fade" id="userModal">
-                <div class="modal-dialog">
-                    
-					<form id="leaveTypeForm" action="<?php echo base_url().'settings/addLeaveType';?>" method="POST">
-					<div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Leave Type</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                <div class="modal-body">
-					<div class="col-md-12 col-xl-12">	
-					<form id="leaveType" method="POST" action="<?php echo base_url().'settings/addLeave';?>">
-						<input type="hidden" name="leaveId" id="leaveId" value="">
-
-						<div class="form-group">
-						  <label>New Leave Type</label>
-						  <input type="text" class="form-control" id="leaveName" placeholder="Enter leave name" name="leaveName" >
-						  <span id="new_leave_type_error" class="text-danger"></span>
-						</div>
-
-						<span style="color: red" id="leaveNameError"></span>
-						 
-						<div class="form-group">
-							<label>Slug</label>
-							<input type="text" class="form-control" name="leaveSlug" id="leaveSlug" placeholder="slug"  >
-						  <span id="slug_error" class="text-danger"></span>
-						</div>
-						<span style="color: red" id="leaveSlugError"></span>
-						
-						<div class="form-group">
-						<label for="leaveIsPaid">IsPaid</label><br>
-						<div class="outerDivFull" >
-						<div class="switchToggle">
-						<!--dont rename id="switch"-->
-							<input type="checkbox" id="switch" name="leaveIsPaid">
-							<label for="switch">Toggle</label>
-						</div>
-						</div>
-						</div>
+  <div class="modal fade" id="userModal">
+    <div class="modal-dialog">
+  		<form id="leaveTypeForm" action="<?php echo base_url().'settings/addLeaveType';?>" method="POST">
+				<div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Leave Type</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+          </div>
+          <div class="modal-body">
+						<div class="col-md-12 col-xl-12">	
+							<form id="leaveType" method="POST" action="<?php echo base_url().'settings/addLeave';?>">
+								<input type="hidden" name="leaveId" id="leaveId" value="">
+								<div class="form-group">
+								  <label>New Leave Type</label>
+								  <input type="text" class="form-control" id="leaveName" placeholder="Enter leave name" name="leaveName" >
+								  <span id="new_leave_type_error" class="text-danger"></span>
+								</div>
+								<span style="color: red" id="leaveNameError"></span>
+								<div class="form-group">
+									<label>Slug</label>
+									<input type="text" class="form-control" name="leaveSlug" id="leaveSlug" placeholder="slug"  >
+								  <span id="slug_error" class="text-danger"></span>
+								</div>
+								<span style="color: red" id="leaveSlugError"></span>
+								<div class="form-group">
+									<label for="leaveIsPaid">IsPaid</label><br>
+									<div class="outerDivFull" >
+										<div class="switchToggle">
+										<!--dont rename id="switch"-->
+											<input type="checkbox" id="switch" name="leaveIsPaid">
+											<label for="switch">Toggle</label>
+										</div>
+									</div>
+								</div>
 						<div class="">
 							<input type="checkbox" name="" class="checkbox_label" id="show_in_payslips"><label class=""for="show_in_payslips">Show in payslips</label>
 						</div>

@@ -14,6 +14,11 @@ class DashboardModel extends CI_Model {
 		$query = $this->db->query("SELECT * FROM payrollshift");
 		return $query->result(); 
 	}
+	public function leavesCount(){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM leaveapplication");
+		return $query->result(); 
+	}
 	public function rosterCount($centerid){
 		$this->load->database();
 		$query = $this->db->query("SELECT * FROM rosters where centerid = '$centerid'");

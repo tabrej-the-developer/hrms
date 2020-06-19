@@ -322,13 +322,18 @@ input.rounded:focus {
 </head>
 <body>
 <div class="container">
+  <?php $permissions = json_decode($permissions); ?>
 <nav>
   <ul class="list-group">
+
   <li class="list-group-item d-flex justify-content-between align-items-center" style="background-color:#cccccc74;border:none;font-size:20px;font-weight:500;border-bottom-right-radius: 0rem;
     border-bottom-left-radius: 0rem;">
     Notices
+    <?php if(isset($permissions->permissions) ? $permissions->permissions->createNoticeYN : "N" == "Y"){ ?>
     <span class="badge badge-default badge-pill"><a href="<?php echo site_url('notice/createNotice')?>" style="font-size:15px;text-decoration:none;"><i class="fas fa-plus-circle"></i> Create notice</a></span>
+    <?php } ?>
   </li>
+
 </ul>
 </nav>
 <div class="messaging">

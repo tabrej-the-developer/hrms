@@ -349,10 +349,11 @@ table.dataTable{
 		}
 	?>
 <div class="containers">
+	<?php $permissions = json_decode($permissions); ?>
 	<div class="d-flex heading-bar">
 		<span class="m-3" id="roster-heading" style="">Rosters</span>
 		<span class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
-			<?php if($this->session->userdata('UserType') == SUPERADMIN){?> 
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?> 
 <!-- 			<div class="filter-icon d-flex">
 				<span class="">Sort&nbsp;by</span>
 				<span class=""><img src="../assets/images/filter-icon.png" height="20px"></span>

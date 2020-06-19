@@ -36,11 +36,11 @@ $nth_child = 0;
     case strtolower("Reports"):
       $nth_child = 9;
       break;
-    case strtolower("Settings"):
-      $nth_child = 10;
-      break;
+    // case strtolower("Settings"):
+    //   $nth_child = 10;
+    //   break;
     case strtolower("MOM"):
-      $nth_child = 11;
+      $nth_child = 10;
       break;
   }
 ?>
@@ -125,6 +125,25 @@ font-family: 'Open Sans', sans-serif;
     background:#142059 !important;
   padding: 0 0 0 20px;
 }
+.nav-item-header-div:hover{
+  background:white !important;
+  padding: 0 0 0 20px;
+}
+.nav-item-header-div:hover::before{
+  display: flex;
+  margin-left:-15px;
+  align-items: center;
+  content: "";
+  position: absolute;
+  height: 40px;
+  padding:5px;
+  border-left:3px solid #307bd3;
+  margin-top:5px;
+}
+.nav-item-header-div{
+    background:#142059 !important;
+  padding: 0 0 0 20px;
+}
 .nav-item-header:nth-of-type(<?php echo $nth_child ;?>){
   background:white !important;
   padding: 0 0 0 20px;
@@ -145,11 +164,22 @@ font-family: 'Open Sans', sans-serif;
   color:#E0E0E0 ;
   font-size: 0.75rem;
 }
+.nav-item-header-div a{
+  font-weight: bolder;
+  color:#E0E0E0 ;
+  font-size: 0.75rem;
+}
 .nav-item-header a:hover{
   font-weight: bolder;
   color: #307bd3 !important;
   font-size: 0.75rem;
 }
+.nav-item-header-div a:hover{
+  font-weight: bolder;
+  color: #307bd3 !important;
+  font-size: 0.75rem;
+}
+
 .nav-item-header:nth-of-type(<?php echo $nth_child ;?>) a{
  font-weight: bolder;
   color: #307bd3 !important;
@@ -164,12 +194,16 @@ font-family: 'Open Sans', sans-serif;
 }
 .PN101{
     height: 4rem;
-    color: #e0e0e0;
+    color: black;
     font-size: 1.5rem;
+    background: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-bottom: 1px solid white;
+    border-bottom: 2px solid #142059;
+}
+.todquest-logo{
+  width: 3rem
 }
 </style>
 </head>
@@ -186,20 +220,20 @@ font-family: 'Open Sans', sans-serif;
         <ul class="navbar-nav animate side-nav">
           <div class="PN101">
             <a class="mr-4" >
+              <i ><img src="<?php echo base_url('assets/images/Todquest_logo.png');?>" class="todquest-logo"></i>
               <span>PN101 </span>
-              <i ><img></i>
+              
             </a>
           </div>          
           <li class="nav-item-header">
-            <a class="nav-link d-flex justify-content-start" href="#" title="Dashboard">
+            <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('dashboard') ?>" title="Dashboard">
               
-              <i class="mr-4" ><img src="<?php echo base_url();?>assets/images/navbar-icons/dashboard.png" style="max-height: 1rem"></i>
+              <i class="mr-4 " ><img src="<?php echo base_url();?>assets/images/navbar-icons/dashboard.png" style="max-height: 1rem"></i>
               <span>Dashboard </span>
             </a>
           </li>
       <li class="nav-item-header">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('roster/roster_dashboard') ?>" title="roster">
-              
               <i class="mr-4" >
                 <img src="<?php echo base_url();?>assets/images/navbar-icons/roster.png" style="max-height: 1rem">
               </i>
@@ -274,17 +308,6 @@ font-family: 'Open Sans', sans-serif;
             </a>
           </li>
 		  
-		  <li class="nav-item-header">
-            <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('settings') ?>" title="Settings">
-             
-             
-              <i class="mr-4" >
-                <img src="<?php echo base_url();?>assets/images/navbar-icons/settings.png" style="max-height: 1rem">
-              </i>
-              <span>Settings </span>
-             </a>
-          </li>
-
       <li class="nav-item-header">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('mom/') ?>" title="roster"> 
              
@@ -295,12 +318,21 @@ font-family: 'Open Sans', sans-serif;
               <span>MOM </span>
           </a>
           </li>
-            <li class="nav-item-header" style="border-top:1px solid white !important;position: absolute;bottom: 0;width: 100%">
-            <a class="nav-link" href="<?php echo base_url();?>welcome/logout" style="color:white !important;">
+          <div style="border-top:1px solid white !important;position: absolute;bottom: 0;width: 100%">
+            <li class="nav-item-header-div">
+              <a class="nav-link-div d-flex justify-content-start" href="<?php echo site_url('settings') ?>" title="Settings">
+                <i class="mr-4" >
+                  <img src="<?php echo base_url();?>assets/images/navbar-icons/settings.png" style="max-height: 1rem">
+                </i>
+                <span>Settings </span>
+              </a>
+            </li>
+            <li class="nav-item-header-div" >
+            <a class="nav-link-div d-flex justify-content-start" href="<?php echo base_url();?>welcome/logout" style="color:white !important;">
               <i class="mr-4" style="color:#f5f5f5;">
                 <img src="<?php echo site_url();?>assets/images/navbar-icons/power.png" class="pr-2" style="height:1rem"></i>Logout</a>
           </li>
-
+        </div>
         </ul>
         <!-- <ul class="navbar-nav ml-md-auto d-md-flex"> -->
 <!--           <li class="nav-item-header">

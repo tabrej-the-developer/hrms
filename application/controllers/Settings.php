@@ -3,20 +3,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Settings extends CI_Controller {
 
-public function index(){
-	if($this->session->has_userdata('LoginId')){
-		if($this->getAllCenters() != 'error'){
-			$this->load->view('settings');
-			}
-			else{
-				$data['error'] = 'error';
+	public function index(){
+		if($this->session->has_userdata('LoginId')){
+			if($this->getAllCenters() != 'error'){
+				$data['permissions'] = $this->fetchPermissions();
 				$this->load->view('settings',$data);
+				}
+				else{
+					$data['error'] = 'error';
+					$this->load->view('settings',$data);
+				}
 			}
+		else{
+			$this->load->view('redirectToLogin');
 		}
-	else{
-		$this->load->view('redirectToLogin');
 	}
-}
 	public function editPassword(){
 		if($this->session->has_userdata('LoginId')){
 			$this->load->view('editPasswordView');
@@ -57,13 +58,14 @@ public function index(){
 
 public function editRooms(){
 		if($this->session->has_userdata('LoginId')){
-		if($this->input->post('centerid') != null){
-		$data['centerid'] = $this->input->post('centerid');
-	}else{
-		$data['centerid'] = 1;
-	}
+			if($this->input->post('centerid') != null){
+					$data['centerid'] = $this->input->post('centerid');
+				}else{
+					$data['centerid'] = 1;
+				}
 		$data['centers'] = $this->getAllCenters();
 		$data['rooms'] = $this->getAllRooms($data['centerid']);
+		$data['permissions'] = $this->fetchPermissions();
 		$this->load->view('editRoomsView',$data);
 			}
 	else{
@@ -157,6 +159,7 @@ public function editRooms(){
 		$data['centerid'] = $centerid;
 		$data['centers'] = $this->getAllCenters();
 		$data['center_profile'] = json_decode($data['centers'])->centers[$centerid-1];
+		$data['permissions'] = $this->fetchPermissions();
 		$this->load->view('editCenterProfile',$data);
 	}
 	else{
@@ -207,6 +210,7 @@ public function editRooms(){
 		$data['centerid'] = 1;
 		$data['centerx'] = 0;
 	}
+		$data['permissions'] = $this->fetchPermissions();
 		$data['centers'] = $this->getAllCenters();
 		$data['orgChart'] = $this->getOrgChart($data['centerid']);
 		$this->load->view('editOrgChartView',$data);
@@ -531,6 +535,7 @@ $server_output = curl_exec($ch);
 			$data['centers'] = $this->getAllCenters();
 		$data['userid'] = $this->session->userdata('LoginId');
 		$data['entitlements'] = $this->getAllEntitlements($data['userid']);
+		$data['permissions'] = $this->fetchPermissions();
 		$this->load->view('entitlementsView',$data);
 	}
 	else{
@@ -735,6 +740,7 @@ $server_output = curl_exec($ch);
 				$data['ordinaryEarningRate'] = $this->getAwardSettings($data['userid']);
 				$data['levels'] = $this->getAllEntitlements($data['userid']);
 				$data['superfunds'] = $this->getSuperfunds($data['userid']);
+				$data['permissions'] = $this->fetchPermissions();
 				// var_dump($data);
 				$this->load->view('addEmployee',$data);
 			}
@@ -895,6 +901,7 @@ $server_output = curl_exec($ch);
 
 	public function permissionSettings(){	
 		$data['centers'] = $this->getAllCenters();
+		$data['permissions'] = $this->fetchPermissions();
 		$this->load->view('permission',$data);
 	}
 
@@ -958,6 +965,7 @@ $server_output = curl_exec($ch);
 	public function superfundsSettings(){
 		$data['userid'] = $this->session->userdata('LoginId');
 		$data['superfunds'] = $this->getSuperfunds($data['userid']);
+		$data['permissions'] = $this->fetchPermissions();
 		$this->load->view('superfundSettings',$data);
 	}
 
@@ -1049,6 +1057,7 @@ $server_output = curl_exec($ch);
 
 	public function leaveSettings(){
 		$data['leaveType'] = $this->getLeaveType();
+		$data['permissions'] = $this->fetchPermissions();
 		$this->load->view('leaveSettings',$data);
 	}
 
@@ -1202,6 +1211,27 @@ $server_output = curl_exec($ch);
 
 		}
 	}
+
+
+		function fetchPermissions(){
+			$url = BASE_API_URL."auth/fetchMyPermissions/".$this->session->userdata('LoginId');
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				return $server_output;
+				curl_close ($ch);
+			}
+			else if($httpcode == 401){
+
+			}
+		}
 
 }
 

@@ -25,9 +25,10 @@ font-family: 'Open Sans', sans-serif;
     </style>
   </head>
 
-  <body id="page-top">    
+  <body id="page-top"> 
+    <?php $permissions = json_decode($permissions); ?>
+<?php if((isset($permissions->permissions) ? $permissions->permissions->viewRoomSettingsYN : "N") == "Y"){ ?>   
     <div id="wrappers">
-
       <div id="content-wrappers" style="margin-top: 90px;
     background: white;" class="container">
         <div class="row">
@@ -37,6 +38,7 @@ font-family: 'Open Sans', sans-serif;
       </div>
       <div class="col-12" style="padding: 10px;"></div>
       <div class="col-lg-3">
+        <?php if((isset($permissions->permissions) ? $permissions->permissions->editRoomSettingsYN : "N") == "Y"){ ?>
           <select id="centerList" class="form-control" onchange="changeCenter()">
             <?php
             $centers = json_decode($centers);
@@ -47,6 +49,7 @@ font-family: 'Open Sans', sans-serif;
               }
               ?>
           </select> 
+        <?php } ?>
           </div>
           <div class="col-lg-9 text-right"> 
           <button onclick="addRoom()" class="btn btn-success" style="background-color: transparent;background-image: url(<?php echo base_url();?>images/button.png);
@@ -94,12 +97,16 @@ font-family: 'Open Sans', sans-serif;
                       </span>
                     </td>
                     <td>
+                      <?php if(isset($permissions->permissions) ? $permissions->permissions->editRoomSettingsYN : "N" == "Y"){ ?>
                         <span style="cursor: pointer;">
-                         <div><i class="fas fa-pencil-alt" style="color: #0077ff;" i-v="<?php echo $room->rooms[$i]->roomId ?>"></i> Edit</div>
+                         <div><i class="fas fa-pencil-alt" style="color: #0077ff;" i-v="<?php echo $room->rooms[$i]->roomId ?>">Edit</i> </div>
                         </span>
+                      <?php }else{ echo "-"; } ?>
                     </td>
                     <td>
-                        <span style="cursor: pointer;"><i class="fas fa-trash-alt" style="color: #ff3b30;" d-v="<?php echo $room->rooms[$i]->roomId ; ?>"></i> Delete</span>
+                      <?php if(isset($permissions->permissions) ? $permissions->permissions->editRoomSettingsYN : "N" == "Y"){ ?>
+                        <span style="cursor: pointer;"><i class="fas fa-trash-alt" style="color: #ff3b30;" d-v="<?php echo $room->rooms[$i]->roomId ; ?>">Delete</i> </span>
+                      <?php }else{ echo "-"; } ?>
                     </td>
                     </tr>
                     <?php }}?> 
@@ -114,7 +121,7 @@ font-family: 'Open Sans', sans-serif;
 
 
     </div>
-
+<?php } ?>
     <a class="scroll-to-top rounded" href="#page-top">
       <i class="fas fa-angle-up"></i>
     </a>

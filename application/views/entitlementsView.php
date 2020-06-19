@@ -60,9 +60,10 @@ font-family: 'Open Sans', sans-serif;
     </style>
   </head>
 
-  <body id="page-top">    
+  <body id="page-top"> 
+<?php $permissions = json_decode($permissions); ?>
+<?php if(isset($permissions->permissions) ? $permissions->permissions->viewEntitlementsYN : "N" == "Y"){ ?>   
     <div id="wrappers">
-
       <div id="content-wrappers" style="margin-top: 30px;
     background: white;" class="container">
         <div class="row">
@@ -93,7 +94,7 @@ font-family: 'Open Sans', sans-serif;
                   <?php
                     $entitlement = json_decode($entitlements);
                     if($entitlement != null){
-              if(isset($entitlements->entitlements)){
+              if(isset($entitlement->entitlements)){
      $count = count($entitlement->entitlements);
             for($i=0;$i<$count;$i++) {   ?>
               <tr >
@@ -112,12 +113,16 @@ font-family: 'Open Sans', sans-serif;
 
 
                   <td>
+                  <?php if(isset($permissions->permissions) ? $permissions->permissions->editEntitlementsYN : "N" == "Y"){ ?>
                       <span style="cursor: pointer;">
-                       <div><i class="fas fa-pencil-alt" style="color: #0077ff;" u-v="<?php echo $entitlement->entitlements[$i]->id;?>"></i> Edit</div>
+                       <div><i class="fas fa-pencil-alt" style="color: #0077ff;" u-v="<?php echo $entitlement->entitlements[$i]->id;?>">Edit</i> </div>
                       </span>
+                      <?php }else{ echo "-";} ?>
                   </td>
                   <td>
-                      <span style="cursor: pointer;"><i class="fas fa-trash-alt" style="color: #ff3b30;" d-v="<?php echo $entitlement->entitlements[$i]->id;?>"></i> Delete</span>
+                  <?php if(isset($permissions->permissions) ? $permissions->permissions->editEntitlementsYN : "N" == "Y"){ ?>
+                    <span style="cursor: pointer;"><i class="fas fa-trash-alt" style="color: #ff3b30;" d-v="<?php echo $entitlement->entitlements[$i]->id;?>"></i> Delete</span>
+                  <?php }else{ echo "-";} ?>
                   </td>
                   </tr>
                   <?php }}}?> 
@@ -131,7 +136,7 @@ font-family: 'Open Sans', sans-serif;
 
 
     </div>
-
+<?php } ?>
     <a class="scroll-to-top rounded" href="#page-top">
       <i class="fas fa-angle-up"></i>
     </a>

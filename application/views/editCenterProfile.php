@@ -22,8 +22,10 @@ font-family: 'Open Sans', sans-serif;
     </style>
 </head>
 <body id="page-top">  
-	<div id="wrapper">
-      <div id="content-wrapper container-styled" class=" container card_future" style="padding-top: 0px;padding: 20px;font-size: 0.9rem;">
+  <?php $permissions = json_decode($permissions); ?>
+<?php if(isset($permissions->permissions) ? $permissions->permissions->viewCenterProfileYN : "N" == "Y"){ ?>
+	<div id="wrapper-element">
+      <div id="content-wrapper-element container-styled" class=" container card_future" style="padding-top: 0px;padding: 20px;font-size: 0.9rem;">
         <div class="row">
           <div class="col-12"><a href="<?php echo base_url();?>settings">
             <button class="btn back-button">
@@ -98,23 +100,26 @@ font-family: 'Open Sans', sans-serif;
             <?php //echo $center_profile['about'];?>
           	</textarea>
     </div> -->
+  <?php if(isset($permissions->permissions) ? $permissions->permissions->editCenterProfileYN : "N" == "Y"){ ?>
         <div class="col-12 text-center" style="margin-top: 20px;">
           <button  class="btn btn-success">Save</button>
         </div>
+  <?php } ?>
       </form>
        
 
       </div>
-      <!-- /.content-wrapper -->
+      <!-- /.content-wrapper-element -->
 
     </div>
-    <!-- /#wrapper -->
+  <?php } ?>
+    <!-- /#wrapper-element -->
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
       <i class="fas fa-angle-up"></i>
     </a>
-
+<?php if(isset($permissions->permissions) ? $permissions->permissions->editCenterProfileYN : "N" == "Y"){ ?>
     <script type="text/javascript">
       $(document).on('click','.btn-success',function(e){
           e.preventDefault();
@@ -149,6 +154,7 @@ font-family: 'Open Sans', sans-serif;
             })
           })
     </script>
+  <?php } ?>
     <!-- Demo scripts for this page-->
 
 <script type="text/javascript">
@@ -160,6 +166,7 @@ font-family: 'Open Sans', sans-serif;
       type: 'GET',
       success:function(response){
         $('.form-group').html($(response).find('.form-group').html())
+        // $('body').html(response)
       }
     })
 }

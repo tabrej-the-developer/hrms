@@ -327,13 +327,15 @@ input[type=checkbox]:checked + label:before {
 </style>
 </head>
 <body>
-
+<?php $permissions = json_decode($permissions); ?>
 <div class="containers">
 	<div class="d-flex">
 		<span class="m-3" style="font-size: 30px;font-weight: bold">Permissions</span>
 		<!-- <span class="d-flex align-items-center"><button id="superfunds">Sync Xero Superfunds</button></span> -->
 	</div>
+
 	<div class="select-class">
+<?php if(isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N" == "Y"){ ?>
 		<span class="span-class center-class">
 			<select placeholder="Select Center" id="centerValue" onchange="getEmployees()">
 			<?php
@@ -349,6 +351,7 @@ input[type=checkbox]:checked + label:before {
 
 			</select>
 		</span>
+	<?php } ?>
 	</div>
 
 	<div class="table-div">
@@ -526,9 +529,11 @@ input[type=checkbox]:checked + label:before {
 		</table>
 		
 	</div>
+<?php if(isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N" == "Y"){ ?>
 <div class="button-class">
 	<button onclick="savePermission()" class="button">Save</button>
 </div>
+<?php } ?>
 </div>
 
 
@@ -630,7 +635,7 @@ input[type=checkbox]:checked + label:before {
 		xhttp.open("GET", base_url+"settings/getPermissionByEmployee/"+empId, true);
 		xhttp.send();
 	}
-
+<?php if(isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N" == "Y"){ ?>
 	function savePermission(){
 		var empId = document.getElementById("employeeValue").value;
 		var isQrReaderYN = document.getElementById("isQrReaderYN").checked ? "Y" : "N";
@@ -675,11 +680,17 @@ input[type=checkbox]:checked + label:before {
 	    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	    xhr.send(params);
 	}
-
+<?php } ?>
 	getEmployees();
 </script>
 
-
+<?php if(isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N" == "Y"){ ?>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('input').prop('disabled',true);
+	})
+</script>
+<?php } ?>
 
 <script type="text/javascript">
 	$(document).ready(()=>{
