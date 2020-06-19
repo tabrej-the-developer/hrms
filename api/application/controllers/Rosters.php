@@ -78,6 +78,7 @@ class Rosters extends CI_Controller {
 						$data['centerid'] = $centerid;
 						$data['status'] = "Draft";
 						$data['roster'] = [];
+						// var_dump($allAreas);
 						foreach ($allAreas as $area) {
 							$var['areaId'] = $area->areaid;
 							$var['areaName'] = $area->areaName;
@@ -96,9 +97,11 @@ class Rosters extends CI_Controller {
 							}
 							$var['roles'] = [];
 							$allRoles = $this->rostersModel->getAllRoles($area->areaid);
+							// var_dump($allRoles);
 							$areaEmployeeCount = 0;
 							foreach ($allRoles as $role) {
 								$allEmployess = $this->rostersModel->getAllEmployees($role->roleid);
+								// var_dump($allEmployess);
 								foreach ($allEmployess as $employee) {
 									$rav['empId'] = $employee->id;
 									$empDetails = $this->authModel->getUserDetails($employee->id);
@@ -119,11 +122,14 @@ class Rosters extends CI_Controller {
 										array_push($rav['shifts'],$shiftObj);
 										$day++;
 									}
+									// var_dump($rav);
 									array_push($var['roles'],$rav);
 								}
+								// var_dump($var);
 							}
 							array_push($data['roster'],$var);
 						}
+						// var_dump($data);
 					}
 					else{
 						$data['Status'] = "ERROR";
