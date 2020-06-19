@@ -64,6 +64,18 @@ text-align:center;
   text-decoration: none;
   cursor: pointer;
 }*/
+	.close{
+		float: none; 
+	    font-size: inherit; 
+	    font-weight: inherit; 
+	    line-height: inherit; 
+	    color: inherit; 
+	    text-shadow: inherit; 
+	    opacity: inherit; 
+	}
+	.close:hover{
+		background:#9E9E9E;
+	}
 input[type="text"],input[type=time],select{
 	background: #ebebeb;
 	border-radius: 5px;
@@ -568,6 +580,28 @@ if($this->session->userdata('UserType')==STAFF){
 				<tr  class="table-row">
 					<td   style="width:16vw" class=" cell-boxes left-most">
 						
+						<span class="row name-space" style="padding:0;margin:0;">
+							<span class="col-4 icon-parent">
+								<span class=" icon" style="
+									<?php	echo "background:".$colors_array[rand(0,5)].";";?>"><?php echo icon($rosterDetails->roster[$x]->roles[$counter]->empName)?>
+								</span>
+							</span>
+							<span class="col-8 name-role">
+								<span class="empname row "><?php echo $rosterDetails->roster[$x]->roles[$counter]->empName?></span>
+			<?php
+						$variable = 0;
+						$userLevel = $rosterDetails->roster[$x]->roles[$counter]->level;
+						foreach($entitlement->entitlements as $e){
+								if($e->id == $userLevel ){
+									$variable = $e->hourlyRate;
+								}
+			?>
+			<?php } ?>
+								<span class="title hourly row"><?php echo  $variable; // echo $rosterDetails->roster[$x]->roles[$counter]->empTitle ?></span>
+							</span>
+
+							<span class=""><?php // echo  $variable?></span>
+						</span>
 					</td>
 				
 					<?php $weeklyTotal=0; ?>
@@ -582,16 +616,22 @@ if($this->session->userdata('UserType')==STAFF){
 		?>
 
 					<td class="shift-edit cell-boxes count-<?php echo $p+1;?>"  style="width:12vw" 
-					 name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->shiftid?>"  
-					 name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleid ?>"
-					 name3="<?php echo $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?>" 
-					 stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime?>" etime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime?>" 
-					 name="<?php echo $rosterDetails->roster[$x]->roles[$counter]->empName?>"
-					 status="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>">
-		<?php if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave != "Y"){ ?>
-					 <div class="cell-back-1 <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"><?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)). "-" .timex( intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime));
-					  $weeklyTotal = $weeklyTotal + $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?> </div>
-					<?php } ?>
+					 name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->shiftid?>"  
+					 name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleid ?>"
+					 name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : intval($variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100); ?>" 
+					 stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime?>" etime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime?>" 
+					 name="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->empName?>"
+					 status="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>">
+
+					 <div class="cell-back-1 <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? 'leave' : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status;  ?>">
+				<?php if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave != "Y"){ ?>
+					 	<span class="row m-0 d-flex justify-content-center"><?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleName;?></span>
+					 	<?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)). "-" .timex( intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime));
+					  $weeklyTotal = $weeklyTotal + $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?> 
+					<?php }else{
+						echo 'On Leave';
+					} ?>
+					</div>
 					</td>
 
 					  <?php } ?>
@@ -651,7 +691,7 @@ if($this->session->userdata('UserType')==STAFF){
 	  <!-- Modal content -->
 	  <div class="modal-content">
 	  	<span class="row titl">
-	  		<span style="" class="box-name-space col-10">
+	  		<span style="" class="box-name-space col-12">
 	  			<span class="box-name row"></span>
 	  			<span class="box-space row"></span>
 	  		</span>
@@ -698,11 +738,10 @@ if($this->session->userdata('UserType')==STAFF){
  
 	  <div class="modal-content">
 	  	<div class="row titl">
-	  		<div class="col-8 box-name-space">
+	  		<div class="col-12 box-name-space">
 		  		<div style=""  class="row box-name">Title Here </div>
 		  		<div  class="row box-space">Time Here</div>
 		  	</div>
-		 	<span class="close col-2" >&times;</span>
 		</div>
 		   <form  id="user-form">	
 		   		<input type="text"  name="" id="starts" style="display: none">
@@ -710,8 +749,9 @@ if($this->session->userdata('UserType')==STAFF){
 		 		<input type="text" name="shiftId"  id="shift-Id" style="display:none">
 		 		<input type="text" name="roleId" id="role-Id" style="display:none">
 		 		<input type="text" name="userId"   id="user-Id" style="display:none">
-		 		<input type="button" name="user-submit" id="user-submit" value="Accept" style="margin:30px" class="button">
-		 		<input type="button" name="user-deny" id="user-deny" style="margin:30px" value="Deny" class="button">
+		 		<input type="button" name="user-submit" id="user-submit" value="Accept" style="width:5rem" class="button">
+		 		<input type="button" name="user-deny" id="user-deny" style="width:5rem" value="Deny" class="button">
+		 		<input type="button" name="cancel" class="button close" value="Close" style="width:5rem">
 		 	</form>
 	  </div>
 </div>
@@ -1130,7 +1170,7 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 </script>
 <script type="text/javascript">
 	$(document).ready(function(){
-		let height = $('td[name2 != ""] div').eq(3).height();
+		let height = $('td[name2 != ""] div').eq(0).height();
 		let count =	 $('td[name2 = ""]').length;
 		for(let i=0;i<count;i++){
 		$('td[name2 = ""] .leave').eq(i).height(height);

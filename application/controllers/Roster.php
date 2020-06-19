@@ -14,8 +14,7 @@ class Roster extends CI_Controller {
 
 public function roster_dashboard(){
   if($this->session->has_userdata('LoginId')){
-	if($this->session->userdata('UserType') == SUPERADMIN ){
-		if(!isset($_GET['center'])){
+  	if(!isset($_GET['center'])){
 							$id = 0;
 							$oldid=1;
 						}else{
@@ -34,29 +33,49 @@ public function roster_dashboard(){
 				$var['error'] = 'error';
 			}
 		$var['entitlement'] = $this->getAllEntitlements($var['userId']);
-	}
-	else if($this->session->userdata('UserType') == ADMIN ){
+	// if($this->session->userdata('UserType') == SUPERADMIN ){
+	// 	if(!isset($_GET['center'])){
+	// 						$id = 0;
+	// 						$oldid=1;
+	// 					}else{
+	// 						$id = $_GET['center'];
+	// 						$id = intval($id)-1;
+	// 						$oldid = $id;
+	// 					}
+	// 	$var['id'] = $id;
+	// 	$var['centerId'] = $oldid;
+	// 	$var['userId'] 	= $this->session->userdata('LoginId');
+	// 	if( $this->getAllCenters() != 'error'){
+	// 		$var['centers'] = $this->getAllCenters();
+	// 		$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[$id]->centerid);
+	// 		}
+	// 		else{
+	// 			$var['error'] = 'error';
+	// 		}
+	// 	$var['entitlement'] = $this->getAllEntitlements($var['userId']);
+	// }
+	// else if($this->session->userdata('UserType') == ADMIN ){
 		
-		$var['userId'] 	= $this->session->userdata('LoginId');
-		$var['centers'] = $this->getAllCenters();
-		$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[0]->centerid);
-		$var['cents'] = json_decode($var['centers'])->centers[0]->centerid;
-		$var['entitlement'] = $this->getAllEntitlements($var['userId']);
-			}
-	else{
-		$var['userId'] 	= $this->session->userdata('LoginId');
-		$var['userType'] = $this->session->userdata('UserType');
-		$var['centers'] = $this->getAllCenters();
-		$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[0]->centerid);
-		$var['entitlement'] = $this->getAllEntitlements($var['userId']);
-	}
+	// 	$var['userId'] 	= $this->session->userdata('LoginId');
+	// 	$var['centers'] = $this->getAllCenters();
+	// 	$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[0]->centerid);
+	// 	$var['cents'] = json_decode($var['centers'])->centers[0]->centerid;
+	// 	$var['entitlement'] = $this->getAllEntitlements($var['userId']);
+	// 		}
+	// else{
+	// 	$var['userId'] 	= $this->session->userdata('LoginId');
+	// 	$var['userType'] = $this->session->userdata('UserType');
+	// 	$var['centers'] = $this->getAllCenters();
+	// 	$var['rosters'] = $this->getPastRosters("1");
+	// 	$var['entitlement'] = $this->getAllEntitlements($var['userId']);
+	// }
 	//footprint start
 	if($this->session->has_userdata('current_url')){
 		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
 		$this->session->set_userdata('current_url',currentUrl());
 	}
 	// footprint end
-		$var['permissions'] = $this->fetchPermissions();
+	$var['permissions'] = $this->fetchPermissions();
 			$this->load->view('rosterView',$var);
 
 	}
@@ -91,12 +110,13 @@ public function getRosterDetails(){
 		$data['userid'] = $this->session->userdata('LoginId');
 		$data['entitlements'] = $this->getAllEntitlements($data['userid']);
 		$data['rosterDetails'] = $this->getRoster($data['rosterid'],$data['userid']);
+		// var_dump($data['rosterDetails']);
 			//footprint start
-	if($this->session->has_userdata('current_url')){
-		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-		$this->session->set_userdata('current_url',currentUrl());
-	}
-	// footprint end
+		if($this->session->has_userdata('current_url')){
+			footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+			$this->session->set_userdata('current_url',currentUrl());
+		}
+		// footprint end
 			$this->load->view('rosterData',$data);
 		}
 		else{
