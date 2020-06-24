@@ -96,6 +96,93 @@ class Timesheet extends CI_Controller{
 		}
 	}
 
+	public function postTimesheetToXero($timesheetId){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $json->userid){
+				$this->load->model('timesheetModel');
+				$this->load->model('settingsModel');
+				$this->load->model('rostersModel');
+				$this->load->model('utilModel');
+				$currentDay = 0;
+				$timesheet = $this->timesheetModel->getTimesheet($timesheetId);
+				$userDetails = $this->utilModel->getUserDetails($json->userid);
+				$usersList = $this->timesheetModel->getUsersByTimesheetId($timesheetId);
+				$startDate = $timesheet->startDate;
+				$endDate = $timesheet->endDate;
+				$Timesheets['Timesheets'] = [];
+				foreach ($usersList as $user) {
+					$payrollTypes = $this->timesheetModel->getPayrollShiftTypesByUser($timesheetId,$user->userid);
+					$employeeDetails = $this->timesheetModel->getEmployeeDetails($user->userid);
+					$sheet = [];
+					$sheet['StartDate'] = $startDate;
+					$sheet['EndDate'] = $endDate;
+					$sheet['EmployeeID'] = isset($employeeDetails->xeroEmployeeId) ? $employeeDetails->xeroEmployeeId : 'ab';
+					$sheet['TimesheetLines'] = [];
+					
+					foreach ($payrollTypes as $payrollType){
+						$lines = [];
+						// print_r($payrollType);
+					$lines['earningRateId'] = $payrollType->payrollType;
+					$lines['NumberOfUnits'] = [];
+						while ($currentDay < 14) {
+							$unit = 0;
+							$currentDate = date( "Y-m-d", strtotime( "$startDate +$currentDay day" ));
+							$payrollShifts = $this->timesheetModel->getPayrollShiftsById($timesheetId,$currentDate,$user->userid,$payrollType->payrollType);
+							if($payrollShifts == null or $payrollShifts == ''){
+								foreach ($payrollShifts as $payrollShift) {
+									$unit = (intval($payrollShift->clockedOutTime) - intval($payrollShift->clockedInTime))/100;
+								array_push($lines['NumberOfUnits'],$unit);
+								}
+							}
+								else{
+									array_push($lines['NumberOfUnits'],0);
+								}
+							$currentDay++;
+						}
+							array_push($sheet['TimesheetLines'],$lines);
+						}
+						array_push($Timesheets['Timesheets'],$sheet);
+					}
+				$this->load->model('payrollModel');
+				$xeroTokens = $this->xeroModel->getXeroToken();
+					if($xeroTokens != null){
+						$access_token = $xeroTokens->access_token;
+						$tenant_id = $xeroTokens->tenant_id;
+					}
+					$this->postTimesheetDataToXero($Timesheets,$access_token,$tenant_id);
+				$data['Status'] = "SUCCESS";
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
+	function postTimesheetDataToXero($data,$access_token,$tenant_id){
+	$url = "https://api.xero.com/payroll.xro/1.0/Timesheets";
+		$ch =  curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_POST,1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+		curl_setopt($ch, CURLOPT_HTTPHEADER,  array(
+			'Content-Type:application/json',
+			'Authorization:Bearer '.$access_token,
+			'Xero-tenant-id:'.$tenant_id
+		));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+		$server_output = curl_exec($ch);
+		return $server_output;
+	}
+
 	// public function getTimesheet($timesheetid,$userid){
 	// 	$headers = $this->input->request_headers();
 	// 	if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){

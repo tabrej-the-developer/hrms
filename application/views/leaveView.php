@@ -15,7 +15,7 @@ font-family: 'Open Sans', sans-serif;
 	}
 	.containers{
 		background:	rgb(243, 244, 247);
-		height: calc(100vh - 50px);
+		height: calc(100vh);
 	}
   
 		.leave-heading{
@@ -309,8 +309,8 @@ table.dataTable{
 
   <div class="row">
     <div class="col-sm-12 ">
-		<div class="row d-flex">
-	    <div class="ml-3"><span class="leave-heading">Leave Management</span></div>
+		<div class="row d-flex pt-3">
+	    <div class="ml-2"><span class="leave-heading">Leave Management</span></div>
 	    	<div class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
 		<?php if($this->session->userdata('UserType') == SUPERADMIN){?> 
 			<!-- 			<div class="filter-icon d-flex">

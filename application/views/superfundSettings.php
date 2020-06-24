@@ -11,8 +11,19 @@
 	*{
 		font-family: 'Open Sans', sans-serif;
 	}
+	body{
+		background: #f2f2f2;
+	}
+		.containers{
+		padding-left: 200px;
+				height: 100vh;
+    overflow-y: hidden;
+	}
 		thead tr{
 			background:rgba(255,255,255,1) !important;
+		}
+		tbody{
+			overflow-y: auto
 		}
 		tr:nth-child(even){
 			background:rgb(255,255,255);
@@ -21,8 +32,17 @@
 
 			background:rgb(243, 244, 247);
 		}
+		tr{
+			line-height: 1rem
+		}
+		td{
+			font-size: 0.8rem;
+			line-height: 1rem;
+
+		}
+
 		.table-div{
-			height:70vh;
+			height:80%;
 			overflow-y: auto;
 			padding: 0 20px;
 		}	
@@ -72,6 +92,15 @@
 		.data-buttons{
 			padding:10px;
 		}
+		button{
+			line-height: 1rem;
+			display: flex;
+			background: #142059;
+    	color: white;
+    	border-radius: 5px;
+    	border:none;
+    	padding: 0.5rem;
+		}
 		/* The Modal (background) */
 .modal {
   display: none; 
@@ -93,7 +122,7 @@
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 80%;
+  max-width: 100%;
 }
 
 /* The Close Button */
@@ -212,14 +241,18 @@ border-bottom-right-radius: 20px;
         transform: scale(1.0);
         transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
     }
+    .superfunds-container{
+    	padding: 4rem 3rem 2rem 2rem;
+    	height: 100%;
+    overflow: hidden;
+    }
+    .superfunds-container-child{
+    	background: white;
+    	height: 100%;
+    }
 @media only screen and (max-width:1024px) {
 .modal-content{
 	min-width:100vw;
-}
-.containers {
-     width: 100%;
-    margin: 0px;
-    padding:0;
 }
 .containers {
      width: 100%;
@@ -237,12 +270,26 @@ border-bottom-right-radius: 20px;
 		}
 	?>
 <div class="containers">
+		<span style="position: absolute;top:20px;padding-left: 2rem">
+      <a href="<?php echo base_url();?>/settings">
+        <button class="btn back-button">
+          <img src="<?php echo base_url('assets/images/back.svg');?>">
+          <span style="font-size:0.8rem">Superfunds</span>
+        </button>
+      </a>
+    </span>
+	<div class="superfunds-container">
+		<div class="superfunds-container-child">
 	<?php $permissions = json_decode($permissions); ?>
 <?php if(isset($permissions->permissions) ? $permissions->permissions->viewPermissionYN : "N" == "Y"){ ?>
 	<div class="d-flex">
-		<span class="m-3" style="font-size: 30px;font-weight: bold">Superfunds</span>
+			<h4 style="font-weight: 700;
+                      padding: 1rem 0 0 2rem;
+                      margin: 0 !important;
+                      color: rgba(11, 36, 107);width: 100%"
+                class="text-left">Superfunds</h4>
 <?php if(isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N" == "Y"){ ?>
-		<span class="d-flex align-items-center"><button id="superfunds">Sync Xero Superfunds</button></span>
+		<span class="d-flex align-items-center pr-4"><button id="superfunds">Sync&nbsp;Xero&nbsp;Superfunds</button></span>
 <?php } ?>
 	</div>
 	<div class="table-div">
@@ -298,7 +345,8 @@ border-bottom-right-radius: 20px;
 // }
 
  ?>
-
+	 </div>
+	</div>
 </div>
 
 

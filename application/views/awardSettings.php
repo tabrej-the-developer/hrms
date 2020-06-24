@@ -11,6 +11,15 @@
 	*{
 		font-family: 'Open Sans', sans-serif;
 	}
+	.containers{
+		padding-left: 200px;
+		height: 100vh;
+    overflow-y: hidden;
+	}
+	.table thead th {
+    vertical-align: top !important;
+    border-bottom: 2px solid #dee2e6;
+		}
 		thead tr{
 			background:rgba(255,255,255,1) !important;
 		}
@@ -21,8 +30,16 @@
 
 			background:rgb(243, 244, 247);
 		}
+		tbody tr{
+			font-size: 0.8rem;
+		}
+		body{
+			background: #f2f2f2;
+			height: 100%;
+			overflow-y: auto;
+		}
 		.table-div{
-			height:70vh;
+			max-height:80%;
 			overflow-y: auto;
 			padding: 0 20px;
 		}	
@@ -58,7 +75,8 @@
 			position:absolute;
 						
 		}
-
+		.containers{
+		}
 		.filter-icon{
 			border:1px solid rgba(0,0,0,0.7);
 			padding:8px;
@@ -212,14 +230,58 @@ border-bottom-right-radius: 20px;
         transform: scale(1.0);
         transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
     }
+    .awards-container{
+    	padding: 4rem 3rem 2rem 2rem;
+    	height: 100%;
+    overflow: hidden;
+    }
+		.awards-container-child{
+			background: white;
+			height: 100%;
+
+		}
+		thead{
+			height: 100%;
+						overflow-y: auto;
+		}
+				button{
+			line-height: 1rem;
+			display: flex;
+			background: #142059;
+    	color: white;
+    	border-radius: 5px;
+    	border:none;
+    	padding: 0.5rem;
+    	margin-right:2rem;
+		}
+		/*
+						scroll bar 
+		*/
+					/* width */
+			::-webkit-scrollbar {
+			  width: 10px;
+			}
+
+			/* Track */
+			::-webkit-scrollbar-track {
+			  background: #f1f1f1; 
+			}
+			 
+			/* Handle */
+			::-webkit-scrollbar-thumb {
+			  background: #888; 
+			}
+
+			/* Handle on hover */
+			::-webkit-scrollbar-thumb:hover {
+			  background: #555; 
+			}
+		/*
+						scroll bar end
+		*/
 @media only screen and (max-width:1024px) {
 .modal-content{
 	min-width:100vw;
-}
-.containers {
-     width: 100%;
-    margin: 0px;
-    padding:0;
 }
 .containers {
      width: 100%;
@@ -237,12 +299,26 @@ border-bottom-right-radius: 20px;
 		}
 	?>
 <div class="containers">
+	<span style="position: absolute;top:20px;padding-left: 2rem">
+      <a href="<?php echo base_url();?>/settings">
+        <button class="btn back-button">
+          <img src="<?php echo base_url('assets/images/back.svg');?>">
+          <span style="font-size:0.8rem">Awards</span>
+        </button>
+      </a>
+    </span>
+	<div class="awards-container">
+		<div class="awards-container-child">
 	<?php $permissions = json_decode($permissions); ?>
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewAwardsYN : "N") == "Y"){ ?>
 	<div class="d-flex">
-		<span class="m-3" style="font-size: 30px;font-weight: bold">Awards</span>
+		<h4 style="font-weight: 700;
+                      padding: 1rem 0 1rem 2rem;
+                      margin: 0 !important;
+                      color: rgba(11, 36, 107);width: 100%"
+                class="text-left">Awards</h4>
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editAwardsYN : "N") == "Y"){ ?>
-		<span class="d-flex align-items-center"><button id="awards">Sync Xero Awards</button></span>
+<span class="d-flex align-items-center pr-4"><button id="awards">Sync&nbsp;Xero&nbsp;Awards
 <?php } ?>
 	</div>
 	<div class="table-div">
@@ -290,6 +366,8 @@ border-bottom-right-radius: 20px;
 	
 </div>
 <?php } ?>
+		</div>
+	</div>
 </div>
 
 
@@ -303,7 +381,7 @@ border-bottom-right-radius: 20px;
 
 <script type="text/javascript">
 	$(document).ready(function(){
-	$('#superfunds').click(function(){
+	$('#awards').click(function(){
 		var url = window.location.origin + "/PN101/settings/syncXeroAwards" ;
 		$.ajax({
 				url:url,

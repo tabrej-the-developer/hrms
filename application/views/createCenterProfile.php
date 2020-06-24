@@ -12,8 +12,9 @@ font-family: 'Open Sans', sans-serif;
 	</style>
 </head>
 <body id="page-top">
+	<?php $permissions = json_decode($permissions); ?>
 	   <?php require_once('header.php') ?>
-<?php if(isset($permissions->permissions) ? $permissions->permissions->viewCenterProfileYN : "N" == "Y"){ ?>
+<?php if((isset($permissions->permissions) ? $permissions->permissions->viewCenterProfileYN : "N")== "Y"){ ?>
 	<div id="wrapper-element">	 
 		<div  id="content-wrapper-element"  style="padding-top: 0px;margin-top: 80px;padding-left: 15px;">
 		<div class="container-fluid card_future" style="padding: 20px;">

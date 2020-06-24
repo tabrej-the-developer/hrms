@@ -10,6 +10,10 @@
 		h5{
 			padding-left: 10px
 		}
+		body{
+			background: #f2f2f2 !important;
+			font-size: 0.8rem;
+		}
 		.employee-section{
 			padding-left: 10px;
 		}
@@ -40,17 +44,18 @@
 			align-content: center;
 			color: white;
 			width:100%;
+			border-bottom: 1px solid #979797;
 		}
 		.tab-buttons-div{
 			border-radius: 4px;
 			padding: 10px;
 			display: flex;
 			justify-content: center;
-			background:  #307bd3;
 		}
 		.nav-button{
 			padding-right:15px;
 			position: relative;
+			color: #4B4B4B
 		}
 		.nav-button > span{
 /*			border:1px solid #307bd3;
@@ -65,9 +70,8 @@
 		input,select{
 			display: block;
 		    width: auto;
-		    height: calc(1.5em + .75rem + 2px);
-		    padding: .375rem .75rem;
-		    font-size: 1rem;
+		    height: 1.5rem;
+		    font-size: 0.8rem;
 		    font-weight: 400;
 		    line-height: 1.5;
 		    color: #495057;
@@ -81,15 +85,18 @@
 			padding:10px;
 			display: inline-block;
 		}
+
 		label{
 			width:100%;
+			margin: 0 !important;
 		}
 		#submit{
-		background-color: #9E9E9E;
+		background-color: #60AC0C;
   		border: none;
   		color: white;
-  		padding: 10px 10px;
+  		padding: 0.5rem 0.5rem;
   		text-align: center;
+  		border-radius: 5px;
   		text-decoration: none;
   		display: inline-block;
   		margin: 2px
@@ -114,7 +121,11 @@
 		.submit-div{
 			display: flex;
 			justify-content: center;
-			margin:5%;
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			border-top:1px solid #979797;
+			padding: 1%;
 		}
 		.row.ml-1 > .span-class{
 			padding:0;
@@ -136,17 +147,40 @@
 		    /* background: red; */
 		    margin-top: 34px;
 		    position: absolute;
-		    width: 0;
-		    border-right: 10px solid transparent;
-		    border-top: 10px solid #899097;
-		    border-left: 10px solid transparent;
-		    left:50%;
+		    width: 100%;
+		    border-top: 2px solid #307bd3;
+		    left:0;
 		}
+	.addEmployee-container{
+		height:100vh;
+		padding:4rem 3rem 2rem 2rem;
+	}
+	.addEmployee-container-child{
+		height:100%;
+		background: white;
+		position: relative;
+	}
+	.employee-section,.employee-bank-account-section,.employee-superfund-section, 
+	.employee-tax-declaration-section,.employee-details{
+		max-height: 80%;
+		height: 80%;
+		overflow: auto
+	}
 	</style>
 </head>
 <body>
 <?php $this->load->view('header'); ?>
 <div class="containers">
+	<span style="position: absolute;top:20px;padding-left: 2rem">
+      <a href="<?php echo base_url();?>/settings">
+        <button class="btn back-button">
+          <img src="<?php echo base_url('assets/images/back.svg');?>">
+          <span style="font-size:0.8rem">Add Employee</span>
+        </button>
+      </a>
+    </span>
+	<div class="addEmployee-container">
+	<div class="addEmployee-container-child">
 	<?php $permissions = json_decode($permissions); ?>
 <?php if(isset($permissions->permissions) ? $permissions->permissions->editEmployeeYN : "N" == "Y"){ ?>
 	<section class="tab-buttons">
@@ -159,7 +193,7 @@
 		</div>	
 	</section>
 	<section class="employee-section">	
-		<h3>Employee Section</h3>
+		<!-- <h3>Employee Section</h3> -->
 		<span class="d-flex">
 		<span class="span-class ">
 			<label>Title</label>
@@ -187,7 +221,7 @@
 	</span>
 	</span>
 </span>
-		<br>
+		
 		<span class="span-class">
 			<label>Email</label>
 			<input placeholder="Emails" id="emails"  class="" type="text">
@@ -205,7 +239,7 @@
 				<option value="I">Non binary</option>
 			</select>
 		</span>
-				<br>
+				
 		<span class="span-class">
 			<label>Job Title</label>
 			<input placeholder="Job Title" id="jobTitle"  class="" type="text">
@@ -256,17 +290,17 @@
 					<input placeholder="Mobile" id="mobile"  class="" type="text">
 				</span>
 		</span>
-				<br>
-		<span class="span-class">
+	<span class="d-block">
+		<span class="span-class col-3">
 			<label>Start Date</label>
 			<input placeholder="Start Date" id="startDate"  class="" type="date">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label>Termination Date</label>
 			<input placeholder="Termination Date" id="terminationDate"  class="" type="date">
 		</span>
-				<br>
-		<span class="span-class">
+				
+		<span class="span-class col-3">
 			<label>Ordinary Earning Rate Id</label>
 			<select placeholder="Ordinary Earning Rate Id" id="ordinaryEarningRateId"  class="" type="text">
 			<?php
@@ -277,6 +311,7 @@
 			<?php }?>
 			</select>
 		</span>
+	</span>
 <!-- 		<span class="span-class">
 			<label>created_at</label>
 			<input placeholder="created_at" id="created_at"  class="" type="text">
@@ -306,7 +341,7 @@
 			<input placeholder="BSB"  class="bsb" >
 		</span>
 	</div>
-		<br>
+		
 	<span class="row">
 		<span class="span-class col-4">
 			<label>Account Number</label>
@@ -371,7 +406,7 @@
 
 
 	<section class="employee-tax-declaration-section">
-		<h3>Employee Tax Declaration Section</h3>
+		<!-- <h3>Employee Tax Declaration Section</h3> -->
 
 		<span class="span-class col-4">
 			<label>Employment Basis</label>
@@ -461,7 +496,7 @@
 			<label>Approved Witholding Variation Percentage</label>
 			<input placeholder="Approved Witholding Variation Percentage" id="approvedWitholdingVariationPercentage">
 		</span>
-		<br>
+		
 	</div>
 	</section>
 
@@ -471,6 +506,7 @@
 			<label>Center</label>
 
 			<select placeholder="Center" id="center">
+				<option>--Center--</option>
 				<?php 
 					$centers = json_decode($centers);
 				foreach($centers->centers as $center){ ?> 
@@ -481,8 +517,10 @@
 
 		<span class="span-class">
 			<label>Area</label>
+
 				<span class="" id="area-select">
 					<select placeholder="Area" id="area">
+						<option>--select--</option>
 					<?php 
 					$areas = json_decode($areas);
 					foreach($areas->areas as $area){
@@ -495,13 +533,16 @@
 
 		<span class="span-class">
 			<label>Role</label>
+			<span id="role-select">
 			<select placeholder="Role" id="role">
 				<option>--select--</option>
+
 				<?php foreach($areas->areas as $roles){?>
 					<?php foreach($roles->roles as $role){?>
 				<option area-id="<?php print_r($role->areaid); ?>" ><?php print_r($role->roleName) ?></option>
 				<?php } } ?>
 			</select>
+		</span>
 		</span>
 
 		<span class="span-class">
@@ -526,9 +567,11 @@
 		</span>
 	</section>
 	<div class="submit-div">
-		<button id="submit">submit</button>
+		<button id="submit">Submit</button>
 	</div>
 <?php } ?>
+		</div>
+	</div>
 </div>
 <script type="text/javascript">
 	$(document).ready(()=>{
@@ -795,16 +838,21 @@ $(document).ready(function(){
 		$('#center').change(function(){
 	var id = this.value;
 	var url = "http://localhost/PN101/settings/addEmployee/"+id;
+	console.log(id)
 	$.ajax({
 		url:url,
 		type:'GET',
 		success:function(response){
 			// $('body').html($(response).find('#area'))
 			$('#area-select').html($(response).find('#area'))
-					}
-				})
+			$('#role-select').html($(response).find('#role'))
+			for(x=0;x<$('#role').children().length;x++){
+					$('#role').children('option').eq(x).css('display','none')
+			}
+				}
 			})
 		})
+	});
 </script>
 
 <script type="text/javascript">
@@ -821,6 +869,7 @@ $(document).ready(function(){
 
 	$(document).on('change','#area',function(){
 	var areaId = this.value;
+	console.log(areaId);
 	for(x=0;x<$('#role').children().length;x++){
 		if($('#role').children('option').eq(x).attr('area-id') == areaId){
 			$('#role').children('option').eq(x).css('display','block')

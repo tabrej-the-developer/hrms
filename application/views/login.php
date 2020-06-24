@@ -13,7 +13,7 @@
 font-family: 'Open Sans', sans-serif;
     }
  body{
-	background-color:#2B427F;
+	background-color:#f2f2f2;
     overflow: hidden
 }
 .login-container{
@@ -22,7 +22,8 @@ font-family: 'Open Sans', sans-serif;
 .login-form-1{
     padding: 3%;
 	background-color:#fff;
-    height: 100vh;
+    height: 100%;
+    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.3);
 }
 .login-form-1 h3{
     text-align: center;
@@ -68,14 +69,18 @@ font-family: 'Open Sans', sans-serif;
     font-family: : Open Sans;
 }
 .login-container-child{
-    height: 100vh;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    padding: 4rem 10rem;
 }
 .login-form-3{
     padding-right: 0px; 
     padding-left: 0px;
     background:url('http://localhost/PN101/assets/images/login.png');
-    background-size: 100% 100vh;
+    background-size: 100% 100%;
     background-repeat: no-repeat;
+    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.3);
 }
 .text-class{
     color:white;
@@ -111,7 +116,7 @@ input[type="submit"]{
 @media only screen and (max-width:500px){
     body{
         max-width: 100vw;
-        max-height: 100vh;
+        max-height: 100%;
         overflow-x:hidden;
         overflow-y: hidden;
     }

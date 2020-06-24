@@ -13,6 +13,9 @@
 		max-height: 100vw;
 		overflow-y: hidden;
 	}
+	body{
+		background: #f2f2f2;
+	}
 		thead tr{
 			background:rgba(255,255,255,1) !important;
 		}
@@ -24,12 +27,13 @@
 			background:rgb(243, 244, 247);
 		}
 		.table-div{
-			height:69vh;
 			overflow-y: auto;
-			padding: 0 20px;
+			height: 75%;
+			padding: 0;
 		}	
 		.table  td,.table th{
-			padding: 1rem;
+			padding: 0.25rem;
+			padding-left: 4rem;
 			border: none;
 		}
 		.sort-by{
@@ -227,19 +231,21 @@ border-bottom-right-radius: 20px;
     .button-class{
     	display: flex;
     	justify-content: flex-end;
-    	margin-right:5%;
-    	height:5%;
-    	padding-bottom: 10px
+    	right:5%;
+    	bottom: 5px;
     }
     .select-class{
     	display: flex;
     	justify-content: flex-end;
-    	padding-right: 5%
+    	padding: 1rem
     }
     .center-class{
     	padding-right: 2%;
     	position: relative;
-
+    	margin-left: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     }
     .center-class:after{
     	background: url("../assets/images/dropdown.png");
@@ -251,7 +257,9 @@ border-bottom-right-radius: 20px;
     .employee-id-class{
     	padding-right: 2%;
     	position: relative;
-    	
+    display: flex;
+    justify-content: center;
+    align-items: center;
     }
     .employee-id-class:after{
     	background: url("../assets/images/dropdown.png");
@@ -273,6 +281,12 @@ border-bottom-right-radius: 20px;
     select {
     -webkit-appearance: none
 }
+    select{
+      background: #ebebeb !important;
+      border-radius: 5px;
+        padding: 5px;
+        border: 2px solid #e9e9e9 !important;
+    }
 input[type=checkbox] + label {
   display: block;
   margin: 0.2em;
@@ -306,8 +320,17 @@ input[type=checkbox]:checked + label:before {
   color: #fff;
 }
 
-
-
+.permission-container{
+	padding: 4rem 3rem 2rem 2rem;
+	height:calc(100vh - 2rem);
+}
+.permission-container-child{
+	background: white;
+	height: 100%;
+}
+tbody{
+	padding-bottom: 16rem;
+}
 
 @media only screen and (max-width:1024px) {
 .modal-content{
@@ -329,13 +352,29 @@ input[type=checkbox]:checked + label:before {
 <body>
 <?php $permissions = json_decode($permissions); ?>
 <div class="containers">
-	<div class="d-flex">
-		<span class="m-3" style="font-size: 30px;font-weight: bold">Permissions</span>
-		<!-- <span class="d-flex align-items-center"><button id="superfunds">Sync Xero Superfunds</button></span> -->
-	</div>
+	<div class="permission-container">
+		<span style="position: absolute;top:20px;padding-left: 0rem">
+      <a href="<?php echo base_url();?>/settings">
+        <button class="btn back-button">
+          <img src="<?php echo base_url('assets/images/back.svg');?>">
+          <span style="font-size:0.8rem">Edit Permissions</span>
+        </button>
+      </a>
+    </span>
+		<div class="permission-container-child">
+			<div class="d-flex">
+
 
 	<div class="select-class">
 <?php if(isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N" == "Y"){ ?>
+	<h4 style="font-weight: 700;
+                      padding: 1rem 0 0 2rem;
+                      margin: 0 !important;
+                      color: rgba(11, 36, 107);width: 100%"
+                class="text-left">Permissions</h4>
+				<!-- <span class="d-flex align-items-center"><button id="superfunds">Sync Xero Superfunds</button></span> -->
+			</div>
+
 		<span class="span-class center-class">
 			<select placeholder="Select Center" id="centerValue" onchange="getEmployees()">
 			<?php
@@ -530,10 +569,12 @@ input[type=checkbox]:checked + label:before {
 		
 	</div>
 <?php if(isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N" == "Y"){ ?>
-<div class="button-class">
+<div class="button-class" style="">
 	<button onclick="savePermission()" class="button">Save</button>
 </div>
 <?php } ?>
+		</div>
+	</div>
 </div>
 
 

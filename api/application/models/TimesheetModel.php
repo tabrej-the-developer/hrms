@@ -70,4 +70,29 @@ class TimesheetModel extends CI_Model {
 		return $query->result();
 	}
 
+	public function getUsersByTimesheetId($timesheetid){
+		$this->load->database();
+		$query = $this->db->query("SELECT userid from payrollshift where timesheetId = '$timesheetid' group by userid");
+		return $query->result();
+	}
+
+	public function getPayrollShiftsById($timesheetid,$currentDate,$userid,$payrollType){
+		$this->load->database();
+		$query = $this->db->query("SELECT sum(clockedInTime) as clockedInTime,sum(clockedOutTime) as clockedOutTime,payrollType from payrollshift where timesheetId = '$timesheetid' and shiftDate = '$currentDate' and userid = '$userid' and payrollType = '$payrollType' group by payrollType");
+		return $query->result();
+	}
+
+	public function getPayrollShiftTypesByUser($timesheetid,$userid){
+		$this->load->database();
+		$query = $this->db->query("SELECT  payrollType from payrollshift where timesheetId = '$timesheetid' and userid = '$userid' group by payrollType");
+		return $query->result();
+	}
+
+	public function getEmployeeDetails($userid){
+		$this->load->database();
+		$query = $this->db->query("SELECT  * from employee where  userid = '$userid' ");
+		return $query->result();
+	}
+
+
 }

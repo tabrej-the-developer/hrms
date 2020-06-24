@@ -433,11 +433,15 @@ margin-top:-3px;
 }
 
 .containers{
-  max-width:80vw;
+  max-width:100%;
 }
 .shift-bar-tab{
   text-align: center;
   color:white;
+  max-width: 100%;
+}
+table{
+  width: 100% !important;
 }
 .prevv{
   background:#307bd3 ;
@@ -513,6 +517,14 @@ table.dataTable thead th, table.dataTable thead td{
     transform: scale(1.0);
     transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
 }
+  .mom-container{
+    padding: 4rem 3rem 2rem 2rem;
+    height: calc(100vh - 3rem);
+  }
+  .mom-container-child{
+    background: white;
+    height: 100%;
+  }
 </style>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/tokenize2.css">
@@ -612,6 +624,8 @@ $users =   json_decode($users);
 
 <!-- Modal -->
 
+<div class="mom-container">
+  <div class="mom-container-child">
 
 
 <div class="modal fade" id="myModal" role="dialog" style="z-index:1400px">
@@ -910,6 +924,8 @@ $users =   json_decode($users);
    <p>Viewing page 1-20 of 36</p>
    
    </div> -->
+        </div>
+      </div>
     </div>
   </div>
 </div>

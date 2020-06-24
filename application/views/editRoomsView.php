@@ -6,11 +6,18 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style type="text/css">
+  th,td,thead,table{
+    border: 0px !important;
+    border-bottom:0 !important;
+    border-top:0 !important;
+  }
+
   *{
 font-family: 'Open Sans', sans-serif;
   }
       #wrappers{
         padding:0;
+        height: 100vh;
       }
       .submit,.cancel{
             background-color: #9E9E9E;
@@ -22,6 +29,45 @@ font-family: 'Open Sans', sans-serif;
   display: inline-block;
   margin: 2px
       }
+    body{
+      background: #f2f2f2;
+     }
+    select{
+      background: #ebebeb !important;
+      border-radius: 5px;
+        padding: 5px;
+        border: 2px solid #e9e9e9 !important;
+    }
+    label{
+      font-weight: 600;
+      color:rgba(0,0,0,0.8);
+      font-size: 0.9rem;
+    }
+    .row{
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+    .edit-rooms-heading{
+      width: 100%;
+      justify-content: center;
+    }
+    #content-wrappers{
+      padding: 4rem 2rem 0 2rem;
+      height:calc(100vh - 4rem);
+    }
+    .content-wrappers-child{
+      background: white;
+      height: 100%
+    }
+    .table-overflow{
+      max-width: 100%;
+      overflow-x: auto;
+    }
+    .row{
+      display: block !important;
+    }
     </style>
   </head>
 
@@ -29,17 +75,27 @@ font-family: 'Open Sans', sans-serif;
     <?php $permissions = json_decode($permissions); ?>
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewRoomSettingsYN : "N") == "Y"){ ?>   
     <div id="wrappers">
-      <div id="content-wrappers" style="margin-top: 90px;
-    background: white;" class="container">
-        <div class="row">
-           <h4 class="col-12"><a href="<?php echo base_url();?>center/settings"><button class="btn back-button"> <img src="<?php echo base_url();?>/images/back.png" > </button></a> &nbsp; Edit Rooms</h4>
-          <div class="col-12">
-        Showing rooms for :
-      </div>
-      <div class="col-12" style="padding: 10px;"></div>
-      <div class="col-lg-3">
+    <span style="position: absolute;top:20px;padding-left: 2rem">
+      <a href="<?php echo base_url();?>/settings">
+        <button class="btn back-button">
+          <img src="<?php echo base_url('assets/images/back.svg');?>">
+          <span style="font-size:0.8rem">Edit Rooms</span>
+        </button>
+      </a>
+    </span>
+      <div id="content-wrappers"  class="containers">
+        <div class="row content-wrappers-child">
+           <h4 style="font-weight: 700;
+                      margin: 2rem;
+                      color: rgba(11, 36, 107);width: 100%"
+                class="text-center"> Edit Rooms</h4>
+
+      <div class="col-lg-12 ml-auto d-flex">
         <?php if((isset($permissions->permissions) ? $permissions->permissions->editRoomSettingsYN : "N") == "Y"){ ?>
-          <select id="centerList" class="form-control" onchange="changeCenter()">
+            <div class="col-9 ml-auto text-right">
+                Showing rooms for :
+            </div>
+          <select id="centerList" class="form-control " onchange="changeCenter()">
             <?php
             $centers = json_decode($centers);
             $count = count($centers->centers);
@@ -51,11 +107,8 @@ font-family: 'Open Sans', sans-serif;
           </select> 
         <?php } ?>
           </div>
-          <div class="col-lg-9 text-right"> 
-          <button onclick="addRoom()" class="btn btn-success" style="background-color: transparent;background-image: url(<?php echo base_url();?>images/button.png);
-    border: 0px solid;color: white;background-size: cover;">Add Room</button>
-        </div>
-        <div class="col-12">
+ 
+        <div class="col-12 table-overflow">
           <table class="table table-bordered table-striped thead-dark" style="font-size: 0.9rem;background-color: white;width: 90%;margin: auto;margin-top: 20px;text-align: center;">
             <thead>
               <tr>
@@ -145,13 +198,14 @@ font-family: 'Open Sans', sans-serif;
     $(document).on('click','.fa-pencil-alt',function(){
       var parent = $(this).parent().parent().parent().parent();
       var parentHtml = parent.html();
+      // alert(parentHtml);
       var name = $(this).parent().parent().parent().parent().children().children('.name').text();
        var careAgeFrom  = $(this).parent().parent().parent().parent().children('td').eq(2).children('.min').text();
       var careAgeTo  = $(this).parent().parent().parent().parent().children('td').eq(3).children('.max').text();
       var capacity  = $(this).parent().parent().parent().parent().children('td').eq(1).children('.capacity').text();
       var studentRatio  = $(this).parent().parent().parent().parent().children('td').eq(4).children('.ratio').text();
       var roomId  = $(this).attr('i-v');
-      var code = "<td class=\"r-name\"><label>Room Name</label><input type='text' class=\"name\" placeholder="+name+"></td><td class=\"r-capacity\"><label>Room Capacity</label><input type=\"number\" class=\"capacity\" placeholder="+capacity+"></td><td class=\"min-age\"><label>Min age in months</label><input type=\"number\" class=\"min\" placeholder="+careAgeFrom+"></td><td class=\"max-age\"><label>Max-age in months</label><input type=\"number\" class=\"max\" placeholder="+careAgeTo+"></td><td class=\"s-ratio\"><label>Ratio</label><input type=\"number\" class=\"ratio\" placeholder="+studentRatio+"></td><label style=\"display:none\">Room Id</label><input type=\"text\" class=\"id\" style=\"display:none\"><td class=\"s-button\"><button class=\"submit\" i-v="+roomId+">submit</button></td><td class=\"c-button\"><button class=\"cancel\" >cancel</button></td>"
+      var code = "<td class=\"r-name\"><label>Room Name</label><input type='text' class=\"name\" value="+name+"></td><td class=\"r-capacity\"><label>Room Capacity</label><input type=\"number\" class=\"capacity\" value="+capacity+"></td><td class=\"min-age\"><label>Min age in months</label><input type=\"number\" class=\"min\" value="+careAgeFrom+"></td><td class=\"max-age\"><label>Max-age in months</label><input type=\"number\" class=\"max\" value="+careAgeTo+"></td><td class=\"s-ratio\"><label>Ratio</label><input type=\"number\" class=\"ratio\" value="+studentRatio+"></td><label style=\"display:none\">Room Id</label><input type=\"text\" class=\"id\" style=\"display:none\"><td class=\"s-button\"><button class=\"submit\" i-v="+roomId+">submit</button></td><td class=\"c-button\"><button class=\"cancel\" >cancel</button></td>"
       parent.html(code);      
       $('.cancel').on('click',function(){
         $(this).parent().parent().html(parentHtml);
@@ -169,15 +223,16 @@ font-family: 'Open Sans', sans-serif;
      var studentRatio = $(this).parent().parent().children('.s-ratio').children('.ratio').val();
      var roomId = $(this).attr('i-v');
      var url = "http://localhost/PN101/updateRoom"
-      console.log(name)
+      console.log(centerid+" -"+name+" -"+careAgeFrom+" -"+careAgeTo+" -"+capacity+" -"+studentRatio+" -"+roomId)
+
 
     })
   </script>
   <script type="text/javascript">
     $(document).ready(function(){
         $(document).on('click','.fa-trash-alt',function(){
-          var id = $(this).attr('d-v'),
-          var url = "http://localhost/PN101/settings/deleteRoom",
+          var id = $(this).attr('d-v');
+          var url = "http://localhost/PN101/settings/deleteRoom";
           $.ajax({
             url : url,
             type : 'POST',

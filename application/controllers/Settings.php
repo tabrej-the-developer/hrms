@@ -108,9 +108,10 @@ public function editRooms(){
 		}
 	}
 
-	public function email(){
+	public function createCenter(){
 		if($this->session->has_userdata('LoginId')){
-			$this->load->view('createCenterProfile');
+			$data['permissions'] = $this->fetchPermissions();
+			$this->load->view('createCenterProfile',$data);
 		}
 	else{
 		$this->load->view('redirectToLogin');
@@ -908,6 +909,7 @@ $server_output = curl_exec($ch);
 	public function awardSettings(){
 		$data['userid'] = $this->session->userdata('LoginId');
 		$data['awards'] = $this->getAwardSettings($data['userid']);
+		$data['permissions'] = $this->fetchPermissions();
 		$this->load->view('awardSettings',$data);
 	}
 

@@ -30,17 +30,17 @@ $nth_child = 0;
     case strtolower("Messenger"):
       $nth_child = 7;
       break;
-    case strtolower("Notice"):
-      $nth_child = 8;
-      break;
+    // case strtolower("Notice"):
+    //   $nth_child = 8;
+    //   break;
     case strtolower("Reports"):
-      $nth_child = 9;
+      $nth_child = 8;
       break;
     // case strtolower("Settings"):
     //   $nth_child = 10;
     //   break;
     case strtolower("MOM"):
-      $nth_child = 10;
+      $nth_child = 9;
       break;
   }
 ?>
@@ -297,7 +297,7 @@ font-family: 'Open Sans', sans-serif;
             </a>
           </li>
 		  
-      <li class="nav-item-header">
+<!--       <li class="nav-item-header">
             <a class="nav-link d-flex justify-content-start" href="#" title="Settings">
              
            
@@ -306,7 +306,7 @@ font-family: 'Open Sans', sans-serif;
               </i>
               <span>Reports </span>
             </a>
-          </li>
+          </li> -->
 		  
       <li class="nav-item-header">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('mom/') ?>" title="roster"> 

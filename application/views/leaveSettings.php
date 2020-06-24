@@ -6,7 +6,17 @@
 	*{
 font-family: 'Open Sans', sans-serif;
 	}
-  
+  body{
+  	background: #f2f2f2;
+  }
+  .tab-pane-child{
+  	background: white;
+  	height: 100%;
+  }
+  .tab-pane{
+  	padding: 4rem 3rem 2rem 2rem;
+  	height: calc(100vh - 2rem);
+  }
 
         .card-header {
             padding: 0.2rem 1.25rem;
@@ -51,11 +61,18 @@ font-family: 'Open Sans', sans-serif;
 			outline: 0;
 			box-shadow: none;
 		}
-		.btn-group-sm>.btn, .btn-sm {
+		.btn-group-sm>.btn,{
 			padding: .25rem .5rem;
 			font-size: .875rem;
 			line-height: 1.5;
 			border-radius: 1.2rem;
+			border: 1px solid #ccc;
+		}
+		.btn-sm{
+			padding: .5rem;
+			font-size: .9rem;
+			line-height: 1.5;
+			border-radius: 5px;
 			border: 1px solid #ccc;
 		}
 		#example_filter input {
@@ -247,26 +264,42 @@ input[class=checkbox_label]:checked + label:before {
   border-color: #307bd3 ;
   color: #fff;
 }
-
+.buttons-parent{
+	padding:1rem;
+}
 </style>
  	<title></title>
  </head>
  <body>
  	<?php $permissions = json_decode($permissions); ?>
- <div class="tab-pane containers" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+<div class="containers">
+	  <span style="position: absolute;top:20px;padding-left: 2rem">
+      <a href="<?php echo base_url();?>/settings">
+        <button class="btn back-button">
+          <img src="<?php echo base_url('assets/images/back.svg');?>">
+          <span style="font-size:0.8rem">Manage Leave Types</span>
+        </button>
+      </a>
+    </span>
+  <div class="tab-pane " id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+  	<div class="tab-pane-child">
  	  <?php  if((isset($permissions->permissions) ? $permissions->permissions->viewLeaveTypeYN : "N") === "Y"){ ?>
- 	<h2 class="m-2">Manage Leave Types</h2>
+ 	<h4 style="font-weight: 700;
+                      padding: 2rem 0 0 0;
+                      color: rgba(11, 36, 107);width: 100%"
+                class="text-center">Manage Leave Types</h4>
 	<div class="card-header">
-		<div class="row">
-    <div class="col-md-4"></div>
-    <div class="col-md-2 ml-auto ">
+		<div class="row d-flex pr-3 buttons-parent">
+    <div class="ml-auto ">
 <?php if(isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N" === "Y"){ ?>
     	<button class="btn btn-primary">Sync Xero Leaves</button>
 <?php } ?>
     </div>
-	<div class="col-md-2 text-right ml-auto">
+	<div class="">
 <?php if(isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N" === "Y"){ ?>
-	<button type="button" name="add_button" id="add_button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal"   onclick="addLeaveType()"> <i class="fas fa-plus-circle"></i> Add Leave Type</button>
+	<button type="button" name="add_button" id="add_button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal"   onclick="addLeaveType()">
+	 <i>
+	 	<img src="<?php echo base_url('/assets/images/plus.png');?>"></i> Add Leave Type</button>
 <?php } ?>
 	</div>
     </div>
@@ -307,6 +340,8 @@ input[class=checkbox_label]:checked + label:before {
         </table>
 	</div>
 <?php } ?>
+		</div>
+	</div>
 </div>
 <!-- modal start here -->
   <div class="modal fade" id="userModal">

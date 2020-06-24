@@ -135,17 +135,31 @@ font-family: 'Open Sans', sans-serif;
 		padding: 3rem 2rem 2rem 1rem;
 	}
 	#areas-roles-list{
-		
+		height: 100%;
+		overflow-y: auto;
 	}
 	.container-child{
 		padding: 3rem 2rem 2rem 1rem;
+			 height: 100% !important;
 	}
 	.container-actual-element{
 		background: white;
+  	height: 100% !important
 	}
 	.center-select-span{
 		font-weight: 700;
 	}
+.containers{
+	height: 100vh;
+	}   
+
+  .thisOne{
+  	    height: 75% !important;
+  }
+.areas-roles-list{
+  	height: 100% !important;
+    overflow: auto;
+  }
 	label{
 		font-size:0.8rem;
 		padding-left: 1rem;
@@ -200,7 +214,7 @@ font-family: 'Open Sans', sans-serif;
 <?php if(isset($permissions->permissions) ? $permissions->permissions->editOrgChartYN : "N" == "Y"){ ?>
 					<span  class="newRole"><a href="javascript:void(0)"><i class="fas fa-plus" ></i></a></span>
 					<span class="editArea "><a href="javascript:void(0)"><i class="fas fa-pencil-alt"></i></a></span>
-					<span class="delete-Area"><a class="delete-area" href="javascript:void(0)" d-val="<?php echo $orgChart->areaId ?>"><i class="fas fa-trash-alt" style="color: #ff3b30;"></i></a></span>
+					<span class="delete-Area" style="padding-right:20px"><a class="delete-area" href="javascript:void(0)" d-val="<?php echo $orgChart->areaId ?>"><i class="fas fa-trash-alt" style="color: #ff3b30;"></i></a></span>
 				<?php } ?>
 				</div>
 				<div areaId="<?php echo $orgChart->areaId;?>" ></div>
@@ -208,7 +222,7 @@ font-family: 'Open Sans', sans-serif;
 					<?php foreach($orgChart->roles as $roles){
 					echo "<li class='li-c'><span class=\"roleNameClass\">".$roles->roleName."</span>";
 					if(isset($permissions->permissions) ? $permissions->permissions->editOrgChartYN : 'N' == 'Y'){
-					echo "<span class=\"editRole\" ><i class=\"fas fa-pencil-alt\"></i>&nbsp; &nbsp;</span><span class=\"delete-role\" d-val=\"$roles->roleid\"><i class=\"fas fa-trash-alt\"></i></span></li>";
+					echo "<span class=\"editRole\" style=\"padding-right:20px\"><i class=\"fas fa-pencil-alt\"></i>&nbsp; &nbsp;</span><span class=\"delete-role\" d-val=\"$roles->roleid\" style=\"padding-right:20px\"><i class=\"fas fa-trash-alt\"></i></span></li>";
 						}
 					}
 					?>

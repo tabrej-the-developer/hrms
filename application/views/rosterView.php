@@ -15,7 +15,7 @@ font-family: 'Open Sans', sans-serif;
 	}
 		.containers{
 		background:	rgb(243, 244, 247);
-		height: calc(100vh - 50px);
+		height: calc(100vh);
 	}
 		thead{
 			background:rgba(0,0,0,0.2);

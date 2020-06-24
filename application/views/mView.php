@@ -749,7 +749,9 @@ p.ovrflowtext {
 			
 			<div class="col-md-6 text-right">
 			<a href="javascript:void(0);" style="text-decoration:none;" data-toggle="modal" data-target="#addtogroup"> 
-			<i class="fas fa-plus-circle" style="font-size:15px; margin: 15px 0 0 0;" title="Add New Group"></i></a>
+			<i class="" style="font-size:15px; margin: 15px 0 0 0;" title="Add New Group">
+        <img src="<?php echo site_url('/assets/images/add.png'); ?>" height="15px">   
+      </i></a>
 			</div>
         </div>
 		
@@ -1091,7 +1093,16 @@ p.ovrflowtext {
 							<a href="javascript:void(0);" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people">
 							  <div class="media">
 							  <div class="icon-container">
-							  <img src="<?php echo $chat->imageUrl;?>" alt="user" width="20" class="rounded-circle">
+                  <?php if($chat->imageUrl != null || $chat->imageUrl != ''){ ?>
+                <img src="<?php echo $chat->imageUrl;?>" alt="user" width="20" class="rounded-circle">
+                  <?php }else{?>
+                  <span class="icon-parent">
+                    <span class=" icon" style="
+                      <?php echo "background:".$colors_array[rand(0,5)]?>">
+                      <?php echo icon($chat->username);?>
+                    </span>
+                  </span>
+                  <?php } ?>
 							  <div class='status-circle-online'></div>
 							  </div>
 								<div class="media-body ml-0">

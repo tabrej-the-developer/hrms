@@ -74,7 +74,7 @@ font-family: 'Open Sans', sans-serif;
       <span style="position: absolute">
         <a href="<?php echo base_url();?>/settings">
           <button class="btn back-button">
-            <img src="<?php echo base_url('assets/images/back.svg');?>"> <span style="font-size:0.8rem">Back to Settings</span>
+            <img src="<?php echo base_url('assets/images/back.svg');?>"> <span style="font-size:0.8rem">Password Settings</span>
           </button>
         </a>
       </span>

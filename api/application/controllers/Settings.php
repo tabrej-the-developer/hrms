@@ -647,12 +647,12 @@ class Settings extends CI_Controller {
 		}
 	}
 
- 	function postToXero($data){
+ 	function postToXero($data,$access_token,$tenant_id){
  		$url = "https://api.xero.com/payroll.xro/1.0/Employees/";
 		$ch =  curl_init($url);
        	curl_setopt($ch, CURLOPT_URL,$url);
        	curl_setopt($ch, CURLOPT_POST,1);
-       	curl_setopt($ch, CURLOPT_POSTFIELDS,$postData);
+       	curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
        	curl_setopt($ch, CURLOPT_HTTPHEADER,  array(
            'Content-Type:application/json',
            'Authorization:Bearer '.$access_token,
