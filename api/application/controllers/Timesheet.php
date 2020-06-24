@@ -153,7 +153,18 @@ class Timesheet extends CI_Controller{
 						$access_token = $xeroTokens->access_token;
 						$tenant_id = $xeroTokens->tenant_id;
 					}
-					$this->postTimesheetDataToXero($Timesheets,$access_token,$tenant_id);
+					$val = $this->postTimesheetDataToXero($Timesheets,$access_token,$tenant_id);
+	 					if($val != NULL){
+	 						if($val->Status == 401){
+	 							$refresh = $this->refreshXeroToken($refresh_token);
+	 							$refresh = json_decode($refresh);
+	 							$access_token = $refresh->access_token;
+	 							$expires_in = $refresh->expires_in;
+	 							$refresh_token = $refresh->refresh_token;
+	 							$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in);
+	 							$val = $this->postTimesheetDataToXero($Timesheets,$access_token,$tenant_id);
+	 						}
+	 					}
 				$data['Status'] = "SUCCESS";
 				http_response_code(200);
 				echo json_encode($data);
