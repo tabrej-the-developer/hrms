@@ -478,7 +478,7 @@ input[type=checkbox]:checked:before {
       
       $summary = json_decode(json_encode($summary,true));
       
-      
+      // print_r($summary);
 
       $len = count($summary);
       
@@ -684,5 +684,9 @@ $('#toggle').remove();
 	 }
 		
 	</script>
-	
+	<script type="text/javascript">
+  $(document).ready(()=>{
+    $('.container').css('paddingLeft',$('.side-nav').width());
+});
+</script>
 </html>

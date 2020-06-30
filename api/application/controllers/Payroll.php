@@ -193,6 +193,28 @@ class Payroll extends CI_Controller{
 		}
 	}
 
+	public function postPayRun($timesheetId){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $json->userid){
+				$payRuns = $json->payRuns;
+				$userid = $json->userid;
+				
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	} 
+
 	// public function CreateAwardType(){
 	// 	$headers = $this->input->request_headers();
 	// 	if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
@@ -356,6 +378,22 @@ class Payroll extends CI_Controller{
            'Authorization:Basic '.base64_encode(XERO_CLIENT_ID.":".XERO_CLIENT_SECRET)
        	));
        	curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+		$server_output = curl_exec($ch);
+		return $server_output;
+	}
+
+	function postPayrunToXero($postData,$access_token,$tenant_id){
+		$url = "https://api.xero.com/payroll.xro/1.0/PayRuns";
+		$ch =  curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_POST,1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($postData));
+		curl_setopt($ch, CURLOPT_HTTPHEADER,  array(
+			'Content-Type:application/json',
+			'Authorization:Bearer '.$access_token,
+			'Xero-tenant-id:'.$tenant_id
+		));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
 		$server_output = curl_exec($ch);
 		return $server_output;
 	}

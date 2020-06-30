@@ -9,8 +9,12 @@
   *{
 font-family: 'Open Sans', sans-serif;
   }
+  body{
+    background: #f2f2f2;
+  }
       #wrappers{
         padding:0;
+        height:100vh;
       }
 .modal {
   display: none; 
@@ -49,14 +53,53 @@ font-family: 'Open Sans', sans-serif;
 }
 .ent-btn{
       background-color: #9E9E9E;
-  border: none;
-  color: white;
-  padding: 10px 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 2px;
+      border: none;
+      color: white;
+      padding: 10px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      margin: 2px;
+    }
+    #wrappers{
+      height:100vh;
+      overflow-y: hidden;
+    }
+#content-wrappers{
+    padding: 4rem 3rem 2rem 2rem;
+    height:calc(100vh - 2rem);
 }
+.content-wrappers-child{
+    background: white;
+    height: 100%;
+    overflow-y: auto;
+}
+.row{
+  display: block !important;
+}
+
+.table td, .table th {
+    padding: 1rem !important;
+    vertical-align: top;
+     border-top: 0px !important; 
+}
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 0 !important;
+}
+thead{
+      background:rgba(0,0,0,0.2);
+    }
+    tr:nth-child(even){
+      background:rgb(255,255,255) !important;
+    }
+    tr:nth-child(odd){
+
+      background:rgb(243, 244, 247) !important;
+    }
+    th{
+      background: white
+    }
     </style>
   </head>
 
@@ -64,14 +107,23 @@ font-family: 'Open Sans', sans-serif;
 <?php $permissions = json_decode($permissions); ?>
 <?php if(isset($permissions->permissions) ? $permissions->permissions->viewEntitlementsYN : "N" == "Y"){ ?>   
     <div id="wrappers">
-      <div id="content-wrappers" style="margin-top: 30px;
-    background: white;" class="container">
-        <div class="row">
-           <h4 class="col-12"><a href="<?php echo base_url();?>center/settings"><button class="btn back-button"> <img src="<?php echo base_url();?>/images/back.png" > </button></a> &nbsp; Entitlements</h4>
+      <span style="position: absolute">
+    <a href="<?php echo base_url();?>/settings">
+      <button class="btn back-button">
+        <img src="<?php echo base_url('assets/images/back.svg');?>">Entitlements View
+      </button>
+    </a>
+  </span>
+      <div id="content-wrappers" class="containers">
+        <div class="row content-wrappers-child">
+           <h4 style="font-weight: 700;
+                      padding: 1rem 0 1rem 2rem;
+                      margin: 0 !important;
+                      color: rgba(11, 36, 107);width: 100%;text-align: center !important"
+                class="text-left">Entitlements View</h4>
 <!--           <div class="col-12">
             Entitlements
           </div> -->
-      <div class="col-12" style="padding: 10px;"></div>
       <div class=" create-ent" style="cursor: pointer;width: 90%;display: flex;justify-content: flex-end">
        <button class="ent-btn"> Create Entitlement</button>
       </div>
@@ -80,7 +132,7 @@ font-family: 'Open Sans', sans-serif;
     border: 0px solid;color: white;background-size: cover;">Add Room</button>
         </div>
         <div class="col-12">
-          <table class="table table-bordered table-striped thead-dark" style="font-size: 0.9rem;background-color: white;width: 90%;margin: auto;margin-top: 20px;text-align: center;">
+          <table class="table " style="font-size: 0.9rem;background-color: white;width: 90%;margin: auto;margin-top: 20px;text-align: center;">
             <thead>
               <tr>
                 <th>Entitlement Id</th>

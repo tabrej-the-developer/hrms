@@ -172,7 +172,7 @@ font-family: 'Open Sans', sans-serif;
   <span style="position: absolute">
 	  <a href="<?php echo base_url();?>/settings">
 	    <button class="btn back-button">
-	      <img src="<?php echo base_url('assets/images/back.svg');?>"> <span style="font-size:0.8rem">Back to Settings</span>
+	      <img src="<?php echo base_url('assets/images/back.svg');?>"> <span style="font-size:0.8rem">Organisational Chart</span>
 	    </button>
 	  </a>
 	</span>
@@ -220,7 +220,7 @@ font-family: 'Open Sans', sans-serif;
 				<div areaId="<?php echo $orgChart->areaId;?>" ></div>
 				<div>
 					<?php foreach($orgChart->roles as $roles){
-					echo "<li class='li-c'><span class=\"roleNameClass\">".$roles->roleName."</span>";
+					echo "<li class='li-c'><span class=\"roleNameClass\">".$roles->roleName."</span><span class=\"roleIdClass\" style=\"display:none\">".$roles->roleid."</span>";
 					if(isset($permissions->permissions) ? $permissions->permissions->editOrgChartYN : 'N' == 'Y'){
 					echo "<span class=\"editRole\" style=\"padding-right:20px\"><i class=\"fas fa-pencil-alt\"></i>&nbsp; &nbsp;</span><span class=\"delete-role\" d-val=\"$roles->roleid\" style=\"padding-right:20px\"><i class=\"fas fa-trash-alt\"></i></span></li>";
 						}
@@ -365,7 +365,7 @@ font-family: 'Open Sans', sans-serif;
 					isRoomYN : isRoomYN
 				},
 				success:function(response){
-					alert(areaid + " " +areaName )
+					window.location.reload();
 				}
 			}).fail(function(){
 				alert('fail')

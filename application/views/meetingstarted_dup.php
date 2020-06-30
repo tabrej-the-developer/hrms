@@ -449,7 +449,8 @@ input[type=checkbox]:checked:before {
 </style>
 </head>
 <body style="background-color:#eee;">
- <div class="container">
+ <div class="containers">
+  
  <div class="card">
   <div class="card-header bg-primary">
   Meeting Onboard
@@ -457,7 +458,7 @@ input[type=checkbox]:checked:before {
   <?php 
 
 $present = json_decode($present);
- 
+ // print_r($present);
  $len = count($present);
 ?>
   <form action="<?php echo base_url() ?>mom/meetingRecord/<?php echo $mId; ?>" method="post">
@@ -505,6 +506,10 @@ $present = json_decode($present);
  }
 
 </script>
-
+<script type="text/javascript">
+  $(document).ready(()=>{
+    $('.containers').css('paddingLeft',$('.side-nav').width());
+});
+</script>
 	
 </html>

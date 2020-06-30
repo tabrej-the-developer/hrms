@@ -192,29 +192,34 @@ img{ max-width:140%;}
 }
 	
 /*corousol end*/		
-		
+	.row{
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+    margin-right: 0 !important ; 
+    margin-left:  0 !important;
+  }	
 </style>
 
 </head>
 <body>
-<div class="container">
+<div class="containers">
 <div class="row">
  <div class="col-md-6">
    <h4>Agenda and Summary</h4>
    <?php
    $info = json_decode($info);
-   // print_r($info);
+   // print_r($info->mom);
     ?>
-<!--     <?php foreach($info->mom as $a): ?>
+    <?php  foreach($info->agenda as $a): ?>
     <div class="card border-success mb-3" style="max-width: 18rem;">
   
   <div class="card-body text-success">
-    <h5 class="card-title"><?php echo $a->text; ?></h5>
-    <p class="card-text"><?php echo $a->summary; ?></p>
+    <h5 class="card-title"><?php  echo $a->text; ?></h5>
+    <p class="card-text"><?php  echo $a->summary; ?></p>
   </div>
 </div>
 
-<?php endforeach; ?>  -->
+<?php  endforeach; ?> 
 
 
     
@@ -231,10 +236,12 @@ img{ max-width:140%;}
     </tr>
   </thead>
   <tbody>
+    <?php  // print_r($info->mom); ?>
   <?php foreach($info->mom as $m): ?>
+    
     <tr>
-      <td><?php echo $m->user_id; ?></td>
-      <td><?php echo $m->text; ?> </td>
+      <td><?php print_r($m->user_id); ?></td>
+      <td><?php print_r($m->text); ?> </td>
     </tr>
   <?php endforeach; ?> 
    
@@ -246,11 +253,11 @@ img{ max-width:140%;}
   </div>
 <div class="jumbotron">
  <h3>Meeting Attendence</h3>
-<!--  <ul class="list-group">
+ <ul class="list-group">
   <?php foreach($info->participant as $p): ?>
   <li class="list-group-item disabled" aria-disabled="true"><?php echo $p->userid; ?></li>
   <?php endforeach; ?>
-</ul> -->
+</ul>
 </div>
 </div>
 
@@ -328,5 +335,10 @@ img{ max-width:140%;}
 		
 		
 	</script>
-	
+<script type="text/javascript">
+  $(document).ready(()=>{
+    $('.containers').css('paddingLeft',$('.side-nav').width());
+});
+</script>
+
 </html>

@@ -6,11 +6,9 @@ class MeetingModel extends CI_MODEL{
  public function addMeeting($id,$meetingTitle,$date,$time,$location,$period,$mPrevid,$userId){
     $this->load->database();
     
-     $query = $this->db->query("insert into meeting(id,title,date,time,location,period,loginid,m_previd) values('$id','$meetingTitle','$date','$time','$location','$period','$userId','$mPrevid')");
-    
-
-   
+     $query = $this->db->query("insert into meeting(id,title,date, time,location,period, loginid,m_previd) values('$id','$meetingTitle','$date','$time','$location','$period','$userId','$mPrevid')");
  }
+
   public function addAgenda($id,$agenda){
          $this->load->database();
          $this->db->query("insert into agenda(m_id,text) values('$id','$agenda')");
@@ -47,6 +45,7 @@ class MeetingModel extends CI_MODEL{
       //$sql = "select * from meeting where loginid = '$id'";
       $sql = "SELECT * FROM meeting WHERE id IN (SELECT m_id FROM participants WHERE user_id = '$id') ORDER BY date DESC";
       $q = $this->db->query($sql);
+            // print_r($q->result());
       return $q->result();
   }
   public function getPartcipant($id){
@@ -57,7 +56,7 @@ class MeetingModel extends CI_MODEL{
   }
   public function getPresent($id){
       $this->load->database();
-      $query = "select * from participants where status IS NULL and m_id='$id' ";
+      $query = "select * from participants where status = 'P' and m_id='$id' ";
       $result = $this->db->query($query);
       return $result->result();
   }
@@ -72,7 +71,7 @@ class MeetingModel extends CI_MODEL{
        $this->load->database();
        $query = "select * from mom where m_id = '$mId'";
        $result = $this->db->query($query);
-       return $result->row();
+       return $result->result();
    }
   public function getAgendaInfo($mId){
       $this->load->database();

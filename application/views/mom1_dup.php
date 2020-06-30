@@ -518,12 +518,35 @@ table.dataTable thead th, table.dataTable thead td{
     transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
 }
   .mom-container{
-    padding: 4rem 3rem 2rem 2rem;
-    height: calc(100vh - 3rem);
+    padding: 4rem 3rem 2rem 1rem;
+    height: calc(100vh - 2rem);
   }
   .mom-container-child{
     background: white;
     height: 100%;
+  }
+
+  .input-class{
+    padding-right:4rem !important;
+  }
+  .input-group-parent{
+    width:50% !important;
+  }
+.form-group{
+  margin-bottom: 0 !important;
+}
+  .label-class{
+    padding-left:8rem !important;
+    text-align:left;
+  }
+  .form-control{
+    padding: 0.25rem 0 !important;
+  }
+  .click-add{
+    cursor: pointer;
+  }
+  .click-remove{
+    cursor: pointer;
   }
 </style>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css">
@@ -625,6 +648,14 @@ $users =   json_decode($users);
 <!-- Modal -->
 
 <div class="mom-container">
+        <span style="position: absolute;top:20px;padding-left: 2rem">
+        <a href="<?php echo base_url();?>/settings">
+          <button class="btn back-button">
+              <img src="<?php echo base_url('assets/images/back.svg');?>">
+               <span style="font-size:0.8rem">Minutes of Meeting</span>
+          </button>
+        </a>
+      </span>
   <div class="mom-container-child">
 
 
@@ -645,8 +676,8 @@ $users =   json_decode($users);
                <table class="table table-borderless">
                <tr>
               
-                <td>
-                <div class="input-group mb-3">
+                <td class="col-md-4 input-group-parent">
+                <div class="input-group mb-1 col-md-9">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">Date</span>
                         </div>
@@ -654,8 +685,8 @@ $users =   json_decode($users);
                         </div>
                 </td>
                
-                <td>
-                <div class="input-group mb-3">
+                <td class="col-md-4 input-group-parent">
+                <div class="input-group mb-1 col-md-8">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">Time</span>
                     </div>
@@ -669,10 +700,10 @@ $users =   json_decode($users);
               <hr>
               <table class="table table-borderless">
                <tr>
-                   <td class="text-center">Where</td>
-                    <td>
+                   <td class="label-class">Where</td>
+                    <td class="input-class">
                       <div class="form-group">
-                       <input id="location" type="text" class="form-control" id="autocomplete" placeholder="Type Address...">
+                       <input id="location" type="text" class="form-control" id="autocomplete" placeholder="Type Address..." name="meetingLocation">
                       </div>
                       <div class="form-group">
                        <input type="hidden">
@@ -691,18 +722,28 @@ $users =   json_decode($users);
                    </td>
                </tr> -->
      <tr>
-        <td class="text-center">Agenda <span class="click-add">+</span><span class="click-remove">-</span></td>
-          <td>
+        <td class="label-class">Agenda 
+          <span class="click-add">
+            <i>
+              <img src="<?php echo base_url('assets/images/circle_plus.png');?>" height="25px">
+            </i>
+          </span>
+          <span class="click-remove">
+            <i>
+              <img src="<?php echo base_url('assets/images/minus.png');?>" height="25px">
+            </i>
+          </span></td>
+          <td class="input-class">
             <div class="form-group agenda-class">
                 <textarea name="meetingAgenda[]" id="agenda" class="form-control agenda" style="background-color:#eee"></textarea>
             </div>  
           </td>
       </tr>
               <tr>
-                  <td class="text-center">Period</td>
-                  <td>
+                  <td class="label-class">Period</td>
+                  <td class="input-class">
                    <div class="form-group">
-                   <select name="" id="collab" class="form-control">
+                   <select name="meetingcollab" id="collab" class="form-control">
                       <option value="O">Once</option>
                       <option value="A">Annual</option>
                       <option value="M">Monthly</option>
@@ -713,8 +754,8 @@ $users =   json_decode($users);
                   </td>
                 </tr>
                <tr>
-                   <td class="text-center">Add Member</td>
-                   <td>
+                   <td class="label-class">Add Member</td>
+                   <td class="input-class">
                     <div class="form-group">
                     <!-- <input type="text" id="add_meeting" class="form-control"> -->
                     
@@ -722,8 +763,9 @@ $users =   json_decode($users);
                        <?php 
                        
                          foreach($users->users as $m):
+
                        ?>  
-                       <option value="<?php echo $m->username ?>"><?php echo $m->username;?></option>
+                       <option value="<?php echo $m->userid ?>"><?php echo $m->username;?></option>
                          <?php endforeach; ?>
                      </select>
                     </div>  
@@ -762,7 +804,7 @@ $users =   json_decode($users);
 
 <div class="row">
  
-       <div class="left">
+       <div class="left ">
         <h3>Mins. of Meeting</h3>
      
         
@@ -779,7 +821,7 @@ $users =   json_decode($users);
          <td>Start Date</td>
          <td>Time</td>
          <td>Location</td>
-         <td>Status</td>
+         <!-- <td>Status</td> -->
          <td>Attendees</td>
         <td></td>
         <td></td>
@@ -800,7 +842,7 @@ $users =   json_decode($users);
         <td class="table-date"><?php echo $u->date; ?></td>
         <td><?php echo $u->time; ?></td>
         <td><?php echo $u->location; ?></td>
-        <td><?php echo $u->status; ?></td>
+        <!-- <td><?php echo $u->status; ?></td> -->
         <script>
         var arr = [];
         </script>
@@ -827,15 +869,17 @@ $users =   json_decode($users);
          -->
         </td>
         <td>
-        <div class="dropdown">
-  <a href="#" onclick="myFunction(this)" id="<?php echo $i; ?>" class="dropbtn"><i   class="fas fa-ellipsis-v"></i></a>
-  <div id="myDropdown<?php echo $i; ?>" class="dropdown-content">
-    <a   class="btn btn-default" id="update"  data-toggle="modal" data-target="#myModal">Edit</a>
-    <!-- <a href="#">Delete</a> -->
-    </div>
-      </div>
-      </td>
-          </tr>
+          <div class="dropdown">
+            <a href="#" onclick="myFunction(this)" id="<?php echo $i; ?>" class="dropbtn">
+              <i class="fas fa-ellipsis-v"></i>
+            </a>
+            <div id="myDropdown<?php echo $i; ?>" class="dropdown-content">
+              <a   class="btn btn-default" id="update"  data-toggle="modal" data-target="#myModal">Edit</a>
+            <!-- <a href="#">Delete</a> -->
+            </div>
+          </div>
+        </td>
+      </tr>
                          <?php } endforeach; } ?>
       
        
@@ -849,7 +893,7 @@ $users =   json_decode($users);
          <td>Start Date</td>
          <td>Time</td>
          <td>Location</td>
-         <td>Status</td>
+         <td>Status</td> 
          <td>Attendees</td>
         <td></td>
         <td></td>
@@ -866,11 +910,11 @@ $users =   json_decode($users);
            $i = $i + 1;
          ?>
         <tr>
-        <td class="title-td" m-id="<?php echo $u->mid; ?>"><?php echo $u->title; ?></td>
+        <td class="<?php if($u->status == 'Summary'){echo 'title-td';} ?>" m-id="<?php echo $u->mid; ?>"><?php echo $u->title; ?></td>
         <td class="table-date"><?php echo $u->date; ?></td>
         <td><?php echo $u->time; ?></td>
         <td><?php echo $u->location; ?></td>
-        <td><?php echo $u->status; ?></td>
+        <td><?php echo $u->status; ?></td> 
         <script>
         var arr = [];
         </script>
@@ -892,9 +936,9 @@ $users =   json_decode($users);
         <!-- <div id="participant2">+5</div> -->
         </td>
         <td>
-          <?php if($u->status == 'Summary'){?>
-            <a href="<?php echo base_url() ?>mom/attendence/<?php echo $u->mid ?>" class="btn btn-primary btn-p disabled">start</a>
-          <?php } ?>
+          <?php // if($u->status == 'Summary'){?>
+            <a href="<?php if($u->status == 'Created'){echo base_url('mom/attendence/').$u->mid; }if($u->status == 'Attendence'){echo base_url('mom/attendence/').$u->mid; }if($u->status == 'MOM'){echo base_url('mom/onBoard/').$u->mid;}if($u->status == 'Summary'){echo base_url('mom/summary/').$u->mid;} ?>" class="btn btn-primary btn-p ">start</a>
+          <?php // } ?>
           </td>
         <td>
         <div class="dropdown">
@@ -949,6 +993,7 @@ $users =   json_decode($users);
  });
 
 function myFunction(value) {
+  // console.log(value);
   document.getElementById("myDropdown"+value.id).classList.toggle("show");
 }
 
@@ -997,8 +1042,8 @@ $(document).ready(function(){
       //alert(this.value);
       var email = this.value;
       console.log(email);
-      //$('.tokens-container').append(`<li class="token" data-value="${email}"><a class="dismiss" onclick="remove()"></a><span> ${email} </span></li>`); 
-         $('#demo').append(`<option value="${email}" selected> ${email} </option>`);   
+      $('.tokens-container').append(`<li class="token" data-value="${email}"><a class="dismiss" onclick="remove()"></a><span> ${email} </span></li>`); 
+         // $('#demo').append(`<option value="${email}" selected> ${email} </option>`);   
       });
     // working
     // $('input[type="hidden"').each(function(){
@@ -1016,6 +1061,8 @@ $(document).ready(function(){
    $('#location').val(value3);
    $('.agenda').val(value5);
    $('#collab').val(value6);
+   console.log(
+               JSON.stringify(value5))
 });
 
  function remove(){
@@ -1298,6 +1345,13 @@ $('#toggle').remove();
   }
   })
 </script>
+
+<script type="text/javascript">
+  $(document).ready(()=>{
+    remove_loader_icon();
+    $('.containers').css('paddingLeft',$('.side-nav').width());
+});
+</script>
   <script type="text/javascript">
       $(document).ready(()=>{
         var past = $('.past').html()
@@ -1359,8 +1413,9 @@ $('#toggle').remove();
     $('.arrow::after').css('marginTop',$('.shift-bar-tab').height())
   </script>
   <script type="text/javascript">
+    var newElement = $('.agenda-class ').html();
     $('.click-add').click(function(){
-        $('.agenda-class').append($('.agenda-class ').html())
+        $('.agenda-class').append(newElement)
     })
     $('.click-remove').click(function(){
       if(($('.agenda').length) > 1){
@@ -1383,3 +1438,4 @@ $('#toggle').remove();
 ?>
   
 </html>
+<!-- timesheet id,empl ,slip id ,run id,start  -->
