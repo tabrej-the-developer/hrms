@@ -155,6 +155,17 @@ class SettingsModel extends CI_Model {
 		return $query->result();
 	}
 
+	public function insertMedicalInfo($employeeNo,$medicareNo,$medicareRefNo,$healthInsuranceFund,$healthInsuranceNo,$ambulanceSubscriptionNo,$medicalConditions,$medicalAllergies,$medication,$dietaryPreferences,$anaphylaxis,$asthma,$maternityStartDate,$maternityEndDate){
+		$this->load->database();
+		$query = $this->db->query("INSERT into medicalinfo (employeeNo,medicareNo,medicareRefNo,healthInsuranceFund,healthInsuranceNo,ambulanceSubscriptionNo,medicalConditions,medicalAllergies,medication,dietaryPreferences,anaphylaxis,asthma,maternityStartDate,maternityEndDate) values ($employeeNo,$medicareNo,$medicareRefNo,$healthInsuranceFund,$healthInsuranceNo,$ambulanceSubscriptionNo,$medicalConditions,$medicalAllergies,$medication,$dietaryPreferences,$anaphylaxis,$asthma,$maternityStartDate,$maternityEndDate)");
+	}
+
+	public function insertIntoHRrecord($employeeNo,$currentlyEmployed,$commencementDate,$contractPosition,$resumeSupplied,$resumeDoc,$employmentType,$currentContractNotes,$currentContractSignatureDate,$currentContractCommencementDate,$currentContractEndDate,$currentContractPaidStartDate,$probationEndDate,$industryYearsExpAsNov19,$prohibitionNoticeDeclaration,$VITcardNo,$VITexpiry,$WWCCcardNo,$WWCCexpiry,$foodHandlingSafety,$lastPoliceCheck,$childProtectionCheck,$nominatedSupervisor,$workcover,$PIAWE,$annualLeaveInContract,$otherQualifications,$otherQualDesc,$highestQualHeld,$highestQualType,$qualTowardsDesc,$qualTowardsPercentcomp,$contractAwardId,$paidAwardId,$visaType,$visaGrantDate,$visaEndDate,$visaConditions){
+		$this->load->database();
+		$uniqueId = uniqid();
+		$query = $this->db->query("INSERT into medicalinfo (employeeNo,uniqueId,currentlyEmployed,commencementDate,contractPosition,resumeSupplied,resumeDoc,employmentType,currentContractNotes,currentContractSignatureDate,currentContractCommencementDate,currentContractEndDate,currentContractPaidStartDate,probationEndDate,industryYearsExpAsNov19,prohibitionNoticeDeclaration,VITcardNo,VITexpiry,WWCCcardNo,WWCCexpiry,foodHandlingSafety,lastPoliceCheck,childProtectionCheck,nominatedSupervisor,workcover,PIAWE,annualLeaveInContract,otherQualifications,otherQualDesc,highestQualHeld,highestQualType,qualTowardsDesc,qualTowardsPercentcomp,contractAwardId,paidAwardId,visaType,visaGrantDate,visaEndDate,visaConditions) values ($employeeNo,$uniqueId,$currentlyEmployed,$commencementDate,$contractPosition,$resumeSupplied,$resumeDoc,$employmentType,$currentContractNotes,$currentContractSignatureDate,$currentContractCommencementDate,$currentContractEndDate,$currentContractPaidStartDate,$probationEndDate,$industryYearsExpAsNov19,$prohibitionNoticeDeclaration,$VITcardNo,$VITexpiry,$WWCCcardNo,$WWCCexpiry,$foodHandlingSafety,$lastPoliceCheck,$childProtectionCheck,$nominatedSupervisor,$workcover,$PIAWE,$annualLeaveInContract,$otherQualifications,$otherQualDesc,$highestQualHeld,$highestQualType,$qualTowardsDesc,$qualTowardsPercentcomp,$contractAwardId,$paidAwardId,$visaType,$visaGrantDate,$visaEndDate,$visaConditions)");
+	}
+
 }
 
 

@@ -4,6 +4,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Dashboard extends CI_Controller {
 	
 	public function index(){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			$data['moduleEntryCount'] = $this->moduleEntryCounts();
 			$data['footprints'] = $this->getFootprints($this->session->userdata('LoginId'));
 			$data['permissions'] = $this->fetchPermissions();

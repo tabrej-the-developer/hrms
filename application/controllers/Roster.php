@@ -151,6 +151,12 @@ public function createRoster(){
 		if($this->session->has_userdata('LoginId')){
 		$this->load->helper('form');
 		$form_data = $this->input->post();
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 		if($form_data != null){
 			$date = date_create($this->input->post('roster-date'));
 			$data['startDate'] = date_format($date,"Y-m-d");
@@ -211,6 +217,12 @@ public function createRoster(){
 public	function updateShift(){
 
 		if($this->session->has_userdata('LoginId')){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			$data['startTime'] = $this->input->post('startTime');
 			$data['endTime'] = $this->input->post('endTime');
 			$data['status'] = $this->input->post('status');
@@ -264,6 +276,12 @@ public	function updateShift(){
 
 public function updateRoster(){
 	if($this->session->has_userdata('LoginId')){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 		$data['userid'] = $this->input->post('userid');
 		$data['rosterid'] = $this->input->post('rosterid');
 		$data['status'] = $this->input->post('status');	

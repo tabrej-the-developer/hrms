@@ -6,6 +6,7 @@ class Leave extends CI_Controller {
 	public function index(){
 	  if($this->session->has_userdata('LoginId')){
 		if($this->session->userdata('UserType') == SUPERADMIN){
+
 			if($this->getLeaveType() == 'failed'){
 				$data['error'] = 'failed';
 			}
@@ -155,6 +156,12 @@ class Leave extends CI_Controller {
 		$this->load->helper('form');
 		$form_data = $this->input->post();
 		if($form_data != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			//var_dump($form_data);
 			$data['leaveId'] = $form_data['leaveId'];
 			$data['name'] = $form_data['leaveName'];
@@ -194,6 +201,12 @@ class Leave extends CI_Controller {
 		$this->load->helper('form');
 		$form_data = $this->input->post();
 		if($form_data != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			//var_dump($form_data);
 			$data['leaveId'] = $form_data['leaveId'];
 			$data['userid'] = $this->session->userdata('LoginId');
@@ -228,6 +241,12 @@ class Leave extends CI_Controller {
 		$this->load->helper('form');
 		$form_data = $this->input->post();
 		if($form_data != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			//var_dump($form_data);
 			$data['leaveApplication'] = $form_data['leaveId'];
 			$data['status'] = $form_data['status'];
@@ -262,6 +281,12 @@ class Leave extends CI_Controller {
 		$this->load->helper('form');
 		$form_data = $this->input->post();
 		if($form_data != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			$data['leaveTypeId'] = $form_data['applyLeaveId'];
 			$data['startDate'] = $form_data['applyLeaveFromDate'];
 			$data['endDate'] = $form_data['applyLeaveToDate'];

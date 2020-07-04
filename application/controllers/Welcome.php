@@ -107,6 +107,7 @@ class Welcome extends CI_Controller {
 					$data['password'] = $this->input->post('confirm_password');
 					$password = md5($data['password']);
 					$this->resetPasswordRequest($userid,$token,$password);
+	
 					redirect("/welcome/login");
 				}
 			$this->load->view("forgot_password");

@@ -71,6 +71,12 @@ class Messenger extends CI_Controller {
 		$this->load->helper('form');
 		$form_data = $this->input->post();
 		if($form_data != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			$data['receiverId'] = $form_data['receiverId'];
 			$data['isGroupYN'] = $form_data['isGroupYN'];
 			$data['chatText'] = $form_data['chatText'];
@@ -104,6 +110,12 @@ class Messenger extends CI_Controller {
 		$this->load->helper('form');
 		$form_data = $this->input->post();
 		if($form_data != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			$data['groupId'] = $form_data['groupId'];
 			$data['userid'] = $this->session->userdata('LoginId');
 			$url="http://todquest.com/PN101/api/messenger/leaveGroup";
@@ -136,6 +148,12 @@ class Messenger extends CI_Controller {
 		$form_data = $this->input->post();
 		var_dump($form_data);
 		if($form_data != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			$data['groupId'] = $form_data['groupId'];
 			$data['userid'] = $this->session->userdata('LoginId');
 			$url="http://todquest.com/PN101/api/messenger/deleteGroup";
@@ -168,6 +186,12 @@ class Messenger extends CI_Controller {
 		$this->load->helper('form');
 		$form_data = $this->input->post();
 		if($form_data != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			$data['groupName'] = $form_data['recipient-name'];
 			if($data['groupName'] != ""){
 				$users = json_decode($this->getUsers());

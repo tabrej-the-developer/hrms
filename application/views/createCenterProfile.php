@@ -54,16 +54,70 @@ font-family: 'Open Sans', sans-serif;
 			    <div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-sort-numeric-up"></i> PostCode</label>
 					<input class="form-control" type="number" name="" id="center-zip" value="" placeholder = "Postcode" required>
+				</div>	
+			  <div class="col-lg-6 form-group">
+					<label><i style="color: #aa63ff;" class="fas fa-sort-numeric-up"></i> Centre-phone-number</label>
+					<input class="form-control" type="number" name="" id="centre_phone_number" value="" placeholder = "Centre-phone-number">
 				</div>
-
+			    <div class="col-lg-6 form-group">
+					<label><i style="color: #aa63ff;" class="fas fa-sort-numeric-up"></i> Centre-mobile-number</label>
+					<input class="form-control" type="number" name="" id="centre_mobile_number" value="" placeholder = "Centre-mobile-number">
+				</div>
+			    <div class="col-lg-6 form-group">
+					<label><i style="color: #aa63ff;" class="fas fa-sort-numeric-up"></i> Centre-email	</label>
+					<input class="form-control" type="number" name="" id="Centre_email	" value="" placeholder = "Centre-email	">
+				</div>
 			<div class="col-lg-6 form-group">
 				<label>
-					<i style="color: #aa63ff;" class="fas "></i> Logo</label>
-				<input class="form-control" type="file" name="" id="center-logo" placeholder="Logo" value="">
+					<i style="color: #aa63ff;" class="fas "></i> Centre-ABN</label>
+				<input class="form-control" type="file" name="" id="centre_abn" placeholder="Centre-ABN" value="">
+			</div>
+			<div class="col-lg-6 form-group">
+				<label>
+					<i style="color: #aa63ff;" class="fas "></i> Centre-ACN</label>
+				<input class="form-control" type="text" name="" id="centre_acn" placeholder="Centre-ACN" value="">
+			</div>
+			<div class="col-lg-6 form-group">
+				<label>
+					<i style="color: #aa63ff;" class="fas "></i> Centre-SE-no</label>
+				<input class="form-control" type="text" name="" id="centre_se_no" placeholder="Centre-SE-no" value="">
+			</div>
+	<div class="col-lg-6 form-group">
+				<label>
+					<i style="color: #aa63ff;" class="fas "></i> Centre-date-opened</label>
+				<input class="form-control" type="text" name="" id="centre_date_opened" placeholder="Centre-date-opened" value="">
+			</div>
+			<div class="col-lg-6 form-group">
+				<label>
+					<i style="color: #aa63ff;" class="fas "></i> Centre-capacity</label>
+				<input class="form-control" type="text" name="" id="centre_capacity" placeholder="Centre-capacity" value="">
+			</div>
+			<div class="col-lg-6 form-group">
+				<label>
+					<i style="color: #aa63ff;" class="fas "></i> Centre-approval-doc</label>
+				<input class="form-control" type="file" name="" id="centre_approval_doc" placeholder="Centre-approval-doc" value="">
+			</div>
+			<div class="col-lg-6 form-group">
+				<label>
+					<i style="color: #aa63ff;" class="fas "></i> Centre-CCS-doc</label>
+				<input class="form-control" type="file" name="" id="centre_ccs_doc" placeholder="Centre-CCS-doc" value="">
+			</div>
+			<div class="col-lg-6 form-group">
+				<label>
+					<i style="color: #aa63ff;" class="fas "></i> Manager-name</label>
+				<input class="form-control" type="text" name="" id="manager_name" placeholder="Manager-name" value="">
+			</div>
+			<div class="col-lg-6 form-group">
+				<label>
+					<i style="color: #aa63ff;" class="fas "></i> Centre-admin-name</label>
+				<input class="form-control" type="text" name="" id="centre_admin_name" placeholder="Centre-admin-name" value="">
+			</div>
+			<div class="col-lg-6 form-group">
+				<label>
+					<i style="color: #aa63ff;" class="fas "></i> Centre-nominated-supervisor</label>
+				<input class="form-control" type="text" name="" id="centre_nominated_supervisor" placeholder="Centre-nominated-supervisor" value="">
 			</div>
 		</div>
-
-
 		<hr>
 		<div class="row">
 			<div class="col-lg-6"><h3>Organize Rooms</h3></div>
@@ -89,17 +143,98 @@ font-family: 'Open Sans', sans-serif;
 					<label><i style="color: #aa63ff;" class="fas fa-child"></i> Maximum Age</label>
 					<input type="number" class="form-control" name="" id="" value="" placeholder="Max age in months" > 
 				</div>
-					
-					<div  class="alert alert-danger" role="alert" style=""></div>
 				</div>
-			</span>
-		 <div  class="alert alert-danger" role="alert" style=""></div>
-			 
-			</span>
+			</span>	
+		<hr>
+		<div class="row">
+			<div class="col-lg-6"><h3>Organize Centre Compliance</h3></div>
+			<div class="col-lg-6 text-right">
+				<div id="cci" ><b style="cursor: pointer;background-color: transparent;background-image: url(https://spotlist.todquest.com/images/button.png);border: 0px solid;color: white;background-size: cover; padding: 10px;"> Add</b>
+			</div></div>
+			<div class="w-100" style="padding: 5px;"></div>
+		</div>
+			<span id="" class="cci-class">
+					<div class="row">
+					<h4 class="col-12">Centre Compliance Information </h4>
+		           <div class="col-lg-6 form-group">
+					<label><i style="color: #aa63ff;" class="fas fa-door-open"></i>Compliance-name</label>
+					<input type="text" class="form-control" name="compliance_name" id="" value="" placeholder="Compliance-name">
+				</div>
+		       <div class="col-lg-6 form-group">
+					<label><i style="color: #aa63ff;" class="fas fa-chair"></i>Compliance-desc</label>
+								<input type="number" class="form-control" name="compliance_desc" value="" placeholder="Compliance-desc" > 
+				</div>
+				<div class="col-lg-6 form-group">
+					<label><i style="color: #aa63ff;" class="fas fa-baby"></i>Compliance-contact-details</label>
+					<input type="number" class="form-control" name="compliance_contact_details" id="" value="" placeholder="Compliance-contact-details"></div>
+				<div class="col-lg-6 form-group">
+					<label><i style="color: #aa63ff;" class="fas fa-child"></i>Compliance-contact-name</label>
+					<input type="number" class="form-control" name="compliance_contact_name" id="" value="" placeholder="Compliance-contact-name" > 
+				</div>
+				<div class="col-lg-6 form-group">
+					<label><i style="color: #aa63ff;" class="fas fa-child"></i>Compliance-contact-number</label>
+					<input type="number" class="form-control" name="compliance_contact_number" id="" value="" placeholder="Compliance-contact-number" > 
+				</div>
+				<div class="col-lg-6 form-group">
+					<label><i style="color: #aa63ff;" class="fas fa-child"></i>Compliance-contact-email</label>
+					<input type="number" class="form-control" name="compliance_contact_email" id="" value="" placeholder="Compliance-contact-email" > 
+				</div>
+				<div class="col-lg-6 form-group">
+					<label><i style="color: #aa63ff;" class="fas fa-child"></i>Compliance-expiry-renewal-date</label>
+					<input type="number" class="form-control" name="compliance_expiry_renewal-date" id="" value="" placeholder="Compliance-expiry-renewal-date" > 
+				</div>
+				<div class="col-lg-6 form-group">
+					<label><i style="color: #aa63ff;" class="fas fa-child"></i>Compliance-document</label>
+					<input type="number" class="form-control" name="compliance_document" id="" value="" placeholder="Compliance-document" > 
+				</div>
+				</div>
+			</span>			 
+		</span>
+		<hr>
+
+		<div class="row">
+			<div class="col-lg-6"><h3>Organize Centre Suppliers</h3></div>
+			<div class="col-lg-6 text-right">
+				<div id="csi" ><b style="cursor: pointer;background-color: transparent;background-image: url(https://spotlist.todquest.com/images/button.png);border: 0px solid;color: white;background-size: cover; padding: 10px;"> Add</b>
+			</div></div>
+			<div class="w-100" style="padding: 5px;"></div>
+		</div>
+			<span id="" class="csi-class">
+					<div class="row">
+					<h4 class="col-12">Centre Supplier Information </h4>
+		           <div class="col-lg-6 form-group">
+					<label><i style="color: #aa63ff;" class="fas fa-door-open"></i>Supplier-desc</label>
+					<input type="text" class="form-control" name="supplier_desc" id="" value="" placeholder="Supplier-desc">
+				</div>
+		       <div class="col-lg-6 form-group">
+					<label><i style="color: #aa63ff;" class="fas fa-chair"></i>Supplier-account-no</label>
+								<input type="number" class="form-control" name="supplier_account_no" value="" placeholder="Supplier-account-no" > 
+				</div>
+				<div class="col-lg-6 form-group">
+					<label><i style="color: #aa63ff;" class="fas fa-baby"></i>Supplier-contact-name</label>
+					<input type="number" class="form-control" name="supplier_contact_name" id="" value="" placeholder="Supplier-contact-name"></div>
+				<div class="col-lg-6 form-group">
+					<label><i style="color: #aa63ff;" class="fas fa-child"></i>Supplier-contact-number</label>
+					<input type="number" class="form-control" name="supplier_contact_number" id="" value="" placeholder="Supplier-contact-number" > 
+				</div>
+				<div class="col-lg-6 form-group">
+					<label><i style="color: #aa63ff;" class="fas fa-child"></i>Supplier-contact-email</label>
+					<input type="number" class="form-control" name="supplier_contact_email" id="" value="" placeholder="Supplier-contact-email" > 
+				</div>
+				</div>
+			</span>			 
+		</span>
 			<div class="row text-center justify-content-center align-self-center">
 				<div class="w-100"></div>
 				<center><button type="submit" class="btn btn-success" style="padding: 6px 30px;"><i style="color: #fff;" class="fas fa-location-arrow"></i>&nbsp;  Save</button></center>
 			</div>
+
+
+
+
+
+
+
 		 
 				
 			</form>
@@ -115,6 +250,22 @@ font-family: 'Open Sans', sans-serif;
 		$(document).on('click','#AddRoom',function(){
 			var length = $('.room-class').length;
 			$('.room-class').eq(length-1).after(newRoom);
+		})
+	})
+	
+	$(document).ready(function(){
+		var newCCI = $('.cci-class').html();
+		$(document).on('click','#cci',function(){
+			var length = $('.cci-class').length;
+			$('.cci-class').eq(length-1).after(newCCI);
+		})
+	})
+
+	$(document).ready(function(){
+		var newCSI = $('.csi-class').html();
+		$(document).on('click','#csi',function(){
+			var length = $('.csi-class').length;
+			$('.csi-class').eq(length-1).after(newCSI);
 		})
 	})
 

@@ -28,6 +28,12 @@ class Payroll extends CI_Controller {
 		else{
 			$var['error'] = 'error';
 		}
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			$this->load->view('payrollList',$var);
 					}
 		else{
@@ -65,6 +71,12 @@ class Payroll extends CI_Controller {
 				$data['payrollTypes'] = $this->getAllPayrollTypes($data['userId']);
 				$data['entitlements'] = $this->getAllEntitlements($data['userId']);
 			}
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			$this->load->view('payrollData',$data);
 				}
 		else{
@@ -83,6 +95,12 @@ class Payroll extends CI_Controller {
 				$data['payrollTypes'] = $this->getAllPayrollTypes($data['userId']);
 				$data['entitlements'] = $this->getAllEntitlements($data['userId']);
 			}
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			$this->load->view('payrollModal',$data);
 				}
 		else{

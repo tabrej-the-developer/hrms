@@ -4,6 +4,12 @@ class Mom extends CI_CONTROLLER{
 
     public function index(){
       if($this->session->has_userdata('LoginId')){
+  //footprint start
+  if($this->session->has_userdata('current_url')){
+    footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+    $this->session->set_userdata('current_url',currentUrl());
+  }
+  // footprint end
         if($this->getUsers() != 'error'){
               $data['users'] = $this->getUsers();
               $data['meetings'] = $this->getMeetings();
@@ -17,9 +23,16 @@ class Mom extends CI_CONTROLLER{
     else{
       $this->load->view('redirectToLogin');
     }
-    }
+  }
+
    public function attendence($mId){
     if($this->session->has_userdata('LoginId')){
+  //footprint start
+  if($this->session->has_userdata('current_url')){
+    footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+    $this->session->set_userdata('current_url',currentUrl());
+  }
+  // footprint end
     $data['partcipants'] = $this->getParticipant($mId); 
     $data['mId'] = $mId;
        $this->load->view('attendence',$data);
@@ -49,6 +62,12 @@ class Mom extends CI_CONTROLLER{
 
     public function startMeeting($mId){
       if($this->session->has_userdata('LoginId')){
+    //footprint start
+  if($this->session->has_userdata('current_url')){
+    footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+    $this->session->set_userdata('current_url',currentUrl());
+  }
+  // footprint end
         $data['partcipants'] = $this->getParticipant($mId); 
         $data['mId'] = $mId;
         $this->load->view('startmeeting',$data);
@@ -87,6 +106,12 @@ class Mom extends CI_CONTROLLER{
 
     public function createMeeting(){
       if($this->session->has_userdata('LoginId')){
+  //footprint start
+  if($this->session->has_userdata('current_url')){
+    footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+    $this->session->set_userdata('current_url',currentUrl());
+  }
+  // footprint end
         $this->load->view('createMeeting');
                 }
     else{
@@ -97,6 +122,12 @@ class Mom extends CI_CONTROLLER{
 
     public function onBoard($mId){
       if($this->session->has_userdata('LoginId')){
+  //footprint start
+  if($this->session->has_userdata('current_url')){
+    footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+    $this->session->set_userdata('current_url',currentUrl());
+  }
+  // footprint end
         $data['mId'] = $mId;
         $data['present'] = $this->getPresent($mId);
         $this->load->view('meetingstarted_dup',$data);
@@ -108,6 +139,12 @@ class Mom extends CI_CONTROLLER{
 
     public function onBoardDup(){
       if($this->session->has_userdata('LoginId')){
+  //footprint start
+  if($this->session->has_userdata('current_url')){
+    footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+    $this->session->set_userdata('current_url',currentUrl());
+  }
+  // footprint end
         $this->load->view('meetingstarted_dup');
                 }
     else{
@@ -116,6 +153,13 @@ class Mom extends CI_CONTROLLER{
     }
 
     public function getPresent($id){
+
+  //footprint start
+  if($this->session->has_userdata('current_url')){
+    footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+    $this->session->set_userdata('current_url',currentUrl());
+  }
+  // footprint end
         $url = BASE_API_URL."/mom/Present/".$id;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
@@ -139,6 +183,12 @@ class Mom extends CI_CONTROLLER{
     
     public function summary($id){
       if($this->session->has_userdata('LoginId')){
+  //footprint start
+  if($this->session->has_userdata('current_url')){
+    footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+    $this->session->set_userdata('current_url',currentUrl());
+  }
+  // footprint end
         $data1['mId'] = $id;
         $data1['summary'] = $this->getSummary($id);
         $this->load->view('summary_dup',$data1);
@@ -149,6 +199,12 @@ class Mom extends CI_CONTROLLER{
     }
 
     public function getSummary($id){
+  //footprint start
+  if($this->session->has_userdata('current_url')){
+    footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+    $this->session->set_userdata('current_url',currentUrl());
+  }
+  // footprint end
         $url =  BASE_API_URL."mom/getSummary/".$id;
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_URL,$url);
@@ -191,6 +247,12 @@ class Mom extends CI_CONTROLLER{
     public function addMeeting(){
        $form_data = $this->input->post();
        if($form_data != null ){
+  //footprint start
+  if($this->session->has_userdata('current_url')){
+    footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+    $this->session->set_userdata('current_url',currentUrl());
+  }
+  // footprint end
            $data['userid']        =      $this->session->userdata('LoginId');
            $data['title']         =      $form_data['meetingTitle'];
            $data['location']      =      $form_data['meetingLocation'];
@@ -235,7 +297,12 @@ class Mom extends CI_CONTROLLER{
              $data['absent'] = null;
               }
            $data['mId'] = $mId;
-
+  //footprint start
+  if($this->session->has_userdata('current_url')){
+    footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+    $this->session->set_userdata('current_url',currentUrl());
+  }
+  // footprint end
        $url = "http://localhost/PN101/api/mom/meetingAttendence";
        $ch = curl_init($url);
        curl_setopt($ch, CURLOPT_URL, $url);
@@ -262,7 +329,13 @@ class Mom extends CI_CONTROLLER{
    public function meetingRecord($id){
        $form_data = $this->input->post();
 
-       if($form_data != null){    
+       if($form_data != null){ 
+  //footprint start
+  if($this->session->has_userdata('current_url')){
+    footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+    $this->session->set_userdata('current_url',currentUrl());
+  }
+  // footprint end   
            $data['invites']  = $form_data['invites'];
            $data['sentence'] = $form_data['sentence'];
            $data['remark']   = $form_data['remark'];
@@ -296,6 +369,12 @@ class Mom extends CI_CONTROLLER{
        $form_data = $this->input->post();
     
        if($form_data != null){
+  //footprint start
+  if($this->session->has_userdata('current_url')){
+    footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+    $this->session->set_userdata('current_url',currentUrl());
+  }
+  // footprint end
          $data['summary'] = $form_data['summary'];
          $data['id'] = $form_data['id'];
         //    echo json_encode($data);
@@ -328,7 +407,12 @@ class Mom extends CI_CONTROLLER{
     if($this->session->has_userdata('LoginId')){
       $data['info'] = $this->getInfo($mId);
       // print_r($data);
-        
+  //footprint start
+  if($this->session->has_userdata('current_url')){
+    footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+    $this->session->set_userdata('current_url',currentUrl());
+  }
+  // footprint end
        $this->load->view('meetingInfo',$data);
               }
     else{

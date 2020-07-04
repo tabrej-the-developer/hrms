@@ -11,6 +11,12 @@ class Settings extends CI_Controller {
 				}
 				else{
 					$data['error'] = 'error';
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 					$this->load->view('settings',$data);
 				}
 			}
@@ -20,6 +26,12 @@ class Settings extends CI_Controller {
 	}
 	public function editPassword(){
 		if($this->session->has_userdata('LoginId')){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			$this->load->view('editPasswordView');
 				}
 		else{
@@ -30,6 +42,12 @@ class Settings extends CI_Controller {
 	public function changePassword(){
 		$input = $this->input->post();
 		if($input != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 		$data['userid'] = $this->session->userdata('LoginId');
 		$data['password'] = $this->input->post('password');
 		$data['passcode'] =  $this->input->post('passcode');
@@ -66,6 +84,12 @@ public function editRooms(){
 		$data['centers'] = $this->getAllCenters();
 		$data['rooms'] = $this->getAllRooms($data['centerid']);
 		$data['permissions'] = $this->fetchPermissions();
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 		$this->load->view('editRoomsView',$data);
 			}
 	else{
@@ -77,6 +101,12 @@ public function editRooms(){
 	public function updateRoom(){
 		$input = $this->input->post();
 		if($input != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 		$data['userid'] = $this->session->userdata('LoginId');
 		$data['response'] = $this->input->post('response');
 		$data['centerid'] = $this->input->post('centerid');
@@ -111,6 +141,12 @@ public function editRooms(){
 	public function createCenter(){
 		if($this->session->has_userdata('LoginId')){
 			$data['permissions'] = $this->fetchPermissions();
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			$this->load->view('createCenterProfile',$data);
 		}
 	else{
@@ -121,6 +157,12 @@ public function editRooms(){
 	public function createCenterProfile(){
 		$input = $this->input->post();
 		if($input != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			$data['userid'] = $this->session->userdata('LoginId');
 			$data['centerid'] = $this->load->post('centerid');
 			$data['addStreet'] = $this->load->post('addStreet');
@@ -161,6 +203,12 @@ public function editRooms(){
 		$data['centers'] = $this->getAllCenters();
 		$data['center_profile'] = json_decode($data['centers'])->centers[$centerid-1];
 		$data['permissions'] = $this->fetchPermissions();
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 		$this->load->view('editCenterProfile',$data);
 	}
 	else{
@@ -171,6 +219,12 @@ public function editRooms(){
 	public function updateCenter(){
 		$input = $this->input->post();
 		if($input != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 		$data['addStreet'] = $this->input->post('addStreet');
 		$data['addCity'] = $this->input->post('addCity');
 		$data['addState'] = $this->input->post('addState');
@@ -214,6 +268,12 @@ public function editRooms(){
 		$data['permissions'] = $this->fetchPermissions();
 		$data['centers'] = $this->getAllCenters();
 		$data['orgChart'] = $this->getOrgChart($data['centerid']);
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 		$this->load->view('editOrgChartView',$data);
 	}
 	else{
@@ -245,6 +305,12 @@ public function editRooms(){
 	public function addArea(){
 		$form_data = $this->input->post();
 		if($form_data != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			$data['centerid'] = $this->input->post('centerid');;
 			$data['isRoomYN'] = $this->input->post('isRoomYN');
 			$data['userid'] = $this->session->userdata('LoginId');
@@ -276,6 +342,12 @@ $server_output = curl_exec($ch);
 		public function addRole(){
 		$form_data = $this->input->post();
 		if($form_data != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			//$data['centerid'] = $this->input->post('centerid');
 			$data['areaid'] = $this->input->post('areaid');
 			$data['userid'] = $this->session->userdata('LoginId');
@@ -306,9 +378,15 @@ $server_output = curl_exec($ch);
 	}
 
 
-		public function UpdateRole(){
-		$form_data = $this->input->post();
-		if($form_data != null){
+	public function UpdateRole(){
+	$form_data = $this->input->post();
+	if($form_data != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			//$data['centerid'] = $this->input->post('centerid');
 			$data['roleid'] = $this->input->post('roleid');
 			$data['userid'] = $this->session->userdata('LoginId');
@@ -339,9 +417,15 @@ $server_output = curl_exec($ch);
 	}
 
 
-		public function UpdateArea(){
-		$form_data = $this->input->post();
-		if($form_data != null){
+	public function UpdateArea(){
+	$form_data = $this->input->post();
+	if($form_data != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			//$data['centerid'] = $this->input->post('centerid');
 			$data['areaid'] = $this->input->post('areaid');
 			$data['userid'] = $this->session->userdata('LoginId');
@@ -455,6 +539,12 @@ $server_output = curl_exec($ch);
 	public function deleteRoom(){
 		$input = $this->input->post();
 		if($input != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 		$data['id'] = $this->input->post('id'); 
 		$data['userid'] = $this->session->userdata('LoginId');
 		$url = BASE_API_URL."/settings/deleteRoom/".$data['id']."/".$data['userid'];
@@ -481,6 +571,12 @@ $server_output = curl_exec($ch);
 	public function deleteArea(){
 		$input = $this->input->post();
 		if($input != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 		$data['id'] = $this->input->post('id'); 
 		$data['userid'] = $this->session->userdata('LoginId');
 		$url = BASE_API_URL."/settings/deleteRoom/".$data['id']."/".$data['userid'];
@@ -507,6 +603,12 @@ $server_output = curl_exec($ch);
 	public function deleteRole(){
 		$input = $this->input->post();
 		if($input != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 		$data['id'] = $this->input->post('id'); 
 		$data['userid'] = $this->session->userdata('LoginId');
 		$url = BASE_API_URL."/settings/deleteRoom/".$data['id']."/".$data['userid'];
@@ -533,6 +635,12 @@ $server_output = curl_exec($ch);
 
 	public function viewEntitlements(){
 		if($this->session->has_userdata('LoginId')){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			$data['centers'] = $this->getAllCenters();
 		$data['userid'] = $this->session->userdata('LoginId');
 		$data['entitlements'] = $this->getAllEntitlements($data['userid']);
@@ -567,6 +675,12 @@ $server_output = curl_exec($ch);
 	public function deleteEntitlement(){
 		$input = $this->input->post();
 		if($input != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 		$data['id'] = $this->input->post('id'); 
 		$data['userid'] = $this->session->userdata('LoginId');
 		$url = BASE_API_URL."/payroll/deleteEntitlement/".$data['id']."/".$data['userid'];
@@ -593,6 +707,12 @@ $server_output = curl_exec($ch);
 	public function updateEntitlement(){
 		$form_data = $this->input->post();
 		if($form_data != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			//$data['centerid'] = $this->input->post('centerid');
 			$data['id'] = $this->input->post('id');
 			$data['userid'] = $this->session->userdata('LoginId');
@@ -624,6 +744,12 @@ $server_output = curl_exec($ch);
 		public function addEntitlement(){
 		$form_data = $this->input->post();
 		if($form_data != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			$data['userid'] = $this->session->userdata('LoginId');
 			$data['name'] = $this->input->post('name');
 			$data['rate'] = $this->input->post('rate');
@@ -695,6 +821,13 @@ $server_output = curl_exec($ch);
 	public function oldCreateEmployeeProfile(){
 		$input = $this->input->post();
 		if($input != null){
+
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			$data['email'] = $this->load->post('email');
 			$data['name'] = $this->load->post('name');
 			$data['password'] = $this->load->post('password');
@@ -734,6 +867,12 @@ $server_output = curl_exec($ch);
 
 		public function addEmployee($centerid=1){
 			if($this->session->has_userdata('LoginId')){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 				$data['centerid'] = $centerid;
 				$data['userid'] = $this->session->userdata('LoginId');
 				$data['centers'] = $this->getAllCenters();
@@ -753,7 +892,13 @@ $server_output = curl_exec($ch);
 	public function createEmployeeProfile(){
 		$form_data = $this->input->post();
 		if($form_data != null){
-			$data['userid'] = $this->session->userdata('LoginId');
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
+		$data['userid'] = $this->session->userdata('LoginId');
 		$data['title'] = $this->input->post('title'); 
 		$data['fname'] = $this->input->post('fname'); 
 		$data['mname'] = $this->input->post('mname'); 
@@ -795,6 +940,54 @@ $server_output = curl_exec($ch);
 		$data['manager'] = $this->input->post('manager');
 		$data['level'] = $this->input->post('level');
 		$data['bonusRates'] = $this->input->post('bonusRates');
+		$data['medicareNo'] = $this->input->post('medicareNo');
+		$data['medicareRefNo'] = $this->input->post('medicareRefNo');
+		$data['healthInsuranceFund'] = $this->input->post('healthInsuranceFund');
+		$data['healthInsuranceNo'] = $this->input->post('healthInsuranceNo');
+		$data['ambulanceSubscriptionNo'] = $this->input->post('ambulanceSubscriptionNo');
+		$data['medicalConditions'] = $this->input->post('medicalConditions');
+		$data['medicalAllergies'] = $this->input->post('medicalAllergies');
+		$data['medication'] = $this->input->post('medication');
+		$data['dietaryPreferences'] = $this->input->post('dietaryPreferences');
+		$data['anaphylaxis'] = $this->input->post('anaphylaxis');
+		$data['asthma'] = $this->input->post('asthma');
+		$data['maternityStartDate'] = $this->input->post('maternityStartDate');
+		$data['maternityEndDate'] = $this->input->post('maternityEndDate');
+		$data['employee_no'] = $this->input->post('employee_no');
+		$data['currently_employed'] = $this->input->post('currently_employed');
+		$data['commencement_date'] = $this->input->post('commencement_date');
+		$data['resume_supplied'] = $this->input->post('resume_supplied');
+		$data['resume_doc'] = $this->input->post('resume_doc');
+		$data['employement_type'] = $this->input->post('employement_type');
+		$data['current_contract_notes'] = $this->input->post('current_contract_notes');
+		$data['current_contract_signature'] = $this->input->post('current_contract_signature');
+		$data['current_contract_commencement'] = $this->input->post('current_contract_commencement');
+		$data['current_contract_end_date'] = $this->input->post('current_contract_end_date');
+		$data['current_contract_paid_start_date'] = $this->input->post('current_contract_paid_start_date');
+		$data['probation_end_date'] = $this->input->post('probation_end_date');
+		$data['industry_years_exp_as_nov19'] = $this->input->post('industry_years_exp_as_nov19');
+		$data['highest_qual_held'] = $this->input->post('highest_qual_held');
+		$data['highest_qual_type'] = $this->input->post('highest_qual_type');
+		$data['qual_towards_desc'] = $this->input->post('qual_towards_desc');
+		$data['qual_towards_percent_comp'] = $this->input->post('qual_towards_percent_comp');
+		$data['workcover'] = $this->input->post('workcover');
+		$data['piawe'] = $this->input->post('piawe');
+		$data['annual_leave_in_contract'] = $this->input->post('annual_leave_in_contract');
+		$data['visa_type'] = $this->input->post('visa_type');
+		$data['visa_grant_date'] = $this->input->post('visa_grant_date');
+		$data['visa_end_date'] = $this->input->post('visa_end_date');
+		$data['visa_conditions'] = $this->input->post('visa_conditions');
+		$data['first_aid_expiry'] = $this->input->post('first_aid_expiry');
+		$data['cpr_expiry'] = $this->input->post('cpr_expiry');
+		$data['prohibition_notice_declaration'] = $this->input->post('prohibition_notice_declaration');
+		$data['vit_card_no'] = $this->input->post('vit_card_no');
+		$data['vit_expiry'] = $this->input->post('vit_expiry');
+		$data['wwcc_card_no'] = $this->input->post('wwcc_card_no');
+		$data['wwcc_expiry'] = $this->input->post('wwcc_expiry');
+		$data['food_handling_safety'] = $this->input->post('food_handling_safety');
+		$data['last_police_check'] = $this->input->post('last_police_check');
+		$data['child_protection_check'] = $this->input->post('child_protection_check');
+		$data['nominated_supervisor'] = $this->input->post('nominated_supervisor');
 
 					$data['Employees'] = [];
 					$employee = [];
@@ -875,6 +1068,12 @@ $server_output = curl_exec($ch);
 	public function savePermission(){
 		$input = $this->input->post();
 		if($input != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			$data = $this->input->post();
 			$data['userid'] = $this->session->userdata('LoginId');
 			$url = BASE_API_URL."/settings/PostEmployeePermission";
@@ -903,6 +1102,12 @@ $server_output = curl_exec($ch);
 	public function permissionSettings(){	
 		$data['centers'] = $this->getAllCenters();
 		$data['permissions'] = $this->fetchPermissions();
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 		$this->load->view('permission',$data);
 	}
 
@@ -910,6 +1115,12 @@ $server_output = curl_exec($ch);
 		$data['userid'] = $this->session->userdata('LoginId');
 		$data['awards'] = $this->getAwardSettings($data['userid']);
 		$data['permissions'] = $this->fetchPermissions();
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 		$this->load->view('awardSettings',$data);
 	}
 
@@ -934,6 +1145,12 @@ $server_output = curl_exec($ch);
 	}
 
 	public function syncXeroAwards(){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 		$data['userid'] = $this->session->userdata('LoginId');
 		$url = BASE_API_URL."/xero/syncXeroAwards";
 		$ch = curl_init($url);
@@ -968,6 +1185,12 @@ $server_output = curl_exec($ch);
 		$data['userid'] = $this->session->userdata('LoginId');
 		$data['superfunds'] = $this->getSuperfunds($data['userid']);
 		$data['permissions'] = $this->fetchPermissions();
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 		$this->load->view('superfundSettings',$data);
 	}
 
@@ -993,6 +1216,12 @@ $server_output = curl_exec($ch);
 	}
 
 	public function  syncXeroSuperfunds(){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 		$data['userid'] = $this->session->userdata('LoginId');
 		$url = BASE_API_URL."/xero/syncXeroSuperfunds";
 		$ch = curl_init($url);
@@ -1018,6 +1247,7 @@ $server_output = curl_exec($ch);
 
 
 	public function getEmployeesByCenter($centerid){
+
 		$url = BASE_API_URL."util/GetAllEmployeesByCenter/".$centerid.'/'.$this->session->userdata('LoginId');
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
@@ -1087,6 +1317,12 @@ $server_output = curl_exec($ch);
 		$this->load->helper('form');
 		$form_data = $this->input->post();
 		if($form_data != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			//var_dump($form_data);
 			$data['leaveId'] = $form_data['leaveId'];
 			$data['name'] = $form_data['leaveName'];
@@ -1126,6 +1362,12 @@ $server_output = curl_exec($ch);
 		$this->load->helper('form');
 		$form_data = $this->input->post();
 		if($form_data != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			//var_dump($form_data);
 			$data['leaveId'] = $form_data['leaveId'];
 			$data['userid'] = $this->session->userdata('LoginId');
@@ -1160,6 +1402,12 @@ $server_output = curl_exec($ch);
 		$this->load->helper('form');
 		$form_data = $this->input->post();
 		if($form_data != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			//var_dump($form_data);
 			$data['leaveApplication'] = $form_data['leaveId'];
 			$data['status'] = $form_data['status'];
@@ -1191,6 +1439,12 @@ $server_output = curl_exec($ch);
 	}
 
 		public function  syncXeroLeaves(){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 		$data['userid'] = $this->session->userdata('LoginId');
 		$url = BASE_API_URL."/xero/syncXeroLeaves";
 		$ch = curl_init($url);

@@ -90,6 +90,12 @@ class Notice extends CI_Controller {
 		$this->load->helper('form');
 		$form_data = $this->input->post();
 		if($form_data != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			$sendData['members'] = array();
 			$allUsers = json_decode($data['users']);
 			foreach ($allUsers->users as $user) {
@@ -141,6 +147,13 @@ class Notice extends CI_Controller {
 		$this->load->helper('form');
 		$form_data = $this->input->post();
 		if($form_data != null){
+
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			$data['noticeId'] = $form_data['currentNoticeId'];
 			$data['status'] = "2";
 			$data['userid'] = $this->session->userdata('LoginId');

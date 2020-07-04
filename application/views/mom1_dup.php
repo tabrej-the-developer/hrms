@@ -821,7 +821,7 @@ $users =   json_decode($users);
          <td>Start Date</td>
          <td>Time</td>
          <td>Location</td>
-         <!-- <td>Status</td> -->
+          <td>Status</td>
          <td>Attendees</td>
         <td></td>
         <td></td>
@@ -842,7 +842,7 @@ $users =   json_decode($users);
         <td class="table-date"><?php echo $u->date; ?></td>
         <td><?php echo $u->time; ?></td>
         <td><?php echo $u->location; ?></td>
-        <!-- <td><?php echo $u->status; ?></td> -->
+         <td><?php echo $u->status; ?></td> 
         <script>
         var arr = [];
         </script>
@@ -1059,11 +1059,10 @@ $(document).ready(function(){
    $('#date').val(value1);
    $('#time').val(value2);
    $('#location').val(value3);
-   $('.agenda').val(value5);
+   // $('.agenda').val(value5);
    $('#collab').val(value6);
-   console.log(
-               JSON.stringify(value5))
-});
+   // console.log(JSON.stringify(value5))
+ });
 
  function remove(){
    alert('hello');

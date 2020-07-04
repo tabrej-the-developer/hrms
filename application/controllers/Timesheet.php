@@ -32,6 +32,12 @@ class Timesheet extends CI_Controller {
 		else{
 			$var['error'] = 'error';
 		}
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			$this->load->view('getPastTimesheetsView',$var);
 		}
 		else{
@@ -45,6 +51,12 @@ class Timesheet extends CI_Controller {
 		$data['userid'] = $this->session->userdata('LoginId');
 		$data['timesheetDetails'] = $this->gettimesheet($data['timesheetid'],$data['userid']);
 		$data['entitlements'] = $this->getAllEntitlements($data['userid']);
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			$this->load->view('timesheetView',$data);
 			}
 		else{
@@ -62,6 +74,12 @@ class Timesheet extends CI_Controller {
 			$data['entitlements'] = $this->getAllEntitlements($data['userid']);
 			$data['timesheetDetails'] = $this->gettimesheet($data['timesheetid'],$data['userid']);
 			$data['shift'] = $this->getShiftType($data['userid']);
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 				$this->load->view('timesheetModal',$data);
 				}
 		else{
@@ -93,6 +111,12 @@ class Timesheet extends CI_Controller {
 		}
 
 	public function getPastTimeSheets($centerid = 1){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 		$url = BASE_API_URL."/timesheet/getPastTimesheet/".$centerid."/".$this->session->userdata('LoginId');
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
@@ -116,6 +140,12 @@ class Timesheet extends CI_Controller {
 		$this->load->helper('form');
 		$form_data = $this->input->post();
 		if($form_data != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 			$date = date_create($this->input->post('timesheet-date'));
 			$data['startDate'] = date_format($date,"Y-m-d");
 			$data['centerid'] = $this->input->post('centerId');
@@ -210,6 +240,12 @@ $server_output = curl_exec($ch);
 	}
 
 		public function getShiftType($userid){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
 		$url = BASE_API_URL."/payroll/getAllPayrollTypes/".$userid;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
