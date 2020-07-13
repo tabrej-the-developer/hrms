@@ -1,6 +1,11 @@
 <html>
 <head>
 	<title>Dashboard</title>
+<link  href="https://cdn.jsdelivr.net/npm/fullcalendar@5.1.0/main.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.1.0/main.js"></script>
+<link href='https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.css' rel='stylesheet' />
+<link href='https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css' rel='stylesheet'>
+
 <style type="text/css">
 	body{
 		background: #F2F2F2 !important;
@@ -63,6 +68,26 @@
 	}
 	.activity-row:nth-of-type(odd){
 		background:#F5F6FA;
+	}
+	#calendar{
+		width: 70%;
+	}
+	.fc-view-harness{
+		padding-bottom: 100% !important;
+	}
+	.fc-col-header{
+		width: 100% !important;
+	}
+	.fc-scrollgrid-sync-table{
+		height: 100% !important;
+		width: 100% !important;
+	}
+	.fc-daygrid-body-unbalanced{
+		width: 100% !important;
+	}
+	.calendar_text{
+		color:white;
+		font-size:0.7rem;
 	}
 </style>
 </head>
@@ -163,11 +188,104 @@
 			</span>
 			
 		</div>
+		<div class="d-flex">
+			<div id="calendar" class="col-md-9"></div>
+			<div classs="col-md-3">Birthdays & Anniversaries</div>
+		</div>
 	</div>
 <script type="text/javascript">
 	$(document).ready(()=>{
 	    $('.containers').css('paddingLeft',$('.side-nav').width());
 	});
 </script>
+<?php //echo $calendar; ?>
+    <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {   events: <?php echo $calendar; ?>
+				  });
+				        calendar.render();
+				      });
+// fc-event-title
+// fc-daygrid-day 
+// data-date
+// fc-button
+    </script>
+    <script type="text/javascript">
+    	$(document).ready(function(){
+    		var events = <?php echo $calendar; ?>;
+    		console.log(events)
+    		var count = $('.fc-event-title').length; 
+    		var counter = 0;
+    		var increment = 0;
+    		var element = [];
+    		
+    		while(increment < count){
+    			// rosters dates array
+    			if(($('.fc-event-title').eq(increment).text()).includes('Role')){
+    			element[counter] = $('.fc-event-title').eq(increment).closest('td').attr('data-date');
+    			var date = element[counter];
+    			var role = $('.fc-event-title').eq(increment).text();
+    			events.forEach((item,index)=>{
+		    		x = fun(item,index,date)
+		    		if(x !== undefined){
+		    		console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/roster/getRosterDetails?rosterId=${x}" title="${role}">${role}</a>`));
+		    			}
+		    	});
+    			counter++;
+    			}
+					if(($('.fc-event-title').eq(increment).text()).includes('Leave')){
+	    			var status = $('.fc-event-title').eq(increment).text();
+	    				console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/Leave" title="${status}">${status}</a>`));
+			    	}
+    			increment++; 
+    		}
+    		function fun(item,index,date){
+    			if(item['roster'] !== undefined && item['start'] == date){
+	    		return item['roster'];
+	    				}
+	    			}
+    		console.log(events)
+	$(document).on('click','.fc-button',function(){
+		var d = new Date();
+		var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+		if($('.fc-header-toolbar .fc-toolbar-chunk .fc-toolbar-title').text() == `${months[d.getMonth()]} ${d.getFullYear()}`){
+    		var events = <?php echo $calendar; ?>;
+    		var count = $('.fc-event-title').length; 
+    		var counter = 0;
+    		var increment = 0;
+    		var element = [];
+    		
+    		while(increment < count){
+    			// rosters dates array
+    			if(($('.fc-event-title').eq(increment).text()).includes('Role')){
+    			element[counter] = $('.fc-event-title').eq(increment).closest('td').attr('data-date');
+    			var date = element[counter];
+    			// var role = $('.fc-event-title').eq(increment).text();
+    			events.forEach((item,index)=>{
+		    		x = fun(item,index,date)
+		    		if(x !== undefined){
+		    		console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/roster/getRosterDetails?rosterId=${x}" title="${role}">${role}</a>`));
+		    			}
+		    	});
+    			counter++;
+    			}
+					if(($('.fc-event-title').eq(increment).text()).includes('Leave')){
+	    			// var status = $('.fc-event-title').eq(increment).text();
+	    				console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/Leave" title="${status}">${status}</a>`));
+			    	}
+    			increment++; 
+    		}
+    		function fun(item,index,date){
+    			if(item['roster'] !== undefined && item['start'] == date){
+	    		return item['roster'];
+	    				}
+	    			}
+    		console.log(events)
+    		}
+    	})
+    	})
+    </script>
 </body>
 </html>

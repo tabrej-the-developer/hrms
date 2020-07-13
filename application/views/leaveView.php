@@ -301,6 +301,12 @@ table.dataTable{
         transform: scale(1.0);
         transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
     }
+    @media only screen and (max-width:600px){
+    	.col-sm-12{
+    		padding-left: 0 !important;
+    		padding-right: 0 !important;
+    	}
+    }
 
 </style>
 </head>

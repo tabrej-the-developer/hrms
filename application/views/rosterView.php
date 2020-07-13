@@ -334,6 +334,17 @@ table.dataTable{
 			padding: 0.75rem;
 			border: none;
 		}
+		.create{
+			width: 150px;
+			overflow: hidden;
+		}
+		.center-list{
+			width: 100px
+		}
+		body{
+			max-width: 100vw;
+			overflow: hidden;
+		}
     }
 </style>
 </head>

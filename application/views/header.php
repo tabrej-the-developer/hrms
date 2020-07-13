@@ -205,6 +205,23 @@ font-family: 'Open Sans', sans-serif;
 .todquest-logo{
   width: 3rem
 }
+.navbar-fixed-elements{
+  border-top:1px solid white !important;
+  position: absolute;
+  bottom: 0;width: 100%
+}
+@media only screen and (max-width:600px){
+  .navbar{
+    position: relative;
+    background: #142059;
+  }
+  .navbar-fixed-elements{
+    position: relative;
+  }
+  .containers{
+    height: calc(100vh - 56px );
+  }
+}
 </style>
 </head>
 <body>
@@ -318,7 +335,7 @@ font-family: 'Open Sans', sans-serif;
               <span>MOM </span>
           </a>
           </li>
-          <div style="border-top:1px solid white !important;position: absolute;bottom: 0;width: 100%">
+          <div  class="navbar-fixed-elements">
             <li class="nav-item-header-div">
               <a class="nav-link-div d-flex justify-content-start" href="<?php echo site_url('settings') ?>" title="Settings">
                 <i class="mr-4" >

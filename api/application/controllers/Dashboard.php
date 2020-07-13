@@ -72,4 +72,46 @@ class Dashboard extends CI_Controller{
 			http_response_code(401);
 		}
 	}
+
+	public function calendarDetails($userid){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+				$this->load->model('dashboardModel');
+				$this->load->model('rostersModel');
+				$this->load->model('leaveModel');
+				$totalDays = cal_days_in_month(CAL_GREGORIAN,date('m'),date('Y'));
+				$events = [];
+				$y = date('Y');
+				$m = date('m');
+				$startDate = "$y-$m-01";
+				for($i=0;$i<$totalDays;$i++){
+				$currentDate = date('Y-m-d', strtotime("+$i day", strtotime("$startDate")));
+				$getShiftDetails = $this->rostersModel->getShiftDetails($userid,$currentDate);
+					if($getShiftDetails != null || $getShiftDetails != ""){
+					$mdata['title'] = 'Role - '.($this->rostersModel->getRole($getShiftDetails->roleid))->roleName;
+					$mdata['start'] = $currentDate;
+					$mdata['roster'] = $getShiftDetails->roasterId;
+					array_push($events,$mdata);
+				}
+				$getLeaveDetails = $this->leaveModel->getLeaveApplicationForUser($userid,$currentDate);
+				if($getLeaveDetails != null || $getLeaveDetails != ""){
+						$mbdata['title'] = 'Leave Status - '.$getLeaveDetails->status;
+						$mbdata['start'] = $currentDate;
+						array_push($events,$mbdata);
+							}
+					 }
+				http_response_code(200);
+				echo json_encode($events);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
 }

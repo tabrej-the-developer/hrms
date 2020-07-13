@@ -14,6 +14,7 @@ $colors_array = ['#8dba5e','#9ebdff','#dd91ee','#f7c779','#a9bfaf','#6b88ca'];
 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style type="text/css">
 	*{
@@ -304,6 +305,117 @@ max-width:30vw;
 	bottom: 0;
   background: #f3f4f7;
 }
+
+
+.mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.1);
+  z-index: 50;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.7s;
+}
+.modal_priority {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  height: 400px;
+  margin-left: -200px;
+  margin-top: -150px;
+  background: #fff;
+  z-index: 100;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.5s ease-out;
+  transform: translateY(45px);
+}
+.active {
+  visibility: visible;
+  opacity: 1;
+}
+.active + .modal_priority {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+}
+.priority_areas  tr td{
+	width: 300px;
+	cursor: move;
+}
+.prority_buttons{
+	position:absolute;
+	bottom: 10px;
+	width:100%;
+	justify-content: center;
+	display: flex;
+}
+.priority_areas {
+	display: flex;
+    position: absolute;
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
+}
+.priority{
+	font-size:1rem;
+	width:100%;
+}
+.priority-btn{
+	position: absolute;
+	right: 0;
+			background-color: #9E9E9E;
+  border: none;
+  color: white;
+  padding: 10px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 2px
+}
+.close_priority{
+				background-color: #9E9E9E;
+  border: none;
+  color: white;
+  padding: 10px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 2px
+}
+.priority_save{
+				background-color: #9E9E9E;
+  border: none;
+  color: white;
+  padding: 10px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 2px
+}
+.edit_priority{
+	font-weight: 700;
+	font-size: 2rem
+}
+@media print{
+	td:nth-child(6){
+		display: none;
+	}
+	.budget-table-parent{
+		display: none
+	}
+	.column_budget{
+		display: none
+	}
+	.priority{
+		display: none
+	}
+}
 @media only screen and (max-width: 1050px) {
 			.header-top{
 			max-width: 100vw !important;
@@ -342,7 +454,9 @@ max-width:30vw;
 		$entitlement = json_decode($entitlements);
 	?>
 	<div class="containers" id="containers">
-		<div class="heading" id="center-id" c_id="<?php echo $rosterDetails->centerid; ?>">Rosters</div>
+		<div class="heading" id="center-id" c_id="<?php echo $rosterDetails->centerid; ?>">Rosters
+			<span class="priority ml-auto"><button class="priority-btn ">Priority</button></span>
+		</div>
 		<div class="roster-dates"><?php 
 
 //PHP functions //
@@ -418,25 +532,25 @@ function icon($str){
 		<div class="table-div" style="">
 			<table>
 				<tr class="day-row">
-					<th id="table-id-1" class="day">Employees</th>	<?php $x=0;
+					<th id="table-id-1" class="day" style="width:16vw">Employees</th>	<?php $x=0;
 					if(isset($rosterDetails->startDate)){
 						$startDate = date('Y-m-d', strtotime($rosterDetails->startDate));
 						?>
-					<th id="table-id-2" class="day">Mon <?php echo dateToDay($rosterDetails->startDate) ?></th>
-					<th id="table-id-3" class="day">Tue <?php  
+					<th id="table-id-2" class="day" style="width:12vw">Mon <?php echo dateToDay($rosterDetails->startDate) ?></th>
+					<th id="table-id-3" class="day"  style="width:12vw">Tue <?php  
 						$endDate = date( "Y-m-d", strtotime( "$startDate +1 day" ));
 						echo dateToDay($endDate); ?></th>
-					<th id="table-id-4" class="day">Wed <?php 
+					<th id="table-id-4" class="day"  style="width:12vw">Wed <?php 
 						$endDate = date( "Y-m-d", strtotime( "$startDate +2 day" ));
 						echo dateToDay($endDate); ?></th>
-					<th id="table-id-5" class="day">Thu <?php 
+					<th id="table-id-5" class="day"  style="width:12vw">Thu <?php 
 						$endDate = date( "Y-m-d", strtotime( "$startDate +3 day" ));
 						echo dateToDay($endDate); ?></th>
-					<th id="table-id-6" class="day">Fri <?php 
+					<th id="table-id-6" class="day" style="width:12vw">Fri <?php 
 						$endDate = date( "Y-m-d", strtotime( "$startDate +4 day" ));
 						echo dateToDay($endDate); }?></th>
-					<th id="table-id-7" class="day">
-						<span class="">
+					<th id="table-id-7" class="day"  style="width:12vw">
+						<span class="column_budget">
 							<span class="row d-flex justify-content-center m-0">Budget </span>
 							<span class="row d-flex justify-content-center m-0" style="font-size:0.7rem">(Emp wise)</span>
 						</span>
@@ -451,7 +565,8 @@ function icon($str){
 if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){
 				for($x=0;$x<$count;$x++){ 
 					?>
-				<tr >
+					<tr>
+				<tr class="area_name_class">
 					<td colspan="7" class="area-name" area-value="<?php echo $rosterDetails->roster[$x]->areaId ?> "><?php echo $rosterDetails->roster[$x]->areaName ?></td>
 				</tr>
 				<?php $occupancy = 0; ?>
@@ -460,7 +575,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 						{
 				?>
 				<tr>
-					<td></td>
+					<td>Occupancy</td>
 					<td><?php echo $rosterDetails->roster[$x]->occupancy[0]->occupancy?></td>
 					<td><?php echo $rosterDetails->roster[$x]->occupancy[1]->occupancy?></td>
 					<td><?php echo $rosterDetails->roster[$x]->occupancy[2]->occupancy?></td>
@@ -544,6 +659,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					<td class=" " style="width:12vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
 
 				</tr>
+			</tr>
 			<?php } }  } }?>
 
 
@@ -757,6 +873,14 @@ if($this->session->userdata('UserType')==STAFF){
 </div>
 <?php } ?>
 
+<div class="mask" ></div>
+<div class="modal_priority" >
+	<a class="text-center m-2 edit_priority">Edit Priority</a>
+	<div class="priority_areas"></div>
+	<div class="prority_buttons">
+  	<button class="close_priority" role="button">Cancel</button><button class="priority_save">Save</button>
+  </div>
+</div>
 
 <?php if($this->session->userdata('UserType') == STAFF ){?>
 <script type="text/javascript">
@@ -1177,6 +1301,76 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 			}
 			console.log(height)
 	})
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+	  $(document).on('click','.priority-btn',function(){
+		let count = $('tr').length ;
+		let array = [];
+		console.log(count)
+		var i =0;
+		for(i=1;i<count;i++){
+			if($('tr').eq(i).hasClass('area_name_class') == false) {
+				// $('tr').eq(i).hide()
+				console.log(i)
+				}
+			 else{
+				console.log($('tr').eq(i).text())
+				array[i] = $('tr')[i].outerHTML
+				// console.log(i)
+			 }
+		   }
+		     $(".priority_areas").sortable();
+			$(".priority_areas").disableSelection();
+			// console.log(array)
+			$(".mask").addClass("active");
+			$(".priority_areas").append(array)
+	   })
+	})
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+	  $(document).on('click','.priority_save',function(){
+	  	console.log($('.priority_areas tr').length);
+	  	let count = $('.priority_areas tr').length ;
+		console.log(count)
+		var i = 0;
+		let j = 0;
+
+		for(i=0;i<count;i++){
+			if($('.priority_areas tr').eq(i).hasClass('area_name_class') == true) {
+
+				j++;
+				areaid = $('.priority_areas tr td').eq(i).attr('area-value')
+				priority = j;
+				console.log( areaid);
+		  $.ajax({
+		  		url: window.location.origin+'/PN101/roster/changePriority',
+		  		data: {
+		  			areaid : areaid,
+		  			priority : priority
+		  		},
+		  		type: 'POST',
+		  		success: function(){
+		  			// window.location.reload();
+		  		}
+		  	})
+				}}
+		  })
+
+	  })
+</script>
+<script type="text/javascript">
+
+
+function closeModal(){
+  $(".mask").removeClass("active");
+}
+
+$(".close_priority").on("click", function(){
+	$(".priority_areas").empty();
+  closeModal();
+});
 </script>
 </body>
 </html>

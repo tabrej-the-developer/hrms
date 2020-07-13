@@ -53,7 +53,7 @@ class LeaveModel extends CI_Model {
 		if($startDate != null)
 			$queryTxt .= " AND startDate <= $startDate";
 		if($endDate != null)
-			$queryTxt .= " ADN endDate >= $endDate";
+			$queryTxt .= " AND endDate >= $endDate";
 		$query = $this->db->query($queryTxt);
 		return $query->result();
 	}

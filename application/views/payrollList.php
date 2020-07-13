@@ -255,7 +255,28 @@ table.dataTable{
     margin: 0px;
     padding:0;
 }
-}
+		.create{
+			width: 150px;
+			overflow: hidden;
+		}
+		.center-list{
+			width: 100px
+		}
+		body{
+			max-width: 100vw;
+			overflow: hidden;
+		}
+		.table-div{
+			padding:0 !important;
+		}
+		.dataTables_wrapper {
+			height:100%;
+			overflow-y: scroll;
+			background: white;
+			box-shadow: 0 0 4px 1px rgba(0,0,0,0.1);
+		}
+
+    }
 </style>
 </head>
 <body>

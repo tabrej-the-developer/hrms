@@ -113,7 +113,7 @@ input[type="submit"]{
     font-weight: 400;
     font-size: 13px
 }
-@media only screen and (max-width:500px){
+@media only screen and (max-width:600px){
     body{
         max-width: 100vw;
         max-height: 100%;
@@ -122,6 +122,12 @@ input[type="submit"]{
     }
     .login-form-3{
         display: none
+    }
+    .login-container-child{
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        padding: 0rem !important;
     }
 }
  </style>

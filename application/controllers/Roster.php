@@ -84,6 +84,46 @@ public function roster_dashboard(){
 		}
 	}
 
+	public function changePriority(){
+		if($this->session->has_userdata('LoginId')){
+			$this->load->helper('form');
+			$form_data = $this->input->post();
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
+		if($form_data != null){
+			$data['areaid'] = $this->input->post('areaid');
+			$data['newid'] = $this->input->post('priority');
+		 		$url = BASE_API_URL."/Rosters/changePriority/".$this->session->userdata('LoginId');
+				$ch = curl_init($url);
+				curl_setopt($ch, CURLOPT_URL,$url);
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+						'x-device-id: '.$this->session->userdata('x-device-id'),
+						'x-token: '.$this->session->userdata('AuthToken')
+					));
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+					$server_output = curl_exec($ch);
+					$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				$jsonOutput = json_decode($server_output);
+				curl_close ($ch);
+				redirect(base_url("roster/roster_dashboard"));
+			}
+			else if($httpcode == 401){
+
+			}
+		}
+	}
+		else{
+			$this->load->view('redirectToLogin');
+		}
+	}
+
 	function getPastRosters($centerId = 1){
 		$url = BASE_API_URL."/rosters/getPastRosters/".$centerId."/".$this->session->userdata('LoginId');
 		$ch = curl_init($url);

@@ -632,6 +632,18 @@ p.ovrflowtext {
     @media only screen and (max-width: 600px){
       .left-bar{
         max-width:auto;
+        width: 100vw;
+      }
+      .message-back{
+        padding:0 20px !important;
+
+      }
+      .container{
+        max-width:100%;
+        padding-right: 0 !important;
+      }
+      .lefbar-sm{
+        width: 100vw;
       }
     }
 </style>
@@ -643,8 +655,8 @@ p.ovrflowtext {
 
   <div class="row rounded-lg overflow-hidden shadow">
     <!-- Users box-->
-    <div class="col-4 px-0 left-bar" style="background-color:#ccc;">
-      <div class="bg-white">
+    <div class="col-4 col-sm-12 px-0 left-bar" style="background-color:#ccc;">
+      <div class="bg-white lefbar-sm">
 
         <div class="headind_srch d-flex">
 			<div class="has-search">
@@ -798,6 +810,7 @@ p.ovrflowtext {
     <div class="col px-0">
 			
    <div class="media headind_srchs">
+    <i class="message-back"></i>
    <a href="javascript:void(0);" id="contact_us">
 		<?php
             $currentUserInfo = json_decode($currentUserInfo);
@@ -1211,6 +1224,13 @@ $('.save').click(function(){
 	
 	</script>
 
+<script type="text/javascript">
+  $(document).ready(function(){
+    $(document).on('click','.list-group-item',function(){
+      $('.leftbar-sm').css('display','none');
+    })
+  })
+</script>
   <script type="text/javascript">
     var base_url = "<?php echo base_url();?>";
     function loadNewChat(userid,isGroupYN){

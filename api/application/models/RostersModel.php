@@ -11,7 +11,7 @@ class RostersModel extends CI_Model {
 
 	public function getAllAreas($centerid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM orgchartareas WHERE centerid = '$centerid'");
+		$query = $this->db->query("SELECT * FROM orgchartareas WHERE centerid = '$centerid'   order by rosterPriority ASC");
 		return $query->result();
 	}
 
@@ -100,4 +100,8 @@ class RostersModel extends CI_Model {
 		return $query->row();
 	}
 
+	public function changePriority($areaid,$newid){
+		$this->load->database();
+		$query = $this->db->query("UPDATE orgchartareas set rosterPriority = '$newid' WHERE areaid = '$areaid' ");
+	}
 }

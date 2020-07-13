@@ -285,7 +285,32 @@ table.dataTable{
 .table-div{
 	padding:0;
 }
+.create{
+	width: 150px;
+	overflow: hidden;
+}
+.center-list{
+	width: 100px !important;
+}
+body{
+	max-width: 100vw;
+	overflow: hidden;
+}
+.heading-bar{
+	padding: 0;
+    }
+    .sort-by{
+    	margin: 1rem!important;
+    	margin-right:0 !important;
+    	margin-left:0 !important;
+    }
+  	.dataTables_wrapper {
+		height:100%;
+		overflow-y: scroll;
+		background: white;
+		box-shadow: 0 0 4px 1px rgba(0,0,0,0.1);
 
+	}
 }
 </style>
 </head>

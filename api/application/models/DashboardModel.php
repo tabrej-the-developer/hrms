@@ -30,4 +30,11 @@ class DashboardModel extends CI_Model {
 		$query = $this->db->query("SELECT * FROM footprints where userid = '$userid' order by id desc");
 		return $query->result(); 
 	}
+
+	public function getBirthdays(){
+		$this->load->database();
+		$today = date('Y-m-d');
+		$query = $this->db->query("SELECT * FROM employee where userdateOfBirth = '$today' order by id desc");
+		return $query->result(); 
+	}
 }
