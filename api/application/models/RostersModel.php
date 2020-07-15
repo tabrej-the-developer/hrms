@@ -66,9 +66,9 @@ class RostersModel extends CI_Model {
 		return $query->result();
 	}
 
-	public function getAllShiftsFromEmployee($rosterid,$userid){
+	public function getAllShiftsFromEmployee($rosterid,$userid,$areaid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM shift WHERE roasterId = '$rosterid' AND userid = '$userid' ORDER BY rosterDate");
+		$query = $this->db->query("SELECT * FROM shift WHERE roasterId = '$rosterid' AND userid = '$userid' AND roleid IN (SELECT roleid FROM orgchartroles WHERE areaid = $areaid) ORDER BY rosterDate");
 		return $query->result();
 	}
 
