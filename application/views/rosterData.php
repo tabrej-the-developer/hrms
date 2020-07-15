@@ -673,7 +673,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 			$currentSequenceDate = date('Y-m-d',strtotime("$date".'+'.$fiveIterations.'days'));
 			// print_r($currentSequenceDate);
 			$currentDate = isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave) == true ?  $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->currentDate) == true ?  $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->currentDate : '00-00-00' : '00-00-00';
-			if(isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave) == true){
+			// if(isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave) == true){
 			if($currentSequenceDate  == $currentDate){
 
 		 ?>
@@ -707,13 +707,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					  	$p = $p; ?>
 					  	<td area-id="<?php echo $rosterDetails->roster[$x]->areaId;?>" date="<?php //echo $currentSequenceDate; ?>" roster-id="<?php echo $rosterDetails->id; ?>" emp-id="<?php //echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->empId;?>" level="<?php //echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->level;?>" ></td>
 					  	<?php
-					  } }else{ ?>
-					  	<td>
-								<div class="cell-back-1 leave ?>" >
-									On Leave
-								</div>
-					  	</td>
-					<?php  } } ?>
+					  }  } ?>
 					<td class=" " style="width:12vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
 
 				</tr>
