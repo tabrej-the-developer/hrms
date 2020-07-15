@@ -432,7 +432,7 @@ max-width:30vw;
         transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
     }
 @media print{
-	td:nth-child(6){
+	td:nth-child(7){
 		display: none;
 	}
 	.budget-table-parent{
@@ -595,6 +595,7 @@ function icon($str){
 					}
 					else $count = 0;
 if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){
+					$CI = 0; // CI == Current Index
 				for($x=0;$x<$count;$x++){ 
 					?>
 					<tr>
@@ -653,8 +654,9 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					
 					</td>
 				
-					<?php $weeklyTotal=0; ?>
-					<?php for($p=0;$p<5;$p++){
+					<?php $weeklyTotal=0; $p=0;?>
+
+					<?php for($fiveIterations=0;$fiveIterations<5;$fiveIterations++){
 						$variable = 0;
 		$userLevel = $rosterDetails->roster[$x]->roles[$counter]->level;
 
@@ -665,15 +667,26 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 		}
 
 		?>
+		<?php 
+				$date = date('Y-m-d',strtotime($rosterDetails->startDate)); 
+				// print_r($date);
+			$currentSequenceDate = date('Y-m-d',strtotime("$date".'+'.$fiveIterations.'days'));
+			// print_r($currentSequenceDate);
+			$currentDate = isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave) == true ?  $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->currentDate) == true ?  $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->currentDate : '00-00-00' : '00-00-00';
+			if($currentSequenceDate  == $currentDate){
+
+		 ?>
 
 					<td class="shift-edit cell-boxes count-<?php echo $p+1;?>"  style="width:12vw" 
-					 name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->shiftid?>"  
+					 name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->shiftid ?>"  
 					 name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleid ?>"
 					 name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?>" 
 					 stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime?>" etime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime?>" 
 					 name="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->empName?>"
 					 status="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>" 
-					 area-id="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->areaId;?>">
+					 area-id="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->areaId;?>"
+					 emp-id="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->areaId;?>"
+					 >
 <?php if(($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime != 0) && ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime != 0)){ ?>
 					 <div class="cell-back-1 <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? 'leave' : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status;  ?>" >
 					 	<?php if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave != "Y"){ 
@@ -689,7 +702,11 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 
 					   </div>
 					</td>
-					  <?php } ?>
+					  <?php $p++; }else{
+					  	$p = $p; ?>
+					  	<td area-id="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->areaId;?>" date="" roster-id="" emp-id="" level="" ></td>
+					  	<?php
+					  } } ?>
 					<td class=" " style="width:12vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
 
 				</tr>
