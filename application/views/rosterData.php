@@ -672,8 +672,19 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 				// print_r($date);
 			$currentSequenceDate = date('Y-m-d',strtotime("$date".'+'.$fiveIterations.'days'));
 			// print_r($currentSequenceDate);
-			$currentDate = isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave) == true ?  $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->currentDate) == true ?  $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->currentDate : '00-00-00' : '00-00-00';
+			if(isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave)){
+			  if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" )
+			  	{ $currentDate = $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->currentDate; }
+			  else{ 
+			  	if(isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->currentDate)){
+			  	 $currentDate = $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->currentDate;
+			  	  }
+			  	else{ $currentDate = '00-00-00';}
+			  	 }
+			  	}
+			else{$currentDate = '00-00-00';}
 			// if(isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave) == true){
+
 			if($currentSequenceDate  == $currentDate){
 
 		 ?>
