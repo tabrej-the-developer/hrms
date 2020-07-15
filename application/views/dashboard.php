@@ -183,7 +183,7 @@
 						<span class="col-2"><?php  echo $footprint->ip ?></span>
 						<span class="col-2"><?php  echo explode(" ",$footprint->start_time)[0] ?></span>
 						<span class="col-2"><?php  echo explode(" ",$footprint->start_time)[1] ?></span>
-						<span style="background:transparent;" class="col-4 "> <?php  echo $footprint->prev_page_tag != " " ? str_replace("http://localhost/PN101/","",$footprint->prev_page_tag):"Login"; ?></span>
+						<span style="background:transparent;" class="col-4 "> <?php  echo $footprint->prev_page_tag != " " ? str_replace(base_url(),"",$footprint->prev_page_tag):"Login"; ?></span>
 					</span>
 			<?php } ?>
 			</span>

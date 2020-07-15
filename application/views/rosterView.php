@@ -381,7 +381,7 @@ table.dataTable{
 						<?php } ?>
 		</span>
 
-		<?php if($this->session->userdata('UserType') == SUPERADMIN || $this->session->userdata('UserType') == ADMIN ){?>
+		<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
 		<span class="btn ml-auto d-flex align-self-center create"><a href="javascript:void(0)" id="create-new-roster" class="d-flex">
 			<span style="margin:0 10px 0 10px">
 				<img src="../assets/images/plus.png" >
@@ -392,7 +392,7 @@ table.dataTable{
 		<table class="table">
 			<thead>
 				<th>S.No</th>
-				<?php if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')== ADMIN) {?>
+				<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
 				<th>Roster Name</th>
 			<?php } ?>
 				<th>Start Date</th>
@@ -408,7 +408,7 @@ table.dataTable{
 				$roster = json_decode($rosters);
 				for($i=0;$i<count($roster->rosters);$i++){
 				?>
-				<?php if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')== ADMIN) {?>
+				<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
 				<tr id="<?php echo $roster->rosters[$i]->id?>">
 					<td><?php echo $i+1 ?></td>
 					<?php if($this->session->userdata('UserType') == ADMIN ){?>
@@ -422,7 +422,7 @@ table.dataTable{
 					<td><?php echo $roster->rosters[$i]->status ?></td>
 					</tr>
 				<?php }?>
-			<?php if($this->session->userdata('UserType') == STAFF ) { ?>
+			<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N"){ ?>
 					<tr id="<?php echo $roster->rosters[$i]->id?>">
 					<td><?php echo $i+1 ?></td>
 					<td><?php echo $roster->rosters[$i]->startDate ?></td>

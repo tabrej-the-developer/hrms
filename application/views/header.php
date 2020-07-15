@@ -249,6 +249,7 @@ font-family: 'Open Sans', sans-serif;
               <span>Dashboard </span>
             </a>
           </li>
+<?php // if((isset(json_decode($permissions)->permissions) ? json_decode($permissions)->permissions->viewRosterYN : "N") == "Y"){ ?> 
       <li class="nav-item-header">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('roster/roster_dashboard') ?>" title="roster">
               <i class="mr-4" >
@@ -257,6 +258,8 @@ font-family: 'Open Sans', sans-serif;
               <span>Roster </span>
             </a>
           </li>
+          <?php // }  ?>
+          <?php // if((isset(json_decode($permissions)->permissions) ? json_decode($permissions)->permissions->viewTimesheetYN : "N") == "Y"){ ?>
           <li class="nav-item-header">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('timesheet/timesheetDashboard'); ?>" title="Leaves">
             
@@ -266,6 +269,8 @@ font-family: 'Open Sans', sans-serif;
               <span>Timesheet </span>
               </a>
           </li>
+        <?php // } ?>
+          <?php // if((isset(json_decode($permissions)->permissions) ? json_decode($permissions)->permissions->viewPayrollYN : "N") == "Y"){ ?>
       <li class="nav-item-header">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('payroll/payrollList'); ?>" title="payroll"> 
               <i class="mr-4" >
@@ -275,6 +280,8 @@ font-family: 'Open Sans', sans-serif;
               
              </a>
           </li>
+        <?php // } ?>
+      <?php // if((isset(json_decode($permissions)->permissions) ? json_decode($permissions)->permissions->viewLeaveTypeYN : "N") == "Y"){ ?>
 		      <li class="nav-item-header">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('leave') ?>" title="Leaves"> 
               
@@ -284,7 +291,7 @@ font-family: 'Open Sans', sans-serif;
               <span>Leaves </span>
              </a>
           </li>
-		  
+		  <?php // } ?>
           <li class="nav-item-header ">
             <a class="nav-link d-flex justify-content-start" href="#" title="Cart">
               

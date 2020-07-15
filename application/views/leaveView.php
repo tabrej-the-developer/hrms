@@ -301,6 +301,38 @@ table.dataTable{
         transform: scale(1.0);
         transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
     }
+ 	.buttonn{
+		background-color: #9E9E9E;
+  border: none;
+  color: white;
+  padding: 10px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 2px;
+       float:none; 
+     font-size: 1rem; 
+     font-weight: bolder; 
+     line-height: inherit; 
+     text-shadow: none; 
+     opacity: 1;
+}
+	.close{
+		float: none; 
+	    font-size: inherit; 
+	    font-weight: inherit; 
+	    line-height: inherit; 
+	    color: inherit; 
+	    text-shadow: inherit; 
+	    opacity: inherit; 
+	    border-radius:0 !important;
+	    background:#6c757d !important;
+	    padding: .375rem .75rem !important;
+	    color: white !important;
+	}
+	.close:hover{
+		background:#9E9E9E;
+	}   
     @media only screen and (max-width:600px){
     	.col-sm-12{
     		padding-left: 0 !important;
@@ -311,6 +343,7 @@ table.dataTable{
 </style>
 </head>
 <body>
+	<?php $permissions = json_decode($permissions); ?>
 <div class="containers">
 
   <div class="row">
@@ -366,7 +399,7 @@ table.dataTable{
         		while($var < 3){ 
         			if($var+$i < count($balance->balance)){
     			?>
-         <div class="col-md-4 balance-tile cardContainer">
+         <div class="col-md-3 balance-tile cardContainer">
          	<div class="balance-tile-div cardItem">
 							<div class="leave-name"><?php echo $balance->balance[$i + $var]->leaveName;?></div>
 							<div class="leave-balance"><?php echo sprintf('%.2f',$balance->balance[$i + $var]->leavesRemaining);?></div>
@@ -400,11 +433,11 @@ table.dataTable{
                     <div class="nav  nav-fill" id="nav-tab" >
 
 	              <?php
-	              	if($this->session->userdata('UserType') != STAFF && $this->session->userdata('UserType') != SUPERADMIN){ ?>
+	              if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N"){ ?>
                       <a class="nav-item nav-link heading-leave-approval" >Leave Approvals</a>
                   <?php }?>
                      
-                  	<!-- <a class="nav-item nav-link <?php if($this->session->userdata('UserType') == STAFF || $this->session->userdata('UserType') == SUPERADMIN) echo 'active';?>" id="nav-contact-tab1" data-toggle="tab" href="#nav-contact1" role="tab" aria-controls="nav-contact" aria-selected="false">My Leave Requests</a> -->
+                  	<!-- <a class="nav-item nav-link <?php ?>" id="nav-contact-tab1" data-toggle="tab" href="#nav-contact1" role="tab" aria-controls="nav-contact" aria-selected="false">My Leave Requests</a> -->
 					  
 
                      
@@ -412,7 +445,7 @@ table.dataTable{
                   </nav>
         <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
           	<?php
-          	if($this->session->userdata('UserType') != STAFF && $this->session->userdata('UserType') != SUPERADMIN){ ?>
+          	if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "N"){ ?>
 				<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
 	              	<div class="card">
 	                <div class="card-header">
@@ -503,7 +536,7 @@ table.dataTable{
 	      	<?php }?>
 
               
-				  <div class="tab-pane fade <?php if($this->session->userdata('UserType') == STAFF || $this->session->userdata('UserType') == SUPERADMIN) echo 'show active';?>" id="nav-contact1" role="tabpanel" aria-labelledby="nav-home-tab">
+				  <div class="tab-pane fade <?php if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "Y") echo 'show active';?>" id="nav-contact1" role="tabpanel" aria-labelledby="nav-home-tab">
 	                  	<div class="card">
 			                <div class="card-header">
 							<div class="row">
@@ -540,7 +573,7 @@ table.dataTable{
 			                        	foreach ($leaves->leaves as $l) { ?>
 										<tr>
 	                            		<?php
-	                            			if($this->session->userdata('UserType') == SUPERADMIN || $this->session->userdata('UserType') == ADMIN ){ ?>
+	                if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "Y"){ ?>
 											<td><?php echo $l->name;?></td>
 								<?php if($l->title != "Centre Manager"){ ?>
 											<td><?php echo $l->title;?></td>
@@ -621,9 +654,7 @@ table.dataTable{
 					<div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" >Apply Leave</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
+
                         </div>
                 <div class="modal-body">						
 					<div class="col-md-12 col-xl-12">
@@ -694,8 +725,13 @@ table.dataTable{
 			</div>
 		</div>	
 					</div>
-					<div class="text-center mt-2 mb-4">
-						<button class="btn btn-secondary rounded-0" type="button" onclick="applyLeave()">Apply</button>
+					<div class="text-center mt-2 mb-4 f-flex">
+						<span>
+							<button class="btn btn-secondary rounded-0" type="button" onclick="applyLeave()">Apply</button>
+						</span>
+						<span>
+							<button type="button" class="close btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
+						</span>
 					</div>
                     </div>
 					</form>

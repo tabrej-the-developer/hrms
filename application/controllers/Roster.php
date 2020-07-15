@@ -150,6 +150,7 @@ public function getRosterDetails(){
 		$data['userid'] = $this->session->userdata('LoginId');
 		$data['entitlements'] = $this->getAllEntitlements($data['userid']);
 		$data['rosterDetails'] = $this->getRoster($data['rosterid'],$data['userid']);
+		$data['permissions'] = $this->fetchPermissions();
 		// var_dump($data['rosterDetails']);
 			//footprint start
 		if($this->session->has_userdata('current_url')){
@@ -157,6 +158,12 @@ public function getRosterDetails(){
 			$this->session->set_userdata('current_url',currentUrl());
 		}
 		// footprint end
+		if( $this->getAllCenters() != 'error'){
+			// $var['centers'] = $this->getAllCenters();
+			}
+			else{
+				$data['error'] = 'error';
+			}
 			$this->load->view('rosterData',$data);
 		}
 		else{

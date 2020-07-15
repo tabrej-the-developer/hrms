@@ -47,13 +47,14 @@ body {
 }
 
 .individual-box{
-  height: 129px;
+  min-height: 25vh;
+  max-height: 25vh;
   overflow-y: scroll;
     background-color:#fff;
     padding-left: 1.5rem
 }
 .messages-box{
-  height: 206px;
+  height: 25vh;
   overflow-y: scroll;
   background-color:#fff;
   padding-left: 1.5rem 
@@ -629,6 +630,20 @@ p.ovrflowtext {
         transform: scale(1.0);
         transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
     }
+    .chat-box{
+      min-height:85vh;
+    }
+
+    /*-------------------*/
+    /*Left bar heights and styles*/
+    /*-------------------*/
+
+.headind_srch{
+  height:9vh;
+}
+.general_heading{
+  height:5.33vh;
+}
     @media only screen and (max-width: 600px){
       .left-bar{
         max-width:auto;
@@ -650,7 +665,7 @@ p.ovrflowtext {
 </head>
 
 <body>
-<div class="container mr-0">
+<div class="container mr-0 pr-0">
  
 
   <div class="row rounded-lg overflow-hidden shadow">
@@ -675,7 +690,7 @@ p.ovrflowtext {
 			</div>
       <div class="circle_plus" ><img src="<?php echo site_url().'assets/images/circle_plus.png'?>"></div>
         </div>
-		<div class="bg-gray px-4 py-2" style="background-color:#fff;">
+		<div class="bg-gray px-4 py-2 general_heading" style="background-color:#fff;">
           <p class="h6 left-bar-title mb-0 py-1">General</p>
         </div>
 
@@ -718,7 +733,7 @@ p.ovrflowtext {
 
           </div>
         </div>
-		<div class="bg-gray px-4 py-2" style="background-color:#fff; border-top: 1px solid #ccc;">
+		<div class="bg-gray px-4 py-2 general_heading" style="background-color:#fff; border-top: 1px solid #ccc;">
 		  <a style="text-decoration: none; color:#212529;" href="<?php echo site_url('messenger_api_controller')?>"><p class="h6 left-bar-title mb-0 py-1">Individual</p></a>
         </div>
 		 <div class="individual-box">
@@ -753,7 +768,7 @@ p.ovrflowtext {
 			
 		 </div>
 		 
-		 <div class="row bg-gray px-4 py-2" style="background-color:#fff; border-top: 1px solid #ccc;">
+		 <div class="row bg-gray px-4 py-2 general_heading" style="background-color:#fff; border-top: 1px solid #ccc;">
 			<div class="col-md-6">
 			<a style="text-decoration: none; color:#212529;" href="javascript:void(0);">
 			<p class="h6 left-bar-title mb-0 py-1">Groups </p></a>
@@ -807,7 +822,7 @@ p.ovrflowtext {
 	 <div class="group-box"></div>
     <!-- Chat Box-->
 	
-    <div class="col px-0">
+    <div class="col px-0" style="min-height:100vh">
 			
    <div class="media headind_srchs">
     <i class="message-back"></i>

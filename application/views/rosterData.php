@@ -402,6 +402,35 @@ max-width:30vw;
 	font-weight: 700;
 	font-size: 2rem
 }
+   .modal-logout {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        visibility: hidden;
+        transform: scale(1.1);
+        transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+        text-align: center;
+    }
+    .modal-content-logout {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 1rem 1.5rem;
+        width: 50%;
+        border-radius: 0.5rem;
+    }
+    .show-modal {
+        opacity: 1;
+        visibility: visible;
+        transform: scale(1.0);
+        transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+    }
 @media print{
 	td:nth-child(6){
 		display: none;
@@ -452,10 +481,13 @@ max-width:30vw;
 	<?php 
 		$rosterDetails = json_decode($rosterDetails); 
 		$entitlement = json_decode($entitlements);
+		$permissions = json_decode($permissions);
 	?>
 	<div class="containers" id="containers">
-		<div class="heading" id="center-id" c_id="<?php echo $rosterDetails->centerid; ?>">Rosters
+		<div class="heading" id="center-id" c_id="<?php echo isset($rosterDetails->centerid) ? $rosterDetails->centerid : null; ?>">Rosters
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?> 
 			<span class="priority ml-auto"><button class="priority-btn ">Priority</button></span>
+<?php } ?>
 		</div>
 		<div class="roster-dates"><?php 
 
@@ -669,7 +701,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 	if(isset($rosterDetails->roster)){
 		$count = count($rosterDetails->roster);
 	}
-if($this->session->userdata('UserType')==STAFF){
+		 if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N"){ 
 				for($x=0;$x<1;$x++){ 
 					
 					if($rosterDetails->roster[$x]->isRoomYN == "Y")
@@ -688,7 +720,7 @@ if($this->session->userdata('UserType')==STAFF){
 					<td> </td>
 				</tr>
 				<?php 
-				if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){
+		 if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ 
 				$value = count($rosterDetails->roster[$x]->roles);
 		}
 		else{
@@ -778,7 +810,7 @@ if($this->session->userdata('UserType')==STAFF){
 				</tr>
 			</table>
 		</div>
-<?php if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){ ?>
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?> 
 
 					<?php 
 				if(isset($rosterDetails->status)){
@@ -804,7 +836,7 @@ if($this->session->userdata('UserType')==STAFF){
 			</div>
 </div>
 <!--This is meant for admin-->
-<?php if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){ ?>
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?> 
 	<div id="myModal" class="modal">
 	  <!-- Modal content -->
 	  <div class="modal-content">
@@ -852,7 +884,7 @@ if($this->session->userdata('UserType')==STAFF){
 <?php } ?>
 <!-- Till here -->>
 
-<?php if($this->session->userdata('UserType') == STAFF){?>
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N"){ ?> 
 <div id="mxModal" class="modal">
  
 	  <div class="modal-content">
@@ -876,6 +908,14 @@ if($this->session->userdata('UserType')==STAFF){
 </div>
 <?php } ?>
 
+<div class="modal-logout">
+    <div class="modal-content-logout">
+        <h3>You have been logged out!!</h3>
+        <h4><a href="<?php echo base_url(); ?>">Click here</a> to login</h4>
+        
+    </div>
+</div>
+
 <div class="mask" ></div>
 <div class="modal_priority" >
 	<a class="text-center m-2 edit_priority">Edit Priority</a>
@@ -885,7 +925,7 @@ if($this->session->userdata('UserType')==STAFF){
   </div>
 </div>
 
-<?php if($this->session->userdata('UserType') == STAFF ){?>
+<?php 		 if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N"){ ?>
 <script type="text/javascript">
 				var model = document.getElementById("mxModal");
 
@@ -931,7 +971,7 @@ if($this->session->userdata('UserType')==STAFF){
 
 <!-- This is meant for staff -->
 
-<?php if($this->session->userdata('UserType')==STAFF){?>
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N"){ ?> 
 
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -968,6 +1008,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 				},
 				success:function(response){
 						console.log(response)
+						window.location.reload();
 
 				}
 			})
@@ -980,7 +1021,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 <!-- Till here -->
 
 
-<?php if($this->session->userdata('UserType') == ADMIN || $this->session->userdata('UserType') == SUPERADMIN){?>
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?> 
 <script type="text/javascript">
 				var modal = document.getElementById("myModal");
 
@@ -1102,7 +1143,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 
 
 
-<?php if($this->session->userdata('UserType') == SUPERADMIN || $this->session->userdata('UserType') == ADMIN){ ?>
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?> 
 <script type="text/javascript">
 	$(document).ready(function(){
 
@@ -1381,7 +1422,7 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 		  		},
 		  		type: 'POST',
 		  		success: function(){
-		  			// window.location.reload();
+		  			window.location.reload();
 		  		}
 		  	})
 				}}
@@ -1401,6 +1442,19 @@ $(".close_priority").on("click", function(){
   closeModal();
 });
 </script>
+
+<?php if( isset($error) != null){ ?>
+	<script type="text/javascript">
+		
+   var modal = document.querySelector(".modal-logout");
+       function toggleModal() {
+   	     modal.classList.toggle("show-modal");
+    	}
+	$(document).ready(function(){
+  		toggleModal();	
+  		});
+	</script>
+<?php }	?>
 </body>
 </html>
 
