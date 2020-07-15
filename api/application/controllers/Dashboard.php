@@ -84,12 +84,15 @@ class Dashboard extends CI_Controller{
 				$this->load->model('leaveModel');
 				$totalDays = cal_days_in_month(CAL_GREGORIAN,date('m'),date('Y'));
 				$events = [];
+				$event['event'] = [];
+				$event['birthday'] = [];
+				$event['anniversary'] = [];
 				$y = date('Y');
 				$m = date('m');
 				$startDate = "$y-$m-01";
 				for($i=0;$i<$totalDays;$i++){
 				$currentDate = date('Y-m-d', strtotime("+$i day", strtotime("$startDate")));
-				$getShiftDetails = $this->rostersModel->getShiftDetails($userid,$currentDate);
+				$getShiftDetails = $this->dashboardModel->getShiftDetails($userid,$currentDate);
 					if($getShiftDetails != null || $getShiftDetails != ""){
 					$mdata['title'] = 'Role - '.($this->rostersModel->getRole($getShiftDetails->roleid))->roleName;
 					$mdata['start'] = $currentDate;
@@ -102,9 +105,22 @@ class Dashboard extends CI_Controller{
 						$mbdata['start'] = $currentDate;
 						array_push($events,$mbdata);
 							}
+				$getBirthdays = $this->dashboardModel->getBirthdays($currentDate);
+				if($getBirthdays != null || $getBirthdays != ""){
+					$mxdata['date'] = $currentDate;
+					$mxdata['birthday'] = $getBirthdays;
+					array_push($event['birthday'],$mxdata);
+				}
+				$getAnniversaries = $this->dashboardModel->getAnniversaries($currentDate);
+				if($getAnniversaries != null || $getAnniversaries != ""){
+					$mydata['date'] = $currentDate;
+					$mydata['anniversary'] =  $getAnniversaries;
+					array_push($event['anniversary'],$mydata);
+				}
 					 }
+					array_push($event['event'],$events);
 				http_response_code(200);
-				echo json_encode($events);
+				echo json_encode($event);
 			}
 			else{
 				http_response_code(401);

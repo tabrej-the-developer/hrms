@@ -252,7 +252,7 @@ class Leave extends CI_Controller {
 			$data['status'] = $form_data['status'];
 			$data['userid'] = $this->session->userdata('LoginId');
 
-			$url = "http://todquest.com/PN101/api/leave/UpdateLeaveApplication";
+			$url = BASE_API_URL."leave/UpdateLeaveApplication";
 
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
@@ -292,8 +292,8 @@ class Leave extends CI_Controller {
 			$data['endDate'] = $form_data['applyLeaveToDate'];
 			$data['notes'] = $form_data['applyLeaveNotes'];
 			$data['userid'] = $this->session->userdata('LoginId');
-			$data['hours'] = $form_data['total-leave-hours'];
-
+			$data['hours'] = $form_data['total_leave_hours'];
+			
 			$url = "http://todquest.com/PN101/api/leave/applyLeave";
 
 			$ch = curl_init($url);

@@ -1,3 +1,4 @@
+<?php // print_r(json_encode(json_decode($calendar)->event[0])); ?>
 <html>
 <head>
 	<title>Dashboard</title>
@@ -190,7 +191,19 @@
 		</div>
 		<div class="d-flex">
 			<div id="calendar" class="col-md-9"></div>
-			<div classs="col-md-3">Birthdays & Anniversaries</div>
+			<div classs="col-md-3">
+				<div>Birthdays & Anniversaries</div>
+				<div> <?php 
+					foreach(json_decode($calendar)->birthday as $birthday){
+						if(count($birthday->birthday) !=0 ){
+							foreach($birthday as $bday){
+									print_r($birthday->date);
+								}
+							}
+						}
+				?></div>
+			</div>
+
 		</div>
 	</div>
 <script type="text/javascript">
@@ -203,7 +216,7 @@
 
       document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {   events: <?php echo $calendar; ?>
+        var calendar = new FullCalendar.Calendar(calendarEl, {   events: <?php print_r(json_encode(json_decode($calendar)->event[0])); ?>
 				  });
 				        calendar.render();
 				      });
@@ -214,7 +227,7 @@
     </script>
     <script type="text/javascript">
     	$(document).ready(function(){
-    		var events = <?php echo $calendar; ?>;
+    		var events = <?php print_r(json_encode(json_decode($calendar)->event[0])); ?>;
     		console.log(events)
     		var count = $('.fc-event-title').length; 
     		var counter = 0;
@@ -251,7 +264,7 @@
 		var d = new Date();
 		var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 		if($('.fc-header-toolbar .fc-toolbar-chunk .fc-toolbar-title').text() == `${months[d.getMonth()]} ${d.getFullYear()}`){
-    		var events = <?php echo $calendar; ?>;
+    		var events = <?php print_r(json_encode(json_decode($calendar)->event[0])); ?>;
     		var count = $('.fc-event-title').length; 
     		var counter = 0;
     		var increment = 0;

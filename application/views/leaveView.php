@@ -49,7 +49,7 @@ font-family: 'Open Sans', sans-serif;
         }
         .balance-tile-div{
         	height: 8rem;
-			    background: blue;
+			    background: rgba(0,0,255,0.6);
 			    border-radius: 5px;
 			    color: white;
 			    position: relative;
@@ -358,6 +358,7 @@ table.dataTable{
         	<?php
         		// print_r($balance);
         		$balance = json_decode($balance);
+        		// var_dump($balance);
         		for($i=0;$i<count($balance->balance);$i+=3){ ?>
             <div class="carousel-item row no-gutters  <?php if($i == 0) echo 'active';?>">
         	<?php 
@@ -569,7 +570,30 @@ table.dataTable{
 													if($l->status == "Applied") $color = '#9E9E9E';
 													else if($l->status == "Approved") $color = '#4CAF50';
 												?>
-											<td style="color:<?php echo $color;?>;"><?php echo $l->status;?></td>
+											<td class="d-flex">
+										<?php 
+							if($l->userid == $this->session->userdata('LoginId')){
+								echo $l->status;
+							}else{
+											if($l->status == "Applied"){ 
+
+												?>
+												<div onclick="updateLeaveApp('<?php echo $l->id;?>','2')" class="pr-1">
+													<img src="<?php echo base_url("assets/images/accept.png"); ?>" style="max-width:1.3rem;cursor: pointer" />
+												</div>
+												<div onclick="updateLeaveApp('<?php echo $l->id;?>','3')" class="pl-1">
+													<img src="<?php echo base_url("assets/images/deny.png"); ?>"  style="max-width:1.3rem;cursor: pointer">
+												</div>
+										<?php }
+											else{
+												$color = $l->status == "Approved" ? '#4CAF50' : '#F44336'; ?>
+												<span style="color: <?php echo $color;?>;">
+													<?php echo $l->status;?>
+												</span>
+												<?php
+											}}
+										?>
+										</td>
 											
 											
 										</tr>
@@ -596,7 +620,7 @@ table.dataTable{
 					<form id="applyLeaveForm" action="<?php echo base_url().'leave/applyLeave';?>" method="POST">
 					<div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" >Leave Apply</h5>
+                            <h5 class="modal-title" >Apply Leave</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
@@ -607,6 +631,7 @@ table.dataTable{
 								<div class="col-md-12">
 									<div class="md-form">
 									<label>Leave Type</label>
+									<?php // $balance = json_decode($balance) ?>
 										<select class="form-control" id="applyLeaveId" name="applyLeaveId" required >
 										  <option value="" selected disabled>Select Leave Type </option>
 											<?php 
@@ -655,7 +680,7 @@ table.dataTable{
 				<div class="md-form">
 					<label>Total leave hours</label>
 				<span class="row pl-5">
-					<select name="total-leave-hours">
+					<select name="total-leave-hours" id="total-leave-hours">
 						<?php
 						for($v = 0; $v < 10; $v+=0.5){
 						?>
@@ -776,8 +801,9 @@ table.dataTable{
 		}
 
 		function updateLeaveApp(leaveId,status){
-			console.log(leaveId);
+			console.log(leaveId+" "+status);
 			var data = 'leaveId='+leaveId+'&status='+status;
+	
 		    var params = typeof data == 'string' ? data : Object.keys(data).map(
 		        function(k){ return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) }
 		    ).join('&');
@@ -797,7 +823,7 @@ table.dataTable{
 			var leaveId = document.getElementById("applyLeaveId").value;
 			var startDate = document.getElementById("applyLeaveFromDate").value;
 			var endDate = document.getElementById("applyLeaveToDate").value;
-			var hours = document.getElementById('total-leave-hours').value;
+			var hours = document.getElementById("total-leave-hours").value;
 			var notes = document.getElementById("applyLeaveNotes").value;
 			console.log(leaveId);
 			console.log(startDate);
@@ -818,6 +844,20 @@ table.dataTable{
 			if(leaveId != "" && endDate>startDate){
 				document.getElementById("applyLeaveForm").submit();
 			}
+			var url = window.location.origin+"/PN101/leave/applyLeave";
+			$.ajax({
+				url : url,
+				data : {
+					applyLeaveId : leaveId,
+					applyLeaveFromDate : startDate,
+					applyLeaveToDate : endDate,
+					applyLeaveNotes : notes,
+					total_leave_hours : hours 
+				},
+				success:function(){
+					window.location.reload();
+				}
+			})
 		}
 	</script>
 	<script type="text/javascript">

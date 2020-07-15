@@ -381,8 +381,8 @@ class Leave extends CI_Controller{
 				$startDate = $json->startDate;
 				$endDate = $json->endDate;
 				$notes = $json->notes;
-				$noOfHours = $json->noOfHours;
-				$title = $json->leaveTitle;
+				$noOfHours = $json->hours;
+				// $title = $json->leaveTitle;
 
 				$this->load->model('employeeModel');
 				$this->load->model('xeroModel');
@@ -481,9 +481,12 @@ class Leave extends CI_Controller{
 			if($res != null && $res->userid == $userid){
 				$this->load->model('leaveModel');
 				$allLeaves = $this->leaveModel->getLeaveBalance($userid);
+				// print_r($allLeaves);
 				$data = array();
 				foreach ($allLeaves as $lb) {
 					$leaveDetails = $this->leaveModel->getLeaveType($lb->leaveId);
+					// var_dump($leaveDetails);
+					if($leaveDetails != null ){
 					$var['leaveTypeId'] = $lb->leaveId;
 					$var['leaveName'] = $leaveDetails->name;
 					$var['leaveSlug'] = $leaveDetails->slug;
@@ -493,6 +496,7 @@ class Leave extends CI_Controller{
 					// $var['period'] = $lb->leavePeriod;
 					// $var['startDate'] = $lb->startDate;
 					array_push($data,$var);
+					}
 				}
 				$mdata['balance'] = $data;
 				http_response_code(200);

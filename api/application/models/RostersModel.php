@@ -104,4 +104,9 @@ class RostersModel extends CI_Model {
 		$this->load->database();
 		$query = $this->db->query("UPDATE orgchartareas set rosterPriority = '$newid' WHERE areaid = '$areaid' ");
 	}
+
+	public function deleteShift($shiftId){
+		$this->load->database();
+		$query = $this->db->query("UPDATE shift set startTime= 0 , endTime= 0, status =1  WHERE id = '$shiftId' ");
+	}
 }

@@ -48,17 +48,38 @@ class Rosters extends CI_Controller {
 			http_response_code(401);
 		}
 	}
+
 	public function changePriority($userid){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res->userid == $userid){
 			$json = json_decode(file_get_contents('php://input'));
 				$areaid = $json->areaid;
 				$newid = $json->newid;
 				$userid = $userid;
 			$this->load->model('rostersModel');
 			$this->rostersModel->changePriority($areaid,$newid);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
+	public function deleteShift($shiftId,$userid){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res->userid == $userid){
+					$json = json_decode(file_get_contents('php://input'));
+					$areaid = $shiftId;
+					$userid = $userid;
+				$this->load->model('rostersModel');
+				$this->rostersModel->deleteShift($shiftId);
+			}
 		}
 		else{
 			http_response_code(401);

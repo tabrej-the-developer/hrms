@@ -642,16 +642,18 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					 name="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->empName?>"
 					 status="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>" 
 					 area-id="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->areaId;?>">
-
+<?php if(($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime != 0) && ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime != 0)){ ?>
 					 <div class="cell-back-1 <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? 'leave' : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status;  ?>" >
-					 	<?php if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave != "Y"){ ?>
+					 	<?php if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave != "Y"){ 
+					 				
+					 		?>
 					 		<span class="row m-0 d-flex justify-content-center"><?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleName;?></span>
 					 	<?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)). "-" .timex( intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime));
 					  $weeklyTotal = $weeklyTotal + $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?>
-
-					<?php  }else{
+					  				
+					<?php   }else{
 						echo 'On Leave';
-					} ?>
+					}}else{} ?>
 
 					   </div>
 					</td>
@@ -843,6 +845,7 @@ if($this->session->userdata('UserType')==STAFF){
 	 		<input type="text" name="userId"   id="userId" style="display:none">
 	 		<input type="button" name="modal-cancel"  value="Cancel"  class="close buttonn" style="width:5rem">
 	 		<input type="button" name="shift-submit" id="shift-submit" value="Save" style="margin:30px;width:5rem" class="button">
+	 		<input type="button" name="delete_shift" id="delete_shift" value="Delete" style="width:5rem" class="button">
 	 	</form>
 	  </div>
 </div>
@@ -942,8 +945,14 @@ if($this->session->userdata('UserType')==STAFF){
 			var status = $(this).prop('value');
 			var userid = "<?php echo $userid ?>";
 			var roleid = $('#role-Id').prop('value');
-			var message = $('#message').val();
 
+console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
+				if(status == 'Accept'){
+				status = "3";
+				}
+				if(status == "Deny"){
+					status = "4";
+				}
 			url = window.location.origin+"/PN101/roster/updateShift";
 			$.ajax({
 				url:url,
@@ -954,8 +963,8 @@ if($this->session->userdata('UserType')==STAFF){
 					shiftid:shiftid,
 					roleid:roleid,
 					status:status,
-					userid:userid,
-					message:message
+					userid:userid
+					
 				},
 				success:function(response){
 						console.log(response)
@@ -1008,7 +1017,24 @@ if($this->session->userdata('UserType')==STAFF){
 </script>
 
  -->
-
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(document).on('click','#delete_shift',function(){
+			var shiftId = $("#shiftId").val();
+			alert(shiftId)
+			let bool = confirm("confirm delete shift?");
+			if(bool == true){
+				var url = window.location.origin+"/PN101/roster/deleteShift/"+shiftId;
+				$.ajax({
+				url : url,
+				success: function(){
+					window.location.reload();
+				}
+			})
+			}
+		})		
+	})
+</script>
 
 <script type="text/javascript">
 				$(document).ready(function(){
@@ -1108,6 +1134,8 @@ if($this->session->userdata('UserType')==STAFF){
 			var shiftid = $('#shiftId').val();
 			var status = document.getElementById('status').value;
 			var userid = "<?php echo $userid ?>";
+			var message = $('#message').val();
+
 			if($('#role').val() != null || $('#role').val() !=""){
 				var roleid = $('#role').val()
 			}else{			
@@ -1120,7 +1148,7 @@ if($this->session->userdata('UserType')==STAFF){
 					}
 
 			url = window.location.origin+"/PN101/roster/updateShift";
-			console.log(startTime + " "+ endTime +" "+ shiftid+" "+roleid+" "+status +" "+userid)
+			console.log(startTime + " "+ endTime +" "+ shiftid+" "+roleid+" "+status +" "+userid+" "+areaid+ "" + message)
 			$.ajax({
 				url:url,
 				type:'POST',
@@ -1131,12 +1159,13 @@ if($this->session->userdata('UserType')==STAFF){
 					roleid:roleid,
 					status:status,
 					userid:userid,
-					areaid:areaid
+					areaid:areaid,
+					message:message
 				},
 				success:function(response){
 											console.log(response)
 											$('#roster-form').trigger('reset');
-
+											window.location.reload();
 				}
 			})
 		})

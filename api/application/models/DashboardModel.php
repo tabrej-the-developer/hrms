@@ -31,10 +31,23 @@ class DashboardModel extends CI_Model {
 		return $query->result(); 
 	}
 
-	public function getBirthdays(){
+	public function getBirthdays($currentDate){
 		$this->load->database();
-		$today = date('Y-m-d');
-		$query = $this->db->query("SELECT * FROM employee where userdateOfBirth = '$today' order by id desc");
+		$today = date('-m-d',strtotime($currentDate));
+		$query = $this->db->query("SELECT * FROM employee where LOCATE('$today',dateOfBirth);");
 		return $query->result(); 
+	}
+
+	public function getAnniversaries($currentDate){
+		$this->load->database();
+		$date = date('-m-d',strtotime($currentDate));
+		$query = $this->db->query("SELECT * FROM employee where LOCATE('$date',startDate);");
+		return $query->result(); 
+	}
+
+	public function getShiftDetails($userid,$currentDate){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM shift WHERE userid = '$userid' AND rosterDate = '$currentDate'");
+		return $query->row();
 	}
 }
