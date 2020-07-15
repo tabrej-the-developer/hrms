@@ -236,7 +236,7 @@ class Rosters extends CI_Controller {
 								$rav['level'] = $empDetails->level;
 								//$rav['maxHoursPerWeek'] = $empDetails->maxHoursPerWeek;
 								$rav['shifts'] = [];
-								$allShifts = $this->rostersModel->getAllShiftsFromEmployee($rosterid,$employeeid->userid);
+								$allShifts = $this->rostersModel->getAllShiftsFromEmployee($rosterid,$employeeid->userid,$area->areaid);
 								foreach ($allShifts as $shiftOb) {
 									$shiftObj['currentDate'] = $shiftOb->rosterDate;
 									$leaveApp = $this->leaveModel->getLeaveApplicationForUser($employeeid->userid,$shiftOb->rosterDate);
