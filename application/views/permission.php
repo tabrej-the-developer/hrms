@@ -366,7 +366,7 @@ tbody{
 
 
 	<div class="select-class">
-<?php if(isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N" == "Y"){ ?>
+<?php  if((isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N") == "Y"){ ?>
 	<h4 style="font-weight: 700;
                       padding: 1rem 0 0 2rem;
                       margin: 0 !important;
@@ -390,7 +390,7 @@ tbody{
 
 			</select>
 		</span>
-	<?php } ?>
+	<?php  } ?>
 	</div>
 
 	<div class="table-div">
@@ -568,11 +568,11 @@ tbody{
 		</table>
 		
 	</div>
-<?php if(isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N" == "Y"){ ?>
+<?php  if((isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N") == "Y"){ ?>
 <div class="button-class" style="">
 	<button onclick="savePermission()" class="button">Save</button>
 </div>
-<?php } ?>
+<?php  } ?>
 		</div>
 	</div>
 </div>
@@ -676,7 +676,7 @@ tbody{
 		xhttp.open("GET", base_url+"settings/getPermissionByEmployee/"+empId, true);
 		xhttp.send();
 	}
-<?php if(isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N" == "Y"){ ?>
+<?php  if((isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N") == "Y"){ ?>
 	function savePermission(){
 		var empId = document.getElementById("employeeValue").value;
 		var isQrReaderYN = document.getElementById("isQrReaderYN").checked ? "Y" : "N";
@@ -721,17 +721,17 @@ tbody{
 	    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	    xhr.send(params);
 	}
-<?php } ?>
+<?php  } ?>
 	getEmployees();
 </script>
 
-<?php if(isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N" == "Y"){ ?>
-<script type="text/javascript">
+<?php  if((isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N") == "N"){ ?>
+	<script type="text/javascript">
 	$(document).ready(function(){
 		$('input').prop('disabled',true);
-	})
-</script>
-<?php } ?>
+		})
+	</script>
+<?php  } ?>
 
 <script type="text/javascript">
 	$(document).ready(()=>{
