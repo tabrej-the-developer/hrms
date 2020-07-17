@@ -51,7 +51,7 @@ class Settings extends CI_Controller {
 		$data['userid'] = $this->session->userdata('LoginId');
 		$data['password'] = $this->input->post('password');
 		$data['passcode'] =  $this->input->post('passcode');
-		$url = "http://localhost/PN101/api/settings/changePassword";
+		$url = BASE_API_URL."settings/changePassword";
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);

@@ -316,6 +316,43 @@ class Rosters extends CI_Controller {
 		}
 	}
 
+	public function addNewShift(){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $json->userid){
+				$startTime = $json->add_start_time;
+				$endTime = $json->add_end_time;
+				$rosterid = $json->roster_id;//$json->roster_id;
+				$roleid = $json->add_role_id;
+				$date = $json->date;
+				$empid = $json->emp_id;
+				$status = "1";
+				if($startTime != null && $endTime != null && $rosterid != null && $roleid != null && $date != null && $empid != null){
+					$this->load->model('rostersModel');
+					$this->rostersModel->addNewShift($startTime,$endTime,$rosterid,$roleid,$date,$empid,$status);
+					$data['Status'] = 'SUCCESS';
+					http_response_code(200);
+					echo json_encode($data);
+				}
+				else{
+					$data['Status'] = 'ERROR';
+					$data['Message'] = "Invalid Parameters";
+					http_response_code(200);
+					echo json_encode($data);
+				}
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
 	public function updateRoster(){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){

@@ -109,4 +109,19 @@ class RostersModel extends CI_Model {
 		$this->load->database();
 		$query = $this->db->query("UPDATE shift set startTime= 0 , endTime= 0, status =1  WHERE id = '$shiftId' ");
 	}
+
+	public function addNewShift($startTime,$endTime,$rosterid,$roleid,$date,$empid,$status){
+		$this->load->database();
+		$uniqueid = uniqid();
+		$query = $this->db->query("INSERT INTO shift (id,roasterId,rosterDate,userid,startTime,endTime,roleid,status) VALUES ('$uniqueid','$rosterid','$date','$empid','$startTime','$endTime',$roleid,$status) ");
+	}
+
 }
+
+
+
+
+
+
+
+

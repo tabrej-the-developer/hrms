@@ -12,6 +12,9 @@ $colors_array = ['#8dba5e','#9ebdff','#dd91ee','#f7c779','#a9bfaf','#6b88ca'];
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 -->
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -321,7 +324,7 @@ max-width:30vw;
 }
 .modal_priority {
   position: fixed;
-  top: 50%;
+  top: 30%;
   left: 50%;
   width: 400px;
   height: 400px;
@@ -347,7 +350,7 @@ max-width:30vw;
 	width: 300px;
 	cursor: move;
 }
-.prority_buttons{
+.priority_buttons{
 	position:absolute;
 	bottom: 10px;
 	width:100%;
@@ -362,21 +365,105 @@ max-width:30vw;
     width: 100%;
     flex-wrap: wrap;
 }
+
+
+.masks {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.1);
+  z-index: 50;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.7s;
+}
+.modal_prioritys {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  width: 400px;
+  height: 400px;
+  margin-left: -200px;
+  margin-top: -150px;
+  background: #fff;
+  z-index: 100;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.5s ease-out;
+  transform: translateY(45px);
+}
+.actives {
+  visibility: visible;
+  opacity: 1;
+}
+.actives + .modal_prioritys {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+}
+.priority_areass  tr td{
+	width: 300px;
+	cursor: move;
+}
+.priority_buttonss{
+	position:absolute;
+	bottom: 10px;
+	width:100%;
+	justify-content: center;
+	display: flex;
+}
+.priority_areass {
+	/*display: flex;*/
+    /*position: absolute;*/
+    text-align: center;
+    /*justify-content: center;*/
+    width: 100%;
+    flex-wrap: wrap;
+}
 .priority{
 	font-size:1rem;
 	width:100%;
 }
-.priority-btn{
+.print-button{
+	font-size:1rem;
+	width:100%;
+}
+.top_buttons{
 	position: absolute;
 	right: 0;
+	margin-top:-5px;
+	/*width: 100%;*/
+}
+.print-btn{
+		/*position: absolute;*/
+	/*right: 0;*/
+		width: 5rem;
 			background-color: #9E9E9E;
   border: none;
   color: white;
-  padding: 10px 10px;
+  padding: 5px 10px;
+  border-radius: 3px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   margin: 2px
+}
+.priority-btn{
+	/*position: absolute;*/
+/*	right: 0;*/
+	width: 5rem;
+			background-color: #9E9E9E;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 3px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 2px;
+  width:5rem;
 }
 .close_priority{
 				background-color: #9E9E9E;
@@ -386,7 +473,8 @@ max-width:30vw;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  margin: 2px
+  margin: 2px;
+  width:5rem;
 }
 .priority_save{
 				background-color: #9E9E9E;
@@ -396,7 +484,19 @@ max-width:30vw;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  margin: 2px
+  margin: 2px;
+  width:5rem;
+}
+.add_shift{
+				background-color: #9E9E9E;
+  border: none;
+  color: white;
+  padding: 10px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 2px;
+  width: 5rem;
 }
 .edit_priority{
 	font-weight: 700;
@@ -431,6 +531,11 @@ max-width:30vw;
         transform: scale(1.0);
         transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
     }
+
+    .add_shift_span{
+    	display: block;
+
+    }
 @media print{
 	td:nth-child(7){
 		display: none;
@@ -443,6 +548,9 @@ max-width:30vw;
 	}
 	.priority{
 		display: none
+	}
+	.print-btn{
+		display: none;
 	}
 }
 @media only screen and (max-width: 1050px) {
@@ -485,9 +593,11 @@ max-width:30vw;
 	?>
 	<div class="containers" id="containers">
 		<div class="heading" id="center-id" c_id="<?php echo isset($rosterDetails->centerid) ? $rosterDetails->centerid : null; ?>">Rosters
+			<span class="top_buttons ml-auto">
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?> 
-			<span class="priority ml-auto"><button class="priority-btn ">Priority</button></span>
-<?php } ?>
+			<span class="priority "><button class="priority-btn ">Priority</button></span>
+<?php } ?><span class="print-button"><button class="print-btn">Print</button></span>
+			</span>
 		</div>
 		<div class="roster-dates"><?php 
 
@@ -654,7 +764,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					
 					</td>
 				
-					<?php $weeklyTotal=0; $p=0;?>
+					<?php $weeklyTotal=0; $p=0; $index=0;?>
 
 					<?php for($fiveIterations=0;$fiveIterations<5;$fiveIterations++){
 						$variable = 0;
@@ -689,7 +799,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 
 		 ?>
 
-					<td class="shift-edit cell-boxes count-<?php echo $p+1;?>"  style="width:12vw" 
+					<td class="shift-edit cell-boxes count-<?php echo $index+1;?>"  style="width:12vw" 
 					 name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->shiftid ?>"  
 					 name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleid ?>"
 					 name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?>" 
@@ -699,24 +809,25 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					 area-id="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->areaId;?>"
 					 emp-id="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->empId;?>"
 					 >
-<?php if(($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime != 0) && ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime != 0)){ ?>
+
+<?php if((intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime) == 0) && (intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime) == 0)){}else{ ?>
 					 <div class="cell-back-1 <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? 'leave' : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status;  ?>" >
-					 	<?php if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave != "Y"){ 
-					 				
-					 		?>
+					 	<?php if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave != "Y"){ 	?>
 					 		<span class="row m-0 d-flex justify-content-center"><?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleName;?></span>
 					 	<?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)). "-" .timex( intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime));
 					  $weeklyTotal = $weeklyTotal + $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?>
 					  				
 					<?php   }else{
 						echo 'On Leave';
-					}}else{} ?>
+					}} ?>
 
 					   </div>
 					</td>
-					  <?php $p++; }else{
-					  	$p = $p; ?>
-					  	<td area-id="<?php echo $rosterDetails->roster[$x]->areaId;?>" date="<?php //echo $currentSequenceDate; ?>" roster-id="<?php echo $rosterDetails->id; ?>" emp-id="<?php //echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->empId;?>" level="<?php //echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->level;?>" ></td>
+					  <?php $p++; $index++;}else{
+					  	$p = $p;
+					  	$index = $index+1;
+					  	 ?>
+					  	<td area-id="<?php echo $rosterDetails->roster[$x]->areaId;?>" date="<?php echo $currentSequenceDate; ?>" roster-id="<?php echo $rosterDetails->id; ?>" emp-id="<?php echo  $rosterDetails->roster[$x]->roles[$counter]->empId;?>" level="<?php  $rosterDetails->roster[$x]->roles[$counter]->level;?>" class="__addshift count-<?php echo $index;?>" name3="<?php echo intval(0)/100; ?>"></td>
 					  	<?php
 					  }  } ?>
 					<td class=" " style="width:12vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
@@ -949,11 +1060,43 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 <div class="modal_priority" >
 	<a class="text-center m-2 edit_priority">Edit Priority</a>
 	<div class="priority_areas"></div>
-	<div class="prority_buttons">
+	<div class="priority_buttons">
   	<button class="close_priority" role="button">Cancel</button><button class="priority_save">Save</button>
   </div>
 </div>
 
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
+<div class="masks" ></div>
+<div class="modal_prioritys" >
+	<a class="text-center m-2 edit_priority">Add Shift</a>
+	<div class="priority_areass">
+		<!-- rosterid --> 				<!-- <input type="" name="" id="" class=""> -->
+		<!-- roster date  -->		<!-- <input type="" name="" id="" class=""> -->
+		<!-- userid  -->					<!-- <input type="" name="" id="" class=""> -->
+		<span class="add_shift_span">
+			<label>start time</label>
+			<input type="time" name="" id="add_start_time" class="add_start_time">
+		</span>
+		<span class="add_shift_span">
+			<label>end time</label>
+			<input type="time" name="" id="add_end_time" class="add_end_time">
+		</span>
+		<span class="add_shift_span">
+			<label>Area id</label>
+			<select type="" name="" id="add_area_id" class="add_area_id">
+				<option>change area</option>
+			</select>
+		</span>
+		<span class="add_shift_span">
+			<label>role id</label>
+			<select type="" name="" id="add_role_id" class="add_role_id"></select>
+		</span>
+	</div>
+	<div class="priority_buttonss">
+  	<button class="close_priority" role="button">Cancel</button><button class="add_shift">Save</button>
+  </div>
+</div>
+<?php } ?>
 <?php 		 if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N"){ ?>
 <script type="text/javascript">
 				var model = document.getElementById("mxModal");
@@ -1110,6 +1253,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 				$(document).ready(function(){
 				var	total = 0;
 				var count = $('.count-1').length
+				console.log(count)
 				for(var i=0;i<count;i++){
 					if(isNaN(parseInt($('.count-1').eq(i).attr('name3')))){
 						total = total;
@@ -1122,6 +1266,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 				//
 				total = 0;
 				 count = $('.count-2').length
+				 console.log(count)
 				for( i=0;i<count;i++){
 					if(isNaN(parseInt($('.count-2').eq(i).attr('name3')))){
 						total = total;
@@ -1133,7 +1278,8 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 				$('#count-2').html('$'+total)
 				//
 				total = 0;
-				 count = $('.count-3').length
+				 count = $('.count-3').length;
+				 console.log(count)
 				for( i=0;i<count;i++){
 					if(isNaN(parseInt($('.count-3').eq(i).attr('name3')))){
 						total = total;
@@ -1146,6 +1292,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 				//
 				total = 0;
 				 count = $('.count-4').length
+				 console.log(count)
 				for( i=0;i<count;i++){
 					if(isNaN(parseInt($('.count-4').eq(i).attr('name3')))){
 						total = total;
@@ -1158,6 +1305,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 				//
 				total = 0;
 				 count = $('.count-5').length
+				 console.log(count)
 				for( i=0;i<count;i++){
 					if(isNaN(parseInt($('.count-5').eq(i).attr('name3')))){
 						total = total;
@@ -1243,7 +1391,13 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 	})
 </script>
 
-
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(document).on('click','.print-btn',function(){
+			window.print();
+		})
+	})
+</script>
 <script type="text/javascript">
 	$(document).ready(function(){
 		$(document).on('click','.button',function(){
@@ -1304,26 +1458,36 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
     $('.containers').css('paddingLeft',$('.side-nav').width());
 });
 </script>
-<script type="text/javascript">
+	<script type="text/javascript">
 	function timer( x)
 	{ 
 	    var output="";
 	    if((x/100) < 12){
 	        if((x%100)==0 ){
 	        	if((x/100)<10){
-	         output = "0"+String(x/100) + ":00" ;
-	     }
-	     if((x/100)>9){
-	     	output = String(x/100) + ":00" ;
-	     }
-	        }
+	         output = "0"+Math.floor(x/100) + ":00" ;
+	   		 }
+		    if((x/100)>9){
+		    	output = Math.floor(x/100) + ":00" ;
+		    }
+	    }
 	    if((x%100)!=0){
 	        if((x/100)<10){
-	         output = "0"+String(x/100) + ":" + String(x%100) ;
+	        	if(x%100 <10){
+	        		 output = "0"+Math.floor(x/100) + ":0" + String(x%100) ;
+	        	}
+	        	else{
+	        		 output = "0"+String(x/100) + ":" + String(x%100) ;
+	        	}
 	        }
 	    }
 	     if((x/100)>10){
-	         output = String(x/100) + ":" + String(x%100) ;
+	         if(x%100 <10){
+	        		 output = Math.floor(x/100) + ":0" + String(x%100) ;
+	        	}
+	        	else{
+	        		 output = Math.floor(x/100) + ":" + String(x%100) ;
+	        	}
 	        }
 	    }
 	
@@ -1332,21 +1496,34 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 	    output = x/100 + ":00";
 	    }
 	    if((x%100)!=0){
-	    output = x/100 +":" + x%100 ;
+	    	if(x%100 <10){
+	        		 output = Math.floor(x/100) +":0" + x%100 ;
+	        	}
+	        	else{
+	        		 output = Math.floor(x/100) +":" + x%100 ;
+	        	}
+	    
 	    }
 	}
 	else{
 	if((x%100)==0){
-	     output = parseInt(x/100) + ":00";
+	     output = Math.floor(parseInt(x/100)) + ":00";
 	    }
 	    if((x%100)!=0){
-	    output = parseInt(x/100) + ":" + x%100;
+	    	if(x%100 <10){
+	        		 output = Math.floor(x/100) +":0" + x%100 ;
+	        	}
+	        	else{
+	        		 output = Math.floor(x/100) +":" + x%100 ;
+	        	}
 	    }
 	}
 	return output;
 }
 
 </script>
+
+
 <script type="text/javascript">
 	$(document).ready(function(){
 		var centerid = $('#center-id').attr('c_id');
@@ -1460,16 +1637,65 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 	  })
 </script>
 <script type="text/javascript">
+	function closeModal(){
+	  $(".mask").removeClass("active");
+	}
 
+	$(".close_priority").on("click", function(){
+		$(".priority_areas").empty();
+	  closeModal();
+	});
+</script>
 
-function closeModal(){
-  $(".mask").removeClass("active");
-}
+<script type="text/javascript">
+//----------------------------------------//
+//------------add shift modal-------------//
+//----------------------------------------//
 
-$(".close_priority").on("click", function(){
-	$(".priority_areas").empty();
-  closeModal();
-});
+	$(document).on('click','.__addshift',function(){
+		$(".masks").addClass("actives");
+		var date = $(this).attr('date');
+		var roster_id = $(this).attr('roster-id');
+		var emp_id = $(this).attr('emp-id');
+			$(document).on('click','.add_shift',function(){
+				var add_start_time = $('#add_start_time').val();
+				var add_end_time = $('#add_end_time').val();
+				add_start_time = parseInt(add_start_time.replace(":",""));
+				add_end_time = parseInt(add_end_time.replace(":",""));
+				var add_role_id = $('#add_role_id').val();
+				console.log(date+ "---"+roster_id+ "---"+emp_id+ "---"+add_start_time+ "---"+add_end_time+ "---"+add_role_id)
+				var url = window.location.origin+"/PN101/roster/addNewshift";
+				$.ajax({
+					url:url,
+					method:'POST',
+					data:{
+						date : date,
+						roster_id : roster_id,
+						emp_id : emp_id,
+						add_start_time : add_start_time,
+						add_end_time : add_end_time,
+						add_role_id : add_role_id
+					},
+					success:function(response){
+						alert(response)
+						window.location.reload();
+					}
+				})
+			})
+	})
+
+	$(document).on('click','.add_shift',function(){
+		$(this).closest();
+	})
+
+	function closeAddShitModal(){
+		  $(".masks").removeClass("actives");
+		}
+
+	$(".close_priority").on("click", function(){
+		// $(".add_shift").empty();
+		  closeAddShitModal();
+		});
 </script>
 
 <?php if( isset($error) != null){ ?>
@@ -1484,6 +1710,54 @@ $(".close_priority").on("click", function(){
   		});
 	</script>
 <?php }	?>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		var centerid = $('#center-id').attr('c_id');
+		// var userid = $('#user-id-select').text();
+		var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
+		$.ajax({
+			method:'GET',
+			url:url,
+			dataType: 'JSON',
+			success:function(response){
+				response['orgchart'].forEach(function(index){
+					var data = "<option value="+index.areaId+">"+index.areaName+"</option>";
+					$('#add_area_id').append(data)
+				})
+			}
+		})
+	})
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(document).on('change','#add_area_id',function(){
+		 var centerid = $('#center-id').attr('c_id');
+		// var userid = $('#user-id-select').text();
+		var areaId = $(this).val();
+		var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
+		$.ajax({
+			method:'GET',
+			url:url,
+			dataType: 'JSON',
+			success:function(response){
+					$('#role').empty()
+				response['orgchart'].forEach(function(index){
+					index['roles'].forEach(function(values){
+						if(areaId == values.areaid){
+							var data = "<option value="+values.roleid+">"+values.roleName+"</option>";
+								$('#add_role_id').append(data)
+										}
+									})
+					})
+				}
+			})
+		})
+	})
+</script>
+<script>
+$( ".modal_prioritys" ).draggable();
+</script>
 </body>
 </html>
 

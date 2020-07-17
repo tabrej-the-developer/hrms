@@ -69,11 +69,14 @@ class Timesheet extends CI_Controller {
 			$data['timesheetid'] = $this->input->get('timesheetId');
 			$data['xa'] = $this->input->get('x');
 			$data['ya'] = $this->input->get('y');
+			$data['date'] = $this->input->get('date');
 			$data['userid'] = $this->session->userdata('LoginId');
 			$data['aT'] = $this->input->get('aT');
+			$data['empId'] = $this->input->get('empId');
 			$data['entitlements'] = $this->getAllEntitlements($data['userid']);
 			$data['timesheetDetails'] = $this->gettimesheet($data['timesheetid'],$data['userid']);
 			$data['shift'] = $this->getShiftType($data['userid']);
+			$data['rosterShift'] = $this->getRosterShifts($data['userid'],$data['empId'],$data['date']);
 	//footprint start
 	if($this->session->has_userdata('current_url')){
 		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
@@ -108,6 +111,26 @@ class Timesheet extends CI_Controller {
 		else if($httpcode == 401){
 
 			}
+		}
+
+		function getRosterShifts($userid,$empId,$date){
+			$url = BASE_API_URL."/timesheet/getRosterShifts/".$userid."/".$empId."/?date=".$date;
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+				$server_output = curl_exec($ch);
+				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				return $server_output;
+				curl_close ($ch);
+			}
+			else if($httpcode == 401){
+
+				}
 		}
 
 	public function getPastTimeSheets($centerid = 1){
@@ -152,7 +175,7 @@ class Timesheet extends CI_Controller {
 			$data['userid'] = $this->session->userdata('LoginId');
 			$data['staff'] = $this->getUsers();
 
- 		$url = BASE_API_URL."/timesheet/createTimesheet";
+ 		$url = BASE_API_URL."timesheet/createTimesheet";
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -170,7 +193,7 @@ $server_output = curl_exec($ch);
 				redirect(base_url()."timesheet/TimesheetDashboard");
 			}
 			else if($httpcode == 401){
-			//	redirect(base_url()."roster/roster_dashboard");
+				redirect(base_url()."roster/roster_dashboard");
 			}
 
 	}

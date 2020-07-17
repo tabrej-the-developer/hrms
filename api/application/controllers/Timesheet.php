@@ -406,6 +406,27 @@ class Timesheet extends CI_Controller{
 		}
 	}
 
+	public function getRosterShifts($empId,$userid){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+				$date = $this->input->get('date');
+				$this->load->model('timesheetModel');
+				$data = $this->timesheetModel->getRosterShift($date,$empId);
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
 	public function createPayrollEntry(){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){

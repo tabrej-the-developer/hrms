@@ -388,7 +388,7 @@ td.shift-edit{
 						$original = explode('-',$timesheet->currentDate);
 						$datts = $original[2].".".$original[1].".".$original[0]; 
 					 	 ?>
-					<th  class="day"><?php  echo date("D",strtotime($datts)); echo " ".dateToDay($timesheet->currentDate) ?></th>
+					<th  class="day" date="<?php echo $timesheet->currentDate; ?>"><?php  echo date("D",strtotime($datts)); echo " ".dateToDay($timesheet->currentDate) ?></th>
 					<?php }
 					$incrementer++;
 					 } } ?>
@@ -840,17 +840,20 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					// console.log(v)
 					var w = $('.day').eq($(this).index()).html();
 					// console.log(w)
+					let date = $('.day').eq($(this).index()).attr('date');
+					//console.log(date)
 					var x = $(this).attr('cal-x');
 					// console.log((x))
 					var y = $(this).attr('cal-p');
 					// console.log(y)
 					var eId = $('#employee-id').val($(this).attr('emp-id'))
+					var empId  = $(this).attr('emp-id');
 					// console.log(eId)
 					var sDate = $('#start-date').val($(this).attr('curr-date'))
 					// console.log(sDate)
 					var tId = $('#timesheet-id').val($(this).attr('timesheet-id'))
 					// console.log(tId)
-	var url = "<?php echo base_url();?>timesheet/getTimesheetDetailsModal?timesheetId="+"<?php echo $timesheetid;?>&x="+x+"&y="+y+"&aT="+arrayType ;
+	var url = "<?php echo base_url();?>timesheet/getTimesheetDetailsModal?timesheetId="+"<?php echo $timesheetid;?>&x="+x+"&y="+y+"&aT="+arrayType+"&date="+date+"&empId="+empId ;
 					 $.ajax({
 					 	url : url,
 					 	type : 'GET',
@@ -978,6 +981,12 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 		var object = {};
 		var url = window.location.origin+"/PN101/timesheet/createPayroll";
 		for(var a=0;a<i;a++){
+			if($('.same_as_roster').length == 1){
+				object.startTime = $('.as_roster').children('.time_1').attr('time')
+				object.endTime = $('.as_roster').children('.time_2').attr('time')
+				object.payType = $('.as_roster').children('.same_as_roster').attr('factor')
+			}
+			else{
 		if($('.box-time').eq(a).children().children().children().prop('checked') == true){
 			if($('.time-box').eq(a).text() != ""){
 				object.startTime = $('.time-box').eq(a).attr('svalue');
@@ -988,6 +997,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 				object.startTime = $('.new-time-box').eq(a).children('.sclass').val();
 				object.endTime = $('.new-time-box').eq(a).children('.eclass').val();
 				object.payType = $('.new-time-box').next().children().val();
+				}
 			}
 		}
 			values.push(object)
@@ -1073,6 +1083,29 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 	})
 </script>
 
+<script type="text/javascript">
+	/*----------------------
+		same as roster checkbox
+	-----------------------*/
+	$(document).ready(function(){
+		$(document).on('change','.same_as_roster',function(){
+			let count = $('.clocked_time').length;
+		if($(this).is(":checked")) {
+
+				for(var i=0;i<count;i++){
+	        		$('.clocked_time').eq(i).prop('disabled',true);
+	        		}
+		        }
+	        else{
+	        	for(var i=0;i<count;i++){
+	        		$('.clocked_time').eq(i).is(':checked') = false;
+	        		$('.clocked_time').eq(i).prop('disabled',true);
+	        	}
+	        } 	
+		})
+	})
+</script>
+
 </body>
 </html>
 
@@ -1087,28 +1120,36 @@ function timex( $x)
 	        if(($x%100)==0){
 	         $output = $x/100 . ":00 AM";
 	        }
-	    if(($x%100)!=0){
-	        $output = $x/100 .":". $x%100 . "AM";
-	        }
+		    if(($x%100)!=0){
+		        $output = $x/100 .":". $x%100 . "AM";
+		        }
 	    }
-	else if(($x/100)>12){
-	    if(($x%100)==0){
-	    $output = ($x/100)-12 . ":00 PM";
-	    }
-	    if(($x%100)!=0){
-	    $output = ($x/100)-12 .":". $x%100 . "PM";
-	    }
+		else if(($x/100)>12){
+		    if(($x%100)==0){
+		    $output = floor($x/100)-12 . ":00 PM";
+		    }
+		    if(($x%100)!=0){
+		    $output = floor($x/100)-12 .":". $x%100 . "PM";
+		    }
+		}
+		else if(($x/100)==12){
+		    if(($x%100)==0){
+		    $output = floor($x/100) . ":00 PM";
+		    }
+		    if(($x%100)!=0){
+		    $output = floor($x/100) .":". $x%100 . "PM";
+		    }
+		}
+		else{
+		if(($x%100)==0){
+		     $output = floor($x/100) . ": 00 PM";
+		    }
+		    if(($x%100)!=0){
+		    $output = floor($x/100) . ":". $x%100 . "PM";
+		    }
+		}
+		return $output;
 	}
-	else{
-	if(($x%100)==0){
-	     $output = ($x/100) . ": 00 PM";
-	    }
-	    if(($x%100)!=0){
-	    $output = ($x/100) . ":". $x%100 . "PM";
-	    }
-	}
-	return $output;
-}
 
 function dateToDay($date){
 	$date = explode("-",$date);
