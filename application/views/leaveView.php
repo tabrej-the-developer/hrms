@@ -1,3 +1,6 @@
+<?php 
+	$colorcodes = ['#0041C2','#254117','#FBB117','#C35817','#E42217','#9F000F','#7D0552'];
+ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +15,10 @@
 <style type="text/css">
 	*{
 font-family: 'Open Sans', sans-serif;
+	}
+	body{
+		background: rgb(243, 244, 247) !important;
+
 	}
 	.containers{
 		background:	rgb(243, 244, 247);
@@ -49,25 +56,23 @@ font-family: 'Open Sans', sans-serif;
         }
         .balance-tile-div{
         	height: 8rem;
-			    background: rgba(0,0,255,0.6);
-			    border-radius: 5px;
-			    color: white;
-			    position: relative;
+		    background: white;
+		    font-weight: bolder;
+		    position: relative;
         }
         .leave-name{
         	width: 100%;
-    			display: inline-block;
-        	text-align: left;
+			display: inline-block;
+        	text-align: center;
         }
         .leave-balance{
-        	position: absolute;
-        	bottom: 0;
-        	text-align: right;
-        	width: 100%
+        	font-size:2rem;
+        	padding-top: 1rem;
         }
         .leave-balance:before{
         	content: 'Hrs : ';
-        	color: white;
+        	color: black;
+        	font-size:1rem;
         }
 
         .cardContainer {
@@ -202,6 +207,9 @@ font-family: 'Open Sans', sans-serif;
 }
 img{ max-width:140%;}
 
+.vdivide{
+	background: transparent;
+}
 .row.vdivide [class*='col-']:not(:last-child):after {
   background: #e0e0e0;
   width: 1px;
@@ -253,7 +261,7 @@ table.dataTable{
 		border-color: transparent;
 	}
 	.dataTables_paginate{
-		position: fixed;
+		position: absolute;
 		bottom: 0;
 		right: 0
 	}
@@ -333,6 +341,12 @@ table.dataTable{
 	.close:hover{
 		background:#9E9E9E;
 	}   
+/*	.card-header .row{
+		display: none;
+	}*/
+	#nav-contact1{
+		box-shadow: 0 0 5px 5px rgba(0,0,0,0.1);
+	}
     @media only screen and (max-width:600px){
     	.col-sm-12{
     		padding-left: 0 !important;
@@ -373,7 +387,7 @@ table.dataTable{
 				<div class="row mt-3">
                     <div class="col-md-12"><h6>Leave Balance</h6></div>
                 </div>
-				<div class="row shadow-sm mb-4 bg-white rounded vdivide">
+				<div class="row shadow-sm mb-4  rounded vdivide">
                     
 					<!-- <div class="col-sm-3">
 					<div class="chat_people">
@@ -399,12 +413,13 @@ table.dataTable{
         		while($var < 3){ 
         			if($var+$i < count($balance->balance)){
     			?>
-         <div class="col-md-3 balance-tile cardContainer">
+        <div class="col-md-3 balance-tile cardContainer">
          	<div class="balance-tile-div cardItem">
-							<div class="leave-name"><?php echo $balance->balance[$i + $var]->leaveName;?></div>
-							<div class="leave-balance"><?php echo sprintf('%.2f',$balance->balance[$i + $var]->leavesRemaining);?></div>
-					</div>
-				</div> 
+				
+				<div class="leave-balance" style="color:<?php echo $colorcodes[rand(0,6)];?>"><?php echo sprintf('%.2f',$balance->balance[$i + $var]->leavesRemaining);?></div>
+				<div class="leave-name" ><?php echo $balance->balance[$i + $var]->leaveName;?></div>
+			</div>
+		</div> 
 			<?php 
 				}	
 				$var++;
@@ -574,9 +589,9 @@ table.dataTable{
 										<tr>
 	                            		<?php
 	                if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "Y"){ ?>
-											<td><?php echo $l->name;?></td>
+											<!-- <td><?php // echo $l->name;?></td> -->
 								<?php if($l->title != "Centre Manager"){ ?>
-											<td><?php echo $l->title;?></td>
+											<!-- <td><?php // echo $l->title;?></td> -->
 			                       		<?php } else {echo "<td>--</td>";} }?>
 											<td><?php echo $l->leaveTypeSlug;?></td>
 											<td><?php
