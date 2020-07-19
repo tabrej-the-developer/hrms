@@ -77,12 +77,7 @@ class Timesheet extends CI_Controller {
 			$data['timesheetDetails'] = $this->gettimesheet($data['timesheetid'],$data['userid']);
 			$data['shift'] = $this->getShiftType($data['userid']);
 			$data['rosterShift'] = $this->getRosterShifts($data['userid'],$data['empId'],$data['date']);
-	//footprint start
-	if($this->session->has_userdata('current_url')){
-		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-		$this->session->set_userdata('current_url',currentUrl());
-	}
-	// footprint end
+
 				$this->load->view('timesheetModal',$data);
 				}
 		else{

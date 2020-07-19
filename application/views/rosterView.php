@@ -392,9 +392,7 @@ table.dataTable{
 		<table class="table">
 			<thead>
 				<th>S.No</th>
-				<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
 				<th>Roster Name</th>
-			<?php } ?>
 				<th>Start Date</th>
 				<th>End Date</th>
 				<th>Status</th>
@@ -417,6 +415,7 @@ table.dataTable{
 					<?php if($this->session->userdata('UserType') ==SUPERADMIN ) { ?>
 					<td><?php echo 'Roster | '.dateToDay($roster->rosters[$i]->startDate).'-'.dateToDay($roster->rosters[$i]->endDate) ?></td>
 				<?php }?>
+
 					<td><?php echo dateToDayAndYear($roster->rosters[$i]->startDate) ?></td>
 					<td><?php echo dateToDayAndYear($roster->rosters[$i]->endDate) ?></td>
 					<td><?php echo $roster->rosters[$i]->status ?></td>
@@ -425,6 +424,9 @@ table.dataTable{
 			<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N"){ ?>
 					<tr id="<?php echo $roster->rosters[$i]->id?>">
 					<td><?php echo $i+1 ?></td>
+				<?php  if($this->session->userdata('UserType') == STAFF ){ ?>
+					<td><?php echo 'Roster | '.dateToDay($roster->rosters[$i]->startDate).'-'.dateToDay($roster->rosters[$i]->endDate) ?></td>
+				<?php } ?>
 					<td><?php echo $roster->rosters[$i]->startDate ?></td>
 					<td><?php echo $roster->rosters[$i]->endDate ?></td>
 					<td><?php echo $roster->rosters[$i]->status ?></td>

@@ -87,6 +87,7 @@ class Notice extends CI_Controller {
 
 	if($this->session->has_userdata('LoginId')){
 		$data['users'] = $this->getUsers();
+		$data['permissions'] = $this->fetchPermissions();
 		$this->load->helper('form');
 		$form_data = $this->input->post();
 		if($form_data != null){
@@ -106,7 +107,7 @@ class Notice extends CI_Controller {
 			$sendData['text'] = $this->dataReady($form_data['message']);
 			$sendData['subject'] = $form_data['subject'];
 			$sendData['userid'] = $this->session->userdata('LoginId');
-			$url="http://todquest.com/PN101/api/notice/addNotice";
+			$url= BASE_API_URL."notice/addNotice";
 			$ch = curl_init($url);
 
 			curl_setopt($ch, CURLOPT_URL,$url);

@@ -228,7 +228,7 @@ class Rosters extends CI_Controller {
 					foreach ($allRoles as $role) {
 						$allEmployess = $this->rostersModel->getAllEmployeesFromRole($role->roleid,$rosterid);
 						foreach ($allEmployess as $employeeid) {
-							if($userDetails->role == SUPERADMIN || $userDetails->role == ADMIN || $userid == $employeeid->userid){
+							// if($userDetails->role == SUPERADMIN || $userDetails->role == ADMIN || $userid == $employeeid->userid){
 								$rav['empId'] = $employeeid->userid;
 								$empDetails = $this->authModel->getUserDetails($employeeid->userid);
 								$rav['empName'] = $empDetails->name;
@@ -248,7 +248,7 @@ class Rosters extends CI_Controller {
 										$shiftObj['startTime'] = $shiftOb->startTime;
 										$shiftObj['endTime'] = $shiftOb->endTime;
 										$shiftObj['shiftid'] = $shiftOb->id;
-										$shiftObj['status'] = $shiftOb->status == 1 ? "Added" : ($shiftOb->status == 2 ? "Published" : "Accepted");
+										$shiftObj['status'] = $shiftOb->status == 1 ? "Added" : ($shiftOb->status == 2 ? "Published" : ($shiftOb->status == 3 ? "Accepted":"Rejected"));
 									}
 									else{
 										$shiftObj['isOnLeave'] = 'Y';
@@ -262,7 +262,7 @@ class Rosters extends CI_Controller {
 									array_push($rav['shifts'],$shiftObj);
 								}
 								array_push($var['roles'],$rav);
-							}
+							// }
 						}
 					}
 					array_push($data['roster'],$var);

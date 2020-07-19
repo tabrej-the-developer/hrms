@@ -1118,38 +1118,45 @@ function timex( $x)
 	    $output;
 	    if(($x/100) < 12){
 	        if(($x%100)==0){
-	         $output = $x/100 . ":00 AM";
+	         $output = intval($x/100) . ":00 AM";
 	        }
-		    if(($x%100)!=0){
-		        $output = $x/100 .":". $x%100 . "AM";
-		        }
+	    if(($x%100)!=0){
+	    	if(($x%100) < 10){
+	    		$output = intval($x/100) .":0". $x%100 . " AM";
+	    	}
+    		if(($x%100) >= 10){
+    			$output = intval($x/100) .":". $x%100 . " AM";
+    		}
+	        }
 	    }
-		else if(($x/100)>12){
-		    if(($x%100)==0){
-		    $output = floor($x/100)-12 . ":00 PM";
-		    }
-		    if(($x%100)!=0){
-		    $output = floor($x/100)-12 .":". $x%100 . "PM";
-		    }
-		}
-		else if(($x/100)==12){
-		    if(($x%100)==0){
-		    $output = floor($x/100) . ":00 PM";
-		    }
-		    if(($x%100)!=0){
-		    $output = floor($x/100) .":". $x%100 . "PM";
-		    }
-		}
-		else{
-		if(($x%100)==0){
-		     $output = floor($x/100) . ": 00 PM";
-		    }
-		    if(($x%100)!=0){
-		    $output = floor($x/100) . ":". $x%100 . "PM";
-		    }
-		}
-		return $output;
+	else if(($x/100)>12){
+	    if(($x%100)==0){
+	    $output = intval($x/100)-12 . ":00 PM";
+	    }
+	    if(($x%100)!=0){
+	    	if(($x%100) < 10){
+	    		$output = intval($x/100)-12 .":0". $x%100 . " PM";
+	    	}
+    		if(($x%100) >= 10){
+    			$output = intval($x/100)-12 .":". $x%100 . " PM";
+    		}
+	    }
 	}
+	else{
+	if(($x%100)==0){
+	     $output = intval($x/100) . ": 00 PM";
+	    }
+	    if(($x%100)!=0){
+	    	if(($x%100) < 10){
+	    		$output = intval($x/100) . ":0". $x%100 . " PM";
+	    	}
+	    	if(($x%100) >= 10){
+	    		$output = intval($x/100) . ":". $x%100 . " PM";
+	    	}
+	    }
+	}
+	return $output;
+}
 
 function dateToDay($date){
 	$date = explode("-",$date);

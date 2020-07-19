@@ -107,7 +107,7 @@ class RostersModel extends CI_Model {
 
 	public function deleteShift($shiftId){
 		$this->load->database();
-		$query = $this->db->query("UPDATE shift set startTime= 0 , endTime= 0, status =1  WHERE id = '$shiftId' ");
+		$query = $this->db->query("DELETE from shift WHERE id = '$shiftId' ");
 	}
 
 	public function addNewShift($startTime,$endTime,$rosterid,$roleid,$date,$empid,$status){

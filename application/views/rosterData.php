@@ -499,7 +499,6 @@ max-width:30vw;
   width: 5rem;
 }
 .edit_priority{
-	font-weight: 700;
 	font-size: 2rem
 }
    .modal-logout {
@@ -533,8 +532,32 @@ max-width:30vw;
     }
 
     .add_shift_span{
-    	display: block;
+    	padding: 0.5rem 1rem;
 
+    }
+  .priority_heading{
+		position: relative;
+    width: 100%;
+    display: block;
+    padding: 0;
+    }
+    .edit_priority,.edit_prioritys{
+    	padding: 0.5rem 0;
+	    position: relative;
+	    display: block;
+	    background: #307bd3;
+	    color: white !important;
+	    font-weight: 100
+    }
+    label{
+    	text-align: left;
+    padding: 0 0 0 3rem;
+    }
+    .modal_label{
+    	padding-left:3rem !important;
+    }
+    .Rejected{
+    	background: rgba(220,20,60,0.8)
     }
 @media print{
 	td:nth-child(7){
@@ -608,26 +631,41 @@ function timex( $x)
 	    $output;
 	    if(($x/100) < 12){
 	        if(($x%100)==0){
-	         $output = $x/100 . ":00 AM";
+	         $output = intval($x/100) . ":00 AM";
 	        }
 	    if(($x%100)!=0){
-	        $output = $x/100 .":". $x%100 . "AM";
+	    	if(($x%100) < 10){
+	    		$output = intval($x/100) .":0". $x%100 . " AM";
+	    	}
+    		if(($x%100) >= 10){
+    			$output = intval($x/100) .":". $x%100 . " AM";
+    		}
 	        }
 	    }
 	else if(($x/100)>12){
 	    if(($x%100)==0){
-	    $output = ($x/100)-12 . ":00 PM";
+	    $output = intval($x/100)-12 . ":00 PM";
 	    }
 	    if(($x%100)!=0){
-	    $output = ($x/100)-12 .":". $x%100 . "PM";
+	    	if(($x%100) < 10){
+	    		$output = intval($x/100)-12 .":0". $x%100 . " PM";
+	    	}
+    		if(($x%100) >= 10){
+    			$output = intval($x/100)-12 .":". $x%100 . " PM";
+    		}
 	    }
 	}
 	else{
 	if(($x%100)==0){
-	     $output = ($x/100) . ": 00 PM";
+	     $output = intval($x/100) . ": 00 PM";
 	    }
 	    if(($x%100)!=0){
-	    $output = ($x/100) . ":". $x%100 . "PM";
+	    	if(($x%100) < 10){
+	    		$output = intval($x/100) . ":0". $x%100 . " PM";
+	    	}
+	    	if(($x%100) >= 10){
+	    		$output = intval($x/100) . ":". $x%100 . " PM";
+	    	}
 	    }
 	}
 	return $output;
@@ -809,8 +847,6 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					 area-id="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->areaId;?>"
 					 emp-id="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->empId;?>"
 					 >
-
-<?php if((intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime) == 0) && (intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime) == 0)){}else{ ?>
 					 <div class="cell-back-1 <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? 'leave' : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status;  ?>" >
 					 	<?php if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave != "Y"){ 	?>
 					 		<span class="row m-0 d-flex justify-content-center"><?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleName;?></span>
@@ -819,7 +855,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					  				
 					<?php   }else{
 						echo 'On Leave';
-					}} ?>
+					} ?>
 
 					   </div>
 					</td>
@@ -842,14 +878,15 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 		$count = count($rosterDetails->roster);
 	}
 		 if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N"){ 
-				for($x=0;$x<1;$x++){ 
-					
-					if($rosterDetails->roster[$x]->isRoomYN == "Y")
-						{?>
+				for($x=0;$x<count($rosterDetails->roster);$x++){?>
 				<tr >
 					<td colspan="7" class="area-name"><?php echo $rosterDetails->roster[$x]->areaName ?></td>
 				</tr>
-				<?php $occupancy = 0; ?>
+				<?php $occupancy = 0; 
+ 
+					if($rosterDetails->roster[$x]->isRoomYN == "Y")
+						{
+				?>
 				<tr>
 					<td></td>
 					<td><?php echo $rosterDetails->roster[$x]->occupancy[0]->occupancy?></td>
@@ -860,12 +897,9 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					<td> </td>
 				</tr>
 				<?php 
-		 if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ 
+			}
 				$value = count($rosterDetails->roster[$x]->roles);
-		}
-		else{
-			$value=1;
-		}
+
 				for($counter=0;$counter<$value;$counter++){ ?>
 				<tr  class="table-row">
 					<td   style="width:16vw" class=" cell-boxes left-most">
@@ -887,15 +921,17 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 								}
 			?>
 			<?php } ?>
+			<?php if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$counter]->empId){ ?>
 								<span class="title hourly row"><?php echo  $variable; // echo $rosterDetails->roster[$x]->roles[$counter]->empTitle ?></span>
+							<?php } ?>
 							</span>
 
 							<span class=""><?php // echo  $variable?></span>
 						</span>
 					</td>
 				
-					<?php $weeklyTotal=0; ?>
-					<?php for($p=0;$p<5;$p++){
+					<?php $weeklyTotal=0;$p=0;$index=0; ?>
+					<?php for($fiveIterations=0;$fiveIterations<5;$fiveIterations++){
 						$variable = 0;
 		$userLevel = $rosterDetails->roster[$x]->roles[$counter]->level;
 		foreach($entitlement->entitlements as $e){
@@ -904,11 +940,35 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 			}
 		}
 		?>
+		<?php 
+				$date = date('Y-m-d',strtotime($rosterDetails->startDate)); 
+				// print_r($date);
+			$currentSequenceDate = date('Y-m-d',strtotime("$date".'+'.$fiveIterations.'days'));
+			// print_r($currentSequenceDate);
+			if(isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave)){
+			  if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" )
+			  	{ 
+			  		$currentDate = $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->currentDate;
+			  		 }
+			  else{ 
+			  	if(isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->currentDate)){
+			  	 $currentDate = $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->currentDate;
+			  	  }
+			  	else{ $currentDate = '00-00-00';}
+			  	 }
+			  	}
+			else{$currentDate = '00-00-00';}
+			// if(isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave) == true){
 
-					<td class="shift-edit cell-boxes count-<?php echo $p+1;?>"  style="width:12vw" 
+			if($currentSequenceDate  == $currentDate){
+				?>
+
+					<td class="shift-edit cell-boxes count-<?php echo $index+1;?>"  style="width:12vw" 
 					 name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->shiftid?>"  
 					 name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleid ?>"
+			<?php if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$counter]->empId){ ?>
 					 name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : intval($variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100); ?>" 
+					<?php } ?>
 					 stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime?>" etime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime?>" 
 					 name="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->empName?>"
 					 status="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>">
@@ -917,18 +977,26 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 				<?php if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave != "Y"){ ?>
 					 	<span class="row m-0 d-flex justify-content-center"><?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleName;?></span>
 					 	<?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)). "-" .timex( intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime));
+if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$counter]->empId){ 
 					  $weeklyTotal = $weeklyTotal + $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?> 
-					<?php }else{
+					<?php } } else{
 						echo 'On Leave';
 					} ?>
 					</div>
 					</td>
+ <?php $p++; $index++;}else{
+					  	$p = $p;
+					  		$index = $index+1;
+					  	 ?>
+					  	<td area-id="<?php echo $rosterDetails->roster[$x]->areaId;?>" date="<?php echo $currentSequenceDate; ?>" roster-id="<?php echo $rosterDetails->id; ?>" emp-id="<?php echo  $rosterDetails->roster[$x]->roles[$counter]->empId;?>" level="<?php  $rosterDetails->roster[$x]->roles[$counter]->level;?>" class="__addshift count-<?php echo $index;?>" name3="<?php echo intval(0)/100; ?>"></td>
 
-					  <?php } ?>
+										  	<?php
+										  
+					  }  } ?>
 					<td class=" " style="width:12vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
 
 				</tr>
-			<?php } } } }?>
+			<?php }  } }?>
 
 
 
@@ -990,25 +1058,25 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 	    
 	    <form  id="roster-form">
 			<div class="row p-2">
-				<label class="col-4">Start Time</label>
+				<label class="col-4 modal_label">Start Time</label>
 				<input class="col-7" type="time" name="startTime" id="startTime" >
 			</div>
 			<div class="row p-2">
-				<label class="col-4">End Time</label>
+				<label class="col-4 modal_label">End Time</label>
 				<input class="col-7" type="time" name="endTime" id="endTime" >
 			</div>
 			<div class="row p-2">
-				<label class="col-4">Area</label>
-				<select  class="col-7" name="areaId" id="areaId">
-					<option>--modify--</option>
+				<label class="col-4 modal_label">Area</label>
+				<select  class="col-7" name="areaId" id="areaId" style="padding-left:60px">
+					<option>Change Area</option>
 				</select>
 			</div>
 			<div class="row p-2">
-				<label class="col-4">Role</label>
+				<label class="col-4 modal_label">Role</label>
 				<select  name="role" id="role" class="col-7">				</select>
 			</div>
 			<div class="row p-2">
-				<label class="col-4">Message</label>
+				<label class="col-4 modal_label">Message</label>
 				<input name="message" id="message" class="col-7" type="text">
 			</div>
 	 		<input type="text" name="shiftId"  id="shiftId" style="display:none">
@@ -1058,43 +1126,49 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 
 <div class="mask" ></div>
 <div class="modal_priority" >
-	<a class="text-center m-2 edit_priority">Edit Priority</a>
-	<div class="priority_areas"></div>
-	<div class="priority_buttons">
-  	<button class="close_priority" role="button">Cancel</button><button class="priority_save">Save</button>
-  </div>
+	<span class="priority_heading" >
+		<a class="text-center  edit_priority" style="padding:1rem 0">Edit Priority</a>
+		<div class="priority_areas"></div>
+		<div class="priority_buttons">
+	  	<button class="close_priority" role="button">Cancel</button><button class="priority_save">Save</button>
+	  </div>
+	</span>
 </div>
 
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
 <div class="masks" ></div>
 <div class="modal_prioritys" >
-	<a class="text-center m-2 edit_priority">Add Shift</a>
+	<div>
+	<span class="priority_heading" >
+	<a class="text-center  edit_priority" style="padding:1rem 0">Add Shift</a>
+	</span>
 	<div class="priority_areass">
 		<!-- rosterid --> 				<!-- <input type="" name="" id="" class=""> -->
 		<!-- roster date  -->		<!-- <input type="" name="" id="" class=""> -->
 		<!-- userid  -->					<!-- <input type="" name="" id="" class=""> -->
-		<span class="add_shift_span">
-			<label>start time</label>
-			<input type="time" name="" id="add_start_time" class="add_start_time">
+		<span class="add_shift_span d-flex">
+			<label class="col-5">Start Time</label>
+			<input type="time" name="" id="add_start_time" class="add_start_time col-7">
 		</span>
-		<span class="add_shift_span">
-			<label>end time</label>
-			<input type="time" name="" id="add_end_time" class="add_end_time">
+		<span class="add_shift_span d-flex">
+			<label class="col-5">End Time</label>
+			<input type="time" name="" id="add_end_time" class="add_end_time col-7">
 		</span>
-		<span class="add_shift_span">
-			<label>Area id</label>
-			<select type="" name="" id="add_area_id" class="add_area_id">
-				<option>change area</option>
+		<span class="add_shift_span d-flex">
+			<label class="col-5">Area</label>
+			<select type="" name="" id="add_area_id" class="add_area_id col-7" style="padding-left:50px">
+				<option>Change Area</option>
 			</select>
 		</span>
-		<span class="add_shift_span">
-			<label>role id</label>
-			<select type="" name="" id="add_role_id" class="add_role_id"></select>
+		<span class="add_shift_span d-flex">
+			<label class="col-5">Role</label>
+			<select type="" name="" id="add_role_id" class="add_role_id col-7"></select>
 		</span>
 	</div>
 	<div class="priority_buttonss">
   	<button class="close_priority" role="button">Cancel</button><button class="add_shift">Save</button>
   </div>
+	</div>
 </div>
 <?php } ?>
 <?php 		 if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N"){ ?>
@@ -1122,7 +1196,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 		var ends = $(this).attr('etime');
 	var timings = $(this).text();
 	var name = $(this).index();
-	var role = 4;
+	var role = $(this).attr('name2');
 	var userid = "<?php echo $userid ?>";
 	var shiftid = $(this).attr('name4');
 	document.getElementsByClassName('box-name')[0].innerHTML = $('th').eq(name).html();
@@ -1143,7 +1217,6 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 
 <!-- This is meant for staff -->
 
-<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N"){ ?> 
 
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -1188,7 +1261,6 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 		
 	})
 </script>
-<?php } ?>
 
 <!-- Till here -->
 
@@ -1477,7 +1549,7 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 	        		 output = "0"+Math.floor(x/100) + ":0" + String(x%100) ;
 	        	}
 	        	else{
-	        		 output = "0"+String(x/100) + ":" + String(x%100) ;
+	        		 output = "0"+Math.floor(x/100) + ":" + String(x%100) ;
 	        	}
 	        }
 	    }
@@ -1578,6 +1650,7 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 			console.log(height)
 	})
 </script>
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?> 
 <script type="text/javascript">
 	$(document).ready(function(){
 	  $(document).on('click','.priority-btn',function(){
@@ -1636,6 +1709,7 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 
 	  })
 </script>
+<?php } ?>
 <script type="text/javascript">
 	function closeModal(){
 	  $(".mask").removeClass("active");
@@ -1647,10 +1721,12 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 	});
 </script>
 
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?> 
+
 <script type="text/javascript">
-//----------------------------------------//
-//------------add shift modal-------------//
-//----------------------------------------//
+/*----------------------------------------
+						add shift modal 							
+	----------------------------------------*/
 
 	$(document).on('click','.__addshift',function(){
 		$(".masks").addClass("actives");
@@ -1697,7 +1773,7 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 		  closeAddShitModal();
 		});
 </script>
-
+<?php } ?>
 <?php if( isset($error) != null){ ?>
 	<script type="text/javascript">
 		
@@ -1741,7 +1817,7 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 			url:url,
 			dataType: 'JSON',
 			success:function(response){
-					$('#role').empty()
+					$('#add_role_id').empty()
 				response['orgchart'].forEach(function(index){
 					index['roles'].forEach(function(values){
 						if(areaId == values.areaid){

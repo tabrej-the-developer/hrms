@@ -238,7 +238,7 @@ img{ max-width:140%;}
 	height:95%;
 	overflow-y: hidden;
 	background: white;
-	box-shadow: 0 0 4px 1px rgba(0,0,0,0.1);
+	/*box-shadow: 0 0 4px 1px rgba(0,0,0,0.1);*/
 }
 table.dataTable tbody th, table.dataTable tbody td{
 	padding:1rem;
@@ -324,7 +324,7 @@ table.dataTable{
      line-height: inherit; 
      text-shadow: none; 
      opacity: 1;
-}
+	}
 	.close{
 		float: none; 
 	    font-size: inherit; 
@@ -338,6 +338,23 @@ table.dataTable{
 	    padding: .375rem .75rem !important;
 	    color: white !important;
 	}
+
+	.confirm_button{
+		background-color: #9E9E9E;
+  	border: none;
+  	color: white;
+  	padding: 10px 10px;
+  	text-align: center;
+  	text-decoration: none;
+  	display: inline-block;
+  	margin: 2px;
+  	float:none; 
+  	font-size: 1rem; 
+  	font-weight: bolder; 
+  	line-height: inherit; 
+  	text-shadow: none; 
+  	opacity: 1;
+	}
 	.close:hover{
 		background:#9E9E9E;
 	}   
@@ -347,6 +364,137 @@ table.dataTable{
 	#nav-contact1{
 		box-shadow: 0 0 5px 5px rgba(0,0,0,0.1);
 	}
+	/*-------------------------
+		Confirm Box Css
+	--------------------------*/
+
+#modal_confirm__container {
+  position: fixed;
+  display: table;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  transform: scale(0);
+  z-index: 1;
+}
+#modal_confirm__container.five {
+  transform: scale(1);
+}
+#modal_confirm__container.five .modal_confirm__background {
+  background: rgba(0, 0, 0, 0);
+  animation: fadeIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+#modal_confirm__container.five .modal_confirm__background .modal_confirm_ {
+  transform: translateX(-1500px);
+  animation: roadRunnerIn 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+#modal_confirm__container.five.out {
+  animation: quickScaleDown 0s .5s linear forwards;
+}
+#modal_confirm__container.five.out .modal_confirm__background {
+  animation: fadeOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+#modal_confirm__container.five.out .modal_confirm__background .modal_confirm_ {
+  animation: roadRunnerOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+#modal_confirm__container .modal_confirm__background {
+  display: table-cell;
+  background: rgba(0, 0, 0, 0.8);
+  text-align: center;
+  vertical-align: middle;
+}
+#modal_confirm__container .modal_confirm__background .modal_confirm_ {
+  background: white;
+  padding: 50px;
+  display: inline-block;
+  border-radius: 3px;
+  font-weight: 300;
+  position: relative;
+}
+#modal_confirm__container .modal_confirm__background .modal_confirm_ h2 {
+  font-size: 25px;
+  line-height: 25px;
+  margin-bottom: 15px;
+}
+#modal_confirm__container .modal_confirm__background .modal_confirm_ p {
+  font-size: 18px;
+  line-height: 22px;
+}
+
+@keyframes unfoldIn {
+  0% {
+    transform: scaleY(0.005) scaleX(0);
+  }
+  50% {
+    transform: scaleY(0.005) scaleX(1);
+  }
+  100% {
+    transform: scaleY(1) scaleX(1);
+  }
+}
+@keyframes fadeIn {
+  0% {
+    background: rgba(0, 0, 0, 0);
+  }
+  100% {
+    background: rgba(0, 0, 0, 0.7);
+  }
+}
+@keyframes fadeOut {
+  0% {
+    background: rgba(0, 0, 0, 0.7);
+  }
+  100% {
+    background: rgba(0, 0, 0, 0);
+  }
+}
+@keyframes scaleForward {
+  0% {
+    transform: scale(0.85);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes quickScaleDown {
+  0% {
+    transform: scale(1);
+  }
+  99.9% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes roadRunnerIn {
+  0% {
+    transform: translateX(-1500px) skewX(30deg) scaleX(1.3);
+  }
+  70% {
+    transform: translateX(30px) skewX(0deg) scaleX(0.9);
+  }
+  100% {
+    transform: translateX(0px) skewX(0deg) scaleX(1);
+  }
+}
+@keyframes roadRunnerOut {
+  0% {
+    transform: translateX(0px) skewX(0deg) scaleX(1);
+  }
+  30% {
+    transform: translateX(-30px) skewX(-5deg) scaleX(0.9);
+  }
+  100% {
+    transform: translateX(1500px) skewX(30deg) scaleX(1.3);
+  }
+}
+
+	/*-------------------------
+		Confirm Box Css
+	--------------------------*/
+
     @media only screen and (max-width:600px){
     	.col-sm-12{
     		padding-left: 0 !important;
@@ -589,7 +737,7 @@ table.dataTable{
 										<tr>
 	                            		<?php
 	                if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "Y"){ ?>
-											<!-- <td><?php // echo $l->name;?></td> -->
+											<td><?php  echo $l->name;?></td>
 								<?php if($l->title != "Centre Manager"){ ?>
 											<!-- <td><?php // echo $l->title;?></td> -->
 			                       		<?php } else {echo "<td>--</td>";} }?>
@@ -660,7 +808,20 @@ table.dataTable{
                 </div>
               </div>
         </div>
-    
+
+<div id="modal_confirm__container">
+  <div class="modal_confirm__background">
+    <div class="modal_confirm_">
+      <h2 class="confirm__"></h2>
+      <p class="confirm_p"></p>
+      <span class="confirm__span"></span>
+      <span class="confirm_buttons d-flex">
+      	<input class="confirm_button confirm_cancel" type="button" value="Cancel" status="no">
+      	<input class="confirm_button confirm_save" type="button" value="Confirm" status="yes">
+      </span>
+    </div>
+  </div>
+</div>    
  <!-- apply leave modal start here -->
             <div class="modal fade" id="applyModal">
                 <div class="modal-dialog">
@@ -726,15 +887,7 @@ table.dataTable{
 				<div class="md-form">
 					<label>Total leave hours</label>
 				<span class="row pl-5">
-					<select name="total-leave-hours" id="total-leave-hours">
-						<?php
-						for($v = 0; $v < 10; $v+=0.5){
-						?>
-						<option value="<?php echo $v;?>"><?php echo $v; ?></option>
-						<?php
-							}
-						?>
-					</select>
+					<input type="number" name="total-leave-hours" id="total-leave-hours" step="0.5">
 				</span>		
 				</div>
 			</div>
@@ -853,22 +1006,75 @@ table.dataTable{
 
 		function updateLeaveApp(leaveId,status){
 			console.log(leaveId+" "+status);
-			var data = 'leaveId='+leaveId+'&status='+status;
-	
-		    var params = typeof data == 'string' ? data : Object.keys(data).map(
-		        function(k){ return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) }
-		    ).join('&');
-			var xhr = new XMLHttpRequest();
-			xhr.open('POST', base_url+"leave/updateLeaveApp");
-		    xhr.onreadystatechange = function() {
-		        if (xhr.readyState>3 && xhr.status==200) { 
-		        	location.reload();
-		        }
-		    };
-		    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-		    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-		    xhr.send(params);
+			confirmBox('Leave Status',status);
+				confirmStatus('update_leave_no','update_leave_yes',status);
+					$(document).on('click','.confirm_button',function(){
+						console.log($(this).attr('button-attr'))
+						if(($(this).attr('button-attr')) == 'update_leave_no' ){
+							console.log(leaveId+" "+status);
+			  			removeAttribute()
+						}
+						if(($(this).attr('button-attr')) == 'update_leave_yes' && $('.reject_leave_text').text() == null ){
+					  removeAttribute()
+					  console.log(leaveId+" "+status)
+						var data = 'leaveId='+leaveId+'&status='+status;
+				
+					    var params = typeof data == 'string' ? data : Object.keys(data).map(
+					        function(k){ return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) }
+					    ).join('&');
+						var xhr = new XMLHttpRequest();
+						xhr.open('POST', base_url+"leave/updateLeaveApp");
+					    xhr.onreadystatechange = function() {
+					        if (xhr.readyState>3 && xhr.status==200) { 
+					        	location.reload();
+					        }
+					    };
+					    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+					    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+					    xhr.send(params);
+							}
+				})
+		};
+
+	function confirmStatus(attr1,attr2){
+		  $(this).addClass('out');
+		  let yesOrNo;
+		  $('.confirm_button').eq(0).attr('button-attr',`${attr1}`);
+		  $('.confirm_button').eq(1).attr('button-attr',`${attr2}`);
+		  $('.confirm_button').on('click',function(){	
+		  	if($('.reject_leave_text').val() != null || $('.reject_leave_text').val() != ""){
+	  	  $('#modal_confirm__container').addClass('out');
+			  $('body').removeClass('modal_confirm__active');
+			  	}else{
+
+			  	}
+		  })
+		};
+		function confirmBox(heading,status){
+		  $('#modal_confirm__container').removeAttr('class').addClass('five');
+		  let modalHeading = `${heading}`;
+		  if(status == 3){
+		  	$('.confirm_p').empty();
+		  	$('.confirm__').empty();
+		  	$('.confirm__span').empty();
+		  let code = `<input type="text" class="reject_leave_text" placeholder="Please mention the reason" required>`;
+			  $('.confirm__span').append(code);
+		  	$('.confirm_p').html('Reject Leave');
+		  }
+	  	if(status == 2){
+		  	$('.confirm_p').empty();
+		  	$('.confirm__').empty();
+	  		$('.confirm_p').html('Accept Leave');
+	  	}
+		  $('.confirm__').append(modalHeading);
+		  $('body').addClass('modal_confirm__active');
+		};	
+
+		function removeAttribute(){
+			  $('.confirm_button').eq(0).removeAttr('button-attr');
+			  $('.confirm_button').eq(1).removeAttr('button-attr');
 		}
+
 
 		function applyLeave(){
 			var leaveId = document.getElementById("applyLeaveId").value;
@@ -876,7 +1082,7 @@ table.dataTable{
 			var endDate = document.getElementById("applyLeaveToDate").value;
 			var hours = document.getElementById("total-leave-hours").value;
 			var notes = document.getElementById("applyLeaveNotes").value;
-			console.log(leaveId);
+			 (leaveId);
 			console.log(startDate);
 			console.log(endDate);
 			console.log(notes);
@@ -969,5 +1175,11 @@ else{
 			$('#ui-datepicker-div').hide()
 			$('.table-div').css('maxWidth','100vw')
 		})
+</script>
+
+<script type="text/javascript">
+
+
+
 </script>
 </html>
