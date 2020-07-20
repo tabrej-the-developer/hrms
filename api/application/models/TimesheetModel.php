@@ -94,7 +94,7 @@ class TimesheetModel extends CI_Model {
 		return $query->result();
 	}
 
-	public function getRosterShift($empId,$date){
+	public function getRosterShift($date,$empId){
 		$this->load->database();
 		$query = $this->db->query("SELECT  * from shift where  userid = '$empId' and rosterDate = '$date' ");
 		return $query->row();

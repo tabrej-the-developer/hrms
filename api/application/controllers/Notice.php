@@ -14,6 +14,7 @@ class Notice extends CI_Controller {
 		parent::__construct();
 	}
 
+
 	public function index(){
 		
 	}
@@ -76,13 +77,13 @@ class Notice extends CI_Controller {
 		}
 	}
 
-	public function AddNotice(){
+	public function AddNotice($userid){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
 			if($res != null && $res->userid == $userid){
-				$json = json_decode(file_get_contents('php://input'));
 				if($json != null){
 					$userid = $json->userid;
 					$text = $json->text;
@@ -91,9 +92,7 @@ class Notice extends CI_Controller {
 					foreach ($json->members as $memberid) {
 						$this->noticeModel->addNotice($userid,$memberid,$subject,$text);
 					}
-					http_response_code(200);
-					echo json_encode($data);
-				}
+					http_response_code(200);				}
 				else{
 					http_response_code(401);
 				}

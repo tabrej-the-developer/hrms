@@ -12,12 +12,14 @@ $colors_array = ['#8dba5e','#9ebdff','#dd91ee','#f7c779','#a9bfaf','#6b88ca'];
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 -->
-
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css">
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.js"></script>
+
 <style type="text/css">
 	*{
 font-family: 'Open Sans', sans-serif;
@@ -104,12 +106,46 @@ table,tr,td{
 	font-size:12px;
 	padding-left: 1rem;
 }
-.owl-item{
-	max-width: 100vw
+@media only screen and (min-width:1024px){
+	table td:nth-child(1),table th:nth-child(1){
+		min-width:20vw !important;
+		max-width:20vw !important;
+	}
+	table td:nth-child(2),
+	table td:nth-child(3),
+	table td:nth-child(4),
+	table td:nth-child(5),
+	table td:nth-child(6),
+	table th:nth-child(2),
+	table th:nth-child(3),
+	table th:nth-child(4),
+	table th:nth-child(5),
+	table th:nth-child(6){
+		min-width:11.5vw !important;
+		max-width:11.5vw !important;
+	}
+}
+@media only screen and (min-width:1200px){
+	table td:nth-child(1){
+		min-width:20vw !important;
+		max-width:20vw !important;
+	}
+	table td:nth-child(2),
+	table td:nth-child(3),
+	table td:nth-child(4),
+	table td:nth-child(5),
+	table td:nth-child(6),
+	table th:nth-child(2),
+	table th:nth-child(3),
+	table th:nth-child(4),
+	table th:nth-child(5),
+	table th:nth-child(6){
+		min-width:12.5vw !important;
+		max-width:12.5vw !important;
+	}
 }
 table{
-	min-width: 100%;
-	max-width: 100%;
+	
 }
 .icon{
 	font-size:1rem;
@@ -252,6 +288,13 @@ max-width:30vw;
 }
 .Accepted{
 	background:#4CAF50;
+}
+.owl-item{
+	width: 100!important;
+}
+
+.owl-carousel.owl-loaded {
+    display: flex !important;
 }
    .modal-logout {
         position: fixed;
@@ -515,7 +558,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 						<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
 
 						<span class="row" style="padding:0;margin:0;">
-							<span class="col-3 icon-parent"><span class=" icon" style="<?php	echo "background:".$colors_array[rand(0,5)].";";?>"><?php echo icon($timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName)?></span></span>
+							<span class="col-md-3 col-12 icon-parent"><span class=" icon" style="<?php	echo "background:".$colors_array[rand(0,5)].";";?>"><?php echo icon($timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName)?></span></span>
 							<span class="col-9 name-role">
 								<span class="empname row"><?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName?></span>
 								<span class="hourly title row"><?php echo  $variable ?></span>
@@ -621,7 +664,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 			<td   style="min-width:14vw" class=" cell-boxes left-most">
 				<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
 				<span class="row name-space" style="padding:0;margin:0;">
-					<span class="col-3 icon-parent"><span class=" icon" style="<?php	echo "background:".$colors_array[rand(0,5)].";";?>"><?php echo icon($timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName)?></span></span>
+					<span class="col-md-3 col-12 icon-parent"><span class=" icon" style="<?php	echo "background:".$colors_array[rand(0,5)].";";?>"><?php echo icon($timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName)?></span></span>
 					<span class="col-9 name-role">
 					<span class="empname row"><?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName?></span>
 										<?php
@@ -715,12 +758,12 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 						<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
 
 						<span class="row" style="padding:0;margin:0;">
-							<span class="col-3 icon-parent"><span class=" icon" style="<?php	echo "background:".$colors_array[rand(0,5)].";";?>"><?php echo icon($timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName)?></span></span>
+							<span class="col-md-3 col-12 icon-parent"><span class=" icon" style="<?php	echo "background:".$colors_array[rand(0,5)].";";?>"><?php echo icon($timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName)?></span></span>
 							<span class="col-6 name-role">
 								<span class="empname row"><?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName?></span>
 								<span class="hourly title row "><?php echo  $variable; ?></span>
 							</span>
-							<span class="hourly col-3"><?php echo  $variable ?></span>
+							<span class="hourly col-md-3 col-12"><?php echo  $variable ?></span>
 						</span>
 					<?php } ?>
 					</td>
@@ -831,7 +874,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 <?php if($this->session->userdata('UserType') == ADMIN || $this->session->userdata('UserType') == SUPERADMIN){?>
 <script type="text/javascript">
 				var modal = document.getElementById("myModal");
-				var htmlVal = $('timesheet-form').html()
+				var htmlVal = $('#timesheet-form').html()
 				$(document).on('click','.shift-edit',function(){
 					 modal.style.display = "block";
 					var arrayType = $(this).attr('array-type');
@@ -960,8 +1003,9 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 <script type="text/javascript">
 	$(document).on('click','.time-box',function(){
 		var thisValue = $(this).children('.time-box').html();
-		var parentHTML = $('timesheet-form').html();
+		var parentHTML = $('.time-box').html();
 		var stime = $(this).attr('start-time');
+		var etime = $(this).attr('end-time')
 		var code = "<input type=\"time\" class=\"sclass\"> - <input type=\"time\" class=\"eclass\"> <input type=\"text\" id=\"employee-id\" style=\"display:none\"> <input type=\"text\" id=\"start-date\" style=\"display:none\"> <input type=\"text\" id=\"timesheet-id\" style=\"display:none\">"
 		$(this).empty();
 		$(this).next().html(code)
@@ -974,49 +1018,83 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 	})
 </script>
 <script type="text/javascript">
-	$(document).on('click','.buttonn',function(){
-		alert('gone')
+$(document).on('click','.buttonn',function(){
 		var i = $(".box-time").length;
 		var values = [];
 		var object = {};
 		var url = window.location.origin+"/PN101/timesheet/createPayroll";
-		for(var a=0;a<i;a++){
-			if($('.same_as_roster').length == 1){
+		alert(url)
+			if($('.same_as_roster').is(':checked')){
+				object = {};
 				object.startTime = $('.as_roster').children('.time_1').attr('time')
 				object.endTime = $('.as_roster').children('.time_2').attr('time')
 				object.payType = $('.as_roster').children('.same_as_roster').attr('factor')
+				object.clockedInTime = object.startTime;
+				object.clockedOutTime = object.endTime;
+				values.push(object)
 			}
 			else{
+		for(var a=0;a<i;a++){
+				object = {};
 		if($('.box-time').eq(a).children().children().children().prop('checked') == true){
 			if($('.time-box').eq(a).text() != ""){
 				object.startTime = $('.time-box').eq(a).attr('svalue');
 				object.endTime = $('.time-box').eq(a).attr('evalue');
-				object.payType = $('.new-time-box').next().children().val();
+				object.payType = $('.new-time-box').eq(a).next().children('.shift-type-select').val();
+				object.clockedInTime = $('.box-time').eq(a).attr('start-time');
+				object.clockedOutTime = $('.box-time').eq(a).attr('end-time');
+				values.push(object)
 			}
 			else{
-				object.startTime = $('.new-time-box').eq(a).children('.sclass').val();
-				object.endTime = $('.new-time-box').eq(a).children('.eclass').val();
-				object.payType = $('.new-time-box').next().children().val();
+				object.startTime = AmPmTo24($('.new-time-box').eq(a).children('.sclass').val());
+				object.endTime = AmPmTo24($('.new-time-box').eq(a).children('.eclass').val());
+				object.payType = $('.new-time-box').eq(a).next().children('.shift-type-select').val();
+				object.clockedInTime = $('.box-time').eq(a).attr('start-time');
+				object.clockedOutTime = $('.box-time').eq(a).attr('end-time');
+				values.push(object)
 				}
 			}
 		}
-			values.push(object)
-	}
+		}
+	console.log(values)
+	console.log()
+		let userid = "<?php echo $this->session->userdata('LoginId'); ?>;"
+		let empId = $('#emply-id').attr('employee');
+		let shiftDate = $('#emply-id').attr('date');
+		let timesheetId = "<?php echo $timesheetid; ?>";
+		console.log(shiftDate);
 		$.ajax({
 			url : url,
 			type : 'POST',
 			data : {
-				empId : $('#employee-id').val(),
-				userid : <?php echo $this->session->userdata($userid); ?>,
-				shiftDate : $('#start-date').val(),
-				timesheetid : $('#timesheet-id').val(), 
+				empId : empId,
+				userid : userid,
+				shiftDate : shiftDate,
+				timesheetid : timesheetId, 
 				visits : values
 			},
 			success : function(response){
-				alert('done')
+				alert(response)
 			}
-		}).fail(function(){alert('failed')})
+		}).fail(function(){
+			alert('failed')
+			})
 		})
+
+function AmPmTo24(time){
+	var time = $("#starttime").val();
+var hours = Number(time.match(/^(\d+)/)[1]);
+var minutes = Number(time.match(/:(\d+)/)[1]);
+var AMPM = time.match(/\s(.*)$/)[1];
+if(AMPM == "PM" && hours<12) hours = hours+12;
+if(AMPM == "AM" && hours==12) hours = hours-12;
+var sHours = hours.toString();
+var sMinutes = minutes.toString();
+if(hours<10) sHours = "0" + sHours;
+if(minutes<10) sMinutes = "0" + sMinutes;
+time = toString(sHours) + toString(sMinutes)
+return time;
+}
 </script>
 
 	<script type="text/javascript">
@@ -1043,7 +1121,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 <script type="text/javascript">
 	$(document).ready(()=>{
     $('.containers').css('paddingLeft',$('.side-nav').width());
-   			 margin_auto();
+   			 // margin_auto();
 });
 
 </script>
@@ -1098,8 +1176,8 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 		        }
 	        else{
 	        	for(var i=0;i<count;i++){
-	        		$('.clocked_time').eq(i).is(':checked') = false;
-	        		$('.clocked_time').eq(i).prop('disabled',true);
+	        		$('.clocked_time').eq(i).prop('disabled',false);
+	        		// $('.clocked_time').eq(i).prop('disabled',true);
 	        	}
 	        } 	
 		})

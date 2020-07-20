@@ -184,7 +184,7 @@ font-family: 'Open Sans', sans-serif;
 		<span class="center-select-span">Show Chart for:</span>
 		<?php $centersList = json_decode($centers); ?>
 		<select class="sellect">
-			<option>--Select Center--</option>
+			<!-- <option>--Select Center--</option> -->
 			<?php foreach($centersList->centers as $centers){ ?>
 			<option value="<?php echo $centers->centerid;?>" class="opt"><?php echo $centers->name;?></option>
 		<?php } ?>
@@ -326,7 +326,7 @@ font-family: 'Open Sans', sans-serif;
 					isRoomYN:isRoomYN,
 				},
 				success:function(response){
-					window.location.reload;
+					window.location.reload();
 				}
 			})
 		})
@@ -344,7 +344,7 @@ font-family: 'Open Sans', sans-serif;
 					roleName:roleName,
 				},
 				success:function(response){
-					alert('wow')
+					window.location.reload();
 				}
 			})
 		})
@@ -386,6 +386,7 @@ font-family: 'Open Sans', sans-serif;
 					roleName:roleName,
 				},
 				success:function(response){
+					window.location.reload();
 					alert(roleid + " " + roleName )
 				}
 			})
@@ -403,6 +404,7 @@ font-family: 'Open Sans', sans-serif;
 			type : 'POST',
 			data : {centerid:centerid} ,
 			success:function(response){
+				window.location.reload();
 				$('.thisOne').html($(response).find('.thisOne').html())
 			} 
 		}).fail(function(){
@@ -420,7 +422,7 @@ font-family: 'Open Sans', sans-serif;
 				id : id
 			},
 			success : function(response){
-				location.reload();
+				window.location.reload();
 			}
 		})
 	})
@@ -435,7 +437,7 @@ font-family: 'Open Sans', sans-serif;
 				id : id
 			},
 			success : function(response){
-				location.reload();
+				window.location.reload();
 			}
 		})
 	})

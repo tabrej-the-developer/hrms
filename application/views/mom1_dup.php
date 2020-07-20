@@ -833,6 +833,7 @@ $users =   json_decode($users);
          if(isset($meetings)){
            $meetings = json_decode($meetings);
             // print_r($meetings);
+           if(isset($meetings->data)){
          foreach($meetings->data as $u): 
           if($u->date <= date('Y-m-d')){
            $i = $i + 1;
@@ -880,7 +881,7 @@ $users =   json_decode($users);
           </div>
         </td>
       </tr>
-                         <?php } endforeach; } ?>
+                         <?php } endforeach; } } ?>
       
        
 
@@ -1032,6 +1033,7 @@ $(document).ready(function(){
 $(document).ready(function(){
 
   $('a#update').click(function() {
+    $('.tokens-container').empty()
     $('.tokens-container').remove('li');
     var  value  = $(this).closest('tr').children('td:eq(0)').text();
     var  value1 = $(this).closest('tr').children('td:eq(1)').text();

@@ -168,6 +168,7 @@ max-width:30vw;
     margin: 0;
     padding: 0;
     background:#307bd3;
+    cursor: move;
 	}
 	.ui-timepicker-container{
 		z-index:999;
@@ -327,7 +328,7 @@ max-width:30vw;
   top: 30%;
   left: 50%;
   width: 400px;
-  height: 400px;
+  min-height: 400px;
   margin-left: -200px;
   margin-top: -150px;
   background: #fff;
@@ -351,15 +352,15 @@ max-width:30vw;
 	cursor: move;
 }
 .priority_buttons{
-	position:absolute;
+	position:relative;
 	bottom: 10px;
 	width:100%;
 	justify-content: center;
 	display: flex;
+	padding: 20px 0 0 0;
 }
 .priority_areas {
 	display: flex;
-    position: absolute;
     text-align: center;
     justify-content: center;
     width: 100%;
@@ -413,6 +414,7 @@ max-width:30vw;
 	width:100%;
 	justify-content: center;
 	display: flex;
+	padding: 20px 0 0 0;
 }
 .priority_areass {
 	/*display: flex;*/
@@ -540,6 +542,7 @@ max-width:30vw;
     width: 100%;
     display: block;
     padding: 0;
+    cursor: move
     }
     .edit_priority,.edit_prioritys{
     	padding: 0.5rem 0;
@@ -575,6 +578,12 @@ max-width:30vw;
 	.print-btn{
 		display: none;
 	}
+	.hourly{
+	display:none;
+}
+.hourly::before{
+		display:none;
+}
 }
 @media only screen and (max-width: 1050px) {
 			.header-top{
@@ -839,8 +848,11 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 
 					<td class="shift-edit cell-boxes count-<?php echo $index+1;?>"  style="width:12vw" 
 					 name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->shiftid ?>"  
+
 					 name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleid ?>"
+						<?php if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status != "Rejected"){ ?>
 					 name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?>" 
+					<?php } ?>
 					 stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime?>" etime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime?>" 
 					 name="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->empName?>"
 					 status="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>" 
@@ -851,9 +863,11 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					 	<?php if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave != "Y"){ 	?>
 					 		<span class="row m-0 d-flex justify-content-center"><?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleName;?></span>
 					 	<?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)). "-" .timex( intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime));
+
+		 if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status != "Rejected"){ 
 					  $weeklyTotal = $weeklyTotal + $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?>
 					  				
-					<?php   }else{
+					<?php  } }else{
 						echo 'On Leave';
 					} ?>
 
@@ -1128,11 +1142,11 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 <div class="modal_priority" >
 	<span class="priority_heading" >
 		<a class="text-center  edit_priority" style="padding:1rem 0">Edit Priority</a>
+		</span>
 		<div class="priority_areas"></div>
 		<div class="priority_buttons">
 	  	<button class="close_priority" role="button">Cancel</button><button class="priority_save">Save</button>
 	  </div>
-	</span>
 </div>
 
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
@@ -1312,6 +1326,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 				var url = window.location.origin+"/PN101/roster/deleteShift/"+shiftId;
 				$.ajax({
 				url : url,
+				method : 'POST',
 				success: function(){
 					window.location.reload();
 				}
@@ -1833,6 +1848,10 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 </script>
 <script>
 $( ".modal_prioritys" ).draggable();
+$( ".modal-content" ).draggable();
+$( ".modal_priority" ).draggable();
+
+
 </script>
 </body>
 </html>

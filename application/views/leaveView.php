@@ -150,6 +150,8 @@ font-family: 'Open Sans', sans-serif;
 			border-top-right-radius:0;
 			background-color: #307bd3;
 			color: #fff;
+      display: flex;
+    justify-content: center;
 		}
 		.modal-content {
 			border-radius:0;	
@@ -338,6 +340,7 @@ table.dataTable{
 	    padding: .375rem .75rem !important;
 	    color: white !important;
 	}
+
 
 	.confirm_button{
 		background-color: #9E9E9E;
@@ -717,10 +720,10 @@ table.dataTable{
 			                        <thead>
 			                            <tr class="text-muted">
 	                            	<?php
-	                            		if($this->session->userdata('UserType') == SUPERADMIN ){ ?>
+	                            		//if($this->session->userdata('UserType') == SUPERADMIN ){ ?>
 			                            <th>Emp Name</th>
 			                            <th>Emp Designation</th>
-			                        <?php }?>
+			                        <?php // }?>
 			                            <th>Leave Type</th>
 			                            <th>Start Date</th>
 			                            <th>End Date </th>
@@ -835,7 +838,7 @@ table.dataTable{
                 <div class="modal-body">						
 					<div class="col-md-12 col-xl-12">
 							<div class="row">
-								<div class="col-md-12">
+								<div class="col-md-12" style="padding-left:0">
 									<div class="md-form">
 									<label>Leave Type</label>
 									<?php // $balance = json_decode($balance) ?>
@@ -851,7 +854,7 @@ table.dataTable{
 							</div>
 							<span style="color: red" id="applyLeaveIdError"></span>
 							<div class="row">
-								<div class="col-md-6">
+								<div class="col-md-6" style="padding-left:0">
 									<div class="md-form">
 										<label>Start Date</label>
 										<div class="input-group date" id="datetimepicker12" data-target-input="nearest">
@@ -863,7 +866,7 @@ table.dataTable{
 									</div>
 								</div>
 								<div class="col-md-6">
-									<div class="md-form">
+									<div class="md-form" style="padding-left:0">
 									<label>End Date</label>
 									<div class="input-group date" id="datetimepicker13" data-target-input="nearest">
                                     <input type="text" name="applyLeaveToDate" id="applyLeaveToDate" class="form-control datetimepicker-input" data-target="#datetimepicker13"  />
@@ -1064,6 +1067,7 @@ table.dataTable{
 	  	if(status == 2){
 		  	$('.confirm_p').empty();
 		  	$('.confirm__').empty();
+        $('.confirm__span').empty();
 	  		$('.confirm_p').html('Accept Leave');
 	  	}
 		  $('.confirm__').append(modalHeading);

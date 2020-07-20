@@ -11,6 +11,9 @@ font-family: 'Open Sans', sans-serif;
 		.box-time{
 			
 		}
+		.as_roster{
+			padding: 20px 20px 20px 4rem;
+		}
 		.shift-type-select{
 			width:100px;
 		}
@@ -51,10 +54,11 @@ font-family: 'Open Sans', sans-serif;
   crossorigin="anonymous"></script>
 <div>
 	<?php 
-	$shift = json_decode($shift);
+		$shift = json_decode($shift);
+		$rosterShift = json_decode($rosterShift);
 		$timesheetDetails = json_decode($timesheetDetails);
 		$entitlements = json_decode($entitlements);
-		//print_r($timesheetDetails->timesheet[$ya]->employees[$xa]->empName);
+		// print_r($timesheetDetails);
 		function timex( $x)
 	{ 
 	    $output;
@@ -95,14 +99,16 @@ if($aT == 'rosteredEmployees'){
 				$break = true;
 			}
 			?>
+			<?php // print_r($rosterShift); ?>
 			<div class="as_roster">
 				<?php foreach($shift->payrollTypes as $shifts){
 					if($shifts->id == "3"){?>
+						<?php // print_r(isset($rosterShift->startTime) ? $rosterShift->startTime : ""); ?>
 				<input type="checkbox" name="same_as_roster" class="same_as_roster" factor="<?php echo $shifts->factor; ?>">
-			<?php } ?>
-				<span time="<?php echo isset($rosterShift->startTime) ? $rosterShift->startTime : ""; ?>" class="time_1"><?php echo isset($rosterShift->startTime) ? $rosterShift->startTime : ""; ?></span>-<span time="<?php echo isset($rosterShift->startTime) ? $rosterShift->endTime : ""; ?>" class="time_2"><?php echo isset($rosterShift->startTime) ? $rosterShift->endTime : ""; ?></span>
+			<?php } } ?> Same as Roster(
+				<span time="<?php echo isset($rosterShift->startTime) ? $rosterShift->startTime : ""; ?>" class="time_1"><?php echo isset($rosterShift->startTime) ? timex($rosterShift->startTime) : ""; ?></span>-<span time="<?php echo isset($rosterShift->startTime) ? $rosterShift->endTime : ""; ?>" class="time_2"><?php echo isset($rosterShift->startTime) ? timex($rosterShift->endTime) : ""; ?></span> )
 			</div>
-	<?php	}
+	<?php	
 }
 	else{
 		$break = false;
@@ -116,7 +122,7 @@ foreach($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes 
 						}
 
 	?>
-	  <div start-time="<?php echo $visits->startTime; ?>" end-time="<?php echo $visits->endTime; ?>" class="box-time" style="padding:20px" hourly="<?php echo $variable;?>">
+	  <div start-time="<?php echo $visits->startTime; ?>" end-time="<?php echo $visits->endTime; ?>" class="box-time" style="padding:20px 20px 20px 4rem" hourly="<?php echo $variable;?>">
 	  	<span class="group-span">
 		<span><input type="checkbox" name="" checked class="clocked_time"></span>
 		<span svalue="<?php echo $visits->startTime; ?>" evalue="<?php echo $visits->endTime; ?>" class="time-box"><?php echo timex($visits->startTime) ."-". timex($visits->endTime) ?></span>
@@ -125,11 +131,11 @@ foreach($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes 
 			<select class="shift-type-select" >
 				<?php foreach($shift->payrollTypes as $shifts){
 					if($shifts->id == "3"){?>
-				<option value="<?php echo $shifts->type; ?>" selected factor="<?php echo $shifts->factor; ?>" class="fact"><?php echo $shifts->type ?></option>
+				<option value="<?php echo $shifts->factor; ?>" selected factor="<?php echo $shifts->factor; ?>" class="fact"><?php echo $shifts->type ?></option>
 			<?php 
 					}
 					else{ ?>
-				<option value="<?php echo $shifts->type; ?>" factor="<?php echo $shifts->factor; ?>"><?php echo $shifts->type ?></option>	
+				<option value="<?php echo $shifts->factor; ?>" factor="<?php echo $shifts->factor; ?>"><?php echo $shifts->type ?></option>	
 					<?php 
 					}
 				} ?>
@@ -137,15 +143,19 @@ foreach($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes 
 		</span>
 
 	</span>
-		<div><?php echo $visits->reason;?></div>
+		<div style="padding-left: 3rem;"><?php echo $visits->reason;?></div>
 
 	</div>
-		<?php if($break) 
-		
-			echo "Break :". $timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes[1]->startTime . " to " .$timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes[0]->endTime; 
-		 ?>
+
 	<?php
-		}
+		} ?>
+		<span style="padding-left: 4rem;">
+			<?php  
+		 if($break){ 
+			echo "Break :".  timex($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes[1]->endTime) . " to " . timex($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes[0]->startTime); 
+		} ?>
+		</span>
+		<?php 
 	}
 
 	?>
@@ -188,7 +198,7 @@ foreach($timesheetDetails->timesheet[$ya]->unrosteredEmployees[$xa]->clockedTime
 		}
 	}
 	?>
-		<div class="budget">Budget : </div>
+		<div class="budget" id="emply-id" employee="<?php echo $empId; ?>" timesheetid="<?php echo $timesheetid;?>" date="<?php echo $date;?>">Budget : </div>
 		<div class="d-flex justify-content-center">
 			<div class="">
 				<button class="close">Close</button>

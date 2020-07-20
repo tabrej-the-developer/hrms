@@ -347,8 +347,8 @@ class Timesheet extends CI_Controller{
 									$mar['startTime'] = $paySh->startTime;
 									$mar['endTime'] = $paySh->endTime;
 									$mar['status'] = $paySh->status;
-									$mar['payrollTypeId'] = $paySh->payrollTypeId;
-									$mar['payrollType'] = $this->payrollModel->getPayrollType($paySh->payrollTypeId);
+									$mar['payrollTypeId'] = $paySh->payrollType;
+									$mar['payrollType'] = $this->payrollModel->getPayrollType($paySh->payrollType);
 									array_push($var['payrollShifts'],$mar);
 								}
 							}
@@ -406,7 +406,7 @@ class Timesheet extends CI_Controller{
 		}
 	}
 
-	public function getRosterShifts($empId,$userid){
+	public function getRosterShifts($userid,$empId){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
@@ -441,8 +441,7 @@ class Timesheet extends CI_Controller{
 				$visits = $json->visits;
 				$this->load->model('timesheetModel');
 				foreach ($visits as $v) {
-					$this->timesheetModel->createPayrollEntry($timesheetid,$empId,$shiftDate,$v->clockedInTime,$v->clockedOutTime
-							,$v->startTime,$v->endTime,$userid,$v->payType);
+					$this->timesheetModel->createPayrollEntry($timesheetid,$empId,$shiftDate,$v->clockedInTime,$v->clockedOutTime,$v->startTime,$v->endTime,$userid,$v->payType);
 				}
 				$data['Status'] = "SUCCESS";
 				http_response_code(200);
