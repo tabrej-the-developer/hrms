@@ -288,13 +288,13 @@ max-width:30vw;
 }
 
 .Published{
-	background:#B493CB;
-	color:white !important;
+	background:#E3B5FF;
+	color:#707070 !important;
 	border-radius: 3px;
 }
 .Accepted{
-	background:#95C95A;
-	color:white !important;
+	background:#A7D572;
+	color:#707070 !important;
 	border-radius: 3px;
 }
 .Rejected{
@@ -305,8 +305,8 @@ max-width:30vw;
 	text-align:left;
 }
 .leave{
-	background: #F9AE3C;
-	color:white !important;
+	background: #FBBD52;
+	color:#707070 !important;
 	content: 'On Leave';
 	display: flex;
 	align-items: center;
