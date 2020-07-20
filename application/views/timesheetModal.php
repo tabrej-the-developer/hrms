@@ -152,7 +152,7 @@ foreach($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes 
 		<span style="padding-left: 4rem;">
 			<?php  
 		 if($break){ 
-			echo "Break :".  timex($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes[1]->endTime) . " to " . timex($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes[0]->startTime); 
+			//echo "Break :".  timex($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes[1]->endTime) . " to " . timex($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes[0]->startTime); 
 		} ?>
 		</span>
 		<?php 
@@ -198,7 +198,7 @@ foreach($timesheetDetails->timesheet[$ya]->unrosteredEmployees[$xa]->clockedTime
 		}
 	}
 	?>
-		<div class="budget" id="emply-id" employee="<?php echo $empId; ?>" timesheetid="<?php echo $timesheetid;?>" date="<?php echo $date;?>">Budget : </div>
+		<!-- <div class="budget" id="emply-id" employee="<?php echo $empId; ?>" timesheetid="<?php echo $timesheetid;?>" date="<?php echo $date;?>">Budget : </div> -->
 		<div class="d-flex justify-content-center">
 			<div class="">
 				<button class="close">Close</button>

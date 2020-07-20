@@ -163,7 +163,7 @@
 			<?php $footprints = json_decode($footprints); 
 			// print_r($footprints);
 			?>
-			<span class="col-12 footprints" style="background: white">
+			<!-- <span class="col-12 footprints" style="background: white">
 				<span class="row activity" style="border-bottom:1px solid #979797;opacity:0.28">
 					<span class="mr-auto pl-3">Activity</span>
 					<span class="pr-3">Refresh</span>
@@ -186,7 +186,7 @@
 						<span style="background:transparent;" class="col-4 "> <?php  echo $footprint->prev_page_tag != " " ? str_replace(base_url(),"",$footprint->prev_page_tag):"Login"; ?></span>
 					</span>
 			<?php } ?>
-			</span>
+			</span> -->
 			
 		</div>
 		<div class="d-flex">
