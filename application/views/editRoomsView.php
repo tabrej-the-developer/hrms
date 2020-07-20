@@ -222,9 +222,25 @@ font-family: 'Open Sans', sans-serif;
     var capacity = $(this).parent().parent().children('.r-capacity').children('.capacity').val();
      var studentRatio = $(this).parent().parent().children('.s-ratio').children('.ratio').val();
      var roomId = $(this).attr('i-v');
-     var url = "http://localhost/PN101/updateRoom"
+     var url = window.location.origin+"/PN101/settings/updateRoom"
       console.log(centerid+" -"+name+" -"+careAgeFrom+" -"+careAgeTo+" -"+capacity+" -"+studentRatio+" -"+roomId)
-
+      $.ajax({
+        url : url,
+        type: 'POST',
+        data:{
+          response : response,
+          centerid : centerid,
+          roomId : roomId,
+          name     : name,
+          careAgeFrom : careAgeFrom,
+          careAgeTo   : careAgeTo,
+          capacity    : capacity,
+          studentRatio : studentRatio
+        },
+        success:function(){
+          window.location.reload();
+        }
+      })
 
     })
   </script>

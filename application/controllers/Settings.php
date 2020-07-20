@@ -110,6 +110,7 @@ public function editRooms(){
 		$data['userid'] = $this->session->userdata('LoginId');
 		$data['response'] = $this->input->post('response');
 		$data['centerid'] = $this->input->post('centerid');
+		$data['roomId'] = $this->input->post('roomId');
 		$data['name'] = $this->input->post('name');
 		$data['careAgeFrom'] = $this->input->post('careAgeFrom');
 		$data['careAgeTo'] = $this->input->post('careAgeTo');
