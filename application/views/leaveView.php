@@ -1011,16 +1011,39 @@ table.dataTable{
 			console.log(leaveId+" "+status);
 			confirmBox('Leave Status',status);
 				confirmStatus('update_leave_no','update_leave_yes',status);
+            if(($('.reject_leave_text').length > 0) && status == 3) {
+              $('.confirm_save').attr('disabled',true);
+              $(document).on('keyup','.reject_leave_text',function(){
+                if($('.reject_leave_text') !=""){
+                $('.confirm_save').attr('disabled',false);
+                  }
+                  else{
+                    $('.confirm_save').attr('disabled',true);
+                  }
+              })
+            }
 					$(document).on('click','.confirm_button',function(){
 						console.log($(this).attr('button-attr'))
 						if(($(this).attr('button-attr')) == 'update_leave_no' ){
+            $('.confirm_p').empty();
+            $('.confirm__').empty();
+            $('.confirm__span').empty();
+             $('.confirm_save').attr('disabled',false);
 							console.log(leaveId+" "+status);
 			  			removeAttribute()
 						}
-						if(($(this).attr('button-attr')) == 'update_leave_yes' && $('.reject_leave_text').text() == null ){
+
+						if(($(this).attr('button-attr')) == 'update_leave_yes'  ){
 					  removeAttribute()
 					  console.log(leaveId+" "+status)
-						var data = 'leaveId='+leaveId+'&status='+status;
+            
+            if($('.reject_leave_text').length >0){
+              let rejectLeaveText = $('.reject_leave_text').val();
+              console.log(leaveId+""+status+""+rejectLeaveText)
+						var data = 'leaveId='+leaveId+'&status='+status+'&message='+rejectLeaveText;
+            }else{
+              var data = 'leaveId='+leaveId+'&status='+status;
+            }
 				
 					    var params = typeof data == 'string' ? data : Object.keys(data).map(
 					        function(k){ return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) }
@@ -1045,11 +1068,14 @@ table.dataTable{
 		  $('.confirm_button').eq(0).attr('button-attr',`${attr1}`);
 		  $('.confirm_button').eq(1).attr('button-attr',`${attr2}`);
 		  $('.confirm_button').on('click',function(){	
-		  	if($('.reject_leave_text').val() != null || $('.reject_leave_text').val() != ""){
+		  	if(($('.reject_leave_text').val() != null || $('.reject_leave_text').val() != "") && ($('.reject_leave_text').length > 0)){
+          console.log($('.reject_leave_text').val() +""+$('.reject_leave_text').val() != null)
 	  	  $('#modal_confirm__container').addClass('out');
 			  $('body').removeClass('modal_confirm__active');
-			  	}else{
-
+			  	}
+        if($('.reject_leave_text').length == 0){
+        $('#modal_confirm__container').addClass('out');
+        $('body').removeClass('modal_confirm__active');
 			  	}
 		  })
 		};

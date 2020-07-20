@@ -263,7 +263,7 @@ class Mom extends CI_CONTROLLER{
            $data['invites']       =      $form_data['invites'];
            $data['status']        =      'CREATED';//$form_data['status'];
 
-           $url = "http://localhost/PN101/api/mom/AddMeeting";
+           $url = BASE_API_URL."api/mom/AddMeeting";
            $ch = curl_init($url);
            curl_setopt($ch, CURLOPT_URL, $url);
            curl_setopt($ch, CURLOPT_POST, 1);
@@ -303,7 +303,7 @@ class Mom extends CI_CONTROLLER{
     $this->session->set_userdata('current_url',currentUrl());
   }
   // footprint end
-       $url = "http://localhost/PN101/api/mom/meetingAttendence";
+       $url = BASE_API_URL."api/mom/meetingAttendence";
        $ch = curl_init($url);
        curl_setopt($ch, CURLOPT_URL, $url);
        curl_setopt($ch, CURLOPT_POST, 1);
@@ -340,7 +340,7 @@ class Mom extends CI_CONTROLLER{
            $data['sentence'] = $form_data['sentence'];
            $data['remark']   = $form_data['remark'];
             
-           $url = "http://localhost/PN101/api/mom/meetingRecord/".$id;
+           $url = BASE_API_URL."api/mom/meetingRecord/".$id;
            $ch = curl_init($url);
            curl_setopt($ch, CURLOPT_URL,$url);
            curl_setopt($ch, CURLOPT_POST,1);
@@ -379,7 +379,7 @@ class Mom extends CI_CONTROLLER{
          $data['id'] = $form_data['id'];
         //    echo json_encode($data);
         //    exit;
-           $url = "http://localhost/PN101/api/mom/addSummary";
+           $url = BASE_API_URL."api/mom/addSummary";
            $ch = curl_init($url);
            curl_setopt($ch, CURLOPT_URL,$url);
            curl_setopt($ch, CURLOPT_POST,1);

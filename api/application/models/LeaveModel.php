@@ -104,9 +104,9 @@ class LeaveModel extends CI_Model {
 		return $query->row();
 	}
 
-	public function updateLeave($leaveApp,$status){
+	public function updateLeave($leaveApp,$status,$message){
 		$this->load->database();
-		$this->db->query("UPDATE leaveapplication SET status = $status WHERE applicationId=$leaveApp");
+		$this->db->query("UPDATE leaveapplication SET status = $status, message = '$message' WHERE applicationId=$leaveApp");
 	}
 
 	public function updateLeaveBalance($userid,$leaveId,$toUpdate){
@@ -117,6 +117,11 @@ class LeaveModel extends CI_Model {
 	public function getLeaveApplicationForUser($userid,$currentDate){
 		$this->load->database();
 		$query = $this->db->query("SELECT * FROM `leaveapplication` WHERE startDate<='$currentDate' and endDate >= '$currentDate' AND userid = '$userid'");
+		return $query->row();
+	}
+	public function getUserFromLeaveApplication($leaveApplication){
+		$this->load->database();
+		$query = $this->db->query("SELECT email FROM `leaveapplication` INNER JOIN users on leaveApplication.userid = users.id WHERE applicationId='$leaveApplication'");
 		return $query->row();
 	}
 }

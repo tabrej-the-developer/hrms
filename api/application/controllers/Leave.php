@@ -554,10 +554,35 @@ class Leave extends CI_Controller{
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			$json = json_decode(file_get_contents('php://input'));
 			if($json!= null && $res != null && $res->userid == $json->userid){
+				$this->load->model('leaveModel');
 				$leaveApplication = $json->leaveApplication;
 				$status = $json->status;
-				$this->load->model('leaveModel');
-				$this->leaveModel->updateLeave($leaveApplication,$status);
+				$message = $json->message;
+				if($status == 2){
+				$this->leaveModel->updateLeave($leaveApplication,$status,$message);
+				}
+				else{
+					$this->leaveModel->updateLeave($leaveApplication,$status,$message);
+					$to = $this->leaveModel->getUserFromLeaveApplication($leaveApplication);
+				$config = array(
+				    'protocol'  => 'smtp',
+				    'smtp_host' => 'ssl://smtp.zoho.com',
+				    'smtp_port' => 465,
+				    'smtp_user' => SMTP_EMAIL,
+				    'smtp_pass' => SMTP_PASSWORD,
+				    'mailtype'  => 'html',
+				    'charset'   => 'utf-8'
+				);
+				$from = $this->config->item('smtp_user');
+				$this->email->initialize($config);
+				$this->email->set_mailtype("html");
+				$this->email->set_newline("\r\n");
+				$this->email->from($from);
+				$this->email->to($to->email);				
+				$this->email->subject('Leave Application status');
+				$this->email->message($message);
+				$this->email->send();
+				}
 				$data['Status'] = 'SUCCESS';
 				http_response_code(200);
 				echo json_encode($data);

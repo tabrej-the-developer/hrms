@@ -251,6 +251,12 @@ class Leave extends CI_Controller {
 			$data['leaveApplication'] = $form_data['leaveId'];
 			$data['status'] = $form_data['status'];
 			$data['userid'] = $this->session->userdata('LoginId');
+			if(isset($form_data['status'])){
+					$data['message'] = $form_data['message'];
+					}
+					else{
+						$form_data['message'] = ''; 
+						}
 
 			$url = BASE_API_URL."leave/UpdateLeaveApplication";
 
