@@ -278,7 +278,7 @@ font-family: 'Open Sans', sans-serif;
 		var	name = $('#center-name').val();
 		var	logo = $('#center-logo').val();
 		var	rooms = $('').val();
-		var url = "http://localhost/PN101/createCenterProfile"
+		var url = window.location.origin+"/PN101/createCenterProfile"
 		$.ajax({
 			url: url,
 			type:'POST',

@@ -1396,7 +1396,7 @@ $('#toggle').remove();
   $(document).on('click','.title-td',function(){
       var mId = $(this).attr('m-id');
 
-  var url = "http://localhost/PN101/MOM/meetingInfo/"+mId;
+  var url = window.location.origin+"/PN101/MOM/meetingInfo/"+mId;
       window.location.href=url;
     });
   </script>

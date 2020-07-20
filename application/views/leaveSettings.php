@@ -17,7 +17,33 @@ font-family: 'Open Sans', sans-serif;
   	padding: 4rem 3rem 2rem 2rem;
   	height: calc(100vh - 2rem);
   }
-
+  .close{
+    float: none; 
+      font-size: inherit; 
+      font-weight: inherit; 
+      line-height: inherit; 
+      color: inherit; 
+      text-shadow: inherit; 
+      opacity: inherit; 
+      background: #6c757d !important;
+      color:white !important;
+      width: 5rem;margin-right: 20px
+  }
+  .btn-secondary{
+    float: none; 
+      font-size: inherit; 
+      font-weight: inherit; 
+      line-height: inherit; 
+      color: inherit; 
+      text-shadow: inherit; 
+      opacity: inherit; 
+      background: #6c757d !important;
+      color:white !important;
+      width: 5rem;
+  }
+  .close:hover{
+    background:#6c757d;
+  }
         .card-header {
             padding: 0.2rem 1.25rem;
             /* margin-bottom: 0; */
@@ -350,9 +376,6 @@ input[class=checkbox_label]:checked + label:before {
 				<div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Leave Type</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
-              </button>
           </div>
           <div class="modal-body">
 						<div class="col-md-12 col-xl-12">	
@@ -387,7 +410,8 @@ input[class=checkbox_label]:checked + label:before {
 						<button class="btn btn-secondary rounded-0" type="button" onclick="addLeave()">Update</button>
 						<button class="btn btn-danger rounded-0" type="button" onclick="deleteLeave()">Delete</button> 
 						</div>
-						<div class="form-group text-center" id="addLeaveType" style="display: block;">
+						<div class="form-group text-center d-flex justify-content-center" id="addLeaveType" >
+            <button type="button" class="close " data-dismiss="modal" aria-label="Close">Cancel</button>
 						<button class="btn btn-secondary rounded-0" type="button" onclick="addLeave()">Add</button>
 						</div>
 				  </form>	

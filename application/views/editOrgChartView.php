@@ -313,7 +313,7 @@ font-family: 'Open Sans', sans-serif;
 
 		$(document).on('click','#addAreaSubmit',function(e){
 			e.preventDefault();
-			var url = "http://localhost/PN101/settings/addArea";
+			var url = window.location.origin+"/PN101/settings/addArea";
 			var centerid = $('.sellect').prop('value');
 			var areaName = $('#areaName').val();
 			var isRoomYN = $('#isRoomYN').val();
@@ -333,7 +333,7 @@ font-family: 'Open Sans', sans-serif;
 
 		$(document).on('click','.addRoleSubmit',function(e){
 			e.preventDefault();
-			var url = "http://localhost/PN101/settings/addRole";
+			var url = window.location.origin+"/PN101/settings/addRole";
 			var areaid = $(this).parent().parent().parent().attr('areaId');
 			var roleName = $(this).parent().parent().children().children().next().val();
 			$.ajax({
@@ -352,7 +352,7 @@ font-family: 'Open Sans', sans-serif;
 
 	$(document).on('click','.editAreaSubmit',function(e){
 			e.preventDefault();
-			var url = "http://localhost/PN101/settings/UpdateArea";
+			var url = window.location.origin+"/PN101/settings/UpdateArea";
 			var areaid = $(this).parent().parent().attr('areaId');
 			var areaName = $(this).parent().prev().prev().children().val();
 			var isRoomYN = $(this).parent().prev().children().val();
@@ -375,7 +375,7 @@ font-family: 'Open Sans', sans-serif;
 
 		$(document).on('click','.editRoleSubmit',function(e){
 			e.preventDefault();
-			var url = "http://localhost/PN101/settings/UpdateRole";
+			var url = window.location.origin+"/PN101/settings/UpdateRole";
 			var roleid = $(this).parent().prev().children().val();
 			var roleName = $(this).parent().prev().prev().children().val();
 			$.ajax({
@@ -397,14 +397,13 @@ font-family: 'Open Sans', sans-serif;
 	}
 
 	$(document).on('change','.sellect',function(){
-		var url = "http://localhost/PN101/settings/orgChart";
+		var url = window.location.origin+"/PN101/settings/orgChart";
 		var centerid = parseInt($(this).prop('value'));
 		$.ajax({
 			url : url,
 			type : 'POST',
 			data : {centerid:centerid} ,
 			success:function(response){
-				window.location.reload();
 				$('.thisOne').html($(response).find('.thisOne').html())
 			} 
 		}).fail(function(){
@@ -413,7 +412,7 @@ font-family: 'Open Sans', sans-serif;
 	})
 
 	$(document).on('click','.delete-role',function(){
-		var url = "http://localhost/PN101/settings/deleteRole"
+		var url = window.location.origin+"/PN101/settings/deleteRole"
 		var id = $(this).attr('d-val');
 		$.ajax({
 			url : url ,
@@ -428,7 +427,7 @@ font-family: 'Open Sans', sans-serif;
 	})
 
 	$(document).on('click','.delete-area',function(){
-		var url = "http://localhost/PN101/settings/deleteArea"
+		var url = window.location.origin+"/PN101/settings/deleteArea"
 		var id = $(this).attr('d-val');
 		$.ajax({
 			url : url ,

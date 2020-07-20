@@ -1177,7 +1177,7 @@ $(document).ready(function(){
 	$(document).ready(function(){
 		$('#center').change(function(){
 	var id = this.value;
-	var url = "http://localhost/PN101/settings/addEmployee/"+id;
+	var url = window.location.origin+"/PN101/settings/addEmployee/"+id;
 	console.log(id)
 	$.ajax({
 		url:url,

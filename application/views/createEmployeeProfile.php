@@ -25,7 +25,7 @@ font-family: 'Open Sans', sans-serif;
 					</button></a> Enter Employee Details
 			</div>
 		</h4>	
-		<form name ="userinput" action="http://localhost/PN101/createEmployeeProfile" method="post" 
+		<form name ="userinput" action="<?php echo site_url();?>/PN101/createEmployeeProfile" method="post" 
 		enctype="multipart/form-data" >
 			<hr>
 		 	<span id="employeeDetailsYo">

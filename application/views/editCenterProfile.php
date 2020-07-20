@@ -185,7 +185,7 @@
     <script type="text/javascript">
       $(document).on('click','.btn-success',function(e){
           e.preventDefault();
-            var url = "http://localhost/PN101/settings/updateCenter";
+            var url = window.location.origin+"/PN101/settings/updateCenter";
             var centerid = document.getElementById("centerid").value;
             var logo = document.getElementById("logoFile").value;
             var name = document.getElementById("centerName").value;
@@ -222,7 +222,7 @@
 <script type="text/javascript">
   function filterCenter(){
     var val = $('select').val();
-    var url = "http://localhost/PN101/settings/centerProfile?centerid="+val;
+    var url = window.location.origin+"/PN101/settings/centerProfile?centerid="+val;
     $.ajax({
       url : url,
       type: 'GET',
@@ -238,12 +238,12 @@
 </script>
 <script type="text/javascript">
   $('.add-center').on('click',function(){
-    window.location.href="http://localhost/PN101/settings/createCenter"
+    window.location.href = window.location.origin+"/PN101/settings/createCenter"
   })
 </script>
 <!-- <script type="text/javascript">
   $('.add-employee').on('click',function(){
-    window.location.href="http://localhost/PN101/settings/addEmployee"
+    window.location.href=window.location.origin+"/PN101/settings/addEmployee"
   })
 </script> -->
 <script type="text/javascript">

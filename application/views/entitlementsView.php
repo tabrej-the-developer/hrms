@@ -87,6 +87,26 @@ font-family: 'Open Sans', sans-serif;
     vertical-align: bottom;
     border-bottom: 0 !important;
 }
+.submit-edit{
+        background-color: #9E9E9E;
+      border: none;
+      color: white;
+      padding: 10px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      margin: 2px;
+}
+.cancel-edit{
+        background-color: #9E9E9E;
+      border: none;
+      color: white;
+      padding: 10px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      margin: 2px;
+}
 thead{
       background:rgba(0,0,0,0.2);
     }
@@ -295,8 +315,8 @@ thead{
        </span>
      </td>
      <td>
-       <span style="cursor: pointer;">
-         <i class="fas fa-trash-alt" style="color: #ff3b30;" d-v=""></i> Cancel</span>
+       <span style="cursor: pointer;" class="fa-trash-alt">
+         <i class="fas " style="color: #ff3b30;" d-v=""></i> Cancel</span>
      </td>
    </tr>`;
    
