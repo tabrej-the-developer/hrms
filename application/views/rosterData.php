@@ -283,22 +283,30 @@ max-width:30vw;
 }
 .Added{
 	background: #e7e7e7;
+	color: #707070
 	border-radius: 3px;
 }
 
 .Published{
-	background:rgba(156,39,1760.5);
+	background:#B493CB;
+	color:white !important;
 	border-radius: 3px;
 }
 .Accepted{
-	background:rgba(76,175,80,0.8);
+	background:#95C95A;
+	color:white !important;
 	border-radius: 3px;
+}
+.Rejected{
+	background: #E26D4E;
+	color:white;
 }
 .nav-link{
 	text-align:left;
 }
 .leave{
-	background: orange;
+	background: #F9AE3C;
+	color:white !important;
 	content: 'On Leave';
 	display: flex;
 	align-items: center;
@@ -559,9 +567,7 @@ max-width:30vw;
     .modal_label{
     	padding-left:3rem !important;
     }
-    .Rejected{
-    	background: rgba(220,20,60,0.8)
-    }
+
 @media print{
 	td:nth-child(7){
 		display: none;
