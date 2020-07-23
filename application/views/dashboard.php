@@ -176,16 +176,16 @@
 					<span class="col-3">Activity Description</span>
 				</span>
 				<?php 
-					$count = 1;
-				foreach($footprints->footprints as $footprint){?>
+				//	$count = 1;
+				//foreach($footprints->footprints as $footprint){?>
 					<span class="row activity-row" >
-						<span class="col-2"><?php echo  $count++ ;?></span>
-						<span class="col-2"><?php  echo $footprint->ip ?></span>
-						<span class="col-2"><?php  echo explode(" ",$footprint->start_time)[0] ?></span>
-						<span class="col-2"><?php  echo explode(" ",$footprint->start_time)[1] ?></span>
-						<span style="background:transparent;" class="col-4 "> <?php  echo $footprint->prev_page_tag != " " ? str_replace(base_url(),"",$footprint->prev_page_tag):"Login"; ?></span>
+						<span class="col-2"><?php // echo  $count++ ;?></span>
+						<span class="col-2"><?php  // echo $footprint->ip ?></span>
+						<span class="col-2"><?php  // echo explode(" ",$footprint->start_time)[0] ?></span>
+						<span class="col-2"><?php  // echo explode(" ",$footprint->start_time)[1] ?></span>
+						<span style="background:transparent;" class="col-4 "> <?php  // echo $footprint->prev_page_tag != " " ? str_replace(base_url(),"",$footprint->prev_page_tag):"Login"; ?></span>
 					</span>
-			<?php } ?>
+			<?php // } ?>
 			</span> -->
 			
 		</div>

@@ -623,8 +623,8 @@ table.dataTable{
 	                    <table class="table table-striped table-borderless table-hover border-shadow" id="example1" style="width:100%;">
 	                        <thead>
 	                            <tr class="text-muted">
-	                            <th>Emp. Name</th>
-	                            <th>Emp. Designation</th>
+	                            <th>Employee Name</th>
+	                            <th>Employee Role</th>
 	                            <th>Start Date </th>
 	                            <th>End Date</th>
 	                            <th>Leave Type</th>
@@ -721,8 +721,8 @@ table.dataTable{
 			                            <tr class="text-muted">
 	                            	<?php
 	                            		//if($this->session->userdata('UserType') == SUPERADMIN ){ ?>
-			                            <th>Emp Name</th>
-			                            <th>Emp Designation</th>
+			                            <th>Employee Name</th>
+			                            <!-- <th>Emp Designation</th> -->
 			                        <?php // }?>
 			                            <th>Leave Type</th>
 			                            <th>Start Date</th>
@@ -1009,19 +1009,23 @@ table.dataTable{
 
 		function updateLeaveApp(leaveId,status){
 			console.log(leaveId+" "+status);
+      //confirm box is a modal
 			confirmBox('Leave Status',status);
-				confirmStatus('update_leave_no','update_leave_yes',status);
-            if(($('.reject_leave_text').length > 0) && status == 3) {
-              $('.confirm_save').attr('disabled',true);
-              $(document).on('keyup','.reject_leave_text',function(){
-                if($('.reject_leave_text') !=""){
-                $('.confirm_save').attr('disabled',false);
-                  }
-                  else{
-                    $('.confirm_save').attr('disabled',true);
-                  }
-              })
+      //confirm status adds the attr
+			confirmStatus('update_leave_no','update_leave_yes',status);
+      //disables the button
+      if(($('.reject_leave_text').length > 0) && status == 3) {
+        $('.confirm_save').attr('disabled',true);
+        $(document).on('keyup','.reject_leave_text',function(){
+          if($('.reject_leave_text') !=""){
+          $('.confirm_save').attr('disabled',false);
             }
+            else{
+              $('.confirm_save').attr('disabled',true);
+            }
+        })
+      }
+
 					$(document).on('click','.confirm_button',function(){
 						console.log($(this).attr('button-attr'))
 						if(($(this).attr('button-attr')) == 'update_leave_no' ){

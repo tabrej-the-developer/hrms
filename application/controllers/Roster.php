@@ -151,7 +151,7 @@ public function getRosterDetails(){
 		$data['entitlements'] = $this->getAllEntitlements($data['userid']);
 		$data['rosterDetails'] = $this->getRoster($data['rosterid'],$data['userid']);
 		$data['permissions'] = $this->fetchPermissions();
-		// var_dump($data['rosterDetails']);
+		$data['casualEmployees'] = $this->getCasualEmployees();
 			//footprint start
 		if($this->session->has_userdata('current_url')){
 			footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
@@ -171,8 +171,58 @@ public function getRosterDetails(){
 		}
 	}
 
+	 function getCasualEmployees(){
+			$url = BASE_API_URL."/rosters/getCasualEmployees/".$this->session->userdata('LoginId');
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				return $server_output;
+				curl_close ($ch);
+			}
+			else if($httpcode == 401){
 
+			}
+		
+		}
 
+ public function addCasualEmployee(){
+ 	$form_data = $this->input->post();
+	if($form_data != null){
+		$data['date'] = $this->input->post('date');
+		$data['roster_id'] = $this->input->post('roster_id');
+		$data['emp_id'] = $this->input->post('emp_id');
+		$data['casualEmp_start_time'] = $this->input->post('casualEmp_start_time');
+		$data['casualEmp_end_time'] = $this->input->post('casualEmp_end_time');
+		$data['casualEmp_role_id'] = $this->input->post('casualEmp_role_id');
+	 		$url = BASE_API_URL."/Rosters/addCasualEmployee/".$this->session->userdata('LoginId');
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'x-device-id: '.$this->session->userdata('x-device-id'),
+					'x-token: '.$this->session->userdata('AuthToken')
+				));
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				$server_output = curl_exec($ch);
+				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			$jsonOutput = json_decode($server_output);
+			curl_close ($ch);
+			return $jsonOutput;
+		}
+		else if($httpcode == 401){
+
+		}
+	}		
+}
 
 	 function getRoster($rosterid,$userid){
 		

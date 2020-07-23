@@ -3,6 +3,9 @@ $colors_array = ['#8dba5e','#9ebdff','#dd91ee','#f7c779','#a9bfaf','#6b88ca'];
 ?>
 <!DOCTYPE html>
 <html>
+<style type="text/css" media="print">
+  @page { size: landscape; }
+</style>
 <head>
 	<title></title>
 		<?php $this->load->view('header'); ?>
@@ -346,11 +349,16 @@ max-width:30vw;
   transition: 0.5s ease-out;
   transform: translateY(45px);
 }
-.active {
+.active,.actived {
   visibility: visible;
   opacity: 1;
 }
 .active + .modal_priority {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+}
+.actived + .modal_priorityed {
   visibility: visible;
   opacity: 1;
   transform: translateY(0);
@@ -412,6 +420,33 @@ max-width:30vw;
   opacity: 1;
   transform: translateY(0);
 }
+.masked {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.1);
+  z-index: 50;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.7s;
+}
+.modal_priorityed {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  width: 400px;
+  height: 450px;
+  margin-left: -200px;
+  margin-top: -150px;
+  background: #fff;
+  z-index: 100;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.5s ease-out;
+  transform: translateY(45px);
+}
 .priority_areass  tr td{
 	width: 300px;
 	cursor: move;
@@ -446,25 +481,14 @@ max-width:30vw;
 	margin-top:-5px;
 	/*width: 100%;*/
 }
-.print-btn{
-		/*position: absolute;*/
-	/*right: 0;*/
-		width: 5rem;
-			background-color: #9E9E9E;
-  border: none;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 3px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 2px
-}
-.priority-btn{
+
+.casualEmploye-btn,.priority-btn,.print-btn{
 	/*position: absolute;*/
 /*	right: 0;*/
+	font-size:1rem;
+	width:100%;
 	width: 5rem;
-			background-color: #9E9E9E;
+	background-color: #9E9E9E;
   border: none;
   color: white;
   padding: 5px 10px;
@@ -474,6 +498,12 @@ max-width:30vw;
   display: inline-block;
   margin: 2px;
   width:5rem;
+}
+.casualEmployee-span{
+	margin-right: 10px;
+}
+.casualEmploye-btn{
+	width:8rem;
 }
 .close_priority{
 				background-color: #9E9E9E;
@@ -552,7 +582,7 @@ max-width:30vw;
     padding: 0;
     cursor: move
     }
-    .edit_priority,.edit_prioritys{
+    .edit_priority,.edit_prioritys,.edit_priorityed{
     	padding: 0.5rem 0;
 	    position: relative;
 	    display: block;
@@ -567,7 +597,20 @@ max-width:30vw;
     .modal_label{
     	padding-left:3rem !important;
     }
-
+    .casualEmployee_label{
+    	display: flex;
+    	width:100%;
+    	padding:10px;
+    }
+    .casualEmployee_label label{
+    	width:40%;
+    }
+    .casualEmployee_label select{
+    	padding-left:50px;
+    }
+    .casualEmployee_label select,.casualEmployee_label input{
+    	width:60%;
+    }
 @media print{
 	td:nth-child(7){
 		display: none;
@@ -633,7 +676,7 @@ max-width:30vw;
 		<div class="heading" id="center-id" c_id="<?php echo isset($rosterDetails->centerid) ? $rosterDetails->centerid : null; ?>">Rosters
 			<span class="top_buttons ml-auto">
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?> 
-			<span class="priority "><button class="priority-btn ">Priority</button></span>
+			<span class="casualEmploye-span"><button class="casualEmploye-btn">Add Employee</button></span><span class="priority "><button class="priority-btn ">Priority</button></span>
 <?php } ?><span class="print-button"><button class="print-btn">Print</button></span>
 			</span>
 		</div>
@@ -1152,6 +1195,52 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 		<div class="priority_areas"></div>
 		<div class="priority_buttons">
 	  	<button class="close_priority" role="button">Cancel</button><button class="priority_save">Save</button>
+	  </div>
+</div>
+
+<div class="masked" ></div>
+<div class="modal_priorityed" >
+	<span class="priority_headinged" >
+		<a class="text-center  edit_priorityed" style="padding:1rem 0">Add Employee</a>
+	</span>
+	<?php $casualEmployees = json_decode($casualEmployees); ?>
+		<div class="priority_areased">
+			<span class="casualEmployee_label">
+			<label >Employee</label>
+			<select id="casualEmp_id">
+			<?php foreach($casualEmployees->casualEmployees as $employee){ ?>
+					<option value="<?php echo $employee->empId; ?>" ><?php echo $employee->empName;?></option>
+		<?php	} ?>
+			</select>
+			</span>
+			<span class="casualEmployee_label">
+				<label>Date</label>
+				<input type="date" name="" id="casualEmp_date">
+			</span>
+			<span class="casualEmployee_label">
+				<label>Start Time</label>
+				<input type="time"  id="casualEmp_start_time">
+			</span>
+			<span class="casualEmployee_label">
+				<label>End Time</label>
+				<input type="time"  id="casualEmp_end_time">
+			</span>
+			<span class="casualEmployee_label">
+				<label>Area</label>
+				<select class="casualEmploye-area-select">
+					<option>Change Area</option>
+				</select>
+			</span>
+			<span class="casualEmployee_label">
+				<label>Role</label>
+				<select class="casualEmploye-role-select" id="casualEmp_role_id">
+				
+				</select>
+			</span>
+			<span></span>
+		</div>
+		<div class="priority_buttonsed">
+	  		<button class="close_priorityed" role="button">Cancel</button><button class="priority_saveed">Save</button>
 	  </div>
 </div>
 
@@ -1782,7 +1871,7 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 	})
 
 	$(document).on('click','.add_shift',function(){
-		$(this).closest();
+		// $(this).closest();
 	})
 
 	function closeAddShitModal(){
@@ -1859,9 +1948,96 @@ $( ".modal_priority" ).draggable();
 
 
 </script>
+<script type="text/javascript">
+	$(document).on('click','.casualEmploye-btn',function(){
+			$(".masked").addClass("actived");
+		});
+
+	function closeModal(){
+	  $(".masked").removeClass("actived");
+	}
+
+	$(".close_priorityed").on("click", function(){
+		// $(".priority_areased").empty();
+	 		 closeModal();
+	});
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var centerid = $('#center-id').attr('c_id');
+		// var userid = $('#user-id-select').text();
+		var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
+		$.ajax({
+			method:'GET',
+			url:url,
+			dataType: 'JSON',
+			success:function(response){
+				response['orgchart'].forEach(function(index){
+					var data = "<option value="+index.areaId+">"+index.areaName+"</option>";
+					$('.casualEmploye-area-select').append(data)
+				})
+			}
+		})
+	})
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(document).on('change','.casualEmploye-area-select',function(){
+		 var centerid = $('#center-id').attr('c_id');
+		// var userid = $('#user-id-select').text();
+		var areaId = $(this).val();
+		var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
+		$.ajax({
+			method:'GET',
+			url:url,
+			dataType: 'JSON',
+			success:function(response){
+					$('.casualEmploye-role-select').empty()
+				response['orgchart'].forEach(function(index){
+					index['roles'].forEach(function(values){
+						if(areaId == values.areaid){
+							var data = "<option value="+values.roleid+">"+values.roleName+"</option>";
+								$('.casualEmploye-role-select').append(data)
+										}
+									})
+					})
+				}
+			})
+		})
+	})
+</script>
+<script type="text/javascript">
+	$(document).on('click','.priority_saveed',function(){
+		var date = $('#casualEmp_date').val();
+		var roster_id = "<?php echo $rosterDetails->id; ?>";
+		var emp_id = $('#casualEmp_id').val();
+		var casualEmp_start_time = $('#casualEmp_start_time').val();
+		var casualEmp_end_time = $('#casualEmp_end_time').val();
+		casualEmp_start_time = parseInt(casualEmp_start_time.replace(":",""));
+		casualEmp_end_time = parseInt(casualEmp_end_time.replace(":",""));
+		var casualEmp_role_id = $('#casualEmp_role_id').val();
+		console.log(date+ "---"+roster_id+ "---"+emp_id+ "---"+casualEmp_start_time+ "---"+casualEmp_end_time+ "---"+casualEmp_role_id)
+		var url = window.location.origin+"/PN101/roster/addCasualEmployee";
+		$.ajax({
+			url:url,
+			method:'POST',
+			data:{
+				date : date,
+				roster_id : roster_id,
+				emp_id : emp_id,
+				casualEmp_start_time : casualEmp_start_time,
+				casualEmp_end_time : casualEmp_end_time,
+				casualEmp_role_id : casualEmp_role_id
+			},
+			success:function(response){
+				alert(response)
+				window.location.reload();
+			}
+		})
+	})
+</script>
 </body>
 </html>
-
 
 
 <!-- 334 -->

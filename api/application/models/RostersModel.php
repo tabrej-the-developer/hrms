@@ -116,6 +116,19 @@ class RostersModel extends CI_Model {
 		$query = $this->db->query("INSERT INTO shift (id,roasterId,rosterDate,userid,startTime,endTime,roleid,status) VALUES ('$uniqueid','$rosterid','$date','$empid','$startTime','$endTime',$roleid,$status) ");
 	}
 
+	public function addCasualEmployees($startTime,$endTime,$rosterid,$roleid,$date,$empid,$status){
+		$this->load->database();
+		$uniqueid = uniqid();
+		$query = $this->db->query("INSERT into shift (id,roasterId,rosterDate, userid, startTime, endTime, roleid,status) VALUES ('$uniqueid','$rosterid','$date','$empid','$startTime','$endTime',$roleid,$status)");
+
+	}
+
+	public function getCasualEmployees(){
+		$this->load->database();
+		$query = $this->db->query("SELECT * from Users");
+		return $query->result();
+	}
+
 }
 
 

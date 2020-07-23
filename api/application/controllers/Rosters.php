@@ -391,4 +391,68 @@ class Rosters extends CI_Controller {
 			http_response_code(401);
 		}
 	}
+
+	public function addCasualEmployee($userid){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $userid){
+				$startTime = $json->casualEmp_start_time;
+				$endTime = $json->casualEmp_end_time;
+				$rosterid = $json->roster_id ;//$json->roster_id;
+				$roleid = $json->casualEmp_role_id;
+				$date = $json->date;
+				$empid = $json->emp_id;
+				$status = "1";
+				if($startTime != null && $endTime != null && $rosterid != null && $roleid != null && $date != null && $empid != null){
+					$this->load->model('rostersModel');
+					$this->rostersModel->addCasualEmployees($startTime,$endTime,$rosterid,$roleid,$date,$empid,$status);
+					$data['Status'] = 'SUCCESS';
+					http_response_code(200);
+					echo json_encode($data);
+				}
+				else{
+					$data['Status'] = 'ERROR';
+					$data['Message'] = "Invalid Parameters";
+					http_response_code(200);
+					echo json_encode($data);
+				}
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
+	public function getCasualEmployees($userid){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+				$this->load->model('rostersModel');
+				$casualEmployees = $this->rostersModel->getCasualEmployees();
+				$data['casualEmployees'] = [];
+				foreach ($casualEmployees as $emp) {
+						$var['empName'] = $emp->name;
+						$var['empCenter'] = $emp->center;
+						$var['empId'] = $emp->id;
+						array_push($data['casualEmployees'],$var);
+				}
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
 }
