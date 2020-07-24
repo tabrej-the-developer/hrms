@@ -97,6 +97,7 @@ table,tr,td{
 	font-weight:bold;
 	font-size:2rem;
 	padding-left:50px;
+	display: flex;
 }
 .roster-dates{
 	text-align:left;
@@ -475,23 +476,31 @@ max-width:30vw;
 	font-size:1rem;
 	width:100%;
 }
+.print-button,.priority,.casualEmploye-span,.showBudget{
+	display: flex;
+	align-items: center;
+}
 .top_buttons{
 	position: absolute;
-	right: 0;
-	margin-top:-5px;
+	right:0;
+	display: flex;
+	align-items: center;
+	margin-top:0.5rem;
 	/*width: 100%;*/
 }
-
-.casualEmploye-btn,.priority-btn,.print-btn{
+.hide_budget{
+	font-weight: 100;
+	font-size: 1rem;
+	padding: 1px 6px;
+}
+.casualEmploye-btn,.priority-btn,.print-btn,.showBudget{
 	/*position: absolute;*/
 /*	right: 0;*/
 	font-size:1rem;
 	width:100%;
-	width: 5rem;
 	background-color: #9E9E9E;
   border: none;
   color: white;
-  padding: 5px 10px;
   border-radius: 3px;
   text-align: center;
   text-decoration: none;
@@ -499,8 +508,12 @@ max-width:30vw;
   margin: 2px;
   width:5rem;
 }
-.casualEmployee-span{
-	margin-right: 10px;
+.showBudget input{
+	margin-right:0.3rem;
+}
+.casualEmployee-span,.showBudget{
+	font-size:1rem;
+	width:100%;
 }
 .casualEmploye-btn{
 	width:8rem;
@@ -629,10 +642,13 @@ max-width:30vw;
 	}
 	.hourly{
 	display:none;
-}
-.hourly::before{
-		display:none;
-}
+	}
+	.hourly::before{
+			display:none;
+	}
+	body{
+		margin: 0;
+	}
 }
 @media only screen and (max-width: 1050px) {
 			.header-top{
@@ -664,6 +680,9 @@ max-width:30vw;
 }
 }
 </style>
+<style type="text/css" media="print">
+  @page { size: landscape;margin: 25mm 25mm 25mm 25mm;   }
+</style>
 </head>
 <body>
 
@@ -676,8 +695,34 @@ max-width:30vw;
 		<div class="heading" id="center-id" c_id="<?php echo isset($rosterDetails->centerid) ? $rosterDetails->centerid : null; ?>">Rosters
 			<span class="top_buttons ml-auto">
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?> 
-			<span class="casualEmploye-span"><button class="casualEmploye-btn">Add Employee</button></span><span class="priority "><button class="priority-btn ">Priority</button></span>
-<?php } ?><span class="print-button"><button class="print-btn">Print</button></span>
+				<span class="casualEmploye-span">
+					<button class="casualEmploye-btn">Add Employee</button>
+				</span>
+				<span class="priority ">
+					<button class="priority-btn ">Priority</button>
+				</span>
+				<span class="showBudget d-flex">
+					<span class="d-flex justify-content-center align-items-center hide_budget">Hide&nbsp;Budget</span>
+					<!-- Hide budget -->
+					<input type="checkbox" class="showBudget-btn"
+					 show-budget="<?php 
+					 	if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') == 'Y'){
+					 		echo 'N';
+					 	}
+					 	if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') == 'N'){
+					 		echo 'Y';
+					 	} ?>" <?php 
+					 	if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') == 'Y'){
+					 		echo '';
+					 	}
+					 	if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') == 'N'){
+					 		echo 'checked';
+					 	}
+					 	 ?>>
+				</span>
+	<?php } ?>  <span class="print-button">
+					<button class="print-btn">Print</button>
+				</span>
 			</span>
 		</div>
 		<div class="roster-dates"><?php 
@@ -691,16 +736,16 @@ function timex( $x)
 	        if(($x%100)==0){
 	         $output = intval($x/100) . ":00 AM";
 	        }
-	    if(($x%100)!=0){
-	    	if(($x%100) < 10){
-	    		$output = intval($x/100) .":0". $x%100 . " AM";
-	    	}
-    		if(($x%100) >= 10){
-    			$output = intval($x/100) .":". $x%100 . " AM";
-    		}
+	    	if(($x%100)!=0){
+		    	if(($x%100) < 10){
+		    		$output = intval($x/100) .":0". $x%100 . " AM";
+		    	}
+	    		if(($x%100) >= 10){
+	    			$output = intval($x/100) .":". $x%100 . " AM";
+	    		}
 	        }
 	    }
-	else if(($x/100)>12){
+	else if(intval($x/100)>12){
 	    if(($x%100)==0){
 	    $output = intval($x/100)-12 . ":00 PM";
 	    }
@@ -852,7 +897,8 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 								}
 			?>
 			<?php } ?>
-								<span class="title hourly row"><?php echo  $variable; // echo $rosterDetails->roster[$x]->roles[$counter]->empTitle ?></span>
+			<?php if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){?>
+				<span class="title hourly row"><?php echo  $variable; // echo $rosterDetails->roster[$x]->roles[$counter]->empTitle ?></span><?php } ?>
 							</span>
 
 							<span class=""><?php // echo  $variable?></span>
@@ -2029,10 +2075,29 @@ $( ".modal_priority" ).draggable();
 				casualEmp_end_time : casualEmp_end_time,
 				casualEmp_role_id : casualEmp_role_id
 			},
-			success:function(response){
-				alert(response)
-				window.location.reload();
+			success:function(response){ 
+				if(JSON.parse(response).status == "REDUNDANT"){
+					alert('Shift for this user, for the particular date already exists in another center. Please delete the shift to add a new one');
+				}else{
+				//window.location.reload();
+				}
 			}
+		})
+	})
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(document).on('click','.showBudget-btn',function(){
+			let url = new URL(window.location.href);
+				parameters = url.searchParams
+			if($(this).attr('show-budget') == 'N'){
+				parameters.set("showBudgetYN","N");
+			}
+			if($(this).attr('show-budget') == 'Y'){
+				parameters.delete("showBudgetYN");
+			}
+				url.search = parameters.toString();
+				window.location.href= url.href
 		})
 	})
 </script>

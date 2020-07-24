@@ -235,7 +235,7 @@ class Rosters extends CI_Controller {
 								$rav['empTitle'] = $empDetails->title;
 								$rav['level'] = $empDetails->level;
 								//$rav['maxHoursPerWeek'] = $empDetails->maxHoursPerWeek;
-								$rav['shifts'] = [];
+									$rav['shifts'] = [];
 								$allShifts = $this->rostersModel->getAllShiftsFromEmployee($rosterid,$employeeid->userid,$area->areaid);
 								foreach ($allShifts as $shiftOb) {
 									$shiftObj['currentDate'] = $shiftOb->rosterDate;
@@ -398,26 +398,34 @@ class Rosters extends CI_Controller {
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			$json = json_decode(file_get_contents('php://input'));
+			$this->load->model('rostersModel');
 			if($json!= null && $res != null && $res->userid == $userid){
-				$startTime = $json->casualEmp_start_time;
-				$endTime = $json->casualEmp_end_time;
-				$rosterid = $json->roster_id ;//$json->roster_id;
-				$roleid = $json->casualEmp_role_id;
-				$date = $json->date;
-				$empid = $json->emp_id;
-				$status = "1";
-				if($startTime != null && $endTime != null && $rosterid != null && $roleid != null && $date != null && $empid != null){
-					$this->load->model('rostersModel');
-					$this->rostersModel->addCasualEmployees($startTime,$endTime,$rosterid,$roleid,$date,$empid,$status);
-					$data['Status'] = 'SUCCESS';
-					http_response_code(200);
-					echo json_encode($data);
+				$checkUserShift = $this->rostersModel->getShiftDetails($json->emp_id,$json->date);
+					if($checkUserShift == null){
+					$startTime = $json->casualEmp_start_time;
+					$endTime = $json->casualEmp_end_time;
+					$rosterid = $json->roster_id ;//$json->roster_id;
+					$roleid = $json->casualEmp_role_id;
+					$date = $json->date;
+					$empid = $json->emp_id;
+					$status = "1";
+					if($startTime != null && $endTime != null && $rosterid != null && $roleid != null && $date != null && $empid != null){
+						$this->rostersModel->addCasualEmployees($startTime,$endTime,$rosterid,$roleid,$date,$empid,$status);
+						$data['Status'] = 'SUCCESS';
+						http_response_code(200);
+						echo json_encode($data);
+					}
+					else{
+						$data['Status'] = 'ERROR';
+						$data['Message'] = "Invalid Parameters";
+						http_response_code(200);
+						echo json_encode($data);
+					}
 				}
 				else{
-					$data['Status'] = 'ERROR';
-					$data['Message'] = "Invalid Parameters";
-					http_response_code(200);
-					echo json_encode($data);
+						$data['status'] = "REDUNDANT";
+						http_response_code(200);
+						echo json_encode($data);
 				}
 			}
 			else{
@@ -429,7 +437,7 @@ class Rosters extends CI_Controller {
 		}
 	}
 
-	public function getCasualEmployees($userid){
+	public function getCasualEmployees($rosterid,$userid){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
@@ -438,11 +446,21 @@ class Rosters extends CI_Controller {
 				$this->load->model('rostersModel');
 				$casualEmployees = $this->rostersModel->getCasualEmployees();
 				$data['casualEmployees'] = [];
+
+				$rosterEmployees = $this->rostersModel->getAllEmployeesFromRoster($rosterid);
 				foreach ($casualEmployees as $emp) {
+					$emp_exists = false;
+					foreach($rosterEmployees as $roster_emp){
+						if($roster_emp->userid == $emp->id){
+							$emp_exists = true;
+						}
+					}
+					if($emp_exists == false){
 						$var['empName'] = $emp->name;
 						$var['empCenter'] = $emp->center;
 						$var['empId'] = $emp->id;
 						array_push($data['casualEmployees'],$var);
+					}
 				}
 				http_response_code(200);
 				echo json_encode($data);

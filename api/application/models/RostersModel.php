@@ -129,6 +129,12 @@ class RostersModel extends CI_Model {
 		return $query->result();
 	}
 
+	public function getAllEmployeesFromRoster($rosterid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * from shift where roasterId = '$rosterid' GROUP BY userid;");
+		return $query->result();
+	}
+
 }
 
 

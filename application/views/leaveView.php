@@ -722,7 +722,7 @@ table.dataTable{
 	                            	<?php
 	                            		//if($this->session->userdata('UserType') == SUPERADMIN ){ ?>
 			                            <th>Employee Name</th>
-			                            <!-- <th>Emp Designation</th> -->
+			                            <th>Emp Designation</th>
 			                        <?php // }?>
 			                            <th>Leave Type</th>
 			                            <th>Start Date</th>

@@ -151,7 +151,7 @@ public function getRosterDetails(){
 		$data['entitlements'] = $this->getAllEntitlements($data['userid']);
 		$data['rosterDetails'] = $this->getRoster($data['rosterid'],$data['userid']);
 		$data['permissions'] = $this->fetchPermissions();
-		$data['casualEmployees'] = $this->getCasualEmployees();
+		$data['casualEmployees'] = $this->getCasualEmployees($data['rosterid']);
 			//footprint start
 		if($this->session->has_userdata('current_url')){
 			footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
@@ -171,8 +171,8 @@ public function getRosterDetails(){
 		}
 	}
 
-	 function getCasualEmployees(){
-			$url = BASE_API_URL."/rosters/getCasualEmployees/".$this->session->userdata('LoginId');
+	 function getCasualEmployees($rosterid){
+			$url = BASE_API_URL."/rosters/getCasualEmployees/".$rosterid."/".$this->session->userdata('LoginId');
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -214,9 +214,9 @@ public function getRosterDetails(){
 				$server_output = curl_exec($ch);
 				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		if($httpcode == 200){
-			$jsonOutput = json_decode($server_output);
+			// $jsonOutput = json_decode($);
 			curl_close ($ch);
-			return $jsonOutput;
+			echo $server_output;
 		}
 		else if($httpcode == 401){
 
