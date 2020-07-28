@@ -111,8 +111,10 @@ class Timesheet extends CI_Controller{
 				$timesheet = $this->timesheetModel->getTimesheet($timesheetId);
 				$userDetails = $this->utilModel->getUserDetails($json->userid);
 				$usersList = $this->timesheetModel->getUsersByTimesheetId($timesheetId);
-				$startDate = $timesheet->startDate;
-				$endDate = $timesheet->endDate;
+				$startDate = new DateTime($timesheet->startDate);
+				$endDate = new DateTime($timesheet->endDate);
+				$startDate = "/Date(".$startDate->format('Uu')."+0000)/";
+				$endDate = "/Date(".$endDate->format('Uu')."+0000)/";
 				$Timesheets['Timesheets'] = [];
 				foreach ($usersList as $user) {
 					$payrollTypes = $this->timesheetModel->getPayrollShiftTypesByUser($timesheetId,$user->userid);
@@ -130,7 +132,7 @@ class Timesheet extends CI_Controller{
 					$lines['NumberOfUnits'] = [];
 						while ($currentDay < 14) {
 							$unit = 0;
-							$currentDate = date( "Y-m-d", strtotime( "$startDate +$currentDay day" ));
+							$currentDate = date( "Y-m-d", strtotime( "$timesheet->startDate +$currentDay day" ));
 							$payrollShifts = $this->timesheetModel->getPayrollShiftsById($timesheetId,$currentDate,$user->userid,$payrollType->payrollType);
 							if($payrollShifts == null or $payrollShifts == ''){
 								foreach ($payrollShifts as $payrollShift) {
@@ -298,11 +300,13 @@ class Timesheet extends CI_Controller{
 					$data['isEditYN'] = $timesheet->createdBy == $userid ? "Y" : "N";
 					$data['status'] = $timesheet->status;
 					$data['timesheet'] = array();
-					
-					while ($currentDay < 14) {
-						$currentDate = date( "Y-m-d", strtotime( "$timesheet->startDate +$currentDay day" ));
-						$rosteredEmployees = $this->timesheetModel->getUniqueVisitorsWithRoster($currentDate,$timesheet->centerid);
-						$unrosteredEmployees = $this->timesheetModel->getUniqueVisitorsWithoutRoster($currentDate,$timesheet->centerid);
+					$rosteredEmployees = $this->timesheetModel->getUniqueVisitorsWithRoster($data['startDate'],$timesheet->centerid);
+
+					print_r($rosteredEmployees);
+					$unrosteredEmployees = $this->timesheetModel->getUniqueVisitorsWithoutRoster($data['startDate'],$timesheet->centerid);				
+				while ($currentDay < 14) {
+					$currentDate = date( "Y-m-d", strtotime( "$timesheet->startDate +$currentDay day" ));
+
 						$mData['rosteredEmployees'] = array();
 						$mData['unrosteredEmployees'] = array();
 						foreach ($rosteredEmployees as $empId) {
@@ -333,6 +337,7 @@ class Timesheet extends CI_Controller{
 								$var['rosterShift']['endTime'] = $rosterDetails->endTime;
 								$var['rosterShift']['roleName'] = $this->rostersModel->getRole($rosterDetails->roleid);
 								$clockedTimes = $this->timesheetModel->getAllVisits($empId->users,$currentDate,$timesheet->centerid);
+								$meetingTimes = $this->timesheetModel->getMeetingTime($currentDate,$empId->users);
 								$var['clockedTimes'] = array();
 								foreach ($clockedTimes as $clocks) {
 									$mar['startTime'] = $clocks->signInTime;
@@ -341,6 +346,14 @@ class Timesheet extends CI_Controller{
 									$mar['reason'] = $clocks->reason;
 									array_push($var['clockedTimes'],$mar);
 								}
+								foreach ($meetingTimes as $mee) {
+									$meet['startTime'] = intval($mee->time)*100;
+									$meet['endTime'] = intval($mee->eTime)*100;
+									$meet['message'] = "Meeting";
+									$meet['reason'] = "Meeting";
+									array_push($var['clockedTimes'],$meet);
+								}
+
 								$payedShifts = $this->timesheetModel->getPayrollShifts($currentDate,$timesheetid,$empId->users);
 								$var['payrollShifts'] = array();
 								foreach ($payedShifts as $paySh) {

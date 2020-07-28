@@ -35,6 +35,12 @@ class TimesheetModel extends CI_Model {
 		return $query->result();
 	}
 
+	public function getMeetingTime($currentDate,$empId){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM mom INNER JOIN meeting on mom.m_id = meeting.id WHERE mom.user_id = '$empId' AND meeting.date = '$currentDate'");
+		return $query->result();
+	}
+
 	// public function getVisitsNotOnDate($shiftDate,$centerid,$timesheetId){
 	// 	$this->load->database();
 	// 	$query = $this->db->query("SELECT DISTINCT(userid) as userid FROM visitis WHERE centerid = '$centerid' AND signInDate = '$shiftDate' AND userid NOT IN (SELECT userid from payrollshift WHERE timesheetId = '$timesheetId' AND shiftDate = '$shiftDate')");
@@ -44,6 +50,12 @@ class TimesheetModel extends CI_Model {
 	public function getAllVisits($userid,$shiftDate,$centerid){
 		$this->load->database();
 		$query = $this->db->query("SELECT * FROM visitis WHERE userid = '$userid' AND centerid = '$centerid' AND signInDate = '$shiftDate'");
+		return $query->result();
+	}
+
+	public function getTimesheetForPayrun($startDate,$endDate,$empId){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM timesheet WHERE centerid IN (SELECT users.center from  employee  inner join users on employee.userid = users.id where xeroEmployeeId = '$empId' ) and startDate = '$startDate'");
 		return $query->result();
 	}
 
@@ -58,15 +70,17 @@ class TimesheetModel extends CI_Model {
 		$query = $this->db->query("INSERT INTO payrollshift VALUES(0,'$timesheetid','$empid','$shiftDate',$cStartTime,$cEndTime,$startTime,$endTime,$payTypeId,'$approvedBy',now(),'Added')");
 	}
 
-	public function getUniqueVisitorsWithRoster($currentDate,$centerid){
+	public function getUniqueVisitorsWithRoster($startDate,$centerid){
 		$this->load->database();
-		$query = $this->db->query("SELECT DISTINCT(userid) as users FROM shift WHERE rosterDate = '$currentDate' AND roasterId = (SELECT ros.id FROM rosters as ros WHERE '$currentDate' BETWEEN ros.startDate and ros.endDate and ros.centerid = '$centerid')");
+		$queryText = "SELECT DISTINCT(userid) as users FROM shift WHERE roasterId = (SELECT ros.id FROM rosters as ros WHERE ros.startDate = '$startDate' and ros.centerid = '$centerid')";
+		print_r($queryText);
+		$query = $this->db->query("SELECT DISTINCT(userid) as users FROM shift WHERE roasterId = (SELECT ros.id FROM rosters as ros WHERE ros.startDate = $startDate and ros.centerid = '$centerid')");
 		return $query->result();
 	}
 
-	public function getUniqueVisitorsWithoutRoster($currentDate,$centerid){
+	public function getUniqueVisitorsWithoutRoster($startDate,$centerid){
 		$this->load->database();
-		$query = $this->db->query("SELECT DISTINCT(userid) as users from visitis WHERE userid not in (SELECT userid FROM shift WHERE shift.roasterId = (SELECT ros.id FROM rosters as ros WHERE '$currentDate' BETWEEN ros.startDate and ros.endDate and ros.centerid = '$centerid'))");
+		$query = $this->db->query("SELECT DISTINCT(userid) as users from visitis WHERE userid not in (SELECT userid FROM shift WHERE shift.roasterId = (SELECT ros.id FROM rosters as ros WHERE '$startDate' BETWEEN ros.startDate and ros.endDate and ros.centerid = '$startDate'))");
 		return $query->result();
 	}
 
