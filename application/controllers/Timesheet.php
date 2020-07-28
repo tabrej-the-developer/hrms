@@ -50,6 +50,7 @@ class Timesheet extends CI_Controller {
 		$data['timesheetid'] = $this->input->get('timesheetId');
 		$data['userid'] = $this->session->userdata('LoginId');
 		$data['timesheetDetails'] = $this->gettimesheet($data['timesheetid'],$data['userid']);
+		// var_dump($data);
 		$data['entitlements'] = $this->getAllEntitlements($data['userid']);
 	//footprint start
 	if($this->session->has_userdata('current_url')){

@@ -73,8 +73,7 @@ class TimesheetModel extends CI_Model {
 	public function getUniqueVisitorsWithRoster($startDate,$centerid){
 		$this->load->database();
 		$queryText = "SELECT DISTINCT(userid) as users FROM shift WHERE roasterId = (SELECT ros.id FROM rosters as ros WHERE ros.startDate = '$startDate' and ros.centerid = '$centerid')";
-		print_r($queryText);
-		$query = $this->db->query("SELECT DISTINCT(userid) as users FROM shift WHERE roasterId = (SELECT ros.id FROM rosters as ros WHERE ros.startDate = $startDate and ros.centerid = '$centerid')");
+		$query = $this->db->query($queryText);
 		return $query->result();
 	}
 

@@ -301,8 +301,6 @@ class Timesheet extends CI_Controller{
 					$data['status'] = $timesheet->status;
 					$data['timesheet'] = array();
 					$rosteredEmployees = $this->timesheetModel->getUniqueVisitorsWithRoster($data['startDate'],$timesheet->centerid);
-
-					print_r($rosteredEmployees);
 					$unrosteredEmployees = $this->timesheetModel->getUniqueVisitorsWithoutRoster($data['startDate'],$timesheet->centerid);				
 				while ($currentDay < 14) {
 					$currentDate = date( "Y-m-d", strtotime( "$timesheet->startDate +$currentDay day" ));
@@ -333,9 +331,11 @@ class Timesheet extends CI_Controller{
 							else{
 								$var['isOnLeave'] = 'N';
 								$rosterDetails = $this->rostersModel->getShiftDetails($empId->users,$currentDate);
-								$var['rosterShift']['startTime'] = $rosterDetails->startTime;
-								$var['rosterShift']['endTime'] = $rosterDetails->endTime;
-								$var['rosterShift']['roleName'] = $this->rostersModel->getRole($rosterDetails->roleid);
+								if($rosterDetails != null){
+									$var['rosterShift']['startTime'] = $rosterDetails->startTime;
+									$var['rosterShift']['endTime'] = $rosterDetails->endTime;
+									$var['rosterShift']['roleName'] = $this->rostersModel->getRole($rosterDetails->roleid);
+								}
 								$clockedTimes = $this->timesheetModel->getAllVisits($empId->users,$currentDate,$timesheet->centerid);
 								$meetingTimes = $this->timesheetModel->getMeetingTime($currentDate,$empId->users);
 								$var['clockedTimes'] = array();
