@@ -22,199 +22,213 @@ class Xero extends CI_Controller{
 
 		$code = $_GET['code'];
 		$state = $_GET['state'];
+		$this->load->library('session');
+		// $userid = $_GET['LoginId'];
+	 // 	if($userid == null) return;
 
-		//$userid = $this->session->userdata('LoginId');
-		$userid = "123";
+		$userid = $this->session->userdata('LoginId');
+		// $userid = ;
 		$this->load->model('xeroModel');
 		// $result = $this->xeroModel->getFromUserid($userid);
 
 		if($code != null && $state == $userid){
-			$postData = "code=".$code;
-			$postData .= "&grant_type=authorization_code";
-			$postData .= "&redirect_uri=".base_url()."xero/oauth";
+			try{
+				$postData = "code=".$code;
+				$postData .= "&grant_type=authorization_code";
+				$postData .= "&redirect_uri=".base_url()."xero/oauth";
 
-	        $server_output = $this->postToken($postData);
-			$json = json_decode($server_output);
-			
-			$access_token = $json->access_token;
-			$id_token = $json->id_token;
-			$refresh_token = $json->refresh_token;
-			$expires_in = $json->expires_in;
+		        $server_output = $this->postToken($postData);
+				$json = json_decode($server_output);
+				
+				$access_token = $json->access_token;
+				$id_token = $json->id_token;
+				$refresh_token = $json->refresh_token;
+				$expires_in = $json->expires_in;
 
-			$tenant = $this->getTenant($access_token);
-			$tjson = json_decode($tenant);
-			$tenant_id = $tjson[0]->tenantId;
+				$tenant = $this->getTenant($access_token);
+				// var_dump($tenant);
+				$tjson = json_decode($tenant);
+				$tenant_id = $tjson[0]->tenantId;
 
-			$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in);
+				$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in);
 
-			$payItems = $this->getPayItems($access_token,$tenant_id);
+				$payItems = $this->getPayItems($access_token,$tenant_id);
+				// var_dump($payItems);
 
-			$this->load->model('payrollModel');
-			//earning rates
-			$earningRates = json_decode($payItems)->PayItems->EarningsRates;
-			$this->payrollModel->deleteAllPayrollShiftTypes();
-			for($i = 0; $i < count($earningRates); $i++){
-				$RateType = $earningRates[$i]->RateType;
-				$EarningsRateID = $earningRates[$i]->EarningsRateID;
-				$Name = addslashes($earningRates[$i]->Name);
-				$EarningsType = $earningRates[$i]->EarningsType;
-				$IsExemptFromTax = $earningRates[$i]->IsExemptFromTax ? "Y" : "N";
-				$IsExemptFromSuper = $earningRates[$i]->IsExemptFromSuper ? "Y" : "N";
-				$IsReportableAsW1 = $earningRates[$i]->IsReportableAsW1 ? "Y" : "N";
-				$CurrentRecord = $earningRates[$i]->CurrentRecord ? "Y" : "N";
-				if($RateType == "FIXEDAMOUNT")
-					$Multiplier_Amount = isset($earningRates[$i]->Amount) ? $earningRates[$i]->Amount : 0;
-				else if($RateType == "MULTIPLE")
-					$Multiplier_Amount = $earningRates[$i]->Multiplier;
-				else
-					$Multiplier_Amount = 0;
-				$this->payrollModel->insertPayrollShifts($EarningsRateID,$Name,$IsExemptFromTax,$IsExemptFromSuper,$IsReportableAsW1,$EarningsType,$RateType,$Multiplier_Amount,$CurrentRecord,$userid);		
+				$this->load->model('payrollModel');
+				//earning rates
+				$earningRates = json_decode($payItems)->PayItems->EarningsRates;
+				$this->payrollModel->deleteAllPayrollShiftTypes();
+				for($i = 0; $i < count($earningRates); $i++){
+					$RateType = $earningRates[$i]->RateType;
+					$EarningsRateID = $earningRates[$i]->EarningsRateID;
+					$Name = addslashes($earningRates[$i]->Name);
+					$EarningsType = $earningRates[$i]->EarningsType;
+					$IsExemptFromTax = $earningRates[$i]->IsExemptFromTax ? "Y" : "N";
+					$IsExemptFromSuper = $earningRates[$i]->IsExemptFromSuper ? "Y" : "N";
+					$IsReportableAsW1 = $earningRates[$i]->IsReportableAsW1 ? "Y" : "N";
+					$CurrentRecord = $earningRates[$i]->CurrentRecord ? "Y" : "N";
+					if($RateType == "FIXEDAMOUNT")
+						$Multiplier_Amount = isset($earningRates[$i]->Amount) ? $earningRates[$i]->Amount : 0;
+					else if($RateType == "MULTIPLE")
+						$Multiplier_Amount = $earningRates[$i]->Multiplier;
+					else
+						$Multiplier_Amount = 0;
+					$this->payrollModel->insertPayrollShifts($EarningsRateID,$Name,$IsExemptFromTax,$IsExemptFromSuper,$IsReportableAsW1,$EarningsType,$RateType,$Multiplier_Amount,$CurrentRecord,$userid);		
+				}
+
+				$this->load->model('leaveModel');
+				//leave types
+				$leaveTypes = json_decode($payItems)->PayItems->LeaveTypes;
+				$this->leaveModel->deleteAllLeaveTypes();
+				for($i=0;$i<count($leaveTypes);$i++){
+					$LeaveTypeID = $leaveTypes[$i]->LeaveTypeID;
+					$Name = addslashes($leaveTypes[$i]->Name);
+					$IsPaidLeave = $leaveTypes[$i]->IsPaidLeave ? "Y" : "N";
+					$ShowOnPayslip = $leaveTypes[$i]->ShowOnPayslip ? "Y" : "N";
+					$CurrentRecord = $leaveTypes[$i]->CurrentRecord ? "Y" : "N";
+					$slug = $Name[0];
+	 				$this->leaveModel->createLeaveType($LeaveTypeID,$Name,$IsPaidLeave,$slug,$ShowOnPayslip,$CurrentRecord,$userid);
+				}
+
+				//superfunds
+				$superFunds = $this->getSuperfunds($access_token,$tenant_id);
+				$superFunds = json_decode($superFunds)->SuperFunds;
+				for($i=0;$i<count($superFunds);$i++){
+					$SuperFundID = $superFunds[$i]->SuperFundID;
+					$Name = addslashes($superFunds[$i]->Name);
+					$ABN = isset($superFunds[$i]->ABN) ? $superFunds[$i]->ABN : "";
+					$BSB = isset($superFunds[$i]->BSB) ? $superFunds[$i]->BSB : "";
+					$USI = isset($superFunds[$i]->USI) ? $superFunds[$i]->USI : "";
+					$AccountNumber = isset($superFunds[$i]->AccountNumber) ? $superFunds[$i]->AccountNumber : "";
+					$AccountName = isset($superFunds[$i]->AccountName) ? $superFunds[$i]->AccountName : "";
+					$ElectronicServiceAddress = isset($superFunds[$i]->ElectronicServiceAddress) ? $superFunds[$i]->ElectronicServiceAddress : "";
+					$EmployerNumber = $superFunds[$i]->EmployerNumber;
+					$Type = $superFunds[$i]->Type;
+					$this->payrollModel->insertSuperfund($ABN,$USI,$Type,$Name,$BSB,$AccountNumber,$AccountName,$ElectronicServiceAddress,$EmployerNumber,$userid);
+				}
+
+				//employees
+				$employees = $this->getEmployees($access_token,$tenant_id);
+				$employees = json_decode($employees)->Employees;
+				
+				$this->load->model('authModel');
+				$this->load->model('employeeModel');
+
+				for($i=0;$i<count($employees);$i++){
+					$employeeId = $employees[$i]->EmployeeID;
+					$empDetails = $this->getCompleteEmployeeInfo($access_token,$tenant_id,$employeeId);
+					$empDetails = json_decode($empDetails)->Employees[0];
+					$Title = isset($empDetails->Title) ? $empDetails->Title : "";
+					$FirstName = $empDetails->FirstName;
+					$MiddleNames = isset($empDetails->MiddleNames) ? $empDetails->MiddleNames : "";
+					$LastName = $empDetails->LastName;
+					$Status = $empDetails->Status;
+					$JobTitle = isset($empDetails->JobTitle) ? $empDetails->JobTitle : "";
+					$Email = $empDetails->Email;
+					preg_match( '/([\d]{9})/', $empDetails->DateOfBirth, $matches );
+					$DateOfBirth = date( 'Y-m-d', $matches[0] );
+					$Gender = $empDetails->Gender;
+					$AddressLine1 = $empDetails->HomeAddress->AddressLine1;
+					$AddressLine2 = isset($empDetails->HomeAddress->AddressLine2) ?  $empDetails->HomeAddress->AddressLine2: "";
+					$City = $empDetails->HomeAddress->City;
+					$Region = $empDetails->HomeAddress->Region;
+					$PostalCode = $empDetails->HomeAddress->PostalCode;
+					$Country = $empDetails->HomeAddress->Country;
+					$Phone = isset($empDetails->Phone) ? $empDetails->Phone : "";
+					$Mobile = isset($empDetails->Mobile) ? $empDetails->Mobile : "";
+					if(isset($empDetails->TerminationDate)){
+						preg_match( '/([\d]{9})/', $empDetails->TerminationDate, $matches );
+						$TerminationDate = date( 'Y-m-d', $matches[0] );
+					}
+					else{
+						$TerminationDate = null;
+					}
+					if(isset($empDetails->StartDate)){
+						preg_match( '/([\d]{9})/', $empDetails->StartDate, $matches );
+						$StartDate = date( 'Y-m-d', $matches[0] );
+					}
+					else{
+						$StartDate = null;
+					}
+					$OrdinaryEarningsRateID = $empDetails->OrdinaryEarningsRateID;
+					$PayrollCalendarID = $empDetails->PayrollCalendarID;
+
+					$myUser = $this->authModel->getUserFromEmail($Email);
+					if($myUser == null){
+						$password = $FirstName.$LastName."@123";
+						$myUserid = $this->authModel->insertUser($Email,$password,$FirstName." ".$LastName,4,$JobTitle,null,null,$userid,0,0,0);
+					}
+					else{
+						$myUserid = $myUser->id;
+					}
+
+					$myEmployee = $this->employeeModel->getUserFromId($myUserid);
+					if($myEmployee == null){
+						//insert 
+						$this->employeeModel->insertEmployee($myUserid,$employeeId,$Title,$FirstName,$MiddleNames,$LastName,$Status,$Email,$DateOfBirth,$JobTitle,$Gender,$AddressLine1,$AddressLine2,$City,$Region,$PostalCode,$Country,$Phone,$Mobile,$StartDate,$TerminationDate,$OrdinaryEarningsRateID,$PayrollCalendarID,$userid);
+					}
+					else{
+						//update
+						$this->employeeModel->updateEmployee($employeeId,$Title,$FirstName,$MiddleNames,$LastName,$Status,$Email,$DateOfBirth,$JobTitle,$Gender,$AddressLine1,$AddressLine2,$City,$Region,$PostalCode,$Country,$Phone,$Mobile,$StartDate,$TerminationDate,$OrdinaryEarningsRateID,$PayrollCalendarID,$myUserid);
+						$this->employeeModel->deleteAllDetailsForUser($employeeId);
+					}
+
+
+					//taxes
+
+					$TaxFileNumber = $empDetails->TaxDeclaration->TaxFileNumber;
+					$EmploymentBasis = $empDetails->TaxDeclaration->EmploymentBasis;
+					$TFNExemptionType = isset($empDetails->TaxDeclaration->TFNExemptionType) ? $empDetails->TaxDeclaration->TFNExemptionType : "";
+					$AustralianResidentForTaxPurposes = $empDetails->TaxDeclaration->AustralianResidentForTaxPurposes;
+					$TaxFreeThresholdClaimed = $empDetails->TaxDeclaration->TaxFreeThresholdClaimed ? "Y" : "N";
+					$HasHELPDebt = $empDetails->TaxDeclaration->HasHELPDebt ? "Y" : "N";
+					$HasSFSSDebt = $empDetails->TaxDeclaration->HasSFSSDebt ? "Y" : "N";
+					$EligibleToReceiveLeaveLoading = $empDetails->TaxDeclaration->EligibleToReceiveLeaveLoading ? "Y" : "N";
+					$HasStudentStartupLoan = $empDetails->TaxDeclaration->HasStudentStartupLoan ? "Y" : "N";
+					$ResidencyStatus = $empDetails->TaxDeclaration->ResidencyStatus;
+					$TaxOffsetEstimatedAmount = isset($empDetails->TaxDeclaration->TaxOffsetEstimatedAmount) ? $empDetails->TaxDeclaration->TaxOffsetEstimatedAmount : 0;
+					$UpwardVariationTaxWithholdingAmount = isset($empDetails->TaxDeclaration->UpwardVariationTaxWithholdingAmount) ? $empDetails->TaxDeclaration->UpwardVariationTaxWithholdingAmount : 0;
+					$ApprovedWithholdingVariationPercentage = isset($empDetails->TaxDeclaration->ApprovedWithholdingVariationPercentage) ? $empDetails->TaxDeclaration->ApprovedWithholdingVariationPercentage : 0;
+
+					$this->employeeModel->insertIntoTaxDeclaration($employeeId,$EmploymentBasis,$TFNExemptionType,$TaxFileNumber,$AustralianResidentForTaxPurposes,$ResidencyStatus,$TaxFreeThresholdClaimed,$TaxOffsetEstimatedAmount,$HasHELPDebt,$HasSFSSDebt,$HasStudentStartupLoan,$UpwardVariationTaxWithholdingAmount,$EligibleToReceiveLeaveLoading,$ApprovedWithholdingVariationPercentage);
+
+					//bank accounts
+					foreach ($empDetails->BankAccounts as $bankAccount) {
+						$StatementText = addslashes($bankAccount->StatementText);
+						$AccountName = addslashes($bankAccount->AccountName);
+						$BSB = $bankAccount->BSB;
+						$AccountNumber = $bankAccount->AccountNumber;
+						$Remainder = $bankAccount->Remainder ? "Y" : "N";
+						$Amount = isset($bankAccount->Amount) ? $bankAccount->Amount : 0;
+						$this->employeeModel->insertIntoBankAccount($employeeId,$StatementText,$AccountName,$BSB,$AccountNumber,$Remainder,$Amount);
+					}
+
+					//super fund memberships
+					foreach ($empDetails->SuperMemberships as $superMembership) {
+						$SuperMembershipID = $superMembership->SuperMembershipID;
+						$SuperFundID = $superMembership->SuperFundID;
+						$EmployeeNumber = $superMembership->EmployeeNumber;
+						$this->employeeModel->insertIntoSuperMembership($employeeId,$SuperFundID,$EmployeeNumber,$SuperMembershipID);
+					}
+
+					//leave balance
+					$this->leaveModel->deleteAllUserLeaveBalance($myUserid);
+					foreach ($empDetails->LeaveBalances	 as $leaveBalance) {
+						$LeaveTypeID = $leaveBalance->LeaveTypeID;
+						$NumberOfUnits = $leaveBalance->NumberOfUnits;
+						$this->leaveModel->insertIntoLeaveBalance($myUserid,$LeaveTypeID,$NumberOfUnits);
+					}
+
+				}
+
+			    $data['Status'] = "ERROR";
 			}
-
-			$this->load->model('leaveModel');
-			//leave types
-			$leaveTypes = json_decode($payItems)->PayItems->LeaveTypes;
-			$this->leaveModel->deleteAllLeaveTypes();
-			for($i=0;$i<count($leaveTypes);$i++){
-				$LeaveTypeID = $leaveTypes[$i]->LeaveTypeID;
-				$Name = addslashes($leaveTypes[$i]->Name);
-				$IsPaidLeave = $leaveTypes[$i]->IsPaidLeave ? "Y" : "N";
-				$ShowOnPayslip = $leaveTypes[$i]->ShowOnPayslip ? "Y" : "N";
-				$CurrentRecord = $leaveTypes[$i]->CurrentRecord ? "Y" : "N";
-				$slug = $Name[0];
- 				$this->leaveModel->createLeaveType($LeaveTypeID,$Name,$IsPaidLeave,$slug,$ShowOnPayslip,$CurrentRecord,$userid);
+			catch (Exception $e) {
+			    echo 'Caught exception: ',  $e->getMessage(), "\n";
+			    $data['Status'] = "ERROR";
 			}
-
-			//superfunds
-			$superFunds = $this->getSuperfunds($access_token,$tenant_id);
-			$superFunds = json_decode($superFunds)->SuperFunds;
-			for($i=0;$i<count($superFunds);$i++){
-				$SuperFundID = $superFunds[$i]->SuperFundID;
-				$Name = addslashes($superFunds[$i]->Name);
-				$ABN = isset($superFunds[$i]->ABN) ? $superFunds[$i]->ABN : "";
-				$BSB = isset($superFunds[$i]->BSB) ? $superFunds[$i]->BSB : "";
-				$USI = isset($superFunds[$i]->USI) ? $superFunds[$i]->USI : "";
-				$AccountNumber = isset($superFunds[$i]->AccountNumber) ? $superFunds[$i]->AccountNumber : "";
-				$AccountName = isset($superFunds[$i]->AccountName) ? $superFunds[$i]->AccountName : "";
-				$ElectronicServiceAddress = isset($superFunds[$i]->ElectronicServiceAddress) ? $superFunds[$i]->ElectronicServiceAddress : "";
-				$EmployerNumber = $superFunds[$i]->EmployerNumber;
-				$Type = $superFunds[$i]->Type;
-				$this->payrollModel->insertSuperfund($ABN,$USI,$Type,$Name,$BSB,$AccountNumber,$AccountName,$ElectronicServiceAddress,$EmployerNumber,$userid);
-			}
-
-			//employees
-			$employees = $this->getEmployees($access_token,$tenant_id);
-			$employees = json_decode($employees)->Employees;
-			
-			$this->load->model('authModel');
-			$this->load->model('employeeModel');
-
-			for($i=0;$i<count($employees);$i++){
-				$employeeId = $employees[$i]->EmployeeID;
-				$empDetails = $this->getCompleteEmployeeInfo($access_token,$tenant_id,$employeeId);
-				$empDetails = json_decode($empDetails)->Employees[0];
-				$Title = isset($empDetails->Title) ? $empDetails->Title : "";
-				$FirstName = $empDetails->FirstName;
-				$MiddleNames = isset($empDetails->MiddleNames) ? $empDetails->MiddleNames : "";
-				$LastName = $empDetails->LastName;
-				$Status = $empDetails->Status;
-				$JobTitle = isset($empDetails->JobTitle) ? $empDetails->JobTitle : "";
-				$Email = $empDetails->Email;
-				preg_match( '/([\d]{9})/', $empDetails->DateOfBirth, $matches );
-				$DateOfBirth = date( 'Y-m-d', $matches[0] );
-				$Gender = $empDetails->Gender;
-				$AddressLine1 = $empDetails->HomeAddress->AddressLine1;
-				$AddressLine2 = isset($empDetails->HomeAddress->AddressLine2) ?  $empDetails->HomeAddress->AddressLine2: "";
-				$City = $empDetails->HomeAddress->City;
-				$Region = $empDetails->HomeAddress->Region;
-				$PostalCode = $empDetails->HomeAddress->PostalCode;
-				$Country = $empDetails->HomeAddress->Country;
-				$Phone = isset($empDetails->Phone) ? $empDetails->Phone : "";
-				$Mobile = isset($empDetails->Mobile) ? $empDetails->Mobile : "";
-				if(isset($empDetails->TerminationDate)){
-					preg_match( '/([\d]{9})/', $empDetails->TerminationDate, $matches );
-					$TerminationDate = date( 'Y-m-d', $matches[0] );
-				}
-				else{
-					$TerminationDate = null;
-				}
-				if(isset($empDetails->StartDate)){
-					preg_match( '/([\d]{9})/', $empDetails->StartDate, $matches );
-					$StartDate = date( 'Y-m-d', $matches[0] );
-				}
-				else{
-					$StartDate = null;
-				}
-				$OrdinaryEarningsRateID = $empDetails->OrdinaryEarningsRateID;
-				$PayrollCalendarID = $empDetails->PayrollCalendarID;
-
-				$myUser = $this->authModel->getUserFromEmail($Email);
-				if($myUser == null){
-					$password = $FirstName.$LastName."@123";
-					$myUserid = $this->authModel->insertUser($Email,$password,$FirstName." ".$LastName,4,$JobTitle,null,null,$userid,0,0,0);
-				}
-				else{
-					$myUserid = $myUser->id;
-				}
-
-				$myEmployee = $this->employeeModel->getUserFromId($myUserid);
-				if($myEmployee == null){
-					//insert 
-					$this->employeeModel->insertEmployee($myUserid,$employeeId,$Title,$FirstName,$MiddleNames,$LastName,$Status,$Email,$DateOfBirth,$JobTitle,$Gender,$AddressLine1,$AddressLine2,$City,$Region,$PostalCode,$Country,$Phone,$Mobile,$StartDate,$TerminationDate,$OrdinaryEarningsRateID,$PayrollCalendarID,$userid);
-				}
-				else{
-					//update
-					$this->employeeModel->updateEmployee($employeeId,$Title,$FirstName,$MiddleNames,$LastName,$Status,$Email,$DateOfBirth,$JobTitle,$Gender,$AddressLine1,$AddressLine2,$City,$Region,$PostalCode,$Country,$Phone,$Mobile,$StartDate,$TerminationDate,$OrdinaryEarningsRateID,$PayrollCalendarID,$myUserid);
-					$this->employeeModel->deleteAllDetailsForUser($employeeId);
-				}
-
-
-				//taxes
-
-				$TaxFileNumber = $empDetails->TaxDeclaration->TaxFileNumber;
-				$EmploymentBasis = $empDetails->TaxDeclaration->EmploymentBasis;
-				$TFNExemptionType = isset($empDetails->TaxDeclaration->TFNExemptionType) ? $empDetails->TaxDeclaration->TFNExemptionType : "";
-				$AustralianResidentForTaxPurposes = $empDetails->TaxDeclaration->AustralianResidentForTaxPurposes;
-				$TaxFreeThresholdClaimed = $empDetails->TaxDeclaration->TaxFreeThresholdClaimed ? "Y" : "N";
-				$HasHELPDebt = $empDetails->TaxDeclaration->HasHELPDebt ? "Y" : "N";
-				$HasSFSSDebt = $empDetails->TaxDeclaration->HasSFSSDebt ? "Y" : "N";
-				$EligibleToReceiveLeaveLoading = $empDetails->TaxDeclaration->EligibleToReceiveLeaveLoading ? "Y" : "N";
-				$HasStudentStartupLoan = $empDetails->TaxDeclaration->HasStudentStartupLoan ? "Y" : "N";
-				$ResidencyStatus = $empDetails->TaxDeclaration->ResidencyStatus;
-				$TaxOffsetEstimatedAmount = isset($empDetails->TaxDeclaration->TaxOffsetEstimatedAmount) ? $empDetails->TaxDeclaration->TaxOffsetEstimatedAmount : 0;
-				$UpwardVariationTaxWithholdingAmount = isset($empDetails->TaxDeclaration->UpwardVariationTaxWithholdingAmount) ? $empDetails->TaxDeclaration->UpwardVariationTaxWithholdingAmount : 0;
-				$ApprovedWithholdingVariationPercentage = isset($empDetails->TaxDeclaration->ApprovedWithholdingVariationPercentage) ? $empDetails->TaxDeclaration->ApprovedWithholdingVariationPercentage : 0;
-
-				$this->employeeModel->insertIntoTaxDeclaration($employeeId,$EmploymentBasis,$TFNExemptionType,$TaxFileNumber,$AustralianResidentForTaxPurposes,$ResidencyStatus,$TaxFreeThresholdClaimed,$TaxOffsetEstimatedAmount,$HasHELPDebt,$HasSFSSDebt,$HasStudentStartupLoan,$UpwardVariationTaxWithholdingAmount,$EligibleToReceiveLeaveLoading,$ApprovedWithholdingVariationPercentage);
-
-				//bank accounts
-				foreach ($empDetails->BankAccounts as $bankAccount) {
-					$StatementText = addslashes($bankAccount->StatementText);
-					$AccountName = addslashes($bankAccount->AccountName);
-					$BSB = $bankAccount->BSB;
-					$AccountNumber = $bankAccount->AccountNumber;
-					$Remainder = $bankAccount->Remainder ? "Y" : "N";
-					$Amount = isset($bankAccount->Amount) ? $bankAccount->Amount : 0;
-					$this->employeeModel->insertIntoBankAccount($employeeId,$StatementText,$AccountName,$BSB,$AccountNumber,$Remainder,$Amount);
-				}
-
-				//super fund memberships
-				foreach ($empDetails->SuperMemberships as $superMembership) {
-					$SuperMembershipID = $superMembership->SuperMembershipID;
-					$SuperFundID = $superMembership->SuperFundID;
-					$EmployeeNumber = $superMembership->EmployeeNumber;
-					$this->employeeModel->insertIntoSuperMembership($employeeId,$SuperFundID,$EmployeeNumber,$SuperMembershipID);
-				}
-
-				//leave balance
-				$this->leaveModel->deleteAllUserLeaveBalance($myUserid);
-				foreach ($empDetails->LeaveBalances	 as $leaveBalance) {
-					$LeaveTypeID = $leaveBalance->LeaveTypeID;
-					$NumberOfUnits = $leaveBalance->NumberOfUnits;
-					$this->leaveModel->insertIntoLeaveBalance($myUserid,$LeaveTypeID,$NumberOfUnits);
-				}
-
-			}
+			$this->load->view('afterIntegrationView',$data);
 		}
 	}
 
@@ -541,11 +555,13 @@ class Xero extends CI_Controller{
 		return $server_output;
 	}
 
-	public function startOauth(){
+	public function startOauth($userid){
 		$client_id = XERO_CLIENT_ID;
 		$redirect_uri = base_url()."xero/oauth";
+		$this->load->library('session');
+		$this->session->set_userdata('LoginId',$userid);
 		//$userid = $this->session->userdata('LoginId');
-		$userid = "123";
+		// $userid = "123";
 
 		$url = "https://login.xero.com/identity/connect/authorize?response_type=code&client_id=".$client_id."&redirect_uri=".$redirect_uri."&scope=openid offline_access profile email payroll.employees payroll.payruns payroll.payslip payroll.timesheets payroll.settings&state=".$userid;
 		header('Location: '.$url);

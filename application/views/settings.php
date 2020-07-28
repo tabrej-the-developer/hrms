@@ -185,7 +185,7 @@ a[href*="settings"]{
 			<div class="tile-box d-md-flex col-3">
 				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/xero.png'); ?>"></div>
 				<div class="col-6">
-					<a href="<?php echo base_url()?>api/xero/startOauth">Xero settings</a>
+					<a href="<?php echo base_url().'api/xero/startOauth/'.$this->session->userdata('LoginId');?>">Xero settings</a>
 				</div>
 			</div>
 		<?php } ?>
