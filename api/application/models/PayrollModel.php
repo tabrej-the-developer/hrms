@@ -62,7 +62,8 @@ class PayrollModel extends CI_Model {
 
 	public function insertSuperfund($abn,$usi,$type,$name,$bsb,$accountNumber,$accountName,$eServiceAdd,$employeeNo,$userid){
 		$this->load->database();
-		$this->db->query("INSERT INTO superfund VALUES(0,'$abn','$usi','$type','$name','$bsb','$accountNumber','$accountName','$eServiceAdd','$employeeNo',now(),'$userid')");
+		$query = $this->db->query("INSERT INTO superfund VALUES(0,'$abn','$usi','$type','$name','$bsb','$accountNumber','$accountName','$eServiceAdd','$employeeNo',now(),'$userid')");
+		// var_dump($query);
 	}
 
 	public function deleteAllPayrollShiftTypes(){
@@ -73,5 +74,12 @@ class PayrollModel extends CI_Model {
 	public function deleteAllSuperFunds(){
 		$this->load->database();
 		$this->db->query("DELETE FROM superfund");
+	}
+
+	public function getAllPayrollCalendarId($timesheetId){
+		$this->load->database();
+		$query = $this->db->query("SELECT DISTINCT(payrollCalendarId) from employee where userid IN (SELECT DISTINCT(userid) from payrollshift where timesheetId = '$timesheetId')");
+		echo "SELECT DISTINCT(payrollCalendarId) from employee where userid IN (SELECT DISTINCT(userid) from payrollshift where timesheetId = '$timesheetId')";
+		return $query->result();
 	}
 }

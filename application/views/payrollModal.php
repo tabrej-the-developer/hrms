@@ -76,13 +76,13 @@
 	 ?>
 	<div class="d-flex row m-0">
 		<span class="head head-th col-3">Date</span>
-		<span class="head head-th col-2">Clocked in</span>
-		<span class="head head-th col-3">Clocked out</span>
-		<span class="head head-th col-2">Timed in</span>
-		<span class="head head-th col-2">Timed out</span>
+		<span class="head head-th col-2">Clocked&nbsp;In</span>
+		<span class="head head-th col-3">Clocked&nbsp;Out</span>
+		<span class="head head-th col-2">Timed&nbsp;In</span>
+		<span class="head head-th col-2">Timed&nbsp;Out</span>
 	</div>
 	<?php  ?>
-	<?php for($r=0;$r<2;$r++){ ?>
+	<?php for($r=0;$r<count($payrollShifts->employees[$x]->payrollShifts);$r++){ ?>
 	<div class="d-flex row m-0">
 		<span class="head col-3"><?php echo dateToDay($payrollShifts->employees[$x]->payrollShifts[$r]->shiftDate);?></span>
 		<span class="head col-2"><?php echo timex($payrollShifts->employees[$x]->payrollShifts[$r]->clockedInTime); ?></span>

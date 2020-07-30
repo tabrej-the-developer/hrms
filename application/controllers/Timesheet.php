@@ -51,7 +51,11 @@ class Timesheet extends CI_Controller {
 		$data['userid'] = $this->session->userdata('LoginId');
 		$data['timesheetDetails'] = $this->gettimesheet($data['timesheetid'],$data['userid']);
 		// var_dump($data);
-		$data['entitlements'] = $this->getAllEntitlements($data['userid']);
+		if( $this->getAllCenters() != 'error'){
+			$data['entitlements'] = $this->getAllEntitlements($data['userid']);
+		}else{
+			$data['error'] = 'error';
+		}
 	//footprint start
 	if($this->session->has_userdata('current_url')){
 		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
@@ -283,7 +287,7 @@ $server_output = curl_exec($ch);
 			curl_close ($ch);
 		}
 		else if($httpcode == 401){
-
+			
 		}
 	}
 

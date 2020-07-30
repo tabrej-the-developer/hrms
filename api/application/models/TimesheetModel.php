@@ -55,8 +55,13 @@ class TimesheetModel extends CI_Model {
 
 	public function getTimesheetForPayrun($startDate,$endDate,$empId){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM timesheet WHERE centerid IN (SELECT users.center from  employee  inner join users on employee.userid = users.id where xeroEmployeeId = '$empId' ) and startDate = '$startDate'");
-		return $query->result();
+		$query = $this->db->query("SELECT * FROM timesheet WHERE centerid IN (SELECT users.center from  employee  inner join users on employee.userid = users.id where xeroEmployeeId = '$empId' ) and startDate = '$startDate' group by timesheet.id");
+		return $query->row();
+	}
+
+	public function insertPayslips($timesheetid,$employeeID,$payslipID,$payrunID,$startDate){
+		$this->load->database();
+		$query = $this->db->query("INSERT INTO payslips (timesheetId, employeeId, slipId, payrunId, startDate) values ($timesheetid,$employeeID,$payslipID,$payrunID,$startDate)");
 	}
 
 	public function updateVisitStatus($visitId,$status,$startTime,$endTime){
@@ -85,7 +90,7 @@ class TimesheetModel extends CI_Model {
 
 	public function getUsersByTimesheetId($timesheetid){
 		$this->load->database();
-		$query = $this->db->query("SELECT userid from payrollshift where timesheetId = '$timesheetid' group by userid");
+		$query = $this->db->query("SELECT DISTINCT(userid) from payrollshift where timesheetId = '$timesheetid' group by userid");
 		return $query->result();
 	}
 
@@ -104,12 +109,18 @@ class TimesheetModel extends CI_Model {
 	public function getEmployeeDetails($userid){
 		$this->load->database();
 		$query = $this->db->query("SELECT  * from employee where  userid = '$userid' ");
-		return $query->result();
+		return $query->row();
 	}
 
 	public function getRosterShift($date,$empId){
 		$this->load->database();
 		$query = $this->db->query("SELECT  * from shift where  userid = '$empId' and rosterDate = '$date' ");
+		return $query->row();
+	}
+
+	public function getEarningsRateFromId($id){
+		$this->load->database();
+		$query = $this->load->query("SELECT * from payrollshifttype_v1 where payrollshifttype_v1='$id'");
 		return $query->row();
 	}
 

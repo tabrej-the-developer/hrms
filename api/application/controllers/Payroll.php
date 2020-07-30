@@ -193,18 +193,93 @@ class Payroll extends CI_Controller{
 		}
 	}
 
-	public function postPayRun($timesheetId){
+	public function postPayRun($timesheetId,$userid){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
-			$json = json_decode(file_get_contents('php://input'));
-			if($json!= null && $res != null && $res->userid == $json->userid){
-				$payRuns = $json->payRuns;
-				$userid = $json->userid;
-				
+			// var_dump($res);
+			if($res != null && $res->userid == $userid){
+				$this->load->model('payrollModel');
+				$payrollCalendarId = $this->payrollModel->getAllPayrollCalendarId($timesheetId);
+				// var_dump($payrollCalendarId);
+				$payrollCalendar = array();
+				foreach($payrollCalendarId as $calendarId){
+					$payrollCalendarId['PayrollCalendarID'] = $calendarId->payrollCalendarId;
+					$payrollCalendarId['PayRunStatus'] = 'POSTED';
+					array_push($payrollCalendar,$payrollCalendarId);
+				}
+
+				$this->load->model('xeroModel');
+				$xeroTokens = $this->xeroModel->getXeroToken();
+				// var_dump($xeroTokens);
+					if($xeroTokens != null){
+						$access_token = $xeroTokens->access_token;
+						$tenant_id = $xeroTokens->tenant_id;
+						$refresh_token = $xeroTokens->refresh_token;
+						// var_dump($payrollCalendar);
+					$createPayrun = $this->createPayrun($payrollCalendar,$access_token,$tenant_id);
+					var_dump($createPayrun);
+					$createPayrun = json_decode($createPayrun);
+	 					if($createPayrun != NULL){
+	 						if($createPayrun->Status == 401){
+	 							$refresh = $this->refreshXeroToken($refresh_token);
+	 							$refresh = json_decode($refresh);
+	 							$access_token = $refresh->access_token;
+	 							$expires_in = $refresh->expires_in;
+	 							$refresh_token = $refresh->refresh_token;
+	 							$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in);
+	 							$createPayrun = $this->createPayrun($payrollCalendar,$access_token,$tenant_id);
+	 						}
+	 						$createPayrun = json_decode($createPayrun);
+	 					}
+	 						var_dump($createPayrun);
+
+	 		if($createPayrun->Status == 'OK'){
+	 			foreach($createPayrun->PayRuns  as $payrun){
+					$xeroTokens = $this->xeroModel->getXeroToken();
+						// var_dump($xeroTokens);
+							if($xeroTokens != null){
+								$access_token = $xeroTokens->access_token;
+								$tenant_id = $xeroTokens->tenant_id;
+								$refresh_token = $xeroTokens->refresh_token;
+							$val = getPayRun($payrun->payrunID,$access_token,$tenant_id);
+							$getPayruns = json_decode($val);
+		 					if($getPayruns != NULL){
+		 						if($val->Status == 401){
+		 							$refresh = $this->refreshXeroToken($refresh_token);
+		 							$refresh = json_decode($refresh);
+		 							$access_token = $refresh->access_token;
+		 							$expires_in = $refresh->expires_in;
+		 							$refresh_token = $refresh->refresh_token;
+		 							$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in);
+		 							$getPayruns = $this->getPayRun($payrun->payrunID,$access_token,$tenant_id);
+		 						}
+		 						$getPayruns = json_decode($getPayruns);
+		 					}
+							$pay['Wages'] = $getPayruns->PayRuns->Wages;
+							$pay['Deductions'] = $getPayruns->PayRuns->Deductions;
+							$pay['Tax'] = $getPayruns->PayRuns->Tax;
+							$pay['Super'] = $getPayruns->PayRuns->Super;
+							$pay['Reimbursement'] = $getPayruns->PayRuns->Reimbursement;
+							$pay['NetPay'] = $getPayruns->PayRuns->NetPay;
+							preg_match( '/([\d]{9})/', $getPayruns->PayRuns->PayRunPeriodStartDate, $matches );
+							$pay['StartDate']  = date( 'Y-m-d', $matches[0] );
+							// $pay['StartDate'] = $getPayruns->PayRuns->PayRunPeriodStartDate;
+
+		 					foreach($getPayruns->PayRuns->Payslips as $payslip){
+		 						$this->timesheetModel->insertPayslips($timesheetid,$payslip->EmployeeID,$payslip->PayslipID,$payrun->payrunID,$pay['StartDate']);
+		 					}
+	 						 				// var_dump($getPayruns);
+	 				}
+	 							
+	 						}
+	 					}
+	 				}
+
+
 				http_response_code(200);
-				echo json_encode($data);
+				// echo json_encode($);
 			}
 			else{
 				http_response_code(401);
@@ -215,6 +290,44 @@ class Payroll extends CI_Controller{
 		}
 	} 
 
+
+function createPayrun($payrollCalendarId,$access_token,$tenant_id){
+	$url = "https://api.xero.com/payroll.xro/1.0/PayRuns";
+		$ch =  curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_POST,1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($payrollCalendarId));
+		curl_setopt($ch, CURLOPT_HTTPHEADER,  array(
+			'Content-Type:application/json',
+			'Authorization:Bearer '.$access_token,
+			'Xero-tenant-id:'.$tenant_id,
+			'Accept:application/json'
+		));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+		$server_output = curl_exec($ch);
+		return $server_output;
+	}
+
+	function getPayRun($payrunID,$access_token,$tenant_id){
+		$url = "https://api.xero.com/payroll.xro/1.0/PayRuns/".$payrunID;
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER,  array(
+			'Content-Type:application/json',
+			'Authorization:Bearer '.$access_token,
+			'Xero-tenant-id:'.$tenant_id
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			return $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+
+		}
+	}
 	// public function CreateAwardType(){
 	// 	$headers = $this->input->request_headers();
 	// 	if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){

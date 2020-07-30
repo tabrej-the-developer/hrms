@@ -147,6 +147,20 @@ table,tr,td{
 table{
 	
 }
+a[href="#week1"] button,a[href="#week2"] button{
+	        border: none;
+    color: rgb(23, 29, 75);
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-weight: 700;
+    margin: 2px;
+    width:8rem;
+      border-radius: 20px;
+      padding: 4px 8px;
+      background: rgb(164, 217, 214) !important;
+      font-size: 1rem;
+}
 .icon{
 	font-size:1rem;
 	display:flex;
@@ -296,6 +310,9 @@ max-width:30vw;
 .owl-carousel.owl-loaded {
     display: flex !important;
 }
+/* --------------------------
+			On Logout
+	 ------------------------- */
    .modal-logout {
         position: fixed;
         left: 0;
@@ -325,6 +342,9 @@ max-width:30vw;
         transform: scale(1.0);
         transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
     }
+/* --------------------------
+			On Logout
+	 ------------------------- */
     .leave{
     	background:orange;
     	padding:3px;
@@ -387,7 +407,9 @@ td.shift-edit{
 
 	<?php 
 			$timesheetDetails = json_decode($timesheetDetails); 
-			$entitlements = json_decode($entitlements);
+			if(isset($entitlements)){
+						$entitlements = json_decode($entitlements);
+					}
 	?>
 	<div class="containers" id="containers" style="overflow-x:scroll">
 		<div class="heading ">Timesheets</div>
@@ -491,16 +513,27 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					<?php 
 		for($p=0;$p<5;$p++){
 		    if($timesheetDetails->timesheet[$p]->rosteredEmployees != null){?>
-		<td style="" class="shift-edit " name="<?php  echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName ?>"  cal-x="<?php echo $x; ?>" cal-p="<?php echo $p; ?>" array-type="rosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empId?>" curr-date="<?php echo $timesheetDetails->timesheet[$p]->currentDate?>" timesheet-id="<?php echo $timesheetDetails->id;?>">
+		<td style="" 
+				class="<?php echo count($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes) > 0 ? 'shift-edit' : '' ?> " 
+				name="<?php  echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName ?>"  
+				cal-x="<?php echo $x; ?>" 
+				cal-p="<?php echo $p; ?>" 
+				array-type="rosteredEmployees" 
+				emp-id="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empId?>" 
+				curr-date="<?php echo $timesheetDetails->timesheet[$p]->currentDate?>" 
+				timesheet-id="<?php echo $timesheetDetails->id;?>"  
+				payrollShifts="<?php echo count($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes) > 0 ? 'shift-edit' : '' ?>" >
+<?php 
 
-			
-		<div style="border-radius: 5px;padding:3px">
-		<div  class="<?php if($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{ echo 'div-box';}?>">
-					<?php 
-					 if($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->isOnLeave =="N"){ 
+		 if($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->isOnLeave =="N"){ 
+			 if(count($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes) > 0){ 
 						// $timesheetDetails->timesheet[$p]->employees[$x];
 			$times = $timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes;
 			$totalTime = 0;
+ ?>
+		<div style="border-radius: 5px;padding:3px">
+		<div  class="<?php if($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{ echo 'div-box';}?>">
+					<?php 
 			foreach($times as $time){
 				$totalTime = $totalTime + $time->endTime - $time->startTime;
 			}
@@ -508,12 +541,12 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 	foreach($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes as $visits){$number++;}
 				$totalVisits = $number;
 			?>
-						<span><?php echo $timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->rosterShift->roleName->roleName;?></span>
+						<span><?php echo isset($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->rosterShift->roleName->roleName) ? $timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->rosterShift->roleName->roleName : "";?></span>
 							<span>Total Hours : <?php echo  intVal($totalTime/100) .".". $totalTime%100; ?></span>
 							<span>Total visits : <?php echo $totalVisits; ?></span>
 						</div>
 					</div>
-				<?php }else{
+				<?php } }else{
 					echo "On Leave";
 				} ?>
 				</td>
@@ -573,15 +606,27 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					?>
 
 				<?php for($p=0;$p<1;$p++){?>
-	<td style="min-width:8vw;padding:7px" class="shift-edit" name="<?php  echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName ?>"  cal-x="<?php echo $x; ?>"cal-p="<?php echo $p; ?>" array-type="unrosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empId?>"  timesheet-id="<?php echo $timesheetDetails->id;?>">
-		<?php if($timesheetDetails->timesheet[0]->unrosteredEmployees[$p]->isOnLeave =="N"){ ?>
-					<div style="border-radius: 5px;padding:3px">
-						<div  class=" <?php if($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{echo 'div-box';}?>">
-				<?php 
+	<td 
+		style="min-width:8vw;padding:7px" 
+		class="<?php echo count($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes) > 0 ? 'shift-edit' : '' ?>" 
+		name="<?php  echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName ?>"  
+		cal-x="<?php echo $x; ?>"
+		cal-p="<?php echo $p; ?>" 
+		array-type="unrosteredEmployees" 
+		emp-id="<?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empId?>"  
+		timesheet-id="<?php echo $timesheetDetails->id;?>">
+		<?php if($timesheetDetails->timesheet[0]->unrosteredEmployees[$p]->isOnLeave =="N"){
+				
 				if($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave != 'Y'){ 
+					if(count($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes) > 0){
 					// $timesheetDetails->timesheet[$p]->employees[$x];
 			$times = $timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes;
 			$totalTime = 0;
+		 ?>
+					<div style="border-radius: 5px;padding:3px">
+						<div  class=" <?php if($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{echo 'div-box';}?>">
+				<?php 
+
 			foreach($times as $time){
 				$totalTime = $totalTime + $time->endTime - $time->startTime;
 			}
@@ -591,14 +636,16 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 			$totalVisits = $number;
 			
 				?>
-							<span><?php echo $timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->rosterShift->roleName->roleName;?></span>
+							<span><?php echo isset($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->rosterShift->roleName->roleName) ? $timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->rosterShift->roleName->roleName : ""; ?></span>
 							<span>Total Hours : <?php echo  $totalTime/100 .".". $totalTime%100; ?></span>
 							<span>Total visits : <?php echo $totalVisits; ?></span>
-				<?php		}else{
-						echo " On Leave";
-					}?>
+				?>
 						</div>
-						
+				<?php	
+							}	}else{
+						echo " On Leave";
+								}
+					?>
 					</div>
 				<?php } else{
 					echo "On leave";
@@ -691,16 +738,26 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					<?php 
 		for($p=7;$p<12;$p++){
 		    if($timesheetDetails->timesheet[$p]->rosteredEmployees != null){?>
-		<td style="min-width:8vw;padding:7px" class="shift-edit " name="<?php  echo $timesheetDetails->timesheet[0]->rosteredEmployees[$p]->empName ?>"  cal-x="<?php echo $x; ?>" cal-p="<?php echo $p; ?>" array-type="rosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$p]->empId?>" curr-date="<?php echo $timesheetDetails->timesheet[$p]->currentDate?>" timesheet-id="<?php echo $timesheetDetails->id;?>">
+		<td style="min-width:8vw;padding:7px" 
+				class="<?php echo count($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes) > 0 ?  'shift-edit' : '' ?> " 
+				name="<?php  echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName ?>"  
+				cal-x="<?php echo $x; ?>" 
+				cal-p="<?php echo $p; ?>" 
+				array-type="rosteredEmployees" 
+				emp-id="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empId?>" 
+				curr-date="<?php echo $timesheetDetails->timesheet[$p]->currentDate?>" 
+				timesheet-id="<?php echo $timesheetDetails->id;?>">
+			<?php
+					 if($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->isOnLeave =="N"){ 
+						// $timesheetDetails->timesheet[$p]->employees[$x];
+					 	if(count($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes) > 0){
+			$times = $timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes;
+			$totalTime = 0;
 
-			
+			?>
 		<div style="border-radius: 5px;padding:3px">
 		<div  class="<?php if($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{ echo 'div-box';}?>">
 					<?php 
-					 if($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->isOnLeave =="N"){ 
-						// $timesheetDetails->timesheet[$p]->employees[$x];
-			$times = $timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes;
-			$totalTime = 0;
 			foreach($times as $time){
 				$totalTime = $totalTime + $time->endTime - $time->startTime;
 			}
@@ -708,12 +765,12 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 	foreach($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes as $visits){$number++;}
 				$totalVisits = $number;
 			?>
-			<span><?php echo $timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->rosterShift->roleName->roleName;?></span>
+			<span><?php echo isset($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->rosterShift->roleName->roleName) ? $timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->rosterShift->roleName->roleName : "";?></span>
 							<span>Total Hours : <?php echo  intVal($totalTime/100) .".". $totalTime%100; ?></span>
 							<span>Total visits : <?php echo $totalVisits; ?></span>
 						</div>
 					</div>
-				<?php }else{
+				<?php } } else{
 					echo "On Leave";
 				} ?>
 				</td>
@@ -773,15 +830,25 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					?>
 
 				<?php for($p=0;$p<1;$p++){?>
-	<td style="min-width:8vw;padding:7px" class="shift-edit" name="<?php  echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName ?>"  cal-x="<?php echo $x; ?>"cal-p="<?php echo $p; ?>" array-type="unrosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empId?>"  timesheet-id="<?php echo $timesheetDetails->id;?>">
-		<?php if($timesheetDetails->timesheet[0]->unrosteredEmployees[$p]->isOnLeave =="N"){ ?>
-					<div style="border-radius: 5px;padding:3px">
-						<div  class=" <?php if($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{echo 'div-box';}?>">
-				<?php 
-				if($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave != 'Y'){ 
+	<td style="min-width:8vw;padding:7px" 
+			class="<?php count($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes) > 0 ? 									'shift-edit' : '' ?>" 
+			name="<?php  echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName ?>"  
+			cal-x="<?php echo $x; ?>"
+			cal-p="<?php echo $p; ?>" 
+			array-type="unrosteredEmployees" 
+			emp-id="<?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empId?>"  
+			timesheet-id="<?php echo $timesheetDetails->id;?>">
+		<?php if($timesheetDetails->timesheet[0]->unrosteredEmployees[$p]->isOnLeave =="N"){
+						if($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave != 'Y'){ 
+							if(count($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes) > 0){
 					// $timesheetDetails->timesheet[$p]->employees[$x];
 			$times = $timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes;
 			$totalTime = 0;
+
+		 ?>
+					<div style="border-radius: 5px;padding:3px">
+						<div  class=" <?php if($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{echo 'div-box';}?>">
+				<?php 
 			foreach($times as $time){
 				$totalTime = $totalTime + $time->endTime - $time->startTime;
 			}
@@ -794,7 +861,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 				<span><?php echo $timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->rosterShift->roleName->roleName;?></span>
 							<span>Total Hours : <?php echo  $totalTime/100 .".". $totalTime%100; ?></span>
 							<span>Total visits : <?php echo $totalVisits; ?></span>
-				<?php		}else{
+				<?php	 }	}else{
 						echo " On Leave";
 					}?>
 						</div>
@@ -825,13 +892,30 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 				</tr>
 			</table>
 		</div>
+
+<div class="modal-logout">
+    <div class="modal-content-logout">
+        <h3>You have been logged out!!</h3>
+        <h4><a href="<?php echo base_url(); ?>">Click here</a> to login</h4>
+        
+    </div>
+</div>
+
 <?php if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){ ?>
 
-
+<?php if($timesheetDetails->status == 'Draft'){ ?>
 	<div class="buttons d-flex justify-content-end">
 		<button id="discard-timesheet" class="button">Discard</button>
 		<button id="publish-timesheet" class="button">Save</button>
 	</div>
+
+	<?php
+}else{ ?>
+	<div class="buttons d-flex justify-content-end">
+		<button id="discard-timesheet" class="button">Discard</button>
+		<button id="publish-timesheet" class="button">Save</button>
+	</div>
+<?php } ?>
 
 <?php } ?>
 <?php if($this->session->userdata('UserType') == STAFF){?>
@@ -904,7 +988,8 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					 		console.log('success')
 					 		$('.box-name').html(v)
 					 		$('.box-space').html(w)
-					 		$('#timesheet-form').html(response)
+					 		$('#timesheet-form').html(response);
+					 		employeeBudget();
 					 	}
 					 })
 				})
@@ -1081,20 +1166,11 @@ $(document).on('click','.buttonn',function(){
 			})
 		})
 
-function AmPmTo24(time){
-	var time = $("#starttime").val();
-var hours = Number(time.match(/^(\d+)/)[1]);
-var minutes = Number(time.match(/:(\d+)/)[1]);
-var AMPM = time.match(/\s(.*)$/)[1];
-if(AMPM == "PM" && hours<12) hours = hours+12;
-if(AMPM == "AM" && hours==12) hours = hours-12;
-var sHours = hours.toString();
-var sMinutes = minutes.toString();
-if(hours<10) sHours = "0" + sHours;
-if(minutes<10) sMinutes = "0" + sMinutes;
-time = toString(sHours) + toString(sMinutes)
-return time;
-}
+	function AmPmTo24(time){
+		var sTime = time.toString();
+		time = parseInt(sTime.replace(':',''));
+		return time;
+	}
 </script>
 
 	<script type="text/javascript">
@@ -1102,21 +1178,61 @@ return time;
 	</script>
 
 <script type="text/javascript">
-	var count = $('.box-time').length;
-	var thisValue = 0;
 	
-	for(var i=0;i<count;i++){
-		var children = $('.box-time').eq(i).children().children().next();
-		if($('.box-time').eq(i).children().children().children().prop('checked') == true){
+	let employeeBudget = function(){
+
+				var count = $('.box-time').length;
+				var thisValue = 0;
+		for(var i=0;i<count;i++){
+		var children = $('.time-box').eq(i);
+		if($('.clocked_time').eq(i).prop('checked') == true){
 			if(children.next().html() == ""){
-				thisValue = thisValue + ( parseInt(children.attr('evalue')) - parseInt(children.attr('svalue')) ) * $('select option:selected').eq(i).attr('factor') * parseInt($('.box-time').eq(i).attr('hourly'))
+				thisValue = thisValue + ( parseInt(children.attr('evalue')) - parseInt(children.attr('svalue')) ) * $('.shift-type-select option:selected').eq(i).attr('factor') * parseInt($('.box-time').eq(i).attr('hourly'))
 			}
 			else{
 				thisValue = thisValue + parseInt(String(children.next().children('eclass').val()).replace(":","")) - parseInt(String(children.next().children('sclass').val()).replace(":",""))
+				}
 			}
 		}
-	}
-	$('.budget').html('Budget '+'$' + thisValue);
+
+		$(document).on('change','select',function(){
+			var count = $('.box-time').length;
+				var thisValue = 0;
+		for(var i=0;i<count;i++){
+		var children = $('.time-box').eq(i);
+		if($('.clocked_time').eq(i).prop('checked') == true){
+			if(children.next().html() == ""){
+				thisValue = thisValue + ( parseInt(children.attr('evalue')) - parseInt(children.attr('svalue')) ) * $('.shift-type-select option:selected').eq(i).attr('factor') * parseInt($('.box-time').eq(i).attr('hourly'))
+			}
+			else{
+				thisValue = thisValue + parseInt(String(children.next().children('eclass').val()).replace(":","")) - parseInt(String(children.next().children('sclass').val()).replace(":",""))
+				}
+			}
+		}
+					$('.budget').html('Budget : $'+(thisValue)/100);
+		})
+
+		$(document).on('click','input[type=checkbox]',function(){
+			var count = $('.box-time').length;
+				var thisValue = 0;
+		for(var i=0;i<count;i++){
+		var children = $('.time-box').eq(i);
+		if($('.clocked_time').eq(i).prop('checked') == true){
+			if(children.next().html() == ""){
+				thisValue = thisValue + ( parseInt(children.attr('evalue')) - parseInt(children.attr('svalue')) ) * $('.shift-type-select option:selected').eq(i).attr('factor') * parseInt($('.box-time').eq(i).attr('hourly'))
+			}
+			else{
+				thisValue = thisValue + parseInt(String(children.next().children('eclass').val()).replace(":","")) - parseInt(String(children.next().children('sclass').val()).replace(":",""))
+				}
+			}
+		}
+					$('.budget').html('Budget : $'+(thisValue)/100);
+		})
+				$('.budget').html('Budget : $'+(thisValue)/100);
+	};
+
+
+
 </script>
 <script type="text/javascript">
 	$(document).ready(()=>{

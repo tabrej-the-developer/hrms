@@ -170,9 +170,9 @@ class Leave extends CI_Controller {
 			$data['userid'] = $this->session->userdata('LoginId');
 
 			if($data['leaveId'] == "")
-				$url = "http://todquest.com/PN101/api/leave/createLeaveType";
+				$url = BASE_API_URL."leave/createLeaveType";
 			else
-				$url = "http://todquest.com/PN101/api/leave/editLeaveType";
+				$url = BASE_API_URL."leave/editLeaveType";
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -211,7 +211,7 @@ class Leave extends CI_Controller {
 			$data['leaveId'] = $form_data['leaveId'];
 			$data['userid'] = $this->session->userdata('LoginId');
 
-			$url = "http://todquest.com/PN101/api/leave/deleteLeaveType";
+			$url = BASE_API_URL."leave/deleteLeaveType";
 
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
@@ -300,7 +300,7 @@ class Leave extends CI_Controller {
 			$data['userid'] = $this->session->userdata('LoginId');
 			$data['hours'] = $form_data['total_leave_hours'];
 			
-			$url = "http://todquest.com/PN101/api/leave/applyLeave";
+			$url = BASE_API_URL."leave/applyLeave";
 
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);

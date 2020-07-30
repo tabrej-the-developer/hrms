@@ -24,23 +24,23 @@ $nth_child = 0;
     case strtolower("Leave"):
       $nth_child = 5;
       break;
-    case strtolower("Jobs"):
-      $nth_child = 6;
-      break;
+    // case strtolower("Jobs"):
+    //   $nth_child = ;
+    //   break;
     case strtolower("Messenger"):
-      $nth_child = 7;
+      $nth_child = 6;
       break;
     // case strtolower("Notice"):
     //   $nth_child = 8;
     //   break;
     case strtolower("Reports"):
-      $nth_child = 8;
+      $nth_child = 7;
       break;
     // case strtolower("Settings"):
     //   $nth_child = 10;
     //   break;
     case strtolower("MOM"):
-      $nth_child = 9;
+      $nth_child = 8;
       break;
   }
 ?>
@@ -95,7 +95,7 @@ font-family: 'Open Sans', sans-serif;
   position: absolute;
    }
 .navbar-nav.side-nav:hover {left:0;}
-.side-nav li a {padding: 15px}
+.side-nav li a {padding: 15px 8px}
 .navbar-nav li a .shortmenu {float: right;display: block;opacity: 1}
 
 .navbar-nav.side-nav{background: #f5f5f5; box-shadow: 2px 1px 2px rgba(0,0,0,.1); position:fixed; top:0px; flex-direction: column!important;left:0px;width:200px;overflow-y:auto;bottom:0;overflow-x:hidden;padding-bottom:40px}
@@ -160,30 +160,30 @@ font-family: 'Open Sans', sans-serif;
   margin-top:5px;
 }
 .nav-item-header a{
-  font-weight: bolder;
-  color:#E0E0E0 ;
-  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(255,255,255,.5) !important; ;
+  font-size: 1rem;
 }
 .nav-item-header-div a{
-  font-weight: bolder;
-  color:#E0E0E0 ;
-  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(255,255,255,.5) !important; ;
+  font-size: 1rem;
 }
 .nav-item-header a:hover{
-  font-weight: bolder;
+  font-weight: 500;
   color: #307bd3 !important;
-  font-size: 0.75rem;
+  font-size: 1rem;
 }
 .nav-item-header-div a:hover{
   font-weight: bolder;
   color: #307bd3 !important;
-  font-size: 0.75rem;
+  font-size: 1rem;
 }
 
 .nav-item-header:nth-of-type(<?php echo $nth_child ;?>) a{
- font-weight: bolder;
+ font-weight: 500;
   color: #307bd3 !important;
-  font-size: 0.75rem;
+  font-size: 1rem;
 }
 .fixed-top{
   z-index: 0 !important;
@@ -292,34 +292,33 @@ font-family: 'Open Sans', sans-serif;
              </a>
           </li>
 		  <?php // } ?>
-          <li class="nav-item-header ">
+<!--           <li class="nav-item-header ">
             <a class="nav-link d-flex justify-content-start" href="#" title="Cart">
               
               <i class="mr-4" >
-                <img src="<?php echo base_url();?>assets/images/navbar-icons/jobs.png" style="max-height: 1rem">
+                <img src="<?php // echo base_url();?>assets/images/navbar-icons/jobs.png" style="max-height: 1rem">
               </i>
               <span>Jobs </span>
             </a>
-          </li>
+          </li> -->
 
-          <li class="nav-item-header">
-            <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('messenger') ?>" title="Cart"> 
-              
-              <i class="mr-4" >
-                <img src="<?php echo base_url();?>assets/images/navbar-icons/messenger.png" style="max-height: 1rem">
-              </i>
-              <span>Messenger </span>
-            </a>
-          </li>
       <li class="nav-item-header">
-            <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('notice') ?>" title="Notices">
+        <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('messenger') ?>" title="Cart"> 
+          <i class="mr-4" >
+            <img src="<?php echo base_url();?>assets/images/navbar-icons/messenger.png" style="max-height: 1rem">
+          </i>
+          <span>Messenger </span>
+        </a>
+      </li>
+      <li class="nav-item-header">
+        <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('notice') ?>" title="Notices">
+          <i class="mr-4" >
+            <img src="<?php echo base_url();?>assets/images/navbar-icons/notices.png" style="max-height: 1rem">
+          </i>
+          <span>Notices </span>
+        </a>
+      </li>
               
-              <i class="mr-4" >
-                <img src="<?php echo base_url();?>assets/images/navbar-icons/notices.png" style="max-height: 1rem">
-              </i>
-              <span>Notices </span>
-            </a>
-          </li>
 		  
 <!--       <li class="nav-item-header">
             <a class="nav-link d-flex justify-content-start" href="#" title="Settings">
@@ -352,7 +351,7 @@ font-family: 'Open Sans', sans-serif;
               </a>
             </li>
             <li class="nav-item-header-div" >
-            <a class="nav-link-div d-flex justify-content-start" href="<?php echo base_url();?>welcome/logout" style="color:white !important;">
+            <a class="nav-link-div d-flex justify-content-start" href="<?php echo base_url();?>welcome/logout" >
               <i class="mr-4" style="color:#f5f5f5;">
                 <img src="<?php echo site_url();?>assets/images/navbar-icons/power.png" class="pr-2" style="height:1rem"></i>Logout</a>
           </li>

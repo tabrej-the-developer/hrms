@@ -1314,7 +1314,7 @@ $server_output = curl_exec($ch);
 		}
 	}
 
-		public function addLeaveType(){
+	public function addLeaveType(){
 		$this->load->helper('form');
 		$form_data = $this->input->post();
 		if($form_data != null){
@@ -1328,13 +1328,17 @@ $server_output = curl_exec($ch);
 			$data['leaveId'] = $form_data['leaveId'];
 			$data['name'] = $form_data['leaveName'];
 			$data['slug'] = $form_data['leaveSlug'];
+			if(!isset($form_data['show_in_payslips']))
+				$data['showOnPaySlipYN'] = "N";			
+			else
+				$data['showOnPaySlipYN'] = $form_data['show_in_payslips'];
 			$data['isPaidYN'] = isset($form_data['leaveIsPaid']) ? "Y" : "N";
 			$data['userid'] = $this->session->userdata('LoginId');
 
 			if($data['leaveId'] == "")
-				$url = "http://todquest.com/PN101/api/leave/createLeaveType";
+				$url = BASE_API_URL."leave/createLeaveType";
 			else
-				$url = "http://todquest.com/PN101/api/leave/editLeaveType";
+				$url = BASE_API_URL."leave/editLeaveType";
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -1373,7 +1377,7 @@ $server_output = curl_exec($ch);
 			$data['leaveId'] = $form_data['leaveId'];
 			$data['userid'] = $this->session->userdata('LoginId');
 
-			$url = "http://todquest.com/PN101/api/leave/deleteLeaveType";
+			$url = BASE_API_URL."leave/deleteLeaveType";
 
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
@@ -1414,7 +1418,7 @@ $server_output = curl_exec($ch);
 			$data['status'] = $form_data['status'];
 			$data['userid'] = $this->session->userdata('LoginId');
 
-			$url = "http://todquest.com/PN101/api/leave/UpdateLeaveApplication";
+			$url = BASE_API_URL."leave/UpdateLeaveApplication";
 
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);

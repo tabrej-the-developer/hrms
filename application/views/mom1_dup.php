@@ -34,7 +34,6 @@ font-family: 'Open Sans', sans-serif;
     padding: 15px;
     margin: 0 auto;
 }
-
         .card-header {
             padding: 0.2rem 1.25rem;
             /* margin-bottom: 0; */
@@ -65,8 +64,13 @@ font-family: 'Open Sans', sans-serif;
         
         div.dataTables_wrapper div.dataTables_paginate {
             margin-top: -25px;
+            position: fixed;
+            bottom: 0.2rem;
+            right: 1rem
         }
-        
+        .dataTables_info{
+          display: none;
+        }
         .page-item.active .page-link {
             z-index: 1;
             color: #fff;
@@ -94,11 +98,10 @@ font-family: 'Open Sans', sans-serif;
 		}
 		.modal-header {
 			border-bottom:none;
-			border-top-left-radius:0;
-			border-top-right-radius:0;
-			background-color: #307bd3;
-			color: #fff;
-           
+			background-color:#8D91AA;
+			color: #E7E7E7;
+          display: flex;
+          justify-content: center; 
 		}
 		.modal-content {
 			border-radius:0;	
@@ -174,7 +177,7 @@ input::placeholder {
 }
 .chat_img {
   float: left;
-  width: 11%;
+  width: 14%;
 }
 
 .chat_ib h5{ font-size:15px; color:#464646; margin:0 0 8px 0;}
@@ -182,7 +185,7 @@ input::placeholder {
 .chat_ib p{ font-size:14px; color:#989898; margin:auto}
 .chat_img {
   float: left;
-  width: 11%;
+  width: 14%;
 }
 .chat_ib {
   float: left;
@@ -226,6 +229,153 @@ svg:not(:root).svg-inline--fa {
     padding-left: 2.375rem;
 }
 
+/* ----------------------
+    Schedule meeting modal : key (321x)
+   ---------------------- */
+   input{
+    padding-left: 2rem;
+    padding-right:1rem;
+   }
+   .button_form{
+        border: none;
+    color: rgb(23, 29, 75);
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-weight: 700;
+    margin: 2px;
+    width:8rem;
+      border-radius: 20px;
+      padding: 4px 8px;
+      background: rgb(164, 217, 214);
+      font-size: 1rem;
+   }
+   .clos{
+    background: #BCBFCF !important;
+   }
+   .click-add{
+    position: absolute;
+    right:100px;
+
+   }
+   .click-remove{
+    position: absolute;
+    right:70px;
+
+   }
+   .modal_table{
+    margin-bottom: 0;
+   }
+   .agenda-class{
+    padding-bottom: 1rem;
+   }
+   .agenda_block{
+      min-height: 14rem;
+      border: 1px solid #707070;
+      border-radius: 33px;
+      margin: 2rem 1rem 0 0;
+   }
+   .label_text{
+    font-weight: 700;
+    color: #171D4B;
+    display: inline-block;
+   }
+.fc_input{
+  border-radius: 20px;
+  background: rgba(231, 231, 231, 1);
+  border: 1px solid rgba(231, 231, 231, 1);
+  box-shadow: none;
+  width: 8rem;
+}
+.add_member_label{
+  width:14%;
+  padding:0 0 1rem 0;
+  font-weight: 700;
+  color: #171D4B;
+}
+.fc_input_label span{
+  background: none;
+
+}
+.blocks_modal{
+  width:100%;
+  display: flex;
+}
+.modal_title_div{
+  width: 100%;
+  display: flex;
+}
+  .title_span_label{
+    width: 14%;
+    padding: 1rem 0;
+    display: inline-block;
+  }
+  #add_meeting{
+    width: 100%;
+  }
+  .title_span_input{
+    width: 80%;
+    padding: 1rem 0;
+    display: inline-block;
+    padding-left: 0 !important;
+  }
+  .tokens-container{
+    width: 100%;
+    background: rgba(231, 231, 231, 1);
+  }
+  .add_member_span{
+    width: 80%;
+  }
+  .tokenize{
+    width:100%;
+          height: 2.5rem;
+  }
+  .blocks_modal > span{
+    padding-left : 0 !important;
+  }
+  .tokenize ul{
+        border-radius: 20px;
+        background: rgba(231, 231, 231, 1);
+        border: 1px solid rgba(231, 231, 231, 1);
+        box-shadow: none;
+        height: 2.5rem !important;
+  }
+  .title_span_input input{
+    width: 79%
+  }
+.input-group>.form-control{
+  flex:0 !important;
+  width: 8rem !important;
+}
+.form-control{
+  padding: 0 !important;
+}
+  .date_span_label{
+    width:30%;
+    display: inline-block;
+  }
+  .date_span_input{
+    width:65%;
+      display: inline-block;
+  }
+  .date_span_input .input_box__{
+    width: 100%;
+  }
+.input-group{
+  display: flex;
+}
+.input_box__{
+      background: #E7E7E7;
+      border: none !important;
+      height: 2.5rem;
+      border-radius: 20px;
+  }
+  form{
+        padding: 0 1rem 0 3rem;
+  }
+.table td{
+  padding: 0 1rem 1rem 0;
+}
 .has-search .feedback{
 	position:absolute;
 	z-index: 2;
@@ -272,25 +422,33 @@ table.main-table tr:nth-child(odd){
 }
 .left{
     float:left;
-    margin-left:35px;
-    margin-top:15px;
-    margin-bottom:15px;
+    margin-left:0.5rem 0 0.5rem 2.5rem;
    
 }
 .right{
     float:right;
-    margin-top:15px;
-    margin-bottom:15px;
-
+    margin: 1rem 1rem 0.5rem 0;
+}
+.left h3{
+  margin-left:2rem;
+  font-weight: 700;
+  color: #171D4B !important;
+  margin-top: 0.5rem;
 }
 #mom_search{
     border-radius:25px;
 }
-#mom_button{
-    border-radius:25px;
-    background-color:#2196f3;
-    color:white;
+
+#agenda{
+  width:70%;
+  margin-left: 4rem;
+  border-radius: 20px;
+  min-height: 3rem;
+  color: #171D4B;
+  margin-top:0.5rem;
+  padding-left:1rem !important;
 }
+
 /* .container{
     background-color:#607d8bc9 !important;
 } */
@@ -344,9 +502,9 @@ table.main-table tr:nth-child(odd){
 }
 .modal-dialog {
   max-width: 60% !important;
-  /* height: 100%; */
+   min-height: 85vh; 
   padding: 0;
-  margin:auto;
+  margin: 1.75rem auto;
 }
 
 .modal-content {
@@ -417,7 +575,7 @@ input#add_meeting{
 }
 #main-table_filter input{
 border-radius:50px;
-height:35px;
+height:32px;
 margin-top:-3px;
 
 }
@@ -481,11 +639,11 @@ table.dataTable thead th, table.dataTable thead td{
 .arrow::after{
   content: " ";
     /* background: red; */
-    margin-top: 35px;
+    margin-top: 32px;
     position: absolute;
     /* width: 100px; */
     border-right: 10px solid transparent;
-    border-top: 20px solid #899097;
+    border-top: 15px solid rgba(137, 144, 151, 0.3);
     border-left: 10px solid transparent;
 }
 .modal-logout {
@@ -518,14 +676,56 @@ table.dataTable thead th, table.dataTable thead td{
     transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
 }
   .mom-container{
-    padding: 4rem 3rem 2rem 1rem;
+    padding: 4rem 2rem 2rem 0rem;
     height: calc(100vh - 2rem);
   }
   .mom-container-child{
     background: white;
     height: 100%;
   }
+  .button{
+      border: none;
+      color: rgb(23, 29, 75);
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-weight: 700;
+      margin: 2px;
+      display:inline-block;
 
+      border-radius: 20px;
+      padding: 4px 8px;
+      background: rgb(164, 217, 214);
+      font-size: 1rem;
+    }
+
+  #hide input[type=file] {
+display:none;
+margin:10px;
+}
+#hide input[type=file] + label {
+display:inline-block;
+margin:20px;
+padding: 4px 32px;
+background-color: #FFFFFF;
+border:solid 1px #666F77;
+border-radius: 6px;
+color:#666F77;
+}
+#hide input[type=file]:active + label {
+background-image: none;
+background-color:#2D6C7A;
+color:#FFFFFF;
+}
+  #agendaFile{
+    background:#eee;
+    width: 70%;
+    border-radius: 20px;
+    height: 3rem;
+    margin-left: 4rem;
+    margin-top:1rem;
+    margin-bottom:3rem;
+  }
   .input-class{
     padding-right:4rem !important;
   }
@@ -648,9 +848,9 @@ $users =   json_decode($users);
 <!-- Modal -->
 
 <div class="mom-container">
-        <span style="position: absolute;top:20px;padding-left: 2rem">
+        <span style="position: absolute;top:20px">
         <a href="<?php echo base_url();?>/settings">
-          <button class="btn back-button">
+          <button class="btn back-button p-0">
               <img src="<?php echo base_url('assets/images/back.svg');?>">
                <span style="font-size:0.8rem">Minutes of Meeting</span>
           </button>
@@ -664,126 +864,149 @@ $users =   json_decode($users);
     
       <!-- Modal content-->
       <div class="modal-content">
-        <div class="modal-header bg-primary">
+        <div class="modal-header ">
     
-          <h3 class="modal-title">Schedule New Meeting</h3>
+          <h3 class="modal-title ">Schedule New Meeting</h3>
         </div>
         <div class="modal-body container">
              <form method="post" action="<?php echo base_url() ?>mom/addMeeting">
-              <div class="form-group">
-                    <input type="text" name="meetingTitle" id="add_meeting" class="form-control" placeholder="Add Meeting Title">  
+              <div class="form-group modal_title_div">
+                   <span class="title_span_label">
+                      <label class="label_text">Title</label>
+                    </span>
+                    <span class="title_span_input">
+                      <input type="text" name="meetingTitle" id="add_meeting" class="input_box__" placeholder="Enter Title">
+                    </span>  
               </div>
-               <table class="table table-borderless">
+               <table class="table table-borderless modal_table">
                <tr>
-              
-                <td class="col-md-4 input-group-parent">
-                <div class="input-group mb-1 col-md-9">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">Date</span>
-                        </div>
-                        <input type="date" id="date" name="meetingDate" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-                        </div>
-                </td>
-               
-                <td class="col-md-4 input-group-parent">
-                <div class="input-group mb-1 col-md-8">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1">Time</span>
-                    </div>
-                    <input type="time" name="meetingTime" id="time" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-                    </div>
+                  <td class="col-md-4 input-group-parent">
+                    <div class="d-flex blocks_modal">
+                        <span class="col-md-6 ">
+                          <span class="input-group-prepend date_span_label">
+                            <label class="label_text">Start&nbsp;Date</label>
+                          </span>
+                          <span class=" date_span_input">
+                            <input type="date" id="date" name="meetingDate" class="input_box__" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                          </span>
+                        </span>
+                        <span class="col-md-6 ">
+                          <span class="input-group-prepend date_span_label">
+                            <label class="label_text">End&nbsp;Date</label>
+                          </span>
+                          <span class=" date_span_input">
+                            <input type="date" id="date" name="meetingDate" class="input_box__" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                          </span>
+                        </span>
+                      </div>
+                  </td>
+               </tr>
+              <tr>
+                <td class="col-md-12 input-group-parent">
+                  <div class="d-flex blocks_modal">
+                    <span class="col-md-6 ">
+                      <span class="input-group-prepend date_span_label">
+                         <span class=" label_text" id="basic-addon1">Start&nbsp;Time</span>
+                      </span>
+                      <span class="date_span_input">
+                        <input type="time" name="meetingTime" id="time" class="input_box__" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                      </span>
+                    </span>
+                    <span class="col-md-6 ">
+                      <span class="input-group-prepend date_span_label">
+                        <span class=" label_text" id="basic-addon1">End&nbsp;Time</span>
+                      </span>
+                      <span class="date_span_input">
+                        <input type="time" name="meetingEndTime" id="time" class="input_box__" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                      </span>
+                    </span>
+                  </div>
                 
                 </td>
-               </tr>
-               
-               </table>
-              <hr>
-              <table class="table table-borderless">
                <tr>
-                   <td class="label-class">Where</td>
-                    <td class="input-class">
-                      <div class="form-group">
-                       <input id="location" type="text" class="form-control" id="autocomplete" placeholder="Type Address..." name="meetingLocation">
-                      </div>
+                <td>
+                  <div class="d-flex blocks_modal">
+                    <span class="col-md-6">
+                      <span class="date_span_label label_text">Where</span>
+                      <span class="date_span_input">
+                        <input id="location" type="text" class="input_box__" id="autocomplete" placeholder="Type Address..." name="meetingLocation">
+                      </span>
                       <div class="form-group">
                        <input type="hidden">
                        <input type="hidden">
                       </div>
-                    </td>  
-                </tr>
-              
-               
+                    </span>
+                    <span class="col-md-6">
+                    <span class="date_span_label label_text">Repeat&nbsp;Event</span>
+                    <span class="date_span_input">
+                       <select name="meetingcollab" id="collab" class="input_box__">
+                          <option value="O">Once</option>
+                          <option value="A">Annual</option>
+                          <option value="M">Monthly</option>
+                          <option value="W">Weekly</option>
+                       </select>
+                    </span>
+                   </span>
+                  </div>
+                </td>
+               </tr>
+               </table>
+
+              <table class="table table-borderless">
+
+
+               <tr>
+                  <div class="blocks_modal d-flex">
+                    <span class="add_member_label">Add&nbsp;Member</span>
+                    <span class="add_member_span">
+                      <select name="invites[]" class="demo" multiple  id="demo">
+                      <?php 
+                          foreach($users->users as $m):
+                      ?>  
+                         <option value="<?php echo $m->userid ?>"><?php echo $m->username;?></option>
+                      <?php endforeach; ?>
+                     </select>
+                    </span>
+                  </div>  
+               </tr>
 <!--                <tr>
                    <td class="text-center">Calender</td>
                    <td>
                     <div class="form-group">
-                    <input type="text" id="add_meeting" class="form-control">
+                    <input type="text" id="add_meeting" class="">
                     </div>  
                    </td>
                </tr> -->
-     <tr>
-        <td class="label-class">Agenda 
-          <span class="click-add">
-            <i>
-              <img src="<?php echo base_url('assets/images/circle_plus.png');?>" height="25px">
-            </i>
-          </span>
-          <span class="click-remove">
-            <i>
-              <img src="<?php echo base_url('assets/images/minus.png');?>" height="25px">
-            </i>
-          </span></td>
-          <td class="input-class">
-            <div class="form-group agenda-class">
-                <textarea name="meetingAgenda[]" id="agenda" class="form-control agenda" style="background-color:#eee"></textarea>
-            </div>  
-          </td>
-      </tr>
-              <tr>
-                  <td class="label-class">Period</td>
-                  <td class="input-class">
-                   <div class="form-group">
-                   <select name="meetingcollab" id="collab" class="form-control">
-                      <option value="O">Once</option>
-                      <option value="A">Annual</option>
-                      <option value="M">Monthly</option>
-                      <option value="W">Weekly</option>
-                   </select>
-                   
-                   </div>
-                  </td>
-                </tr>
-               <tr>
-                   <td class="label-class">Add Member</td>
-                   <td class="input-class">
-                    <div class="form-group">
-                    <!-- <input type="text" id="add_meeting" class="form-control"> -->
-                    
-                     <select name="invites[]" class="demo" multiple  id="demo">
-                       <?php 
-                       
-                         foreach($users->users as $m):
 
-                       ?>  
-                       <option value="<?php echo $m->userid ?>"><?php echo $m->username;?></option>
-                         <?php endforeach; ?>
-                     </select>
-                    </div>  
-                   </td>
-               </tr>
-               <tr>
-               
-               <td></td>
-               <td></td>
-               </tr>
-              </table>
+          <div class="agenda_block">
+             <span style="position: absolute;margin-top: -15px;margin-left: 70px;background: white;padding:0 0.25rem">Agenda</span> 
+             <div id="agendaFile">
+               <input type="FILE" name="agendaFile" id="hide">
+             </div>
+            <span class="click-add">
+              <i>
+                <img src="<?php echo base_url('assets/images/circle_plus.png');?>" height="25px">
+              </i>
+            </span>
+            <span class="click-remove">
+              <i>
+                <img src="<?php echo base_url('assets/images/minus.png');?>" height="25px">
+              </i>
+            </span>
+              <span>
+                <div class="form-group agenda-class">
+                    <textarea name="meetingAgenda[]" id="agenda" class="form-control agenda" style="background-color:#eee" placeholder="Add Agenda"></textarea>
+                </div>  
+              </span>
+          </div>
+ </table>
               
            
        
         <div class="modal-footer">
         <div class="m_footer" style="margin:auto">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-          <button class="btn btn-primary">Submit</button>
+          <button type="button" class="btn button_form clos" data-dismiss="modal">Close</button>
+          <button class="btn button_form">Submit</button>
           </div>
         </div>
         </form>
@@ -810,7 +1033,7 @@ $users =   json_decode($users);
         
         </div>
        <div class="right">
-       <button id="mom_button" type="button"  class="btn btn-info" data-toggle="modal" data-target="#myModal">+ Schedule New Meeting</button>
+       <button id="mom_button" type="button"  class="btn button" data-toggle="modal" data-target="#myModal">+ Schedule New Meeting</button>
        </div>        
   </div>
   <table class="table table-borderless past main-table" >
@@ -938,7 +1161,7 @@ $users =   json_decode($users);
         </td>
         <td>
           <?php // if($u->status == 'Summary'){?>
-            <a href="<?php if($u->status == 'Created'){echo base_url('mom/attendence/').$u->mid; }if($u->status == 'Attendence'){echo base_url('mom/attendence/').$u->mid; }if($u->status == 'MOM'){echo base_url('mom/onBoard/').$u->mid;}if($u->status == 'Summary'){echo base_url('mom/summary/').$u->mid;} ?>" class="btn btn-primary btn-p ">start</a>
+            <a href="<?php if(strtolower($u->status) == 'created'){echo base_url('mom/attendence/').$u->mid; }if(strtolower($u->status) == 'attendence'){echo base_url('mom/onBoard/').$u->mid; }if(strtolower($u->status) == 'mom'){echo base_url('mom/summary/').$u->mid;}if(strtolower($u->status) == 'summary'){echo base_url('mom/meetingInfo/').$u->mid;} ?>" class="btn btn-primary btn-p ">start</a>
           <?php // } ?>
           </td>
         <td>

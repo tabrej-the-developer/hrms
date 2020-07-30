@@ -9,14 +9,14 @@ class DashboardModel extends CI_Model {
 			$query = $this->db->query("SELECT * FROM timesheet where centerid = '$centerid'");
 		return $query->result(); 
 	}
-	public function payrollCount(){
+	public function payrollCount($centerid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM payrollshift");
+		$query = $this->db->query("SELECT * FROM payrollshift where timesheetid IN (SELECT id from timesheet where timesheet.id = payrollshift.timesheetid and centerid = '$centerid')");
 		return $query->result(); 
 	}
-	public function leavesCount(){
+	public function leavesCount($centerid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM leaveapplication");
+		$query = $this->db->query("SELECT * FROM leaveapplication where userid IN (SELECT id from users where center LIKE '%".$centerid."_' )");
 		return $query->result(); 
 	}
 	public function rosterCount($centerid){

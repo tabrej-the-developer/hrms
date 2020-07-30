@@ -15,7 +15,7 @@ font-family: 'Open Sans', sans-serif;
 			padding: 20px 20px 20px 4rem;
 		}
 		.shift-type-select{
-			width:100px;
+			width:150px;
 		}
 		.buttonn{
 		background-color: #9E9E9E;
@@ -42,6 +42,9 @@ font-family: 'Open Sans', sans-serif;
 	    line-height: inherit; 
 	    text-shadow: none; 
 	    opacity: 1;
+		}
+		.budget{
+			padding-left: 8rem;
 		}
 		.time-box{
 			cursor:pointer;
@@ -92,7 +95,7 @@ font-family: 'Open Sans', sans-serif;
 <?php 
 if($aT == 'rosteredEmployees'){
 	$variable = 0;
-		if(count($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes) <=2){
+		if(count($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes) <=2 || (count($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes) && (isset($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes[2]->reason) ? $timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes[2]->reason : "") == 'Meeting')){
 			if(count($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes) <2){
 				$break = false; 
 			}else{
@@ -122,7 +125,7 @@ foreach($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes 
 						}
 
 	?>
-	  <div start-time="<?php echo $visits->startTime; ?>" end-time="<?php echo $visits->endTime; ?>" class="box-time" style="padding:20px 20px 20px 4rem" hourly="<?php echo $variable;?>">
+	  <div start-time="<?php echo $visits->startTime; ?>" end-time="<?php echo $visits->endTime; ?>" class="box-time" style="padding:20px 0px 20px 1rem" hourly="<?php echo $variable;?>">
 	  	<span class="group-span">
 		<span><input type="checkbox" name="" checked class="clocked_time"></span>
 		<span svalue="<?php echo $visits->startTime; ?>" evalue="<?php echo $visits->endTime; ?>" class="time-box"><?php echo timex($visits->startTime) ."-". timex($visits->endTime) ?></span>
@@ -198,7 +201,7 @@ foreach($timesheetDetails->timesheet[$ya]->unrosteredEmployees[$xa]->clockedTime
 		}
 	}
 	?>
-		<!-- <div class="budget" id="emply-id" employee="<?php echo $empId; ?>" timesheetid="<?php echo $timesheetid;?>" date="<?php echo $date;?>">Budget : </div> -->
+		<div class="budget" id="emply-id" employee="<?php echo $empId; ?>" timesheetid="<?php echo $timesheetid;?>" date="<?php echo $date;?>"> </div>
 		<div class="d-flex justify-content-center">
 			<div class="">
 				<button class="close">Close</button>

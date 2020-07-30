@@ -181,7 +181,7 @@ font-family: 'Open Sans', sans-serif;
 
 <script type="text/javascript">
   function changeCenter(){
-      var url = "http://localhost/PN101/settings/editRooms";
+      var url = window.location.origin+"/PN101/settings/editRooms";
       var centerid  = $('select').val();
       $.ajax({
         url:url,
@@ -248,7 +248,7 @@ font-family: 'Open Sans', sans-serif;
     $(document).ready(function(){
         $(document).on('click','.fa-trash-alt',function(){
           var id = $(this).attr('d-v');
-          var url = "http://localhost/PN101/settings/deleteRoom";
+          var url = window.location.origin+"/PN101/settings/deleteRoom";
           $.ajax({
             url : url,
             type : 'POST',

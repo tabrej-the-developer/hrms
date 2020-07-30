@@ -526,7 +526,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					//var sDate = $('#start-date').val($(this).attr('curr-date'))
 					//var tId = $('#timesheet-id').val($(this).attr('timesheet-id'))
 					 $.ajax({
-					 	url : "http://localhost/PN101/payroll/payrollShiftsModal?timesheetId="+"<?php echo $timesheetId; ?>&x="+x,
+					 	url : window.location.origin+"/PN101/payroll/payrollShiftsModal?timesheetId="+"<?php echo $timesheetId; ?>&x="+x,
 					 	type : 'GET',
 					 	success : function(response){
 

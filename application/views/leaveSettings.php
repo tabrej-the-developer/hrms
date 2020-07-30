@@ -53,6 +53,10 @@ font-family: 'Open Sans', sans-serif;
         
         .card-body {
             padding: 0rem 1.25rem;
+            height: calc(100% - 30%);
+            overflow-y: scroll;
+            width: 100%;
+            overflow-x: auto !important;
         }
         
         p {
@@ -318,14 +322,14 @@ input[class=checkbox_label]:checked + label:before {
 		<div class="row d-flex pr-3 buttons-parent">
     <div class="ml-auto ">
 <?php if(isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N" === "Y"){ ?>
-    	<button class="btn btn-primary">Sync Xero Leaves</button>
+    	<button class="btn btn-primary" id="XeroLeaves">Sync Xero Leaves</button>
 <?php } ?>
     </div>
 	<div class="">
 <?php if(isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N" === "Y"){ ?>
-	<button type="button" name="add_button" id="add_button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal"   onclick="addLeaveType()">
+<!-- 	<button type="button" name="add_button" id="add_button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal"   onclick="addLeaveType()">
 	 <i>
-	 	<img src="<?php echo base_url('/assets/images/plus.png');?>"></i> Add Leave Type</button>
+	 	<img src="<?php //echo base_url('/assets/images/plus.png');?>"></i> Add Leave Type</button> -->
 <?php } ?>
 	</div>
     </div>
@@ -372,7 +376,7 @@ input[class=checkbox_label]:checked + label:before {
 <!-- modal start here -->
   <div class="modal fade" id="userModal">
     <div class="modal-dialog">
-  		<form id="leaveTypeForm" action="<?php echo base_url().'settings/addLeaveType';?>" method="POST">
+  		<form id="leaveTypeForm" action="<?php  echo base_url().'settings/addLeaveType';?>" method="POST">
 				<div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Leave Type</h5>
@@ -404,15 +408,16 @@ input[class=checkbox_label]:checked + label:before {
 									</div>
 								</div>
 						<div class="">
-							<input type="checkbox" name="" class="checkbox_label" id="show_in_payslips"><label class=""for="show_in_payslips">Show in payslips</label>
+							<input type="checkbox" name="show_in_payslips" class="checkbox_label" id="show_in_payslips"><label class=""for="show_in_payslips">Show in payslips</label>
 						</div>
-						<div class="form-group text-center" id="updateLeaveType" style="display: none;">
-						<button class="btn btn-secondary rounded-0" type="button" onclick="addLeave()">Update</button>
-						<button class="btn btn-danger rounded-0" type="button" onclick="deleteLeave()">Delete</button> 
+						<div class="form-group text-center " id="updateLeaveType" style="display: none;">
+  						<button class="btn btn-secondary rounded-0" type="button" onclick="addLeave()">Update</button>
+             <button type="button" class="btn btn-secondary rounded-0 btn-close" data-dismiss="modal" aria-label="Close">Cancel</button>
+  						<button class="btn btn-danger rounded-0" type="button" onclick="deleteLeave()">Delete</button> 
 						</div>
-						<div class="form-group text-center d-flex justify-content-center" id="addLeaveType" >
-            <button type="button" class="close " data-dismiss="modal" aria-label="Close">Cancel</button>
-						<button class="btn btn-secondary rounded-0" type="button" onclick="addLeave()">Add</button>
+						<div class="form-group text-center  form-group-add" id="addLeaveType" >
+              <button type="button" class="btn btn-secondary rounded-0 " data-dismiss="modal" aria-label="Close">Cancel</button>
+  						<button class="btn btn-secondary rounded-0" type="button" onclick="addLeave()">Add</button>
 						</div>
 				  </form>	
 					</div>
@@ -455,18 +460,19 @@ input[class=checkbox_label]:checked + label:before {
 		}
 
 			function addLeave(){
-			var leaveName = document.getElementById("leaveName").value.trim();
-			if(leaveName == ""){
-				document.getElementById("leaveNameError").innerHTML = "Required field";
-			}
-			var leaveSlug = document.getElementById("leaveSlug").value.trim();
-			if(leaveSlug == ""){
-				document.getElementById("leaveSlugError").innerHTML = "Required field";
-			}
+    		var leaveName = document.getElementById("leaveName").value.trim();
+    		if(leaveName == ""){
+    			document.getElementById("leaveNameError").innerHTML = "Required field";
+    		}
+    		var leaveSlug = document.getElementById("leaveSlug").value.trim();
+    		if(leaveSlug == ""){
+    			document.getElementById("leaveSlugError").innerHTML = "Required field";
+    		}
 
-			if(leaveName != "" && leaveSlug != ""){
-				document.getElementById("leaveTypeForm").submit();
-			}
+    		if(leaveName != "" && leaveSlug != ""){
+    			document.getElementById("leaveTypeForm").submit();
+    		}
+
 
 		}
 
@@ -481,6 +487,7 @@ input[class=checkbox_label]:checked + label:before {
 			xhr.open('POST', base_url+"settings/updateLeaveApp");
 		    xhr.onreadystatechange = function() {
 		        if (xhr.readyState>3 && xhr.status==200) { 
+              // console.log(xhr.responseText)
 		        	location.reload();
 		        }
 		    };
@@ -491,12 +498,13 @@ input[class=checkbox_label]:checked + label:before {
 </script>
 <script type="text/javascript">
 	$(document).ready(function(){
-	$('#superfunds').click(function(){
+	$('#XeroLeaves').click(function(){
 		var url = window.location.origin + "/PN101/settings/syncXeroLeaves" ;
 		$.ajax({
 				url:url,
 				type:'GET',
-				success:function(){
+				success:function(response){
+          // console.log(response)
 					window.location.reload();
 				}
 			})

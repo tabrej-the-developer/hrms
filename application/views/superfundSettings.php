@@ -385,7 +385,8 @@ border-bottom-right-radius: 20px;
 		$.ajax({
 				url:url,
 				type:'GET',
-				success:function(){
+				success:function(response){
+					// console.log(response)
 					window.location.reload();
 				}
 			})

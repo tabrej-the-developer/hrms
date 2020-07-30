@@ -151,8 +151,8 @@ class Xero extends CI_Controller{
 					else{
 						$StartDate = null;
 					}
-					$OrdinaryEarningsRateID = $empDetails->OrdinaryEarningsRateID;
-					$PayrollCalendarID = $empDetails->PayrollCalendarID;
+					$OrdinaryEarningsRateID = isset($empDetails->OrdinaryEarningsRateID) ? $empDetails->OrdinaryEarningsRateID : "" ;
+					$PayrollCalendarID = isset($empDetails->PayrollCalendarID) ? $empDetails->PayrollCalendarID : "" ;
 
 					$myUser = $this->authModel->getUserFromEmail($Email);
 					if($myUser == null){
@@ -177,7 +177,7 @@ class Xero extends CI_Controller{
 
 					//taxes
 
-					$TaxFileNumber = $empDetails->TaxDeclaration->TaxFileNumber;
+					$TaxFileNumber = isset($empDetails->TaxDeclaration->TaxFileNumber) ? $empDetails->TaxDeclaration->TaxFileNumber : "";
 					$EmploymentBasis = $empDetails->TaxDeclaration->EmploymentBasis;
 					$TFNExemptionType = isset($empDetails->TaxDeclaration->TFNExemptionType) ? $empDetails->TaxDeclaration->TFNExemptionType : "";
 					$AustralianResidentForTaxPurposes = $empDetails->TaxDeclaration->AustralianResidentForTaxPurposes;
@@ -222,7 +222,7 @@ class Xero extends CI_Controller{
 
 				}
 
-			    $data['Status'] = "ERROR";
+			    $data['Status'] = "SUCCESS";
 			}
 			catch (Exception $e) {
 			    echo 'Caught exception: ',  $e->getMessage(), "\n";
@@ -339,9 +339,10 @@ class Xero extends CI_Controller{
 							$val = $this->getPayItems($access_token,$tenant_id);
 							$val = json_decode($val);
 						}
-						
+						var_dump($val);
 						if($val->Status == "OK"){
 							$leaveTypes = $val->PayItems->LeaveTypes;
+							var_dump($leaveTypes);
 							$this->leaveModel->deleteAllLeaveTypes();
 							for($i=0;$i<count($leaveTypes);$i++){
 								$LeaveTypeID = $leaveTypes[$i]->LeaveTypeID;

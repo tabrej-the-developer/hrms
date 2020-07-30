@@ -12,14 +12,34 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css">
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+<!-- Draggable plugin -->
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <style type="text/css">
 	*{
-font-family: 'Open Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif;
 	}
 	body{
 		background: rgb(243, 244, 247) !important;
 
 	}
+    thead{
+      background:#8D91AA;
+    }
+    tr:nth-child(even){
+      background:#D2D0D0 !important;
+    }
+    tr:nth-child(odd){
+
+      background: #F1EEEE !important;
+    }
+    td:nth-child(8){
+      background: white
+    }
+    th{
+      background: #8D91AA;
+      color: #F3F4F7;
+    }
 	.containers{
 		background:	rgb(243, 244, 247);
 		height: calc(100vh);
@@ -37,13 +57,14 @@ font-family: 'Open Sans', sans-serif;
         }
         .card{
         	background-color: transparent;
+          padding: 0 !important
         }
         .sort-by{
         	margin:0 0 0 2rem !important;
         }
         .card-body {
             padding: 0;
-            height:75vh;
+            height:80vh;
         }
         
         p {
@@ -230,14 +251,21 @@ img{ max-width:140%;}
         }
 
  /* Data Tables */
-     select{
-	background: #ebebeb;
-	border-radius: 5px;
+    select{
+  background: rgb(164, 217, 214);
+  font-weight: 700;
+  color: rgb(23, 29, 75);
+  border-radius: 20px;
     padding: 5px;
+    padding-left: 20px;
     border: 2px solid #e9e9e9 !important;
-		}
+    font-size: 1rem !important;
+    }
+    select:hover{
+      cursor: pointer;
+    }
 .dataTables_wrapper {
-	height:95%;
+	height:100%;
 	overflow-y: hidden;
 	background: white;
 	/*box-shadow: 0 0 4px 1px rgba(0,0,0,0.1);*/
@@ -346,7 +374,10 @@ table.dataTable{
 		background-color: #9E9E9E;
   	border: none;
   	color: white;
-  	padding: 10px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
   	text-align: center;
   	text-decoration: none;
   	display: inline-block;
@@ -357,6 +388,8 @@ table.dataTable{
   	line-height: inherit; 
   	text-shadow: none; 
   	opacity: 1;
+    width: 150px;
+    border-radius: 20px;
 	}
 	.close:hover{
 		background:#9E9E9E;
@@ -367,6 +400,8 @@ table.dataTable{
 	#nav-contact1{
 		box-shadow: 0 0 5px 5px rgba(0,0,0,0.1);
 	}
+
+
 	/*-------------------------
 		Confirm Box Css
 	--------------------------*/
@@ -409,6 +444,8 @@ table.dataTable{
 }
 #modal_confirm__container .modal_confirm__background .modal_confirm_ {
   background: white;
+  min-height: 50%;
+  width: 50%;
   padding: 50px;
   display: inline-block;
   border-radius: 3px;
@@ -424,6 +461,79 @@ table.dataTable{
   font-size: 18px;
   line-height: 22px;
 }
+.modal_icon{
+  width: 80px;
+  height: 80px;
+  cursor: move;
+}
+.confirm__span textarea{
+      width: 300px;
+    border-radius: 10px;
+    border: 1px solid rgb(23, 29, 75,0.6);
+    box-shadow: none;
+    text-shadow: none;
+    padding: 3px;
+}
+.confirm__span textarea::placeholder{
+  color: rgb(23, 29, 75,0.6);
+  text-align: center;
+}
+.confirm_button:disabled{
+  cursor:not-allowed;
+}
+.confirm_save{
+  background: #A4D9D6 !important;
+  border: 1px solid white;
+  color: #171D4B !important;
+  font-weight: 700 !important;
+  font: 65 Medium 18px/22px Avenir LT Std !important;
+}
+.confirm_cancel{
+  background: #D2D0D0 !important;
+  border: 1px solid white;
+  color: #171D4B !important;
+  font-weight: 700 !important;
+  font: 65 Medium 18px/22px Avenir LT Std !important;
+}
+.confirm_span{
+  color: rgba(23, 29, 75,0.6);
+}
+.confirm_buttons{
+  justify-content: space-evenly !important;
+}
+
+/*  .status-appr{
+    font-size: 0.9rem;
+    background: rgba(0,200,0,0.1)
+  }*/
+  .status-appr:before{
+    content: ' ';
+    background: url;
+    background-size: 20px;
+    padding: 20px;
+    position: absolute;
+    background-repeat: no-repeat;
+    margin-left: -23px
+  }
+  .immg{
+    height:1.3rem;
+    padding-right:0.5rem;
+  }
+
+
+ /* ::before{
+    content: ' ';
+    padding: 3px;
+    height: 4rem;
+    border: 3px;
+    background: red;
+    position: absolute;
+    margin-left: -130px;
+    margin-top: -20px;
+  };*/
+
+/*confirm modal end */
+
 
 @keyframes unfoldIn {
   0% {
@@ -557,6 +667,7 @@ table.dataTable{
         		// print_r($balance);
         		$balance = json_decode($balance);
         		// var_dump($balance);
+            if(count($balance->balance)==0){
         		for($i=0;$i<count($balance->balance);$i+=3){ ?>
             <div class="carousel-item row no-gutters  <?php if($i == 0) echo 'active';?>">
         	<?php 
@@ -576,7 +687,7 @@ table.dataTable{
 				$var++;
 			}?>
             </div>
-        	<?php }?>
+        	<?php } }?>
 
         </div>
         <!-- <a class="carousel-control-prev" href="#recipeCarousel" role="button" data-slide="prev">
@@ -623,8 +734,8 @@ table.dataTable{
 	                    <table class="table table-striped table-borderless table-hover border-shadow" id="example1" style="width:100%;">
 	                        <thead>
 	                            <tr class="text-muted">
-	                            <th>Employee Name</th>
-	                            <th>Employee Role</th>
+	                            <th>Name</th>
+	                            <th>Role</th>
 	                            <th>Start Date </th>
 	                            <th>End Date</th>
 	                            <th>Leave Type</th>
@@ -665,7 +776,7 @@ table.dataTable{
 		                                    </div>
 		                                </div>
 										</td>
-										<td class="d-flex">
+										<td class="d-flex justify-content-around">
 										<?php 
 							if($leave->userid == $this->session->userdata('LoginId')){
 								echo $leave->status;
@@ -681,9 +792,10 @@ table.dataTable{
 												</div>
 										<?php }
 											else{
-												$color = $leave->status == "Approved" ? '#4CAF50' : '#F44336'; ?>
+												$color = $leave->status == "Approved" ? '#4CAF50' : '#F44336'; 
+                        $img = $leave->status == "Approved" ? 'accept' : 'deny'; ?>
 												<span style="color: <?php echo $color;?>;">
-													<?php echo $leave->status;?>
+													<span><img src="<?php echo base_url('assets/images/'.$img.'.png'); ?>"></span><?php echo $leave->status;?>
 												</span>
 												<?php
 											}}
@@ -721,21 +833,22 @@ table.dataTable{
 			                            <tr class="text-muted">
 	                            	<?php
 	                            		//if($this->session->userdata('UserType') == SUPERADMIN ){ ?>
-			                            <th>Employee Name</th>
-			                            <th>Emp Designation</th>
+			                            <th>Name</th>
+			                            <th>Role</th>
 			                        <?php // }?>
 			                            <th>Leave Type</th>
+                                  <th>Applied Date</th>
 			                            <th>Start Date</th>
 			                            <th>End Date </th>
 			                            <th>Reason</th>
-			                            <th>Applied Date</th>
 			                            <th>Status</th>
 			                            </tr>
 			                        </thead>
 			                        <tbody>
 			                        	<?php 
-			                        	if(isset($leaves)){
-			                        	$leaves = json_decode($leaves);
+                                $leaves = json_decode($leaves);
+			                        	if(isset($leaves) && count($leaves->leaves)>0){
+			                        	
 			                        	foreach ($leaves->leaves as $l) { ?>
 										<tr>
 	                            		<?php
@@ -744,7 +857,10 @@ table.dataTable{
 								<?php if($l->title != "Centre Manager"){ ?>
 											<!-- <td><?php // echo $l->title;?></td> -->
 			                       		<?php } else {echo "<td>--</td>";} }?>
-											<td><?php echo $l->leaveTypeSlug;?></td>
+											<td><?php echo isset($l->leaveTypeSlug) ? $l->leaveTypeSlug : "" ;?></td>
+                      <td ><?php
+                        $date = date_create($l->appliedDate);
+                        echo date_format($date,"d/m/Y");?></td>
 											<td><?php
 												$date = date_create($l->startDate);
 												echo date_format($date,"d/m/Y");?></td>
@@ -761,15 +877,12 @@ table.dataTable{
 			                                    </div>
 			                                </div>
 											</td>
-											<td><?php
-												$date = date_create($l->appliedDate);
-												echo date_format($date,"d/m/Y");?></td>
 												<?php
 													$color = '#F44336';
 													if($l->status == "Applied") $color = '#9E9E9E';
 													else if($l->status == "Approved") $color = '#4CAF50';
 												?>
-											<td class="d-flex">
+											<td class="d-flex justify-content-center span__">
 										<?php 
 							if($l->userid == $this->session->userdata('LoginId')){
 								echo $l->status;
@@ -777,17 +890,19 @@ table.dataTable{
 											if($l->status == "Applied"){ 
 
 												?>
-												<div onclick="updateLeaveApp('<?php echo $l->id;?>','2')" class="pr-1">
+												<div onclick="updateLeaveApp('<?php echo $l->id;?>','2')" class="pr-3">
 													<img src="<?php echo base_url("assets/images/accept.png"); ?>" style="max-width:1.3rem;cursor: pointer" />
 												</div>
-												<div onclick="updateLeaveApp('<?php echo $l->id;?>','3')" class="pl-1">
+												<div onclick="updateLeaveApp('<?php echo $l->id;?>','3')" class="pl-3">
 													<img src="<?php echo base_url("assets/images/deny.png"); ?>"  style="max-width:1.3rem;cursor: pointer">
 												</div>
 										<?php }
 											else{
-												$color = $l->status == "Approved" ? '#4CAF50' : '#F44336'; ?>
-												<span style="color: <?php echo $color;?>;">
-													<?php echo $l->status;?>
+												$color = $l->status == "Approved" ? '#4CAF50' : '#F44336'; 
+                        $sta = $l->status == "Approved" ? 'appr' : 'reje'; 
+                        $img = $l->status == "Approved" ? 'accept' : 'deny'; ?>
+												<span style="color: <?php echo $color;?>; " class="status-<?php echo $sta; ?>">
+													<span><img src="<?php echo base_url('assets/images/'.$img.'.png'); ?>" class="immg"></span><?php echo $l->status;?>
 												</span>
 												<?php
 											}}
@@ -816,9 +931,9 @@ table.dataTable{
   <div class="modal_confirm__background">
     <div class="modal_confirm_">
       <h2 class="confirm__"></h2>
-      <p class="confirm_p"></p>
-      <span class="confirm__span"></span>
-      <span class="confirm_buttons d-flex">
+      <span class="d-flex justify-content-center p-3 confirm_span">Are you sure you want to&nbsp;<p class="confirm_p"></p>&nbsp;the leave?</span>
+      <span class="confirm__span pb-3 d-block"></span>
+      <span class="confirm_buttons d-flex justify-content-center p-2">
       	<input class="confirm_button confirm_cancel" type="button" value="Cancel" status="no">
       	<input class="confirm_button confirm_save" type="button" value="Confirm" status="yes">
       </span>
@@ -1010,14 +1125,19 @@ table.dataTable{
 		function updateLeaveApp(leaveId,status){
 			console.log(leaveId+" "+status);
       //confirm box is a modal
-			confirmBox('Leave Status',status);
+      if(status == 3){
+			confirmBox(`<img src="<?php echo base_url('assets/images/deny.png'); ?>" class="modal_icon">`,status);
+        }
+        else{
+      confirmBox(`<img src="<?php echo base_url('assets/images/accept.png'); ?>" class="modal_icon">`,status);
+        }
       //confirm status adds the attr
 			confirmStatus('update_leave_no','update_leave_yes',status);
       //disables the button
       if(($('.reject_leave_text').length > 0) && status == 3) {
         $('.confirm_save').attr('disabled',true);
         $(document).on('keyup','.reject_leave_text',function(){
-          if($('.reject_leave_text') !=""){
+          if($('.reject_leave_text').val() !=""){
           $('.confirm_save').attr('disabled',false);
             }
             else{
@@ -1090,15 +1210,15 @@ table.dataTable{
 		  	$('.confirm_p').empty();
 		  	$('.confirm__').empty();
 		  	$('.confirm__span').empty();
-		  let code = `<input type="text" class="reject_leave_text" placeholder="Please mention the reason" required>`;
+		  let code = `<textarea type="text" class="reject_leave_text" placeholder="Please mention the reason" required></textarea>`;
 			  $('.confirm__span').append(code);
-		  	$('.confirm_p').html('Reject Leave');
+		  	$('.confirm_p').html('<span style="color:rgba(226, 90, 83,0.6)">Reject</span>');
 		  }
 	  	if(status == 2){
 		  	$('.confirm_p').empty();
 		  	$('.confirm__').empty();
         $('.confirm__span').empty();
-	  		$('.confirm_p').html('Accept Leave');
+	  		$('.confirm_p').html('<span style="color:rgba(129, 178, 113,0.6)">Approve</span>');
 	  	}
 		  $('.confirm__').append(modalHeading);
 		  $('body').addClass('modal_confirm__active');
@@ -1212,7 +1332,7 @@ else{
 </script>
 
 <script type="text/javascript">
-
+$( ".modal_confirm_" ).draggable();
 
 
 </script>

@@ -21,14 +21,15 @@
 			background:rgba(0,0,0,0.2);
 		}
 		tr:nth-child(even){
-			background:rgb(255,255,255) !important;
+			background:#D2D0D0 !important;
 		}
 		tr:nth-child(odd){
 
-			background:rgb(243, 244, 247) !important;
+			background: #F1EEEE !important;
 		}
 		th{
-			background: white
+			background: #8D91AA;
+			color: #F3F4F7;
 		}
 		    td:hover{
     	cursor: pointer
@@ -204,12 +205,18 @@ border-bottom-right-radius: 20px;
         transform: scale(1.0);
         transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
     }
-        select{
-	background: #ebebeb;
-	border-radius: 5px;
+    select{
+	background: rgb(164, 217, 214);
+	font-weight: 700;
+	color: rgb(23, 29, 75);
+	border-radius: 20px;
     padding: 5px;
+    padding-left: 20px;
     border: 2px solid #e9e9e9 !important;
 		}
+	select:hover{
+		cursor: pointer;
+	}
 .dataTables_wrapper {
 	height:95%;
 	overflow-y: hidden;
@@ -509,6 +516,7 @@ $("#timesheet-date").datepicker();
 			$('.dataTables_info').remove()
 			$('#ui-datepicker-div').hide()
 			$('.table-div').css('maxWidth','100vw')
+			$('select').val(1)
 		})
 </script>
 </body>

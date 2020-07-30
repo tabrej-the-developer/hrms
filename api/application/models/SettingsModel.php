@@ -152,7 +152,7 @@ class SettingsModel extends CI_Model {
 	public function getEmployeeDetails($userid){
 		$this->load->database();
 		$query = $this->db->query("SELECT * from employee where userid = '$userid'");
-		return $query->result();
+		return $query->row();
 	}
 
 	public function insertMedicalInfo($employeeNo,$medicareNo,$medicareRefNo,$healthInsuranceFund,$healthInsuranceNo,$ambulanceSubscriptionNo,$medicalConditions,$medicalAllergies,$medication,$dietaryPreferences,$anaphylaxis,$asthma,$maternityStartDate,$maternityEndDate){

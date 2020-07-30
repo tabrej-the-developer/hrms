@@ -82,9 +82,9 @@ class Messenger extends CI_Controller {
 			$data['chatText'] = $form_data['chatText'];
 			$data['mediaContent'] = null;
 			$data['userid'] = $this->session->userdata('LoginId');
-			$url="http://todquest.com/PN101/api/messenger/postChat";
+			$url=BASE_API_URL."messenger/postChat";
 			$ch = curl_init($url);
-
+			var_dump($data);
 			curl_setopt($ch, CURLOPT_URL,$url);
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
@@ -96,6 +96,7 @@ class Messenger extends CI_Controller {
 
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			var_dump($httpcode);
 			if($httpcode == 200){
 				$jsonOutput = json_decode($server_output);
 				curl_close ($ch);
@@ -118,7 +119,7 @@ class Messenger extends CI_Controller {
 	// footprint end
 			$data['groupId'] = $form_data['groupId'];
 			$data['userid'] = $this->session->userdata('LoginId');
-			$url="http://todquest.com/PN101/api/messenger/leaveGroup";
+			$url=BASE_API_URL."messenger/leaveGroup";
 			$ch = curl_init($url);
 
 			curl_setopt($ch, CURLOPT_URL,$url);
@@ -156,7 +157,7 @@ class Messenger extends CI_Controller {
 	// footprint end
 			$data['groupId'] = $form_data['groupId'];
 			$data['userid'] = $this->session->userdata('LoginId');
-			$url="http://todquest.com/PN101/api/messenger/deleteGroup";
+			$url=BASE_API_URL."messenger/deleteGroup";
 			$ch = curl_init($url);
 
 			curl_setopt($ch, CURLOPT_URL,$url);
@@ -205,7 +206,7 @@ class Messenger extends CI_Controller {
 					$data['members'] = $members;
 					$data['admin'] = $this->session->userdata('LoginId');
 					$data['avatarUrl'] = "";
-					$url="http://todquest.com/PN101/api/messenger/createGroup";
+					$url=BASE_API_URL."messenger/createGroup";
 					$ch = curl_init($url);
 					
 
@@ -384,7 +385,7 @@ class Messenger extends CI_Controller {
 		// $data['slug'] = "A/L"; //cl, sl, a/l max 5 characters
 		// $data['isPaidYN'] = "Y";
 		// $data['userid'] = "ab";
-		// $url="http://todquest.com/PN101/api/leave/createLeaveType";
+		// $url=BASE_API_URL."leave/createLeaveType";
 		// $ch = curl_init($url);
 		
 
@@ -406,7 +407,7 @@ class Messenger extends CI_Controller {
 	// }
 
 	// public function dummyGet(){
-	// 	$url="http://todquest.com/PN101/api/leave/GetAllLeaveTypes/".$userid;
+	// 	$url=BASE_API_URL."leave/GetAllLeaveTypes/".$userid;
 	// 	$ch = curl_init($url);
 		
 

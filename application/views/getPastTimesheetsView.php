@@ -21,14 +21,15 @@ font-family: 'Open Sans', sans-serif;
 			background:rgba(0,0,0,0.2);
 		}
 		tr:nth-child(even){
-			background:rgb(255,255,255) !important;
+			background:#D2D0D0 !important;
 		}
 		tr:nth-child(odd){
 
-			background:rgb(243, 244, 247) !important;
+			background: #F1EEEE !important;
 		}
 		th{
-			background: white
+			background: #8D91AA;
+			color: #F3F4F7;
 		}
 		.table  td,.table th{
 			padding: 1rem;
@@ -73,10 +74,11 @@ font-family: 'Open Sans', sans-serif;
 			border:3px solid rgb(242, 242, 242);
 			border-radius: 20px;
 			padding:8px;
-			background: rgb(75, 144, 226);
+			background: rgb(164, 217, 214);
 		}
 		.create a{
-		    color: white !important;
+		    color: rgb(23, 29, 75) !important;
+		    font-weight: 700;
 		}
 		.data-buttons{
 			padding:10px;
@@ -231,11 +233,17 @@ border-bottom-right-radius: 20px;
 td{
 	cursor: pointer;
 }
-	select{
-	background: #ebebeb !important;
-	border-radius: 5px !important;
-    padding: 5px !important;
+    select{
+	background: rgb(164, 217, 214);
+	font-weight: 700;
+	color: rgb(23, 29, 75);
+	border-radius: 20px;
+    padding: 5px;
+    padding-left: 20px;
     border: 2px solid #e9e9e9 !important;
+		}
+		select:hover{
+			cursor: pointer;
 		}
 	.dataTables_wrapper {
 		height:95%;
@@ -323,7 +331,7 @@ body{
 	?>
 <div class="containers">
 	<div class="d-flex heading-bar">
-		<span class="m-3" style="font-size: 1.75rem;font-weight: bold">Timesheet</span>
+		<span class="m-3" style="font-size: 1.75rem;font-weight: bold;color: rgb(23, 29, 75) !important;">Timesheet</span>
 		<span class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
 			<?php if($this->session->userdata('UserType') == SUPERADMIN){?> 
 <!-- 			<div class="filter-icon row">
@@ -547,6 +555,7 @@ $("#timesheet-date").datepicker();
 			$('.dataTables_length').remove()
 			$('.dataTables_info').remove()
 			$('#ui-datepicker-div').hide()
+			$('select').val(1)
 	})
 </script>
 </body>

@@ -18,17 +18,18 @@ font-family: 'Open Sans', sans-serif;
 		height: calc(100vh);
 	}
 		thead{
-			background:rgba(0,0,0,0.2);
+			background:#8D91AA;
 		}
 		tr:nth-child(even){
-			background:rgb(255,255,255) !important;
+			background:#D2D0D0 !important;
 		}
 		tr:nth-child(odd){
 
-			background:rgb(243, 244, 247) !important;
+			background: #F1EEEE !important;
 		}
 		th{
-			background: white
+			background: #8D91AA;
+			color: #F3F4F7;
 		}
 		.table  td,.table th{
 			padding: 1rem;
@@ -39,7 +40,7 @@ font-family: 'Open Sans', sans-serif;
 		}
 		
 		.table-div{
-			height:75vh;
+			height:80vh;
 			padding: 0 20px 0 20px;
 		}
 /*		.center-list{
@@ -78,8 +79,12 @@ font-family: 'Open Sans', sans-serif;
 		.create{
 			border:3px solid rgb(242, 242, 242);
 			border-radius: 20px;
-		    background: rgb(75, 144, 226);
-		    color: white;
+			padding:8px;
+			background: rgb(164, 217, 214);
+		}
+		.create a{
+		    color: rgb(23, 29, 75) !important;
+		    font-weight: 700;
 		}
 		#create-new-roster{
 			color:white;
@@ -234,13 +239,20 @@ font-family: 'Open Sans', sans-serif;
     }
     #roster-heading{
     	font-size: 1.75rem;
-    	font-weight: bold
+    	font-weight: bold;
+    	color: rgb(23, 29, 75) !important;
     }
     select{
-	background: #ebebeb;
-	border-radius: 5px;
+	background: rgb(164, 217, 214);
+	font-weight: 700;
+	color: rgb(23, 29, 75);
+	border-radius: 20px;
     padding: 5px;
+    padding-left: 20px;
     border: 2px solid #e9e9e9 !important;
+		}
+		select:hover{
+			cursor: pointer;
 		}
 .dataTables_wrapper {
 	height:95%;
@@ -250,14 +262,14 @@ font-family: 'Open Sans', sans-serif;
 }
 table.dataTable tbody th, table.dataTable tbody td{
 	padding:1rem;
-	border-bottom: none;
+	border: none !important;
 }
 table.dataTable thead th, table.dataTable thead td {
     padding: 1rem;
-    border-bottom: none;
+    border: none !important;
 }
 table.dataTable.no-footer{
-	border-bottom: none
+	border: none !important;
 }
 table.dataTable{
 	margin-top: 0 !important;
@@ -305,7 +317,8 @@ table.dataTable{
 		  width: 80%;
 		}
 		table{
-			background: white
+			background: white;
+			display: block;
 		}
 		.header-top{
 			max-width: 100vw !important;
@@ -604,6 +617,8 @@ $("#roster-date").datepicker();
 	function loader_icon(){
 		$('.loading').show();
 	};
+	//----------------
+	$('select').val(1)
 </script>
 </body>
 </html>

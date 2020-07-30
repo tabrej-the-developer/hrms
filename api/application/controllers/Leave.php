@@ -68,6 +68,7 @@ class Leave extends CI_Controller{
 					$this->load->model('leaveModel');
 					//xero 
 					$xeroTokens = $this->xeroModel->getXeroToken();
+
 					if($xeroTokens != null){
 						$access_token = $xeroTokens->access_token;
 						$tenant_id = $xeroTokens->tenant_id;
@@ -94,6 +95,7 @@ class Leave extends CI_Controller{
 						}
 						if($val == NULL){
 							$payItems = $this->getPayItems($access_token,$tenant_id);
+							print_r($payItems);
 							$leaveTypes = json_decode($payItems)->PayItems->LeaveTypes;
 							for($i=0;$i<count($leaveTypes);$i++){
 								if($leaveTypes[$i]->Name == $name){

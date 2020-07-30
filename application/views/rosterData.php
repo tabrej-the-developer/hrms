@@ -1,6 +1,3 @@
-<?php
-$colors_array = ['#8dba5e','#9ebdff','#dd91ee','#f7c779','#a9bfaf','#6b88ca'];
-?>
 <!DOCTYPE html>
 <html>
 <style type="text/css" media="print">
@@ -105,7 +102,8 @@ table,tr,td{
 	background-color:white;
 	/*color:#afb7cd;*/
 	color:black;
-	padding-left:50px;
+	display: flex;
+	justify-content: center;
 	padding-bottom:10px;
 	padding-top:10px;
 	font-weight:bolder;
@@ -115,15 +113,16 @@ table,tr,td{
 	margin-bottom: 200px
 }
 .area-name{
-	background:#307bd3;
-	color:white;
+	background:#A4D9D6;
+	color:#171D4B;
 	padding:0.25rem 0;
+	font-weight: 700;
 }
 .day{
 	background:transparent;
 }
 .day-row{
-	background: #ADD8E6;
+	background: #8D91AA;
 }
 .total-budget{
 	padding-top:10px;
@@ -160,6 +159,7 @@ table,tr,td{
 	justify-content:left;
 	padding: 0 1rem;
 	font-weight: 600;
+	color: #707070;
 }
 .modal-content{
 max-width:30vw;
@@ -182,14 +182,17 @@ max-width:30vw;
 		margin:2px;
 	}
 	.button{
-		background-color: #9E9E9E;
-  border: none;
-  color: white;
-  padding: 10px 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 2px
+	  border: none;
+	  color: rgb(23, 29, 75);
+	  text-align: center;
+	  text-decoration: none;
+	  display: inline-block;
+	  font-weight: 700;
+	  margin: 2px;
+	  width:8rem;
+      border-radius: 20px;
+      padding: 8px;
+      background: rgb(164, 217, 214);
 }
 	.buttonn{
 		background-color: #9E9E9E;
@@ -232,6 +235,7 @@ max-width:30vw;
 }
 .day{
 	padding:10px;
+	color: #F3F4F7;
 }
 .icon-parent{
 	display: flex;
@@ -286,30 +290,37 @@ max-width:30vw;
   margin: 2px
 }
 .Added{
-	background: #e7e7e7;
-	color: #707070
+	background:#F3F4F7;
+	color: rgba(112, 112, 112, 1) ;
 	border-radius: 3px;
+	font-weight: 500;
 }
-
+/* rgb(112, 112, 112) */
 .Published{
-	background:#E3B5FF;
-	color:#707070 !important;
+	background:rgba(219, 165, 245, 0.4);
+	color:rgba(112, 112, 112, 1) !important;
 	border-radius: 3px;
+	font-weight: 500;
 }
+/*rgba(219, 165, 245, 1)*/
 .Accepted{
-	background:#A7D572;
-	color:#707070 !important;
+	background: rgba(175, 225, 159,0.4);
+	color:rgba(112, 112, 112, 1) !important;
 	border-radius: 3px;
+	font-weight: 500;
 }
+/* rgb(175, 225, 159) */
 .Rejected{
-	background: #E26D4E;
-	color:white;
+	background: rgba(226, 90, 83, 0.4) ;
+	color:rgba(112, 112, 112, 1);
+	font-weight: 500;
 }
+/* rgba(226, 90, 83, 1) */
 .nav-link{
 	text-align:left;
 }
 .leave{
-	background: #FBBD52;
+	background: rgba(253, 179, 93, 0.3);
 	color:#707070 !important;
 	content: 'On Leave';
 	display: flex;
@@ -485,28 +496,29 @@ max-width:30vw;
 	right:0;
 	display: flex;
 	align-items: center;
-	margin-top:0.5rem;
+	margin-top:0.25rem;
 	/*width: 100%;*/
 }
 .hide_budget{
-	font-weight: 100;
+	font-weight: 700;
 	font-size: 1rem;
 	padding: 1px 6px;
 }
 .casualEmploye-btn,.priority-btn,.print-btn,.showBudget{
 	/*position: absolute;*/
 /*	right: 0;*/
-	font-size:1rem;
-	width:100%;
-	background-color: #9E9E9E;
-  border: none;
-  color: white;
-  border-radius: 3px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 2px;
-  width:5rem;
+	  border: none;
+	  color: rgb(23, 29, 75);
+	  text-align: center;
+	  text-decoration: none;
+	  display: inline-block;
+	  font-weight: 700;
+	  margin: 2px;
+	  width:8rem;
+      border-radius: 20px;
+      padding: 4px 8px;
+      background: rgb(164, 217, 214);
+      font-size: 1rem;
 }
 .showBudget input{
 	margin-right:0.3rem;
@@ -701,7 +713,7 @@ max-width:30vw;
 				<span class="priority ">
 					<button class="priority-btn ">Priority</button>
 				</span>
-				<span class="showBudget d-flex">
+				<span class="showBudget d-flex ">
 					<span class="d-flex justify-content-center align-items-center hide_budget">Hide&nbsp;Budget</span>
 					<!-- Hide budget -->
 					<input type="checkbox" class="showBudget-btn"
@@ -721,7 +733,7 @@ max-width:30vw;
 					 	 ?>>
 				</span>
 	<?php } ?>  <span class="print-button">
-					<button class="print-btn">Print</button>
+					<button class="print-btn ">Print</button>
 				</span>
 			</span>
 		</div>
@@ -845,7 +857,9 @@ function icon($str){
 						$count = count($rosterDetails->roster);
 					}
 					else $count = 0;
-if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){
+
+
+if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){
 					$CI = 0; // CI == Current Index
 				for($x=0;$x<$count;$x++){ 
 					?>
@@ -869,7 +883,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 				</tr>
 				<?php 
 			}
-				if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){
+	if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){
 				$value = count($rosterDetails->roster[$x]->roles);
 		}
 		else{
@@ -878,12 +892,12 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 				for($counter=0;$counter<$value;$counter++){ ?>
 				<tr  class="table-row">
 					<td   style="width:16vw" class=" cell-boxes left-most">
-						<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
+						<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
 
 						<span class="row name-space" style="padding:0;margin:0;">
 							<span class="col-4 icon-parent">
 								<span class=" icon" style="
-									<?php	echo "background:".$colors_array[rand(0,5)].";";?>"><?php echo icon($rosterDetails->roster[$x]->roles[$counter]->empName)?>
+									<?php	echo "background:#A4D9D6; color:#707070";?>"><?php echo icon($rosterDetails->roster[$x]->roles[$counter]->empName)?>
 								</span>
 							</span>
 							<span class="col-8 name-role">
@@ -897,7 +911,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 								}
 			?>
 			<?php } ?>
-			<?php if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){?>
+			<?php if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){ ?>
 				<span class="title hourly row"><?php echo  $variable; // echo $rosterDetails->roster[$x]->roles[$counter]->empTitle ?></span><?php } ?>
 							</span>
 
@@ -941,20 +955,22 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 
 		 ?>
 
-					<td class="shift-edit cell-boxes count-<?php echo $index+1;?>"  style="width:12vw" 
+					<td class="shift-edit cell-boxes count-<?php echo $index+1;?> <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"  style="width:12vw" 
 					 name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->shiftid ?>"  
 
 					 name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleid ?>"
-						<?php if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status != "Rejected"){ ?>
+						<?php if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status != "Rejected"){ 
+						if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){
+							?>
 					 name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?>" 
-					<?php } ?>
+					<?php } } ?>
 					 stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime?>" etime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime?>" 
 					 name="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->empName?>"
 					 status="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>" 
 					 area-id="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->areaId;?>"
 					 emp-id="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->empId;?>"
 					 >
-					 <div class="cell-back-1 <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? 'leave' : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status;  ?>" >
+					 <div class="cell-back-1" >
 					 	<?php if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave != "Y"){ 	?>
 					 		<span class="row m-0 d-flex justify-content-center"><?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleName;?></span>
 					 	<?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)). "-" .timex( intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime));
@@ -975,7 +991,11 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					  	<td area-id="<?php echo $rosterDetails->roster[$x]->areaId;?>" date="<?php echo $currentSequenceDate; ?>" roster-id="<?php echo $rosterDetails->id; ?>" emp-id="<?php echo  $rosterDetails->roster[$x]->roles[$counter]->empId;?>" level="<?php  $rosterDetails->roster[$x]->roles[$counter]->level;?>" class="__addshift count-<?php echo $index;?>" name3="<?php echo intval(0)/100; ?>"></td>
 					  	<?php
 					  }  } ?>
-					<td class=" " style="width:12vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
+					<td class=" " style="width:12vw;font-weight:bolder"><?php
+					if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){
+					 echo "$".number_format((float)$weeklyTotal, 2, '.', '');;
+					}
+					 ?></td>
 
 				</tr>
 			</tr>
@@ -1016,7 +1036,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 						<span class="row name-space" style="padding:0;margin:0;">
 							<span class="col-4 icon-parent">
 								<span class=" icon" style="
-									<?php	echo "background:".$colors_array[rand(0,5)].";";?>"><?php echo icon($rosterDetails->roster[$x]->roles[$counter]->empName)?>
+									<?php	echo "background:#A4D9D6; color:#707070";?>"><?php echo icon($rosterDetails->roster[$x]->roles[$counter]->empName)?>
 								</span>
 							</span>
 							<span class="col-8 name-role">
@@ -1072,7 +1092,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 			if($currentSequenceDate  == $currentDate){
 				?>
 
-					<td class="shift-edit cell-boxes count-<?php echo $index+1;?>"  style="width:12vw" 
+					<td class="shift-edit cell-boxes count-<?php echo $index+1;?>  <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"  style="width:12vw" 
 					 name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->shiftid?>"  
 					 name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleid ?>"
 			<?php if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$counter]->empId){ ?>
@@ -1082,7 +1102,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					 name="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->empName?>"
 					 status="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>">
 
-					 <div class="cell-back-1 <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? 'leave' : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status;  ?>">
+					 <div class="cell-back-1 ">
 				<?php if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave != "Y"){ ?>
 					 	<span class="row m-0 d-flex justify-content-center"><?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleName;?></span>
 					 	<?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)). "-" .timex( intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime));
@@ -1118,11 +1138,31 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 			<table>
 				<tr class="total-budget-row">
 					<td class="total-budget-box" style="width:16vw">Total Budget</td>
-					<td class="total-budget-box" style="width:12vw" id="count-1" >$</td>
-					<td class="total-budget-box" style="width:12vw" id="count-2">$</td>
-					<td class="total-budget-box" style="width:12vw" id="count-3">$</td>
-					<td class="total-budget-box" style="width:12vw" id="count-4">$</td>
-					<td class="total-budget-box" style="width:12vw" id="count-5">$</td>
+				<td class="total-budget-box" style="width:12vw" id="count-1" >
+					<?php if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){ ?>
+						$
+					<?php } ?>
+				</td>
+				<td class="total-budget-box" style="width:12vw" id="count-2">
+					<?php if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){ ?>
+						$
+					<?php } ?>
+				</td>
+				<td class="total-budget-box" style="width:12vw" id="count-3">
+					<?php if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){ ?>
+						$
+					<?php } ?>
+				</td>
+				<td class="total-budget-box" style="width:12vw" id="count-4">
+					<?php if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){ ?>
+						$
+					<?php } ?>
+				</td>
+				<td class="total-budget-box" style="width:12vw" id="count-5">
+					<?php if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){ ?>
+						$
+					<?php } ?>
+				</td>
 					<td class="total-budget-box" style="width:12vw">---</td>
 				</tr>
 			</table>
@@ -1233,6 +1273,9 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
     </div>
 </div>
 
+<!-- 	-----------------
+		Priority Modal
+ 		-----------------	-->
 <div class="mask" ></div>
 <div class="modal_priority" >
 	<span class="priority_heading" >
@@ -1243,7 +1286,14 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 	  	<button class="close_priority" role="button">Cancel</button><button class="priority_save">Save</button>
 	  </div>
 </div>
+<!-- 	-----------------
+		Priority Modal
+ 		-----------------	-->
 
+
+ <!-- 	-----------------
+		Add Shift Modal
+ 		-----------------	-->
 <div class="masked" ></div>
 <div class="modal_priorityed" >
 	<span class="priority_headinged" >
@@ -1289,6 +1339,9 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 	  		<button class="close_priorityed" role="button">Cancel</button><button class="priority_saveed">Save</button>
 	  </div>
 </div>
+<!-- 	-----------------
+		Add Shift Modal
+ 		-----------------	-->
 
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
 <div class="masks" ></div>
@@ -1476,7 +1529,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 		})		
 	})
 </script>
-
+<?php if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){ ?>
 <script type="text/javascript">
 				$(document).ready(function(){
 				var	total = 0;
@@ -1546,7 +1599,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 				})
 </script>
 
-
+<?php } ?>
 
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?> 
 <script type="text/javascript">
@@ -1857,6 +1910,7 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 		  		},
 		  		type: 'POST',
 		  		success: function(){
+		  			closeModal()
 		  			window.location.reload();
 		  		}
 		  	})
@@ -1872,15 +1926,14 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 	}
 
 	$(".close_priority").on("click", function(){
+		  closeModal();
 		$(".priority_areas").empty();
-	  closeModal();
 	});
 </script>
 
-<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?> 
-
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
 <script type="text/javascript">
-/*----------------------------------------
+/* ----------------------------------------
 						add shift modal 							
 	----------------------------------------*/
 
@@ -1930,6 +1983,7 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 		});
 </script>
 <?php } ?>
+
 <?php if( isset($error) != null){ ?>
 	<script type="text/javascript">
 		
@@ -1999,13 +2053,13 @@ $( ".modal_priority" ).draggable();
 			$(".masked").addClass("actived");
 		});
 
-	function closeModal(){
+	function closeModalEmp(){
 	  $(".masked").removeClass("actived");
 	}
 
 	$(".close_priorityed").on("click", function(){
 		// $(".priority_areased").empty();
-	 		 closeModal();
+	 		 closeModalEmp();
 	});
 </script>
 <script type="text/javascript">

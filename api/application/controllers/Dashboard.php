@@ -37,8 +37,8 @@ class Dashboard extends CI_Controller{
 						if($centerid != null || $centerid != ""){
 						$data['rostersCount'] = $data['rostersCount']+sizeof($this->dashboardModel->rosterCount($centerid));
 						$data['timesheetsCount'] = $data['timesheetsCount']+sizeof($this->dashboardModel->timesheetCount($centerid));
-						$data['payrollsCount'] = $data['payrollsCount']+sizeof($this->dashboardModel->payrollCount());
-						$data['leavesCount'] = $data['leavesCount'] + sizeof($this->dashboardModel->leavesCount());
+						$data['payrollsCount'] = $data['payrollsCount']+sizeof($this->dashboardModel->payrollCount($centerid));
+						$data['leavesCount'] = $data['leavesCount'] + sizeof($this->dashboardModel->leavesCount($centerid));
 						}
 					}
 				http_response_code(200);
@@ -85,7 +85,7 @@ class Dashboard extends CI_Controller{
 				$totalDays = cal_days_in_month(CAL_GREGORIAN,date('m'),date('Y'));
 				$events = [];
 				$event['event'] = [];
-				$event['birthday'] = [];
+				$event['birthdays'] = [];
 				$event['anniversary'] = [];
 				$y = date('Y');
 				$m = date('m');
@@ -93,29 +93,37 @@ class Dashboard extends CI_Controller{
 				for($i=0;$i<$totalDays;$i++){
 				$currentDate = date('Y-m-d', strtotime("+$i day", strtotime("$startDate")));
 				$getShiftDetails = $this->dashboardModel->getShiftDetails($userid,$currentDate);
-					if($getShiftDetails != null || $getShiftDetails != ""){
-					$mdata['title'] = 'Role - '.($this->rostersModel->getRole($getShiftDetails->roleid))->roleName;
-					$mdata['start'] = $currentDate;
-					$mdata['roster'] = $getShiftDetails->roasterId;
-					array_push($events,$mdata);
+					if($getShiftDetails != null){
+						if($getShiftDetails != ""){
+							$mdata['title'] = 'Role - '.($this->rostersModel->getRole($getShiftDetails->roleid))->roleName;
+							$mdata['start'] = $currentDate;
+							$mdata['roster'] = $getShiftDetails->roasterId;
+							array_push($events,$mdata);
+					}
 				}
 				$getLeaveDetails = $this->leaveModel->getLeaveApplicationForUser($userid,$currentDate);
-				if($getLeaveDetails != null || $getLeaveDetails != ""){
+				if($getLeaveDetails != null ){
+						if( $getLeaveDetails != "" ){
 						$mbdata['title'] = 'Leave Status - '.$getLeaveDetails->status;
 						$mbdata['start'] = $currentDate;
 						array_push($events,$mbdata);
 							}
+						}
 				$getBirthdays = $this->dashboardModel->getBirthdays($currentDate);
-				if($getBirthdays != null || $getBirthdays != ""){
-					$mxdata['date'] = $currentDate;
-					$mxdata['birthday'] = $getBirthdays;
-					array_push($event['birthday'],$mxdata);
+				if($getBirthdays != null){
+					if($getBirthdays != ""){
+						$mxdata['date'] = $currentDate;
+						$mxdata['birthday'] = $getBirthdays;
+						array_push($event['birthdays'],$mxdata);
+					}
 				}
 				$getAnniversaries = $this->dashboardModel->getAnniversaries($currentDate);
-				if($getAnniversaries != null || $getAnniversaries != ""){
-					$mydata['date'] = $currentDate;
+				if($getAnniversaries != null ){
+					if($getAnniversaries != ""){
+						$mydata['date'] = $currentDate;
 					$mydata['anniversary'] =  $getAnniversaries;
 					array_push($event['anniversary'],$mydata);
+					}
 				}
 					 }
 					array_push($event['event'],$events);

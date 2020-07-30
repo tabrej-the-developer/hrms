@@ -194,10 +194,10 @@
 			<div classs="col-md-3">
 				<div>Birthdays & Anniversaries</div>
 				<div> <?php 
-					foreach(json_decode($calendar)->birthday as $birthday){
-						if(count($birthday->birthday) !=0 ){
-							foreach($birthday as $bday){
-									print_r($birthday->date);
+					foreach(json_decode($calendar)->birthdays as $birthdays){
+						if(count($birthdays->birthday) !=0 ){
+							foreach($birthdays as $bday){
+									print_r($birthdays->date);
 								}
 							}
 						}

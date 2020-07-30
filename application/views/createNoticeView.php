@@ -235,7 +235,7 @@ $("#mytable #checkall").click(function () {
             </div>
  
                 <label>To:</label>
-                    <select class="demo" multiple >  
+                    <select class="demo" name="members[]" multiple >  
                     <?php
                         $users = json_decode($users);
                          foreach ($users->users as $chat) {
@@ -247,11 +247,11 @@ $("#mytable #checkall").click(function () {
                             <?php }?>
                     </select>
    
-                          </div>
+      </div>
             
-            <label>Subject</label>
+            <label placeholder="Enter Subject">Subject</label>
             <div class="form-group">
-                <input type="text" name="subject" class="form-control"  required />
+                <input type="text" name="subject" class="form-control"  required  placeholder="Enter Subject"/>
             </div>
 
             <br>

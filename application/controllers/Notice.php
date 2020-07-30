@@ -90,6 +90,7 @@ class Notice extends CI_Controller {
 		$data['permissions'] = $this->fetchPermissions();
 		$this->load->helper('form');
 		$form_data = $this->input->post();
+		var_dump($form_data);
 		if($form_data != null){
 	//footprint start
 	if($this->session->has_userdata('current_url')){
@@ -97,16 +98,18 @@ class Notice extends CI_Controller {
 		$this->session->set_userdata('current_url',currentUrl());
 	}
 	// footprint end
-			$sendData['members'] = array();
-			$allUsers = json_decode($data['users']);
-			foreach ($allUsers->users as $user) {
-				if(isset($form_data[$user->userid])){
-					array_push($sendData['members'],$user->userid);
-				}
-			}
+			$sendData['members'] = $form_data['members'];
+			// $allUsers = json_decode($data['users']);
+			// foreach ($allUsers->users as $user) {
+			// 	if(isset($form_data[$user->userid])){
+			// 		array_push($sendData['members'],$user->userid);
+			// 	}
+			// }
+			var_dump($form_data['members']);
 			$sendData['text'] = $this->dataReady($form_data['message']);
 			$sendData['subject'] = $form_data['subject'];
 			$sendData['userid'] = $this->session->userdata('LoginId');
+			// var_dump($sendData);
 			$url= BASE_API_URL."notice/addNotice";
 			$ch = curl_init($url);
 
@@ -121,6 +124,7 @@ class Notice extends CI_Controller {
 
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			var_dump($httpcode);
 			if($httpcode == 200){
 				curl_close ($ch);
 				redirect(base_url().'notice/notices/Sent');
