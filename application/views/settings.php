@@ -201,7 +201,7 @@ a[href*="settings"]{
 			<div class="tile-box d-md-flex col-3">
 				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/superfund-settings.png'); ?>"></div>
 				<div class="col-6">
-					<a href="<?php echo base_url()?>settings/superfundsSettings">Superfunds settings</a>
+					<a href="<?php echo base_url()?>settings/superfundsSettings">Superannuation settings</a>
 				</div>
 			</div>
 		<?php } ?>

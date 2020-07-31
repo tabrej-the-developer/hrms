@@ -3,7 +3,7 @@
 <head>
 	<?php $this->load->view('header'); ?>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Superfund Settings</title>
+	<title>Superannuation Settings</title>
 	
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
@@ -274,7 +274,7 @@ border-bottom-right-radius: 20px;
       <a href="<?php echo base_url();?>/settings">
         <button class="btn back-button">
           <img src="<?php echo base_url('assets/images/back.svg');?>">
-          <span style="font-size:0.8rem">Superfunds</span>
+          <span style="font-size:0.8rem">Superannuations</span>
         </button>
       </a>
     </span>
@@ -287,9 +287,9 @@ border-bottom-right-radius: 20px;
                       padding: 1rem 0 0 2rem;
                       margin: 0 !important;
                       color: rgba(11, 36, 107);width: 100%"
-                class="text-left">Superfunds</h4>
+                class="text-left">Superannuations</h4>
 <?php if(isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N" == "Y"){ ?>
-		<span class="d-flex align-items-center pr-4"><button id="superfunds">Sync&nbsp;Xero&nbsp;Superfunds</button></span>
+		<span class="d-flex align-items-center pr-4"><button id="superfunds">Sync&nbsp;Xero&nbsp;Superannuations</button></span>
 <?php } ?>
 	</div>
 	<div class="table-div">
