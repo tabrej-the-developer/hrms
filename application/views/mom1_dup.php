@@ -1274,7 +1274,7 @@ $(document).ready(function(){
       // pre worked
 
 
-      
+
          // $('#demo').append(`<option value="${email}" selected> ${email} </option>`);   
       });
     // working
@@ -1670,4 +1670,3 @@ $('#toggle').remove();
 ?>
   
 </html>
-<!-- timesheet id,empl ,slip id ,run id,start  -->
