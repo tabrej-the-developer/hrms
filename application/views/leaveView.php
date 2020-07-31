@@ -519,7 +519,12 @@ table.dataTable{
     height:1.3rem;
     padding-right:0.5rem;
   }
-
+  .appr{
+    background: rgba(0,200,0,0.2) !important;
+  }
+  .reje{
+    background: rgba(200,0,0,0.2) !important;
+  }
 
  /* ::before{
     content: ' ';
@@ -882,32 +887,36 @@ table.dataTable{
 													if($l->status == "Applied") $color = '#9E9E9E';
 													else if($l->status == "Approved") $color = '#4CAF50';
 												?>
-											<td class="d-flex justify-content-center span__">
+											
 										<?php 
 							if($l->userid == $this->session->userdata('LoginId')){
-								echo $l->status;
+								echo "<td class=\"d-flex justify-content-center span__\">".$l->status."</td>";
 							}else{
 											if($l->status == "Applied"){ 
 
 												?>
+                       <td class="d-flex justify-content-center span__ "> 
 												<div onclick="updateLeaveApp('<?php echo $l->id;?>','2')" class="pr-3">
 													<img src="<?php echo base_url("assets/images/accept.png"); ?>" style="max-width:1.3rem;cursor: pointer" />
 												</div>
 												<div onclick="updateLeaveApp('<?php echo $l->id;?>','3')" class="pl-3">
 													<img src="<?php echo base_url("assets/images/deny.png"); ?>"  style="max-width:1.3rem;cursor: pointer">
 												</div>
+                      </td>
 										<?php }
 											else{
 												$color = $l->status == "Approved" ? '#4CAF50' : '#F44336'; 
                         $sta = $l->status == "Approved" ? 'appr' : 'reje'; 
                         $img = $l->status == "Approved" ? 'accept' : 'deny'; ?>
+                        <td class="d-flex justify-content-center span__ <?php echo $sta; ?> ">
 												<span style="color: <?php echo $color;?>; " class="status-<?php echo $sta; ?>">
 													<span><img src="<?php echo base_url('assets/images/'.$img.'.png'); ?>" class="immg"></span><?php echo $l->status;?>
 												</span>
+                      </td>
 												<?php
 											}}
 										?>
-										</td>
+
 											
 											
 										</tr>

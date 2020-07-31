@@ -459,7 +459,7 @@ input[type=checkbox]:checked:before {
 //    exit;
   $summary = json_decode($summary);
 ?>
-  <form action="<?php echo base_url() ?>mom/addSummary" method="post">
+  <form action="<?php echo base_url() ?>mom/addSummary/<?php echo $mId; ?>" method="post">
   
   <div class="card-body">
      <table class="table table-borderless">

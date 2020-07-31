@@ -370,7 +370,7 @@ class Mom extends CI_CONTROLLER{
        }
    }
 
-   public function addSummary(){
+   public function addSummary($meetingId){
        $form_data = $this->input->post();
     
        if($form_data != null){
@@ -384,7 +384,7 @@ class Mom extends CI_CONTROLLER{
          $data['id'] = $form_data['id'];
         //    echo json_encode($data);
         //    exit;
-           $url = BASE_API_URL."mom/addSummary";
+           $url = BASE_API_URL."mom/addSummary/".$meetingId;
            $ch = curl_init($url);
            curl_setopt($ch, CURLOPT_URL,$url);
            curl_setopt($ch, CURLOPT_POST,1);

@@ -80,11 +80,12 @@ text-align:center;
 	.close:hover{
 		background:#9E9E9E;
 	}
-input[type="text"],input[type=time],select{
+input[type="text"],input[type=time],select,#casualEmp_date{
 	background: #ebebeb;
 	border-radius: 5px;
     padding: 5px;
     border: 2px solid #e9e9e9 !important;
+    border-radius: 20px;
 }
 table,tr,td{
 	border:1px solid rgba(0,0,0,0.1)
@@ -171,7 +172,7 @@ max-width:30vw;
     left: 0;
     margin: 0;
     padding: 0;
-    background:#307bd3;
+    background:#8D91AA;
     cursor: move;
 	}
 	.ui-timepicker-container{
@@ -250,7 +251,7 @@ max-width:30vw;
 	display: flex;
     justify-content: center;
     font-size:30px;
-    color:white;
+    color:#E7E7E7;
 }
 .box-space{
 	display: flex;
@@ -504,7 +505,21 @@ max-width:30vw;
 	font-size: 1rem;
 	padding: 1px 6px;
 }
-.casualEmploye-btn,.priority-btn,.print-btn,.showBudget{
+#shift-submit{
+	  border: none;
+	  color: rgb(23, 29, 75);
+	  text-align: center;
+	  text-decoration: none;
+	  display: inline-block;
+	  font-weight: 700;
+	  margin: 2px;
+	  width:8rem;
+      border-radius: 20px;
+      padding: 4px 8px;
+      background: rgb(164, 217, 214) !important;
+      font-size: 1rem;
+}
+.casualEmploye-btn,.priority-btn,.print-btn,.showBudget,.buttonn,.button{
 	/*position: absolute;*/
 /*	right: 0;*/
 	  border: none;
@@ -530,27 +545,48 @@ max-width:30vw;
 .casualEmploye-btn{
 	width:8rem;
 }
-.close_priority{
-				background-color: #9E9E9E;
-  border: none;
-  color: white;
-  padding: 10px 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 2px;
-  width:5rem;
+
+.close_priority,.priority_save{
+	  border: none;
+	  color: rgb(23, 29, 75);
+	  text-align: center;
+	  text-decoration: none;
+	  display: inline-block;
+	  font-weight: 700;
+	  margin: 2px;
+	  width:8rem;
+      border-radius: 20px;
+      padding: 4px 8px;
+      background: rgb(164, 217, 214);
+      font-size: 1rem;
 }
-.priority_save{
-				background-color: #9E9E9E;
-  border: none;
-  color: white;
-  padding: 10px 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 2px;
-  width:5rem;
+.close_priorityed{
+	  border: none;
+	  color: rgb(23, 29, 75);
+	  text-align: center;
+	  text-decoration: none;
+	  display: inline-block;
+	  font-weight: 700;
+	  margin: 2px;
+	  width:8rem;
+      border-radius: 20px;
+      padding: 4px 8px;
+      background: rgb(164, 217, 214);
+      font-size: 1rem;
+}
+.priority_saveed{
+	  border: none;
+	  color: rgb(23, 29, 75);
+	  text-align: center;
+	  text-decoration: none;
+	  display: inline-block;
+	  font-weight: 700;
+	  margin: 2px;
+	  width:8rem;
+      border-radius: 20px;
+      padding: 4px 8px;
+      background: rgb(164, 217, 214);
+      font-size: 1rem;
 }
 .add_shift{
 				background-color: #9E9E9E;
@@ -611,8 +647,8 @@ max-width:30vw;
     	padding: 0.5rem 0;
 	    position: relative;
 	    display: block;
-	    background: #307bd3;
-	    color: white !important;
+	    background: #8D91AA;
+	    color: #E7E7E7 !important;
 	    font-weight: 100
     }
     label{
@@ -621,6 +657,8 @@ max-width:30vw;
     }
     .modal_label{
     	padding-left:3rem !important;
+    	font-weight: 700;
+    	color: #171D4B;
     }
     .casualEmployee_label{
     	display: flex;
@@ -635,6 +673,12 @@ max-width:30vw;
     }
     .casualEmployee_label select,.casualEmployee_label input{
     	width:60%;
+    }
+    select{
+    	      background: #E7E7E7;
+      border: none !important;
+      height: 2.5rem;
+      border-radius: 20px;
     }
 @media print{
 	td:nth-child(7){

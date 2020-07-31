@@ -64,6 +64,7 @@ $nth_child = 0;
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+
   <!--datepicker css end -->
   
   <!--datatable css -->
@@ -71,6 +72,7 @@ $nth_child = 0;
   <!--datatable css end -->
   <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/circle.css');?>">
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+
 <style type="text/css">
   *{
 font-family: 'Open Sans', sans-serif;

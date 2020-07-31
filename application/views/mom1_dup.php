@@ -10,7 +10,9 @@
   <!-- <link href="https://getbootstrap.com/docs/4.0/examples/sign-in/signin.css" rel="stylesheet"> -->
     <!-- <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
   <!-- <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'> -->
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -1062,7 +1064,7 @@ $users =   json_decode($users);
            $i = $i + 1;
          ?>
         <tr>
-        <td class="title-td" m-id="<?php echo $u->mid; ?>"><?php echo $u->title; ?></td>
+        <td class="title-td <?php echo $u->status; ?>" m-id="<?php echo $u->mid; ?>"><?php echo $u->title; ?></td>
         <td class="table-date"><?php echo $u->date; ?></td>
         <td><?php echo $u->time; ?></td>
         <td><?php echo $u->location; ?></td>
@@ -1088,9 +1090,9 @@ $users =   json_decode($users);
         <!-- <div id="participant2">+5</div> -->
         </td>
         <td>
-          
-     <!--      <a href="<?php echo base_url() ?>mom/attendence/<?php echo $u->mid ?>" class="btn btn-primary btn-p ">start</a>
-         -->
+          <?php if(strtolower($u->status) != 'summary'){ ?>
+            <a href="<?php if(strtolower($u->status) == 'created' || strtolower($u->status) == ''){echo base_url('mom/attendence/').$u->mid; }if(strtolower($u->status) == 'attendance'){echo base_url('mom/onBoard/').$u->mid; }if(strtolower($u->status) == 'mom'){echo base_url('mom/summary/').$u->mid;}if(strtolower($u->status) == 'summary'){echo base_url('mom/meetingInfo/').$u->mid;} ?>" class="btn btn-primary btn-p ">start</a>
+          <?php } ?>
         </td>
         <td>
           <div class="dropdown">
@@ -1161,19 +1163,19 @@ $users =   json_decode($users);
         </td>
         <td>
           <?php // if($u->status == 'Summary'){?>
-            <a href="<?php if(strtolower($u->status) == 'created'){echo base_url('mom/attendence/').$u->mid; }if(strtolower($u->status) == 'attendence'){echo base_url('mom/onBoard/').$u->mid; }if(strtolower($u->status) == 'mom'){echo base_url('mom/summary/').$u->mid;}if(strtolower($u->status) == 'summary'){echo base_url('mom/meetingInfo/').$u->mid;} ?>" class="btn btn-primary btn-p ">start</a>
+
           <?php // } ?>
           </td>
         <td>
-        <div class="dropdown">
-          <a href="#" onclick="myFunction(this)" id="<?php echo $i; ?>" class="dropbtn">
-            <i class="fas fa-ellipsis-v"></i>
-          </a>
-          <div id="myDropdown<?php echo $i; ?>" class="dropdown-content">
-            <a   class="btn btn-default" id="update"  data-toggle="modal" data-target="#myModal">Edit</a>
+<!--            <div class="dropdown">
+            <a href="#" onclick="myFunction(this)" id="<?php echo $i; ?>" class="dropbtn">
+              <i class="fas fa-ellipsis-v"></i>
+            </a>
+            <div id="myDropdown<?php echo $i; ?>" class="dropdown-content"> -->
+              <a   class="btn btn-default" id="update"  data-toggle="modal" data-target="#myModal">Edit</a>
               <!-- <a href="#">Delete</a> -->
-          </div>
-        </div>
+<!--           </div>
+        </div> -->
         </td>
           </tr>
                          <?php } endforeach; } ?>
@@ -1255,7 +1257,7 @@ $(document).ready(function(){
 
 $(document).ready(function(){
 
-  $('a#update').click(function() {
+  $(document).on('click','a#update',function() {
     $('.tokens-container').empty()
     $('.tokens-container').remove('li');
     var  value  = $(this).closest('tr').children('td:eq(0)').text();
@@ -1267,7 +1269,12 @@ $(document).ready(function(){
       //alert(this.value);
       var email = this.value;
       console.log(email);
+      //pre worked
       $('.tokens-container').append(`<li class="token" data-value="${email}"><a class="dismiss" onclick="remove()"></a><span> ${email} </span></li>`); 
+      // pre worked
+
+
+      
          // $('#demo').append(`<option value="${email}" selected> ${email} </option>`);   
       });
     // working
@@ -1618,9 +1625,10 @@ $('#toggle').remove();
   <script type="text/javascript">
   $(document).on('click','.title-td',function(){
       var mId = $(this).attr('m-id');
-
-  var url = window.location.origin+"/PN101/MOM/meetingInfo/"+mId;
-      window.location.href=url;
+          if($(this).hasClass('Summary')){
+              var url = window.location.origin+"/PN101/MOM/meetingInfo/"+mId;
+              window.location.href=url;
+          }
     });
   </script>
   <script type="text/javascript">

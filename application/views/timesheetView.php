@@ -13,8 +13,8 @@ $colors_array = ['#8dba5e','#9ebdff','#dd91ee','#f7c779','#a9bfaf','#6b88ca'];
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 -->
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
-  <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css">
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
@@ -532,7 +532,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 			$totalTime = 0;
  ?>
 		<div style="border-radius: 5px;padding:3px">
-		<div  class="<?php if($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{ echo 'div-box';}?>">
+		<div  class="<?php if($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{ echo 'div-box';} ?>">
 					<?php 
 			foreach($times as $time){
 				$totalTime = $totalTime + $time->endTime - $time->startTime;
@@ -562,7 +562,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					</div>
 			 	</td>
 		<?php	 }} ?>
-<!-- 			<td class=" " style="min-width:14vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
+<!-- 			<td class=" " style="min-width:14vw;font-weight:bolder"><?php //echo "$".$weeklyTotal;?></td>
  -->		</tr>
 
 			<?php $x = $x+1;
@@ -624,7 +624,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 			$totalTime = 0;
 		 ?>
 					<div style="border-radius: 5px;padding:3px">
-						<div  class=" <?php if($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{echo 'div-box';}?>">
+						<div  class=" <?php if($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{echo 'div-box';} ?>">
 				<?php 
 
 			foreach($times as $time){
@@ -639,7 +639,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 							<span><?php echo isset($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->rosterShift->roleName->roleName) ? $timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->rosterShift->roleName->roleName : ""; ?></span>
 							<span>Total Hours : <?php echo  $totalTime/100 .".". $totalTime%100; ?></span>
 							<span>Total visits : <?php echo $totalVisits; ?></span>
-				?>
+
 						</div>
 				<?php	
 							}	}else{
@@ -756,7 +756,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 
 			?>
 		<div style="border-radius: 5px;padding:3px">
-		<div  class="<?php if($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{ echo 'div-box';}?>">
+		<div  class="<?php if($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{ echo 'div-box';} ?>">
 					<?php 
 			foreach($times as $time){
 				$totalTime = $totalTime + $time->endTime - $time->startTime;
@@ -880,7 +880,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 		} 
 
 
-			 } }?>
+			 } } ?>
 		</table>
 	</div>
 </div>
@@ -956,6 +956,11 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 <!-- Logout Modal -->
 
 <?php if($this->session->userdata('UserType') == ADMIN || $this->session->userdata('UserType') == SUPERADMIN){?>
+	<script>
+$( ".modal-content" ).draggable();
+
+
+</script>
 <script type="text/javascript">
 				var modal = document.getElementById("myModal");
 				var htmlVal = $('#timesheet-form').html()

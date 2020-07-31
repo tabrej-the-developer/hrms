@@ -264,14 +264,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       }
     }
 
-    public function addSummary(){
+    public function addSummary($meetingId){
       $headers = $this->input->request_headers();
       if($headers != null && array_key_exists('x-device-id',$headers) && array_key_exists('x-token',$headers)){
         $this->load->model('meetingModel');
         $json = json_decode(file_get_contents('php://input'));
         $summary = $json->summary;
         $t = $json->id;
-        $mId = $json->meetingId;
+        $mId = $meetingId;
         $len = count($summary);
         for($k = 0; $k < $len; $k++){
           $this->meetingModel->meetingSummary($t[$k],$summary[$k]);          
