@@ -14,9 +14,21 @@ font-family: 'Open Sans', sans-serif;
   	height: 100%;
   }
   .tab-pane{
-  	padding: 4rem 3rem 2rem 2rem;
-  	height: calc(100vh - 2rem);
+  	padding: 2rem 3rem 2rem 2rem;
+  	height: calc(100vh - 4rem);
   }
+   .heading{
+      position: relative;
+      top:20px;
+      padding-left: 2rem;
+      width: 100%;
+    }
+    .back-button span{
+      font-size:1.75rem;
+      color: #171D4B;
+      font-weight: 700;
+      margin-top: 20px;
+    }
   .close{
     float: none; 
       font-size: inherit; 
@@ -41,6 +53,20 @@ font-family: 'Open Sans', sans-serif;
       color:white !important;
       width: 5rem;
   }
+  .button{
+      border: none;
+      color: rgb(23, 29, 75);
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-weight: 700;
+      margin: 2px;
+      width:auto;
+      border-radius: 20px;
+      padding: 4px 8px;
+      background: rgb(164, 217, 214);
+      font-size: 1rem;
+  }
   .close:hover{
     background:#6c757d;
   }
@@ -52,9 +78,9 @@ font-family: 'Open Sans', sans-serif;
         }
         
         .card-body {
-            padding: 0rem 1.25rem;
-            height: calc(100% - 30%);
-            overflow-y: scroll;
+            padding: 0;
+            height: 100%;
+            overflow-y: auto;
             width: 100%;
             overflow-x: auto !important;
         }
@@ -261,7 +287,12 @@ img{ max-width:140%;}
         transform: scale(1.0);
         transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
     }
-
+    .sync_button{
+      display: flex;
+      margin-right:2rem;
+      justify-content: center;
+      align-items: center;
+    }
 input[class=checkbox_label] + label {
   display: block;
   margin: 0.2em;
@@ -294,6 +325,26 @@ input[class=checkbox_label]:checked + label:before {
   border-color: #307bd3 ;
   color: #fff;
 }
+  .table{
+    font-size: 1rem;
+    background-color: white;
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    max-height: 100%;
+    overflow-y: auto;
+   }
+    thead tr{
+      background-color: #8D91AA;
+      color: #F3F4F7 !important;
+    }
+    tr{
+      border-top:  1px solid #d2d0d0;
+      border-bottom: 1px solid #d2d0d0;
+    }
+    tbody tr{
+      background: white !important;
+    }
 .buttons-parent{
 	padding:1rem;
 }
@@ -303,41 +354,31 @@ input[class=checkbox_label]:checked + label:before {
  <body>
  	<?php $permissions = json_decode($permissions); ?>
 <div class="containers">
-	  <span style="position: absolute;top:20px;padding-left: 2rem">
-      <a href="<?php echo base_url();?>/settings">
+  <span class="d-flex heading">
+	  <span>
+      <a href="<?php echo base_url('settings');?>">
         <button class="btn back-button">
           <img src="<?php echo base_url('assets/images/back.svg');?>">
-          <span style="font-size:0.8rem">Manage Leave Types</span>
+          <span >Manage Leave Types</span>
         </button>
       </a>
     </span>
+    <span class="ml-auto sync_button">
+        <?php if(isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N" === "Y"){ ?>
+              <button class="button" id="XeroLeaves">Sync Xero Leaves</button>
+        <?php } ?>
+
+    </span>
+  </span>
   <div class="tab-pane " id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
   	<div class="tab-pane-child">
  	  <?php  if((isset($permissions->permissions) ? $permissions->permissions->viewLeaveTypeYN : "N") === "Y"){ ?>
- 	<h4 style="font-weight: 700;
-                      padding: 2rem 0 0 0;
-                      color: rgba(11, 36, 107);width: 100%"
-                class="text-center">Manage Leave Types</h4>
-	<div class="card-header">
-		<div class="row d-flex pr-3 buttons-parent">
-    <div class="ml-auto ">
-<?php if(isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N" === "Y"){ ?>
-    	<button class="btn btn-primary" id="XeroLeaves">Sync Xero Leaves</button>
-<?php } ?>
-    </div>
-	<div class="">
-<?php if(isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N" === "Y"){ ?>
-<!-- 	<button type="button" name="add_button" id="add_button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal"   onclick="addLeaveType()">
-	 <i>
-	 	<img src="<?php //echo base_url('/assets/images/plus.png');?>"></i> Add Leave Type</button> -->
-<?php } ?>
-	</div>
-    </div>
-    </div>
+
+
   	<div class="card-body">
-        <table class="table table-striped table-borderless table-hover border-shadow" id="example2" style="width:100%;">
+        <table class="table " id="example2" style="width:100%;">
             <thead>
-                <tr class="text-muted">
+                <tr>
                 <th>S.No</th>
                 <th>Leave Name</th>
                 <th>Leave Slug</th>

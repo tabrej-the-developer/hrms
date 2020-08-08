@@ -56,6 +56,7 @@ font-family: 'Open Sans', sans-serif;
   .top-box-bottom .tile-box{
   		margin-top: 1rem;
     	}
+
 .modal-logout {
     position: fixed;
     left: 0;
@@ -85,7 +86,7 @@ font-family: 'Open Sans', sans-serif;
     transform: scale(1.0);
     transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
 }
-a[href*="settings"]{
+a[href*="settings"],.xero_settings a{
 	font-weight: 700 !important;
 	font-style: normal;
 	color: rgba(0,0,0,0.6);
@@ -184,8 +185,8 @@ a[href*="settings"]{
 			<?php if(isset($permissions->permissions) ? $permissions->permissions->xeroYN : "N" == "Y"){ ?>
 			<div class="tile-box d-md-flex col-3">
 				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/xero.png'); ?>"></div>
-				<div class="col-6">
-					<a href="<?php echo base_url().'api/xero/startOauth/'.$this->session->userdata('LoginId');?>">Xero settings</a>
+				<div class="col-6 xero_settings">
+					<a href="<?php echo base_url().'api/xero/startOauth/'.$this->session->userdata('LoginId');?>" target="_blank">Xero settings</a>
 				</div>
 			</div>
 		<?php } ?>

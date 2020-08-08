@@ -113,7 +113,7 @@ font-family: 'Open Sans', sans-serif;
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 50%;
+  width: 30%;
 }
 
 /* The Close Button */
@@ -181,19 +181,22 @@ font-family: 'Open Sans', sans-serif;
 	background: white
 }
 	.button{
-	  background-color: #9E9E9E;
 	  border: none;
-	  color: white !important;
-	  padding: 10px 10px;
+	  color: rgb(23, 29, 75);
 	  text-align: center;
 	  text-decoration: none;
 	  display: inline-block;
-	  margin: 2px
+	  font-weight: 700;
+	  margin: 2px;
+	  width:5rem;
+      border-radius: 20px;
+      padding: 4px 8px;
+      background: rgb(164, 217, 214);
+      font-size: 1rem;
 	}
 	.close{
 		float: none; 
-	    font-size: inherit; 
-	    font-weight: inherit; 
+	    font-size: inherit;  
 	    line-height: inherit; 
 	    color: inherit; 
 	    text-shadow: inherit; 
@@ -398,7 +401,7 @@ table.dataTable{
 		<span class="btn ml-auto d-flex align-self-center create"><a href="javascript:void(0)" id="create-new-roster" class="d-flex">
 			<span style="margin:0 10px 0 10px">
 				<img src="../assets/images/plus.png" >
-			</span>Create&nbsp;new&nbsp;roster</a></span>
+			</span>Create&nbsp;New&nbsp;Roster</a></span>
 		<?php } ?>
 	</div>
 	<div class="table-div">
@@ -422,24 +425,16 @@ table.dataTable{
 				<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
 				<tr id="<?php echo $roster->rosters[$i]->id?>">
 					<td><?php echo $i+1 ?></td>
-					<?php if($this->session->userdata('UserType') == ADMIN ){?>
-						<td><?php print_r(json_decode($centers)->centers[0]->name) ?></td>
-					<?php } ?>
-					<?php if($this->session->userdata('UserType') ==SUPERADMIN ) { ?>
 					<td><?php echo 'Roster | '.dateToDay($roster->rosters[$i]->startDate).'-'.dateToDay($roster->rosters[$i]->endDate) ?></td>
-				<?php }?>
-
 					<td><?php echo dateToDayAndYear($roster->rosters[$i]->startDate) ?></td>
 					<td><?php echo dateToDayAndYear($roster->rosters[$i]->endDate) ?></td>
 					<td><?php echo $roster->rosters[$i]->status ?></td>
-					</tr>
+				</tr>
 				<?php }?>
 			<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N"){ ?>
 					<tr id="<?php echo $roster->rosters[$i]->id?>">
 					<td><?php echo $i+1 ?></td>
-				<?php  if($this->session->userdata('UserType') == STAFF ){ ?>
 					<td><?php echo 'Roster | '.dateToDay($roster->rosters[$i]->startDate).'-'.dateToDay($roster->rosters[$i]->endDate) ?></td>
-				<?php } ?>
 					<td><?php echo $roster->rosters[$i]->startDate ?></td>
 					<td><?php echo $roster->rosters[$i]->endDate ?></td>
 					<td><?php echo $roster->rosters[$i]->status ?></td>
@@ -466,7 +461,7 @@ table.dataTable{
 <div style="position: relative;margin-top:40px ">
  	<form id="create-roster-form"  method="POST" action=<?php echo base_url("roster/createRoster") ?>>
  		<span id="down-arrow" class="row" style="display:flex;justify-content: center;margin:20px">
- 			<input class="col-4" name="roster-date" id="roster-date" autocomplete="off" placeholder="Start Date"></span>
+ 			<input class="col-8" name="roster-date" id="roster-date" autocomplete="off" placeholder="Start Date"></span>
  		<input type="text" name="userId" id="userId" style="display:none" value="<?php echo $userId?>">
  		
  		<?php if($this->session->userdata('UserType')==ADMIN) {?>

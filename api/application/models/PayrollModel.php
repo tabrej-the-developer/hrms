@@ -6,13 +6,13 @@ class PayrollModel extends CI_Model {
 
 	public function getPayrollType($id){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM payrollshifttype WHERE id = $id");
+		$query = $this->db->query("SELECT * FROM payrollshifttype_v1 WHERE id = $id");
 		return $query->row();
 	}
 
 	public function getAllPayrollTypes(){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM payrollshifttype");
+		$query = $this->db->query("SELECT * FROM payrollshifttype_v1");
 		return $query->result();
 	}
 
@@ -74,6 +74,18 @@ class PayrollModel extends CI_Model {
 	public function deleteAllSuperFunds(){
 		$this->load->database();
 		$this->db->query("DELETE FROM superfund");
+	}
+
+	public function updateFlag($timesheetid,$memberid){
+		$this->load->database();
+		$query = $this->db->query("SELECT status from payrollshift where timesheetId='$timesheetid' and userid = '$memberid' ");
+		$result = $query->result();
+		foreach($result as $status){
+			if(strtolower($status->status) == "added")
+				$this->db->query("UPDATE payrollshift SET status = 'FLAGGED' where timesheetId='$timesheetid' and userid = '$memberid'");
+			if(strtolower($status->status) == "flagged")
+				$this->db->query("UPDATE payrollshift SET status = 'ADDED' where timesheetId='$timesheetid' and userid = '$memberid'");
+		}
 	}
 
 	public function getAllPayrollCalendarId($timesheetId){

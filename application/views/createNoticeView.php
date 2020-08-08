@@ -92,7 +92,41 @@ ul.mail-list li span.mail-message-preview{
     opacity: 0;
     cursor: pointer;
 }
-
+  .create_group_block{
+    height:50%;
+  }
+  .list_of_groups{
+    height:50%;
+  }
+  .create_group_parent{
+    height:80vh;
+  }
+  .create_group_title{
+    font-weight: 700;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+  }
+  .group_name_label{
+    display: flex;
+    justify-content: center;
+  }
+  .group_name_span{
+    display: block;
+  }
+  .group_name_input{
+    width: 100%;
+  }
+  .groups_titles{
+    display: flex;
+    font-size:1.5rem;
+    font-weight: 700;
+    justify-content: center;
+  }
+  .group_members_span{
+    display: block;
+    text-align: center;
+  }
 /*pagination*/
 .pagination {
     display: inline-block;
@@ -208,7 +242,7 @@ $("#mytable #checkall").click(function () {
   <div class="tab-content">
     <div id="home" class="container tab-pane active">
     <div class="container">
-    <div class="content-container clearfix" >
+    <div class="content-container clearfix d-md-flex" >
         <div class="col-md-8 col-md-offset-2">
             <?php if($error = $this->session->flashdata('msg')){ ?>
                <p style="color: green;"><?php echo  $error; ?><p>
@@ -238,16 +272,16 @@ $("#mytable #checkall").click(function () {
                     <select class="demo" name="members[]" multiple >  
                     <?php
                         $users = json_decode($users);
-                         foreach ($users->users as $chat) {
-                          if($chat->imageUrl == null || $chat->imageUrl == ""){
-                            $chat->imageUrl = base_url().'assets/images/defaultUser.png';
-                          }
-                        ?>       
-                        <option value="<?php echo $chat->userid;?>"><?php echo $chat->username;?></option>
-                            <?php }?>
-                    </select>
-   
-      </div>
+                foreach ($users->users as $chat) {
+                    if($chat->imageUrl == null || $chat->imageUrl == ""){
+                        $chat->imageUrl = base_url().'assets/images/defaultUser.png';
+                    }
+                ?>       
+            <option value="<?php echo $chat->userid;?>"><?php echo $chat->username;?></option>
+                <?php }?>
+
+            </select>
+        </div>
             
             <label placeholder="Enter Subject">Subject</label>
             <div class="form-group">
@@ -265,6 +299,57 @@ $("#mytable #checkall").click(function () {
             </div>
             </form>
         </div>
+        <!-- This block is for create group and list of groups  -->
+        <div class="col-md-4 create_group_parent">
+            <div class="create_group_block">
+                <div class="create_group_heading">
+                    <span class="create_group_title">Create Group</span>
+                </div>
+                <div class="create_group">
+                    <span>
+                        <label class="group_name_label">Group Name</label>
+                        <span class="group_name_span">
+                            <input type="text" name="groupName" class="group_name_input">
+                        </span>
+                    </span>
+                    <span class="group_members_span">
+                        <label class="group_members_input">Add Members</label>
+                      <select class="group_select" name="members_select[]" multiple > 
+                        <option></option> 
+                        <?php
+                    foreach ($users->users as $chat) {
+                        if($chat->imageUrl == null || $chat->imageUrl == ""){
+                            $chat->imageUrl = base_url().'assets/images/defaultUser.png';
+                        }
+                    ?>       
+                    <option value="<?php echo $chat->userid;?>"><?php echo $chat->username;?></option>
+                    <?php }?>
+                    </select>
+                    <button id="create_group">Create Group</button>
+                    </span>
+                </div>
+            </div>
+            <div class="list_of_groups">
+                <div class="groups_titles">List of Groups</div>
+                <div>
+                  <?php if(isset($groups)){ 
+                    $groups = json_decode($groups); 
+                    // var_dump($groups);
+                    foreach($groups as $group){
+                   ?>
+                    <span>
+                      <li>
+                        <span>
+                          <input type="checkbox" name="group" value="<?php echo $group->gid; ?>" class="group_list">
+                        </span>
+                        <span class="group_name_list"><?php echo $group->groupName; ?></span>
+                      </li>
+                    </span>
+                  <?php } } ?>
+                </div>
+            </div>
+        </div>
+        <!-- Create group  and list of groups block ends here -->
         </div>
     </div>
     </div>
@@ -284,6 +369,47 @@ $("#mytable #checkall").click(function () {
     $(document).ready(function(){
         $('.demo').tokenize2();
     });
+    $(document).ready(function(){
+        $('.group_select').tokenize2();
+    })
 //tokenize2
+</script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $(document).on('click','#create_group',function(){
+      if(($('.group_name_input').val() != null && $('.group_name_input').val() != "") && $('.group_select').selected != ""){
+        let url = window.location.origin+"/PN101/notice/createGroup"
+        let groupName = $('.group_name_input').val();
+        let groupMembers = [];
+          groupMembers = $('.group_select').val();
+        $.ajax({
+          url : url,
+          method:'POST',
+          data : {
+            groupName : groupName,
+            groupMembers : groupMembers
+          },
+          success : function(response){
+            console.log(response);
+          }
+        })
+      }
+    })
+  })
+</script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $(document).on('change','.group_list',function(){
+        var value = $(this).val()
+        var code = `<option value="${value}" selected="selected">${$('.group_name_list').eq($(this).index()).text()}</option>`
+        var liAppend = `<li class="token" data-value="${value}">
+                            <a class="dismiss"></a>
+                            <span>${$('.group_name_list').eq($(this).index()).text()}</span>
+                        </li>`
+            $('.tokens-container.form-control').eq(0).prepend(liAppend)
+            $('.demo').append(code)
+
+    })
+  })
 </script>
 </html>

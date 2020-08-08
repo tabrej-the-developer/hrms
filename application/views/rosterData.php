@@ -84,7 +84,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 	background: #ebebeb;
 	border-radius: 5px;
     padding: 5px;
-    border: 2px solid #e9e9e9 !important;
+    border: 1px solid #D2D0D0 !important;
     border-radius: 20px;
 }
 table,tr,td{
@@ -102,7 +102,7 @@ table,tr,td{
 	/*background-color: #e3e9f5;*/
 	background-color:white;
 	/*color:#afb7cd;*/
-	color:black;
+	color:#171D4B;
 	display: flex;
 	justify-content: center;
 	padding-bottom:10px;
@@ -250,7 +250,7 @@ max-width:30vw;
 .box-name{
 	display: flex;
     justify-content: center;
-    font-size:30px;
+    font-size:1.5rem;
     color:#E7E7E7;
 }
 .box-space{
@@ -484,10 +484,7 @@ max-width:30vw;
 	font-size:1rem;
 	width:100%;
 }
-.print-button{
-	font-size:1rem;
-	width:100%;
-}
+
 .print-button,.priority,.casualEmploye-span,.showBudget{
 	display: flex;
 	align-items: center;
@@ -519,7 +516,7 @@ max-width:30vw;
       background: rgb(164, 217, 214) !important;
       font-size: 1rem;
 }
-.casualEmploye-btn,.priority-btn,.print-btn,.showBudget,.buttonn,.button{
+.casualEmploye-btn,.priority-btn,.print-btn,.showBudget,.buttonn,.button,.priority_saveed,.add_shift{
 	/*position: absolute;*/
 /*	right: 0;*/
 	  border: none;
@@ -574,33 +571,10 @@ max-width:30vw;
       background: rgb(164, 217, 214);
       font-size: 1rem;
 }
-.priority_saveed{
-	  border: none;
-	  color: rgb(23, 29, 75);
-	  text-align: center;
-	  text-decoration: none;
-	  display: inline-block;
-	  font-weight: 700;
-	  margin: 2px;
-	  width:8rem;
-      border-radius: 20px;
-      padding: 4px 8px;
-      background: rgb(164, 217, 214);
-      font-size: 1rem;
-}
-.add_shift{
-				background-color: #9E9E9E;
-  border: none;
-  color: white;
-  padding: 10px 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 2px;
-  width: 5rem;
-}
+
+
 .edit_priority{
-	font-size: 2rem
+	font-size: 1.5rem
 }
    .modal-logout {
         position: fixed;
@@ -675,13 +649,51 @@ max-width:30vw;
     	width:60%;
     }
     select{
-    	      background: #E7E7E7;
+      background: #E7E7E7;
       border: none !important;
       height: 2.5rem;
       border-radius: 20px;
+      border: 1px solid #D2D0D0;
+    }
+    #message{
+    	min-height: 4rem;
+    	max-height: 4rem;
+    	border-radius: 0.25rem;
+    	border: 1px solid #D2D0D0;
+    }
+		.print-landscape,.print-portrait{
+    	display: none;
+  	  border: none;
+		  color: rgb(23, 29, 75);
+		  text-align: center;
+		  text-decoration: none;
+		  font-weight: 700;
+		  margin: 2px;
+		  width:8rem;
+      font-size: 1rem;
+      border-radius: 20px;
+      padding: 4px 8px;
+      background: rgb(164, 217, 214);
+    }
+    .print-hidden-btn{
+    	position: absolute;
+    	margin-top:2rem;
+    }
+		.print-button{
+			font-size:1rem;
+			width:100%;
+			display: flex;
+			flex-direction: column;
+		}
+    .print-button .print-landscape:hover,.print-button .print-portrait:hover{
+    	display: block;
+
+    }
+    .print-button:hover button{
+    	display: block;
     }
 @media print{
-	td:nth-child(7){
+	td:nth-child(7),th:nth-child(7){
 		display: none;
 	}
 	.budget-table-parent{
@@ -702,9 +714,23 @@ max-width:30vw;
 	.hourly::before{
 			display:none;
 	}
+
+	nav{
+		display: none;
+	}
+	.containers{
+		padding-left: 0 !important;
+		width: 100vw !important;
+	}
+	table{
+		width: 100% !important;
+	}
 	body{
 		margin: 0;
 	}
+		.top_buttons{
+			display: none;
+		}
 }
 @media only screen and (max-width: 1050px) {
 			.header-top{
@@ -720,25 +746,25 @@ max-width:30vw;
 			display: flex;
    			 justify-content: center;
 		}
-.modal-content{
-	min-width:100vw;
-}
-.containers {
-     width: 100%;
-    margin: 0px;
-}
-.name-space{
-	display: block
-}
-.icon-parent{
-	max-width:100%;
-	justify-content: center
-}
+		.modal-content{
+			min-width:100vw;
+		}
+		.containers {
+		     width: 100%;
+		    margin: 0px;
+		}
+
+		.name-space{
+			display: block
+		}
+		.icon-parent{
+			max-width:100%;
+			justify-content: center
+		}
+
 }
 </style>
-<style type="text/css" media="print">
-  @page { size: landscape;margin: 25mm 25mm 25mm 25mm;   }
-</style>
+
 </head>
 <body>
 
@@ -776,8 +802,13 @@ max-width:30vw;
 					 	}
 					 	 ?>>
 				</span>
-	<?php } ?>  <span class="print-button">
-					<button class="print-btn ">Print</button>
+	<?php } ?>  
+				<span class="print-button">
+					<button class="print-btn">Print</button>
+					<span class="print-hidden-btn">
+						<button class="print-landscape" onclick="landscape()">Landscape</button>
+						<button class="print-portrait" onclick="portrait()">Portrait</button>
+					</span>
 				</span>
 			</span>
 		</div>
@@ -1261,7 +1292,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 			<div class="row p-2">
 				<label class="col-4 modal_label">Area</label>
 				<select  class="col-7" name="areaId" id="areaId" style="padding-left:60px">
-					<option>Change Area</option>
+					<option >Change Area</option>
 				</select>
 			</div>
 			<div class="row p-2">
@@ -1270,7 +1301,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 			</div>
 			<div class="row p-2">
 				<label class="col-4 modal_label">Message</label>
-				<input name="message" id="message" class="col-7" type="text">
+				<textarea name="message" id="message" class="col-7" type="text"></textarea>
 			</div>
 	 		<input type="text" name="shiftId"  id="shiftId" style="display:none">
 	 		<input type="text" name="roleId" id="roleId" style="display:none">
@@ -2198,6 +2229,44 @@ $( ".modal_priority" ).draggable();
 				window.location.href= url.href
 		})
 	})
+</script>
+<script type="text/javascript">
+	function landscape(){
+			var css = '@page { size: landscape; }',
+			    head = document.head || document.getElementsByTagName('head')[0],
+			    style = document.createElement('style');
+
+			style.type = 'text/css';
+			style.media = 'print';
+
+			if (style.styleSheet){
+			  style.styleSheet.cssText = css;
+			} else {
+			  style.appendChild(document.createTextNode(css));
+			}
+
+			head.appendChild(style);
+
+			window.print();
+	}
+	function portrait(){
+		var css = '@page { size: portrait; }',
+		    head = document.head || document.getElementsByTagName('head')[0],
+		    style = document.createElement('style');
+
+		style.type = 'text/css';
+		style.media = 'print';
+
+		if (style.styleSheet){
+		  style.styleSheet.cssText = css;
+		} else {
+		  style.appendChild(document.createTextNode(css));
+		}
+
+		head.appendChild(style);
+
+		window.print();
+	}
 </script>
 </body>
 </html>

@@ -84,14 +84,13 @@ class Notice extends CI_Controller {
 	}
 
 	public function createNotice(){
-
-	if($this->session->has_userdata('LoginId')){
-		$data['users'] = $this->getUsers();
-		$data['permissions'] = $this->fetchPermissions();
-		$this->load->helper('form');
-		$form_data = $this->input->post();
-		var_dump($form_data);
-		if($form_data != null){
+		if($this->session->has_userdata('LoginId')){
+			$data['users'] = $this->getUsers();
+			$data['groups'] = $this->getGroupsForUser();
+			$data['permissions'] = $this->fetchPermissions();
+			$this->load->helper('form');
+			$form_data = $this->input->post();
+	if($form_data != null){
 	//footprint start
 	if($this->session->has_userdata('current_url')){
 		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
@@ -105,12 +104,12 @@ class Notice extends CI_Controller {
 			// 		array_push($sendData['members'],$user->userid);
 			// 	}
 			// }
-			var_dump($form_data['members']);
+			// var_dump($form_data['members']);
 			$sendData['text'] = $this->dataReady($form_data['message']);
 			$sendData['subject'] = $form_data['subject'];
 			$sendData['userid'] = $this->session->userdata('LoginId');
 			// var_dump($sendData);
-			$url= BASE_API_URL."notice/addNotice";
+			$url= BASE_API_URL."notice/addNotice/".$this->session->userdata('LoginId');
 			$ch = curl_init($url);
 
 			curl_setopt($ch, CURLOPT_URL,$url);
@@ -133,11 +132,11 @@ class Notice extends CI_Controller {
 
 			}
 		}
-		$this->load->view('createNoticeView',$data);
+			$this->load->view('createNoticeView',$data);
+				}
+			else{
+				$this->load->view('redirectToLogin');
 			}
-		else{
-			$this->load->view('redirectToLogin');
-		}
 	}
 
 	public function dataReady($data){
@@ -147,47 +146,105 @@ class Notice extends CI_Controller {
 		return $data;
 	}
 
+	public function createGroup(){
+		$this->load->helper('form');
+		$form_data = $this->input->post();
+		if($form_data != null){
+			//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+				$this->session->set_userdata('current_url',currentUrl());
+				}
+				// footprint end
+				$data['groupName'] = $this->input->post('groupName');
+				$data['groupMembers'] = $this->input->post('groupMembers');
+				$userid = $this->session->userdata('LoginId');
+				$url=BASE_API_URL."notice/createGroup/".$userid;
+				$ch = curl_init($url);
+
+				curl_setopt($ch, CURLOPT_URL,$url);
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'x-device-id: '.$this->session->userdata('x-device-id'),
+					'x-token: '.$this->session->userdata('AuthToken')
+				));
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+				$server_output = curl_exec($ch);
+				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				echo $httpcode;
+				if($httpcode == 200){
+					echo $server_output;
+					curl_close ($ch);
+				}
+				else if($httpcode == 401){
+
+				}
+		}
+	}
+
 
 	public function updateStatus(){
 		$this->load->helper('form');
 		$form_data = $this->input->post();
 		if($form_data != null){
 
-	//footprint start
-	if($this->session->has_userdata('current_url')){
-		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-		$this->session->set_userdata('current_url',currentUrl());
-	}
-	// footprint end
-			$data['noticeId'] = $form_data['currentNoticeId'];
-			$data['status'] = "2";
-			$data['userid'] = $this->session->userdata('LoginId');
-			$url="http://todquest.com/PN101/api/notice/updateStatus";
-			$ch = curl_init($url);
-
-			curl_setopt($ch, CURLOPT_URL,$url);
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-				'x-device-id: '.$this->session->userdata('x-device-id'),
-				'x-token: '.$this->session->userdata('AuthToken')
-			));
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-			$server_output = curl_exec($ch);
-			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			if($httpcode == 200){
-				curl_close ($ch);
-				redirect(base_url().'notice/notices/Archived');
-			}
-			else if($httpcode == 401){
-
-			}
+		//footprint start
+		if($this->session->has_userdata('current_url')){
+			footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+			$this->session->set_userdata('current_url',currentUrl());
 		}
+		// footprint end
+				$data['noticeId'] = $form_data['currentNoticeId'];
+				$data['status'] = "2";
+				$data['userid'] = $this->session->userdata('LoginId');
+				$url=BASE_API_URL."notice/updateStatus";
+				$ch = curl_init($url);
+
+				curl_setopt($ch, CURLOPT_URL,$url);
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'x-device-id: '.$this->session->userdata('x-device-id'),
+					'x-token: '.$this->session->userdata('AuthToken')
+				));
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+				$server_output = curl_exec($ch);
+				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				if($httpcode == 200){
+					curl_close ($ch);
+					redirect(base_url().'notice/notices/Archived');
+				}
+				else if($httpcode == 401){
+
+				}
+			}
 	}
 
 	function getAllNotices(){
 		$url = BASE_API_URL."notice/getAllNotices/".$this->session->userdata('LoginId');
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			return $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+			return 'error';
+		}
+	}
+
+	function getGroupsForUser(){
+		$url = BASE_API_URL."notice/getGroupsForUser/".$this->session->userdata('LoginId');
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

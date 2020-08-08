@@ -109,6 +109,7 @@ class Dashboard extends CI_Controller{
 						array_push($events,$mbdata);
 							}
 						}
+
 				$getBirthdays = $this->dashboardModel->getBirthdays($currentDate);
 				if($getBirthdays != null){
 					if($getBirthdays != ""){
@@ -125,7 +126,19 @@ class Dashboard extends CI_Controller{
 					array_push($event['anniversary'],$mydata);
 					}
 				}
-					 }
+		 	}
+			$getMeetings = $this->dashboardModel->getAllMeetingsForUser($userid);
+				if($getMeetings != null ){
+						if( $getMeetings != "" ){
+							foreach($getMeetings as $meeting){
+							$madata['title'] = $meeting->title.'- Meeting';
+							$madata['start'] = $meeting->date;
+							$madata['meetingId'] = $meeting->id;
+							$madata['meetingStatus'] = $meeting->status;
+							array_push($events,$madata);
+								}
+							}
+						}
 					array_push($event['event'],$events);
 				http_response_code(200);
 				echo json_encode($event);

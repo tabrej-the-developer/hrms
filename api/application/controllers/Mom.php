@@ -128,11 +128,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           $userid  = $json->userid;
           $period = $json->period;
           $status = $json->status;
+          $agendaFile = $json->agendaFile;
+
+
+          //           if($json->agendaFile != null){
+          //   $file = base64_decode($json->agendaFile);
+          //   $agendaFile = uniqid()."-".uniqid()."pdf";
+          // }
+          // move_uploaded_file($file,'/assets/agendas/'.$agendaFile);
           // $collab = $json->collab;
           //$offset = $json->offset;
           // var_dump($meetingTitle,$date,$time,$agenda,$invites,$location,$userid,$period);
         if($period == 'O'){
-          $this->meetingModel->addMeeting($id,$meetingTitle,$date,$time,$location,$period,null,$userid,$status);
+          $this->meetingModel->addMeeting($id,$meetingTitle,$date,$time,$location,$period,null,$userid,$status,$agendaFile);
           $this->meetingModel->addParticipant($id,$userid);
           foreach($agenda as $a):
             $this->meetingModel->addAgenda($id,$a);

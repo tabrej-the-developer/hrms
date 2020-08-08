@@ -33,6 +33,8 @@ class Notice extends CI_Controller {
 					$userDetails = $this->authModel->getUserDetails($notice->senderId);
 					$var['senderId'] = $notice->senderId;
 					$var['senderName'] = $userDetails->name;
+					$receiverDetails = $this->authModel->getUserDetails($notice->receiverId);
+					$var['receiverId'] = $receiverDetails->name;
 					$var['subject'] = $notice->subject;
 					$var['text'] = $notice->htmlText;
 					$var['date'] = $notice->sentDate;
@@ -85,14 +87,23 @@ class Notice extends CI_Controller {
 			$json = json_decode(file_get_contents('php://input'));
 			if($res != null && $res->userid == $userid){
 				if($json != null){
-					$userid = $json->userid;
+					$userid = $userid;
 					$text = $json->text;
 					$subject = $json->subject;
 					$this->load->model('noticeModel');
 					foreach ($json->members as $memberid) {
-						$this->noticeModel->addNotice($userid,$memberid,$subject,$text);
+						if(preg_match('/[a-z]/i',$memberid) == 1){
+							$this->noticeModel->addNotice($userid,$memberid,$subject,$text);
+						}
+						if(preg_match('/[a-z]/i',$memberid) == 0 ){
+							$groupMembers = $this->noticeModel->getMembersOfGroup($memberid);
+							foreach($groupMembers as $member){
+								$this->noticeModel->addNotice($userid,$member->memberid,$subject,$text);
+							}
+						}
 					}
-					http_response_code(200);				}
+					http_response_code(200);				
+				}
 				else{
 					http_response_code(401);
 				}
@@ -105,4 +116,63 @@ class Notice extends CI_Controller {
 			http_response_code(401);
 		}
 	} 
+
+	public function createGroup($userid){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($res != null && $res->userid == $userid){
+				if($json != null){
+					$this->load->model('noticeModel');
+					$userid = $userid;
+					$groupName = $json->groupName;
+					$groupMembers = $json->groupMembers;
+					$groupId = $this->noticeModel->createGroup($userid,$groupName);
+					echo $groupId;
+					foreach ($groupMembers as $memberid) {
+						$this->noticeModel->addGroupMembers($memberid,$groupId);
+					}
+					$data['status'] = 'SUCCESS';
+					http_response_code(200);	
+					echo json_encode($data);			
+				}
+				else{
+					http_response_code(401);
+				}
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
+	public function getGroupsForUser($userid){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+					$this->load->model('noticeModel');
+					$userid = $userid;
+					$groups = $this->noticeModel->getGroupsForUser($userid);
+
+					http_response_code(200);
+					echo json_encode($groups);				
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
+
+
 }

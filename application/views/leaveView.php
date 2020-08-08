@@ -44,6 +44,10 @@
 		background:	rgb(243, 244, 247);
 		height: calc(100vh);
 	}
+  .heading_space{
+    width:100%;
+    display: flex;
+  }
   
 		.leave-heading{
 			font-size: 1.75rem;
@@ -169,8 +173,8 @@
 			border-bottom:none;
 			border-top-left-radius:0;
 			border-top-right-radius:0;
-			background-color: #307bd3;
-			color: #fff;
+			background-color: #8D91AA;
+			color: #F3F4F7;
       display: flex;
     justify-content: center;
 		}
@@ -355,19 +359,42 @@ table.dataTable{
      text-shadow: none; 
      opacity: 1;
 	}
-	.close{
-		float: none; 
-	    font-size: inherit; 
-	    font-weight: inherit; 
-	    line-height: inherit; 
-	    color: inherit; 
-	    text-shadow: inherit; 
-	    opacity: inherit; 
-	    border-radius:0 !important;
-	    background:#6c757d !important;
-	    padding: .375rem .75rem !important;
-	    color: white !important;
-	}
+  .button{
+    border: none !important;
+    color: rgb(23, 29, 75) !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+    font-weight: 700 !important;
+    margin: 2px !important;
+    width:8rem !important;
+      border-radius: 20px !important;
+      padding: 8px !important;
+      background: rgb(164, 217, 214) !important;
+      text-shadow: none; 
+      opacity: 1; 
+      font-size:1rem !important;
+      line-height: 1.6rem !important;
+      float: none;
+  }
+
+    input[type="text"],input[type=time],input[type=number],select,#casualEmp_date,textarea{
+      background: #ebebeb !important;
+      border-radius: 5px !important;
+      padding: 5px !important;
+      border: 1px solid #D2D0D0 !important;
+      border-radius: 20px !important;
+      padding-left: 1rem;
+    }
+    select{
+      background: #E7E7E7 !important;
+      border: none !important;
+      height: 2.5rem !important;
+      border-radius: 20px !important;
+      border: 1px solid #D2D0D0 !important;
+      padding-left: 1rem !important;
+    }
+
 
 
 	.confirm_button{
@@ -629,72 +656,80 @@ table.dataTable{
   <div class="row">
     <div class="col-sm-12 ">
 		<div class="row d-flex pt-3">
-	    <div class="ml-2"><span class="leave-heading">Leave Management</span></div>
+	    <div class="ml-2 heading_space">
+        <span class="leave-heading">Leave Management</span>
+       <span class="ml-auto"> 
+        <button type="button" name="apply_button" id="apply_button" class="button"        data-toggle="modal" data-target="#exampleModal">
+                <i class="fas fa-plus-circle"></i>
+                  Apply Leave
+        </button>
+      </span>
+     </div>
 	    	<div class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
-		<?php if($this->session->userdata('UserType') == SUPERADMIN){?> 
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "Y"){ ?>
 			<!-- 			<div class="filter-icon d-flex">
 				<span class="">Sort&nbsp;by</span>
 				<span class=""><img src="../assets/images/filter-icon.png" height="20px"></span>
 			</div> -->
 
-			<select class="center-list " id="center-list">
-				<?php $centers = json_decode($centers);	
-					for($i=0;$i<count($centers->centers);$i++){
-				?>
-			<option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid; ?>"><?php echo $centers->centers[$i]->name?></option>
-		<?php } ?>
-		</select>	
-				<?php } ?>
-	</div>
+	       <select class="center-list " id="center-list">
+  				<?php $centers = json_decode($centers);	
+  					for($i=0;$i<count($centers->centers);$i++){
+  				?>
+      			<option href="javascript:void(0)"
+                    class="center-class"
+                    id="<?php echo $centers->centers[$i]->centerid ?>"
+                     value="<?php echo $centers->centers[$i]->centerid; ?>">
+                     <?php echo $centers->centers[$i]->name?>
+           </option>
+        		<?php } ?>
+      		</select>	
+<?php } ?>
+        	</div>
 	    </div>
 
-<?php
-	if($this->session->userdata('UserType') != SUPERADMIN){ ?>
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "N"){ ?>
 				<div class="row mt-3">
-                    <div class="col-md-12"><h6>Leave Balance</h6></div>
-                </div>
-				<div class="row shadow-sm mb-4  rounded vdivide">
-                    
-					<!-- <div class="col-sm-3">
-					<div class="chat_people">
-					<div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-					<div class="chat_ib">
-					  <h4>Admin Name(You)</h4>
-					  <p>Emp45698</p>
-					</div>
-					</div>
-					</div> -->
-					
-		<div class="col-sm-12">	
-			<div id="recipeCarousel" class="carousel slide w-100" data-ride="">
-        <div class="carousel-inner w-100" role="listbox">
-        	<?php
-        		// print_r($balance);
-        		$balance = json_decode($balance);
-        		// var_dump($balance);
-            if(count($balance->balance)==0){
-        		for($i=0;$i<count($balance->balance);$i+=3){ ?>
-            <div class="carousel-item row no-gutters  <?php if($i == 0) echo 'active';?>">
-        	<?php 
-        		$var = 0;
-        		while($var < 3){ 
-        			if($var+$i < count($balance->balance)){
-    			?>
-        <div class="col-md-3 balance-tile cardContainer">
-         	<div class="balance-tile-div cardItem">
-				
-				<div class="leave-balance" style="color:<?php echo $colorcodes[rand(0,6)];?>"><?php echo sprintf('%.2f',$balance->balance[$i + $var]->leavesRemaining);?></div>
-				<div class="leave-name" ><?php echo $balance->balance[$i + $var]->leaveName;?></div>
-			</div>
-		</div> 
-			<?php 
-				}	
-				$var++;
-			}?>
-            </div>
-        	<?php } }?>
-
+          <div class="col-md-12">
+            <h6>Leave Balance</h6>
+          </div>
         </div>
+				<div class="row shadow-sm mb-4  rounded vdivide">
+      		<div class="col-sm-12">	
+      			<div id="recipeCarousel" class="carousel slide w-100" data-ride="">
+              <div class="carousel-inner w-100" role="listbox">
+              	<?php
+              		// print_r($balance);
+              		$balance = json_decode($balance);
+              		// print_r($balance);
+                  if(count($balance->balance) > 0){
+                    $count = count($balance->balance) >0 ? count($balance->balance) : 1;
+                    $count = ceil($count/3);
+                		for($i=0; $i < $count; $i+=3){ ?>
+                <div class="carousel-item row no-gutters  <?php if($i == 0) echo 'active';?>">
+              	<?php 
+                  $var = 0;
+              		while($var < 3){ 
+              			if($var+$i < count($balance->balance)){
+            			?>
+                  <div class="col-md-3 balance-tile cardContainer">
+                   	<div class="balance-tile-div cardItem">
+              				<div class="leave-balance"
+                           style="color:<?php echo $colorcodes[rand(0,6)];?>">
+                           <?php echo sprintf('%.2f',$balance->balance[$i + $var]->leavesRemaining);?>
+                      </div>
+              				<div class="leave-name" >
+                        <?php echo $balance->balance[$i + $var]->leaveName;?>
+                      </div>
+              			</div>
+              		</div> 
+          			<?php 
+          				}	
+        				$var++;
+        			}  ?>
+              </div>
+        	<?php } } ?>
+            </div>
         <!-- <a class="carousel-control-prev" href="#recipeCarousel" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="sr-only">Previous</span>
@@ -714,47 +749,38 @@ table.dataTable{
                  <nav>
                     <div class="nav  nav-fill" id="nav-tab" >
 
-	              <?php
-	              if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N"){ ?>
-                      <a class="nav-item nav-link heading-leave-approval" >Leave Approvals</a>
-                  <?php }?>
-                     
                   	<!-- <a class="nav-item nav-link <?php ?>" id="nav-contact-tab1" data-toggle="tab" href="#nav-contact1" role="tab" aria-controls="nav-contact" aria-selected="false">My Leave Requests</a> -->
 					  
-
-                     
                     </div>
                   </nav>
         <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
           	<?php
           	if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "N"){ ?>
 				<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-	              	<div class="card">
-	                <div class="card-header">
-					<div class="row">
-	                </div>
-	                </div>
+        	<div class="card">
+            <div class="card-header">
+    					<div class="row"></div>
 
-	                <div class="card-body">
-	                    <table class="table table-striped table-borderless table-hover border-shadow" id="example1" style="width:100%;">
-	                        <thead>
-	                            <tr class="text-muted">
-	                            <th>Name</th>
-	                            <th>Role</th>
-	                            <th>Start Date </th>
-	                            <th>End Date</th>
-	                            <th>Leave Type</th>
-	                            <th>Reason</th>
-	                            <th>Action</th>
-	                            </tr>
-	                        </thead>
-	                        <tbody>
-	                        	<?php
-	                        	// print_r($leaveRequests);
-	                        		$leaveRequests = json_decode($leaveRequests);
-	                        		foreach ($leaveRequests->leaves as $leave) { 
-
-                        			?>
+            </div>
+            <div class="card-body">
+              <table class="table table-striped table-borderless table-hover border-shadow" id="example1"       style="width:100%;">
+	              <thead>
+                  <tr class="text-muted">
+                  <th>Name</th>
+                  <th>Role</th>
+                  <th>Start Date </th>
+                  <th>End Date</th>
+                  <!-- <th>Leave Type</th> -->
+                  <th>Reason</th>
+                  <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                	<?php
+                	// print_r($leaveRequests);
+                		$leaveRequests = json_decode($leaveRequests);
+                		foreach ($leaveRequests->leaves as $leave) { 
+             			?>
 									<tr>
 										<td><?php echo $leave->name;?></td>
 										<td><?php echo $leave->title;?></td>
@@ -770,7 +796,7 @@ table.dataTable{
 												echo date_format($date,"d/m/Y");
 											?>
 										</td>
-										<td><?php echo $leave->leaveTypeName;?></td>
+										<!-- <td><?php // echo $leave->leaveTypeName;?></td> -->
 										<td>
 										<div class="dropdown">
 		                                    <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -819,115 +845,118 @@ table.dataTable{
 	      	<?php }?>
 
               
-				  <div class="tab-pane fade <?php if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "Y") echo 'show active';?>" id="nav-contact1" role="tabpanel" aria-labelledby="nav-home-tab">
-	                  	<div class="card">
-			                <div class="card-header">
-							<div class="row">
-			                    <div class="col-md-6"></div>
-								<div class="col-md-6 text-right">
-									<?php 
-									if($this->session->userdata('UserType') != SUPERADMIN){ ?>
-										<button type="button" name="apply_button" id="apply_button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal"> <i class="fas fa-plus-circle"></i> Apply Leave</button>
-									<?php }?>
-								</div>
-			                </div>
-			                </div>
-			                <div class="card-body">
-			                    <table class="table table-striped table-borderless table-hover border-shadow" id="example3" style="width:100%;">
-			                        <thead>
-			                            <tr class="text-muted">
-	                            	<?php
-	                            		//if($this->session->userdata('UserType') == SUPERADMIN ){ ?>
-			                            <th>Name</th>
-			                            <th>Role</th>
-			                        <?php // }?>
-			                            <th>Leave Type</th>
-                                  <th>Applied Date</th>
-			                            <th>Start Date</th>
-			                            <th>End Date </th>
-			                            <th>Reason</th>
-			                            <th>Status</th>
-			                            </tr>
-			                        </thead>
-			                        <tbody>
-			                        	<?php 
-                                $leaves = json_decode($leaves);
-			                        	if(isset($leaves) && count($leaves->leaves)>0){
-			                        	
-			                        	foreach ($leaves->leaves as $l) { ?>
-										<tr>
-	                            		<?php
-	                if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "Y"){ ?>
-											<td><?php  echo $l->name;?></td>
-								<?php if($l->title != "Centre Manager"){ ?>
-											<!-- <td><?php // echo $l->title;?></td> -->
-			                       		<?php } else {echo "<td>--</td>";} }?>
-											<td><?php echo isset($l->leaveTypeSlug) ? $l->leaveTypeSlug : "" ;?></td>
-                      <td ><?php
-                        $date = date_create($l->appliedDate);
-                        echo date_format($date,"d/m/Y");?></td>
-											<td><?php
-												$date = date_create($l->startDate);
-												echo date_format($date,"d/m/Y");?></td>
-											<td><?php
-												$date = date_create($l->endDate);
-												echo date_format($date,"d/m/Y");?></td>
-											<td>
-											<div class="dropdown">
-			                                    <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			                                        <i class="far fa-file-alt"></i>
-			                                    </button>
-			                                    <div class="dropdown-menu dropdown-menu-right p-3 " aria-labelledby="gedf-drop1">
-			                                        <p><?php echo $l->notes;?></p>
-			                                    </div>
-			                                </div>
-											</td>
-												<?php
-													$color = '#F44336';
-													if($l->status == "Applied") $color = '#9E9E9E';
-													else if($l->status == "Approved") $color = '#4CAF50';
-												?>
-											
-										<?php 
-							if($l->userid == $this->session->userdata('LoginId')){
-								echo "<td class=\"d-flex justify-content-center span__\">".$l->status."</td>";
-							}else{
-											if($l->status == "Applied"){ 
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "Y"){ ?>
+  <div class="tab-pane fade 
+              <?php if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "Y") echo 'show active';?>"
+         id="nav-contact1" 
+         role="tabpanel" 
+         aria-labelledby="nav-home-tab" >
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-6"></div>
+            <div class="col-md-6 text-right">
+              <!-- Apply Leave Button -->
+          <?php if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "N"){?>
+              <button type="button" name="apply_button" id="apply_button" class="button" data-toggle="modal" data-target="#exampleModal"> <i class="fas fa-plus-circle"></i> Apply Leave</button>
+          <?php }?>
+            </div>
+          </div>
+        </div>
+          <div class="card-body">
+            <table class="table table-striped table-borderless table-hover border-shadow" id="example3" style="width:100%;">
+              <!-- Employee Leave View -->
+              <thead>
+                <tr class="text-muted">
+                  <th>Name</th>
+                  <th>Role</th>
+                  <th>Leave Type</th>
+                  <th>Applied Date</th>
+                  <th>Start Date</th>
+                  <th>End Date </th>
+                  <th>Reason</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php 
+                $leaves = json_decode($leaves);
+                if(isset($leaves) && count($leaves->leaves)>0){
+                
+                foreach ($leaves->leaves as $l) { ?>
+                <tr>                              
+                  <td><?php  echo $l->name;?></td>
+                  <td><?php  echo $l->title;?></td> 
+                  <td><?php echo isset($l->leaveTypeSlug) ? $l->leaveTypeSlug : "" ;?></td>
+                  <td >
+                    <?php
+                      $date = date_create($l->appliedDate);
+                      echo date_format($date,"d/m/Y");
+                    ?>
+                  </td>
+                  <td>
+                    <?php
+                      $date = date_create($l->startDate);
+                      echo date_format($date,"d/m/Y");
+                    ?>
+                  </td>
+                  <td>
+                    <?php
+                      $date = date_create($l->endDate);
+                      echo date_format($date,"d/m/Y");
+                     ?>
+                  </td>
+                  <td>
+                    <div class="dropdown">
+                      <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="far fa-file-alt"></i>
+                      </button>
+                      <div class="dropdown-menu dropdown-menu-right p-3 " aria-labelledby="gedf-drop1">
+                        <p>
+                          <?php echo $l->notes;?>
+                        </p>
+                      </div>
+                    </div>
+                  </td>
+                    <?php
+                      $color = '#F44336';
+                      if($l->status == "Applied") $color = '#9E9E9E';
+                      if($l->status == "Approved") $color = '#4CAF50';
 
-												?>
-                       <td class="d-flex justify-content-center span__ "> 
-												<div onclick="updateLeaveApp('<?php echo $l->id;?>','2')" class="pr-3">
-													<img src="<?php echo base_url("assets/images/accept.png"); ?>" style="max-width:1.3rem;cursor: pointer" />
-												</div>
-												<div onclick="updateLeaveApp('<?php echo $l->id;?>','3')" class="pl-3">
-													<img src="<?php echo base_url("assets/images/deny.png"); ?>"  style="max-width:1.3rem;cursor: pointer">
-												</div>
-                      </td>
-										<?php }
-											else{
-												$color = $l->status == "Approved" ? '#4CAF50' : '#F44336'; 
-                        $sta = $l->status == "Approved" ? 'appr' : 'reje'; 
-                        $img = $l->status == "Approved" ? 'accept' : 'deny'; ?>
-                        <td class="d-flex justify-content-center span__ <?php echo $sta; ?> ">
-												<span style="color: <?php echo $color;?>; " class="status-<?php echo $sta; ?>">
-													<span><img src="<?php echo base_url('assets/images/'.$img.'.png'); ?>" class="immg"></span><?php echo $l->status;?>
-												</span>
-                      </td>
-												<?php
-											}}
-										?>
-
-											
-											
-										</tr>
-									<?php } }?>
-										
-			                        </tbody>
-			                    </table>
-			                </div>
-
-			            </div>
-			      </div>
+                      if($l->userid == $this->session->userdata('LoginId')){
+                        echo "<td class=\"d-flex justify-content-center span__\">".$l->status."</td>";
+                      }else{
+                        if($l->status == "Applied"){ 
+                    ?>
+                   <td class="d-flex justify-content-center span__ "> 
+                    <div onclick="updateLeaveApp('<?php echo $l->id;?>','2')" class="pr-3">
+                      <img src="<?php echo base_url("assets/images/accept.png"); ?>" style="max-width:1.3rem;cursor: pointer" />
+                    </div>
+                    <div onclick="updateLeaveApp('<?php echo $l->id;?>','3')" class="pl-3">
+                      <img src="<?php echo base_url("assets/images/deny.png"); ?>"  style="max-width:1.3rem;cursor: pointer">
+                    </div>
+                  </td>
+                <?php }
+                  else{
+                    $color = $l->status == "Approved" ? '#4CAF50' : '#F44336'; 
+                    $sta = $l->status == "Approved" ? 'appr' : 'reje'; 
+                    $img = $l->status == "Approved" ? 'accept' : 'deny'; ?>
+                    <td class="d-flex justify-content-center span__ <?php echo $sta; ?> ">
+                    <span style="color: <?php echo $color;?>; " class="status-<?php echo $sta; ?>">
+                      <span><img src="<?php echo base_url('assets/images/'.$img.'.png'); ?>" class="immg"></span><?php echo $l->status;?>
+                    </span>
+                  </td>
+                    <?php
+                  }}
+                ?>
+                </tr>
+              <?php } }?>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+<?php } ?>
               
 
                   </div>
@@ -970,7 +999,10 @@ table.dataTable{
 										  <option value="" selected disabled>Select Leave Type </option>
 											<?php 
 												foreach ($balance->balance as $bal) { ?>
-										  <option value="<?php echo $bal->leaveTypeId;?>"><?php echo $bal->leaveName;?></option>
+										  <option value="<?php echo $bal->leaveTypeId;?>"
+                              balance="<?php echo $bal->leavesRemaining ?>">
+                              <?php echo $bal->leaveName;?>
+                      </option>
 											<?php }?>
 										</select>
 									</div>
@@ -1010,22 +1042,26 @@ table.dataTable{
 									</div>	
 						</div>
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-9">
 				<div class="md-form">
 					<label>Total leave hours</label>
-				<span class="row pl-5">
+				<span class="row ">
 					<input type="number" name="total-leave-hours" id="total-leave-hours" step="0.5">
+          <i class="total-leave-hours"></i>
 				</span>		
 				</div>
 			</div>
+      <div class="col-md-3">
+        <span class="leave_balance"></span>
+      </div>
 		</div>	
 					</div>
 					<div class="text-center mt-2 mb-4 f-flex">
 						<span>
-							<button class="btn btn-secondary rounded-0" type="button" onclick="applyLeave()">Apply</button>
+							<button class=" button apply_leave" type="button" onclick="applyLeave()" >Apply</button>
 						</span>
 						<span>
-							<button type="button" class="close btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
+							<button type="button" class="close button" data-dismiss="modal" aria-label="Close">Close</button>
 						</span>
 					</div>
                     </div>
@@ -1157,43 +1193,47 @@ table.dataTable{
 
 					$(document).on('click','.confirm_button',function(){
 						console.log($(this).attr('button-attr'))
-						if(($(this).attr('button-attr')) == 'update_leave_no' ){
+      if(status != null){
+          if(($(this).attr('button-attr')) == 'update_leave_no' ){
             $('.confirm_p').empty();
             $('.confirm__').empty();
             $('.confirm__span').empty();
              $('.confirm_save').attr('disabled',false);
-							console.log(leaveId+" "+status);
-			  			removeAttribute()
-						}
+              console.log(leaveId+" "+status);
+              removeAttribute()
+              status = null;
+            }
 
-						if(($(this).attr('button-attr')) == 'update_leave_yes'  ){
-					  removeAttribute()
-					  console.log(leaveId+" "+status)
+            if(($(this).attr('button-attr')) == 'update_leave_yes'  ){
+            removeAttribute()
+            console.log(leaveId+" "+status)
             
             if($('.reject_leave_text').length >0){
               let rejectLeaveText = $('.reject_leave_text').val();
               console.log(leaveId+""+status+""+rejectLeaveText)
-						var data = 'leaveId='+leaveId+'&status='+status+'&message='+rejectLeaveText;
+            var data = 'leaveId='+leaveId+'&status='+status+'&message='+rejectLeaveText;
             }else{
               var data = 'leaveId='+leaveId+'&status='+status;
             }
-				
-					    var params = typeof data == 'string' ? data : Object.keys(data).map(
-					        function(k){ return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) }
-					    ).join('&');
-						var xhr = new XMLHttpRequest();
-						xhr.open('POST', base_url+"leave/updateLeaveApp");
-					    xhr.onreadystatechange = function() {
-					        if (xhr.readyState>3 && xhr.status==200) { 
-					        	location.reload();
-					        }
-					    };
-					    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-					    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-					    xhr.send(params);
-							}
-				})
-		};
+        
+              var params = typeof data == 'string' ? data : Object.keys(data).map(
+                  function(k){ return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) }
+              ).join('&');
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', base_url+"leave/updateLeaveApp");
+              xhr.onreadystatechange = function() {
+                  if (xhr.readyState>3 && xhr.status==200) { 
+                    location.reload();
+                  }
+              };
+              xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+              xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+              xhr.send(params);
+              status = null;
+              }
+      }
+		});
+        }
 
 	function confirmStatus(attr1,attr2){
 		  $(this).addClass('out');
@@ -1202,7 +1242,7 @@ table.dataTable{
 		  $('.confirm_button').eq(1).attr('button-attr',`${attr2}`);
 		  $('.confirm_button').on('click',function(){	
 		  	if(($('.reject_leave_text').val() != null || $('.reject_leave_text').val() != "") && ($('.reject_leave_text').length > 0)){
-          console.log($('.reject_leave_text').val() +""+$('.reject_leave_text').val() != null)
+          // console.log($('.reject_leave_text').val() +""+$('.reject_leave_text').val() != null)
 	  	  $('#modal_confirm__container').addClass('out');
 			  $('body').removeClass('modal_confirm__active');
 			  	}
@@ -1339,10 +1379,42 @@ else{
 			$('.table-div').css('maxWidth','100vw')
 		})
 </script>
-
 <script type="text/javascript">
-$( ".modal_confirm_" ).draggable();
-
-
+  $(document).ready(function(){
+    $(document).on('click','.close',function(){
+      removeAttribute();
+    })
+  })
+</script>
+<script type="text/javascript">
+  $( ".modal_confirm_" ).draggable();
+</script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $(document).on('click','#apply_button',function(){
+      if($('#applyLeaveId').val() == null){
+        $('.total-leave-hours').text('select Leave Type')
+        $('#total-leave-hours').prop('disabled',true)
+      }
+      $(document).on('change','#applyLeaveId',function(){
+        if($('#applyLeaveId').val() != null){
+          $('.leave_balance').text(parseFloat($('#applyLeaveId :selected').attr('balance')).toFixed(2))
+          $('.total-leave-hours').empty();
+          $('#total-leave-hours').prop('disabled',false);
+        }
+        $(document).on('keyup','#total-leave-hours',function(){
+          if($('#applyLeaveId').val() != null){
+            if($('#total-leave-hours').val() > parseFloat($('.leave_balance').text())){
+              alert('You have completely used you leaves')
+              $('.apply_leave').prop('disabled',true)
+            }
+          else{
+            $('.apply_leave').prop('disabled',false)
+          }
+          }
+        })
+      })
+    })
+  })
 </script>
 </html>

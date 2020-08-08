@@ -5,180 +5,178 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style type="text/css">
   *{
-font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
+    }
+  .container{
+   max-width:100%;
+   margin:auto;
+   }
+  img{ max-width:75%;}
+
+  .icon-container {
+    width: 35px;
+    height: 30px;
+    position: relative;
   }
-.container{
-  max-width:100%;
-   margin:auto;}
 
-img{ max-width:75%;}
+  .status-circle {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: grey;
+    border: 2px solid white;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+  }
+  .status-circle-online {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #3CE77E;
+    border: 2px solid white;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+  }
 
-.icon-container {
-  width: 35px;
-  height: 30px;
-  position: relative;
-}
+  .inbox_people {
+    background: #f8f8f8 none repeat scroll 0 0;
+    float: left;
+    overflow: hidden;
+    width: 25%; border-right:1px solid #c4c4c4;
+  }
+  .inbox_msg {
+    border: none;
+    clear: both;
+    overflow: hidden;
+  }
+  .top_spac{ margin: 20px 0 0;}
 
-/* img {
-  height: 100%;
-  width: 100%;
-  border-radius: 50%;
-} */
+  .chat_ib h5{ font-size:15px; color:#464646; margin:0 0 8px 0;}
+  .chat_ib h5 span{ font-size:13px; float:right;}
+  .chat_ib p{ font-size:14px; color:#989898; margin:auto}
+  .chat_img {
+    float: left;
+    width: 11%;
+  }
+  .chat_ib {
+    float: left;
+    padding: 0 0 0 15px;
+    width: 88%;
+  }
 
-.status-circle {
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background-color: grey;
-  border: 2px solid white;
-  bottom: 0;
-  right: 0;
-  position: absolute;
-}
-.status-circle-online {
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background-color: #3CE77E;
-  border: 2px solid white;
-  bottom: 0;
-  right: 0;
-  position: absolute;
-}
+  .chat_people{ overflow:hidden; clear:both;}
+  .chat_list {
+    border-bottom: none;
+    margin: 0;
+    padding: 10px 16px 5px;
+  }
+  .inbox_chat {
+    height: 570px;
+    overflow-y: auto;
+    background: #cccccc73;
+  }
 
-.inbox_people {
-  background: #f8f8f8 none repeat scroll 0 0;
-  float: left;
-  overflow: hidden;
-  width: 25%; border-right:1px solid #c4c4c4;
-}
-.inbox_msg {
-  border: none;
-  clear: both;
-  overflow: hidden;
-}
-.top_spac{ margin: 20px 0 0;}
+  .active_chat{ background:#ebebeb;}
 
-.chat_ib h5{ font-size:15px; color:#464646; margin:0 0 8px 0;}
-.chat_ib h5 span{ font-size:13px; float:right;}
-.chat_ib p{ font-size:14px; color:#989898; margin:auto}
-.chat_img {
-  float: left;
-  width: 11%;
-}
-.chat_ib {
-  float: left;
-  padding: 0 0 0 15px;
-  width: 88%;
-}
+  .incoming_msg_img {
+    display: inline-block;
+    width: 6%;
+  }
+  .received_msg {
+    display: inline-block;
+    padding: 0 0 0 10px;
+    vertical-align: top;
+    width: 92%;
+   }
+   .received_withd_msg p {
+    
+    font-size: 15px;
+    font-weight:600;
+    margin: 0;
+    padding: 5px 5px 3px 5px;
+    width: 100%;
+  }
+  .time_date {
+    color: #747474;
+    display: block;
+    font-size: 12px;
+    margin: 8px 0 0;
+  }
+  .received_withd_msg { width: 57%;}
+  .h7 {
+        font-size: 0.8rem;
+    }
 
-.chat_people{ overflow:hidden; clear:both;}
-.chat_list {
-  border-bottom: none;
-  margin: 0;
-  padding: 10px 16px 5px;
-}
-.inbox_chat { height: 570px; overflow-y: auto;  background: #cccccc73;}
+    .gedf-wrapper {
+        margin-top: 0.97rem;
+    }
 
-.active_chat{ background:#ebebeb;}
-
-.incoming_msg_img {
-  display: inline-block;
-  width: 6%;
-}
-.received_msg {
-  display: inline-block;
-  padding: 0 0 0 10px;
-  vertical-align: top;
-  width: 92%;
- }
- .received_withd_msg p {
-  
-  font-size: 15px;
-  font-weight:600;
-  margin: 0;
-  padding: 5px 5px 3px 5px;
-  width: 100%;
-}
-.time_date {
-  color: #747474;
-  display: block;
-  font-size: 12px;
-  margin: 8px 0 0;
-}
-.received_withd_msg { width: 57%;}
-.h7 {
-            font-size: 0.8rem;
+    @media (min-width: 992px) {
+        .gedf-main {
+            padding-left: 4rem;
+            padding-right: 4rem;
         }
-
-        .gedf-wrapper {
-            margin-top: 0.97rem;
+        .gedf-card {
+            margin-bottom: 2.77rem;
         }
+    }
 
-        @media (min-width: 992px) {
-            .gedf-main {
-                padding-left: 4rem;
-                padding-right: 4rem;
-            }
-            .gedf-card {
-                margin-bottom: 2.77rem;
-            }
-        }
+    /**Reset Bootstrap*/
+    .dropdown-toggle::after {
+        content: none;
+        display: none;
+    }
 
-        /**Reset Bootstrap*/
-        .dropdown-toggle::after {
-            content: none;
-            display: none;
-        }
+   .sent_msg p {
+    background: #05728f none repeat scroll 0 0;
+    border-radius: 3px;
+    font-size: 14px;
+    margin: 0; 
+    color:#fff;
+    padding: 5px 10px 5px 12px;
+    width:100%;
+  }
+  .outgoing_msg{ overflow:hidden; margin:26px 0 26px;}
+  .sent_msg {
+    float: right;
+    width: 46%;
+  }
+  .input_msg_write input {
+    background: #fff;
+    border: 1px solid #ccc;
+    color: #4c4c4c;
+    font-size: 15px;
+    min-height: 48px;
+    width: 100%;
+  }
 
- .sent_msg p {
-  background: #05728f none repeat scroll 0 0;
-  border-radius: 3px;
-  font-size: 14px;
-  margin: 0; 
-  color:#fff;
-  padding: 5px 10px 5px 12px;
-  width:100%;
-}
-.outgoing_msg{ overflow:hidden; margin:26px 0 26px;}
-.sent_msg {
-  float: right;
-  width: 46%;
-}
-.input_msg_write input {
-  background: #fff;
-  border: 1px solid #ccc;
-  color: #4c4c4c;
-  font-size: 15px;
-  min-height: 48px;
-  width: 100%;
-}
+  .type_msg {border-top: 1px solid #c4c4c4;position: relative;}
+  .msg_send_btn {
 
-.type_msg {border-top: 1px solid #c4c4c4;position: relative;}
-.msg_send_btn {
+   border: none;
+    background-color: inherit;
+    padding: 14px 28px;
+    
+    
+    color: #11d1d1;
+    cursor: pointer;
+    font-size: 17px;
+    height: 33px;
+    position: absolute;
+    right: 0;
 
- border: none;
-  background-color: inherit;
-  padding: 14px 28px;
-  
-  
-  color: #11d1d1;
-  cursor: pointer;
-  font-size: 17px;
-  height: 33px;
-  position: absolute;
-  right: 0;
-
-}
-button:focus {
-    outline: 0px dotted;
-    /* outline: 5px auto -webkit-focus-ring-color; */
-}
-.messaging { padding: 0 0 50px 0;}
-.msg_history {
-  height: 516px;
-  overflow-y: auto;
-}
+  }
+  button:focus {
+      outline: 0px dotted;
+      /* outline: 5px auto -webkit-focus-ring-color; */
+  }
+  .messaging { padding: 0 0 50px 0;}
+  .msg_history {
+    height: 516px;
+    overflow-y: auto;
+  }
 hr {
     margin-top: 0.2rem;
     margin-bottom: 0;
@@ -358,7 +356,9 @@ input.rounded:focus {
           <div class="inbox_chat">
 
           <?php
+          if(preg_match('/Sent/',$_SERVER['REQUEST_URI']) == 0){
             foreach ($allNotices as $notice) { 
+              
               $date=date_create($notice->date);
               ?>
             <div class="chat_list <?php if($notice->noticeId == $currentNotice->noticeId) echo 'active_chat';?>" onclick="loadNewNotice('<?php echo $notice->noticeId;?>')" id="<?php echo 'chat_list_'.$notice->noticeId;?>">
@@ -370,7 +370,21 @@ input.rounded:focus {
                 </div>
               </div>
             </div>
-          <?php }?>
+          <?php } }else{ 
+            foreach ($allNotices as $notice) { 
+
+              $date=date_create($notice->date);
+              ?>
+            <div class="chat_list <?php if($notice->noticeId == $currentNotice->noticeId) echo 'active_chat';?>" onclick="loadNewNotice('<?php echo $notice->noticeId;?>')" id="<?php echo 'chat_list_'.$notice->noticeId;?>">
+              <div class="chat_people">
+                <div class="chat_img"> <img src="<?php echo base_url().'assets/images/defaultUser.png';?>" alt="user photo"> </div>
+                <div class="chat_ib">
+                  <h5><div class="text-muted h7 mb-2"><?php echo $notice->receiverId;?></div><span class="chat_date"><?php echo dateToDay(date_format($date,"d/m/Y"));?></span></h5>
+           <h5 class="card-title"><?php echo $notice->subject;?></h5>
+                </div>
+              </div>
+            </div>
+          <?php } } ?>
             
 			
           </div>
@@ -388,7 +402,11 @@ input.rounded:focus {
                                     <img class="rounded-circle" width="45" src="<?php echo base_url().'assets/images/defaultUser.png';?>" alt="">
                                 </div>
                                 <div class="ml-2">
+                                  <?php if(preg_match('/Sent/',$_SERVER['REQUEST_URI']) == 0){ ?>
                                     <div class="h6 m-0"><?php echo $currentNotice->senderName;?></div>
+                                  <?php }else{ ?>
+                                    <div class="h6 m-0"><?php echo $currentNotice->receiverId;?></div>
+                                 <?php } ?>
                                 </div>
                             </div>
                             <div>

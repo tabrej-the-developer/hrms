@@ -1,34 +1,107 @@
 
-!DOCTYPE html>
 <html>
 <head>
 	<title></title>
 		<?php $this->load->view('header'); ?>
 <meta content="width=device-width, initial-scale=1" name="viewport" />
-	<title>Timesheet</title>
+	<title>Payroll</title>
 <!--	
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
 <style type="text/css">
 	*{
 font-family: 'Open Sans', sans-serif;
-
-
 	}
-	body{
-		background:#f3f4f7;
+		.containers{
+		background:	rgb(243, 244, 247);
+		height: calc(100vh);
 	}
-.containers{
-	margin-left:20px;
-}
-			/* The Modal (background) */
+		thead{
+			background:#8D91AA;
+		}
+		tr:nth-child(even){
+			background:#D2D0D0 !important;
+		}
+		tr:nth-child(odd){
+
+			background: #F3F4F7 !important;
+		}
+		th{
+			background: #8D91AA;
+			color: #F3F4F7;
+		}
+		.table  td,.table th{
+			padding: 1rem;
+			border: none;
+		}
+		.sort-by{
+
+		}
+		
+		.table-div{
+			height:80vh;
+			padding: 0 20px 0 20px;
+		}
+/*		.center-list{
+			display:none;
+			box-shadow:0 0 1px 1px rgb(242, 242, 242) ;
+		}
+		.center-list a{
+			display:block;
+			position: relative;
+			text-decoration: none;
+			color:black;			
+		}
+		.sort-by:hover .center-list{
+			display:block;
+			background:white;
+			position:absolute;
+			margin-top:5px;
+			margin-left:-15px;
+			padding:10px;
+		}*/
+		.sort-by:hover::after{
+			position:absolute;	
+		}
+		.heading-bar{
+			padding: 0 20px 0 20px;
+		}
+
+		.filter-icon{
+			border:1px solid rgba(0,0,0,0.7);
+			padding:8px;
+			border-radius: 20px
+		}
+		.filter-icon span{
+			padding: 0 5px;
+		}
+		.create{
+			border:3px solid rgb(242, 242, 242);
+			border-radius: 20px;
+			padding:8px;
+			background: rgb(164, 217, 214);
+		}
+		.create a{
+		    color: rgb(23, 29, 75) !important;
+		    font-weight: 700;
+		}
+		#create-new-roster{
+			color:white;
+		}
+		.data-buttons{
+			padding:10px;
+		}
+		/* The Modal (background) */
 .modal {
   display: none; 
   position: fixed;
-    padding-top: 100px;
+  z-index: 1; 
+  padding-top: 100px;
   left: 0;
   top: 0;
   width: 100%;
@@ -42,452 +115,379 @@ font-family: 'Open Sans', sans-serif;
 .modal-content {
   background-color: #fefefe;
   margin: auto;
+  padding: 20px;
   border: 1px solid #888;
-  width: 80%;
+  width: 60%;
 }
 
 /* The Close Button */
-.close {
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
 
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
-}
-table,tr,td{
-	border:1px solid rgba(0,0,0,0.1)
-}
-.heading{
-	text-align: left;
-	font-size:2rem;
-	font-weight: bold;
-	padding-left:50px;
-}
-.timesheet-dates{
-	text-align:left;
-	background-color: #e3e9f5;
-	padding-left:50px;
-	padding-bottom:10px;
-	padding-top:10px;
-	font-weight:bolder;
-		color:#afb7cd;
-}
-.table-div{
+#ui-datepicker-div{
 	background:white;
-	display: flex;
-	justify-content: center;
-	padding:10px;
+	color:black;
+	background: white;
+    padding: 50px;
+    border-radius: 30px;
 }
-.area-name{
+.ui-state-default{
+	color:black;
+	font-size:20px;
+}
+.ui-datepicker-prev{
+	margin:20px;
+	padding:10px;
+	background:#e0e0e0;
+	border-top-left-radius: 20px;
+	border-bottom-left-radius: 20px;
+	cursor:pointer;
+}
+.ui-datepicker-next{
+	margin: 20px;
+	padding:10px;
+	background:#e0e0e0;
+	border-top-right-radius: 20px;
+	border-bottom-right-radius: 20px;
+	cursor:pointer;
+}
+.ui-datepicker-title{
+	text-align: center;
+	margin:30px 30px 10px 30px;
+}
+#down-arrow::after{
+		position:relative;
+        content: "";
+        background: url("<?php echo base_url('/assets/images/calendar.png') ?>");
+        background-repeat: no-repeat;
+        background-size: 20px;
+        padding:10px;
+        top: 5px;
+        right: 30px;
+}
+
+.ui-datepicker-current-day{
+	background:skyblue;
+	color:white;
+}
+
+.ui-datepicker-today{
 	background:#307bd3;
-	color:white;
 }
-.day{
-	background:#C2E7F0;
+.ui-datepicker-today a{
+	color:white !important;
 }
-.total-budget{
-	padding-top:10px;
-
-
+.ui-datepicker-calendar thead tr{
+	background: #80B9FF
 }
-.hourly{
-	font-size:12px;
-	text-align: left;
-		align-self: center;
-
+.ui-datepicker-calendar thead th{
+	margin:5px;
 }
-.hourly::before{
-	content:'$';
+.ui-datepicker-calendar tbody tr:nth-child(even){
+	background: white
 }
-.hourly::after{
-	content:'/hr';
-}
-.title{
-	font-size:12px;
-	display:flex;
-	justify-content:center;
-	
-}
-.icon{
-	font-size:15px;
-	display:flex;
-	justify-content:center;
-	align-self: center;
-	background:rgba(200,200,150,0.8);
-	border-radius: 50%;
-	padding:0 10px 0 10px;
-	color:white;
-	display: flex;
-
-}
-.empname{
-	font-size:15px;
-	display:flex;
-	justify-content:center;
-	font-weight: 600;
-}
-.modal-content{
-max-width:50vw;
-	}
-	.modal-content .titl{
-	width: 100%;
-    position: relative;
-    top: 0;
-    left: 0;
-    margin: 0;
-    padding: 0;
-    background:#307bd3;
-	}
-	.ui-timepicker-container{
-		z-index:999;
-	}
-	.buttons{
-		padding:20px;
-		margin:2px;
-	}
 	.button{
-		background-color: #9E9E9E;
-  border: none;
-  color: white;
-  padding: 10px 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 2px
-}
-.cell-back-1{
-	margin:0 10px 0 10px;
-}
-.cell-back-2{
-	margin:0 10px 0 10px;
-}
-.cell-back-3{
-	margin:0 10px 0 10px;
-}
-.cell-back-4{
-	margin:0 10px 0 10px;
-}
-.cell-back-5{
-	margin:0 10px 0 10px;
-}
-.cell-boxes{
-	padding:0;
-}
-.name-role{
-	padding:0;
-	margin:0;
-}
-.left-most{
-	border-top:1px solid rgba(0,0,0,0.3);
-	border-bottom:1px solid rgba(0,0,0,0.3);
-}
-.day{
-	padding:10px;
-}
-.icon-parent{
-	display: flex;
-	align-content: center;
-	justify-content: center
-	padding:0;
-}
-.box-name-space{
-	width:100%;
-}
-.box-name{
-	display: flex;
-    justify-content: center;
-    font-size:30px;
-    color:white;
-}
-.box-space{
-	display: flex;
-    justify-content: center;
-    color:white;
-}
-.total-name{
-	display: flex;
-    justify-content: center;
-    font-size:30px;
-}
-.total-space{
-	display: flex;
-    justify-content: center;
-}
-#timesheet-form{
-	position: relative;
+	  border: none;
+	  color: rgb(23, 29, 75);
+	  text-align: center;
+	  text-decoration: none;
+	  display: inline-block;
+	  font-weight: 700;
+	  margin: 2px;
+	  width:5rem;
+      border-radius: 20px;
+      padding: 4px 8px;
+      background: rgb(164, 217, 214);
+      font-size: 1rem;
+	}
+	.close{
+		float: none; 
+	    font-size: inherit;  
+	    line-height: inherit; 
+	    color: inherit; 
+	    text-shadow: inherit; 
+	    opacity: inherit; 
+	}
+	.close:hover{
+		background:#9E9E9E;
+	}
+   .modal-logout {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        visibility: hidden;
+        transform: scale(1.1);
+        transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+        text-align: center;
+    }
+    .modal-content-logout {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 1rem 1.5rem;
+        width: 50%;
+        border-radius: 0.5rem;
+    }
+    .show-modal {
+        opacity: 1;
+        visibility: visible;
+        transform: scale(1.0);
+        transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+    }
+    td[data-handler="selectDay"]{
+    	text-align:center;
+    }
+    td:hover{
+    	cursor: pointer
+    }
+    #roster-heading{
+    	font-size: 1.75rem;
+    	font-weight: bold;
+    	color: rgb(23, 29, 75) !important;
+    }
+    select{
+	background: rgb(164, 217, 214);
+	font-weight: 700;
+	color: rgb(23, 29, 75);
+	border-radius: 20px;
+    padding: 5px;
+    padding-left: 20px;
+    border: 2px solid #e9e9e9 !important;
+		}
+		select:hover{
+			cursor: pointer;
+		}
+.dataTables_wrapper {
+	height:95%;
 	overflow-y: hidden;
+	background: white;
+	box-shadow: 0 0 4px 1px rgba(0,0,0,0.1);
 }
-.total-budget-row {
-		background:#FFFCAD;
-	margin:10px;
+table.dataTable tbody th, table.dataTable tbody td{
+	padding:1rem;
+	border: none !important;
 }
-.total-budget .total-budget-row td{
-	background:#FFFCAD;
-	padding:10px;
-	font-weight: bolder
+table.dataTable thead th, table.dataTable thead td {
+    padding: 1rem;
+    border: none !important;
 }
-#shift-submit,#user-submit{
-	background-color: #9E9E9E;
-  border: none;
-  color: white;
-  padding: 10px 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 2px
+table.dataTable.no-footer{
+	border: none !important;
 }
-.Added{
-	background: #9E9E9E
+table.dataTable{
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
 }
+	.dataTables_paginate span .paginate_button{
+		background:none !important;
+		border:none !important;
+		border-color: transparent;
+	}
+	.dataTables_paginate{
+		position: fixed;
+		bottom: 0;
+		right: 0
+	}
+	.loader {
+	  border: 16px solid #f3f3f3;
+	  border-radius: 50%;
+	  border-top: 16px solid #307bd3;
+	  width: 120px;
+	  height: 120px;
+	  animation: spin 2s linear infinite;
+	}
+	.loading{
+		position: fixed;
+		height: 100vh;
+		width: 100vw;
+		top: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
 
-.Published{
-	background:#9C27B0;
+	@keyframes spin {
+	  0% { transform: rotate(0deg); }
+	  100% { transform: rotate(360deg); }
+	}
+.flag_button{
+	box-shadow: 0px 5px 6px #9a9999;
 }
-.Accepted{
-	background:#4CAF50;
-}
-
-@media only screen and (max-width:1024px) {
-.modal-content{
-	min-width:100vw;
-}
-.containers {
-     width: 100%;
-    margin: 0px;
-    padding:0;
-}
-.container {
-     width: 100%;
-    margin: 0px;
-    padding:0;
-}
-.name-space{
-	display: block;
-	width: 100%;
-	justify-content: center
-}
-.icon-parent{
-	max-width: 100%;
-}
-}
+    @media only screen and (max-width :600px){
+    	.modal-content {
+		  background-color: #fefefe;
+		  margin: auto;
+		  padding: 20px;
+		  border: 1px solid #888;
+		  width: 80%;
+		}
+		table{
+			background: white;
+			display: block;
+		}
+		.header-top{
+			max-width: 100vw !important;
+		}
+		.table-div{
+			padding: 0;
+			position: relative;
+			max-width: 100vw !important;
+   			overflow-x: scroll !important;
+		}
+		.title{
+			display: flex;
+   			 justify-content: center;
+		}
+		.sort-by{
+			margin-right:0px !important;
+			padding:0 !important;
+		}
+		#roster-heading{
+			font-size: 1.5rem !important;
+			margin: 0 !important;
+			display: flex;
+			align-items: center
+		}
+		.table  td,.table th{
+			padding: 0.75rem;
+			border: none;
+		}
+		.create{
+			width: 150px;
+			overflow: hidden;
+		}
+		.center-list{
+			width: 100px
+		}
+		body{
+			max-width: 100vw;
+			overflow: hidden;
+		}
+    }
 </style>
 </head>
 <body>
-
-	<?php 
-		$payrollShifts = json_decode($payrollShifts); 
+	<?php
 		$payrollTypes = json_decode($payrollTypes);
 		$entitlements = json_decode($entitlements);
+		$permissions = json_decode($permissions);
+
+		function dateToDay($date){
+			$date = explode("-",$date);
+			return date("M d",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
+		}
+		function dateToDayAndYear($date){
+			$date = explode("-",$date);
+			return date("M d, Y",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
+		}
 	?>
-	<div class="containers" id="containers" style="overflow-x:auto">
-		<div class="heading">Payroll Shifts</div>
-		<div class="timesheet-dates"><?php 
+<div class="containers">
+	<?php  ?>
+	<div class="d-flex heading-bar">
+		<span class="m-3" id="roster-heading" style="">Payroll Shifts</span>
+		<span class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?> 
+<!-- 			<div class="filter-icon d-flex">
+				<span class="">Sort&nbsp;by</span>
+				<span class=""><img src="../assets/images/filter-icon.png" height="20px"></span>
+			</div> -->
 
-//PHP functions //
+						<?php } ?>
+		</span>
 
-function timex( $x){ 
-	    $output;
-	    if(($x/100) < 12){
-	        if(($x%100)==0){
-	         $output = $x/100 . ":00 AM";
-	        }
-	    if(($x%100)!=0){
-	        $output = $x/100 .":". $x%100 . "AM";
-	        }
-	    }
-	else if(($x/100)>12){
-	    if(($x%100)==0){
-	    $output = ($x/100)-12 . ":00 PM";
-	    }
-	    if(($x%100)!=0){
-	    $output = ($x/100)-12 .":". $x%100 . "PM";
-	    }
-	}
-	else{
-	if(($x%100)==0){
-	     $output = ($x/100) . ": 00 PM";
-	    }
-	    if(($x%100)!=0){
-	    $output = ($x/100) . ":". $x%100 . "PM";
-	    }
-	}
-	return $output;
-}
-
-function toMinutes($number){
-	$number = intval($number);
-    if($number%100 == 0){
-        $minutes = $number/100*60;
-    }
-    else{
-      $variable =  intval($number/100);
-        $minutes = $variable*60 + $number % 100;   
-    }
-     return $minutes;
-}
-
-function dateToDay($date){
-	$date = explode("-",$date);
-	return date(",M d",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
-}
-
-function icon($str){
-	if (strpos($str, '.') !== false) {
-	$str = explode(".",$str);
-	if(count($str) >1 ){
-	    return strtoupper($str[0][0].$str[1][0]);
-	}else{
-	    return strtoupper($str[0]);
-	}
-}
-	if (strpos($str, ' ') !== false) {
-	$str = explode(" ",$str);
-	if(count($str) >1 ){
-	    return strtoupper($str[0][0]);
-	}else{
-	    return strtoupper($str[0][0]);
-	}
-}
-	if (strpos($str, ' ') == false && strpos($str, '.') == false) {
-		return $str[0];
-	}
-}
-
-//PHP functions //
-
-		 $str1 = $payrollShifts->startDate;
-		 $str2 = $payrollShifts->endDate; 
-		 $v1 = explode("-",$str1);
-		 $v2 = explode("-",$str2);
-		 echo date("M d",mktime(0,0,0,$v1[1],intval($v1[2]),(intval($v1[0]))))." to ". 
-		 date("M d , Y",mktime(0,0,0,$v2[1],intval($v2[2]),(intval($v2[0]))));
-		 ?> </div>
-		<div class="table-div" >
-			<table style="">
-				<tr>
-					<?php $p =0; ?>
-					<th id="table-id-1" class="day">Employees</th>	<?php $x=0;?>
-					
-					<th  class="details-column day">Details</th>
-					
-
-				</tr>
+		<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
+		<span class="btn ml-auto d-flex align-self-center create">
+			<a href="javascript:void(0)" id="create-new-roster" class="d-flex" id="publish">Publish</a>
+		</span>
+		<?php } ?>
+	</div>
+	<div class="table-div">
+		<table class="table">
+			<thead>
+				<th>Name</th>
+				<th>Role</th>
+				<th>Entitlement</th>
+				<th>Hourly Rate</th>
+				<th>Total Pay</th>
+				<th>Action</th>
+			</thead>
 			
-				<?php 
-				$count = count($payrollShifts->employees);
-if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){
-	// $x is the total number of employees loop value;
-				for($x=0;$x<$count;$x++){ 
-					?>
-		<tr  class="table-row " cal-x="<?php echo $x;?>">
-			<td   style="min-width:20vw" class=" cell-boxes left-most">
-				<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
-				<span class="row name-space" style="padding:0;margin:0;">
-					<span class="col-5 icon-parent justify-content-center"><span class=" icon"><?php echo  icon($payrollShifts->employees[$x]->userDetails->name)?></span></span>
-					<span class="col-7 name-role">
-					<span class="empname row"><?php echo $payrollShifts->employees[$x]->userDetails->name ?></span>
-					<span class="title row"><?php echo $payrollShifts->employees[$x]->userDetails->title ?></span>
-					</span>
-				</span>
-					<?php } ?>
-			</td>
-				
-					
-			<td style="min-width:50vw;padding:7px" class="shift-edit" name="<?php  echo $payrollShifts->employees[$x]->userDetails->name ?>"  cal-x="<?php echo $x; ?>" cal-p="<?php echo $p; ?>" array-type=" " emp-id="<?php echo $payrollShifts->employees[$x]->userDetails->id ?>"  timesheet-id="<?php echo $payrollShifts->timesheetid;?>">
-			<div style="background:pink;border-radius: 5px;padding:3px">
-				<div style="background:#307bd3;color:white;border-radius: 5px" class="row m-0 d-flex">
-					<div class="col-6">
-						<span class="row m-0"><?php  echo $payrollShifts->employees[$x]->userDetails->name; ?></span>
-						<?php  $v=0;?>
-						<span class="row m-0"><?php 
+			<tbody id="tbody">
 
-				foreach($entitlements->entitlements as $ent){
-				 	if($ent->id == $payrollShifts->employees[$x]->userDetails->level)
-					 	{
-						 echo $ent->name;
-						}
-					}
-						  ?>	 	
-						 </span>
-						<span class="row m-0">
-							<?php
+				<?php 
+				$centerId;
+				if(isset($payrollShifts)){
+					// print_r($payrollTypes);
+					// print_r($payrollShifts);
+				$payrollShifts = json_decode($payrollShifts); 
+				for($i=0;$i<count($payrollShifts->employees);$i++){
+				?>
+				<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
+				<tr id="<?php echo $this->input->get('timesheetId') ?>" >
+					<td class="shift-edit" 
+							cal-x="<?php echo $i; ?>">
+							<?php echo $payrollShifts->employees[$i]->userDetails->name ?>
+					</td>
+					<td class="shift-edit" 
+							cal-x="<?php echo $i; ?>">
+						<?php echo $payrollShifts->employees[$i]->userDetails->title ?>
+					</td>
+					<td class="shift-edit" 
+							cal-x="<?php echo $i; ?>">
+							<?php 				
+						foreach($entitlements->entitlements as $ent){
+				 			if($ent->id == $payrollShifts->employees[$i]->userDetails->level){
+								 echo $ent->name;
+								}
+							} ?>
+					</td>
+					<td class="shift-edit" 
+							cal-x="<?php echo $i; ?>">
+						<?php
 							$rate = 0;
 
 							 foreach($entitlements->entitlements as $ent){
-							 	if($ent->id == $payrollShifts->employees[$x]->userDetails->level)
+							 	if($ent->id == $payrollShifts->employees[$i]->userDetails->level)
 							 	{
 							 		$rate = $ent->hourlyRate;
 							 		echo "$".$ent->hourlyRate."/hr";
 							 	}
 							 }
-							 ?>	
-						 </span>
-					</div>
-					<div class="col-4 d-flex align-items-center">Flag Accept</div>
-				</div>
-				<div><?php
-				$arr = [];
-				$payValue= 0;
-					$paytm = 0;
-				 foreach($payrollShifts->employees[$x]->payrollShifts as $payroll){
-						if(isset($payroll->payrollTypeId)){	
-						 	$pay = $payroll->payrollTypeId;
-							 	$payTime = toMinutes($payroll->endTime) - toMinutes($payroll->startTime);
-							 	$paytm = intval($paytm) + intval($payTime);
-							 		$payKey = "";
-							 			foreach($payrollTypes->payrollTypes as $payrollTy){
-							 				if($pay == $payrollTy->id){
-							 					$payValue = $payrollTy->factor * $payTime/60 * $rate; 
-							 					$payKey = $payrollTy->type;
-							 				}
-							 			}
-							 				if(!array_key_exists($payKey,$arr)){
-							 					$arr[$payKey]  = $payValue; 
-							 				}
-							 				else{
-							 					$arr[$payKey] = $arr[$payKey] + $payValue;
-							 				}
-							 		 ?>
-							 
-							 	 	<?php
-							 	 }
-				 }	
-				 foreach($arr as $key => $a){
-				 	?>
-				 	<div class="row"><?php echo "<span class=\"col-6 d-flex justify-content-start\">".$key."</span>"."<span class=\"col-6\">". $a/60 ."</span>"; ?></div>
-				 	<?php
-				 }			 	
-				?>  </div>
-				<div>Total pay 
-					<?php 
-						$vr = 0;
-						foreach($arr as $va){
-						$vr = $vr + intval($va);
+						 ?>	
+					</td>
+
+				<?php 
+					$totalTime = 0;
+					$payrollType = 0;
+					foreach($payrollShifts->employees[$i]->payrollShifts as $payrollShift ){
+						foreach($payrollTypes->payrollTypes as $payrollType){
+							if($payrollType->id == $payrollShift->payrollType){
+								$totalTime = $totalTime + $payrollType->multiplier_amount*($payrollShift->endTime - $payrollShift->startTime);
+							}
+						}
 					}
-					echo "$".$vr;
-				?></div>
-			</div>
-			</td>
-		</tr>
-		<?php	 } }?>
-		</table>
-	</div>
-		<div class="total-budget" >
-			<table>
-				<tr class="total-budget-row">
-					
+
+				 ?>
+					<td pay="<?php echo $totalTime; ?>" userid="<?php  echo $payrollShifts->employees[$i]->payrollShifts[0]->userid ?>" timesheetid="<?php  echo $payrollShifts->timesheetid ?>"><?php echo '$ '.$totalTime; ?></td>
+					<td><button class="button flag_button flagged" userid="<?php  echo $payrollShifts->employees[$i]->payrollShifts[0]->userid ?>"  timesheetid="<?php  echo $payrollShifts->timesheetid ?>">Flag</button></td>
 				</tr>
-			</table>
-		</div>
-
-
+				<?php }?>
+		<?php } } ?>
+			</tbody>
+		
+		</table>
+		
 	</div>
+	<div>
+	
+</div>
+</div>
+
+
 <!--This is meant for admin-->
 <?php if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){ ?>
 	<div id="myModal" class="modal">
@@ -510,6 +510,25 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 <!-- Till here -->>
 
 
+	<script type="text/javascript">
+	  $(document).ready( function () {
+		    $('table').dataTable({
+		     pageLength:7,
+		     ordering : false,
+		     select: false,
+		     searching : false
+		    });
+		} );
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+			$('.dataTables_length').remove()
+			$('.dataTables_info').remove()
+			$('#ui-datepicker-div').hide()
+			$('.table-div').css('maxWidth','100vw')
+		})
+</script>
+
 
 <?php if($this->session->userdata('UserType') == ADMIN || $this->session->userdata('UserType') == SUPERADMIN){?>
 <script type="text/javascript">
@@ -520,7 +539,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					//var arrayType = $(this).attr('array-type');
 					//var v = $(this).attr('name');
 					//var w = $('.day').eq($(this).index()).html();
-					var x = $('.table-row').attr('cal-x');
+					var x = $(this).attr('cal-x');
 					//var y = $(this).attr('cal-p');
 					//var eId = $('#employee-id').val($('this').attr('emp-id'))
 					//var sDate = $('#start-date').val($(this).attr('curr-date'))
@@ -537,6 +556,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 
 				$(document).on('click','.close',function(){
 					 modal.style.display = "none";
+					 $('.modalSpace').empty();
 					// $('timesheet-form').html(htmlVal);
 					// $('#timesheet-form').trigger('reset');
 				})
@@ -616,6 +636,47 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 
 
 </script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(document).on('click','#publish',function(){
+			var length = $('[pay]').length;
+			var array = [];
+			var object = {};
+			var url = window.location.origin;
+			for(var i=0;i<length;i++){
+				object = {};
+				object.pay = $('[pay]').eq(i).attr('pay');
+				object.userid = $('[pay]').eq(i).attr('userid')
+				object.timesheetid = $('[pay]').eq(i).attr('timesheetid')
+				array.push(object)
+			}
+				$.ajax({
+					url : url,
+					method : 'POST',
+					data : {
+						array : array
+					},
+					success : function(response){
 
+					}
+				})
+		})
+	})
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(document).on('click','.flagged',function(){
+			var timesheetid = $(this).attr('timesheetid');
+			var userid = $(this).attr('userid')
+			var url = window.location.origin+`/PN101/payroll/updateShiftStatus/${timesheetid}/${userid}`;
+				$.ajax({
+					url : url,
+					success : function(response){
+						window.location.reload();
+					}
+				})
+		})
+	})
+</script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <?php
-$colors_array = ['#8dba5e','#9ebdff','#dd91ee','#f7c779','#a9bfaf','#6b88ca'];
+$colors_array = ['#A4D9D6','#A4D9D6','#A4D9D6','#A4D9D6','#A4D9D6','#A4D9D6'];
 ?>
 <!DOCTYPE html>
 <html>
@@ -85,7 +85,8 @@ table,tr,td{
 	color:white;
 }
 .day{
-	background:#C2E7F0;
+	background:#8D91AA;
+	color: #F3F4F7;
 }
 .total-budget{
 	padding-top:10px;
@@ -105,6 +106,7 @@ table,tr,td{
 .title{
 	font-size:12px;
 	padding-left: 1rem;
+	color: #707070;
 }
 @media only screen and (min-width:1024px){
 	table td:nth-child(1),table th:nth-child(1){
@@ -168,13 +170,14 @@ a[href="#week1"] button,a[href="#week2"] button{
 	align-self: center;
 	border-radius: 50%;
 	padding:0.25rem 0;
-	color:white;
+	color:#707070;
 	height: 2rem;
 	width: 2rem;
 }
 .empname{
 	font-size:15px;
 	display:flex;
+	color: #707070;
 	justify-content:left;
 	padding: 0 1rem;
 	font-weight: 600;
@@ -189,7 +192,8 @@ max-width:30vw;
     left: 0;
     margin: 0;
     padding: 0;
-    background:#307bd3;
+    background:#8D91AA;
+    color: #E7E7E7;
 	}
 	.ui-timepicker-container{
 		z-index:999;
@@ -250,13 +254,13 @@ max-width:30vw;
 .box-name{
 	display: flex;
     justify-content: center;
-    font-size:30px;
-    color:white;
+    font-size:1.5rem;
+    color:#E7E7E7;
 }
 .box-space{
 	display: flex;
     justify-content: center;
-    color:white;
+    color:#E7E7E7;
 }
 .total-name{
 	display: flex;
@@ -351,7 +355,6 @@ max-width:30vw;
     	display:flex;
     	flex-direction: column;
     	color:white;
-    	border-radius: 5px;
     	display:flex;
     	justify-content: center;
     	align-items:center;
@@ -360,14 +363,15 @@ max-width:30vw;
     	padding:3px;
     	display:flex;
     	flex-direction: column;
-    	background:#e7e7e7;
+
     	color:black;
-    	border-radius: 5px
     }
     .shift-edit{
     	min-width:8vw;
-    	padding:2px;
     	font-size:0.75rem
+    }
+    .full_box{
+    	background: #e7e7e7;
     }
 @media only screen and (max-width: 600px) {
 .modal-content{
@@ -531,7 +535,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 			$times = $timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes;
 			$totalTime = 0;
  ?>
-		<div style="border-radius: 5px;padding:3px">
+		<div style="padding:3px;" class="full_box">
 		<div  class="<?php if($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{ echo 'div-box';} ?>">
 					<?php 
 			foreach($times as $time){
@@ -553,7 +557,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 			 <?php }
 			 else{ ?>
 			 	<td style="min-width:8vw;padding:7px" class="shift-edit ">
-			 		<div style="border-radius: 5px;padding:3px">
+			 		<div style="padding:3px">
 						<div  class="div-box">
 							<span>Role : - </span>
 							<span>Total Hours : 0</span>
@@ -623,7 +627,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 			$times = $timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes;
 			$totalTime = 0;
 		 ?>
-					<div style="border-radius: 5px;padding:3px">
+					<div style="padding:3px">
 						<div  class=" <?php if($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{echo 'div-box';} ?>">
 				<?php 
 
@@ -755,7 +759,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 			$totalTime = 0;
 
 			?>
-		<div style="border-radius: 5px;padding:3px">
+		<div style="padding:3px">
 		<div  class="<?php if($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{ echo 'div-box';} ?>">
 					<?php 
 			foreach($times as $time){
@@ -846,7 +850,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 			$totalTime = 0;
 
 		 ?>
-					<div style="border-radius: 5px;padding:3px">
+					<div style="padding:3px">
 						<div  class=" <?php if($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{echo 'div-box';}?>">
 				<?php 
 			foreach($times as $time){
@@ -858,7 +862,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 			$totalVisits = $number;
 			
 				?>
-				<span><?php echo $timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->rosterShift->roleName->roleName;?></span>
+				<span><?php echo isset($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->rosterShift->roleName->roleName) ? $timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->rosterShift->roleName->roleName : "" ;?></span>
 							<span>Total Hours : <?php echo  $totalTime/100 .".". $totalTime%100; ?></span>
 							<span>Total visits : <?php echo $totalVisits; ?></span>
 				<?php	 }	}else{
@@ -930,7 +934,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 	  <!-- Modal content -->
 	  <div class="modal-content">
 	  	<span class="row titl">
-	  		<span style="" class="box-name-space col-10">
+	  		<span style="" class="box-name-space col-12">
 	  			<span class="box-name row"></span>
 	  			<span class="box-space row"></span>
 	  		</span>

@@ -983,7 +983,7 @@ $users =   json_decode($users);
           <div class="agenda_block">
              <span style="position: absolute;margin-top: -15px;margin-left: 70px;background: white;padding:0 0.25rem">Agenda</span> 
              <div id="agendaFile">
-               <input type="FILE" name="agendaFile" id="hide">
+               <input type="FILE" name="agendaFile" id="hide" class="agendaFile" onchange=" return validate()">
              </div>
             <span class="click-add">
               <i>
@@ -1668,5 +1668,16 @@ $('#toggle').remove();
     </script>
   <?php }
 ?>
-  
+  <script type="text/javascript">
+    function validate(){
+      var fileInput =  $('.agendaFile').val();
+      var allowedExtensions =  /(\.pdf)$/i; 
+        
+      if (!allowedExtensions.exec(fileInput)) { 
+          alert('Invalid file type'); 
+          $('.agendaFile').val(''); 
+          return false; 
+    }
+  }
+  </script>
 </html>

@@ -195,7 +195,7 @@ document.getElementById('cell-date').innerHTML = <?php echo $startDate ."-". $da
 })
 	$(document).ready(function(){
 		$(document).on('click','#form-submit',function(){
-			var url = "http://localhost/PN101/api/rosters/updateShift";
+			var url = window.location.origin+"/PN101/api/rosters/updateShift";
 			var startTime = document.getElementById('startTime').value ;
 			var endTime = document.getElementById('endTime').value;
 			var roleId = document.getElementById('roleId').value;

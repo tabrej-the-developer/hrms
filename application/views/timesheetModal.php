@@ -3,6 +3,14 @@
 	*{
 font-family: 'Open Sans', sans-serif;
 	}
+	    select{
+      background: #E7E7E7;
+      border: none !important;
+      height: 2.5rem;
+      border-radius: 20px;
+      border: 1px solid #D2D0D0;
+      padding-left:0.5rem;
+    }
 		.group-span{
 			display:flex;
 			justify-content: space-around;
@@ -18,30 +26,35 @@ font-family: 'Open Sans', sans-serif;
 			width:150px;
 		}
 		.buttonn{
-		background-color: #9E9E9E;
-		border: none;
-		color: white;
-		padding: 10px 10px;
-		text-align: center;
-		text-decoration: none;
-		display: inline-block;
-		margin: 2px
+        border: none !important;
+	    color: rgb(23, 29, 75) !important;
+	    text-align: center !important;
+	    text-decoration: none !important;
+	    display: inline-block !important;
+	    font-weight: 700 !important;
+	    margin: 2px !important;
+	    width:8rem !important;
+      border-radius: 20px !important;
+      padding: 4px 8px !important;
+      background: rgb(164, 217, 214) !important;
+      font-size: 1rem !important;
 		}
 		.close{
-		background-color: #9E9E9E !important;
-	 	border: none;
-	 	color: white !important;
-	 	padding: 10px 10px !important;
-	 	text-align: center;
-	 	text-decoration: none;
-	 	display: inline-block;
-	 	margin: 2px;
-	    float:none; 
-	    font-size: 1rem; 
-	    font-weight: bolder; 
-	    line-height: inherit; 
-	    text-shadow: none; 
 	    opacity: 1;
+        border: none !important;
+	    color: rgb(23, 29, 75) !important;
+	    text-align: center !important;
+	    text-decoration: none !important;
+	    display: inline-block !important;
+	    font-weight: 700 !important;
+	    margin: 2px !important;
+	    width:8rem !important;
+        border-radius: 20px !important;
+        padding: 4px 8px !important;
+        background: rgb(164, 217, 214) !important;
+        font-size: 1rem !important;
+        line-height: 1.5rem !important;
+        text-shadow: none !important;
 		}
 		.budget{
 			padding-left: 8rem;
@@ -61,7 +74,7 @@ font-family: 'Open Sans', sans-serif;
 		$rosterShift = json_decode($rosterShift);
 		$timesheetDetails = json_decode($timesheetDetails);
 		$entitlements = json_decode($entitlements);
-		// print_r($timesheetDetails);
+		// print_r(var_dump($shift->payrollTypes));
 		function timex( $x)
 	{ 
 	    $output;
@@ -107,7 +120,7 @@ if($aT == 'rosteredEmployees'){
 				<?php foreach($shift->payrollTypes as $shifts){
 					if($shifts->id == "3"){?>
 						<?php // print_r(isset($rosterShift->startTime) ? $rosterShift->startTime : ""); ?>
-				<input type="checkbox" name="same_as_roster" class="same_as_roster" factor="<?php echo $shifts->factor; ?>">
+				<input type="checkbox" name="same_as_roster" class="same_as_roster" factor="<?php echo $shifts->multiplier_amount; ?>">
 			<?php } } ?> Same as Roster(
 				<span time="<?php echo isset($rosterShift->startTime) ? $rosterShift->startTime : ""; ?>" class="time_1"><?php echo isset($rosterShift->startTime) ? timex($rosterShift->startTime) : ""; ?></span>-<span time="<?php echo isset($rosterShift->startTime) ? $rosterShift->endTime : ""; ?>" class="time_2"><?php echo isset($rosterShift->startTime) ? timex($rosterShift->endTime) : ""; ?></span> )
 			</div>
@@ -129,16 +142,17 @@ foreach($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes 
 	  	<span class="group-span">
 		<span><input type="checkbox" name="" checked class="clocked_time"></span>
 		<span svalue="<?php echo $visits->startTime; ?>" evalue="<?php echo $visits->endTime; ?>" class="time-box"><?php echo timex($visits->startTime) ."-". timex($visits->endTime) ?></span>
+
 		<span class="new-time-box"></span>
 		<span>
 			<select class="shift-type-select" >
 				<?php foreach($shift->payrollTypes as $shifts){
-					if($shifts->id == "3"){?>
-				<option value="<?php echo $shifts->factor; ?>" selected factor="<?php echo $shifts->factor; ?>" class="fact"><?php echo $shifts->type ?></option>
+					if($shifts->earningType == strtolower("ORDINARYTIMEEARNINGS")){?>
+				<option value="<?php echo $shifts->multiplier_amount; ?>" selected factor="<?php echo $shifts->multiplier_amount; ?>" class="fact"><?php echo $shifts->name ?></option>
 			<?php 
 					}
 					else{ ?>
-				<option value="<?php echo $shifts->factor; ?>" factor="<?php echo $shifts->factor; ?>"><?php echo $shifts->type ?></option>	
+				<option value="<?php echo $shifts->multiplier_amount; ?>" factor="<?php echo $shifts->multiplier_amount; ?>"><?php echo $shifts->name ?></option>	
 					<?php 
 					}
 				} ?>
@@ -183,11 +197,11 @@ foreach($timesheetDetails->timesheet[$ya]->unrosteredEmployees[$xa]->clockedTime
 			<select class="shift-type-select" >
 				<?php foreach($shift->payrollTypes as $shift){
 					if($shift->id == "3"){?>
-				<option value="<?php echo $shift->type; ?>" selected factor="<?php echo $shift->factor; ?>"><?php echo $shift->type ?></option>
+				<option value="<?php echo $shift->multiplier_amount; ?>" selected factor="<?php echo $shift->multiplier_amount; ?>"><?php echo $shift->type ?></option>
 			<?php 
 					}
 					else{ ?>
-				<option value="<?php echo $shift->type; ?>" factor="<?php echo $shift->factor; ?>"><?php echo $shift->type ?></option>	
+				<option value="<?php echo $shift->multiplier_amount; ?>" factor="<?php echo $shift->multiplier_amount; ?>"><?php echo $shift->name ?></option>	
 					<?php 
 					}
 				} ?>

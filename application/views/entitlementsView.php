@@ -12,6 +12,17 @@ font-family: 'Open Sans', sans-serif;
   body{
     background: #f2f2f2;
   }
+    .back-button span{
+      font-size:1.75rem;
+      color: #171D4B;
+      font-weight: 700;
+    }
+      .heading{
+      position: relative;
+      top:20px;
+      padding-left: 2rem;
+      width: 100%;
+    }
       #wrappers{
         padding:0;
         height:100vh;
@@ -28,7 +39,13 @@ font-family: 'Open Sans', sans-serif;
   background-color: rgb(0,0,0); 
   background-color: rgba(0,0,0,0.4); 
 }
-
+input[type="text"],input[type=time],select,#casualEmp_date{
+  background: #ebebeb;
+  border-radius: 5px;
+    padding: 5px;
+    border: 1px solid #D2D0D0 !important;
+    border-radius: 20px;
+}
 /* Modal Content */
 .modal-content {
   background-color: #fefefe;
@@ -52,22 +69,20 @@ font-family: 'Open Sans', sans-serif;
   cursor: pointer;
 }
 .ent-btn{
-      background-color: #9E9E9E;
-      border: none;
-      color: white;
-      padding: 10px 10px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      margin: 2px;
-    }
+    background: #ebebeb;
+    border-radius: 5px;
+    padding: 5px;
+    border: 1px solid #D2D0D0 !important;
+    border-radius: 20px;
+    text-align: center;
+}    }
     #wrappers{
       height:100vh;
       overflow-y: hidden;
     }
 #content-wrappers{
-    padding: 4rem 3rem 2rem 2rem;
-    height:calc(100vh - 2rem);
+    padding: 2rem 2rem 2rem 3rem;
+    height:calc(100vh - 4rem);
 }
 .content-wrappers-child{
     background: white;
@@ -87,38 +102,57 @@ font-family: 'Open Sans', sans-serif;
     vertical-align: bottom;
     border-bottom: 0 !important;
 }
-.submit-edit{
-        background-color: #9E9E9E;
-      border: none;
-      color: white;
-      padding: 10px 10px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      margin: 2px;
-}
-.cancel-edit{
-        background-color: #9E9E9E;
-      border: none;
-      color: white;
-      padding: 10px 10px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      margin: 2px;
-}
-thead{
-      background:rgba(0,0,0,0.2);
-    }
-    tr:nth-child(even){
-      background:rgb(255,255,255) !important;
-    }
-    tr:nth-child(odd){
+.submit-edit,.cancel-edit{
 
-      background:rgb(243, 244, 247) !important;
+}
+  .submit-edit,
+  .cancel-edit,
+  .button,
+  #create_new_entitlements,
+  #cancel_new_entitlements{
+    border: none;
+    color: rgb(23, 29, 75);
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-weight: 700;
+    margin: 2px;
+    width:auto;
+      border-radius: 20px;
+      padding: 8px;
+      background: rgb(164, 217, 214);
+}
+    .fa-pencil-alt,.fa-trash-alt{
+      color: #171D4B !important;
+      font-weight: 700;
+      font-style: normal;
     }
-    th{
-      background: white
+  .create-ent{
+    display: flex;
+    margin-right:2rem;
+    justify-content: center;
+    align-items: center;
+  }
+  .row{
+    margin: 0 !important;
+  }
+  .table{
+    font-size: 1rem;
+    background-color: white;
+    width: 100%;
+    margin: auto;
+    text-align: center;
+   }
+    thead tr{
+      background-color: #8D91AA;
+      color: #F3F4F7;
+    }
+    tr{
+      border-top:  1px solid #d2d0d0;
+      border-bottom: 1px solid #d2d0d0;
+    }
+    tbody tr{
+      background: white !important;
     }
     </style>
   </head>
@@ -127,83 +161,72 @@ thead{
 <?php $permissions = json_decode($permissions); ?>
 <?php if(isset($permissions->permissions) ? $permissions->permissions->viewEntitlementsYN : "N" == "Y"){ ?>   
     <div id="wrappers">
-      <span style="position: absolute">
-    <a href="<?php echo base_url();?>/settings">
-      <button class="btn back-button">
-        <img src="<?php echo base_url('assets/images/back.svg');?>">Entitlements View
-      </button>
-    </a>
-  </span>
+      <span class="d-flex heading">
+        <span>
+          <a href="<?php echo base_url('settings');?>">
+            <button class="btn back-button">
+              <img src="<?php echo base_url('assets/images/back.svg');?>">
+              <span>Entitlements View</span>
+            </button>
+          </a>
+        </span>
+        <span class=" create-ent ml-auto">
+          <button class="button ent-btn">Create Entitlement</button>
+        </span>
+      </span>
       <div id="content-wrappers" class="containers">
         <div class="row content-wrappers-child">
-           <h4 style="font-weight: 700;
-                      padding: 1rem 0 1rem 2rem;
-                      margin: 0 !important;
-                      color: rgba(11, 36, 107);width: 100%;text-align: center !important"
-                class="text-left">Entitlements View</h4>
-<!--           <div class="col-12">
-            Entitlements
-          </div> -->
-      <div class=" create-ent" style="cursor: pointer;width: 90%;display: flex;justify-content: flex-end">
-       <button class="ent-btn"> Create Entitlement</button>
-      </div>
-          <div class="col-lg-9 text-right"> 
-          <button onclick="addRoom()" class="btn btn-success" style="background-color: transparent;background-image: url(<?php echo base_url();?>images/button.png);
-    border: 0px solid;color: white;background-size: cover;">Add Room</button>
-        </div>
-        <div class="col-12">
-          <table class="table " style="font-size: 0.9rem;background-color: white;width: 90%;margin: auto;margin-top: 20px;text-align: center;">
-            <thead>
-              <tr>
-                <th>Entitlement Id</th>
-                <th>Entitlement name</th>
-                <th>Hourly rate</th>
-                <th>Edit</th>
-                <th>Delete</th>
-              </tr>
-            </thead>
-            <tbody id="filterList" > 
-                  <?php
-                    $entitlement = json_decode($entitlements);
-                    if($entitlement != null){
-              if(isset($entitlement->entitlements)){
-     $count = count($entitlement->entitlements);
-            for($i=0;$i<$count;$i++) {   ?>
-              <tr >
-                <td ><span id="" class="id">
-                        <?php echo $entitlement->entitlements[$i]->id?>
-                    </span>
-                 </td> 
-                <td class="name-parent"><span id="" class="names">
-                        <a href="javascript:void(0)"><?php echo $entitlement->entitlements[$i]->name?></a>
-                    </span>
-                 </td> 
-                  <td class="hourly-rate-parent"><span id="" class="hourly-rate">
-                        <?php echo $entitlement->entitlements[$i]->hourlyRate?>
-                       </span>
-                  </td>
-
-
-                  <td>
-                  <?php if(isset($permissions->permissions) ? $permissions->permissions->editEntitlementsYN : "N" == "Y"){ ?>
-                      <span style="cursor: pointer;">
-                       <div><i class="fas fa-pencil-alt" style="color: #0077ff;" u-v="<?php echo $entitlement->entitlements[$i]->id;?>">Edit</i> </div>
+          <div class="">
+            <table class="table ">
+              <thead>
+                <tr>
+                  <th>Entitlement Id</th>
+                  <th>Entitlement name</th>
+                  <th>Hourly rate</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody id="filterList" > 
+                    <?php
+                      $entitlement = json_decode($entitlements);
+                      if($entitlement != null){
+                if(isset($entitlement->entitlements)){
+       $count = count($entitlement->entitlements);
+              for($i=0;$i<$count;$i++) {   ?>
+                <tr >
+                  <td ><span id="" class="id">
+                          <?php echo $entitlement->entitlements[$i]->id?>
                       </span>
-                      <?php }else{ echo "-";} ?>
-                  </td>
-                  <td>
-                  <?php if(isset($permissions->permissions) ? $permissions->permissions->editEntitlementsYN : "N" == "Y"){ ?>
-                    <span style="cursor: pointer;"><i class="fas fa-trash-alt" style="color: #ff3b30;" d-v="<?php echo $entitlement->entitlements[$i]->id;?>"></i> Delete</span>
-                  <?php }else{ echo "-";} ?>
-                  </td>
-                  </tr>
-                  <?php }}}?> 
-            </tbody>
-          </table>
+                   </td> 
+                  <td class="name-parent"><span id="" class="names">
+                          <a href="javascript:void(0)"><?php echo $entitlement->entitlements[$i]->name?></a>
+                      </span>
+                   </td> 
+                    <td class="hourly-rate-parent"><span id="" class="hourly-rate">
+                          <?php echo $entitlement->entitlements[$i]->hourlyRate?>
+                         </span>
+                    </td>
+
+
+                    <td>
+                    <?php if(isset($permissions->permissions) ? $permissions->permissions->editEntitlementsYN : "N" == "Y"){ ?>
+                        <span style="cursor: pointer;">
+                         <div><i class="fas fa-pencil-alt" style="color: #0077ff;" u-v="<?php echo $entitlement->entitlements[$i]->id;?>">Edit</i> </div>
+                        </span>
+                        <?php }else{ echo "-";} ?>
+                    </td>
+                    <td>
+                    <?php if(isset($permissions->permissions) ? $permissions->permissions->editEntitlementsYN : "N" == "Y"){ ?>
+                      <span style="cursor: pointer;"><i class="fas fa-trash-alt" style="color: #ff3b30;" d-v="<?php echo $entitlement->entitlements[$i]->id;?>"></i> Delete</span>
+                    <?php }else{ echo "-";} ?>
+                    </td>
+                    </tr>
+                    <?php }}}?> 
+              </tbody>
+            </table>
+          </div>
         </div>
-</div>
-        <!-- Sticky Footer -->
-     
       </div>
 
 
@@ -231,7 +254,7 @@ thead{
 </div>
 <!-- <script type="text/javascript">
   function changeCenter(){
-      var url = "http://localhost/PN101/settings/editRooms";
+      var url = window.location.origin+"/PN101/settings/editRooms";
       var centerid  = $('select').val();
       $.ajax({
         url:url,
@@ -309,13 +332,13 @@ thead{
        </span>
      </td>
      <td>
-       <span style="cursor: pointer;">
+       <span style="cursor: pointer;" id="create_new_entitlements">
           <div>
            <i class="fas fa-check-square" style="color: #0077ff;" u-v=""></i> Create</div>
        </span>
      </td>
      <td>
-       <span style="cursor: pointer;" class="fa-trash-alt">
+       <span style="cursor: pointer;" class="fa-trash-alt" id="cancel_new_entitlements">
          <i class="fas " style="color: #ff3b30;" d-v=""></i> Cancel</span>
      </td>
    </tr>`;
@@ -352,7 +375,7 @@ thead{
     var capacity = $(this).parent().parent().children('.r-capacity').children('.capacity').val();
      var studentRatio = $(this).parent().parent().children('.s-ratio').children('.ratio').val();
      var roomId = $(this).attr('i-v');
-     var url = "http://localhost/PN101/updateRoom"
+     var url = window.location.origin+"/PN101/updateRoom"
      $.ajax({
           url : url,
           type : 'POST',
@@ -414,7 +437,7 @@ thead{
           //var sDate = $('#start-date').val($(this).attr('curr-date'))
           //var tId = $('#timesheet-id').val($(this).attr('timesheet-id'))
            $.ajax({
-            url : "http://localhost/PN101/settings/entitlementsMod/"+x,
+            url : window.location.origin+"/PN101/settings/entitlementsMod/"+x,
             type : 'GET',
             success : function(response){
 

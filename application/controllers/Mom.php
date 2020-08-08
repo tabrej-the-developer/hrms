@@ -263,6 +263,7 @@ class Mom extends CI_CONTROLLER{
            $data['period']        =      $form_data['meetingcollab'];
            $data['invites']       =      $form_data['invites'];
            $data['status']        =      'CREATED';//$form_data['status'];
+           $data['agendaFile']    =       $form_data['agendaFile'];
            var_dump($data);
            $url = BASE_API_URL."mom/AddMeeting";
            $ch = curl_init($url);

@@ -7,12 +7,29 @@
 <link href='https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.css' rel='stylesheet' />
 <link href='https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css' rel='stylesheet'>
 
+
+
 <style type="text/css">
 	body{
 		background: #F2F2F2 !important;
 	}
 	.containers{
 
+	}
+
+	.btn{
+    display:  inherit;
+    font-weight:  inherit;
+    color:  inherit;
+    text-align:  inherit;
+    vertical-align:  inherit;
+    user-select: inherit; 
+    background-color:  inherit;
+    border:  inherit;
+    padding:  inherit;
+    font-size:  inherit;
+    line-height: inherit; 
+    border-radius:  inherit;
 	}
   .cardContainer {
   display: flex;
@@ -80,8 +97,11 @@
 		width: 100% !important;
 	}
 	.fc-scrollgrid-sync-table{
-		height: 100% !important;
 		width: 100% !important;
+		max-height:50px;
+		height: 50px;
+	    border-spacing: 10px !important;
+	    border-collapse: separate !important;
 	}
 	.fc-daygrid-body-unbalanced{
 		width: 100% !important;
@@ -90,10 +110,742 @@
 		color:white;
 		font-size:0.7rem;
 	}
+	.fc-theme-standard th{
+		border: none;
+	}
+	.fc-theme-standard td{
+		border-radius: 20px;
+		border: 1px solid #8D91AA;
+	}
+	.fc-daygrid-day-number{
+		font-size: 1.5rem !important;
+		color: #171D4B !important;
+	}
+	.fc-scrollgrid-section>td{
+		border: none;
+	}
+	.fc-scrollgrid.fc-scrollgrid-liquid{
+		border: none;
+	}
+	.fc-scroller.fc-scroller-liquid-absolute{
+		overflow: visible !important;
+	}
+	.fc-daygrid-day.fc-day{
+		background: #E7E7E7 !important;
+		border-radius: 20px;
+		/*height: 100px !important;*/
+	}
+
+	.fc-day.fc-day-today{
+		background: #8D91AA !important;
+	}
+	.calendar-parent-div{
+		background: white !important;
+		margin: 0 1.5rem 0 1.5rem;
+	}
+	.fc-daygrid-day-frame::before{
+		content: none !important;
+	}
+	.fc-daygrid-day-events::before{
+		content: none !important;
+	}
+	.fc-daygrid-event-harness::after{
+		content: none !important;
+	}
+	.fc-today-button.fc-button.fc-button-primary{
+		display: none;
+	}
+	.fc-toolbar-chunk:nth-of-type(1){
+		width: 100%;
+		text-align: center;
+	}
+	.fc-daygrid-day-frame:after{
+		content: none !important;
+	}
+	.fc-daygrid-day-events:after,
+	.fc-daygrid-day-events:before,
+	.fc-daygrid-day-frame:after,
+	.fc-daygrid-day-frame:before,
+	.fc-daygrid-event-harness:after,
+	.fc-daygrid-event-harness:before{
+		content: none !important;
+	}
+	.fc-scrollgrid-sync-table>tbody>tr{
+		height: 100px;
+		display: table-row;
+	}
+	.upcoming_events{
+		width: 100%;
+		margin-top:3.25rem;
+	}
+	.upcoming_events_title{
+		font-weight:  700;
+		font-size: 1.5rem;
+	}
+	.event_date{
+		background: #AFE19F;
+		color: #171D4B;
+		display: flex;
+		justify-content: center;
+		border-radius: 8px;
+		padding: 0.5rem;
+	}
+	.event_title{
+		background: #F3F4F7;
+	}
+	.event_details{
+		background: #F3F4F7;
+	}
+	.event_box{
+		background: #F3F4F7;
+	}
+	.button_class{
+		width: 100%;
+		display: flex;
+	}
+	.events_title{
+		font-size: 2rem;
+		color: #171D4B;
+		font-weight: 700;
+		margin-left: 0.5rem;
+	}
+	/*---------------------------------------------------------------------------------------*/
+  *{
+font-family: 'Open Sans', sans-serif;
+  }
+  .placePickerUIButton{
+    position:absolute;
+    z-index:1000;
+    top:269px;
+    left:1000px;
+  }
+  .form-signin {
+    width: 100%;
+    max-width: 70vw;
+    padding: 15px;
+    margin: 0 auto;
+}
+        .card-header {
+            padding: 0.2rem 1.25rem;
+            /* margin-bottom: 0; */
+            background-color: #ffffff;
+            border-bottom: 0px;
+        }
+        
+        .card-body {
+            padding: 0rem 1.25rem;
+        }
+        
+        p {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        
+        .card {
+            border-radius: 0px;
+            padding-top: 15px;
+            padding-bottom: 15px;
+			border:none;
+			box-shadow: none;
+        }
+        
+        .flex-wrap {
+            margin-bottom: -35px;
+        }
+        
+        div.dataTables_wrapper div.dataTables_paginate {
+            margin-top: -25px;
+            position: fixed;
+            bottom: 0.2rem;
+            right: 1rem
+        }
+        .dataTables_info{
+          display: none;
+        }
+        .page-item.active .page-link {
+            z-index: 1;
+            color: #fff;
+            background-color: #5D78FF;
+            border-color: #5D78FF;
+			
+        }
+		.btn.focus, .btn:focus {
+			outline: 0;
+			box-shadow: none;
+		}
+		.btn-group-sm>.btn, .btn-sm {
+			padding: .25rem .5rem;
+			font-size: .875rem;
+			line-height: 1.5;
+			border-radius: 1.2rem;
+/*			border: 1px solid #ccc;*/
+		}
+		#example_filter input {
+		  border-radius: 1.2rem;
+		}
+		.border-shadow{
+			    /*box-shadow: 0 3px 10px rgba(0,0,0,.1);*/
+
+		}
+		.modal-header {
+			border-bottom:none;
+			background-color:#8D91AA;
+			color: #E7E7E7;
+          display: flex;
+          justify-content: center; 
+		}
+		.modal-content {
+			border-radius:0;	
+		}
+		
+
+/* ----------------------
+    Schedule meeting modal : key (321x)
+   ---------------------- */
+
+   input{
+    padding-left: 2rem;
+    padding-right:1rem;
+   }
+   .button_form{
+        border: none !important;
+	    color: rgb(23, 29, 75) !important;
+	    text-align: center !important;
+	    text-decoration: none !important;
+	    display: inline-block !important;
+	    font-weight: 700 !important;
+	    margin: 2px !important;
+	    width:8rem !important;
+      border-radius: 20px !important;
+      padding: 4px 8px !important;
+      background: rgb(164, 217, 214) !important;
+      font-size: 1rem !important;
+   }
+   .clos{
+    background: #BCBFCF !important;
+   }
+   .click-add{
+    position: absolute;
+    right:100px;
+
+   }
+   .click-remove{
+    position: absolute;
+    right:70px;
+
+   }
+   .modal_table{
+    margin-bottom: 0;
+   }
+   .agenda-class{
+    padding-bottom: 1rem;
+   }
+   .agenda_block{
+      min-height: 14rem;
+      border: 1px solid #707070;
+      border-radius: 33px;
+      margin: 2rem 1rem 0 0;
+   }
+   .label_text{
+    font-weight: 700;
+    color: #171D4B;
+    display: inline-block;
+   }
+.fc_input{
+  border-radius: 20px;
+  background: rgba(231, 231, 231, 1);
+  border: 1px solid rgba(231, 231, 231, 1);
+  box-shadow: none;
+  width: 8rem;
+}
+.add_member_label{
+  width:14%;
+  padding:0 0 1rem 1rem;
+  margin-left: 1rem;
+  font-weight: 700;
+  color: #171D4B;
+}
+.fc_input_label span{
+  background: none;
+
+}
+.blocks_modal{
+  width:100%;
+  display: flex;
+}
+.modal_title_div{
+  width: 100%;
+  display: flex;
+}
+  .title_span_label{
+    width: 16%;
+    padding: 1rem 0;
+    display: flex;
+    padding-left: 15px;
+    align-items: center;
+  }
+  #add_meeting{
+    width: 100%;
+  }
+  .title_span_input{
+    width: 78%;
+    padding: 1rem 0;
+    display: inline-block;
+    padding-left: 0 !important;
+  }
+  .tokens-container{
+    width: 100%;
+    background: rgba(231, 231, 231, 1);
+  }
+  .agendafile{
+  	opacity: 0;
+  }
+  .add_member_span{
+    width: 78%;
+  }
+  .tokenize{
+    width:100%;
+          height: 2.5rem;
+  }
+  .blocks_modal > span{
+    padding-left : 0 !important;
+  }
+  .tokenize ul{
+        border-radius: 20px;
+        background: rgba(231, 231, 231, 1);
+        border: 1px solid rgba(231, 231, 231, 1);
+        box-shadow: none;
+        height: 2.5rem !important;
+  }
+  .title_span_input input{
+    width: 79%
+  }
+.input-group>.form-control{
+  flex:0 !important;
+  width: 8rem !important;
+}
+.form-control{
+  padding: 0 !important;
+}
+  .date_span_label{
+    width:30%;
+    display: inline-block;
+  }
+  .date_span_input{
+    width:65%;
+      display: inline-block;
+  }
+  .date_span_input .input_box__{
+    width: 100%;
+  }
+.input-group{
+  display: flex;
+}
+.input_box__{
+      background: #E7E7E7;
+      border: none !important;
+      height: 2.5rem;
+      border-radius: 20px;
+      padding-left: 1rem;
+  }
+  form{
+        padding: 0 1rem 0 3rem;
+  }
+  a{
+  	color: white !important;
+  }
+.table td{
+  padding: 0 1rem 1rem 0;
+}
+.has-search .feedback{
+	position:absolute;
+	z-index: 2;
+    display: block;
+    width: 1.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+    margin: 0 0 0 10px;
+}
+.body{
+    /* background-color:#8798ab26;  */
+}
+.container{
+    /* background-color:#8798ab26; */
+}
+table.main-table tr:nth-child(odd){
+   background-color:#eee !important;
+   color:black; 
+}
+thead tr td{
+  background:white !important;
+  font-weight:bolder;
+}
+
+table.main-table{
+    /*box-shadow: 0px 2px 4px;*/
+}
+table.main-table tr:nth-child(odd){
+    background-color:white;
+    padding:25px;
+    color:black;
+    /* font-weight:bold; */
+}
+ .row {
+  /* background-color: #607d8b; */
+  display:block;
+  margin-top:15px;
+}
+.row h3{
+    color:black;
+}
+.left{
+    float:left;
+    margin-left:0.5rem 0 0.5rem 2.5rem;
+   
+}
+.right{
+    float:right;
+    margin: 1rem 1rem 0.5rem 0;
+}
+.left h3{
+  margin-left:2rem;
+  font-weight: 700;
+  color: #171D4B !important;
+  margin-top: 0.5rem;
+}
+#mom_search{
+    border-radius:25px;
+}
+
+#agenda{
+  width:70%;
+  margin-left: 4rem;
+  border-radius: 20px;
+  min-height: 3rem;
+  color: #171D4B;
+  margin-top:0.5rem;
+  padding-left:1rem !important;
+}
+
+/* .container{
+    background-color:#607d8bc9 !important;
+} */
+	
+/*corousol end*/		
+	#participant{
+       /* border:1px solid black;*/
+        border-radius:50px;
+        height:25px;
+        background-color:skyblue;
+        display:inline-block;
+    }
+
+    #participant1{
+        /*border:1px solid black;*/
+        border-radius:50px;
+        background-color:skyblue;
+        height:25px;
+        width:25px;
+        margin-left:-17px;
+        z-index:-1;
+        display:inline-block;
+    }
+
+    #participant1:nth-last-child(1){
+        /*border:1px solid black;*/
+        border-radius:50px;
+        background-color:lightblue;
+        height:25px;
+        width:25px;
+        margin-left:-17px;
+        z-index:-1;
+        display:inline-block;
+    }
+
+    #participant2{
+        /*border:1px solid black;*/
+        border-radius:50px;
+        height:25px;
+        width:25px;
+        background-color:lightblue;
+        color:white;
+        margin-right:-12px;
+        display:inline-block;
+    }
+    .modal-header{
+        text-align:left;
+    }
+    .modal{
+ padding: 0 !important;
+}
+.modal-dialog {
+  max-width: 60% !important;
+   min-height: 85vh; 
+  padding: 0;
+  margin: 1.75rem auto;
+}
+
+.modal-content {
+  border-radius: 0 !important;
+  /* height: 100%; */
+}
+input#add_meeting{
+    background-color:#eee;
+    color:black;
+}
+
+.footer div{
+   
+    display:inline-block;
+    margin:5px;
+    float:right;
+
+}
+.footer button{
+    background-color:white;
+    /*border:1px solid black;*/
+    color:black;
+}
+
+.dropbtn {
+  /* background-color: #4CAF50;
+  color: white; */
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  
+}
+
+/* .dropbtn:hover, .dropbtn:focus {
+  background-color: #3e8e41;
+} */
+
+.dropdown {
+  float: right;
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 160px;
+  overflow: auto;
+  /*box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);*/
+  right: 0;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* .dropdown a:hover {background-color: #ddd;} */
+
+.show {display: block;}
+#main-table_filter{
+    margin-top: -53px;
+    margin-right: 212px;
+}
+#main-table_filter input{
+border-radius:50px;
+height:32px;
+margin-top:-3px;
+
+}
+.dataTables_length{
+  display:none;
+}
+
+#main-table_paginate{
+  margin-top:2px;
+}
+.modal-body{
+  padding:0;
+}
+
+.containers{
+  max-width:100%;
+}
+.shift-bar-tab{
+  text-align: center;
+  color:white;
+  max-width: 100%;
+}
+table{
+  width: 100% !important;
+}
+.fc-col-header-cell-cushion {
+	color: #707070 !important;
+}
+.prevv{
+  background:#307bd3 ;
+  padding:10px 0 10px 0;
+  cursor:pointer;
+}
+.prevv:hover{
+  background:rgba(48, 123, 211,0.7);
+}
+.futt{
+  background:#307bd3 ;
+  padding:10px 0 10px 0;
+  cursor:pointer;
+}
+.futt:after{
+  content:'';
+
+}
+.futt:hover{
+    background:rgba(48, 123, 211,0.7);
+}
+.table{
+  border-radius:10px;
+}
+.dataTables_paginate{
+  margin:0 !important;
+}
+.table.dataTable.no-footer{
+  border-bottom: 0;
+}
+table.dataTable thead th, table.dataTable thead td{
+  border:0 !important;
+}
+.prevv,.futt{
+  margin-bottom: 40px
+}
+.arrow::after{
+  content: " ";
+    /* background: red; */
+    margin-top: 32px;
+    position: absolute;
+    /* width: 100px; */
+    border-right: 10px solid transparent;
+    border-top: 15px solid rgba(137, 144, 151, 0.3);
+    border-left: 10px solid transparent;
+}
+.modal-logout {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1.1);
+    transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+    text-align: center;
+}
+.modal-content-logout {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 1rem 1.5rem;
+    width: 50%;
+    border-radius: 0.5rem;
+}
+.show-modal {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1.0);
+    transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+}
+  .mom-container{
+    padding: 4rem 2rem 2rem 0rem;
+    height: calc(100vh - 2rem);
+  }
+  .mom-container-child{
+    background: white;
+    height: 100%;
+  }
+  .button{
+      border: none;
+      color: rgb(23, 29, 75);
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-weight: 700;
+      margin: 2px;
+      display:inline-block;
+      border-radius: 20px;
+      padding: 4px 8px;
+      background: rgb(164, 217, 214);
+      font-size: 1rem;
+    }
+.input-group-append, .input-group-prepend{
+	display: inline-block !important;
+}
+  #hide input[type=file] {
+display:none;
+margin:10px;
+}
+#hide input[type=file] + label {
+display:inline-block;
+margin:20px;
+padding: 4px 32px;
+background-color: #FFFFFF;
+border:solid 1px #666F77;
+border-radius: 6px;
+color:#666F77;
+}
+#hide input[type=file]:active + label {
+background-image: none;
+background-color:#2D6C7A;
+color:#FFFFFF;
+}
+  #agendaFile{
+    background:#eee;
+    width: 70%;
+    border-radius: 20px;
+    height: 3rem;
+    margin-left: 4rem;
+    margin-top:1rem;
+    margin-bottom:3rem;
+  }
+  .input-class{
+    padding-right:4rem !important;
+  }
+  .input-group-parent{
+    width:50% !important;
+  }
+.form-group{
+  margin-bottom: 0 !important;
+}
+  .label-class{
+    padding-left:8rem !important;
+    text-align:left;
+  }
+  .form-control{
+    padding: 0.25rem 0 !important;
+  }
+  .click-add{
+    cursor: pointer;
+  }
+  .click-remove{
+    cursor: pointer;
+  }
 </style>
 </head>
 <body>
 	<?php include 'header.php'; ?>
+<script
+  src="https://code.jquery.com/jquery-3.5.1.js"
+  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+  crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/tokenize2.css">
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tokenize2.js"></script>
+	<?php $users =   json_decode($users); ?>
+
+
 	<div class="containers">
 		<?php $permissions = json_decode($permissions); ?>
 		<?php $moduleRowCount = json_decode($moduleEntryCount); ?>
@@ -187,25 +939,210 @@
 					</span>
 			<?php // } ?>
 			</span> -->
-			
+			<span class="button_class">
+				<span class="events_title">Events</span>
+				<span class="ml-auto">
+					<button id="mom_button" type="button"  class="button" data-toggle="modal" data-target="#myModal"> Add New Event</button>
+				</span>
+			</span>
 		</div>
-		<div class="d-flex">
+		<div class="d-flex calendar-parent-div">
 			<div id="calendar" class="col-md-9"></div>
-			<div classs="col-md-3">
-				<div>Birthdays & Anniversaries</div>
+			<div class="col-md-3 upcoming_events">
+				<div class="upcoming_events_title text-center">Upcoming Events</div>
 				<div> <?php 
-					foreach(json_decode($calendar)->birthdays as $birthdays){
-						if(count($birthdays->birthday) !=0 ){
-							foreach($birthdays as $bday){
-									print_r($birthdays->date);
-								}
-							}
-						}
+				$array = [];
+				$calendarBirthdays = isset($calendar) ? 
+														 ( isset(json_decode($calendar)->birthdays) ?
+														 				 json_decode($calendar)->birthdays : "") : "";
+				$calendarAnniversaries = isset($calendar) ?
+														(isset(json_decode($calendar)->anniversary) ? 
+																			json_decode($calendar)->anniversary : "") : "" ; 
+					if((count($calendarAnniversaries) != 0)	|| (count($calendarBirthdays) != 0 )){
+						if((count($calendarAnniversaries) != 0) && (count($calendarBirthdays) != 0 )){
+								$array = array_merge($calendarBirthdays[0]->birthday,$calendarAnniversaries[0]->anniversary);
+										}
+					if((count($calendarAnniversaries) != 0) && (count($calendarBirthdays) == 0 )){
+								$array = $calendarAnniversaries[0]->anniversary;
+										}
+					if((count($calendarAnniversaries) == 0) && (count($calendarBirthdays) != 0 )){
+								$array = $calendarBirthdays[0]->birthday;
+										} ?>
+							<div>
+								<span class="col-12 event_date">Title</span>
+								<div class="d-flex event_box">
+									<span class="col-4 event_title">Event Name</span>
+									<span class="col-8 event_details">Details</span>
+								</div>
+							</div>				
+				<?php	}
 				?></div>
 			</div>
 
 		</div>
 	</div>
+
+
+<!-- ---------------------------
+				Modal Schedule Event
+-------------------------------- -->
+
+<div class="modal fade" id="myModal" role="dialog" style="z-index:1400px">
+    <div class="modal-dialog mw-75">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header ">
+    
+          <h3 class="modal-title ">Schedule New Meeting</h3>
+        </div>
+        <div class="modal-body container">
+             <form method="post" action="<?php echo base_url() ?>mom/addMeeting">
+              <div class="form-group modal_title_div">
+                   <span class="title_span_label">
+                      <label class="label_text">Title</label>
+                    </span>
+                    <span class="title_span_input">
+                      <input type="text" name="meetingTitle" id="add_meeting" class="input_box__" placeholder="Enter Title">
+                    </span>  
+              </div>
+               <table class="table table-borderless modal_table">
+               <tr>
+                  <td class="col-md-4 input-group-parent">
+                    <div class="d-flex blocks_modal">
+                        <span class="col-md-6 ">
+                          <span class="input-group-prepend date_span_label">
+                            <label class="label_text">Start&nbsp;Date</label>
+                          </span>
+                          <span class=" date_span_input">
+                            <input type="date" id="date" name="meetingDate" class="input_box__" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                          </span>
+                        </span>
+                        <span class="col-md-6 ">
+                          <span class="input-group-prepend date_span_label">
+                            <label class="label_text">End&nbsp;Date</label>
+                          </span>
+                          <span class=" date_span_input">
+                            <input type="date" id="date" name="meetingDate" class="input_box__" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                          </span>
+                        </span>
+                      </div>
+                  </td>
+               </tr>
+              <tr>
+                <td class="col-md-12 input-group-parent">
+                  <div class="d-flex blocks_modal">
+                    <span class="col-md-6 ">
+                      <span class="input-group-prepend date_span_label">
+                         <span class=" label_text" id="basic-addon1">Start&nbsp;Time</span>
+                      </span>
+                      <span class="date_span_input">
+                        <input type="time" name="meetingTime" id="time" class="input_box__" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                      </span>
+                    </span>
+                    <span class="col-md-6 ">
+                      <span class="input-group-prepend date_span_label">
+                        <span class=" label_text" id="basic-addon1">End&nbsp;Time</span>
+                      </span>
+                      <span class="date_span_input">
+                        <input type="time" name="meetingEndTime" id="time" class="input_box__" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                      </span>
+                    </span>
+                  </div>
+                
+                </td>
+               <tr>
+                <td>
+                  <div class="d-flex blocks_modal">
+                    <span class="col-md-6">
+                      <span class="date_span_label label_text">Where</span>
+                      <span class="date_span_input">
+                        <input id="location" type="text" class="input_box__" id="autocomplete" placeholder="Type Address..." name="meetingLocation">
+                      </span>
+                      <div class="form-group">
+                       <input type="hidden">
+                       <input type="hidden">
+                      </div>
+                    </span>
+                    <span class="col-md-6">
+                    <span class="date_span_label label_text">Repeat&nbsp;Event</span>
+                    <span class="date_span_input">
+                       <select name="meetingcollab" id="collab" class="input_box__">
+                          <option value="O">Once</option>
+                          <option value="A">Annual</option>
+                          <option value="M">Monthly</option>
+                          <option value="W">Weekly</option>
+                       </select>
+                    </span>
+                   </span>
+                  </div>
+                </td>
+               </tr>
+               </table>
+
+              <table class="table table-borderless">
+
+
+               <tr>
+                  <div class="blocks_modal d-flex">
+                    <span class="add_member_label">Add&nbsp;Member</span>
+                    <span class="add_member_span">
+                      <select name="invites[]" class="demo" multiple  id="demo">
+                      <?php 
+                          foreach($users->users as $m):
+                      ?>  
+                         <option value="<?php echo $m->userid ?>"><?php echo $m->username;?></option>
+                      <?php endforeach; ?>
+                     </select>
+                    </span>
+                  </div>  
+               </tr>
+<!--                <tr>
+                   <td class="text-center">Calender</td>
+                   <td>
+                    <div class="form-group">
+                    <input type="text" id="add_meeting" class="">
+                    </div>  
+                   </td>
+               </tr> -->
+
+          <div class="agenda_block">
+             <span style="position: absolute;margin-top: -15px;margin-left: 70px;background: white;padding:0 0.25rem">Agenda</span> 
+             <div id="agendaFile">
+               <input type="FILE" name="agendaFile" id="hide" class="agendaFile" onchange=" return validate()">
+             </div>
+            <span class="click-add">
+              <i>
+                <img src="<?php echo base_url('assets/images/circle_plus.png');?>" height="25px">
+              </i>
+            </span>
+            <span class="click-remove">
+              <i>
+                <img src="<?php echo base_url('assets/images/minus.png');?>" height="25px">
+              </i>
+            </span>
+              <span>
+                <div class="form-group agenda-class">
+                    <textarea name="meetingAgenda[]" id="agenda" class="form-control agenda" style="background-color:#eee" placeholder="Add Agenda"></textarea>
+                </div>  
+              </span>
+          </div>
+ </table>
+              
+           
+       
+        <div class="modal-footer">
+        <div class="m_footer" style="margin:auto">
+          <button type="button" class="btn button_form clos" data-dismiss="modal">Close</button>
+          <button class="btn button_form">Submit</button>
+          </div>
+        </div>
+        </form>
+      
+        </div>
+<!-- ---------------------------
+				Modal Schedule Event
+-------------------------------- -->
 <script type="text/javascript">
 	$(document).ready(()=>{
 	    $('.containers').css('paddingLeft',$('.side-nav').width());
@@ -217,13 +1154,21 @@
       document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {   events: <?php print_r(json_encode(json_decode($calendar)->event[0])); ?>
-				  });
+				  } );
 				        calendar.render();
 				      });
 // fc-event-title
 // fc-daygrid-day 
 // data-date
 // fc-button
+    </script>
+     <script type="text/javascript">
+    	 $(document).ready(function(){
+				  $('.demo').tokenize2({
+				  	    dataSource: 'select'
+				  });
+				 });
+
     </script>
     <script type="text/javascript">
     	$(document).ready(function(){
@@ -233,6 +1178,8 @@
     		var counter = 0;
     		var increment = 0;
     		var element = [];
+    		var meetingCount = 0;
+    		var meetingElement = [];
     		
     		while(increment < count){
     			// rosters dates array
@@ -252,14 +1199,55 @@
 	    			var status = $('.fc-event-title').eq(increment).text();
 	    				console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/Leave" title="${status}">${status}</a>`));
 			    	}
+
+    			if(($('.fc-event-title').eq(increment).text()).includes('Meeting')){
+    			meetingElement[meetingCount] = $('.fc-event-title').eq(increment).closest('td').attr('data-date');
+    			var dateMeeting = meetingElement[meetingCount];
+    			var titleMeeting = $('.fc-event-title').eq(increment).text();
+    			events.forEach((item,index)=>{
+		    		y = meetingIdFromArray(item,index,dateMeeting)
+		    		meetingStatus = meetStatus(item,index,dateMeeting)
+		    		if(y !== undefined ){
+		    			if(meetingStatus.toLowerCase() == 'created'){
+		    				$('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/attendence/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
+		    			}
+		    			if(meetingStatus.toLowerCase() == 'attendence'){
+		    				$('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/attendence/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
+		    			}
+	    				if(meetingStatus.toLowerCase() == 'mom'){
+	    					$('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/onBoard/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
+	    				}
+    					if(meetingStatus.toLowerCase() == 'summary'){
+    						$('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/summary/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
+    						}
+		    			}
+			    	});
+	    			meetingCount++;
+    			}
     			increment++; 
     		}
+
     		function fun(item,index,date){
     			if(item['roster'] !== undefined && item['start'] == date){
 	    		return item['roster'];
 	    				}
 	    			}
+	    	function meetingIdFromArray(item,index,date){
+    			if(item['meetingId'] !== undefined && item['start'] == date){
+	    			return item['meetingId'];
+	    			}
+	    	}
+	    	function meetStatus(item,index,date){
+    			if(item['meetingId'] !== undefined 
+	    				&& item['start'] == date 
+	    				&& item['start'] != '0000-00-00'
+	    				&& item['meetingStatus'] != ''
+	    				&& item['meetingStatus'] != null ){
+				    			return item['meetingStatus'];
+	    			}
+	    	}
     		console.log(events)
+
 	$(document).on('click','.fc-button',function(){
 		var d = new Date();
 		var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -269,6 +1257,8 @@
     		var counter = 0;
     		var increment = 0;
     		var element = [];
+    		var meetingCount = 0;
+    		var meetingElement = [];
     		
     		while(increment < count){
     			// rosters dates array
@@ -288,6 +1278,31 @@
 	    			// var status = $('.fc-event-title').eq(increment).text();
 	    				console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/Leave" title="${status}">${status}</a>`));
 			    	}
+
+			    if(($('.fc-event-title').eq(increment).text()).includes('Meeting')){
+    			meetingElement[meetingCount] = $('.fc-event-title').eq(increment).closest('td').attr('data-date');
+    			var dateMeeting = meetingElement[meetingCount];
+    			var titleMeeting = $('.fc-event-title').eq(increment).text();
+    			events.forEach((item,index)=>{
+		    		y = meetingIdFromArray(item,index,dateMeeting)
+		    		meetingStatus = meetStatus(item,index,dateMeeting)
+		    		if(y !== undefined ){
+		    			if(meetingStatus.toLowerCase() == 'created'){
+		    				$('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/attendence/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
+		    			}
+		    			if(meetingStatus.toLowerCase() == 'attendence'){
+		    				$('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/attendence/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
+		    			}
+	    				if(meetingStatus.toLowerCase() == 'mom'){
+	    					$('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/onBoard/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
+	    				}
+    					if(meetingStatus.toLowerCase() == 'summary'){
+    						$('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/summary/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
+    						}
+		    			}
+			    	});
+	    			meetingCount++;
+    			}
     			increment++; 
     		}
     		function fun(item,index,date){
@@ -300,5 +1315,84 @@
     	})
     	})
     </script>
+  <script type="text/javascript">
+    function validate(){
+      var fileInput =  $('.agendaFile').val();
+      var allowedExtensions =  /(\.pdf)$/i; 
+        
+      if (!allowedExtensions.exec(fileInput)) { 
+          alert('Invalid file type'); 
+          $('.agendaFile').val(''); 
+          return false; 
+    }
+  }
+  </script>
+<script type="text/javascript" language="javascript" >
+$('#toggle').remove();
+     $('#colab').on('change',function(){
+				$('.remove').remove();
+              		 
+         if(this.value === "m"){  
+               $('#colab').after("<input type='date' class='remove' id='month'>");
+		 }
+         if(this.value === "y"){
+
+			$('#colab').after("<input type='date' class='remove'  id='year'>");
+			 
+			}
+			if(this.value === "w"){
+				$('#colab').after("<input type='date' class='remove' id='weekly'>");
+			 
+			}
+
+
+	 });
+    $('#month').datepicker({
+		defaultDate: new Date(),
+		format:'MM'
+	});
+	$('#year').datepicker({
+		defaultDate: new Date(),
+		format:'DD-MM-YYYY'
+	});
+	$('#weekly').datepicker({
+		defaultDate: new Date(),
+		format:'DD-MM-YYYY'
+	})
+	$('#datetimepicker12').datetimepicker({
+                defaultDate: new Date(),
+                format: 'DD-MM-YYYY'
+    });
+	$('#datetimepicker121').datetimepicker({
+                defaultDate: new Date(),
+                format: 'DD-MM-YYYY'
+    });
+    $('#datetimepicker13').datetimepicker({
+                defaultDate: new Date(),
+                //format: 'YYYY-MM-DD hh:mm:ss A'
+                format: 'DD-MM-YYYY'
+    });
+	$('#datetimepicker131').datetimepicker({
+                defaultDate: new Date(),
+                //format: 'YYYY-MM-DD hh:mm:ss A'
+                format: 'DD-MM-YYYY'
+    });
+	$('#apply_button').click(function(){
+        
+        $('#applyModal').modal('show');
+    });
+</script>
+  <script type="text/javascript">
+    var newElement = $('.agenda-class ').html();
+    $('.click-add').click(function(){
+        $('.agenda-class').append(newElement)
+    })
+    $('.click-remove').click(function(){
+      if(($('.agenda').length) > 1){
+        $('.agenda').last().remove();
+        // alert( $('.agenda').length )
+      }
+    })
+  </script>
 </body>
 </html>

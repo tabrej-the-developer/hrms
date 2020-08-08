@@ -50,4 +50,10 @@ class DashboardModel extends CI_Model {
 		$query = $this->db->query("SELECT * FROM shift WHERE userid = '$userid' AND rosterDate = '$currentDate'");
 		return $query->row();
 	}
+
+	public function getAllMeetingsForUser($userid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * from meeting where id IN (SELECT m_id FROM participants where user_id = '$userid')");
+		return $query->result(); 
+	}
 }

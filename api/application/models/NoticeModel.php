@@ -28,4 +28,27 @@ class NoticeModel extends CI_Model {
 		$query = $this->db->query("INSERT INTO notices VALUES(0,'$senderId','$receiverId','$text','$subject',0,CURDATE())");
 	}
 
+	public function createGroup($userid,$groupName){
+		$this->load->database();
+		$query = $this->db->query("INSERT INTO noticegroups (groupName,userid) VALUES('$groupName','$userid')");
+		return $this->db->insert_id();
+	}
+
+	public function addGroupMembers($memberid,$groupId){
+		$this->load->database();
+		$query = $this->db->query("INSERT INTO noticegroupmembers (gid,memberid) VALUES('$groupId','$memberid')");
+	}
+
+	public function getGroupsForUser($userid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * from noticegroups WHERE userid = '$userid'");
+		return $query->result();
+	}
+
+
+	public function getMembersOfGroup($groupId){
+		$this->load->database();
+		$query = $this->db->query("SELECT * from noticegroupmembers WHERE gid = '$groupId'");
+		return $query->result();
+	}
 }

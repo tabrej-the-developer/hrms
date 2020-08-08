@@ -15,28 +15,47 @@
   *{
 font-family: 'Open Sans', sans-serif;
   }
-      #wrappers{
-        padding:0;
-        height: 100vh;
-      }
-      .submit,.cancel{
-            background-color: #9E9E9E;
-  border: none;
-  color: white;
-  padding: 10px 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 2px
-      }
+    #wrappers{
+      padding:0;
+      height: 100vh;
+    }
+    .submit,.cancel{
+      border: none;
+      color: rgb(23, 29, 75);
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-weight: 700;
+      margin: 2px;
+      width:8rem;
+      border-radius: 20px;
+      padding: 4px 8px;
+      background: rgb(164, 217, 214);
+      font-size: 1rem;
+      box-shadow: 0px 5px 6px #9a9999;
+    }
+    .fa-pencil-alt,.fa-trash-alt{
+      color: #171D4B !important;
+      font-weight: 700;
+      font-style: normal;
+    }
+input[type="text"],input[type=time],input[type="number"]{
+  background: #ebebeb;
+  border-radius: 5px;
+    padding: 5px;
+    border: 1px solid #D2D0D0 !important;
+    border-radius: 20px;
+    text-align: center;
+}
     body{
       background: #f2f2f2;
      }
     select{
-      background: #ebebeb !important;
-      border-radius: 5px;
-        padding: 5px;
-        border: 2px solid #e9e9e9 !important;
+      background: #E7E7E7 !important;
+      border: none !important;
+      height: 2.5rem !important;
+      border-radius: 20px !important;
+      border: 1px solid #D2D0D0 !important;
     }
     label{
       font-weight: 600;
@@ -54,7 +73,7 @@ font-family: 'Open Sans', sans-serif;
       justify-content: center;
     }
     #content-wrappers{
-      padding: 4rem 2rem 0 2rem;
+      padding: 2rem 3rem 2rem 2rem;
       height:calc(100vh - 4rem);
     }
     .content-wrappers-child{
@@ -65,8 +84,46 @@ font-family: 'Open Sans', sans-serif;
       max-width: 100%;
       overflow-x: auto;
     }
+    .back-button span{
+      font-size:1.75rem;
+      color: #171D4B;
+      font-weight: 700;
+    }
     .row{
       display: block !important;
+    }
+    .table-striped{
+      font-size: 1rem;
+      background-color: white;
+      width: 100%;
+      margin: auto;
+      text-align: center;
+    }
+    .heading{
+      position: relative;
+      top:20px;
+      padding-left: 2rem;
+      width: 100%;
+    }
+    .select_box{
+      display: flex;
+      margin-right:2rem;
+      justify-content: center;
+      align-items: center;
+    }
+    table{
+          padding: 1rem !important;
+    }
+    thead tr{
+      background-color: #8D91AA;
+      color: #F3F4F7;
+    }
+    tr{
+      border-top:  1px solid #d2d0d0;
+      border-bottom: 1px solid #d2d0d0;
+    }
+    tbody tr{
+      background: white !important;
     }
     </style>
   </head>
@@ -75,26 +132,20 @@ font-family: 'Open Sans', sans-serif;
     <?php $permissions = json_decode($permissions); ?>
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewRoomSettingsYN : "N") == "Y"){ ?>   
     <div id="wrappers">
-    <span style="position: absolute;top:20px;padding-left: 2rem">
-      <a href="<?php echo base_url();?>/settings">
-        <button class="btn back-button">
-          <img src="<?php echo base_url('assets/images/back.svg');?>">
-          <span style="font-size:0.8rem">Edit Rooms</span>
-        </button>
-      </a>
-    </span>
-      <div id="content-wrappers"  class="containers">
-        <div class="row content-wrappers-child">
-           <h4 style="font-weight: 700;
-                      margin: 2rem;
-                      color: rgba(11, 36, 107);width: 100%"
-                class="text-center"> Edit Rooms</h4>
-
-      <div class="col-lg-12 ml-auto d-flex">
-        <?php if((isset($permissions->permissions) ? $permissions->permissions->editRoomSettingsYN : "N") == "Y"){ ?>
-            <div class="col-9 ml-auto text-right">
-                Showing rooms for :
-            </div>
+    <span  class="d-flex heading">
+      <span>
+        <a href="<?php echo base_url('settings');?>">
+          <button class="btn back-button">
+            <img src="<?php echo base_url('assets/images/back.svg');?>">
+            <span >Edit Rooms</span>
+          </button>
+        </a>
+      </span>
+      <?php if((isset($permissions->permissions) ? $permissions->permissions->editRoomSettingsYN : "N") == "Y"){ ?>
+        <span class="ml-auto select_box">
+          <span class=" text-right">
+                Showing&nbsp;rooms&nbsp;for&nbsp;
+          </span>
           <select id="centerList" class="form-control " onchange="changeCenter()">
             <?php
             $centers = json_decode($centers);
@@ -105,11 +156,15 @@ font-family: 'Open Sans', sans-serif;
               }
               ?>
           </select> 
+        </span>
         <?php } ?>
-          </div>
+    </span>
+      <div id="content-wrappers"  class="containers">
+        <div class="row content-wrappers-child">
+
  
-        <div class="col-12 table-overflow">
-          <table class="table table-bordered table-striped thead-dark" style="font-size: 0.9rem;background-color: white;width: 90%;margin: auto;margin-top: 20px;text-align: center;">
+        <div class="table-overflow">
+          <table class="table table-bordered table-striped thead-dark" style="">
             <thead>
               <tr>
                 <th>Room name</th>
@@ -205,7 +260,7 @@ font-family: 'Open Sans', sans-serif;
       var capacity  = $(this).parent().parent().parent().parent().children('td').eq(1).children('.capacity').text();
       var studentRatio  = $(this).parent().parent().parent().parent().children('td').eq(4).children('.ratio').text();
       var roomId  = $(this).attr('i-v');
-      var code = "<td class=\"r-name\"><label>Room Name</label><input type='text' class=\"name\" value="+name+"></td><td class=\"r-capacity\"><label>Room Capacity</label><input type=\"number\" class=\"capacity\" value="+capacity+"></td><td class=\"min-age\"><label>Min age in months</label><input type=\"number\" class=\"min\" value="+careAgeFrom+"></td><td class=\"max-age\"><label>Max-age in months</label><input type=\"number\" class=\"max\" value="+careAgeTo+"></td><td class=\"s-ratio\"><label>Ratio</label><input type=\"number\" class=\"ratio\" value="+studentRatio+"></td><label style=\"display:none\">Room Id</label><input type=\"text\" class=\"id\" style=\"display:none\"><td class=\"s-button\"><button class=\"submit\" i-v="+roomId+">submit</button></td><td class=\"c-button\"><button class=\"cancel\" >cancel</button></td>"
+      var code = "<td class=\"r-name\"><input type='text' class=\"name\" value="+name+"></td><td class=\"r-capacity\"><input type=\"number\" class=\"capacity\" value="+capacity+"></td><td class=\"min-age\"><input type=\"number\" class=\"min\" value="+careAgeFrom+"></td><td class=\"max-age\"><input type=\"number\" class=\"max\" value="+careAgeTo+"></td><td class=\"s-ratio\"><input type=\"number\" class=\"ratio\" value="+studentRatio+"></td><input type=\"text\" class=\"id\" style=\"display:none\"><td class=\"s-button\"><button class=\"submit\" i-v="+roomId+">submit</button></td><td class=\"c-button\"><button class=\"cancel\" >cancel</button></td>"
       parent.html(code);      
       $('.cancel').on('click',function(){
         $(this).parent().parent().html(parentHtml);
