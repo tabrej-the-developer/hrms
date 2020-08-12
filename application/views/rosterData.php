@@ -69,13 +69,15 @@ text-align:center;
   cursor: pointer;
 }*/
 	.close{
-		float: none; 
+			float: none; 
 	    font-size: inherit; 
 	    font-weight: inherit; 
 	    line-height: inherit; 
 	    color: inherit; 
 	    text-shadow: inherit; 
 	    opacity: inherit; 
+	    padding: 0; 
+    	background-color: transparent;
 	}
 	.close:hover{
 		background:#9E9E9E;
@@ -485,7 +487,7 @@ max-width:30vw;
 	width:100%;
 }
 
-.print-button,.priority,.casualEmploye-span,.showBudget{
+.print-button,.priority,.casualEmploye-span,.showBudget,.editPermission-span{
 	display: flex;
 	align-items: center;
 }
@@ -516,22 +518,33 @@ max-width:30vw;
       background: rgb(164, 217, 214) !important;
       font-size: 1rem;
 }
-.casualEmploye-btn,.priority-btn,.print-btn,.showBudget,.buttonn,.button,.priority_saveed,.add_shift{
+.casualEmploye-btn,
+.priority-btn,
+.print-btn,
+.showBudget,
+.buttonn,
+.button,
+.priority_saveed,
+.add_shift,
+.editPermission-btn,
+#modal_permission{
 	/*position: absolute;*/
 /*	right: 0;*/
-	  border: none;
-	  color: rgb(23, 29, 75);
-	  text-align: center;
-	  text-decoration: none;
+	  border: none !important;
+	  color: rgb(23, 29, 75) !important;
+	  text-align: center !important;
+	  text-decoration: none !important;
 	  display: inline-block;
-	  font-weight: 700;
-	  margin: 2px;
-	  width:8rem;
-      border-radius: 20px;
-      padding: 4px 8px;
-      background: rgb(164, 217, 214);
-      font-size: 1rem;
+	  font-weight: 700 !important;
+	  margin: 2px !important;
+	  width:8rem !important;
+      border-radius: 20px !important;
+      padding: 4px 8px !important;
+      background: rgb(164, 217, 214) !important;
+      font-size: 1rem !important;
 }
+
+
 .showBudget input{
 	margin-right:0.3rem;
 }
@@ -658,8 +671,9 @@ max-width:30vw;
     #message{
     	min-height: 4rem;
     	max-height: 4rem;
-    	border-radius: 0.25rem;
+    	border-radius: .5rem;
     	border: 1px solid #D2D0D0;
+    	background: #E7E7E7;
     }
 		.print-landscape,.print-portrait{
     	display: none;
@@ -692,6 +706,83 @@ max-width:30vw;
     .print-button:hover button{
     	display: block;
     }
+
+  /* Edit Permission Modal */
+  .modal_title{
+    	padding: 0.5rem 0;
+	    position: relative;
+	    display: block;
+	    background: #8D91AA;
+	    color: #E7E7E7 !important;
+	    font-weight: 100
+    }
+    .modal_close{
+		  border: none;
+		  color: rgb(23, 29, 75);
+		  text-align: center;
+		  text-decoration: none;
+		  display: inline-block;
+		  font-weight: 700;
+		  margin: 2px;
+		  width:8rem;
+	    border-radius: 20px;
+	    padding: 4px 8px;
+	    background: rgb(164, 217, 214);
+	    font-size: 1rem;
+		}
+		.modal_outer {
+		  position: fixed;
+		  top: 0;
+		  left: 0;
+		  width: 100%;
+		  height: 100%;
+		  background: rgba(255,255,255,0.1);
+		  z-index: 50;
+		  visibility: hidden;
+		  opacity: 0;
+		  transition: 0.7s;
+			}
+		.modal_body {
+		  position: fixed;
+		  top: 30%;
+		  left: 50%;
+		  width: 400px;
+		  height: 450px;
+		  margin-left: -200px;
+		  margin-top: -150px;
+		  background: #fff;
+		  z-index: 100;
+		  visibility: hidden;
+		  opacity: 0;
+		  transition: 0.5s ease-out;
+		  transform: translateY(45px);
+		}
+		.modal_active{
+		  visibility: visible;
+		  opacity: 1;
+		}
+		.modal_active + .modal_body{
+		  visibility: visible;
+		  opacity: 1;
+		  transform: translateY(0);
+		}
+		.modal_buttons{
+			position: absolute;
+	    bottom: 10%;
+	    display: flex;
+	    justify-content: center;
+	    left: 15%;
+		}
+		.modal_main{
+			margin-top: 10%;
+			margin-bottom:10%;
+		}
+		#permissions_id{
+			margin: 10%;
+		}
+  /* Edit Permission Modal */
+
+
 @media print{
 	td:nth-child(7),th:nth-child(7){
 		display: none;
@@ -776,12 +867,18 @@ max-width:30vw;
 	<div class="containers" id="containers">
 		<div class="heading" id="center-id" c_id="<?php echo isset($rosterDetails->centerid) ? $rosterDetails->centerid : null; ?>">Rosters
 			<span class="top_buttons ml-auto">
-<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?> 
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
+				<span class="editPermission-span">
+					<button class="editPermission-btn">Permission</button>
+				</span>
 				<span class="casualEmploye-span">
 					<button class="casualEmploye-btn">Add Employee</button>
 				</span>
 				<span class="priority ">
-					<button class="priority-btn ">Priority</button>
+					<button class="priority-btn ">
+						<i>
+							<img src="<?php echo base_url('assets/images/icons/priority.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+						</i>Priority</button>
 				</span>
 				<span class="showBudget d-flex ">
 					<span class="d-flex justify-content-center align-items-center hide_budget">Hide&nbsp;Budget</span>
@@ -804,7 +901,10 @@ max-width:30vw;
 				</span>
 	<?php } ?>  
 				<span class="print-button">
-					<button class="print-btn">Print</button>
+					<button class="print-btn">
+						<i>
+							<img src="<?php echo base_url('assets/images/icons/print.png'); ?>" style="max-height:1rem;margin-right:10px">
+						</i>Print</button>
 					<span class="print-hidden-btn">
 						<button class="print-landscape" onclick="landscape()">Landscape</button>
 						<button class="print-portrait" onclick="portrait()">Portrait</button>
@@ -1167,7 +1267,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 			if($currentSequenceDate  == $currentDate){
 				?>
 
-					<td class="shift-edit cell-boxes count-<?php echo $index+1;?>  <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"  style="width:12vw" 
+					<td class="<?php if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$counter]->empId){ ?> shift-edit <?php } ?> cell-boxes count-<?php echo $index+1;?>  <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"  style="width:12vw" 
 					 name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->shiftid?>"  
 					 name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleid ?>"
 			<?php if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$counter]->empId){ ?>
@@ -1248,21 +1348,39 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 				if(isset($rosterDetails->status)){
 						if($rosterDetails->status === 'Draft'){ ?>
 						<div class="buttons d-flex justify-content-end">
-							<button id="discard-roster" class="button">Discard</button>
-							<button id="draft-roster" class="button">Save Draft</button>
-							<button id="publish-roster" class="button">Publish</button>
+							<button id="discard-roster" class="button">
+								<i>
+									<img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+								</i>Discard</button>
+							<button id="draft-roster" class="button">
+								<i>
+									<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+								</i>Save Draft</button>
+							<button id="publish-roster" class="button">
+								<i>
+									<img src="<?php echo base_url('assets/images/icons/publish.svg'); ?>" style="max-height:0.8rem;margin-right:10px">
+								</i>Publish</button>
 						</div>
 					<?php } ?>
 					<?php if($rosterDetails->status === 'Published') {?>
 					<div class="buttons d-flex justify-content-end">
-						<button id="discard-roster" class="button">Discard</button>
-						<button id="publish-roster" class="button">Save</button>
+						<button id="discard-roster" class="button">
+								<i>
+									<img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+								</i>Discard</button>
+						<button id="publish-roster" class="button">
+						<i>
+							<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+						</i>Save</button>
 					</div>
 					<?php } }?>
 			<?php } ?>
 			<?php if($this->session->userdata('UserType') == STAFF){?>
 			<div class="buttons d-flex justify-content-end">
-					<button id="publish-roster" class="button">Save</button>
+					<button id="publish-roster" class="button">
+						<i>
+							<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+						</i>Save</button>
 			</div>
 				<?php } ?>
 			</div>
@@ -1307,9 +1425,20 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 	 		<input type="text" name="roleId" id="roleId" style="display:none">
 	 		<input type="text" name="status" value="2"  id="status" style="display:none">
 	 		<input type="text" name="userId"   id="userId" style="display:none">
-	 		<input type="button" name="modal-cancel"  value="Cancel"  class="close buttonn" style="width:5rem">
-	 		<input type="button" name="shift-submit" id="shift-submit" value="Save" style="margin:30px;width:5rem" class="button">
-	 		<input type="button" name="delete_shift" id="delete_shift" value="Delete" style="width:5rem" class="button">
+			<div class="buttons_group">
+				 		<button type="button" name="modal-cancel"  value="Cancel"  class="close buttonn" style="width:5rem">
+								<i>
+									<img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+								</i>Close</button>
+				 		<button type="button" name="shift-submit" id="shift-submit" value="Save" style="margin:30px;width:5rem" class="button">
+								<i>
+									<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+								</i>Save</button>
+				 		<button type="button" name="delete_shift" id="delete_shift" value="Delete" style="width:5rem" class="button">
+								<i>
+									<img src="<?php echo base_url('assets/images/icons/delete.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+								</i>Delete</button>
+			</div>
 	 	</form>
 	  </div>
 </div>
@@ -1332,9 +1461,18 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 		 		<input type="text" name="shiftId"  id="shift-Id" style="display:none">
 		 		<input type="text" name="roleId" id="role-Id" style="display:none">
 		 		<input type="text" name="userId"   id="user-Id" style="display:none">
-		 		<input type="button" name="user-submit" id="user-submit" value="Accept" style="width:5rem" class="button">
-		 		<input type="button" name="user-deny" id="user-deny" style="width:5rem" value="Deny" class="button">
-		 		<input type="button" name="cancel" class="button close" value="Close" style="width:5rem">
+		 		<button type="button" name="user-submit" id="user-submit" value="Accept" style="width:5rem" class="button">
+					<i>
+						<img src="<?php echo base_url('assets/images/icons/tick.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+					</i>Accept</button>
+		 		<button type="button" name="user-deny" id="user-deny" style="width:5rem" value="Deny" class="button">
+					<i>
+						<img src="<?php echo base_url('assets/images/icons/rejected.png'); ?>" style="max-height:1rem;margin-right:10px">
+					</i>Reject</button>
+		 		<button type="button" name="cancel" class="button close" value="Close" style="width:5rem">
+					<i>
+						<img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+					</i>Close</button>
 		 	</form>
 	  </div>
 </div>
@@ -1358,7 +1496,14 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 		</span>
 		<div class="priority_areas"></div>
 		<div class="priority_buttons">
-	  	<button class="close_priority" role="button">Cancel</button><button class="priority_save">Save</button>
+	  	<button class="close_priority" role="button">
+				<i>
+					<img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+				</i>Cancel</button>
+	  	<button class="priority_save">
+				<i>
+					<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+				</i>Save</button>
 	  </div>
 </div>
 <!-- 	-----------------
@@ -1411,13 +1556,64 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 			<span></span>
 		</div>
 		<div class="priority_buttonsed">
-	  		<button class="close_priorityed" role="button">Cancel</button><button class="priority_saveed">Save</button>
+	  		<button class="close_priorityed" role="button">
+					<i>
+						<img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+					</i>Cancel</button>
+	  		<button class="priority_saveed">
+					<i>
+						<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+					</i>Save</button>
 	  </div>
 </div>
 <!-- 	-----------------
 		Add Shift Modal
  		-----------------	-->
+<!-- ---------------------
+		Edit Roster Permissions
+		------------------- -->
+<div class="modal_outer" ></div>
+<div class="modal_body" >
+	<span class="modal_heading" >
+		<a class="text-center  modal_title " style="padding:1rem 0">Edit Permissions</a>
+	</span>
+		<div class="modal_main">
+			<span class="span-class center-class">
+				<select placeholder="Select Center" id="centerValue" onchange="getEmployees()" id="employeeId">
+					<?php
+						$centers = json_decode($centers);
+						foreach($centers->centers as $center){
+					?>
+					<option value="<?php echo $center->centerid?>"><?php echo $center->name; ?></option>
+						<?php }?>
+				</select>
+			</span>
+			<span class="span-class employee-id-class">
+				<select placeholder="Select Center" id="employeeValue" onchange="getPermissions()">
 
+				</select>
+			</span>
+			<div id="permissions_id">
+				<span>
+					<span><input type="checkbox" name="edit_roster" id="edit_roster"></span>
+					<span><label>Edit Permission</label></span>
+				</span>
+			</div>
+		</div>
+		<div class="modal_buttons">
+	  		<button class="modal_close" role="button">
+					<i>
+						<img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+					</i>Cancel</button>
+	  		<button id="modal_permission">
+					<i>
+						<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+					</i>Save</button>
+	  </div>
+</div>
+<!-- ---------------------
+		Edit Roster Permissions
+		------------------- -->
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
 <div class="masks" ></div>
 <div class="modal_prioritys" >
@@ -1449,7 +1645,14 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 		</span>
 	</div>
 	<div class="priority_buttonss">
-  	<button class="close_priority" role="button">Cancel</button><button class="add_shift">Save</button>
+  	<button class="close_priority" role="button">
+			<i>
+				<img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+			</i>Cancel</button>
+  	<button class="add_shift">
+			<i>
+				<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+			</i>Save</button>
   </div>
 	</div>
 </div>
@@ -1747,13 +1950,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 	})
 </script>
 
-<script type="text/javascript">
-	$(document).ready(function(){
-		$(document).on('click','.print-btn',function(){
-			window.print();
-		})
-	})
-</script>
+
 <script type="text/javascript">
 	$(document).ready(function(){
 		$(document).on('click','.button',function(){
@@ -2053,7 +2250,6 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 		}
 
 	$(".close_priority").on("click", function(){
-		// $(".add_shift").empty();
 		  closeAddShitModal();
 		});
 </script>
@@ -2133,7 +2329,6 @@ $( ".modal_priority" ).draggable();
 	}
 
 	$(".close_priorityed").on("click", function(){
-		// $(".priority_areased").empty();
 	 		 closeModalEmp();
 	});
 </script>
@@ -2208,7 +2403,7 @@ $( ".modal_priority" ).draggable();
 				if(JSON.parse(response).status == "REDUNDANT"){
 					alert('Shift for this user, for the particular date already exists in another center. Please delete the shift to add a new one');
 				}else{
-				//window.location.reload();
+				window.location.reload();
 				}
 			}
 		})
@@ -2216,6 +2411,7 @@ $( ".modal_priority" ).draggable();
 </script>
 <script type="text/javascript">
 	$(document).ready(function(){
+		// url modifiers
 		$(document).on('click','.showBudget-btn',function(){
 			let url = new URL(window.location.href);
 				parameters = url.searchParams
@@ -2231,6 +2427,7 @@ $( ".modal_priority" ).draggable();
 	})
 </script>
 <script type="text/javascript">
+		//	Printing
 	function landscape(){
 			var css = '@page { size: landscape; }',
 			    head = document.head || document.getElementsByTagName('head')[0],
@@ -2267,6 +2464,90 @@ $( ".modal_priority" ).draggable();
 
 		window.print();
 	}
+</script>
+<script type="text/javascript">
+	// Edit Roster Permissions start (e-r-p):key
+
+	$(document).on('click','.editPermission-btn',function(){
+			$(".modal_outer").addClass("modal_active");
+				getEmployees();
+		});
+
+	function close_modal(){
+	  $(".modal_outer").removeClass("modal_active");
+	}
+
+	$(".modal_close").on("click", function(){
+	 		 close_modal();
+	});
+
+</script>
+<script type="text/javascript">
+	var base_url = "<?php echo base_url();?>";
+	function getEmployees(){
+		var xhttp = new XMLHttpRequest();
+		var centerId = document.getElementById("centerValue").value;
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var employees = JSON.parse(xhttp.responseText);
+				var finalStr = "";
+				for(var i=0;i<employees.employees.length;i++){
+					finalStr += '<option value = "' + employees.employees[i].id +  '">' + employees.employees[i].name + '</option>';
+				}
+				document.getElementById("employeeValue").innerHTML = finalStr;
+				getPermissions();
+			}
+		};
+		xhttp.open("GET", base_url+"settings/getEmployeesByCenter/"+centerId, true);
+		xhttp.send();
+	}
+
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(document).on('click','#modal_permission',function(){
+			let employeeId = $('#employeeValue').val();
+			let editRoster = ($('#edit_roster').is(':checked') == true) ? 'Y' : 'N' ;
+			let rosterId = "<?php echo $rosterid; ?>";
+			alert(employeeId)
+			let url = window.location.origin+'/PN101/roster/saveRosterPermissions';
+			$.ajax({
+				url : url,
+				method : 'POST',
+				data : {
+					employeeId : employeeId,
+					editRoster : editRoster,
+					rosterId : rosterId
+				},
+				success : function(response){
+
+				}
+			})
+		})
+	})
+</script>
+<script type="text/javascript">
+	function getPermissions(){
+		let rosterId = "<?php echo $rosterid; ?>";
+		let employeeId = $('#employeeValue').val();
+		console.log(employeeId)
+		let url = window.location.origin+'/PN101/Roster/getRosterPermissions/'+employeeId+'/'+rosterId;
+	 	$.ajax({
+	 		url : url,
+	 		method : 'GET',
+	 		success : function(response){
+	 			if(JSON.parse(response).getPermissions[0] != null){
+	 			document.getElementById('edit_roster').checked = (((JSON.parse(response).getPermissions[0].editRoster) == 'Y') ? true : false ) ;
+	 			console.log(JSON.parse(response).getPermissions[0].editRoster)
+	 		}
+	 		else{
+						document.getElementById('edit_roster').checked = false
+						}
+	 			
+	 		}
+
+	 	})
+	 }
 </script>
 </body>
 </html>

@@ -660,8 +660,9 @@ table.dataTable{
         <span class="leave-heading">Leave Management</span>
        <span class="ml-auto"> 
         <button type="button" name="apply_button" id="apply_button" class="button"        data-toggle="modal" data-target="#exampleModal">
-                <i class="fas fa-plus-circle"></i>
-                  Apply Leave
+          <i>
+            <img src="<?php echo base_url('assets/images/icons/leave.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+          </i>Apply Leave
         </button>
       </span>
      </div>

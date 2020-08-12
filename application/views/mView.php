@@ -1,5 +1,22 @@
 <?php
 $colors_array = ['#8dba5e','#9ebdff','#dd91ee','#f7c779','#a9bfaf','#6b88ca'];
+$this->load->library('Crypt_RSA');
+   $rsa = new Crypt_RSA();
+   // echo extract($rsa->createKey());
+$publickey = '-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDGCglgIcCG5a8xlZHEDRtQQTc4
+kfxENNBtVN8bE4errA06mJ10WavP2Hg+k11NQip71IQPfIF9jlk1CsqT5ZHXOrOq
+RmufHFLa3fiuPvFiMB1NjK4F28Gk4LwyZrfTWc2V6S0xpL5XkFeWRW6I69xckOXj
+GqkC5dsWv/IlvPeVbwIDAQAB
+-----END PUBLIC KEY-----';
+
+$rsa->loadKey($publickey);
+
+
+   // echo $ciphertext;
+
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -641,6 +658,14 @@ p.ovrflowtext {
 .headind_srch{
   height:9vh;
 }
+#upload_image{
+  display: none;
+}
+.attach_file:hover #upload_image{
+  display: block !important;
+  right:50%;
+  top:0;
+}
 .general_heading{
   height:5.33vh;
 }
@@ -867,7 +892,32 @@ p.ovrflowtext {
                <small class="text-muted chat-message-time"><?php echo date_format($date,"d M y | H:i A");?></small>
              </p>
           <div class="bg-light rounded py-2  pl-0 mb-2">
-              <p class="text-small-chat-message mb-0 text-muted"><?php echo $chats->chatText;?></p>
+              <p class="text-small-chat-message mb-0 text-muted"><?php
+                try{
+              if(is_string($rsa->decrypt(base64_decode($chats->chatText))) == 1){
+$expression = "/(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])?/i";
+$string = $rsa->decrypt(base64_decode($chats->chatText));
+                if(preg_match($expression,$string) == 1){
+                  echo '<img src="'.$string.'">';
+                }elseif(preg_match('/data:image/i',$string) == 1){
+                  echo '<img src="'.$string.'">';
+                }else{
+                  echo $string;
+                }
+                if($chats->mediaContent != null && $chats->mediaContent != ''){
+                  echo '<img src="data:image/png;base64,'.$chats->mediaContent.'">';
+                }
+              } 
+              else{
+                throw new Exception('Invalid Type');
+              }
+                }
+                catch(Exception $e){
+                    echo 'Not Known';
+                }
+
+
+                ?></p>
           </div>
         </div>
       </div>
@@ -887,8 +937,11 @@ p.ovrflowtext {
       </div>
 
       <!-- Typing area -->
-      <form action="<?php echo base_url().'messenger/postNewMessage';?>" class="d-flex" method="post" id="chatForm">
-        <span class="attach_file"><img src="<?php echo site_url().'assets/images/attach_file.png'; ?>"></span>
+      <form action="<?php echo base_url().'messenger/postNewMessage';?>" class="d-flex" method="post" id="chatForm" enctype="multipart/form-data">
+        <span class="attach_file">
+          <img src="<?php echo site_url().'assets/images/attach_file.png'; ?>" id="upload_attachment">
+          <input type="file" name="upload_image" id="upload_image" onchange="validate()">
+        </span>
         <div class="input-group">
           <input type="text" id="chatText" name="chatText" placeholder="Type message here.."  class="form-control rounded-0 border-0 py-4 bg-white">
 		  <input type="hidden" name="receiverId" id="receiverId" value="<?php echo $currentUserId;?>">
@@ -1301,7 +1354,17 @@ else{
 
 };
 ?>
-
+<script type="text/javascript">
+  function validate(){
+    var fileType = $('#upload_image').val();
+    var allowedTypes = /(\.jpg)$|(\.jpeg)$|(\.png)$/i;
+    if(!allowedTypes.exec(fileType)){
+      $('#upload_image').val(''); 
+      alert('Please choose from Jpeg | Jpg |PNG')
+      return false;
+    }
+  }
+</script>
     </html>
 
 
@@ -1328,3 +1391,5 @@ else{
   }
 }
 ?>
+
+

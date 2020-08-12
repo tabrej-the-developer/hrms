@@ -38,8 +38,13 @@ font-family: 'Open Sans', sans-serif;
       padding: 4px 8px !important;
       background: rgb(164, 217, 214) !important;
       font-size: 1rem !important;
+      line-height:2rem !important;
+		}
+		.create_payroll{
+			width:auto !important;
 		}
 		.close{
+			line-height:2rem !important;
 	    opacity: 1;
         border: none !important;
 	    color: rgb(23, 29, 75) !important;
@@ -53,8 +58,19 @@ font-family: 'Open Sans', sans-serif;
         padding: 4px 8px !important;
         background: rgb(164, 217, 214) !important;
         font-size: 1rem !important;
-        line-height: 1.5rem !important;
         text-shadow: none !important;
+		}
+		.payroll_button_group{
+			padding-top:1rem;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding-bottom:1rem;
+		}
+		.payroll_button_group  div{
+			display: flex;
+			justify-content: center;
+			align-items: center;
 		}
 		.budget{
 			padding-left: 8rem;
@@ -216,12 +232,18 @@ foreach($timesheetDetails->timesheet[$ya]->unrosteredEmployees[$xa]->clockedTime
 	}
 	?>
 		<div class="budget" id="emply-id" employee="<?php echo $empId; ?>" timesheetid="<?php echo $timesheetid;?>" date="<?php echo $date;?>"> </div>
-		<div class="d-flex justify-content-center">
+		<div class="d-flex justify-content-center payroll_button_group">
 			<div class="">
-				<button class="close">Close</button>
+				<button class="close">
+					<i>
+						<img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+					</i>Close</button>
 			</div>
 			<div class="">
-				<button class="buttonn ">Create Payroll</button>
+				<button class="buttonn create_payroll ">
+					<i>
+						<img src="<?php echo base_url('assets/images/icons/publish.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+					</i>Create Payroll</button>
 			</div>
 		</div>
 </div>

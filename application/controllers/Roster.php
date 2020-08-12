@@ -148,6 +148,7 @@ public function getRosterDetails(){
 	if($this->session->has_userdata('LoginId')){
 		$data['rosterid'] = $this->input->get('rosterId');
 		$data['userid'] = $this->session->userdata('LoginId');
+		$data['centers'] = $this->getAllCenters();
 		$data['entitlements'] = $this->getAllEntitlements($data['userid']);
 		$data['rosterDetails'] = $this->getRoster($data['rosterid'],$data['userid']);
 		$data['permissions'] = $this->fetchPermissions();
@@ -506,6 +507,65 @@ function getAllEntitlements($userid){
 		else if($httpcode == 401){
 
 		}
+	}
+
+	public function saveRosterPermissions(){
+		//footprint start
+		if($this->session->has_userdata('current_url')){
+			footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+			$this->session->set_userdata('current_url',currentUrl());
+		}
+		// footprint end
+			$userid = $this->session->userdata('LoginId');
+			$data['employeeId'] = $this->input->post('employeeId');
+			$data['editRoster'] = $this->input->post('editRoster');	
+			$data['rosterId'] = $this->input->post('rosterId');
+			$url = BASE_API_URL."rosters/saveRosterPermissions/".$userid;
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+				));
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+			$jsonOutput = json_decode($server_output);
+			curl_close ($ch);
+			}
+			else if($httpcode == 401){
+		
+			}
+	}
+
+	public function getRosterPermissions($employeeId,$rosterId){
+		//footprint start
+		if($this->session->has_userdata('current_url')){
+			footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+			$this->session->set_userdata('current_url',currentUrl());
+		}
+		// footprint end
+			$userid = $this->session->userdata('LoginId');
+			$url = BASE_API_URL."rosters/getRosterPermissions/".$employeeId.'/'.$rosterId.'/'.$userid;
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			// echo $httpcode;
+			if($httpcode == 200){
+			echo $server_output;
+			curl_close ($ch);
+			}
+			else if($httpcode == 401){
+		
+			}
 	}
 
 		function fetchPermissions(){

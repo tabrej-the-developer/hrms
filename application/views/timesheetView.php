@@ -203,14 +203,18 @@ max-width:30vw;
 		margin:2px;
 	}
 	.button{
-		background-color: #9E9E9E;
-  border: none;
-  color: white;
-  padding: 10px 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 2px
+	  border: none !important;
+	  color: rgb(23, 29, 75) !important;
+	  text-align: center !important;
+	  text-decoration: none !important;
+	  display: inline-block;
+	  font-weight: 700 !important;
+	  margin: 2px !important;
+	  width:8rem !important;
+    border-radius: 20px !important;
+    padding: 4px 8px !important;
+    background: rgb(164, 217, 214) !important;
+    font-size: 1rem !important;
 }
 
 .cell-back-1{
@@ -909,22 +913,37 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 
 <?php if($timesheetDetails->status == 'Draft'){ ?>
 	<div class="buttons d-flex justify-content-end">
-		<button id="discard-timesheet" class="button">Discard</button>
-		<button id="publish-timesheet" class="button">Save</button>
+		<button id="discard-timesheet" class="button">
+			<i>
+				<img src="<?php echo base_url('assets/images/icons/delete.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+			</i>Discard</button>
+		<button id="publish-timesheet" class="button">
+			<i>
+				<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+			</i>Save</button>
 	</div>
 
 	<?php
 }else{ ?>
 	<div class="buttons d-flex justify-content-end">
-		<button id="discard-timesheet" class="button">Discard</button>
-		<button id="publish-timesheet" class="button">Save</button>
+		<button id="discard-timesheet" class="button">
+			<i>
+				<img src="<?php echo base_url('assets/images/icons/delete.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+			</i>Discard</button>
+		<button id="publish-timesheet" class="button">
+			<i>
+				<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+			</i>Save</button>
 	</div>
 <?php } ?>
 
 <?php } ?>
 <?php if($this->session->userdata('UserType') == STAFF){?>
 <div class="buttons d-flex justify-content-end">
-		<button id="publish-timesheet" class="button">Save</button>
+		<button id="publish-timesheet" class="button">
+								<i>
+									<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+								</i>Save</button>
 </div>
 	<?php } ?>
 	</div>

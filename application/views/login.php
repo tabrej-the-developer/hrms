@@ -77,7 +77,7 @@ font-family: 'Open Sans', sans-serif;
 .login-form-3{
     padding-right: 0px; 
     padding-left: 0px;
-    background:url('http://localhost/PN101/assets/images/login.png');
+    background:url('<?php base_url();?>/PN101/assets/images/login.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
     box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.3);

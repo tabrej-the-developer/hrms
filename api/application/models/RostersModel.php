@@ -135,6 +135,28 @@ class RostersModel extends CI_Model {
 		return $query->result();
 	}
 
+	public function getRostersByPermission($userid){
+		$this->load->database();
+		$query = $this->db->query("SELECT rosters.startDate,rosters.endDate,rosters.id,rosters.createdBy,rosters.status from editpermissions inner join rosters on rosters.id = editpermissions.rosterid where  editpermissions.userid = '$userid' and ( ( editpermissions.timesheetid = '') or  editpermissions.rosterid != '') and editRoster = 'Y' ");
+		return $query->result();
+	}
+
+	public function getRosterPermissions($employeeId,$rosterId){
+		$this->load->database();
+		$query = $this->db->query("SELECT * from editpermissions where userid = '$employeeId' and rosterid = '$rosterId'");
+		return $query->result();
+	}
+
+	public function updateRosterPermission($employeeId,$rosterId,$userid,$editRoster){
+		$this->load->database();
+		$query = $this->db->query("UPDATE editpermissions set editRoster = '$editRoster' where userid = '$employeeId' and rosterid = '$rosterId'");
+		echo $query;	
+	}
+	public function addRosterPermission($employeeId,$rosterId,$userid,$editRoster){
+		$this->load->database();
+		$query = $this->db->query("INSERT into editpermissions (rosterid,userid,created_by,created_at, editRoster) VALUES ('$rosterId','$employeeId','$userid',NOW(),'$editRoster')");
+	}
+
 }
 
 
