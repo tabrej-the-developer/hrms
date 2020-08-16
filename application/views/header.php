@@ -7,39 +7,48 @@ $url_page .= "://";
 $url_page .= $_SERVER['HTTP_HOST']; 
 $url_page .= $_SERVER['REQUEST_URI'];
 $url_page_array = explode("/",$url_page);
+$selected = false;
 $nth_child = 0;
   switch($url_page_array[array_search("PN101",$url_page_array) + 1]){
     case strtolower("Dashboard"):
+      $selected = true;
       $nth_child = 1;
       break;
     case strtolower("Roster"):
+      $selected = true;
       $nth_child = 2;
       break;
     case strtolower("Timesheet"):
+      $selected = true;
       $nth_child = 3;
       break;
     case strtolower("Payroll"):
+      $selected = true;
       $nth_child = 4;
       break;
     case strtolower("Leave"):
+      $selected = true;
       $nth_child = 5;
       break;
     // case strtolower("Jobs"):
     //   $nth_child = ;
     //   break;
     case strtolower("Messenger"):
+      $selected = true;
       $nth_child = 6;
       break;
     // case strtolower("Notice"):
     //   $nth_child = 8;
     //   break;
     case strtolower("Notice"):
+      $selected = true;
       $nth_child = 7;
       break;
     // case strtolower("Settings"):
     //   $nth_child = 10;
     //   break;
     case strtolower("MOM"):
+      $selected = true;
       $nth_child = 8;
       break;
       default:
@@ -269,6 +278,7 @@ font-family: 'Open Sans', sans-serif;
     height: calc(100vh - 56px );
   }
 }
+
 </style>
 </head>
 <body>
@@ -289,52 +299,70 @@ font-family: 'Open Sans', sans-serif;
               
             </a>
           </div>          
-          <li class="nav-item-header">
+          <li class="nav-item-header" onmouseover="hover('dashboard')" onmouseout="hoverOff('dashboard')">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('dashboard') ?>" title="Dashboard">
-              
-              <i class="mr-4 " ><img src="<?php echo base_url();?>assets/images/navbar-icons/dashboard.png" style="max-height: 1rem"></i>
+              <?php
+              if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Dashboard")){ ?>
+              <i class="mr-4 " ><img id="dashboard" src="<?php echo base_url();?>assets/images/navbar-icons/dashboard_filled.png" style="max-height: 1rem"></i>
+              <?php }
+              else{ ?>
+              <i class="mr-4 " ><img id="dashboard" src="<?php echo base_url();?>assets/images/navbar-icons/dashboard.png" style="max-height: 1rem"></i>
+              <?php } ?>
               <span>Dashboard </span>
             </a>
           </li>
 <?php // if((isset(json_decode($permissions)->permissions) ? json_decode($permissions)->permissions->viewRosterYN : "N") == "Y"){ ?> 
-      <li class="nav-item-header">
+      <li class="nav-item-header" onmouseover="hover('roster')" onmouseout="hoverOff('roster')">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('roster/roster_dashboard') ?>" title="roster">
-              <i class="mr-4" >
-                <img src="<?php echo base_url();?>assets/images/navbar-icons/roster.png" style="max-height: 1rem">
-              </i>
+              <?php
+              if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Roster")){ ?>
+              <i class="mr-4 " ><img id="roster" src="<?php echo base_url();?>assets/images/navbar-icons/roster_filled.png" style="max-height: 1rem"></i>
+              <?php }
+              else{ ?>
+                 <i class="mr-4 " ><img id="roster" src="<?php echo base_url();?>assets/images/navbar-icons/roster.png" style="max-height: 1rem"></i>
+              <?php } ?>
               <span>Roster </span>
             </a>
           </li>
           <?php // }  ?>
           <?php // if((isset(json_decode($permissions)->permissions) ? json_decode($permissions)->permissions->viewTimesheetYN : "N") == "Y"){ ?>
-          <li class="nav-item-header">
+          <li class="nav-item-header" onmouseover="hover('timesheet')" onmouseout="hoverOff('timesheet')">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('timesheet/timesheetDashboard'); ?>" title="Leaves">
-            
-              <i class="mr-4" >
-                <img src="<?php echo base_url();?>assets/images/navbar-icons/timesheet.png" style="max-height: 1rem">
-              </i>
+            <?php
+              if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Timesheet")){ ?>
+              <i class="mr-4 " ><img id="timesheet" src="<?php echo base_url();?>assets/images/navbar-icons/timesheet_filled.png" style="max-height: 1rem"></i>
+              <?php }
+              else{ ?>
+                <i class="mr-4 " ><img id="timesheet" src="<?php echo base_url();?>assets/images/navbar-icons/timesheet.png" style="max-height: 1rem"></i>
+              <?php } ?>
               <span>Timesheet </span>
               </a>
           </li>
         <?php // } ?>
           <?php // if((isset(json_decode($permissions)->permissions) ? json_decode($permissions)->permissions->viewPayrollYN : "N") == "Y"){ ?>
-      <li class="nav-item-header">
+      <li class="nav-item-header" onmouseover="hover('payroll')" onmouseout="hoverOff('payroll')">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('payroll/payrollList'); ?>" title="payroll"> 
-              <i class="mr-4" >
-                <img src="<?php echo base_url();?>assets/images/navbar-icons/payroll.png" style="max-height: 1rem">
-              </i>
+            <?php
+              if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Payroll")){ ?>
+              <i class="mr-4 " ><img id="payroll" src="<?php echo base_url();?>assets/images/navbar-icons/payroll_filled.png" style="max-height: 1rem"></i>
+              <?php }
+              else{ ?>
+                <i class="mr-4 " ><img id="payroll" src="<?php echo base_url();?>assets/images/navbar-icons/payroll.png" style="max-height: 1rem"></i>
+              <?php } ?>
               <span>Payroll </span>
-              
              </a>
           </li>
         <?php // } ?>
       <?php // if((isset(json_decode($permissions)->permissions) ? json_decode($permissions)->permissions->viewLeaveTypeYN : "N") == "Y"){ ?>
-		      <li class="nav-item-header">
+		      <li class="nav-item-header" onmouseover="hover('leaves')" onmouseout="hoverOff('leaves')">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('leave') ?>" title="Leaves"> 
-              
-              <i class="mr-4" >
-                <img src="<?php echo base_url();?>assets/images/navbar-icons/leaves.png" style="max-height: 1rem">
-              </i>
+            <?php
+              if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Leave")){ ?>
+              <i class="mr-4 " ><img id = "leaves" src="<?php echo base_url();?>assets/images/navbar-icons/leaves_filled.png" style="max-height: 1rem"></i>
+              <?php }
+              else{ ?>
+                <i class="mr-4 " ><img id = "leaves" src="<?php echo base_url();?>assets/images/navbar-icons/leaves.png" style="max-height: 1rem"></i>
+              <?php } ?>
               <span>Leaves </span>
              </a>
           </li>
@@ -349,19 +377,29 @@ font-family: 'Open Sans', sans-serif;
             </a>
           </li> -->
 
-      <li class="nav-item-header">
+      <li class="nav-item-header" onmouseover="hover('messenger')" onmouseout="hoverOff('messenger')">
         <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('messenger') ?>" title="Cart"> 
-          <i class="mr-4" >
-            <img src="<?php echo base_url();?>assets/images/navbar-icons/messenger.png" style="max-height: 1rem">
-          </i>
+          <?php
+              if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Messenger")){ ?>
+              <i class="mr-4 " ><img id = "messenger" src="<?php echo base_url();?>assets/images/navbar-icons/messenger_filled.png" style="max-height: 1rem"></i>
+              <?php }
+              else{ ?>
+                <i class="mr-4 " ><img id = "messenger" src="<?php echo base_url();?>assets/images/navbar-icons/messenger.png" style="max-height: 1rem"></i>
+              <?php } 
+          ?>
           <span>Messenger </span>
         </a>
       </li>
-      <li class="nav-item-header">
+      <li class="nav-item-header" onmouseover="hover('notices')" onmouseout="hoverOff('notices')">
         <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('notice') ?>" title="Notices">
-          <i class="mr-4" >
-            <img src="<?php echo base_url();?>assets/images/navbar-icons/notices.png" style="max-height: 1rem">
-          </i>
+        <?php
+              if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Notice")){ ?>
+              <i class="mr-4 " ><img id = "notices" src="<?php echo base_url();?>assets/images/navbar-icons/notices_filled.png" style="max-height: 1rem"></i>
+              <?php }
+              else{ ?>
+                <i class="mr-4 " ><img id = "notices" src="<?php echo base_url();?>assets/images/navbar-icons/notices.png" style="max-height: 1rem"></i>
+              <?php } 
+          ?>
           <span>Notices </span>
         </a>
       </li>
@@ -380,27 +418,35 @@ font-family: 'Open Sans', sans-serif;
 		  
       <li class="nav-item-header">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('mom/') ?>" title="roster"> 
-             
+            <?php
+              if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("MOM")){ ?>
+              <i class="mr-4 " ><img src="<?php echo base_url();?>assets/images/navbar-icons/mom_filled.png" style="max-height: 1rem"></i>
+              <?php }
+              else{ ?>
+                <i class="mr-4 " ><img src="<?php echo base_url();?>assets/images/navbar-icons/mom.png" style="max-height: 1rem"></i>
+              <?php } 
+          ?>
             
-              <i class="mr-4" >
-                <img src="<?php echo base_url();?>assets/images/navbar-icons/mom.png" style="max-height: 1rem">
-              </i>
               <span>MOM </span>
           </a>
           </li>
           <div  class="navbar-fixed-elements">
-            <li class="nav-item-header-div">
+            <li class="nav-item-header-div"  onmouseover="hover('settings')" onmouseout="hoverOff('settings')">
               <a class="nav-link-div d-flex justify-content-start" href="<?php echo site_url('settings') ?>" title="Settings">
-                <i class="mr-4" >
-                  <img src="<?php echo base_url();?>assets/images/navbar-icons/settings.png" style="max-height: 1rem">
-                </i>
+              <?php
+              if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Settings")){ ?>
+              <i class="mr-4 " ><img id = "settings" src="<?php echo base_url();?>assets/images/navbar-icons/settings_filled.png" style="max-height: 1rem"></i>
+              <?php }
+              else{ ?>
+                <i class="mr-4 " ><img id = "settings" src="<?php echo base_url();?>assets/images/navbar-icons/settings.png" style="max-height: 1rem"></i>
+              <?php } ?>
                 <span>Settings </span>
               </a>
             </li>
             <li class="nav-item-header-div" >
             <a class="nav-link-div d-flex justify-content-start" href="<?php echo base_url();?>welcome/logout" >
               <i class="mr-4" style="color:#f5f5f5;">
-                <img src="<?php echo site_url();?>assets/images/navbar-icons/power.png" class="pr-2" style="height:1rem"></i>Logout</a>
+                <i class="mr-4 " ><img src="<?php echo site_url();?>assets/images/navbar-icons/power.png" class="pr-2" style="height:1rem"></i>Logout</a>
           </li>
         </div>
         </ul>
@@ -414,6 +460,16 @@ font-family: 'Open Sans', sans-serif;
     </nav>
   
   </div>
+  <script>
+    var base_url = "<?php echo site_url();?>assets/images/navbar-icons/";
+    function hover(str){
+      document.getElementById(str).src = base_url+str+"_filled.png";
+    }
+    function hoverOff(str){
+      document.getElementById(str).src = base_url+str+".png";
+
+    }
+  </script>
 
 </body>
 
