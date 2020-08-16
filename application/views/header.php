@@ -7,41 +7,41 @@ $url_page .= "://";
 $url_page .= $_SERVER['HTTP_HOST']; 
 $url_page .= $_SERVER['REQUEST_URI'];
 $url_page_array = explode("/",$url_page);
-$selected = false;
+$selected = "";
 $nth_child = 0;
   switch($url_page_array[array_search("PN101",$url_page_array) + 1]){
     case strtolower("Dashboard"):
-      $selected = true;
+      $selected = "dashboard";
       $nth_child = 1;
       break;
     case strtolower("Roster"):
-      $selected = true;
+      $selected = "roster";
       $nth_child = 2;
       break;
     case strtolower("Timesheet"):
-      $selected = true;
+      $selected = "timesheet";
       $nth_child = 3;
       break;
     case strtolower("Payroll"):
-      $selected = true;
+      $selected = "payroll";
       $nth_child = 4;
       break;
     case strtolower("Leave"):
-      $selected = true;
+      $selected = "leaves";
       $nth_child = 5;
       break;
     // case strtolower("Jobs"):
     //   $nth_child = ;
     //   break;
     case strtolower("Messenger"):
-      $selected = true;
+      $selected = "messenger";
       $nth_child = 6;
       break;
     // case strtolower("Notice"):
     //   $nth_child = 8;
     //   break;
     case strtolower("Notice"):
-      $selected = true;
+      $selected = "notices";
       $nth_child = 7;
       break;
     // case strtolower("Settings"):
@@ -51,14 +51,19 @@ $nth_child = 0;
       $selected = true;
       $nth_child = 8;
       break;
-      default:
+    case strtolower("settings"):
+        $selected = "settings";
+        $nth_child = 8;
+        break;
+    default:
       $nth_child = null;
   }
-  switch($url_page_array[array_search("PN101",$url_page_array) + 1]){
-    case strtolower("settings"):
-      $nth_child_div = 1;
-      break;
-}
+  // switch($url_page_array[array_search("PN101",$url_page_array) + 1]){
+  //   case strtolower("settings"):
+      
+  //     $nth_child_div = 1;
+  //     break;
+// }
 
 ?>
 <!DOCTYPE html>
@@ -299,7 +304,7 @@ font-family: 'Open Sans', sans-serif;
               
             </a>
           </div>          
-          <li class="nav-item-header" onmouseover="hover('dashboard')" onmouseout="hoverOff('dashboard')">
+          <li class="nav-item-header" onmouseover="hover('dashboard','<?php echo $selected;?>')" onmouseout="hoverOff('dashboard','<?php echo $selected;?>')">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('dashboard') ?>" title="Dashboard">
               <?php
               if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Dashboard")){ ?>
@@ -312,7 +317,7 @@ font-family: 'Open Sans', sans-serif;
             </a>
           </li>
 <?php // if((isset(json_decode($permissions)->permissions) ? json_decode($permissions)->permissions->viewRosterYN : "N") == "Y"){ ?> 
-      <li class="nav-item-header" onmouseover="hover('roster')" onmouseout="hoverOff('roster')">
+      <li class="nav-item-header" onmouseover="hover('roster','<?php echo $selected;?>')" onmouseout="hoverOff('roster','<?php echo $selected;?>')">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('roster/roster_dashboard') ?>" title="roster">
               <?php
               if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Roster")){ ?>
@@ -326,7 +331,7 @@ font-family: 'Open Sans', sans-serif;
           </li>
           <?php // }  ?>
           <?php // if((isset(json_decode($permissions)->permissions) ? json_decode($permissions)->permissions->viewTimesheetYN : "N") == "Y"){ ?>
-          <li class="nav-item-header" onmouseover="hover('timesheet')" onmouseout="hoverOff('timesheet')">
+          <li class="nav-item-header" onmouseover="hover('timesheet','<?php echo $selected;?>')" onmouseout="hoverOff('timesheet','<?php echo $selected;?>')">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('timesheet/timesheetDashboard'); ?>" title="Leaves">
             <?php
               if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Timesheet")){ ?>
@@ -340,7 +345,7 @@ font-family: 'Open Sans', sans-serif;
           </li>
         <?php // } ?>
           <?php // if((isset(json_decode($permissions)->permissions) ? json_decode($permissions)->permissions->viewPayrollYN : "N") == "Y"){ ?>
-      <li class="nav-item-header" onmouseover="hover('payroll')" onmouseout="hoverOff('payroll')">
+      <li class="nav-item-header" onmouseover="hover('payroll','<?php echo $selected;?>')" onmouseout="hoverOff('payroll','<?php echo $selected;?>')">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('payroll/payrollList'); ?>" title="payroll"> 
             <?php
               if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Payroll")){ ?>
@@ -354,7 +359,7 @@ font-family: 'Open Sans', sans-serif;
           </li>
         <?php // } ?>
       <?php // if((isset(json_decode($permissions)->permissions) ? json_decode($permissions)->permissions->viewLeaveTypeYN : "N") == "Y"){ ?>
-		      <li class="nav-item-header" onmouseover="hover('leaves')" onmouseout="hoverOff('leaves')">
+		      <li class="nav-item-header" onmouseover="hover('leaves','<?php echo $selected;?>')" onmouseout="hoverOff('leaves','<?php echo $selected;?>')">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('leave') ?>" title="Leaves"> 
             <?php
               if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Leave")){ ?>
@@ -377,7 +382,7 @@ font-family: 'Open Sans', sans-serif;
             </a>
           </li> -->
 
-      <li class="nav-item-header" onmouseover="hover('messenger')" onmouseout="hoverOff('messenger')">
+      <li class="nav-item-header" onmouseover="hover('messenger','<?php echo $selected;?>')" onmouseout="hoverOff('messenger','<?php echo $selected;?>')">
         <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('messenger') ?>" title="Cart"> 
           <?php
               if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Messenger")){ ?>
@@ -390,7 +395,7 @@ font-family: 'Open Sans', sans-serif;
           <span>Messenger </span>
         </a>
       </li>
-      <li class="nav-item-header" onmouseover="hover('notices')" onmouseout="hoverOff('notices')">
+      <li class="nav-item-header" onmouseover="hover('notices','<?php echo $selected;?>')" onmouseout="hoverOff('notices','<?php echo $selected;?>')">
         <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('notice') ?>" title="Notices">
         <?php
               if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Notice")){ ?>
@@ -416,7 +421,7 @@ font-family: 'Open Sans', sans-serif;
             </a>
           </li> -->
 		  
-      <li class="nav-item-header">
+      <!-- <li class="nav-item-header">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('mom/') ?>" title="roster"> 
             <?php
               if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("MOM")){ ?>
@@ -429,9 +434,9 @@ font-family: 'Open Sans', sans-serif;
             
               <span>MOM </span>
           </a>
-          </li>
+          </li> -->
           <div  class="navbar-fixed-elements">
-            <li class="nav-item-header-div"  onmouseover="hover('settings')" onmouseout="hoverOff('settings')">
+            <li class="nav-item-header-div"  onmouseover="hover('settings','<?php echo $selected;?>')" onmouseout="hoverOff('settings','<?php echo $selected;?>')">
               <a class="nav-link-div d-flex justify-content-start" href="<?php echo site_url('settings') ?>" title="Settings">
               <?php
               if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Settings")){ ?>
@@ -462,10 +467,12 @@ font-family: 'Open Sans', sans-serif;
   </div>
   <script>
     var base_url = "<?php echo site_url();?>assets/images/navbar-icons/";
-    function hover(str){
+    function hover(str,isCurrent){
+      if(str!=isCurrent)
       document.getElementById(str).src = base_url+str+"_filled.png";
     }
-    function hoverOff(str){
+    function hoverOff(str,isCurrent){
+      if(str!=isCurrent)
       document.getElementById(str).src = base_url+str+".png";
 
     }
