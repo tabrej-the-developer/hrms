@@ -54,7 +54,7 @@
 			font-weight: bolder
 		}
         .card-header {
-            padding: 0.2rem 1.25rem;
+            padding: 0 !important;
             /* margin-bottom: 0; */
             background-color: transparent;
             border-bottom: 0px;
@@ -367,7 +367,7 @@ table.dataTable{
     display: inline-block !important;
     font-weight: 700 !important;
     margin: 2px !important;
-    width:8rem !important;
+    width:auto !important;
       border-radius: 20px !important;
       padding: 8px !important;
       background: rgb(164, 217, 214) !important;
@@ -533,6 +533,14 @@ table.dataTable{
     font-size: 0.9rem;
     background: rgba(0,200,0,0.1)
   }*/
+  .status-reje{
+    display: flex;
+    justify-content: center;
+  }
+  .status-appr{
+    display: flex;
+    justify-content: center;
+  }
   .status-appr:before{
     content: ' ';
     background: url;
@@ -658,35 +666,38 @@ table.dataTable{
 		<div class="row d-flex pt-3">
 	    <div class="ml-2 heading_space">
         <span class="leave-heading">Leave Management</span>
-       <span class="ml-auto"> 
-        <button type="button" name="apply_button" id="apply_button" class="button"        data-toggle="modal" data-target="#exampleModal">
-          <i>
-            <img src="<?php echo base_url('assets/images/icons/leave.png'); ?>" style="max-height:0.8rem;margin-right:10px">
-          </i>Apply Leave
-        </button>
-      </span>
-     </div>
-	    	<div class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
+                <div class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "Y"){ ?>
-			<!-- 			<div class="filter-icon d-flex">
-				<span class="">Sort&nbsp;by</span>
-				<span class=""><img src="../assets/images/filter-icon.png" height="20px"></span>
-			</div> -->
+      <!--      <div class="filter-icon d-flex">
+        <span class="">Sort&nbsp;by</span>
+        <span class=""><img src="../assets/images/filter-icon.png" height="20px"></span>
+      </div> -->
 
-	       <select class="center-list " id="center-list">
-  				<?php $centers = json_decode($centers);	
-  					for($i=0;$i<count($centers->centers);$i++){
-  				?>
-      			<option href="javascript:void(0)"
+         <select class="center-list " id="center-list">
+          <?php $centers = json_decode($centers); 
+            for($i=0;$i<count($centers->centers);$i++){
+          ?>
+            <option href="javascript:void(0)"
                     class="center-class"
                     id="<?php echo $centers->centers[$i]->centerid ?>"
                      value="<?php echo $centers->centers[$i]->centerid; ?>">
                      <?php echo $centers->centers[$i]->name?>
            </option>
-        		<?php } ?>
-      		</select>	
+            <?php } ?>
+          </select> 
 <?php } ?>
-        	</div>
+          </div>
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "N"){ ?>
+       <span class="ml-auto"> 
+        <button type="button" name="apply_button" id="apply_button" class="button"        data-toggle="modal" data-target="#exampleModal">
+          <i>
+            <img src="<?php echo base_url('assets/images/icons/leave.png'); ?>" style="max-height:1rem;margin-right:10px">
+          </i>Apply Leave
+        </button>
+      </span>
+    <?php } ?>
+     </div>
+	    	
 	    </div>
 
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "N"){ ?>
@@ -799,14 +810,7 @@ table.dataTable{
 										</td>
 										<!-- <td><?php // echo $leave->leaveTypeName;?></td> -->
 										<td>
-										<div class="dropdown">
-		                                    <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		                                        <i class="far fa-file-alt"></i>
-		                                    </button>
-		                                    <div class="dropdown-menu dropdown-menu-right p-3 " aria-labelledby="gedf-drop1">
-		                                        <p><?php echo $leave->notes;?></p>
-		                                    </div>
-		                                </div>
+		                  <p><?php echo $leave->notes;?></p>
 										</td>
 										<td class="d-flex justify-content-around">
 										<?php 
@@ -907,17 +911,8 @@ table.dataTable{
                       echo date_format($date,"d/m/Y");
                      ?>
                   </td>
-                  <td>
-                    <div class="dropdown">
-                      <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="far fa-file-alt"></i>
-                      </button>
-                      <div class="dropdown-menu dropdown-menu-right p-3 " aria-labelledby="gedf-drop1">
-                        <p>
-                          <?php echo $l->notes;?>
-                        </p>
-                      </div>
-                    </div>
+                  <td style="font-size: 0.75rem">
+                    <?php echo $l->notes;?>
                   </td>
                     <?php
                       $color = '#F44336';

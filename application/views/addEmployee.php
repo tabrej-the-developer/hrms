@@ -49,19 +49,23 @@
 			align-content: center;
 			color: white;
 			width:100%;
-			border-bottom: 1px solid #979797;
 		}
 		.tab-buttons-div{
 			border-radius: 4px;
-			padding: 10px;
 			display: flex;
+
 			justify-content: center;
+			width: 100%;
 		}
 		.nav-button{
-			padding-right:15px;
 			position: relative;
-			color: #4B4B4B;
-			font-size:0.85rem;
+			color: #171D4B;
+			background: #A4D9D6;
+			font-size:0.95rem;
+			flex: 1 1 0px;
+			display: flex;
+			justify-content: center;
+			font-weight: 700
 		}
 		.nav-button > span{
 /*			border:1px solid #307bd3;
@@ -69,11 +73,15 @@
 			color: white;
 			padding:5px;
 			border-radius: 3px*/
+			padding: 10px;
+		    width: 100%;
+		    display: flex;
+		    justify-content: center;
 		}
 		.nav-button > span:hover{
 			cursor: pointer;
 		}
-		input,select{
+/*		input,select{
 			display: block;
 		    width: auto;
 		    height: 1.5rem;
@@ -86,26 +94,56 @@
 		    border: 1px solid #ced4da;
 		    border-radius: .25rem;
 		    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-		}
+		} */
+    input[type="text"],input[type=time],input[type=date],input[type=email],input[type=number],select,textarea{
+      background: #ebebeb !important;
+      border-radius: 5px !important;
+      padding: 5px !important;
+      border: 1px solid #D2D0D0 !important;
+      border-radius: 20px !important;
+      padding-left: 1rem;
+      font-size: 0.85rem !important;
+    }
+    select{
+      background: #E7E7E7 !important;
+      border: none !important;
+      height: 2.5rem !important;
+      border-radius: 20px !important;
+      border: 1px solid #D2D0D0 !important;
+      padding-left: 1rem !important;
+      font-size: 0.75rem !important;
+    }
+
 		.span-class{
 			padding:10px;
 			display: inline-block;
+			width: 33%;
 		}
-
+		.span-class .col-4{
+			padding-left:0;
+		}
+		.name__{
+			width: 66%;
+		}
+		.contact__{
+			width: 66%;
+		}
 		label{
 			width:100%;
 			margin: 0 !important;
 		}
 		#submit{
-		background-color: #60AC0C;
-  		border: none;
-  		color: white;
-  		padding: 0.5rem 0.5rem;
-  		text-align: center;
-  		border-radius: 5px;
-  		text-decoration: none;
-  		display: inline-block;
-  		margin: 2px
+	  	border: none;
+	  	color: rgb(23, 29, 75);
+	  	text-align: center;
+	  	text-decoration: none;
+	  	display: inline-block;
+	  	font-weight: 700;
+	  	margin: 2px;
+	  	width:8rem;
+    	border-radius: 20px;
+    	padding: 8px;
+    	background: rgb(164, 217, 214);
 			}
 		.span-class.row{
 			margin:0;
@@ -126,7 +164,7 @@
 		}
 		.submit-div{
 			display: flex;
-			justify-content: center;
+			justify-content: flex-end;
 			position: absolute;
 			bottom: 0;
 			width: 100%;
@@ -137,26 +175,21 @@
 			padding:0;
 			padding-left: 10px
 		}
+		.row.ml-1 > .span-class:nth-of-type(1){
+			padding-left: 0;
+		}
 		.row{
 			margin-left: 0 !important;
 			margin-right: 0 !important
 		}
 		.arrow{
-
-		    background: white;
-		    color:  #307bd3;
+			border:1px solid #D2D0D0;
+		    background: #F3F4F7;
+		    color:  #171D4B;
 		    padding:3px;
 		    border-radius:;
 		}
-		.arrow::after{
-			content: " ";
-		    /* background: red; */
-		    margin-top: 29px;
-		    position: absolute;
-		    width: 100%;
-		    border-top: 2px solid #307bd3;
-		    left:0;
-		}
+
 	.addEmployee-container{
 		height:100vh;
 		padding:4rem 3rem 2rem 2rem;
@@ -191,16 +224,16 @@
 <?php if(isset($permissions->permissions) ? $permissions->permissions->editEmployeeYN : "N" == "Y"){ ?>
 	<section class="tab-buttons">
 		<div class="tab-buttons-div">
-		<span class="nav-button e-s"><span>Employee Section</span></span>
-		<span class="nav-button e-b-a-s"><span>Employee Bank Account Section</span></span>
-		<span class="nav-button e-s-s"><span>Employee Superfund Section</span></span>
-		<span class="nav-button e-t-d-s"><span>Employee Tax Declaration Section</span></span>
-		<span class="nav-button e-u-s"><span>Employee Details</span></span>	
+		<span class="nav-button e-s"><span>Personal</span></span>
+		<span class="nav-button e-b-a-s"><span>Bank Account</span></span>
+		<span class="nav-button e-s-s"><span> Superannuation </span></span>
+		<span class="nav-button e-t-d-s"><span>Tax Declaration </span></span>
+		<span class="nav-button e-u-s"><span>Employment</span></span>	
 		<span class="nav-button m-i"><span>Medical Info</span></span>
 		</div>	
 	</section>
 	<section class="employee-section">	
-		<!-- <h3>Employee Section</h3> -->
+		<!-- <h3>Personal</h3> -->
 		<span class="d-flex">
 		<span class="span-class ">
 			<label>Title</label>
@@ -210,7 +243,7 @@
 				<option value="Mrs">Mrs</option>
 			</select>
 		</span>
-	<span class="span-class ">
+	<span class="span-class name__">
 		<label>Name</label>
 		<span class="row ml-1 ">
 		<span class="span-class col-4 ">
@@ -232,6 +265,10 @@
 		<span class="span-class">
 			<label>Email</label>
 			<input placeholder="Emails" id="emails"  class="" type="text">
+		</span>
+		<span class="span-class">
+			<label>Alias</label>
+			<input placeholder="Alias" id="alias"  class="" type="text">
 		</span>
 		<span class="span-class">
 			<label>Date Of Birth</label>
@@ -264,7 +301,7 @@
 			</span>
 			<span class="span-class col-4">
 				<!-- <label>City</label> -->
-				<input placeholder="City" id="homeAddCity"  class="" >
+				<input  type="text" placeholder="City" id="homeAddCity"  class="" >
 			</span>				
 			<span class="span-class col-4">
 				<!-- <label>Region</label> -->
@@ -288,7 +325,7 @@
 				<input placeholder="Country" id="homeAddCountry"  class="" type="text">
 			</span>
 		</span>
-		<span class="span-class">
+		<span class="span-class contact__">
 			<label>Contact</label>
 				<span class="span-class">
 					<input placeholder="Phone" id="phone"  class="" type="text">
@@ -306,18 +343,6 @@
 			<label>Termination Date</label>
 			<input placeholder="Termination Date" id="terminationDate"  class="" type="date">
 		</span>
-				
-		<span class="span-class col-3">
-			<label>Ordinary Earning Rate Id</label>
-			<select placeholder="Ordinary Earning Rate Id" id="ordinaryEarningRateId"  class="" type="text">
-			<?php
-					$ordinaryEarningRate = json_decode($ordinaryEarningRate);
-					foreach($ordinaryEarningRate->awards as $rate){
-			?>
-				<option value="<?php echo $rate->earningRateId?>"><?php echo $rate->name?></option>
-			<?php }?>
-			</select>
-		</span>
 	</span>
 <!-- 		<span class="span-class">
 			<label>created_at</label>
@@ -327,32 +352,44 @@
 			<label>created_by</label>
 			<input placeholder="created_by" id="created_by"  class="" type="text">
 		</span> -->
+		<span class="span-class col-3">
+			<label>Emergency Contact</label>
+			<input placeholder="Emergency Contact" id="emergency_contact"  class="" type="text">
+		</span>
+		<span class="span-class col-3">
+			<label>Relationship</label>
+			<input placeholder="Relationship" id="relationship"  class="" type="text">
+		</span>
+		<span class="span-class col-3">
+			<label>Emergency Contact Email</label>
+			<input placeholder="Emergency Contact Email" id="emergency_contact_email"  class="" type="email">
+		</span>
 	</section>
 
 	<section class="employee-bank-account-section">
-		<h3>Employee Bank Account Section<span class="add-row"> + </span></h3>
+		<h3>Bank Account <span class="add-row"> + </span></h3>
 		<div class="parent-child">
 			<div class="child">
 				<div class="statement"></div>
 			<div class="row">
-		<span class="span-class col-4">
+<!-- 		<span class="span-class col-4">
 			<label>Statement Text</label>
-			<input placeholder="Statement Text"  class="statementText" >
-		</span>
+			<input placeholder="Statement Text" type="text" class="statementText" >
+		</span> -->
 		<span class="span-class col-4">
 			<label>Account Name</label>
-			<input placeholder="Account Name"  class="accountName" >
+			<input placeholder="Account Name" type="text" class="accountName" >
 		</span>
 		<span class="span-class col-4">
 			<label>BSB</label>
-			<input placeholder="BSB"  class="bsb" >
+			<input placeholder="BSB" type="text" class="bsb" >
 		</span>
 	</div>
 		
 	<span class="row">
 		<span class="span-class col-4">
 			<label>Account Number</label>
-			<input placeholder="Account Number"  class="accountNumber" >
+			<input placeholder="Account Number" type="text" class="accountNumber" >
 		</span>
 		<span class="span-class col-4">
 			<label>Remainder</label>
@@ -368,7 +405,7 @@
 		<span class="span-class amount-class-parent col-4">
 			<div class="amount-class">
 				<label>Amount</label>
-				<input placeholder="Amount"  class="amount" >
+				<input placeholder="Amount" type="text" class="amount" >
 			</div>
 		</span>
 	</span>
@@ -379,7 +416,7 @@
 
 
 	<section class="employee-superfund-section">
-		<h3>Employee Superfund Section<span id="superfund-add"> + </span></h3>
+		<h3> Superannuation <span id="superfund-add"> + </span></h3>
 <!-- 		<span class="span-class">
 			<label>Employee Id</label>
 			<input placeholder="Employee Id" id="employeeId" >
@@ -397,11 +434,11 @@
 					</span>
 					<span class="span-class col-4">
 						<label>Employee Number</label>
-						<input placeholder="Employee Number" class="employeeNumber" >
+						<input placeholder="Employee Number" class="employeeNumber" type="text">
 					</span>
 					<span class="span-class col-4">
 						<label>Super Membership Id</label>
-						<input placeholder="Super Membership Id" class="superMembershipId" >
+						<input placeholder="Super Membership Id" class="superMembershipId" type="text">
 					</span>
 				</div>
 			</div>
@@ -438,7 +475,7 @@
 		<div class="tax-declaration-class col-lg-12">
 		<span class="span-class col-4">
 			<label>Tax File Number</label>
-			<input placeholder="Tax File Number" id="taxFileNumber">
+			<input placeholder="Tax File Number" id="taxFileNumber" type="text">
 		</span>
 		<span class="span-class col-4">
 			<label>Australian Resident For TaxPurpose</label>
@@ -464,7 +501,7 @@
 		</span>
 		<span class="span-class col-4">
 			<label>Tax Offset Estimated Amount</label>
-			<input placeholder="Tax Offset Estimated Amount" id="taxOffsetEstimatedAmount">
+			<input placeholder="Tax Offset Estimated Amount" id="taxOffsetEstimatedAmount" type="text">
 		</span>
 		<span class="span-class col-3">
 			<label>Has HELP Debt</label>
@@ -490,7 +527,7 @@
 		</span>
 		<span class="span-class col-3">
 			<label>Upward Variation Tax Witholding Amount</label>
-			<input placeholder="Upward Variation Tax Witholding Amount" id="upwardVariationTaxWitholdingAmount">
+			<input placeholder="Upward Variation Tax Witholding Amount" id="upwardVariationTaxWitholdingAmount" type="text">
 		</span>
 		<span class="span-class col-4">
 			<label>Eligible To Receive Leave Loading</label>
@@ -501,7 +538,7 @@
 		</span>
 		<span class="span-class col-4">
 			<label>Approved Witholding Variation Percentage</label>
-			<input placeholder="Approved Witholding Variation Percentage" id="approvedWitholdingVariationPercentage">
+			<input placeholder="Approved Witholding Variation Percentage" id="approvedWitholdingVariationPercentage" type="text">
 		</span>
 		
 	</div>
@@ -509,6 +546,10 @@
 
 
 	<section class="employee-details">
+		<span class="span-class">
+			<label>Employee Number</label>
+			<input placeholder="Employee Number" id="employee_no" type="text">
+		</span>
 		<span class="span-class">
 			<label>Center</label>
 
@@ -554,7 +595,7 @@
 
 		<span class="span-class">
 			<label>Manager</label>
-			<input placeholder="Manager" id="manager">
+			<input placeholder="Manager" id="manager" type="text">
 		</span>
 
 
@@ -572,11 +613,8 @@
 			<label>Bonus Rates</label>
 			<input placeholder="Bonus Rates" id="bonusRates" type="number" step="0.01" min="0">
 		</span>
-		<span class="span-class">
-			<label>	Employee-no </label>
-			<input placeholder="Employee-no " id="employee_no " type="text">
-		</span>
-		<span class="span-class">
+
+<!-- 		<span class="span-class">
 			<label>	Currently-employed</label>
 			<label class="yn-label">Yes</label>
 			<input  type="radio" name="currently_employed " class="currently_employed yn-input" value="Y">
@@ -586,23 +624,27 @@
 		<span class="span-class">
 			<label>	Commencement-date</label>
 			<input placeholder="Commencement-date" id="commencement_date" type="date">
-		</span>
-
+		</span> -->
+<!-- 
 		<span class="span-class">
 			<label>Contract-position	</label>
 			<input placeholder="Contract-position	" id=" " type="text">
-		</span>
-		<span class="span-class">
+		</span> -->
+<!-- 		<span class="span-class">
 			<label>Resume-supplied</label>
 			<label class="yn-label">Yes</label>
 			<input  type="radio" name="resume_supplied" class="resume_supplied yn-input" value="Y">
 			<label class="yn-label">No</label>
 			<input type="radio" name="resume_supplied" class="resume_supplied yn-input" value="N">
 		</span>
-
+ -->
 		<span class="span-class">
 			<label>Resume Document </label>
 			<input  id="resume_doc" type="file">
+		</span>
+		<span class="span-class">
+			<label>Contract Document </label>
+			<input  id="contract_doc" type="file">
 		</span>
 
 		<span class="span-class">
@@ -613,7 +655,7 @@
 				<option value="Casual">Casual</option>
 			</select>
 		</span>
-		<span class="span-class">
+<!-- 		<span class="span-class">
 			<label>Current-contract-notes</label>
 			<input placeholder="Current-contract-notes" id="current_contract_notes" type="date">
 		</span>
@@ -636,22 +678,30 @@
 		<span class="span-class">
 			<label>Probation-end-date 	</label>
 			<input placeholder="Probation end date" id="probation_end_date" type="date">
-		</span>
-		<span class="span-class">
+		</span> -->
+<!-- 		<span class="span-class">
 			<label>Industry-years-exp-as-nov19	</label>
 			<input placeholder="Industry-years-exp-as-nov19	" id="industry_years_exp_as_nov19" type="text">
-		</span>
+		</span> -->
 
 		<span class="span-class">
 			<label>Highest-qual-held</label>
 			<input placeholder="Highest-qual-held" id="highest_qual_held" type="text">
 		</span>
 		<span class="span-class">
+			<label>Date Obtained</label>
+			<input placeholder="Date Obtained" id="highest_qual_date_obtained" type="text">
+		</span>
+		<span class="span-class">
+			<label>Highest Qualification Certificate</label>
+			<input placeholder="Date Obtained" id="highest_qual_cert" type="text">
+		</span>
+<!-- 		<span class="span-class">
 			<label>Highest-qual-type	 </label>
 			<input placeholder="Highest-qual-type" id="highest_qual_type" type="text">
 		</span>
-		<span class="span-class">
-			<label>Qual-towards-desc</label>
+ -->		<span class="span-class">
+			<label>Qualification working Toward</label>
 			<input placeholder="Qual-towards-desc" id="qual_towards_desc" type="text">
 		</span>
 		<span class="span-class">
@@ -659,7 +709,7 @@
 			<input placeholder="Qual towards % comp" id="qual_towards_percent_comp" type="text">
 		</span>
 
-		<span class="span-class">
+<!-- 		<span class="span-class">
 			<label>	Workcover</label>
 			<input placeholder="Workcover" id="workcover" type="text">
 		</span>
@@ -670,6 +720,41 @@
 		<span class="span-class">
 			<label>	Annual-leave-in-contract</label>
 			<input placeholder="Annual-leave-in-contract" id="annual_leave_in_contract" type="text">
+		</span> -->
+		<span class="span-class">
+			<label>Classification</label>
+			<input placeholder="Classification" id="classification" type="text">
+		</span>
+		<span class="span-class">
+			<label>Ordinary Earning Rate Id</label>
+			<select placeholder="Ordinary Earning Rate Id" id="ordinaryEarningRateId"  class="" type="text">
+			<?php
+					$ordinaryEarningRate = json_decode($ordinaryEarningRate);
+					foreach($ordinaryEarningRate->awards as $rate){
+			?>
+				<option value="<?php echo $rate->earningRateId?>"><?php echo $rate->name?></option>
+			<?php }?>
+			</select>
+		</span>
+
+		<span class="span-class">
+			<label>Payroll Calendar</label>
+			<input placeholder="Payroll Calendar" id="payroll_calendar" type="text">
+		</span>
+		<span class="span-class">
+			<label>Employee Group</label>
+			<input placeholder="Employee Group" id="employee_group" type="text">
+		</span>
+		<span class="span-class">
+			<label>Holiday Group</label>
+			<input placeholder="Holiday Group" id="holiday_group" type="text">
+		</span>
+		<span class="span-class">
+			<label>Visa Holder</label>
+			<label class="yn-label">Yes</label>
+			<input  type="radio" name="visa_holder" class="visa_holder yn-input" value="Y">
+			<label class="yn-label">No</label>
+			<input type="radio" name="visa_holder" class="visa_holder yn-input" value="N">
 		</span>
 		<span class="span-class">
 			<label>	Visa-type		</label>
@@ -687,11 +772,30 @@
 			<label>	Visa-conditions</label>
 			<input placeholder="Visa-conditions" id="visa_conditions" type="text">
 		</span>
-		<span class="span-class">
-			<label>First-aid-expiry</label>
-			<input placeholder="First-aid-expiry" id="first_aid_expiry" type="text">
-		</span>
-		<span class="span-class">
+
+		<div>
+				<span class="span-class">
+					<label>Course Name</label>
+					<input placeholder="Course Name" class="course_name" type="text">
+				</span>
+				<span class="span-class">
+					<label>course Description</label>
+					<input placeholder="course Description" class="course_description" type="text">
+				</span>
+				<span class="span-class">
+					<label>Date Obtained</label>
+					<input placeholder="Date Obtained" class="date_obtained" type="text">
+				</span>
+				<span class="span-class">
+					<label>Expiry Date</label>
+					<input placeholder="Expiry Date" class="expiry_date" type="date">
+				</span>
+				<span class="span-class">
+					<label>Certificate </label>
+					<input placeholder="Certificate " class="certificate " type="FILE">
+				</span>
+		</div>
+<!-- 		<span class="span-class">
 			<label>CPR-expiry</label>
 			<input placeholder="CPR-expiry" id="cpr_expiry" type="text">
 		</span>
@@ -733,7 +837,7 @@
 				<input  type="radio"  name="nominated_supervisor" class="nominated_supervisor yn-input" value="Y">
 			<label class="yn-label">No</label>
 				<input type="radio" name="nominated_supervisor" class="nominated_supervisor yn-input" value="N">
-		</span>
+		</span> -->
 	</section>
 
 	<section class="medical-info">
@@ -778,7 +882,7 @@
 			<label>Dietary Preferences</label>
 				<input  type="text"  name="dietaryPreferences" class="dietaryPreferences">
 		</span>
-		<span class="span-class">
+<!-- 		<span class="span-class">
 			<label>Anaphylaxis</label>
 				<input  type="date"  name="anaphylaxis" class="anaphylaxis">
 		</span>
@@ -793,11 +897,14 @@
 		<span class="span-class">
 			<label>Maternity End Date</label>
 				<input  type="date"  name="maternityEndDate" class="maternityEndDate">
-		</span>
+		</span> -->
 	</section>
 
 	<div class="submit-div">
-		<button id="submit">Submit</button>
+		<button id="submit">
+			<i>
+				<img src="<?php echo base_url('assets/images/icons/send.png'); ?>" style="max-height:1rem;margin-right:10px">
+			</i>Submit</button>
 	</div>
 <?php } ?>
 		</div>
@@ -832,6 +939,7 @@
 		var mname = $('#mname').val();
 		var lname = $('#lname').val();
 		var emails = $('#emails').val();
+		var alias = $('#alias').val();
 		var dateOfBirth = $('#dateOfBirth').val();
 		var jobTitle = $('#jobTitle').val();
 		var gender = $('#gender').val();
@@ -846,6 +954,13 @@
 		var startDate = $('#startDate').val();
 		var terminationDate = $('#terminationDate').val();
 		var ordinaryEarningRateId = $('#ordinaryEarningRateId').val();
+		var emergency_contact = $('#emergency_contact').val();
+		var relationship = $('#relationship').val();
+		var emergency_contact_email = $('#emergency_contact_email').val();
+		var classification 	= $('#classification').val();
+		var payroll_calendar 	= $('#payroll_calendar').val();
+		var employee_group 	= $('#employee_group').val();
+		var holiday_group 	= $('#holiday_group').val();
 		// var created_at = $('#created_at').val();
 		// var created_by = $('#created_by').val();
 		// var employeeId = $('#employeeId').val();
@@ -882,79 +997,142 @@
     var medicalAllergies = $('.medicalAllergies').val();
     var medication = $('.medication').val();
     var dietaryPreferences = $('.dietaryPreferences').val();
-    var anaphylaxis = $('.anaphylaxis').val();
-    var asthma = $('.asthma').val();
-    var maternityStartDate = $('.maternityStartDate').val();
-    var maternityEndDate = $('.maternityEndDate').val();
+    // var anaphylaxis = $('.anaphylaxis').val();
+    // var asthma = $('.asthma').val();
+    // var maternityStartDate = $('.maternityStartDate').val();
+    // var maternityEndDate = $('.maternityEndDate').val();
 		var employee_no = $('#employee_no').val();
-		var currently_employed = $('input[name=currently_employed]:checked').val();
-		var commencement_date = $('#commencement_date').val();
-		var resume_supplied = $('input[name=resume_supplied]:checked').val();
+		// var currently_employed = $('input[name=currently_employed]:checked').val();
+		// var commencement_date = $('#commencement_date').val();
+		// var resume_supplied = $('input[name=resume_supplied]:checked').val();
 		var resume_doc = $('#resume_doc').val();
+		var contract_doc = $('#contract_doc').val();
 		var employement_type = $('#employement_type').val();
-		var current_contract_notes = $('#current_contract_notes').val();
-		var current_contract_signature = $('#current_contract_signature_date').val();
-		var current_contract_commencement = $('#current_contract_commencement_date').val();
-		var current_contract_end_date = $('#current_contract_end_date').val();
-		var current_contract_paid_start_date = $('#current_contract_paid_start_date').val();
-		var probation_end_date = $('#probation_end_date').val();
-		var industry_years_exp_as_nov19 = $('#industry_years_exp_as_nov19').val();
+		// var current_contract_notes = $('#current_contract_notes').val();
+		// var current_contract_signature = $('#current_contract_signature_date').val();
+		// var current_contract_commencement = $('#current_contract_commencement_date').val();
+		// var current_contract_end_date = $('#current_contract_end_date').val();
+		// var current_contract_paid_start_date = $('#current_contract_paid_start_date').val();
+		// var probation_end_date = $('#probation_end_date').val();
+		// var industry_years_exp_as_nov19 = $('#industry_years_exp_as_nov19').val();
 		var highest_qual_held = $('#highest_qual_held').val();
-		var highest_qual_type = $('#highest_qual_type').val();
+		// var highest_qual_type = $('#highest_qual_type').val();
+		var highest_qual_date_obtained = $('highest_qual_date_obtained').val();
+		var highest_qual_cert = $('highest_qual_cert').val();
 		var qual_towards_desc = $('#qual_towards_desc').val();
 		var qual_towards_percent_comp = $('#qual_towards_percent_comp').val();
-		var workcover = $('#workcover').val();
-		var piawe = $('#piawe').val();
-		var annual_leave_in_contract = $('#annual_leave_in_contract').val();
+		var course_name = $('.course_name').val();
+		var course_description = $('.course_description').val();
+		var date_obtained = $('.date_obtained').val();
+		var expiry_date = $('.expiry_date').val();
+		var certificate = $('.certificate').val();
+		// var workcover = $('#workcover').val();
+		// var piawe = $('#piawe').val();
+		// var annual_leave_in_contract = $('#annual_leave_in_contract').val();
+		var visa_holder = $('input[name=visa_holder]:checked').val();
 		var visa_type = $('#visa_type').val();
 		var visa_grant_date = $('#visa_grant_date').val();
 		var visa_end_date = $('#visa_end_date').val();
 		var visa_conditions = $('#visa_conditions').val();
-		var first_aid_expiry = $('#first_aid_expiry').val();
-		var cpr_expiry = $('#cpr_expiry').val();
-		var prohibition_notice_declaration = $('#prohibition_notice_declaration').val();
-		var vit_card_no = $('#vit_card_no').val();
-		var vit_expiry = $('#vit_expiry').val();
-		var wwcc_card_no = $('#wwcc_card_no').val();
-		var wwcc_expiry = $('#wwcc_expiry').val();
-		var food_handling_safety = $('#food_handling_safety').val();
-		var last_police_check = $('#last_police_check').val();
-		var child_protection_check = $('#child_protection_check').val();
-		var nominated_supervisor = $('input[name=nominated_supervisor]:checked').val();
+		// var first_aid_expiry = $('#first_aid_expiry').val();
+		// var cpr_expiry = $('#cpr_expiry').val();
+		// var prohibition_notice_declaration = $('#prohibition_notice_declaration').val();
+		// var vit_card_no = $('#vit_card_no').val();
+		// var vit_expiry = $('#vit_expiry').val();
+		// var wwcc_card_no = $('#wwcc_card_no').val();
+		// var wwcc_expiry = $('#wwcc_expiry').val();
+		// var food_handling_safety = $('#food_handling_safety').val();
+		// var last_police_check = $('#last_police_check').val();
+		// var child_protection_check = $('#child_protection_check').val();
+		// var nominated_supervisor = $('input[name=nominated_supervisor]:checked').val();
 
 		var bankAccount = [];
 		var superfund = [];
-		var banckAccountArray =	function(statementText,accountName,bsb,accountNumber,remainderYN,amount){
-				this.statementText = statementText;
+		var medicals = [];
+		var courses = [];
+		var banckAccountArray =	function(accountName,bsb,accountNumber,remainderYN,amount){
+				// this.statementText = statementText;
 				this.accountName = accountName;
 				this.bsb = bsb;
 				this.accountNumber = accountNumber;
 				this.remainderYN = remainderYN;
 				this.amount = amount;
-				return {statementText : statementText,accountName : accountName,bsb : bsb,				accountNumber : accountNumber,remainderYN : remainderYN,amount : amount}
+				return {accountName : accountName,bsb : bsb,accountNumber : accountNumber,remainderYN : remainderYN,amount : amount}
 			}
 		var bankAccountCount = $('.child').length;
 			for(x=0;x<bankAccountCount;x++){
-				let statementText = $('.statementText').eq(x).val();
 				let accountName = $('.accountName').eq(x).val();
 				let bsb = $('.bsb').eq(x).val();
 				let accountNumber = $('.accountNumber').eq(x).val();
 				let remainderYN = $('.remainderYN[name=remainderYN]:checked').eq(x).val();
 				let amount = $('.amount').eq(x).val();
-	bankAccount.push(banckAccountArray(statementText,accountName,bsb,accountNumber,remainderYN,amount));
+	bankAccount.push(banckAccountArray(accountName,bsb,accountNumber,remainderYN,amount));
 			}
-			var superfundArray =	function(superFundId,employeeNumber,superMembershipId){
+
+		// var courseArray =	function(course_name,course_description,date_obtained,expiry_date,certificate){
+		// 		// this.statementText = statementText;
+		// 		this.course_name = course_name;
+		// 		this.course_description = course_description;
+		// 		this.date_obtained = date_obtained;
+		// 		this.expiry_date = expiry_date;
+		// 		this.certificate = certificate;
+		// 		return {course_name : course_name,course_description : course_description,date_obtained : date_obtained,expiry_date : expiry_date,certificate : certificate}
+		// 	}
+		var courseCount = $('.course_name').length;
+		var course_name = [];
+		var course_description = [];
+		var date_obtained = [];
+		var expiry_date = [];
+		var certificate = [];
+			for(x=0;x<courseCount;x++){
+					course_name.push($('.course_name').eq(x).val());
+					course_description.push($('.course_description').eq(x).val());
+					date_obtained.push($('.date_obtained').eq(x).val());
+					expiry_date.push($('.certificate').eq(x).val());
+					certificate.push($('.expiry_date').eq(x).val());
+			}
+
+		// var medicalArray =	function(medicalConditions,medicalAllergies,medication,dietaryPreferences,medicareNo,medicareRefNo,healthInsuranceFund,healthInsuranceNo,ambulanceSubscriptionNo){
+
+		// 		return {
+		// 			medicareNo : medicareNo,
+		// 			medicareRefNo : medicareRefNo,
+		// 			healthInsuranceFund : healthInsuranceFund,
+		// 			healthInsuranceNo : healthInsuranceNo,
+		// 			ambulanceSubscriptionNo : ambulanceSubscriptionNo,
+		// 			medicalConditions : medicalConditions,
+		// 			medicalAllergies : medicalAllergies,
+		// 			medication : medication,
+		// 			dietaryPreferences : dietaryPreferences
+		// 		}
+		// 	}
+		var medicalCount = $('.medicalConditions').length;
+		var medicalConditions = [];
+		var medicalAllergies = [];
+		var medication = [];
+		var dietaryPreferences = [];
+			for(x=0;x<medicalCount;x++){
+				medicalConditions.push($('.medicalConditions').eq(x).val());
+				medicalAllergies.push($('.medicalAllergies').eq(x).val());
+				medication.push($('.medication').eq(x).val());
+				dietaryPreferences.push($('.dietaryPreferences').eq(x).val());
+
+			}
+
+			var superfundArray =	function(superFundId,employeeNumber){
 				this.superFundId = superFundId;
 				this.employeeNumber = employeeNumber;
-				this.superMembershipId = superMembershipId;
-				return {superFundId : superFundId,employeeNumber : employeeNumber,superMembershipId : superMembershipId}
+				// this.superMembershipId = superMembershipId;
+				return {
+					superFundId : superFundId,
+					employeeNumber : employeeNumber
+				}
 			}
 			var superfundCount = $('.superfund-child').length;
 			for(x=0;x<superfundCount;x++){
 				let	superFundId = $('.superFundId').eq(x).val();
 				let	employeeNumber = $('.employeeNumber').eq(x).val();
-				let	superMembershipId = $('.superMembershipId').eq(x).val();
-	superfund.push(superfundArray(superFundId,employeeNumber,superMembershipId));
+	superfund.push(superfundArray(superFundId,employeeNumber));
 			}
 			var center = $('#center').val();
 			var area = $('#area').val();
@@ -971,6 +1149,7 @@
 				mname: mname,
 				lname: lname,
 				emails: emails,
+				alias : alias,
 				dateOfBirth: dateOfBirth,
 				jobTitle: jobTitle,
 				gender: gender,
@@ -985,8 +1164,25 @@
 				startDate: startDate,
 				terminationDate: terminationDate,
 				ordinaryEarningRateId: ordinaryEarningRateId,
-				bankAccount: bankAccount,
+				emergency_contact : emergency_contact,
+				relationship : relationship,
+				emergency_contact_email : emergency_contact_email,
+				medicareNo : medicareNo,
+				medicareRefNo : medicareRefNo,
+				healthInsuranceFund : healthInsuranceFund,
+				healthInsuranceNo : healthInsuranceNo,
+				ambulanceSubscriptionNo : ambulanceSubscriptionNo,
+				medicalConditions : medicalConditions,
+				medicalAllergies : medicalAllergies,
+				medication : medication,
+				dietaryPreferences : dietaryPreferences,
+				course_name : course_name,
+				course_description : course_description,
+				date_obtained : date_obtained,
+				expiry_date : expiry_date,
+				certificate : certificate,
 				superfund: superfund,
+				bankAccount: bankAccount,
 				employmentBasis: employmentBasis,
 				tfnExemptionType: tfnExemptionType,
 				taxFileNumber: taxFileNumber,
@@ -1006,54 +1202,52 @@
 				manager : manager,
 				level : level,
 				bonusRates : bonusRates,
-				medicareNo : medicareNo,
-				medicareRefNo : medicareRefNo,
-				healthInsuranceFund : healthInsuranceFund,
-				healthInsuranceNo : healthInsuranceNo,
-				ambulanceSubscriptionNo : ambulanceSubscriptionNo,
-				medicalConditions : medicalConditions,
-				medicalAllergies : medicalAllergies,
-				medication : medication,
-				dietaryPreferences : dietaryPreferences,
-				anaphylaxis : anaphylaxis,
-				asthma : asthma,
-				maternityStartDate : maternityStartDate,
-				maternityEndDate : maternityEndDate,
+				
+				// anaphylaxis : anaphylaxis,
+				// asthma : asthma,
+				// maternityStartDate : maternityStartDate,
+				// maternityEndDate : maternityEndDate,
 				employee_no : employee_no,
-				currently_employed : currently_employed, 
-				commencement_date : commencement_date, 
-				resume_supplied : resume_supplied, 
+				// currently_employed : currently_employed, 
+				// commencement_date : commencement_date, 
+				// resume_supplied : resume_supplied, 
 				resume_doc : resume_doc, 
+				contract_doc : contract_doc,
 				employement_type : employement_type, 
-				current_contract_notes : current_contract_notes, 
-				current_contract_signature : current_contract_signature, 
-				current_contract_commencement : current_contract_commencement, 
-				current_contract_end_date : current_contract_end_date, 
-				current_contract_paid_start_date : current_contract_paid_start_date, 
-				probation_end_date : probation_end_date, 
-				industry_years_exp_as_nov19 : industry_years_exp_as_nov19, 
+				// current_contract_notes : current_contract_notes, 
+				// current_contract_signature : current_contract_signature, 
+				// current_contract_commencement : current_contract_commencement, 
+				// current_contract_end_date : current_contract_end_date, 
+				// current_contract_paid_start_date : current_contract_paid_start_date, 
+				// probation_end_date : probation_end_date, 
+				// industry_years_exp_as_nov19 : industry_years_exp_as_nov19, 
 				highest_qual_held : highest_qual_held, 
-				highest_qual_type : highest_qual_type, 
+				// highest_qual_type : highest_qual_type, 
 				qual_towards_desc : qual_towards_desc, 
 				qual_towards_percent_comp : qual_towards_percent_comp, 
-				workcover : workcover, 
-				piawe : piawe, 
-				annual_leave_in_contract : annual_leave_in_contract, 
+				// workcover : workcover, 
+				// piawe : piawe, 
+				// annual_leave_in_contract : annual_leave_in_contract,
+				classification : classification,
+				payroll_calendar : payroll_calendar,
+				employee_group : employee_group,
+				holiday_group : holiday_group,
+				visa_holder : visa_holder, 
 				visa_type : visa_type, 
 				visa_grant_date : visa_grant_date, 
 				visa_end_date : visa_end_date, 
 				visa_conditions : visa_conditions, 
-				first_aid_expiry : first_aid_expiry, 
-				cpr_expiry : cpr_expiry, 
-				prohibition_notice_declaration : prohibition_notice_declaration, 
-				vit_card_no : vit_card_no, 
-				vit_expiry : vit_expiry, 
-				wwcc_card_no : wwcc_card_no, 
-				wwcc_expiry : wwcc_expiry, 
-				food_handling_safety : food_handling_safety, 
-				last_police_check : last_police_check, 
-				child_protection_check : child_protection_check, 
-				nominated_supervisor : nominated_supervisor 
+				// first_aid_expiry : first_aid_expiry, 
+				// cpr_expiry : cpr_expiry, 
+				// prohibition_notice_declaration : prohibition_notice_declaration, 
+				// vit_card_no : vit_card_no, 
+				// vit_expiry : vit_expiry, 
+				// wwcc_card_no : wwcc_card_no, 
+				// wwcc_expiry : wwcc_expiry, 
+				// food_handling_safety : food_handling_safety, 
+				// last_police_check : last_police_check, 
+				// child_protection_check : child_protection_check, 
+				// nominated_supervisor : nominated_supervisor 
 			},
 			method:'POST',
 			success:function(response){
@@ -1073,7 +1267,7 @@
 			$('.employee-superfund-section').css('display','none');
 			$('.employee-tax-declaration-section').css('display','none');
 			$('.employee-details').css('display','none');
-			$('.employee-info').css('display','none');
+			$('.medical-info').css('display','none');
 		})
 		$(document).on('click','.e-s',function(){
 			$('.employee-bank-account-section').css('display','none')

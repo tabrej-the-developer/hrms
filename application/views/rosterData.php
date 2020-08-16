@@ -89,6 +89,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
     border: 1px solid #D2D0D0 !important;
     border-radius: 20px;
 }
+
 table,tr,td{
 	border:1px solid rgba(0,0,0,0.1)
 }
@@ -192,20 +193,21 @@ max-width:30vw;
 	  display: inline-block;
 	  font-weight: 700;
 	  margin: 2px;
-	  width:8rem;
+	  min-width:6rem;
       border-radius: 20px;
       padding: 8px;
       background: rgb(164, 217, 214);
+      display: flex !important;
 }
 	.buttonn{
 		background-color: #9E9E9E;
-  border: none;
-  color: white;
-  padding: 10px 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 2px;
+	  border: none;
+	  color: white;
+	  padding: 10px 10px;
+	  text-align: center;
+	  text-decoration: none;
+	  display: inline-block;
+	  margin: 2px;
        float:none; 
      font-size: 1rem; 
      font-weight: bolder; 
@@ -365,16 +367,16 @@ max-width:30vw;
   transform: translateY(45px);
 }
 .active,.actived {
-  visibility: visible;
+  visibility: visible !important;
   opacity: 1;
 }
 .active + .modal_priority {
-  visibility: visible;
+  visibility: visible !important;
   opacity: 1;
   transform: translateY(0);
 }
 .actived + .modal_priorityed {
-  visibility: visible;
+  visibility: visible !important;
   opacity: 1;
   transform: translateY(0);
 }
@@ -431,7 +433,7 @@ max-width:30vw;
   opacity: 1;
 }
 .actives + .modal_prioritys {
-  visibility: visible;
+  visibility: visible !important;
   opacity: 1;
   transform: translateY(0);
 }
@@ -452,7 +454,7 @@ max-width:30vw;
   top: 30%;
   left: 50%;
   width: 400px;
-  height: 450px;
+  min-height: 450px;
   margin-left: -200px;
   margin-top: -150px;
   background: #fff;
@@ -518,12 +520,31 @@ max-width:30vw;
       background: rgb(164, 217, 214) !important;
       font-size: 1rem;
 }
+
+.buttonn,
+.button{
+	/*position: absolute;*/
+/*	right: 0;*/
+	  border: none !important;
+	  color: rgb(23, 29, 75) !important;
+	  text-align: center !important;
+	  text-decoration: none !important;
+	  display: inline-block;
+	  font-weight: 700 !important;
+	  margin: 2px !important;
+	  min-width:6rem !important;
+      border-radius: 20px !important;
+      padding: 4px 8px !important;
+      background: rgb(164, 217, 214) !important;
+      font-size: 1rem !important;
+      margin-right:5px !important;
+      justify-content: center !important;
+}
+
 .casualEmploye-btn,
 .priority-btn,
 .print-btn,
 .showBudget,
-.buttonn,
-.button,
 .priority_saveed,
 .add_shift,
 .editPermission-btn,
@@ -543,8 +564,12 @@ max-width:30vw;
       background: rgb(164, 217, 214) !important;
       font-size: 1rem !important;
 }
-
-
+.buttons_group{
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+	display: flex !important;
+	justify-content: center !important;
+}
 .showBudget input{
 	margin-right:0.3rem;
 }
@@ -569,6 +594,7 @@ max-width:30vw;
       padding: 4px 8px;
       background: rgb(164, 217, 214);
       font-size: 1rem;
+      margin-right:15px !important;
 }
 .close_priorityed{
 	  border: none;
@@ -583,6 +609,7 @@ max-width:30vw;
       padding: 4px 8px;
       background: rgb(164, 217, 214);
       font-size: 1rem;
+      margin-right:15px !important;
 }
 
 
@@ -629,6 +656,9 @@ max-width:30vw;
     display: block;
     padding: 0;
     cursor: move
+    }
+    .priority_buttonsed{
+    	padding: 1rem;
     }
     .edit_priority,.edit_prioritys,.edit_priorityed{
     	padding: 0.5rem 0;
@@ -706,6 +736,12 @@ max-width:30vw;
     .print-button:hover button{
     	display: block;
     }
+    .modal_heading{
+    	cursor: move;
+    }
+    .priority_headinged{
+    	cursor: move;
+    }
 
   /* Edit Permission Modal */
   .modal_title{
@@ -729,6 +765,7 @@ max-width:30vw;
 	    padding: 4px 8px;
 	    background: rgb(164, 217, 214);
 	    font-size: 1rem;
+	    margin-right:5px !important;
 		}
 		.modal_outer {
 		  position: fixed;
@@ -747,7 +784,7 @@ max-width:30vw;
 		  top: 30%;
 		  left: 50%;
 		  width: 400px;
-		  height: 450px;
+		  min-height: 450px;
 		  margin-left: -200px;
 		  margin-top: -150px;
 		  background: #fff;
@@ -762,7 +799,7 @@ max-width:30vw;
 		  opacity: 1;
 		}
 		.modal_active + .modal_body{
-		  visibility: visible;
+		  visibility: visible !important;
 		  opacity: 1;
 		  transform: translateY(0);
 		}
@@ -963,7 +1000,7 @@ function timex( $x)
 
 function dateToDay($date){
 	$date = explode("-",$date);
-	return date(",M d",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
+	return date(", M d",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
 }
 
 function icon($str){
@@ -1006,17 +1043,17 @@ function icon($str){
 					if(isset($rosterDetails->startDate)){
 						$startDate = date('Y-m-d', strtotime($rosterDetails->startDate));
 						?>
-					<th id="table-id-2" class="day" style="width:12vw">Mon <?php echo dateToDay($rosterDetails->startDate) ?></th>
-					<th id="table-id-3" class="day"  style="width:12vw">Tue <?php  
+					<th id="table-id-2" class="day" style="width:12vw">Mon<?php echo dateToDay($rosterDetails->startDate) ?></th>
+					<th id="table-id-3" class="day"  style="width:12vw">Tue<?php  
 						$endDate = date( "Y-m-d", strtotime( "$startDate +1 day" ));
 						echo dateToDay($endDate); ?></th>
-					<th id="table-id-4" class="day"  style="width:12vw">Wed <?php 
+					<th id="table-id-4" class="day"  style="width:12vw">Wed<?php 
 						$endDate = date( "Y-m-d", strtotime( "$startDate +2 day" ));
 						echo dateToDay($endDate); ?></th>
-					<th id="table-id-5" class="day"  style="width:12vw">Thu <?php 
+					<th id="table-id-5" class="day"  style="width:12vw">Thu<?php 
 						$endDate = date( "Y-m-d", strtotime( "$startDate +3 day" ));
 						echo dateToDay($endDate); ?></th>
-					<th id="table-id-6" class="day" style="width:12vw">Fri <?php 
+					<th id="table-id-6" class="day" style="width:12vw">Fri<?php 
 						$endDate = date( "Y-m-d", strtotime( "$startDate +4 day" ));
 						echo dateToDay($endDate); }?></th>
 					<th id="table-id-7" class="day"  style="width:12vw">
@@ -1439,6 +1476,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 									<img src="<?php echo base_url('assets/images/icons/delete.png'); ?>" style="max-height:0.8rem;margin-right:10px">
 								</i>Delete</button>
 			</div>
+			<div><i style="font-size: 0.9rem; color:#a2a2a2">* Please select area to get roles</i></div>
 	 	</form>
 	  </div>
 </div>
@@ -2007,9 +2045,9 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 </script>
 <?php }?>
 <script type="text/javascript">
-	$(document).ready(()=>{
+
     $('.containers').css('paddingLeft',$('.side-nav').width());
-});
+
 </script>
 	<script type="text/javascript">
 	function timer( x)
@@ -2316,6 +2354,8 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 $( ".modal_prioritys" ).draggable();
 $( ".modal-content" ).draggable();
 $( ".modal_priority" ).draggable();
+$('.modal_priorityed').draggable();
+$('.modal_body').draggable();
 
 
 </script>

@@ -70,7 +70,7 @@ font-family: 'Open Sans', sans-serif;
 			<div class="col-lg-6 form-group">
 				<label>
 					<i style="color: #aa63ff;" class="fas "></i> Centre-ABN</label>
-				<input class="form-control" type="file" name="" id="centre_abn" placeholder="Centre-ABN" value="">
+				<input class="form-control" type="text" name="" id="centre_abn" placeholder="Centre-ABN" value="" >
 			</div>
 			<div class="col-lg-6 form-group">
 				<label>
@@ -95,12 +95,12 @@ font-family: 'Open Sans', sans-serif;
 			<div class="col-lg-6 form-group">
 				<label>
 					<i style="color: #aa63ff;" class="fas "></i> Centre-approval-doc</label>
-				<input class="form-control" type="file" name="" id="centre_approval_doc" placeholder="Centre-approval-doc" value="">
+				<input class="form-control" type="file" name="" id="centre_approval_doc" placeholder="Centre-approval-doc" value="" onchange="validate('centre_approval_doc')">
 			</div>
 			<div class="col-lg-6 form-group">
 				<label>
 					<i style="color: #aa63ff;" class="fas "></i> Centre-CCS-doc</label>
-				<input class="form-control" type="file" name="" id="centre_ccs_doc" placeholder="Centre-CCS-doc" value="">
+				<input class="form-control" type="file" name="" id="centre_ccs_doc" placeholder="Centre-CCS-doc" value="" onchange="validate('centre_ccs_doc')">
 			</div>
 			<div class="col-lg-6 form-group">
 				<label>
@@ -130,18 +130,18 @@ font-family: 'Open Sans', sans-serif;
 					<h4 class="col-12">Room </h4>
 		           <div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-door-open"></i> Room Name</label>
-					<input type="text" class="form-control" name="" id="" value="" placeholder="Room name">
+					<input type="text" class="room_name" name="" id="" value="" placeholder="Room name">
 				</div>
 		       <div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-chair"></i> Capacity</label>
-								<input type="number" class="form-control" name="" value="" placeholder="Capacity" > 
+								<input type="number" class="capacity_" name="" value="" placeholder="Capacity" > 
 				</div>
 				       <div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-baby"></i> Minimum Age</label>
-					<input type="number" class="form-control" name="" id="" value="" placeholder="Min age in months"></div>
+					<input type="number" class="minimum_age" name="" id="" value="" placeholder="Min age in months"></div>
 					       <div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-child"></i> Maximum Age</label>
-					<input type="number" class="form-control" name="" id="" value="" placeholder="Max age in months" > 
+					<input type="number" class="maximum_age" name="" id="" value="" placeholder="Max age in months" > 
 				</div>
 				</div>
 			</span>	
@@ -158,34 +158,34 @@ font-family: 'Open Sans', sans-serif;
 					<h4 class="col-12">Centre Compliance Information </h4>
 		           <div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-door-open"></i>Compliance-name</label>
-					<input type="text" class="form-control" name="compliance_name" id="" value="" placeholder="Compliance-name">
+					<input type="text" class="compliance_name" name="compliance_name" placeholder="Compliance-name">
 				</div>
 		       <div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-chair"></i>Compliance-desc</label>
-								<input type="number" class="form-control" name="compliance_desc" value="" placeholder="Compliance-desc" > 
+								<input type="text" class="compliance_desc" name="compliance_desc" placeholder="Compliance-desc" > 
 				</div>
 				<div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-baby"></i>Compliance-contact-details</label>
-					<input type="number" class="form-control" name="compliance_contact_details" id="" value="" placeholder="Compliance-contact-details"></div>
+					<input type="text" class="compliance_contact_details" name="compliance_contact_details"placeholder="Compliance-contact-details"></div>
 				<div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-child"></i>Compliance-contact-name</label>
-					<input type="number" class="form-control" name="compliance_contact_name" id="" value="" placeholder="Compliance-contact-name" > 
+					<input type="text" class="compliance_contact_name" name="compliance_contact_name" placeholder="Compliance-contact-name" > 
 				</div>
 				<div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-child"></i>Compliance-contact-number</label>
-					<input type="number" class="form-control" name="compliance_contact_number" id="" value="" placeholder="Compliance-contact-number" > 
+					<input type="text" class="compliance_contact_number" name="compliance_contact_number"  placeholder="Compliance-contact-number" > 
 				</div>
 				<div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-child"></i>Compliance-contact-email</label>
-					<input type="number" class="form-control" name="compliance_contact_email" id="" value="" placeholder="Compliance-contact-email" > 
+					<input type="email" class="compliance_contact_email" name="compliance_contact_email" id="" value="" placeholder="Compliance-contact-email" > 
 				</div>
 				<div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-child"></i>Compliance-expiry-renewal-date</label>
-					<input type="number" class="form-control" name="compliance_expiry_renewal-date" id="" value="" placeholder="Compliance-expiry-renewal-date" > 
+					<input type="date" class="compliance_expiry_renewal_date" name="compliance_expiry_renewal_date"  placeholder="Compliance-expiry-renewal-date" > 
 				</div>
 				<div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-child"></i>Compliance-document</label>
-					<input type="number" class="form-control" name="compliance_document" id="" value="" placeholder="Compliance-document" > 
+					<input type="number" class="compliance_document" name="compliance_document"  placeholder="Compliance-document" > 
 				</div>
 				</div>
 			</span>			 
@@ -204,22 +204,22 @@ font-family: 'Open Sans', sans-serif;
 					<h4 class="col-12">Centre Supplier Information </h4>
 		           <div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-door-open"></i>Supplier-desc</label>
-					<input type="text" class="form-control" name="supplier_desc" id="" value="" placeholder="Supplier-desc">
+					<input type="text" class="supplier_desc" name="supplier_desc"  placeholder="Supplier-desc">
 				</div>
 		       <div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-chair"></i>Supplier-account-no</label>
-								<input type="number" class="form-control" name="supplier_account_no" value="" placeholder="Supplier-account-no" > 
+								<input type="number" class="supplier_account_no" name="supplier_account_no"  placeholder="Supplier-account-no" > 
 				</div>
 				<div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-baby"></i>Supplier-contact-name</label>
-					<input type="number" class="form-control" name="supplier_contact_name" id="" value="" placeholder="Supplier-contact-name"></div>
+					<input type="text" class="supplier_contact_name" name="supplier_contact_name"  placeholder="Supplier-contact-name"></div>
 				<div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-child"></i>Supplier-contact-number</label>
-					<input type="number" class="form-control" name="supplier_contact_number" id="" value="" placeholder="Supplier-contact-number" > 
+					<input type="number" class="supplier_contact_number" name="supplier_contact_number"  placeholder="Supplier-contact-number" > 
 				</div>
 				<div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-child"></i>Supplier-contact-email</label>
-					<input type="number" class="form-control" name="supplier_contact_email" id="" value="" placeholder="Supplier-contact-email" > 
+					<input type="email" class="supplier_contact_email" name="supplier_contact_email" placeholder="Supplier-contact-email" > 
 				</div>
 				</div>
 			</span>			 
@@ -276,29 +276,163 @@ font-family: 'Open Sans', sans-serif;
 		var	addState = $('#center-state').val();
 		var	addZip = $('#center-zip').val();
 		var	name = $('#center-name').val();
-		var	logo = $('#center-logo').val();
-		var	rooms = $('').val();
-		var url = window.location.origin+"/PN101/createCenterProfile"
+		var centre_phone_number = $('#centre_phone_number').val();
+		var centre_mobile_number = $('#centre_mobile_number').val();
+		var Centre_email = $('#Centre_email').val();
+		var centre_abn = $('#centre_abn').val(); //document
+		var centre_acn = $('#centre_acn').val();
+		var centre_se_no = $('#centre_se_no').val();
+		var centre_date_opened = $('#centre_date_opened').val();
+		var centre_capacity = $('#centre_capacity').val();
+		var centre_approval_doc = $('#centre_approval_doc').val(); //document
+		var centre_ccs_doc = $('#centre_ccs_doc').val(); //document
+		var manager_name = $('#manager_name').val();
+		var centre_admin_name = $('#centre_admin_name').val();
+		var centre_nominated_supervisor = $('#centre_nominated_supervisor').val();
+
+		var roomsLength = $('.room_name').length;
+		var complianceLength = $('.compliance_name').length;
+		var supplierLength = $('.supplier_desc').length;
+		var rooms = [];
+		var suppliers = [];
+		var compliances = [];
+
+		function room(room_name,
+									capacity_,
+									minimum_age,
+									maximum_age){
+			return {
+							room_name:room_name,
+							capacity_:capacity_,
+							minimum_age:minimum_age,
+							maximum_age:maximum_age
+						};
+		}
+
+		function compliance(compliance_name,
+											compliance_desc,
+											compliance_contact_details,
+											compliance_contact_name,
+											compliance_contact_number,
+											compliance_contact_email,
+											compliance_expiry_renewal_date,
+											compliance_document){
+			return{
+				compliance_name : compliance_name,
+				compliance_desc : compliance_desc,
+				compliance_contact_details : compliance_contact_details,
+				compliance_contact_name : compliance_contact_name,
+				compliance_contact_number : compliance_contact_number,
+				compliance_contact_email : compliance_contact_email,
+				compliance_expiry_renewal_date : compliance_expiry_renewal_date,
+				compliance_document : compliance_document
+			}
+		}
+		function supplier(supplier_desc,
+												supplier_account_no,
+												supplier_contact_name,
+												supplier_contact_number,
+												supplier_contact_email){
+			return{
+				supplier_desc : supplier_desc,
+				supplier_account_no : supplier_account_no,
+				supplier_contact_name : supplier_contact_name,
+				supplier_contact_number : supplier_contact_number,
+				supplier_contact_email : supplier_contact_email
+			}
+		}
+
+		for(let i=0;i<roomsLength;i++){
+			var room_name = $('.room_name').eq(i).val()
+			var capacity_ = $('.capacity_').eq(i).val()
+			var minimum_age = $('.minimum_age').eq(i).val()
+			var maximum_age = $('.maximum_age').eq(i).val()
+			rooms.push(room(room_name,capacity_,minimum_age,maximum_age));
+		}
+		for(let i=0;i<complianceLength;i++){
+			var compliance_name = $('.compliance_name').eq(i).val();
+			var compliance_desc = $('.compliance_desc').eq(i).val();
+			var compliance_contact_details = $('.compliance_contact_details').eq(i).val();
+			var compliance_contact_name = $('.compliance_contact_name').eq(i).val();
+			var compliance_contact_number = $('.compliance_contact_number').eq(i).val();
+			var compliance_contact_email = $('.compliance_contact_email').eq(i).val();
+			var compliance_expiry_renewal_date = $('.compliance_expiry_renewal_date').eq(i).val();
+			var compliance_document = $('.compliance_document').eq(i).val();
+			suppliers.push(supplier(compliance_name,compliance_desc,compliance_contact_details,compliance_contact_name,compliance_contact_number,compliance_contact_email,compliance_expiry_renewal_date,compliance_document));
+		}
+		for(let i=0;i<supplierLength;i++){
+			var supplier_desc = $('.supplier_desc').eq(i).val();
+			var supplier_account_no = $('.supplier_account_no').eq(i).val();
+			var supplier_contact_name = $('.supplier_contact_name').eq(i).val();
+			var supplier_contact_number = $('.supplier_contact_number').eq(i).val();
+			var supplier_contact_email = $('.supplier_contact_email').eq(i).val();
+			compliances.push(compliance(compliance_name,compliance_desc,compliance_contact_details,compliance_contact_name,compliance_contact_number,compliance_contact_email,compliance_expiry_renewal_date,compliance_document));;
+		}
+
+		var url = window.location.origin+"/PN101/settings/createCenterProfile"
 		$.ajax({
 			url: url,
 			type:'POST',
 			data:{
-				addStreet : addStreet,
-				addCity : addCity ,
-				addState : addState ,
-				addZip : addZip ,
-				name : name ,
-				logo : logo ,
-				rooms : rooms ,
+					addStreet : addStreet,
+					addCity : addCity,
+					addState : addState,
+					addZip : addZip,
+					name : name,
+					centre_phone_number : centre_phone_number,
+					centre_mobile_number : centre_mobile_number,
+					Centre_email : Centre_email,
+					centre_abn : centre_abn,
+					centre_acn : centre_acn,
+					centre_se_no : centre_se_no,
+					centre_date_opened : centre_date_opened,
+					centre_capacity : centre_capacity,
+					centre_approval_doc : centre_approval_doc,
+					centre_ccs_doc : centre_ccs_doc,
+					manager_name : manager_name,
+					centre_admin_name : centre_admin_name,
+					centre_nominated_supervisor : centre_nominated_supervisor,	
+					rooms : rooms,
+					suppliers : suppliers,
+					compliances : compliances
+			},
+			success:function(response) {
+				console.log(response)
 			}
 		}) 
 		})
 	})
 </script>
+
 <script type="text/javascript">
   $(document).ready(()=>{
     $('#wrapper-element').css('paddingLeft',$('.side-nav').width());
 });
 </script>
+<script type="text/javascript">
+	function validate(variable){
+		if(($('#'+variable)[0].files[0].size)/(1024*1024) < 4){
+			
+		}else{
+			$('#'+variable).val('');
+			alert('File size must be less than 4MB')
+		}
+	}
+</script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

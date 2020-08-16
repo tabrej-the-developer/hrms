@@ -39,7 +39,11 @@
 	  height: 8rem;
 	  padding-left: 0 !important;
 	  padding-right: 0 !important;
+    cursor: pointer;
 	}
+  .cardItem > span:hover{
+    box-shadow: 0 0 10px 3px rgba(0,0,0,0.3);
+  }
 	.cardItem > span{
 		min-height: 100%;
 		display: block;
@@ -131,10 +135,13 @@
 		overflow: visible !important;
 	}
 	.fc-daygrid-day.fc-day{
-		background: #E7E7E7 !important;
+		background: #D2D0D0  ;
 		border-radius: 20px;
 		/*height: 100px !important;*/
 	}
+  .fc-day-other{
+    background: #E7E7E7 !important;
+  }
 
 	.fc-day.fc-day-today{
 		background: #8D91AA !important;
@@ -451,7 +458,7 @@ font-family: 'Open Sans', sans-serif;
   form{
         padding: 0 1rem 0 3rem;
   }
-  a{
+  .calendar_text{
   	color: white !important;
   }
 .table td{
@@ -753,6 +760,13 @@ table.dataTable thead th, table.dataTable thead td{
     width: 50%;
     border-radius: 0.5rem;
 }
+  #mom_button{
+    padding:0.25rem
+  }
+  .icon_i{
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
 .show-modal {
     opacity: 1;
     visibility: visible;
@@ -852,7 +866,7 @@ color:#FFFFFF;
 		<div class="row mr-0 mt-3 cardContainer pl-4 pr-4">
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewTimesheetYN : "N") == "Y"){ ?>
 			<span class="col-3 cardItem pr-4" >
-				<span class="row p-0 m-0">
+				<span class="row p-0 m-0 timesheets">
 					<span class="col-6 dashboard-icons" style="background:rgba(0, 84, 254,0.07)">
 						<img src="<?php echo base_url('assets/images/dashboard-icons/timesheets.png'); ?>">
 					</span>
@@ -867,7 +881,7 @@ color:#FFFFFF;
 <?php } ?>
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewRosterYN : "N") == "Y"){ ?>
 			<span class="col-3 cardItem pr-4" >
-				<span class="row p-0 m-0">
+				<span class="row p-0 m-0 roster">
 					<span class="col-6 dashboard-icons" style="background:rgba(254, 237, 242)">
 						<img src="<?php echo base_url('assets/images/dashboard-icons/roster.png'); ?>">
 					</span>
@@ -882,7 +896,7 @@ color:#FFFFFF;
 <?php } ?>
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewPayrollYN : "N") == "Y"){ ?>
 			<span class="col-3 cardItem pr-4" >
-				<span class="row p-0 m-0">
+				<span class="row p-0 m-0 payrolls">
 					<span class="col-6 dashboard-icons" style="background:rgba(233, 255, 208)">
 						<img src="<?php echo base_url('assets/images/dashboard-icons/payrolls.png'); ?>">
 					</span>
@@ -897,7 +911,7 @@ color:#FFFFFF;
 <?php } ?>
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewLeaveTypeYN : "N") == "Y"){ ?>
 			<span class="col-3 cardItem " >
-				<span class="row p-0 m-0">
+				<span class="row p-0 m-0 onLeave">
 					<span class="col-6 dashboard-icons" style="background:rgba(253, 188, 0,0.18)">
 						<img src="<?php echo base_url('assets/images/dashboard-icons/onLeave.png'); ?>">
 					</span>
@@ -942,7 +956,12 @@ color:#FFFFFF;
 			<span class="button_class">
 				<span class="events_title">Events</span>
 				<span class="ml-auto">
-					<button id="mom_button" type="button"  class="button" data-toggle="modal" data-target="#myModal"> Add New Event</button>
+					<button id="mom_button" type="button"  class="button" data-toggle="modal" data-target="#myModal">
+            <i style="padding-right:0.5rem;padding-left:0.5rem">
+              <img src="<?php echo base_url('assets/images/icons/addEvent_calendar.png'); ?>" style="max-height:0.8rem">
+            </i>
+            <span style="padding-right:0.5rem">Add Event</span>
+          </button>
 				</span>
 			</span>
 		</div>
@@ -952,12 +971,16 @@ color:#FFFFFF;
 				<div class="upcoming_events_title text-center">Upcoming Events</div>
 				<div> <?php 
 				$array = [];
+        $date = date('Y-m-d');
+        $monthAndDate = date('m-d'); 
 				$calendarBirthdays = isset($calendar) ? 
 														 ( isset(json_decode($calendar)->birthdays) ?
 														 				 json_decode($calendar)->birthdays : "") : "";
+
 				$calendarAnniversaries = isset($calendar) ?
 														(isset(json_decode($calendar)->anniversary) ? 
 																			json_decode($calendar)->anniversary : "") : "" ; 
+
 					if((count($calendarAnniversaries) != 0)	|| (count($calendarBirthdays) != 0 )){
 						if((count($calendarAnniversaries) != 0) && (count($calendarBirthdays) != 0 )){
 								$array = array_merge($calendarBirthdays[0]->birthday,$calendarAnniversaries[0]->anniversary);
@@ -967,15 +990,36 @@ color:#FFFFFF;
 										}
 					if((count($calendarAnniversaries) == 0) && (count($calendarBirthdays) != 0 )){
 								$array = $calendarBirthdays[0]->birthday;
-										} ?>
-							<div>
-								<span class="col-12 event_date">Title</span>
-								<div class="d-flex event_box">
-									<span class="col-4 event_title">Event Name</span>
-									<span class="col-8 event_details">Details</span>
+										} 
+
+
+              
+
+                    ?>
+                    <?php if(count($array) > 0){ ?>
+							<div >
+              <?php  foreach($array as $arr){ ?>
+                    <?php if(date('m') == date('m',strtotime($arr->dateOfBirth))){
+                      $eventType = 'Birthday';
+                      $eventDate = date('M,d',strtotime($arr->dateOfBirth));
+                    }if(date('m') == date('m',strtotime($arr->startDate))){
+                      $eventType = 'Anniversary';
+                      $eventDate = date('M,d',strtotime($arr->startDate));
+                    }
+                    if((date('m') == date('m',strtotime($arr->startDate))) && (date('m') == date('m',strtotime($arr->dateOfBirth)))){
+                        $eventType = 'Anniversary & Birthday';
+                    }
+                     ?>
+								<span class="col-12 event_date" style="font-size:1rem;padding-top:0.5rem;padding-bottom:0.5rem"><?php echo $eventDate; ?></span>
+								<div class="d-flex event_box" style="font-size:0.75rem;font-weight:700;padding-top:0.5rem;padding-bottom:0.5rem">
+									<span class="col-4 event_title"><?php echo $eventType; ?></span>
+									<span class="col-8 event_details">
+                    <?php echo $arr->fname.'  '.$arr->lname ?>
+                  </span>
 								</div>
+              <?php } ?>
 							</div>				
-				<?php	}
+				<?php	} }
 				?></div>
 			</div>
 
@@ -1112,7 +1156,7 @@ color:#FFFFFF;
                <input type="FILE" name="agendaFile" id="hide" class="agendaFile" onchange=" return validate()">
              </div>
             <span class="click-add">
-              <i>
+              <i class="icon_i">
                 <img src="<?php echo base_url('assets/images/circle_plus.png');?>" height="25px">
               </i>
             </span>
@@ -1392,6 +1436,30 @@ $('#toggle').remove();
         $('.agenda').last().remove();
         // alert( $('.agenda').length )
       }
+    })
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+<?php if((isset($permissions->permissions) ? $permissions->permissions->viewTimesheetYN : "N") == "Y"){ ?>
+      $(document).on('click','.timesheets',function(){
+        window.location.href = window.location.origin+"/PN101/Timesheet";
+      })
+<?php } ?>
+<?php if((isset($permissions->permissions) ? $permissions->permissions->viewRosterYN : "N") == "Y"){ ?>
+      $(document).on('click','.roster',function(){
+        window.location.href = window.location.origin+"/PN101/Roster";
+      })
+<?php } ?>
+<?php if((isset($permissions->permissions) ? $permissions->permissions->viewPayrollYN : "N") == "Y"){ ?>
+      $(document).on('click','.payrolls',function(){
+        window.location.href = window.location.origin+"/PN101/Payroll";
+      })
+<?php } ?>
+<?php if((isset($permissions->permissions) ? $permissions->permissions->viewLeaveTypeYN : "N") == "Y"){ ?>
+      $(document).on('click','.onLeave',function(){
+        window.location.href = window.location.origin+"/PN101/Leave";
+      })
+<?php } ?>
     })
   </script>
 </body>

@@ -5,7 +5,7 @@ class Roster extends CI_Controller {
 
 	public function index(){
 		if($this->session->has_userdata('LoginId')){
-			$this->load->view(base_url().'roster/roster_dashboard');
+			redirect('roster/roster_dashboard');
 				}
 		else{
 			$this->load->view('redirectToLogin');

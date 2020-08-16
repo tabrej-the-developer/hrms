@@ -33,7 +33,7 @@ $nth_child = 0;
     // case strtolower("Notice"):
     //   $nth_child = 8;
     //   break;
-    case strtolower("Reports"):
+    case strtolower("Notice"):
       $nth_child = 7;
       break;
     // case strtolower("Settings"):
@@ -42,7 +42,15 @@ $nth_child = 0;
     case strtolower("MOM"):
       $nth_child = 8;
       break;
+      default:
+      $nth_child = null;
   }
+  switch($url_page_array[array_search("PN101",$url_page_array) + 1]){
+    case strtolower("settings"):
+      $nth_child_div = 1;
+      break;
+}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -76,6 +84,19 @@ $nth_child = 0;
 <style type="text/css">
   *{
 font-family: 'Open Sans', sans-serif;
+
+  }
+  input:focus{
+    outline: none !important;
+  }
+  .button,.buttonn{
+    margin-right:5px;
+  }
+  button:focus{
+    outline: none !important;
+  }
+  select:focus{
+    outline: none !important;
   }
 
  body{/* background:#f9f9f9; */}
@@ -146,9 +167,15 @@ font-family: 'Open Sans', sans-serif;
     background:#142059 !important;
   padding: 0 0 0 20px;
 }
+<?php if($nth_child != null){ ?>
 .nav-item-header:nth-of-type(<?php echo $nth_child ;?>){
   background:white !important;
   padding: 0 0 0 20px;
+}
+.nav-item-header:nth-of-type(<?php echo $nth_child ;?>) a{
+ font-weight: 500;
+  color: #307bd3 !important;
+  font-size: 1rem;
 }
 .nav-item-header:nth-of-type(<?php echo $nth_child ;?>)::before{
   display: flex;
@@ -161,6 +188,28 @@ font-family: 'Open Sans', sans-serif;
   border-left:3px solid #307bd3;
   margin-top:5px;
 }
+<?php }else{ ?>
+.nav-item-header-div:nth-of-type(<?php echo $nth_child_div; ?>){
+  background:white !important;
+  padding: 0 0 0 20px;
+}
+.nav-item-header-div:nth-of-type(<?php echo $nth_child_div ;?>) a{
+ font-weight: 500;
+  color: #307bd3 !important;
+  font-size: 1rem;
+}
+.nav-item-header-div:nth-of-type(<?php echo $nth_child_div; ?>)::before{
+  display: flex;
+  margin-left:-15px;
+  align-items: center;
+  content: "";
+  position: absolute;
+  height: 40px;
+  padding:5px;
+  border-left:3px solid #307bd3;
+  margin-top:5px;
+}
+<?php } ?>
 .nav-item-header a{
   font-weight: 500;
   color: rgba(255,255,255,.5) !important; ;
@@ -182,11 +231,7 @@ font-family: 'Open Sans', sans-serif;
   font-size: 1rem;
 }
 
-.nav-item-header:nth-of-type(<?php echo $nth_child ;?>) a{
- font-weight: 500;
-  color: #307bd3 !important;
-  font-size: 1rem;
-}
+
 .fixed-top{
   z-index: 0 !important;
 }
