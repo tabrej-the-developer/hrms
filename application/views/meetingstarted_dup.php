@@ -19,9 +19,11 @@ font-family: 'Open Sans', sans-serif;
            
         /* }  */
         
-        /* .card-body {
-            padding: 0rem 1.25rem;
-        } */
+         .card-body {
+            background: white;
+            height: calc(100vh - 12rem);
+            overflow: auto;
+            } 
         
         p {
             margin-top: 0;
@@ -479,15 +481,37 @@ input[type="text"],input[type=time],select,#casualEmp_date,textarea{
       margin-right:5px !important;
       justify-content: center !important;
 }
+.card{
+  position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    /* min-width: 0; */
+    word-wrap: break-word;
+     background-color: transparent;
+     background-clip: border-box;
+    border: none;
+    padding: 0 2rem;
+    box-shadow: none;
+    border-radius: .25rem;
+}
+.bg-default{
+  display: flex;
+    justify-content: center;
+    background: white;
+    padding: 1rem
+}
 </style>
 </head>
 <body style="background-color:#eee;">
  <div class="containers">
-  
- <div class="card">
-  <div class="card-header">
-  Meeting Onboard
+  <div class="d-flex heading-bar">
+    <span class="m-3" style="font-size: 1.75rem;font-weight: bold;color: rgb(23, 29, 75) !important;padding-left:1rem">  Meeting Onboard</span>
+    <span class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
   </div>
+ <div class="card">
+
   <?php 
 
 $present = json_decode($present);
@@ -518,18 +542,14 @@ $present = json_decode($present);
             </i>
         </button>
      </div>
-   
    </div>
     </div>
-  
- 
- 
-  <div class="card-footer bg-default">
+     <div class="bg-default">
        <button type="submit" class="button ">
             <i>
               <img src="<?php echo base_url('assets/images/icons/close.png'); ?>" style="max-height:0.8rem;margin-right:10px">
             </i>End</button>
-  </div>
+      </div>
   </form>
 </div>
  </div>
@@ -541,7 +561,7 @@ $present = json_decode($present);
      var div = document.getElementsByClassName('card-body');
      var row = document.createElement('div');
      row.classList.add('row');
- row.innerHTML = '<div class="col-md-4"><div class="form-group ml-2 mt-2"><select name="invites[]" id="" class="form-control"><?php for($j = 0 ; $j < $len;$j++){ ?><option value="<?php echo $present[$j]->uid; ?>"><?php echo $present[$j]->uid; ?></option><?php } ?></select></div></div><div class="col-md-6  mt-2"><div class="form-group"><textarea name="sentence[]" id="" cols="30" rows="1" class="form-control"></textarea></div></div><div class="col-md-2 mt-2"><button type="button" onclick="addMore()" class="btn button"><i><img src="<?php echo base_url('assets/images/icons/plus.png'); ?>" style="max-height:0.8rem;margin-right:10px"></i></button></div></div>';
+ row.innerHTML = '<div class="col-md-4"><div class="form-group ml-2 mt-2"><select name="invites[]" id="" class="form-control"><?php for($j = 0 ; $j < $len;$j++){ ?><option value="<?php echo $present[$j]->uid; ?>"><?php echo $present[$j]->email; ?></option><?php } ?></select></div></div><div class="col-md-6  mt-2"><div class="form-group"><textarea name="sentence[]" id="" cols="30" rows="1" class="form-control"></textarea></div></div><div class="col-md-2 mt-2"><button type="button" onclick="addMore()" class="btn button"><i><img src="<?php echo base_url('assets/images/icons/plus.png'); ?>" style="max-height:0.8rem;margin-right:10px"></i></button></div></div>';
     div[0].appendChild(row);
  }
 
