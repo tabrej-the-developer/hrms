@@ -5,7 +5,9 @@
 </style>
 <head>
 	<title></title>
+
 		<?php $this->load->view('header'); ?>
+
 <meta content="width=device-width, initial-scale=1" name="viewport" />
 	<title>Roster</title>
 <!--	
@@ -818,7 +820,15 @@ max-width:30vw;
 			margin: 10%;
 		}
   /* Edit Permission Modal */
-
+.tokenize{
+	width:60%;
+}
+.tokens-container{
+	width:100%;
+	border-radius: 20px;
+	background: #ebebeb;
+  border: 1px solid #D2D0D0 !important;
+}
 
 @media print{
 	td:nth-child(7),th:nth-child(7){
@@ -895,7 +905,8 @@ max-width:30vw;
 
 </head>
 <body>
-
+<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/tokenize2.css">
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tokenize2.js"></script>
 	<?php 
 		$rosterDetails = json_decode($rosterDetails); 
 		$entitlement = json_decode($entitlements);
@@ -1613,7 +1624,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 <div class="modal_outer" ></div>
 <div class="modal_body" >
 	<span class="modal_heading" >
-		<a class="text-center  modal_title " style="padding:1rem 0">Edit Permissions</a>
+		<a class="text-center  modal_title " style="padding:1rem 0">Edit Permission</a>
 	</span>
 		<div class="modal_main">
 			<span class="span-class center-class">
@@ -2588,6 +2599,11 @@ $('.modal_body').draggable();
 
 	 	})
 	 }
+</script>
+<script type="text/javascript">
+	    $(document).ready(function(){
+        $('#casualEmp_id').tokenize2();
+    });
 </script>
 </body>
 </html>

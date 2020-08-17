@@ -404,8 +404,9 @@ font-family: 'Open Sans', sans-serif;
     width: 100%;
     background: rgba(231, 231, 231, 1);
   }
-  .agendafile{
+  .agendaFile{
   	opacity: 0;
+    height:100%;
   }
   .add_member_span{
     width: 78%;
@@ -1038,7 +1039,7 @@ color:#FFFFFF;
       <div class="modal-content">
         <div class="modal-header ">
     
-          <h3 class="modal-title ">Schedule New Meeting</h3>
+          <h3 class="modal-title ">Schedule New Event</h3>
         </div>
         <div class="modal-body container">
              <form method="post" action="<?php echo base_url() ?>mom/addMeeting">
@@ -1153,7 +1154,8 @@ color:#FFFFFF;
           <div class="agenda_block">
              <span style="position: absolute;margin-top: -15px;margin-left: 70px;background: white;padding:0 0.25rem">Agenda</span> 
              <div id="agendaFile">
-               <input type="FILE" name="agendaFile" id="hide" class="agendaFile" onchange=" return validate()">
+              <span style="color:#8D91AA;margin-left: 1rem;position: absolute;" class="add_file" >Add File</span>
+               <input type="FILE" name="agendaFile" id="hide" class="agendaFile" onchange="add_file()" onchange=" return validate()">
              </div>
             <span class="click-add">
               <i class="icon_i">
@@ -1177,8 +1179,14 @@ color:#FFFFFF;
        
         <div class="modal-footer">
         <div class="m_footer" style="margin:auto">
-          <button type="button" class="btn button_form clos" data-dismiss="modal">Close</button>
-          <button class="btn button_form">Submit</button>
+          <button type="button" class="btn button_form clos" data-dismiss="modal">
+            <i style="padding-right:0.5rem;padding-left:0.5rem">
+              <img src="<?php echo base_url('assets/images/icons/close.png'); ?>" style="max-height:0.8rem">
+            </i>Close</button>
+          <button class="btn button_form">
+            <i style="padding-right:0.5rem;padding-left:0.5rem">
+              <img src="<?php echo base_url('assets/images/icons/send.png'); ?>" style="max-height:0.8rem">
+            </i>Submit</button>
           </div>
         </div>
         </form>
@@ -1461,6 +1469,15 @@ $('#toggle').remove();
       })
 <?php } ?>
     })
+  </script>
+  <script type="text/javascript">
+    function add_file(){
+      if($('.agendaFile').val() == "" || $('.agendaFile').val() ==  null){
+        $('.add_file').text('Add File')
+      }else{
+        $('.add_file').text($('.agendaFile')[0].files[0].name)
+      }
+    }
   </script>
 </body>
 </html>

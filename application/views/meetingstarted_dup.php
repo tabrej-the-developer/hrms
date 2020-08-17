@@ -69,11 +69,15 @@ font-family: 'Open Sans', sans-serif;
 			    box-shadow: 0 3px 10px rgba(0,0,0,.1);
 
 		}
+    .card-footer{
+      justify-content: flex-end;
+    display: flex;
+    }
 		.modal-header {
 			border-bottom:none;
 			border-top-left-radius:0;
 			border-top-right-radius:0;
-			background-color: #307bd3;
+			background-color: #8D91AA;
 			color: #fff;
            
 		}
@@ -258,6 +262,13 @@ table#main-table tr:nth-child(odd){
     background-color:#2196f3;
     color:white;
 }
+.card-header{
+  background: #8D91AA;
+  color: #E7E7E7;
+  font-size: 1.3rem;
+  display: flex;
+  justify-content: center;
+}
 /* .container{
     background-color:#607d8bc9 !important;
 } */
@@ -378,10 +389,7 @@ input#add_meeting{
 /* .dropdown a:hover {background-color: #ddd;} */
 
 .show {display: block;}
-.card-header{
-    color:white;
-    font-size:28px;
-}
+
 .user{
     display:block;
     margin:auto;
@@ -444,7 +452,32 @@ input[type=checkbox]:checked:before {
     font-size:22px;
     border-radius:50px;
     text-align:center;
-
+}
+input[type="text"],input[type=time],select,#casualEmp_date,textarea{
+  background: #ebebeb !important;
+  border-radius: 5px !important;
+    padding: 5px !important;
+    border: 1px solid #D2D0D0 !important;
+    border-radius: 20px !important;
+}
+.buttonn,
+.button{
+  /*position: absolute;*/
+/*  right: 0;*/
+    border: none !important;
+    color: rgb(23, 29, 75) !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    display: inline-block;
+    font-weight: 700 !important;
+    margin: 2px !important;
+    min-width:6rem !important;
+      border-radius: 20px !important;
+      padding: 4px 8px !important;
+      background: rgb(164, 217, 214) !important;
+      font-size: 1rem !important;
+      margin-right:5px !important;
+      justify-content: center !important;
 }
 </style>
 </head>
@@ -452,7 +485,7 @@ input[type=checkbox]:checked:before {
  <div class="containers">
   
  <div class="card">
-  <div class="card-header bg-primary">
+  <div class="card-header">
   Meeting Onboard
   </div>
   <?php 
@@ -468,7 +501,7 @@ $present = json_decode($present);
        <div class="form-group ml-2 mt-2">
            <select name="invites[]" id="" class="form-control">
                <?php for($i = 0; $i < $len; $i++) { ?>
-               <option value="<?php echo $present[$i]->uid ?>"><?php echo $present[$i]->uid; ?></option>
+               <option value="<?php echo $present[$i]->uid ?>"><?php echo $present[$i]->email; ?></option>
                <?php } ?>
            </select>
        </div>
@@ -479,7 +512,11 @@ $present = json_decode($present);
        </div>
      </div>
      <div class="col-md-2 mt-2">
-        <button type="button" onclick="addMore()" class="btn btn-primary">+</button>
+        <button type="button" onclick="addMore()" class="btn button">
+            <i>
+              <img src="<?php echo base_url('assets/images/icons/plus.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+            </i>
+        </button>
      </div>
    
    </div>
@@ -488,7 +525,10 @@ $present = json_decode($present);
  
  
   <div class="card-footer bg-default">
-       <button type="submit" class="btn btn-primary">End</button>
+       <button type="submit" class="button ">
+            <i>
+              <img src="<?php echo base_url('assets/images/icons/close.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+            </i>End</button>
   </div>
   </form>
 </div>
@@ -501,7 +541,7 @@ $present = json_decode($present);
      var div = document.getElementsByClassName('card-body');
      var row = document.createElement('div');
      row.classList.add('row');
- row.innerHTML = '<div class="col-md-4"><div class="form-group ml-2 mt-2"><select name="invites[]" id="" class="form-control"><?php for($j = 0 ; $j < $len;$j++){ ?><option value="<?php echo $present[$j]->uid; ?>"><?php echo $present[$j]->uid; ?></option><?php } ?></select></div></div><div class="col-md-6  mt-2"><div class="form-group"><textarea name="sentence[]" id="" cols="30" rows="1" class="form-control"></textarea></div></div><div class="col-md-2 mt-2"><button type="button" onclick="addMore()" class="btn btn-primary">+</button></div></div>';
+ row.innerHTML = '<div class="col-md-4"><div class="form-group ml-2 mt-2"><select name="invites[]" id="" class="form-control"><?php for($j = 0 ; $j < $len;$j++){ ?><option value="<?php echo $present[$j]->uid; ?>"><?php echo $present[$j]->uid; ?></option><?php } ?></select></div></div><div class="col-md-6  mt-2"><div class="form-group"><textarea name="sentence[]" id="" cols="30" rows="1" class="form-control"></textarea></div></div><div class="col-md-2 mt-2"><button type="button" onclick="addMore()" class="btn button"><i><img src="<?php echo base_url('assets/images/icons/plus.png'); ?>" style="max-height:0.8rem;margin-right:10px"></i></button></div></div>';
     div[0].appendChild(row);
  }
 

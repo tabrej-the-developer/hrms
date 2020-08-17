@@ -50,13 +50,13 @@ class MeetingModel extends CI_MODEL{
   }
   public function getPartcipant($id){
       $this->load->database();
-      $query = "select * from participants where m_id='$id'";
+      $query = "SELECT * from participants inner join users on users.id = participants.user_id  where m_id='$id'";
       $q1 = $this->db->query($query);
       return $q1->result();
   }
   public function getPresent($id){
       $this->load->database();
-      $query = "select * from participants where status = 'P' and m_id='$id' ";
+      $query = "SELECT * from participants inner join users on users.id = participants.user_id where status = 'P' and m_id='$id' ";
       $result = $this->db->query($query);
       return $result->result();
   }

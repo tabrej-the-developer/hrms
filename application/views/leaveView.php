@@ -40,6 +40,11 @@
       background: #8D91AA;
       color: #F3F4F7;
     }
+    label{
+      font-weight: 700;
+      padding-top:1rem;
+      margin-bottom:0;
+    }
 	.containers{
 		background:	rgb(243, 244, 247);
 		height: calc(100vh);
@@ -48,7 +53,15 @@
     width:100%;
     display: flex;
   }
-  
+    .leave_balance{
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      font-size: 2rem;
+      align-items: center;
+      width: 100%;
+      font-weight:700;
+      }
 		.leave-heading{
 			font-size: 1.75rem;
 			font-weight: bolder
@@ -343,6 +356,13 @@ table.dataTable{
         transform: scale(1.0);
         transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
     }
+input[type="date"],input[type=time]{
+  background: #ebebeb;
+  border-radius: 5px;
+    padding: 5px;
+    border: 1px solid #D2D0D0 !important;
+    border-radius: 20px;
+}
  	.buttonn{
 		background-color: #9E9E9E;
   border: none;
@@ -367,7 +387,7 @@ table.dataTable{
     display: inline-block !important;
     font-weight: 700 !important;
     margin: 2px !important;
-    width:auto !important;
+    min-width: 8rem !important;
       border-radius: 20px !important;
       padding: 8px !important;
       background: rgb(164, 217, 214) !important;
@@ -1009,22 +1029,18 @@ table.dataTable{
 								<div class="col-md-6" style="padding-left:0">
 									<div class="md-form">
 										<label>Start Date</label>
-										<div class="input-group date" id="datetimepicker12" data-target-input="nearest">
-										<input type="text" name="applyLeaveFromDate" id="applyLeaveFromDate" class="form-control datetimepicker-input" data-target="#datetimepicker12"  />
-										<div class="input-group-append" data-target="#datetimepicker12" data-toggle="datetimepicker">
-                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+										<div class="input-group date" >
+										<input type="date" name="applyLeaveFromDate" id="applyLeaveFromDate" class=""  placeholder="dd-mm-yyyy"/>
+
 										</div>
 										</div>
 									</div>
-								</div>
+
 								<div class="col-md-6">
 									<div class="md-form" style="padding-left:0">
 									<label>End Date</label>
-									<div class="input-group date" id="datetimepicker13" data-target-input="nearest">
-                                    <input type="text" name="applyLeaveToDate" id="applyLeaveToDate" class="form-control datetimepicker-input" data-target="#datetimepicker13"  />
-                                    <div class="input-group-append" data-target="#datetimepicker13" data-toggle="datetimepicker">
-                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                    </div>
+									<div class="input-group date" id="datetimepicker13" >
+                    <input type="date" name="applyLeaveToDate" id="applyLeaveToDate" placeholder="dd-mm-yyyy"/>
 									</div>
 									</div>
 								</div>
@@ -1054,10 +1070,16 @@ table.dataTable{
 					</div>
 					<div class="text-center mt-2 mb-4 f-flex">
 						<span>
-							<button class=" button apply_leave" type="button" onclick="applyLeave()" >Apply</button>
+							<button class=" button apply_leave" type="button" onclick="applyLeave()" >
+            <i>
+              <img src="<?php echo base_url('assets/images/icons/tick.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+            </i>Apply</button>
 						</span>
 						<span>
-							<button type="button" class="close button" data-dismiss="modal" aria-label="Close">Close</button>
+							<button type="button" class="close button" data-dismiss="modal" aria-label="Close">
+            <i>
+              <img src="<?php echo base_url('assets/images/icons/close.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+            </i>Close</button>
 						</span>
 					</div>
                     </div>
@@ -1400,11 +1422,32 @@ else{
         }
         $(document).on('keyup','#total-leave-hours',function(){
           if($('#applyLeaveId').val() != null){
-            if($('#total-leave-hours').val() > parseFloat($('.leave_balance').text())){
-              alert('You have completely used you leaves')
+              $('.leave_balance').text(`${
+                parseFloat((parseFloat($('#applyLeaveId :selected').attr('balance')).toFixed(2)) - ($('#total-leave-hours').val())).toFixed(2)
+              }`)
+              console.log()
+            if($('#total-leave-hours').val() > (parseFloat($('#applyLeaveId :selected').attr('balance')).toFixed(2))){
+              $('.total-leave-hours').text('Exceeded Leaves Limit')
               $('.apply_leave').prop('disabled',true)
             }
           else{
+            $('.total-leave-hours').empty()
+            $('.apply_leave').prop('disabled',false)
+          }
+          }
+        })
+        $(document).on('change','#total-leave-hours',function(){
+          if($('#applyLeaveId').val() != null){
+              $('.leave_balance').text(`${
+                parseFloat((parseFloat($('#applyLeaveId :selected').attr('balance')).toFixed(2)) - ($('#total-leave-hours').val())).toFixed(2)
+              }`)
+              console.log()
+            if($('#total-leave-hours').val() > (parseFloat($('#applyLeaveId :selected').attr('balance')).toFixed(2))){
+              $('.total-leave-hours').text('Exceeded Leaves Limit')
+              $('.apply_leave').prop('disabled',true)
+            }
+          else{
+            $('.total-leave-hours').empty()
             $('.apply_leave').prop('disabled',false)
           }
           }
