@@ -281,12 +281,6 @@ border-bottom-right-radius: 20px;
     select {
     -webkit-appearance: none
 }
-    select{
-      background: #ebebeb !important;
-      border-radius: 5px;
-        padding: 5px;
-        border: 2px solid #e9e9e9 !important;
-    }
 input[type=checkbox] + label {
   display: block;
   margin: 0.2em;
@@ -331,7 +325,35 @@ input[type=checkbox]:checked + label:before {
 tbody{
 	padding-bottom: 16rem;
 }
-
+.buttonn,
+.button,
+button[type=button]{
+  /*position: absolute;*/
+/*  right: 0;*/
+    border: none !important;
+    color: rgb(23, 29, 75) !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    display: inline-block;
+    font-weight: 700 !important;
+    margin: 2px !important;
+    min-width:6rem !important;
+      border-radius: 20px !important;
+      padding: 4px 8px !important;
+      background: rgb(164, 217, 214) !important;
+      font-size: 1rem !important;
+      margin-right:5px !important;
+      justify-content: center !important;
+}
+    select{
+	background: rgb(164, 217, 214) !important;
+	font-weight: 700 !important;
+	color: rgb(23, 29, 75) !important;
+	border-radius: 20px !important;
+    padding: 5px !important;
+    padding-left: 20px !important;
+    border: 2px solid #e9e9e9 !important;
+		}
 @media only screen and (max-width:1024px) {
 .modal-content{
 	min-width:100vw;
@@ -570,7 +592,10 @@ tbody{
 	</div>
 <?php  if((isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N") == "Y"){ ?>
 <div class="button-class" style="">
-	<button onclick="savePermission()" class="button">Save</button>
+	<button onclick="savePermission()" class="button">
+            <i>
+              <img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+            </i>Save</button>
 </div>
 <?php  } ?>
 		</div>

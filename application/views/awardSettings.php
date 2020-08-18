@@ -244,16 +244,26 @@ border-bottom-right-radius: 20px;
 			height: 100%;
 						overflow-y: auto;
 		}
-				button{
-			line-height: 1rem;
-			display: flex;
-			background: #142059;
-    	color: white;
-    	border-radius: 5px;
-    	border:none;
-    	padding: 0.5rem;
-    	margin-right:2rem;
-		}
+		#awards{
+  /*position: absolute;*/
+/*  right: 0;*/
+    border: none !important;
+    color: rgb(23, 29, 75) !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    display: inline-block;
+    font-weight: 700 !important;
+    margin: 2px !important;
+    min-width:6rem !important;
+      border-radius: 20px !important;
+      padding: 4px 8px !important;
+      background: rgb(164, 217, 214) !important;
+      font-size: 1rem !important;
+      margin-right:5px !important;
+      justify-content: center !important;
+      display: flex;
+      align-items: center;
+}
 		/*
 						scroll bar 
 		*/
@@ -318,7 +328,13 @@ border-bottom-right-radius: 20px;
                       color: rgba(11, 36, 107);width: 100%"
                 class="text-left">Awards</h4>
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editAwardsYN : "N") == "Y"){ ?>
-<span class="d-flex align-items-center pr-4"><button id="awards">Sync&nbsp;Xero&nbsp;Awards
+<span class="d-flex align-items-center pr-4">
+	<button id="awards">
+            <i>
+              <img src="<?php echo base_url('assets/images/icons/xero.png'); ?>" style="max-height:02rem;margin-right:10px">
+            </i>Sync&nbsp;Xero&nbsp;Awards
+        </button>
+    </span>
 <?php } ?>
 	</div>
 	<div class="table-div">

@@ -547,7 +547,7 @@ $present = json_decode($present);
      <div class="bg-default">
        <button type="submit" class="button ">
             <i>
-              <img src="<?php echo base_url('assets/images/icons/close.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+              <img src="<?php echo base_url('assets/images/icons/end.png'); ?>" style="max-height:0.8rem;margin-right:10px">
             </i>End</button>
       </div>
   </form>

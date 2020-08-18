@@ -14,18 +14,29 @@
 font-family: 'Open Sans', sans-serif;
     }
 body{
-	background-color:#307bd3;
+	background-color:#8D91AA;
 }
 .login-container{
     margin-top: 10%;
 }
 .login-form-1{
-    padding: 3%;
+  border-radius: 1rem;
+  padding: 3% 5%;
 	background-color:#fff;
+}
+  .row{
+    margin-right: 0 !important;
+    margin-left:  0 !important;
+  }
+h3{
+    font-size: 1.25rem;
+    font-weight: 700;
+    color:  #171D4B !important;
+    padding: 3%;
 }
 .login-form-1 h3{
     text-align: center;
-    color: #307bd3;
+    color: #8D91AA;
 }
 .login-form-2{
     padding: 3%;
@@ -34,39 +45,59 @@ body{
 }
 
 .login-container form{
-    padding: 5%;
+    padding: 7%;
 }
 .btnSubmit
 {
+  font-weight: 700;
+    font-size: 0.9rem;
     width: 100%;
     padding: 1.5%;
     border: none;
     cursor: pointer;
-	background-color:#307bd3;
-	color:#fff;
+	background-color: #A4D9D6;
+	color: #171D4B;
 }
 
-.login-form-2 .ForgetPwd{
-    color: #fff;
-    font-weight: 600;
-    text-decoration: none;
-}
-.login-form-1 .ForgetPwd{
-    color: #9E9E9E;
-    font-weight: 500;
-    text-decoration: none;
-	font-size:14px;
-}
+
 .login-form-1 small{
-    color: #9E9E9E;
-    font-weight: 400;
+    color: rgba(23, 31, 75,0.7);
+    font-weight: 700;
     text-decoration: none;
-	font-size:14px;
+	font-size: 0.9rem;
 	text-align:center
 }
 .form-control:focus {
    
     box-shadow: none;
+}
+.btnSubmit{
+    border-radius: 20px;
+    padding-left: 2rem;
+}
+input[type="text"],input[type=email],select{
+    background: #f3f4f7;
+    border-radius: 5px;
+    padding: 5px;
+    padding-left: 1rem;
+    border: 1px solid #D2D0D0 !important;
+    border-radius: 20px;
+    line-height: 2rem;
+}
+input.form-control::placeholder{
+  padding-left: 2rem;
+}
+.back_to_sign_in a{
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: #171D4B !important;
+}
+.back_to_sign_in{
+    display: flex;
+    justify-content: flex-start;
+        position: absolute;
+    bottom: 1rem;
+    left: 1rem;
 }
 </style>
 </head>
@@ -75,19 +106,25 @@ body{
 
             <div class="row d-flex justify-content-center">
                 
-                <div class="col-md-8 login-form-1 text-center">
+                <div class="col-md-6 login-form-1 text-center">
                     <h3>Did you forget your password?</h3>
 					<small>Enter your email address you're using for your account below <br>and we will send you a password reset link.</small>
                     <form method="post" action="<?php echo base_url().'welcome/forgotPassword';?>"> 
                         <div class="form-group">
-                            <input type="email" class="form-control" placeholder="Your Email" value="" required />
+                            <input type="email" class="form-control" placeholder="Enter You Email" value="" required />
                         </div>
 						<div class="form-group">
-                            <input type="submit" class="btnSubmit rounded" value="Request Reset Link" />
+              <button type="submit" class="btnSubmit" value="Request Reset Link" />
+                <i>
+                  <img src="<?php echo base_url('assets/images/icons/link.png'); ?>" style="max-height:1remrem;margin-right:10px">
+                </i>Request Reset Link</button>
                         </div>
                         
-                        <div class="form-group text-center">
-                            <a href="<?php echo site_url('welcome/login') ?>" class="ForgetPwd">Back to Sign in</a>
+                        <div class="back_to_sign_in">
+                            <a href="<?php echo site_url('welcome/login') ?>" class="ForgetPwd">
+                              <i>
+                                <img src="<?php echo base_url('assets/images/icons/back.png'); ?>" style="max-height:1rem;margin-right:10px">
+                              </i>Back to Sign in</a>
                         </div>
                     </form>
                 </div>

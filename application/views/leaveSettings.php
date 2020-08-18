@@ -142,8 +142,11 @@ font-family: 'Open Sans', sans-serif;
 			border-bottom:none;
 			border-top-left-radius:0;
 			border-top-right-radius:0;
-			background-color: #307bd3;
-			color: #fff;
+			background-color: #8D91AA;
+			color: #F3F4F7;
+      font-size: 1rem;
+      display: flex;
+      justify-content: center;
 		}
 		.modal-content {
 			border-radius:0;	
@@ -348,6 +351,33 @@ input[class=checkbox_label]:checked + label:before {
 .buttons-parent{
 	padding:1rem;
 }
+.buttonn,
+.button,
+button[type=button]{
+  /*position: absolute;*/
+/*  right: 0;*/
+    border: none !important;
+    color: rgb(23, 29, 75) !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    display: inline-block;
+    font-weight: 700 !important;
+    margin: 2px !important;
+    min-width:6rem !important;
+      border-radius: 20px !important;
+      padding: 4px 8px !important;
+      background: rgb(164, 217, 214) !important;
+      font-size: 1rem !important;
+      margin-right:5px !important;
+      justify-content: center !important;
+}
+input[type="text"],input[type=time],select,#casualEmp_date{
+  background: #ebebeb;
+  border-radius: 5px;
+    padding: 5px;
+    border: 1px solid #D2D0D0 !important;
+    border-radius: 20px;
+}
 </style>
  	<title></title>
  </head>
@@ -365,7 +395,10 @@ input[class=checkbox_label]:checked + label:before {
     </span>
     <span class="ml-auto sync_button">
         <?php if(isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N" === "Y"){ ?>
-              <button class="button" id="XeroLeaves">Sync Xero Leaves</button>
+              <button class="button" id="XeroLeaves">
+                <i>
+                  <img src="<?php echo base_url('assets/images/icons/xero.png'); ?>" style="max-height:2rem;margin-right:10px">
+                </i>Sync Xero Leaves</button>
         <?php } ?>
 
     </span>
@@ -401,7 +434,11 @@ input[class=checkbox_label]:checked + label:before {
 					<td>
 <?php if(isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N" == "Y"){ ?>
 					<span onclick="editLeaveType('<?php echo $leaveType->id;?>')">
-					<a href="#" title="Edit"><i class="far fa-edit" style="color:green;font-size:18px;"></i></a>
+					<a href="#" title="Edit">
+            <i>
+              <img src="<?php echo base_url('assets/images/icons/pencil.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+            </i>
+          </a>
 	<?php }else{ echo "-"; } ?>
 					</td>
 				</tr>
@@ -451,14 +488,29 @@ input[class=checkbox_label]:checked + label:before {
 						<div class="">
 							<input type="checkbox" name="show_in_payslips" class="checkbox_label" id="show_in_payslips"><label class=""for="show_in_payslips">Show in payslips</label>
 						</div>
-						<div class="form-group text-center " id="updateLeaveType" style="display: none;">
-  						<button class="btn btn-secondary rounded-0" type="button" onclick="addLeave()">Update</button>
-             <button type="button" class="btn btn-secondary rounded-0 btn-close" data-dismiss="modal" aria-label="Close">Cancel</button>
-  						<button class="btn btn-danger rounded-0" type="button" onclick="deleteLeave()">Delete</button> 
+						<div class="form-group text-center " id="updateLeaveType" >
+  						<button class="" type="button" onclick="addLeave()">
+                <i>
+                  <img src="<?php echo base_url('assets/images/icons/pencil.png'); ?>" style="max-height:1rem;margin-right:10px">
+                </i>Update</button>
+             <button type="button" class=" btn-close" data-dismiss="modal" aria-label="Close">
+                <i>
+                  <img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:1rem;margin-right:10px">
+                </i>Cancel</button>
+  						<button class=" btn-danger rounded-0" type="button" onclick="deleteLeave()">
+                <i>
+                  <img src="<?php echo base_url('assets/images/icons/del.png'); ?>" style="max-height:1rem;margin-right:10px">
+                </i>Delete</button> 
 						</div>
 						<div class="form-group text-center  form-group-add" id="addLeaveType" >
-              <button type="button" class="btn btn-secondary rounded-0 " data-dismiss="modal" aria-label="Close">Cancel</button>
-  						<button class="btn btn-secondary rounded-0" type="button" onclick="addLeave()">Add</button>
+              <button type="button" class=" " data-dismiss="modal" aria-label="Close">
+                <i>
+                  <img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:1rem;margin-right:10px">
+                </i>Cancel</button>
+  						<button class="" type="button" onclick="addLeave()">
+                <i>
+                  <img src="<?php echo base_url('assets/images/icons/plus.png'); ?>" style="max-height:1rem;margin-right:10px">
+                </i>Add</button>
 						</div>
 				  </form>	
 					</div>

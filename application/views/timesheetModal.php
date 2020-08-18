@@ -156,7 +156,7 @@ foreach($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes 
 	?>
 	  <div start-time="<?php echo $visits->startTime; ?>" end-time="<?php echo $visits->endTime; ?>" class="box-time" style="padding:20px 0px 20px 1rem" hourly="<?php echo $variable;?>">
 	  	<span class="group-span">
-		<span><input type="checkbox" name="" checked class="clocked_time"></span>
+		<span><input type="checkbox" class="clocked_time" checked></span>
 		<span svalue="<?php echo $visits->startTime; ?>" evalue="<?php echo $visits->endTime; ?>" class="time-box"><?php echo timex($visits->startTime) ."-". timex($visits->endTime) ?></span>
 
 		<span class="new-time-box"></span>
@@ -196,6 +196,7 @@ foreach($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes 
 if($aT == 'unrosteredEmployees'){
 foreach($timesheetDetails->timesheet[$ya]->unrosteredEmployees[$xa]->clockedTimes as $visits){
 		$variable = 0;
+		// print_r($rosterDetails->roster[$xa]->roles[$counter]->level);
 	if(isset($rosterDetails->roster[$xa])){
 		$userLevel = $rosterDetails->roster[$xa]->roles[$counter]->level;
 			foreach($entitlement as $e){
@@ -206,7 +207,7 @@ foreach($timesheetDetails->timesheet[$ya]->unrosteredEmployees[$xa]->clockedTime
 	?>
 	  <div start-time="<?php echo $visits->startTime; ?>" end-time="<?php echo $visits->endTime; ?>" class="box-time" style="padding:20px" hourly="<?php echo $variable;?>">
 	  	<span class="group-span">
-		<span><input type="checkbox" name="" checked></span>
+		<span><input type="checkbox" class="clocked_time" checked></span>
 		<span svalue="<?php echo $visits->startTime; ?>" evalue="<?php echo $visits->endTime; ?>" class="time-box"><?php echo timex($visits->startTime) ."-". timex($visits->endTime) ?></span>
 		<span class="new-time-box"></span>
 		<span>

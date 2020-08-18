@@ -731,13 +731,6 @@ td{
     .casualEmployee_label select,.casualEmployee_label input{
     	width:60%;
     }
-    select{
-      background: #E7E7E7;
-      border: none !important;
-      height: 2.5rem;
-      border-radius: 20px;
-      border: 1px solid #D2D0D0;
-    }
     #message{
     	min-height: 4rem;
     	max-height: 4rem;

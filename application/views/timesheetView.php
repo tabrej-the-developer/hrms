@@ -824,11 +824,10 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 
 						<span class="row" style="padding:0;margin:0;">
 							<span class="col-md-3 col-12 icon-parent"><span class=" icon" style="<?php	echo "background:".$colors_array[rand(0,5)].";";?>"><?php echo icon($timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName)?></span></span>
-							<span class="col-6 name-role">
+							<span class="col-9 name-role">
 								<span class="empname row"><?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName?></span>
 								<span class="hourly title row "><?php echo  $variable; ?></span>
 							</span>
-							<span class="hourly col-md-3 col-12"><?php echo  $variable ?></span>
 						</span>
 					<?php } ?>
 					</td>
@@ -1210,11 +1209,15 @@ $(document).on('click','.buttonn',function(){
 	let employeeBudget = function(){
 
 				var count = $('.box-time').length;
+				// console.log('count'+count)
 				var thisValue = 0;
 		for(var i=0;i<count;i++){
 		var children = $('.time-box').eq(i);
+		// console.log($('.clocked_time').eq(i).is(':checked'))
 		if($('.clocked_time').eq(i).prop('checked') == true){
+			// console.log(children.next().html())
 			if(children.next().html() == ""){
+				console.log(parseInt($('.box-time').eq(i).attr('hourly')));
 				thisValue = thisValue + ( parseInt(children.attr('evalue')) - parseInt(children.attr('svalue')) ) * $('.shift-type-select option:selected').eq(i).attr('factor') * parseInt($('.box-time').eq(i).attr('hourly'))
 			}
 			else{

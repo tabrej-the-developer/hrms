@@ -395,10 +395,7 @@ input#add_meeting{
 }
 .user{
     display:block;
-    margin:auto;
-    margin-bottom:45px;
-
-    
+    padding-top: 0.5rem;   
 }
 .user div{
     float:left;
@@ -468,13 +465,13 @@ input[type=checkbox]:checked:before {
     flex-direction: column;
     /* min-width: 0; */
     word-wrap: break-word;
-     background-color: white;
+     background-color: transparent;
      background-clip: border-box;
     border: none;
     padding: 0 2rem;
     box-shadow: none;
     border-radius: .25rem;
-    height: calc(100vh - 8rem);
+    height: calc(100vh - 6rem);
 }
   .button{
     border: none;
@@ -491,7 +488,16 @@ input[type=checkbox]:checked:before {
       display: flex !important;
 }
 form{
-  background: white
+  background: white;
+  height: calc(100vh - 8rem);
+  overflow-y: auto;
+}
+.card-body{
+  display: flex;
+  border-bottom: 1px solid rgba(0,0,0,0.4);
+}
+.bg-default{
+  padding:1rem;
 }
 </style>
 </head>
@@ -524,8 +530,11 @@ form{
        </div>
       </div>
           <?php } ?>
-      <div class="d-flex justify-content-center bg-default">
-           <button type="submit" class="button">Mark Absent</a>
+      <div class="d-flex bg-default">
+           <button type="submit" class="button">
+            <i>
+              <img src="<?php echo base_url('assets/images/icons/attendance.png'); ?>" style="max-height:1.2rem;margin-right:10px">
+            </i>Mark Absent</a>
       </div>
   </form>
  </div>
