@@ -450,7 +450,6 @@ font-family: 'Open Sans', sans-serif;
             </li>
             <li class="nav-item-header-div" >
             <a class="nav-link-div d-flex justify-content-start" href="<?php echo base_url();?>welcome/logout" >
-              <i class="mr-4" style="color:#f5f5f5;">
                 <i class="mr-4 " ><img src="<?php echo site_url();?>assets/images/navbar-icons/power.png" class="pr-2" style="height:1rem"></i>Logout</a>
           </li>
         </div>

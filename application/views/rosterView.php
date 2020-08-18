@@ -13,6 +13,7 @@
 	*{
 font-family: 'Open Sans', sans-serif;
 	}
+
 		.containers{
 		background:	rgb(243, 244, 247);
 		height: calc(100vh);
@@ -149,16 +150,16 @@ font-family: 'Open Sans', sans-serif;
 	text-align: center;
 	margin:30px 30px 10px 30px;
 }
-#down-arrow::after{
+/*#down-arrow::after{
 		position:relative;
         content: "";
-        background: url("<?php echo base_url('/assets/images/calendar.png') ?>");
+        background: url("<?php // echo base_url('/assets/images/calendar.png') ?>");
         background-repeat: no-repeat;
         background-size: 20px;
         padding:10px;
         top: 5px;
         right: 30px;
-}
+}*/
 
 .ui-datepicker-current-day{
 	background:skyblue;
@@ -615,6 +616,9 @@ $("#roster-date").datepicker();
 	};
 	//----------------
 	$('select').val(1)
+</script>
+<script type="text/javascript">
+	$('#ui-datepicker-div').remove()
 </script>
 </body>
 </html>

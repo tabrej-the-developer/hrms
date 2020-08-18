@@ -322,9 +322,47 @@ max-width:30vw;
 	color:rgba(112, 112, 112, 1);
 	font-weight: 500;
 }
+.Added .cell-back-1::before{
+	border-left:0.25rem solid rgba(112, 112, 112,0.8);
+	content: ' ';
+	position: absolute;
+	height: 100%;
+	left: 0;
+	top: 0;	
+}
+/* rgb(112, 112, 112) */
+.Published .cell-back-1::before{
+	border-left:0.25rem solid rgba(219, 165, 245, 1);
+	content: ' ';
+	position: absolute;
+	height: 100%;
+	left: 0;
+	top: 0;	
+}
+/*rgba(219, 165, 245, 1)*/
+.Accepted .cell-back-1::before{
+	border-left: 0.25rem solid rgba(175, 225, 159,1);
+	content: ' ';
+	position: absolute;
+	height: 100%;
+	left: 0;
+	top: 0;	
+}
+/* rgb(175, 225, 159) */
+.Rejected .cell-back-1::before{
+	border-left: 0.25rem solid rgba(226, 90, 83, 1) ;
+	content: ' ';
+	position: absolute;
+	height: 100%;
+	left: 0;
+	top: 0;	
+}
 /* rgba(226, 90, 83, 1) */
 .nav-link{
 	text-align:left;
+}
+td{
+	position: relative;
 }
 .leave{
 	background: rgba(253, 179, 93, 0.3);
@@ -692,13 +730,6 @@ max-width:30vw;
     }
     .casualEmployee_label select,.casualEmployee_label input{
     	width:60%;
-    }
-    select{
-      background: #E7E7E7;
-      border: none !important;
-      height: 2.5rem;
-      border-radius: 20px;
-      border: 1px solid #D2D0D0;
     }
     #message{
     	min-height: 4rem;

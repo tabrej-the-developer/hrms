@@ -154,6 +154,26 @@ input[type="text"],input[type=time],select,#casualEmp_date{
     tbody tr{
       background: white !important;
     }
+.button{
+  /*position: absolute;*/
+/*  right: 0;*/
+    border: none !important;
+    color: rgb(23, 29, 75) !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    display: inline-block;
+    font-weight: 700 !important;
+    margin: 2px !important;
+    min-width:6rem !important;
+      border-radius: 20px !important;
+      padding: 4px 8px !important;
+      background: rgb(164, 217, 214) !important;
+      font-size: 1rem !important;
+      margin-right:5px !important;
+      justify-content: center !important;
+      display: flex;
+      align-items: center;
+}
     </style>
   </head>
 
@@ -171,7 +191,11 @@ input[type="text"],input[type=time],select,#casualEmp_date{
           </a>
         </span>
         <span class=" create-ent ml-auto">
-          <button class="button ent-btn">Create Entitlement</button>
+          <button class="button ent-btn">
+            <i>
+              <img src="<?php echo base_url('assets/images/icons/xero.png'); ?>" style="max-height:02rem;margin-right:10px">
+            </i>Create Entitlement
+        </button>
         </span>
       </span>
       <div id="content-wrappers" class="containers">
@@ -212,13 +236,21 @@ input[type="text"],input[type=time],select,#casualEmp_date{
                     <td>
                     <?php if(isset($permissions->permissions) ? $permissions->permissions->editEntitlementsYN : "N" == "Y"){ ?>
                         <span style="cursor: pointer;">
-                         <div><i class="fas fa-pencil-alt" style="color: #0077ff;" u-v="<?php echo $entitlement->entitlements[$i]->id;?>">Edit</i> </div>
+                         <div><i class="fas fa-pencil-alt" style="color: #0077ff;" u-v="<?php echo $entitlement->entitlements[$i]->id;?>">
+                            <i>
+                              <img src="<?php echo base_url('assets/images/icons/pencil.png'); ?>" style="max-height:02rem;margin-right:10px">
+                            </i>
+                         </i> </div>
                         </span>
                         <?php }else{ echo "-";} ?>
                     </td>
                     <td>
                     <?php if(isset($permissions->permissions) ? $permissions->permissions->editEntitlementsYN : "N" == "Y"){ ?>
-                      <span style="cursor: pointer;"><i class="fas fa-trash-alt" style="color: #ff3b30;" d-v="<?php echo $entitlement->entitlements[$i]->id;?>"></i> Delete</span>
+                      <span style="cursor: pointer;"><i class="fas fa-trash-alt" style="color: #ff3b30;" d-v="<?php echo $entitlement->entitlements[$i]->id;?>">
+                        <i>
+                          <img src="<?php echo base_url('assets/images/icons/del.png'); ?>" style="max-height:02rem;margin-right:10px">
+                        </i>
+                      </i></span>
                     <?php }else{ echo "-";} ?>
                     </td>
                     </tr>

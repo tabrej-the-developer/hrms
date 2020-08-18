@@ -11,7 +11,7 @@
 
 <style>
 body{
-	background-color:#307bd3;
+	background-color:#8D91AA;
 }
 .login-container{
     margin-top: 10%;
@@ -22,7 +22,7 @@ body{
 }
 .login-form-1 h3{
     text-align: center;
-    color: #307bd3;
+    color: #8D91AA;
 }
 .login-form-2{
     padding: 3%;
@@ -39,7 +39,7 @@ body{
     padding: 1.5%;
     border: none;
     cursor: pointer;
-	background-color:#307bd3;
+	background-color:#8D91AA;
 	color:#fff;
 }
 

@@ -14,7 +14,9 @@
 font-family: 'Open Sans', sans-serif;
     }
 
-
+body{
+    background: #F3F4F7
+}
 
 /*Forms setup*/
 .form-control {
@@ -37,8 +39,8 @@ textarea {
 /*Content Container*/
 .content-container {
     background-color:#fff;
-    padding:35px 20px;
-    margin-bottom:20px;
+
+    height: calc(100vh - 6rem);
 }
 
 /*Compose*/
@@ -99,13 +101,22 @@ ul.mail-list li span.mail-message-preview{
     height:50%;
   }
   .create_group_parent{
-    height:80vh;
+    height: 100%;
+    padding: 0;
+    background: #fff;
+    font-size: 1rem !important;
   }
   .create_group_title{
-    font-weight: 700;
-    font-size: 1.5rem;
+    font-weight: 100;
+    font-size: 1rem;
+    background: #8D91AA;
+    color: #E7E7E7;
     display: flex;
+    padding:1rem 0;
     justify-content: center;
+  }
+  .create_group{
+    padding: 0 2rem;
   }
   .group_name_label{
     display: flex;
@@ -119,9 +130,12 @@ ul.mail-list li span.mail-message-preview{
   }
   .groups_titles{
     display: flex;
-    font-size:1.5rem;
-    font-weight: 700;
+    font-size:1rem;
+    font-weight: 100;
     justify-content: center;
+    background: #8D91AA;
+    color: #E7E7E7 !important;
+    padding: 1rem 0;
   }
   .group_members_span{
     display: block;
@@ -147,19 +161,92 @@ ul.mail-list li span.mail-message-preview{
     color: white;
     border: 1px solid #e2e2e2;
 }
-    .button{
-    background-color: #9E9E9E;
-    border: none;
-    color: white;
-    padding: 10px 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    margin: 2px;
-    border-radius: 0 !important
+     #create_group, .button{
+      border: none;
+      color: rgb(23, 29, 75);
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-weight: 700;
+      margin: 2px;
+      min-width:5rem;
+      border-radius: 20px;
+      padding: 4px 8px;
+      background: rgb(164, 217, 214);
+      font-size: 1rem;
     }
+    
+input[type="text"],input[type=time],select,.tokens-container,textarea,.text_area{
+  background: #ebebeb;
+  border-radius: 5px;
+    padding: 5px;
+    border: 1px solid #D2D0D0 !important;
+    border-radius: 20px;
+}
+.nicEdit-main{
+  max-width:100% !important;
 
-
+}
+.text_area > div{
+  max-width:100% !important;
+  border-bottom-left-radius : 1rem;
+  border-bottom-right-radius: 1rem;
+}
+.notice_heading{
+  background-color:#F3F4F7;
+  border:none;
+  color: #171D4B;
+  font-size: 1.75rem;
+  font-weight:700;
+  border-bottom-right-radius: 0rem;
+  border-bottom-left-radius: 0rem;
+  padding-left:1rem !important;
+  padding-top:0.75rem;
+  padding-bottom: 0.75rem;
+  display: flex;
+}
+  form{
+    padding-top: 1rem;
+  }
+.container{
+    padding-right: 0;
+    padding-left: 0;
+}
+.tab-content{
+    padding: 0 1rem 0 1rem;
+}
+.group_name_label,.group_members_input{
+    display: flex;
+    justify-content: flex-start;
+    font-weight: 700;
+    margin-top: 1rem;
+}
+.group_name_li_tag{
+  list-style: none
+}
+.groups_list{
+  padding: 1rem;
+}
+.col-md-8.col-md-offset-2{
+  padding-top:1rem;
+}
+.col-md-8.col-md-offset-2::before{
+    content: ' ';
+    height: 100%;
+    width: 5px;
+    border-right: 0.5rem solid #D2D0D0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.text_area > div:nth-child(2){
+  padding: 1rem;
+}
+label{
+    margin-bottom: 0;
+    font-weight: 700;
+    color:#171D4B
+}
 .pagination a:hover:not(.active) {background-color: #ddd;}
 /*pagination end*/
 
@@ -237,7 +324,9 @@ $("#mytable #checkall").click(function () {
       <a class="nav-link active" data-toggle="tab" href="#home"><i class="fas fa-plus-square"></i> New</a>
     </li>
   </ul> -->
-<div><h3 style="padding-left:5%">Create New Notice</h3></div>
+    <div>
+      <span class="notice_heading">Create New Notice</span>
+    </div>
   <!-- Tab panes -->
   <div class="tab-content">
     <div id="home" class="container tab-pane active">
@@ -290,7 +379,7 @@ $("#mytable #checkall").click(function () {
 
             <br>
             <label>Message:</label>
-            <div class="form-group"> 
+            <div class="text_area"> 
             <textarea name="message"  class="form-control"  required>  </textarea>
             </div>  
            
@@ -325,20 +414,23 @@ $("#mytable #checkall").click(function () {
                     <option value="<?php echo $chat->userid;?>"><?php echo $chat->username;?></option>
                     <?php }?>
                     </select>
-                    <button id="create_group">Create Group</button>
+                    <button id="create_group">
+                        <i>
+                          <img src="<?php echo base_url('assets/images/icons/sent.png'); ?>" style="max-height:1rem;margin-right:10px">
+                        </i>Create Group</button>
                     </span>
                 </div>
             </div>
             <div class="list_of_groups">
                 <div class="groups_titles">List of Groups</div>
-                <div>
+                <div class="groups_list">
                   <?php if(isset($groups)){ 
                     $groups = json_decode($groups); 
                     // var_dump($groups);
                     foreach($groups as $group){
                    ?>
                     <span>
-                      <li>
+                      <li class="group_name_li_tag">
                         <span>
                           <input type="checkbox" name="group" value="<?php echo $group->gid; ?>" class="group_list">
                         </span>
@@ -411,5 +503,6 @@ $("#mytable #checkall").click(function () {
 
     })
   })
+
 </script>
 </html>

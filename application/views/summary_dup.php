@@ -19,23 +19,31 @@ font-family: 'Open Sans', sans-serif;
            
         /* }  */
         
-        /* .card-body {
+         .card-body {
             padding: 0rem 1.25rem;
-        } */
+            background: white;
+        }
         
         p {
             margin-top: 0;
             margin-bottom: 10px;
         }
-/*         
-        .card {
-            border-radius: 0px;
-            padding-top: 15px;
-            padding-bottom: 15px;
-			border:none;
-			box-shadow: none;
-        } */
-        
+
+.card{
+  position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    /* min-width: 0; */
+    word-wrap: break-word;
+     background-color: transparent;
+     background-clip: border-box;
+    border: none;
+    padding: 0 2rem;
+    box-shadow: none;
+    border-radius: .25rem;
+}
         .flex-wrap {
             margin-bottom: -35px;
         }
@@ -476,13 +484,27 @@ input[type=checkbox]:checked:before {
     width:25px;
     border-radius:50px;
 }
+table{
+  width: 100%;
+}
+.card-body{
+  height: calc(100vh - 10rem);
+}
 </style>
 </head>
 <body style="background-color:#eee;">
- <div class="container">
+ <div class="containers">
+  <div class="d-flex heading-bar">
+    <span class="m-3" style="font-size: 1.75rem;font-weight: bold;color: rgb(23, 29, 75) !important;padding-left:1rem">Minutes of Meeting Agenda</span>
+    <span class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
+  </div>
  <div class="card">
   <div class="card-header ">
-    Minutes of Meeting Agenda
+    
+    <table>
+       <td class="text-center h5">Agenda</td>
+       <td class="text-center h5">Agenda Summary</td>
+    </table>
   </div>
   <?php 
 //   echo "<pre>";
@@ -496,8 +518,7 @@ input[type=checkbox]:checked:before {
      <table class="table table-borderless">
      <thead>
      <tr>
-     <td class="text-center h5">Agenda</td>
-     <td class="text-center h5">Agenda Summary</td>
+
      </tr>
      </thead>
      <tbody>
@@ -528,16 +549,12 @@ input[type=checkbox]:checked:before {
       <?php } ?>
      </tbody>
      </table>
-  </div>
-      
- 
-
-
-  <div class="card-footer d-flex justify-content-end">
+  <div class=" d-flex justify-content-center">
        <button type="submit" class="button">
             <i>
-              <img src="<?php echo base_url('assets/images/icons/close.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+              <img src="<?php echo base_url('assets/images/icons/end.png'); ?>" style="max-height:0.8rem;margin-right:10px">
             </i>End</button>
+  </div>
   </div>
 </form>
 </div>
@@ -720,7 +737,7 @@ $('#toggle').remove();
 	</script>
 	<script type="text/javascript">
   $(document).ready(()=>{
-    $('.container').css('paddingLeft',$('.side-nav').width());
+    $('.containers').css('paddingLeft',$('.side-nav').width());
 });
 </script>
 </html>

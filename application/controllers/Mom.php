@@ -374,7 +374,7 @@ class Mom extends CI_CONTROLLER{
    public function addSummary($meetingId){
        $form_data = $this->input->post();
     
-       if($form_data != null){
+       // if($form_data != null){
   //footprint start
   if($this->session->has_userdata('current_url')){
     footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
@@ -399,13 +399,12 @@ class Mom extends CI_CONTROLLER{
          //var_dump($server_output);
              
            $httpcode = curl_getinfo($ch,CURLINFO_HTTP_CODE);
-           
            if($httpcode == 200){
                $jsonOutput = json_decode($server_output);
                curl_close($ch);
                redirect(base_url().'mom');
            }
-       }
+       // }
    }
 
 

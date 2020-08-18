@@ -92,15 +92,7 @@
 		.data-buttons{
 			padding:10px;
 		}
-		button{
-			line-height: 1rem;
-			display: flex;
-			background: #142059;
-    	color: white;
-    	border-radius: 5px;
-    	border:none;
-    	padding: 0.5rem;
-		}
+
 		/* The Modal (background) */
 .modal {
   display: none; 
@@ -250,6 +242,28 @@ border-bottom-right-radius: 20px;
     	background: white;
     	height: 100%;
     }
+.buttonn,
+.button,
+#superfunds{
+  /*position: absolute;*/
+/*  right: 0;*/
+    border: none !important;
+    color: rgb(23, 29, 75) !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    display: inline-block;
+    font-weight: 700 !important;
+    margin: 2px !important;
+    min-width:6rem !important;
+      border-radius: 20px !important;
+      padding: 4px 8px !important;
+      background: rgb(164, 217, 214) !important;
+      font-size: 1rem !important;
+      margin-right:5px !important;
+      justify-content: center !important;
+      display: flex;
+      align-items: center;
+}
 @media only screen and (max-width:1024px) {
 .modal-content{
 	min-width:100vw;
@@ -289,7 +303,13 @@ border-bottom-right-radius: 20px;
                       color: rgba(11, 36, 107);width: 100%"
                 class="text-left">Superannuations</h4>
 <?php if(isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N" == "Y"){ ?>
-		<span class="d-flex align-items-center pr-4"><button id="superfunds">Sync&nbsp;Xero&nbsp;Superannuations</button></span>
+		<span class="d-flex align-items-center pr-4">
+			<button id="superfunds">
+            <i>
+              <img src="<?php echo base_url('assets/images/icons/xero.png'); ?>" style="max-height:02rem;margin-right:10px">
+            </i>Sync&nbsp;Xero&nbsp;Superannuations
+			</button>
+		</span>
 <?php } ?>
 	</div>
 	<div class="table-div">

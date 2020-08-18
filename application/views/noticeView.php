@@ -11,7 +11,12 @@
    max-width:100%;
    margin:auto;
    }
-  img{ max-width:75%;}
+   body{
+    background: #F3F4F7
+   }
+  img{
+   max-width:75%;
+ }
 
   .icon-container {
     width: 35px;
@@ -50,6 +55,7 @@
     border: none;
     clear: both;
     overflow: hidden;
+    padding-left: 1rem;
   }
   .top_spac{ margin: 20px 0 0;}
 
@@ -73,9 +79,10 @@
     padding: 10px 16px 5px;
   }
   .inbox_chat {
-    height: 570px;
+    height: calc(100vh - 9rem);
     overflow-y: auto;
-    background: #cccccc73;
+    background: #FFFFFF;
+    overflow-y: auto;
   }
 
   .active_chat{ background:#ebebeb;}
@@ -111,6 +118,7 @@
 
     .gedf-wrapper {
         margin-top: 0.97rem;
+        margin-bottom: 0;
     }
 
     @media (min-width: 992px) {
@@ -118,9 +126,7 @@
             padding-left: 4rem;
             padding-right: 4rem;
         }
-        .gedf-card {
-            margin-bottom: 2.77rem;
-        }
+
     }
 
     /**Reset Bootstrap*/
@@ -270,13 +276,17 @@ input.rounded:focus {
 .rounded {
     border-radius: 1.25rem!important;
 }
-
+.card {
+     margin-bottom: 0; 
+    border-radius: 0;
+    box-shadow: 0 3px 5px rgba(0,0,0,.1);
+}
 .card-body {
     -ms-flex: 1 1 auto;
     flex: 1 1 auto;
     padding: 1.25rem;
-    height: 570px;
-    overflow-y: scroll;
+    height: calc(100vh - 4vh);
+    overflow-y: auto;
 }
 .card-header {
     padding: .75rem 1.25rem;
@@ -316,19 +326,71 @@ input.rounded:focus {
     transform: scale(1.0);
     transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
 }
+.notices_heading{
+  background-color:#F3F4F7;
+  border:none;
+  color: #171D4B;
+  font-size: 1.75rem;
+  font-weight:700;
+  border-bottom-right-radius: 0rem;
+  border-bottom-left-radius: 0rem;
+}
+.notice_nav_header{
+  height:calc(100% - 5%);
+}
+.no_notice{
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    color: #171D4B;
+    font-weight: 700;
+    height: calc(100vh - 5rem);
+    justify-content: center;
+}
+.badge{
+    border: none !important;
+    color: rgb(23, 29, 75) !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+    font-weight: 700 !important;
+    margin: 2px !important;
+    min-width:6rem !important;
+    border-radius: 20px !important;
+    padding: 8px !important;
+    background: rgb(164, 217, 214) !important;
+    display: flex !important;
+}
+
+.badge a{
+  color: #171D4B;
+}
+.gedf-card{
+  height: calc(100vh - 5rem);
+}
+.chat_ib > h5 > div{
+  color: #171D4B !important;
+  font-weight: 700;
+}
+.heading_name{
+  color: #171D4B;
+  font-weight: 700;
+}
 </style>
 </head>
 <body>
 <div class="container">
   <?php $permissions = json_decode($permissions); ?>
-<nav>
+<nav class="notice_nav_header">
   <ul class="list-group">
 
-  <li class="list-group-item d-flex justify-content-between align-items-center" style="background-color:#cccccc74;border:none;font-size:20px;font-weight:500;border-bottom-right-radius: 0rem;
-    border-bottom-left-radius: 0rem;">
+  <li class="list-group-item d-flex justify-content-between align-items-center notices_heading" style="">
     Notices
     <?php if(isset($permissions->permissions) ? $permissions->permissions->createNoticeYN : "N" == "Y"){ ?>
-    <span class="badge badge-default badge-pill"><a href="<?php echo site_url('notice/createNotice')?>" style="font-size:15px;text-decoration:none;"><i class="fas fa-plus-circle"></i> Create notice</a></span>
+    <span class="badge badge-default badge-pill"><a href="<?php echo site_url('notice/createNotice')?>" style="font-size:15px;text-decoration:none;">
+            <i>
+              <img src="<?php echo base_url('assets/images/icons/notice.png'); ?>" style="max-height:1rem;margin-right:10px">
+            </i>Create notice</a></span>
     <?php } ?>
   </li>
 
@@ -339,15 +401,45 @@ input.rounded:focus {
         <div class="inbox_people">
           
            <ul class="list-group">
-				<li class="list-group-item d-flex justify-content-between align-items-center"><h6 style="font-size:18px;color:#007bff" id="noticeTitle">
-          <?php echo $noticeStatus;?>
+				<li class="list-group-item d-flex justify-content-between align-items-center">
+          <h6 style="font-size:18px;color:#171D4B;font-weight:700" id="noticeTitle">
+  <?php if(strtolower($noticeStatus) == strtolower('inbox')){ ?>
+            <i>
+              <img src="<?php echo base_url('assets/images/icons/inbox.png'); ?>" style="max-height:1rem;margin-right:10px">
+            </i>
+            <span>Inbox</span>
+   <?php  }if(strtolower($noticeStatus) == strtolower('sent')){ ?>
+            <i>
+              <img src="<?php echo base_url('assets/images/icons/sent.png'); ?>" style="max-height:1rem;margin-right:10px">
+            </i>
+            <span>Sent</span>
+    <?php }if(strtolower($noticeStatus) == strtolower('archived')){ ?>
+            <i>
+              <img src="<?php echo base_url('assets/images/icons/archive.png'); ?>" style="max-height:1rem;margin-right:10px">
+            </i>
+            <span>Archive</span>
+     <?php  }  ?>
         </h6>
 				 <div class="dropdown">
-                     <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-filter"></i></button>
+                     <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <i>
+        <img src="<?php echo base_url('assets/images/icons/down.png'); ?>" style="max-height:1rem;margin-right:10px">
+
+      </i>
+                     </button>
                           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
-                            <a class="dropdown-item" id="Inbox">Inbox</a>
-                            <a class="dropdown-item" id="Sent">Sent</a>
-                            <a class="dropdown-item" id="Archived">Archive</a>
+                            <a class="dropdown-item" id="Inbox">
+            <i>
+              <img src="<?php echo base_url('assets/images/icons/inbox.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+            </i>Inbox</a>
+                            <a class="dropdown-item" id="Sent">
+            <i>
+              <img src="<?php echo base_url('assets/images/icons/sent.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+            </i>Sent</a>
+                            <a class="dropdown-item" id="Archived">
+            <i>
+              <img src="<?php echo base_url('assets/images/icons/archive.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+            </i>Archive</a>
                           </div>
                   </div>
 			  </li>
@@ -403,9 +495,9 @@ input.rounded:focus {
                                 </div>
                                 <div class="ml-2">
                                   <?php if(preg_match('/Sent/',$_SERVER['REQUEST_URI']) == 0){ ?>
-                                    <div class="h6 m-0"><?php echo $currentNotice->senderName;?></div>
+                                    <div class="h6 m-0 heading_name"><?php echo $currentNotice->senderName;?></div>
                                   <?php }else{ ?>
-                                    <div class="h6 m-0"><?php echo $currentNotice->receiverId;?></div>
+                                    <div class="h6 m-0 heading_name"><?php echo $currentNotice->receiverId;?></div>
                                  <?php } ?>
                                 </div>
                             </div>
@@ -440,7 +532,7 @@ input.rounded:focus {
                             <?php echo html_entity_decode(stripslashes($currentNotice->text));?>
                     </div>  
                   <?php }
-                  else echo "<span style=\"font-size:30px;align-self:center\">No notices</span>";?>
+                  else echo "<span  class='no_notice'>No notices</span>";?>
                 </div>
                 <!-- Post-->
 			

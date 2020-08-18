@@ -395,10 +395,7 @@ input#add_meeting{
 }
 .user{
     display:block;
-    margin:auto;
-    margin-bottom:45px;
-
-    
+    padding-top: 0.5rem;   
 }
 .user div{
     float:left;
@@ -460,6 +457,22 @@ input[type=checkbox]:checked:before {
   display: flex;
   justify-content: flex-end;
 }
+.card{
+  position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    /* min-width: 0; */
+    word-wrap: break-word;
+     background-color: transparent;
+     background-clip: border-box;
+    border: none;
+    padding: 0 2rem;
+    box-shadow: none;
+    border-radius: .25rem;
+    height: calc(100vh - 6rem);
+}
   .button{
     border: none;
     color: rgb(23, 29, 75);
@@ -474,45 +487,56 @@ input[type=checkbox]:checked:before {
       background: rgb(164, 217, 214);
       display: flex !important;
 }
+form{
+  background: white;
+  height: calc(100vh - 8rem);
+  overflow-y: auto;
+}
+.card-body{
+  display: flex;
+  border-bottom: 1px solid rgba(0,0,0,0.4);
+}
+.bg-default{
+  padding:1rem;
 }
 </style>
 </head>
 <body style="background-color:#eee;">
-<div class="container">
- <div class="card">
-  <div class="card-header ">
-    Minutes of Meeting Attendence
+<div class="containers">
+ <div class="d-flex heading-bar">
+    <span class="m-3" style="font-size: 1.75rem;font-weight: bold;color: rgb(23, 29, 75) !important;padding-left:1rem">Minutes of Meeting Attendence</span>
+    <span class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
   </div>
+ <div class="card">
   <form action="<?php echo base_url() ; ?>mom/meetingAttendence/<?php echo $mId; ?>" method="post">
    <?php
       $partcipants = json_decode($partcipants);
       $len = count($partcipants);
       for($i = 0 ; $i < $len;$i++){ ?>
-  <div class="card-body">
-   <div class="user">
-        <div>
-        <input type="checkbox" name="absent[]" value="<?php echo $partcipants[$i]->uid; ?>">
-        
-        </div>
-           <div>
-           <img src="<?php echo base_url() ?>assets/images/boyunnamed.jpg">
-           
-           </div>
-         <div>
-         <h6><?php echo $partcipants[$i]->email; ?></h6>
-         
-         </div>
-   </div>
-  </div>
-      <?php } ?>
-  
- 
-
-
-  <div class="card-footer bg-default">
-       <button type="submit" class="button">Mark Absent</a>
-  </div>
- </form>
+      <div class="card-body">
+       <div class="user">
+            <div>
+            <input type="checkbox" name="absent[]" value="<?php echo $partcipants[$i]->uid; ?>">
+            
+            </div>
+               <div>
+               <img src="<?php echo base_url() ?>assets/images/boyunnamed.jpg">
+               
+               </div>
+             <div>
+             <h6><?php echo $partcipants[$i]->email; ?></h6>
+             
+             </div>
+       </div>
+      </div>
+          <?php } ?>
+      <div class="d-flex bg-default">
+           <button type="submit" class="button">
+            <i>
+              <img src="<?php echo base_url('assets/images/icons/attendance.png'); ?>" style="max-height:1.2rem;margin-right:10px">
+            </i>Mark Absent</a>
+      </div>
+  </form>
  </div>
 </div>
 <body>
@@ -693,7 +717,7 @@ $('#toggle').remove();
 	</script>
 	<script type="text/javascript">
   $(document).ready(()=>{
-    $('.container').css('paddingLeft',$('.side-nav').width());
+    $('.containers').css('paddingLeft',$('.side-nav').width());
 });
 </script>
 

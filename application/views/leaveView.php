@@ -407,12 +407,13 @@ input[type="date"],input[type=time]{
       padding-left: 1rem;
     }
     select{
-      background: #E7E7E7 !important;
-      border: none !important;
-      height: 2.5rem !important;
-      border-radius: 20px !important;
-      border: 1px solid #D2D0D0 !important;
-      padding-left: 1rem !important;
+    background: rgb(164, 217, 214) !important;
+    font-weight: 700 !important;
+    color: rgb(23, 29, 75) !important;
+    border-radius: 20px !important;
+    padding: 5px !important;
+    padding-left: 20px !important;
+    border: 2px solid #e9e9e9 !important;
     }
 
 
