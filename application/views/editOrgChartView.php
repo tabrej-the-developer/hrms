@@ -49,6 +49,9 @@ font-family: 'Open Sans', sans-serif;
 		display: inline-flex;
 		width:100%;
 	}
+	.editClassArea{
+		margin-left: 4rem;
+	}
 	.area-name{
 		font-weight:bolder;
 		margin:10px;
@@ -101,31 +104,32 @@ font-family: 'Open Sans', sans-serif;
 		right: 0;
 		color: rgba(0,0,0,0.7);
 	}
-	input[type="submit"],input[type="button"]{
-      background-color: #9E9E9E;
-	  border: none;
-	  color: white;
-	  padding: 10px 10px;
-	  text-align: center;
-	  text-decoration: none;
-	  display: inline-block;
-	  margin: 2px;
+	input[type=submit],input[type=button]{
+  /*position: absolute;*/
+/*  right: 0;*/
+    border: none !important;
+    color: rgb(23, 29, 75) !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    display: inline-block;
+    font-weight: 700 !important;
+    margin: 2px !important;
+    min-width:6rem !important;
+      border-radius: 20px !important;
+      padding: 4px 8px !important;
+      background: rgb(164, 217, 214) !important;
+      font-size: 1rem !important;
+      margin-right:5px !important;
+      justify-content: center !important;
+      display: flex;
+      align-items: center;
 	}
-	select{
-	background: #ebebeb;
-	border-radius: 5px;
-    padding: 5px;
-    border: 2px solid #e9e9e9 !important;
-}
 	input[type="text"]{
-		border-radius:3px;
-		border-style:solid;
-		border:none ;
-		border-width:1px; 
-		border:1px solid #cccccc;
-	}
-	.sellect{
-		border-radius:5px;
+		background: #ebebeb;
+		border-radius: 5px;
+	    padding: 5px;
+	    border: 1px solid #D2D0D0 !important;
+	    border-radius: 20px;
 	}
 	.select-class{
 		padding: 1.5rem;
@@ -165,6 +169,45 @@ font-family: 'Open Sans', sans-serif;
 		padding-left: 1rem;
 		font-weight: 700;
 	}
+    select{
+	background: rgb(164, 217, 214);
+	font-weight: 700;
+	color: rgb(23, 29, 75);
+	border-radius: 20px;
+    padding: 5px;
+    padding-left: 20px;
+    border: 2px solid #e9e9e9 !important;
+		}
+	.btn-primary{
+    border: none !important;
+    color: rgb(23, 29, 75) !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    display: inline-block;
+    font-weight: 700 !important;
+    margin: 2px !important;
+    min-width:6rem !important;
+      border-radius: 20px !important;
+      padding: 4px 8px !important;
+      background: rgb(164, 217, 214) !important;
+      font-size: 1rem !important;
+      margin-right:5px !important;
+      justify-content: center !important;
+      display: flex;
+      align-items: center;
+}
+.li-c{
+	display: flex;
+}
+.li-c > span > input[type=text]{
+	margin-left: 2rem;
+}
+.areaId > div{
+	display: flex;
+}
+#new-area-form > div{
+	display: flex;
+}
 </style>
 </head>
 <body>
@@ -199,7 +242,12 @@ font-family: 'Open Sans', sans-serif;
 		 	</span>
 		 	<?php if(isset($permissions->permissions) ? $permissions->permissions->editOrgChartYN : "N" == "Y"){ ?>
 		 <span onclick="newArea()" style="font-size:25px">
-			<a href="javascript:void(0)" style="padding:0 0 0 20px"><button class="btn btn-primary">Add New Area</button></a>
+			<a href="javascript:void(0)" >
+				<button class="btn btn-primary">
+                        <i>
+                          <img src="<?php echo base_url('assets/images/icons/plus.png'); ?>" style="max-height:1rem;margin-right:10px">
+                        </i>Add New Area</button>
+			</a>
 		 </span>
 		<?php } ?>
 		</div>
@@ -217,7 +265,7 @@ font-family: 'Open Sans', sans-serif;
 					<span class="delete-Area" style="padding-right:20px"><a class="delete-area" href="javascript:void(0)" d-val="<?php echo $orgChart->areaId ?>"><i class="fas fa-trash-alt" style="color: #ff3b30;"></i></a></span>
 				<?php } ?>
 				</div>
-				<div areaId="<?php echo $orgChart->areaId;?>" ></div>
+				<div areaId="<?php echo $orgChart->areaId;?>" class="areaId"></div>
 				<div>
 					<?php foreach($orgChart->roles as $roles){
 					echo "<li class='li-c'><span class=\"roleNameClass\">".$roles->roleName."</span><span class=\"roleIdClass\" style=\"display:none\">".$roles->roleid."</span>";
