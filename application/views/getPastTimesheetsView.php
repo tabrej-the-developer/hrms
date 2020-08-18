@@ -331,6 +331,11 @@ body{
 			$date = explode("-",$date);
 			return date("M d,Y",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
 		}
+		function dateToDay($date){
+	$date = explode("-",$date);
+	return date("M d",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
+}
+
 	?>
 <div class="containers">
 	<div class="d-flex heading-bar">
@@ -367,7 +372,7 @@ body{
 				<th>S.No</th>
 				<?php if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')== ADMIN) {?>
 				<th>Timesheet Name</th>
-				<th>Edit Y/N</th>
+				<!-- <th>Edit Y/N</th> -->
 			<?php } ?>
 				<th>Start Date</th>
 				<th>End Date</th>
@@ -385,11 +390,11 @@ body{
 				<tr id="<?php echo $timesheet->timesheets[$i]->id?>">
 					<td><?php echo $i+1 ?></td>
 					<?php if($this->session->userdata('UserType') == ADMIN ){?>
-						<td><?php print_r(json_decode($centers)->centers[0]->name) ?></td>
+						<td><?php echo 'Timesheet | '.dateToDay($timesheet->timesheets[$i]->startDate).'-'.dateToDay($timesheet->timesheets[$i]->endDate) ?></td>
 					<?php } ?>
 					<?php if($this->session->userdata('UserType') ==SUPERADMIN ) { ?>
-					<td><?php echo $centers->centers[$id]->name ?></td>
-					<td><?php echo $timesheet->timesheets[$i]->isEditYN ?></td>
+					<td><?php echo  'Timesheet | '.dateToDay($timesheet->timesheets[$i]->startDate).'-'.dateToDay($timesheet->timesheets[$i]->endDate) ?></td>
+					<!-- <td><?php // echo $timesheet->timesheets[$i]->isEditYN ?></td> -->
 				<?php }?>
 					<td><?php echo dateToDayAndYear($timesheet->timesheets[$i]->startDate) ?></td>
 					<td><?php echo dateToDayAndYear($timesheet->timesheets[$i]->endDate) ?></td>

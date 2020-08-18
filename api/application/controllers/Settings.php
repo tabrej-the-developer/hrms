@@ -362,37 +362,87 @@ class Settings extends CI_Controller {
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			$json = json_decode(file_get_contents('php://input'));
-			//$newR = $this->UtilModel->getCenterById($json->centerid);
 			if($json!= null && $res != null && $res->userid == $json->userid){
-				$addStreet = $json->addStreet;
-				$addCity = $json->addCity;
-				$addState = $json->addState;
-				$addZip = $json->addZip;
-				$name = $json->name;
-				$logo = $json->logo;
-				$centerid = $json->centerid;
-				$rooms = $json->rooms;
-				if($logo == null){
-					$logo = "http://vizytor.todquest.com/images/logo/amiga.png";
-				}else{
-				$destFile = "assets/images/".$_FILES['file']['name'];
-				$logo = basename($_FILES['file']['name']);
-				move_uploaded_file( $_FILES['file']['tmp_name'], $destFile );
-				}
+					$addStreet = $json->addStreet;
+					$addCity = $json->addCity;
+					$addState = $json->addState;
+					$addZip = $json->addZip;
+					$name = $json->name;
+					$centre_phone_number = $json->centre_phone_number;
+					$centre_mobile_number = $json->centre_mobile_number;
+					$Centre_email = $json->Centre_email;
+					$centre_abn = $json->centre_abn;
+					$centre_acn = $json->centre_acn;
+					$centre_se_no = $json->centre_se_no;
+					$centre_date_opened = $json->centre_date_opened;
+					$centre_capacity = $json->centre_capacity;
+					$approval_doc = $json->centre_approval_doc;
+					$centre_approval_doc = uniqid().'-CenterApprovalDoc-'.uniqid().'pdf';
+					file_put_contents(json_decode($approval_doc),$centre_approval_doc);
+					$ccs_doc = $json->centre_ccs_doc;
+					$centre_ccs_doc = uniqid().'-CCS_Doc-'.uniqid().'pdf';
+					file_put_contents(json_decode($ccs_doc),$centre_ccs_doc);
+					$manager_name = $json->manager_name;
+					$centre_admin_name = $json->centre_admin_name;
+					$centre_nominated_supervisor = $json->centre_nominated_supervisor;
+					$rooms = $json->rooms;
+					$suppliers = $json->suppliers;
+					$compliances = $json->compliances;
 				//$this->load->model('UtilModel');
 				$this->load->model('settingsModel');
+				$centerid = $this->settingsModel->addCenter($addStreet,$addCity,$addState,$addZip,$name,$centre_phone_number,$centre_mobile_number,$Centre_email);
+						$this->settingsModel->addCenterRecord($centerid,$centre_abn,$centre_acn,$centre_se_no,$centre_date_opened,$centre_capacity,$approval_doc,$centre_approval_doc,$ccs_doc,$centre_ccs_doc,$manager_name,$centre_admin_name,$centre_nominated_supervisor);
 				foreach ($rooms as $r) {
-					
 					if($r->name != null ){
-						$name = $r->name;
-						$careAgeFrom = $r->careAgeFrom;
-						$careAgeTo = $r->careAgeTo;
-						$capacity = $r->capacity;
-						$studentRatio = $r->studentRatio;
-						$room = $this->settingsModel->addRoom($centerid,$name,$careAgeFrom,$careAgeTo,$capacity,$studentRatio);
+						$room_name = $r->room_name;
+						$capacity_ = $r->capacity_;
+						$minimum_age = $r->minimum_age;
+						$maximum_age = $r->maximum_age;
+			$room = $this->settingsModel->addRoom($centerid,
+																						$room_name,
+																						$capacity_,
+																						$minimum_age,
+																						$maximum_age);
 					}
 				}
-				$center = $this->settingsModel->addCenter($centerid,$logo,$name,$addStreet,$addCity,$addState,$addZip);
+				foreach($compliances as $c){
+					if($c->compliance_name != null){
+						$compliance_name = $c->compliance_name;
+						$compliance_desc = $c->compliance_desc;
+						$compliance_contact_details = $c->compliance_contact_details;
+						$compliance_contact_name = $c->compliance_contact_name;
+						$compliance_contact_number = $c->compliance_contact_number;
+						$compliance_contact_email = $c->compliance_contact_email;
+						$compliance_expiry_renewal_date = $c->compliance_expiry_renewal_date;
+						$compliance_document = $c->compliance_document;
+						$supplierInfo = $this->settingsModel->addCompliance(
+																													$centerid,
+																													$compliance_name,
+																													$compliance_desc,
+																													$compliance_contact_details,
+																													$compliance_contact_name,
+																													$compliance_contact_number,
+																													$compliance_contact_email,
+																													$compliance_expiry_renewal_date,
+																													$compliance_document);
+					}
+				}
+				foreach ($suppliers as $supplier) {
+					if($supplier->name != null ){
+							$supplier_desc = $supplier->supplier_desc;
+							$supplier_account_no = $supplier->supplier_account_no;
+							$supplier_contact_name = $supplier->supplier_contact_name;
+							$supplier_contact_number = $supplier->supplier_contact_number;
+							$supplier_contact_email = $supplier->supplier_contact_email;
+			$room = $this->settingsModel->addSupplier($centerid,
+																								$supplier_desc,
+																								$supplier_account_no,
+																								$supplier_contact_name,
+																								$supplier_contact_number,
+																								$supplier_contact_email);
+					}
+				}
+				$center = 
 					$data['Status'] = "SUCCESS";
 				http_response_code(200);
 				echo json_encode($data);
@@ -563,141 +613,164 @@ class Settings extends CI_Controller {
 
 
 
-	public function createEmployeeProfile(){
-		$headers = $this->input->request_headers();
-		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
-			$this->load->model('authModel');
-			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
-			$json = json_decode(file_get_contents('php://input'));
-			if($json!= null && $res != null && $res->userid == $json->userid){
-			$title = $json->title; 
-			$fname = $json->fname; 
-			$mname = $json->mname; 
-			$lname = $json->lname; 
-			$status = $json->status; 
-			$emails = $json->emails; 
-			$dateOfBirth = $json->dateOfBirth; 
-			$jobTitle = $json->jobTitle; 
-			$gender = $json->gender; 
-			$homeAddLine1 = $json->homeAddLine1; 
-			$homeAddLine2 = $json->homeAddLine2; 
-			$homeAddCity = $json->homeAddCity; 
-			$homeAddRegion = $json->homeAddRegion; 
-			$homeAddPostal = $json->homeAddPostal; 
-			$homeAddCountry = $json->homeAddCountry; 
-			$phone = $json->phone; 
-			$mobile = $json->mobile; 
-			$startDate = $json->startDate; 
-			$terminationDate = $json->terminationDate; 
-			$ordinaryEarningRateId = $json->ordinaryEarningRateId; 
-			$payrollCalendarId = //$json->payrollCalendarId; 
-			$employeeId = $json->employeeId; 
-			$bankAccount = $json->bankAccount; 
-			$superfunds = $json->superfund;  
-			$employmentBasis = $json->employmentBasis; 
-			$tfnExemptionType = $json->tfnExemptionType; 
-			$taxFileNumber = $json->taxFileNumber; 
-			$australiantResidentForTaxPurposeYN = $json->australiantResidentForTaxPurposeYN; 
-			$residencyStatue = $json->residencyStatue; 
-			$taxFreeThresholdClaimedYN = $json->taxFreeThresholdClaimedYN; 
-			$taxOffsetEstimatedAmount = $json->taxOffsetEstimatedAmount; 
-			$hasHELPDebtYN = $json->hasHELPDebtYN; 
-			$hasSFSSDebtYN = $json->hasSFSSDebtYN; 
-			$hasTradeSupportLoanDebtYN = $json->hasTradeSupportLoanDebtYN; 
-			$upwardVariationTaxWitholdingAmount = $json->upwardVariationTaxWitholdingAmount; 
-			$eligibleToReceiveLeaveLoadingYN = $json->eligibleToReceiveLeaveLoadingYN; 
-			$approvedWitholdingVariationPercentage = $json->approvedWitholdingVariationPercentage; 
-			$center = $json->center;
-			$area = $json->area;
-			$role = $json->role;
-			$manager = $json->manager;
-			$level = $json->level;
-			$bonusRates = $json->bonusRates;
-			$medicareNo = $json->medicareNo;
-			$medicareRefNo = $json->medicareRefNo;
-			$healthInsuranceFund = $json->healthInsuranceFund;
-			$healthInsuranceNo = $json->healthInsuranceNo;
-			$ambulanceSubscriptionNo = $json->ambulanceSubscriptionNo;
-			$medicalConditions = $json->medicalConditions;
-			$medicalAllergies = $json->medicalAllergies;
-			$medication = $json->medication;
-			$dietaryPreferences = $json->dietaryPreferences;
-			$anaphylaxis = $json->anaphylaxis;
-			$asthma = $json->asthma;
-			$maternityStartDate = $json->maternityStartDate;
-			$maternityEndDate = $json->maternityEndDate;
-			$employee_no = $json->employee_no;
-			$currently_employed = $json->currently_employed;
-			$commencement_date = $json->commencement_date;
-			$resume_supplied = $json->resume_supplied;
-			$resume_doc = $json->resume_doc;
-			$employement_type = $json->employement_type;
-			$current_contract_notes = $json->current_contract_notes;
-			$current_contract_signature = $json->current_contract_signature;
-			$current_contract_commencement = $json->current_contract_commencement;
-			$current_contract_end_date = $json->current_contract_end_date;
-			$current_contract_paid_start_date = $json->current_contract_paid_start_date;
-			$probation_end_date = $json->probation_end_date;
-			$industry_years_exp_as_nov19 = $json->industry_years_exp_as_nov19;
-			$highest_qual_held = $json->highest_qual_held;
-			$highest_qual_type = $json->highest_qual_type;
-			$qual_towards_desc = $json->qual_towards_desc;
-			$qual_towards_percent_comp = $json->qual_towards_percent_comp;
-			$workcover = $json->workcover;
-			$piawe = $json->piawe;
-			$annual_leave_in_contract = $json->annual_leave_in_contract;
-			$visa_type = $json->visa_type;
-			$visa_grant_date = $json->visa_grant_date;
-			$visa_end_date = $json->visa_end_date;
-			$visa_conditions = $json->visa_conditions;
-			$first_aid_expiry = $json->first_aid_expiry;
-			$cpr_expiry = $json->cpr_expiry;
-			$prohibition_notice_declaration = $json->prohibition_notice_declaration;
-			$vit_card_no = $json->vit_card_no;
-			$vit_expiry = $json->vit_expiry;
-			$wwcc_card_no = $json->wwcc_card_no;
-			$wwcc_expiry = $json->wwcc_expiry;
-			$food_handling_safety = $json->food_handling_safety;
-			$last_police_check = $json->last_police_check;
-			$child_protection_check = $json->child_protection_check;
-			$nominated_supervisor = $json->nominated_supervisor;
-			$employee = $json->Employees;
-			$this->postToXero($employees);
-			$this->load->model('settingsModel');
-			$bankAccount = json_decode($bankAccount);
-			foreach($bankAccount as $account){
-				$statementText = $account->statementText;
-				$accountName = $account->accountName;
-				$bsb = $account->bsb;
-				$accountNumber = $account->accountNumber;
-				$remainderYN = $account->remainderYN;
-				$amount = $account->amount;
-				$this->load->addEmployeeToEmployeeBankAccount($statementText,$accountName,$bsb,$accountNumber,$remainderYN,$amount);
-			} 
-			$superfunds = json_decode($superfunds);
-			foreach($superfunds as $superfund){
-				$SuperMembershipID = $superfund->SuperMembershipID;
-				$SuperFundID = $superfund->SuperFundID;
-				$EmployeeNumber = $superfund->EmployeeNumber;
-				$this->load->addEmployeeToEmployeeSuperfund($SuperMembershipID,$SuperFundID,$EmployeeNumber);
-			} 
-		$this->load->addEmployeeToEmployee($xeroEmployeeId,$title,$fname,$mname,$lname,$status,$emails,$dateOfBirth,$jobTitle,$gender,$homeAddLine1,$homeAddLine2,$homeAddCity,$homeAddRegion,$homeAddPostal,$homeAddCountry,$phone,$mobile,$startDate,$terminationDate,$ordinaryEarningRateId,$payrollCalendarId);
-		$this->load->addEmployeeToEmployeeTaxDeclaration($employeeId,$employmentBasis,$tfnExemptionType,$taxFileNumber,$australiantResidentForTaxPurposeYN,$residencyStatue,$taxFreeThresholdClaimedYN,$taxOffsetEstimatedAmount,$hasHELPDebtYN,$hasSFSSDebtYN,$hasTradeSupportLoanDebtYN,$upwardVariationTaxWitholdingAmount,$eligibleToReceiveLeaveLoadingYN,$approvedWitholdingVariationPercentage);
-		$this->insertMedicalInfo($employeeNo,$medicareNo,$medicareRefNo,$healthInsuranceFund,$healthInsuranceNo,$ambulanceSubscriptionNo,$medicalConditions,$medicalAllergies,$medication,$dietaryPreferences,$anaphylaxis,$asthma,$maternityStartDate,$maternityEndDate);
-		$this->insertIntoHRrecord($employeeNo,$currentlyEmployed,$commencementDate,$contractPosition,$resumeSupplied,$resumeDoc,$employmentType,$currentContractNotes,$currentContractSignatureDate,$currentContractCommencementDate,$currentContractEndDate,$currentContractPaidStartDate,$probationEndDate,$industryYearsExpAsNov19,$prohibitionNoticeDeclaration,$VITcardNo,$VITexpiry,$WWCCcardNo,$WWCCexpiry,$foodHandlingSafety,$lastPoliceCheck,$childProtectionCheck,$nominatedSupervisor,$workcover,$PIAWE,$annualLeaveInContract,$otherQualifications,$otherQualDesc,$highestQualHeld,$highestQualType,$qualTowardsDesc,$qualTowardsPercentcomp,$contractAwardId,$paidAwardId,$visaType,$visaGrantDate,$visaEndDate,$visaConditions);
-		$this->load->addEmployeeToUsers($emails,$center,$area,$role,$manager,$level,$bonusRates);
-			$data = 'SUCCESS';
-					}
+// 	public function createEmployeeProfile(){
+// 		$headers = $this->input->request_headers();
+// 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+// 			$this->load->model('authModel');
+// 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+// 			$json = json_decode(file_get_contents('php://input'));
+// 			if($json!= null && $res != null && $res->userid == $json->userid){
+// 					$userid = $json->userid;
+// 					$title = $json->title;
+// 					$fname = $json->fname;
+// 					$mname = $json->mname;
+// 					$lname = $json->lname;
+// 					$emails = $json->emails;
+// 					$alias = $json->alias;
+// 					$dateOfBirth = $json->dateOfBirth;
+// 					$jobTitle = $json->jobTitle;
+// 					$gender = $json->gender;
+// 					$homeAddLine1 = $json->homeAddLine1;
+// 					$homeAddLine2 = $json->homeAddLine2;
+// 					$homeAddCity = $json->homeAddCity;
+// 					$homeAddRegion = $json->homeAddRegion;
+// 					$homeAddPostal = $json->homeAddPostal;
+// 					$homeAddCountry = $json->homeAddCountry;
+// 					$phone = $json->phone;
+// 					$mobile = $json->mobile;
+// 					$startDate = $json->startDate;
+// 					$terminationDate = $json->terminationDate;
+// 					$ordinaryEarningRateId = $json->ordinaryEarningRateId;
+// 					$emergency_contact = $json->emergency_contact;
+// 					$relationship = $json->relationship;
+// 					$emergency_contact_email = $json->emergency_contact_email;
+// 					$superfund = $json->superfund;
+// 					$bankAccount = $json->bankAccount;
+// 					$employmentBasis = $json->employmentBasis;
+// 					$tfnExemptionType = $json->tfnExemptionType;
+// 					$taxFileNumber = $json->taxFileNumber;
+// 					$australiantResidentForTaxPurposeYN = $json->australiantResidentForTaxPurposeYN;
+// 					$residencyStatue = $json->residencyStatue;
+// 					$taxFreeThresholdClaimedYN = $json->taxFreeThresholdClaimedYN;
+// 					$taxOffsetEstimatedAmount = $json->taxOffsetEstimatedAmount;
+// 					$hasHELPDebtYN = $json->hasHELPDebtYN;
+// 					$hasSFSSDebtYN = $json->hasSFSSDebtYN;
+// 					$hasTradeSupportLoanDebtYN = $json->hasTradeSupportLoanDebtYN;
+// 					$upwardVariationTaxWitholdingAmount = $json->upwardVariationTaxWitholdingAmount;
+// 					$eligibleToReceiveLeaveLoadingYN = $json->eligibleToReceiveLeaveLoadingYN;
+// 					$approvedWitholdingVariationPercentage = $json->approvedWitholdingVariationPercentage;
+// 					$center = $json->center;
+// 					$area = $json->area;
+// 					$role = $json->role;
+// 					$manager = $json->manager;
+// 					$level = $json->level;
+// 					$bonusRates = $json->bonusRates;
+// 					$employee_no = $json->employee_no;
+// 					$resume = $json->resume_doc;
+// 					$resume_doc = uniqid().'-resume-'.uniqid().'pdf';
+// 					file_put_contents('assets/files/'.$resume_doc,json_decode($resume));
+// 					$contract = $json->contract_doc;
+// 					$contract_doc =   uniqid().'-contract-'.uniqid().'pdf';
+// 					file_put_contents('assets/files/'.$contract_doc,json_decode($contract));
+// 					$employement_type = $json->employement_type;
+// 					$highest_qual_held = $json->highest_qual_held;
+// 					$qual_towards_desc = $json->qual_towards_desc;
+// 					$qual_towards_percent_comp = $json->qual_towards_percent_comp;
+// 					$classification = $json->classification;
+// 					$payroll_calendar = $json->payroll_calendar;
+// 					$holiday_group = $json->holiday_group;
+// 					$employee_group = $json->employee_group;
+// 					$visa_holder = $json->visa_holder;
+// 					$visa_type = $json->visa_type;
+// 					$visa_grant_date = $json->visa_grant_date;
+// 					$visa_end_date = $json->visa_end_date;
+// 					$visa_conditions = $json->visa_conditions;
+// 					$employees = $json->Employees;
+// 					//medical
+// 				$medicareNo = $medical->medicareNo;
+// 				$medicareRefNo = $medical->medicareRefNo;
+// 				$healthInsuranceFund = $medical->healthInsuranceFund;
+// 				$healthInsuranceNo = $medical->healthInsuranceNo;
+// 				$ambulanceSubscriptionNo = $medical->ambulanceSubscriptionNo;
+// 				$medicalConditions = $medical->medicalConditions;
+// 				$medicalAllergies = $medical->medicalAllergies;
+// 				$medication = $medical->medication;
+// 				$dietaryPreferences = $medical->dietaryPreferences;
 
-			http_response_code(200);
-			echo json_encode($data);
-				}
-		else{
-			http_response_code(401);
-		}
-	}
+// 				//courses
+// 				$course_name = $course->course_name; 
+// 				$course_description = $course->course_description; 
+// 				$date_obtained = $course->date_obtained; 
+// 				$expiry_date = $course->expiry_date; 
+// 				$certificate = $course->certificate; 
 
- 	function postToXero($data,$access_token,$tenant_id){
+// 				$this->load->model('xeroModel');
+// 				$xeroTokens = $this->xeroModel->getXeroToken();
+
+// 					if($xeroTokens != null){
+// 						$access_token = $xeroTokens->access_token;
+// 						$tenant_id = $xeroTokens->tenant_id;
+// 						$refresh_token = $xeroTokens->refresh_token;
+// 						$val = $this->postToXero($access_token,$tenant_id,$employees);
+// 						$val = json_decode($val);
+// 						if($val != NULL){
+// 							if($val->Status == 401){
+// 								$refresh = $this->refreshXeroToken($refresh_token);
+// 								$refresh = json_decode($refresh);
+// 								$access_token = $refresh->access_token;
+// 								$expires_in = $refresh->expires_in;
+// 								$refresh_token = $refresh->refresh_token;
+// 								$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in);
+// 								$val = $this->postToXero($access_token,$tenant_id,$employees);
+// 								$val = json_decode($val);
+// 							}
+// 						}
+// 						if($val == NULL){
+// 							$access_token = $xeroTokens->access_token;
+// 							$tenant_id = $xeroTokens->tenant_id;
+// 								$this->postToXero($access_token,$tenant_id,$employees);
+// 							$data = [];
+// 							$data['Status'] = 'SUCCESS';
+// 						}
+// 					}
+// 			$this->postToXero($employees);
+// 			$this->load->model('settingsModel');
+// 			foreach($bankAccount as $account){
+// 				$accountName = $account->accountName;
+// 				$bsb = $account->bsb;
+// 				$accountNumber = $account->accountNumber;
+// 				$remainderYN = $account->remainderYN;
+// 				$amount = $account->amount;
+// 				$this->settingsModel->addEmployeeToEmployeeBankAccount($accountName,$bsb,$accountNumber,$remainderYN,$amount);
+// 			} 
+// 			foreach($superfund as $s)
+// 				$SuperFundID = $s->SuperFundID;
+// 				$EmployeeNumber = $s->EmployeeNumber;
+// 				$this->load->addEmployeeToEmployeeSuperfund($SuperFundID,$EmployeeNumber);
+// 			}
+// 				$this->settingsModel->addToMedicalInfo($medicareNo,$medicareRefNo,$healthInsuranceFund,$healthInsuranceNo,$ambulanceSubscriptionNo,$medicalConditions,$medicalAllergies,$medication,$dietaryPreferences);
+// 				$this->settingsModel->addCourseToHR_record($course_name,$course_description,$date_obtained,$expiry_date,$certificate);
+
+
+// //Done need - Xero Employee Id
+// 		$this->settingsModel->addEmployeeToEmployee($userid,$xeroEmployeeId,$title,$fname,$mname,$lname,$status,$emails,$dateOfBirth,$jobTitle,$gender,$homeAddLine1,$homeAddLine2,$homeAddCity,$homeAddRegion,$homeAddPostal,$homeAddCountry,$phone,$mobile,$startDate,$terminationDate,$ordinaryEarningRateId,$payroll_calendar,$employee_group,$classification,$employee_group,$emergency_contact, $relationship, $emergency_contact_email);
+
+// // Done need - employee id
+// 		$this->settingsModel->addEmployeeToEmployeeTaxDeclaration($employeeId,$employmentBasis,$tfnExemptionType,$taxFileNumber,$australiantResidentForTaxPurposeYN,$residencyStatue,$taxFreeThresholdClaimedYN,$taxOffsetEstimatedAmount,$hasHELPDebtYN,$hasSFSSDebtYN,$hasTradeSupportLoanDebtYN,$upwardVariationTaxWitholdingAmount,$eligibleToReceiveLeaveLoadingYN,$approvedWitholdingVariationPercentage);
+// /// Done
+// 		$this->settingsModel->addEmployeeToUsers($alias,$emails,$center,$area,$role,$manager,$level,$bonusRates);
+// 			$data['status'] = 'SUCCESS';
+
+
+// 			http_response_code(200);
+// 			echo json_encode($data);
+// 				}
+// 		else{
+// 			http_response_code(401);
+// 		}
+// 	}
+
+ 	function postToXero($access_token,$tenant_id,$data){
  		$url = "https://api.xero.com/payroll.xro/1.0/Employees/";
 		$ch =  curl_init($url);
        	curl_setopt($ch, CURLOPT_URL,$url);

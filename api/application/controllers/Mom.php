@@ -72,6 +72,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $mdata = [];
             foreach($participants as $p){
                 $var['uid'] = $p->user_id;
+                $var['email'] = $p->email;
                 
                 array_push($mdata,$var);
             }
@@ -96,6 +97,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $mdata = [];
             foreach($participants as $p){
                 $var['uid'] = $p->user_id;
+                $var['email'] = $p->email;
                 array_push($mdata,$var);
             }
            

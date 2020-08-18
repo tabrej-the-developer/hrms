@@ -73,8 +73,8 @@ font-family: 'Open Sans', sans-serif;
 			border-bottom:none;
 			border-top-left-radius:0;
 			border-top-right-radius:0;
-			background-color: #307bd3;
-			color: #fff;
+			background-color: #8D91AA;
+			color: #E7E7E7;
            
 		}
 		.modal-content {
@@ -393,8 +393,39 @@ input#add_meeting{
     display:block;
     margin:auto;
     margin-bottom:45px;
-
-    
+}
+.card-header{
+  background: #8D91AA;
+  color: #E7E7E7;
+  font-size: 1.3rem;
+  display: flex;
+  justify-content: center;
+}
+input[type="text"],input[type=time],select,#casualEmp_date{
+  background: #ebebeb;
+  border-radius: 5px;
+    padding: 5px;
+    border: 1px solid #D2D0D0 !important;
+    border-radius: 20px;
+}
+.buttonn,
+.button{
+  /*position: absolute;*/
+/*  right: 0;*/
+    border: none !important;
+    color: rgb(23, 29, 75) !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    display: inline-block;
+    font-weight: 700 !important;
+    margin: 2px !important;
+    min-width:6rem !important;
+      border-radius: 20px !important;
+      padding: 4px 8px !important;
+      background: rgb(164, 217, 214) !important;
+      font-size: 1rem !important;
+      margin-right:5px !important;
+      justify-content: center !important;
 }
 .user div{
     float:left;
@@ -450,7 +481,7 @@ input[type=checkbox]:checked:before {
 <body style="background-color:#eee;">
  <div class="container">
  <div class="card">
-  <div class="card-header bg-primary">
+  <div class="card-header ">
     Minutes of Meeting Agenda
   </div>
   <?php 
@@ -502,8 +533,11 @@ input[type=checkbox]:checked:before {
  
 
 
-  <div class="card-footer bg-default">
-       <button type="submit" class="btn btn-primary">End</button>
+  <div class="card-footer d-flex justify-content-end">
+       <button type="submit" class="button">
+            <i>
+              <img src="<?php echo base_url('assets/images/icons/close.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+            </i>End</button>
   </div>
 </form>
 </div>

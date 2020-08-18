@@ -40,6 +40,11 @@
       background: #8D91AA;
       color: #F3F4F7;
     }
+    label{
+      font-weight: 700;
+      padding-top:1rem;
+      margin-bottom:0;
+    }
 	.containers{
 		background:	rgb(243, 244, 247);
 		height: calc(100vh);
@@ -48,13 +53,21 @@
     width:100%;
     display: flex;
   }
-  
+    .leave_balance{
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      font-size: 2rem;
+      align-items: center;
+      width: 100%;
+      font-weight:700;
+      }
 		.leave-heading{
 			font-size: 1.75rem;
 			font-weight: bolder
 		}
         .card-header {
-            padding: 0.2rem 1.25rem;
+            padding: 0 !important;
             /* margin-bottom: 0; */
             background-color: transparent;
             border-bottom: 0px;
@@ -343,6 +356,13 @@ table.dataTable{
         transform: scale(1.0);
         transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
     }
+input[type="date"],input[type=time]{
+  background: #ebebeb;
+  border-radius: 5px;
+    padding: 5px;
+    border: 1px solid #D2D0D0 !important;
+    border-radius: 20px;
+}
  	.buttonn{
 		background-color: #9E9E9E;
   border: none;
@@ -367,7 +387,7 @@ table.dataTable{
     display: inline-block !important;
     font-weight: 700 !important;
     margin: 2px !important;
-    width:8rem !important;
+    min-width: 8rem !important;
       border-radius: 20px !important;
       padding: 8px !important;
       background: rgb(164, 217, 214) !important;
@@ -533,6 +553,14 @@ table.dataTable{
     font-size: 0.9rem;
     background: rgba(0,200,0,0.1)
   }*/
+  .status-reje{
+    display: flex;
+    justify-content: center;
+  }
+  .status-appr{
+    display: flex;
+    justify-content: center;
+  }
   .status-appr:before{
     content: ' ';
     background: url;
@@ -658,35 +686,38 @@ table.dataTable{
 		<div class="row d-flex pt-3">
 	    <div class="ml-2 heading_space">
         <span class="leave-heading">Leave Management</span>
-       <span class="ml-auto"> 
-        <button type="button" name="apply_button" id="apply_button" class="button"        data-toggle="modal" data-target="#exampleModal">
-          <i>
-            <img src="<?php echo base_url('assets/images/icons/leave.png'); ?>" style="max-height:0.8rem;margin-right:10px">
-          </i>Apply Leave
-        </button>
-      </span>
-     </div>
-	    	<div class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
+                <div class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "Y"){ ?>
-			<!-- 			<div class="filter-icon d-flex">
-				<span class="">Sort&nbsp;by</span>
-				<span class=""><img src="../assets/images/filter-icon.png" height="20px"></span>
-			</div> -->
+      <!--      <div class="filter-icon d-flex">
+        <span class="">Sort&nbsp;by</span>
+        <span class=""><img src="../assets/images/filter-icon.png" height="20px"></span>
+      </div> -->
 
-	       <select class="center-list " id="center-list">
-  				<?php $centers = json_decode($centers);	
-  					for($i=0;$i<count($centers->centers);$i++){
-  				?>
-      			<option href="javascript:void(0)"
+         <select class="center-list " id="center-list">
+          <?php $centers = json_decode($centers); 
+            for($i=0;$i<count($centers->centers);$i++){
+          ?>
+            <option href="javascript:void(0)"
                     class="center-class"
                     id="<?php echo $centers->centers[$i]->centerid ?>"
                      value="<?php echo $centers->centers[$i]->centerid; ?>">
                      <?php echo $centers->centers[$i]->name?>
            </option>
-        		<?php } ?>
-      		</select>	
+            <?php } ?>
+          </select> 
 <?php } ?>
-        	</div>
+          </div>
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "N"){ ?>
+       <span class="ml-auto"> 
+        <button type="button" name="apply_button" id="apply_button" class="button"        data-toggle="modal" data-target="#exampleModal">
+          <i>
+            <img src="<?php echo base_url('assets/images/icons/leave.png'); ?>" style="max-height:1rem;margin-right:10px">
+          </i>Apply Leave
+        </button>
+      </span>
+    <?php } ?>
+     </div>
+	    	
 	    </div>
 
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "N"){ ?>
@@ -799,14 +830,7 @@ table.dataTable{
 										</td>
 										<!-- <td><?php // echo $leave->leaveTypeName;?></td> -->
 										<td>
-										<div class="dropdown">
-		                                    <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		                                        <i class="far fa-file-alt"></i>
-		                                    </button>
-		                                    <div class="dropdown-menu dropdown-menu-right p-3 " aria-labelledby="gedf-drop1">
-		                                        <p><?php echo $leave->notes;?></p>
-		                                    </div>
-		                                </div>
+		                  <p><?php echo $leave->notes;?></p>
 										</td>
 										<td class="d-flex justify-content-around">
 										<?php 
@@ -907,17 +931,8 @@ table.dataTable{
                       echo date_format($date,"d/m/Y");
                      ?>
                   </td>
-                  <td>
-                    <div class="dropdown">
-                      <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="far fa-file-alt"></i>
-                      </button>
-                      <div class="dropdown-menu dropdown-menu-right p-3 " aria-labelledby="gedf-drop1">
-                        <p>
-                          <?php echo $l->notes;?>
-                        </p>
-                      </div>
-                    </div>
+                  <td style="font-size: 0.75rem">
+                    <?php echo $l->notes;?>
                   </td>
                     <?php
                       $color = '#F44336';
@@ -1014,22 +1029,18 @@ table.dataTable{
 								<div class="col-md-6" style="padding-left:0">
 									<div class="md-form">
 										<label>Start Date</label>
-										<div class="input-group date" id="datetimepicker12" data-target-input="nearest">
-										<input type="text" name="applyLeaveFromDate" id="applyLeaveFromDate" class="form-control datetimepicker-input" data-target="#datetimepicker12"  />
-										<div class="input-group-append" data-target="#datetimepicker12" data-toggle="datetimepicker">
-                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+										<div class="input-group date" >
+										<input type="date" name="applyLeaveFromDate" id="applyLeaveFromDate" class=""  placeholder="dd-mm-yyyy"/>
+
 										</div>
 										</div>
 									</div>
-								</div>
+
 								<div class="col-md-6">
 									<div class="md-form" style="padding-left:0">
 									<label>End Date</label>
-									<div class="input-group date" id="datetimepicker13" data-target-input="nearest">
-                                    <input type="text" name="applyLeaveToDate" id="applyLeaveToDate" class="form-control datetimepicker-input" data-target="#datetimepicker13"  />
-                                    <div class="input-group-append" data-target="#datetimepicker13" data-toggle="datetimepicker">
-                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                    </div>
+									<div class="input-group date" id="datetimepicker13" >
+                    <input type="date" name="applyLeaveToDate" id="applyLeaveToDate" placeholder="dd-mm-yyyy"/>
 									</div>
 									</div>
 								</div>
@@ -1059,10 +1070,16 @@ table.dataTable{
 					</div>
 					<div class="text-center mt-2 mb-4 f-flex">
 						<span>
-							<button class=" button apply_leave" type="button" onclick="applyLeave()" >Apply</button>
+							<button class=" button apply_leave" type="button" onclick="applyLeave()" >
+            <i>
+              <img src="<?php echo base_url('assets/images/icons/tick.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+            </i>Apply</button>
 						</span>
 						<span>
-							<button type="button" class="close button" data-dismiss="modal" aria-label="Close">Close</button>
+							<button type="button" class="close button" data-dismiss="modal" aria-label="Close">
+            <i>
+              <img src="<?php echo base_url('assets/images/icons/close.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+            </i>Close</button>
 						</span>
 					</div>
                     </div>
@@ -1405,11 +1422,32 @@ else{
         }
         $(document).on('keyup','#total-leave-hours',function(){
           if($('#applyLeaveId').val() != null){
-            if($('#total-leave-hours').val() > parseFloat($('.leave_balance').text())){
-              alert('You have completely used you leaves')
+              $('.leave_balance').text(`${
+                parseFloat((parseFloat($('#applyLeaveId :selected').attr('balance')).toFixed(2)) - ($('#total-leave-hours').val())).toFixed(2)
+              }`)
+              console.log()
+            if($('#total-leave-hours').val() > (parseFloat($('#applyLeaveId :selected').attr('balance')).toFixed(2))){
+              $('.total-leave-hours').text('Exceeded Leaves Limit')
               $('.apply_leave').prop('disabled',true)
             }
           else{
+            $('.total-leave-hours').empty()
+            $('.apply_leave').prop('disabled',false)
+          }
+          }
+        })
+        $(document).on('change','#total-leave-hours',function(){
+          if($('#applyLeaveId').val() != null){
+              $('.leave_balance').text(`${
+                parseFloat((parseFloat($('#applyLeaveId :selected').attr('balance')).toFixed(2)) - ($('#total-leave-hours').val())).toFixed(2)
+              }`)
+              console.log()
+            if($('#total-leave-hours').val() > (parseFloat($('#applyLeaveId :selected').attr('balance')).toFixed(2))){
+              $('.total-leave-hours').text('Exceeded Leaves Limit')
+              $('.apply_leave').prop('disabled',true)
+            }
+          else{
+            $('.total-leave-hours').empty()
             $('.apply_leave').prop('disabled',false)
           }
           }

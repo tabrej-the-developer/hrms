@@ -112,63 +112,99 @@ class SettingsModel extends CI_Model {
 		$query = $this->db->query("SELECT * from payrollshifttype_v1 ");
 		return $query->result();
 	}
+	//add employee
 
-	public function addEmployeeToEmployee($xeroEmployeeId,$userid,$title,$fname,$mname,$lname,$status,$emails,$dateOfBirth,$jobTitle,$gender,$homeAddLine1,$homeAddLine2,$homeAddCity,$homeAddRegion ,$homeAddPostal,$homeAddCountry,$phone,$mobile,$startDate,$terminationDate,$ordinaryEarningRateId,$payrollCalendarId,$created_by){
-		$this->load->database();
-		$query = $this->db->query("INSERT INTO employee (xeroEmployeeId, userid, title ,fname ,mname ,lname ,status ,emails ,dateOfBirth ,jobTitle ,gender ,homeAddLine1 ,homeAddLine2 ,homeAddCity ,homeAddRegion ,homeAddPostal ,homeAddCountry ,phone ,mobile ,startDate ,terminationDate ,ordinaryEarningRateId ,payrollCalendarId ,created_at ,created_by) VALUES   ('$xeroEmployeeId','$userid','$title','$fname','$mname','$lname','$status','$emails','$dateOfBirth','$jobTitle','$gender','$homeAddLine1','$homeAddLine2','$homeAddCity','$homeAddRegion' ,'$homeAddPostal','$homeAddCountry','$phone','$mobile','$startDate','$terminationDate','$ordinaryEarningRateId','$payrollCalendarId',now(),'$created_by') ");
-	}
-	public function addEmployeeToEmployeeBankAccount($employeeId,$statementText,$accountName,$bsb,$accountNumber,$remainderYN,$amount){
-		$this->load->database();
-		$query = $this->db->query("INSERT INTO employeebankaccount (employeeId,statementText,accountName,bsb,accountNumber,remainderYN,amount) VALUES ('$employeeId','$statementText','$accountName','$bsb','$accountNumber','$remainderYN','$amount')");
-	}
-	public function addEmployeeToEmployeeSuperfund($employeeId,$superFundId,$employeeNumber,$superMembershipId){
-		$this->load->database();
-		$query = $this->db->query("INSERT INTO employeesuperfund (employeeId, superFundId, employeeNumber, superMembershipId) VALUES ('$employeeId','$superFundId','$employeeNumber','$superMembershipId')");
-	}
-	public function addEmployeeToEmployeeTaxDeclaration($employeeId,$employmentBasis,$tfnExemptionType,$taxFileNumber,$australiantResidentForTaxPurposeYN,$residencyStatue,$taxFreeThresholdClaimedYN,$taxOffsetEstimatedAmount,$hasHELPDebtYN,$hasSFSSDebtYN,$hasTradeSupportLoanDebtYN,$upwardVariationTaxWitholdingAmount,$eligibleToReceiveLeaveLoadingYN,$approvedWitholdingVariationPercentage){
-		$this->load->database();
-		$query = $this->db->query("INSERT INTO employeetaxdeclaration (employeeId, employmentBasis, tfnExemptionType, taxFileNumber, australiantResidentForTaxPurposeYN, residencyStatue, taxFreeThresholdClaimedYN, taxOffsetEstimatedAmount, hasHELPDebtYN, hasSFSSDebtYN, hasTradeSupportLoanDebtYN, upwardVariationTaxWitholdingAmount, eligibleToReceiveLeaveLoadingYN, approvedWitholdingVariationPercentage) VALUES ('$employeeId','$employmentBasis','$tfnExemptionType','$taxFileNumber','$australiantResidentForTaxPurposeYN','$residencyStatue','$taxFreeThresholdClaimedYN','$taxOffsetEstimatedAmount','$hasHELPDebtYN','$hasSFSSDebtYN','$hasTradeSupportLoanDebtYN','$upwardVariationTaxWitholdingAmount','$eligibleToReceiveLeaveLoadingYN','$approvedWitholdingVariationPercentage')");
-	}
+	//need to get employee number
+// 	public function addToMedicalInfo($medicareNo,$medicareRefNo,$healthInsuranceFund,$healthInsuranceNo,$ambulanceSubscriptionNo,$medicalConditions,$medicalAllergies,$medication,$dietaryPreferences){
+// 		$this->load->database();
+// 		$query = $this->db->query("INSERT INTO medicalinfo (employeeNo,medicareNo, medicareRefNo,
+// healthInsuranceFund, healthInsuranceNo, ambulanceSubscriptionNo, medicalConditions, medicalAllergies,
+// medication, dietaryPreferences,) values ('$medicareNo','$medicareRefNo','$healthInsuranceFund','$healthInsuranceNo','$ambulanceSubscriptionNo','$medicalConditions','$medicalAllergies','$medication','$dietaryPreferences')");
+// 	}
 
-	public function addEmployeeToUsers($emaild,$center,$area,$role,$manager,$level,$bonusRates){
-	 	$this->load->database();
-	 	$query = $this->db->query("INSERT INTO users (center,area,role,manager,level,bonusRates) VALUES ('$center','$area','$role','$manager','$level','$bonusRates') WHERE email ='$emailid'");
-	}
+// 	// need employee No
+// 	public function addCourseToHR_record($course_name,$course_description,$date_obtained,$expiry_date,$certificate,$visa_holder,$visa_type,$visa_grant_date,$visa_end_date,$visa_conditions){
+// 		$this->load->database();
+// 		$query = $this->db->query("UPDATE HR_record SET courseName = '$course_name',courseDescription = '$course_description',dateObtained = '$date_obtained',courseExpiryDate = '$expiry_date',courseCertificate = '$certificate',visaHolderYN = '$visa_holder',visaType = '$visa_type',visaGrantDate = '$visa_grant_date',visaEndDate = '$visa_end_date',visaConditions='$visa_conditions' where employeeNo = '$employeeNo'");
+// 	}
+	
+// 	//need employee id
+// 	public function addEmployeeToEmployeeBankAccount($accountName,$bsb,$accountNumber,$remainderYN,$amount){
+// 		$this->load->database();
+// 		$query = $this->db->query("INSERT INTO employeebankaccount (employeeId, accountName, bsb, accountNumber, remainderYN, amount,) values ('$accountName','$bsb','$accountNumber','$remainderYN','$amount')");
+// 	}
 
 
-	public function getPermissionForEmployee($empId){
-		$this->load->database();
-		$query = $this->db->query("SELECT * FROM permissions WHERE userid = '$empId'");
-		return $query->row();
-	}
+// //need super membership id , employee id
+// 	public function addEmployeeToEmployeeSuperfund($SuperFundID,$EmployeeNumber){
+// 		$this->load->database();
+// 		$query = $this->db->query("INSERT INTO employeesuperfund (superFundId,employeeNumber) values ('$SuperFundID','$EmployeeNumber')");
+// 	}
 
-	public function insertPermission($userid,$isQrReaderYN,$viewRosterYN,$editRosterYN,$viewTimesheetYN,$editTimesheetYN,$viewPayrollYN,$editPayrollYN,$editLeaveTypeYN,$viewLeaveTypeYN,$createNoticeYN,$viewOrgChartYN,$editOrgChartYN,$viewCenterProfileYN,$editCenterProfileYN,$viewRoomSettingsYN,$editRoomSettingsYN,$viewEntitlementsYN,$editEntitlementsYN,$editEmployeeYN,$xeroYN,$viewAwardsYN,$editAwardsYN,$viewSuperfundsYN,$editSuperfundsYN,$createMomYN,$editPermissionYN,$viewPermissionYN){
 
-		$this->load->database();
-		$this->db->query("DELETE FROM permissions WHERE userid = '$userid'");
-		$this->db->query("INSERT INTO permissions VALUES('$userid','$isQrReaderYN','$viewRosterYN','$editRosterYN','$viewTimesheetYN','$editTimesheetYN','$viewPayrollYN','$editPayrollYN','$editLeaveTypeYN','$viewLeaveTypeYN','$createNoticeYN','$viewOrgChartYN','$editOrgChartYN','$viewCenterProfileYN','$editCenterProfileYN','$viewRoomSettingsYN','$editRoomSettingsYN','$viewEntitlementsYN','$editEntitlementsYN','$editEmployeeYN','$xeroYN','$viewAwardsYN','$editAwardsYN','$viewSuperfundsYN','$editSuperfundsYN','$createMomYN','$editPermissionYN','$viewPermissionYN')");
-	}
+// // need xero employee id,
+// 		public function addEmployeeToEmployee($userid,$title,$fname,$mname,$lname,$status,$emails,$dateOfBirth,$jobTitle,$gender,$homeAddLine1,$homeAddLine2,$homeAddCity,$homeAddRegion,$homeAddPostal,$homeAddCountry,$phone,$mobile,$startDate,$terminationDate,$ordinaryEarningRateId,$payroll_calendar,$employee_group,$classification,$employee_group){
+// 			$this->load->database();
+// 			$uniqueId = uniqid();
+// 			$query = $this->db->query("INSERT INTO employee (userid, title, fname, mname, lname, status, emails, dateOfBirth, jobTitle, gender, homeAddLine1, homeAddLine2, homeAddCity, homeAddRegion, homeAddPostal, homeAddCountry, phone, mobile, startDate,terminationDate, ordinaryEarningRateId, payrollCalendarId,employee_group ,classification, employee_group,emergency_contact, 
+// relationship, emergency_contact_email, created_at,created_by) values ('$uniqueId',$title','$fname','$mname','$lname','$status','$emails','$dateOfBirth','$jobTitle','$gender','$homeAddLine1','$homeAddLine2','$homeAddCity','$homeAddRegion','$homeAddPostal','$homeAddCountry','$phone','$mobile','$startDate','$terminationDate','$ordinaryEarningRateId','$payroll_calendar','$employee_group', '$classification', '$employee_group', '$emergency_contact', '$relationship', '$emergency_contact_email', now(),'$userid')");
+// 		}
 
-	public function getEmployeeDetails($userid){
-		$this->load->database();
-		$query = $this->db->query("SELECT * from employee where userid = '$userid'");
-		return $query->row();
-	}
+// // need employee id
+// 		public function addEmployeeToEmployeeTaxDeclaration($employeeId,$employmentBasis,$tfnExemptionType,$taxFileNumber,$australiantResidentForTaxPurposeYN,$residencyStatue,$taxFreeThresholdClaimedYN,$taxOffsetEstimatedAmount,$hasHELPDebtYN,$hasSFSSDebtYN,$hasTradeSupportLoanDebtYN,$upwardVariationTaxWitholdingAmount,$eligibleToReceiveLeaveLoadingYN,$approvedWitholdingVariationPercentage){
+// 			$this->load->database();
+// 			$query = $this->db->query("INSERT INTO employeetaxdeclaration (employeeId, employmentBasis, tfnExemptionType, taxFileNumber, australiantResidentForTaxPurposeYN, residencyStatue, taxFreeThresholdClaimedYN, taxOffsetEstimatedAmount, hasHELPDebtYN, hasSFSSDebtYN, hasTradeSupportLoanDebtYN, upwardVariationTaxWitholdingAmount, eligibleToReceiveLeaveLoadingYN, approvedWitholdingVariationPercentage) values ('$employeeId','$employmentBasis','$tfnExemptionType','$taxFileNumber','$australiantResidentForTaxPurposeYN','$residencyStatue','$taxFreeThresholdClaimedYN','$taxOffsetEstimatedAmount','$hasHELPDebtYN','$hasSFSSDebtYN','$hasTradeSupportLoanDebtYN','$upwardVariationTaxWitholdingAmount','$eligibleToReceiveLeaveLoadingYN','$approvedWitholdingVariationPercentage')");
+// 		}
 
-	public function insertMedicalInfo($employeeNo,$medicareNo,$medicareRefNo,$healthInsuranceFund,$healthInsuranceNo,$ambulanceSubscriptionNo,$medicalConditions,$medicalAllergies,$medication,$dietaryPreferences,$anaphylaxis,$asthma,$maternityStartDate,$maternityEndDate){
-		$this->load->database();
-		$query = $this->db->query("INSERT into medicalinfo (employeeNo,medicareNo,medicareRefNo,healthInsuranceFund,healthInsuranceNo,ambulanceSubscriptionNo,medicalConditions,medicalAllergies,medication,dietaryPreferences,anaphylaxis,asthma,maternityStartDate,maternityEndDate) values ($employeeNo,$medicareNo,$medicareRefNo,$healthInsuranceFund,$healthInsuranceNo,$ambulanceSubscriptionNo,$medicalConditions,$medicalAllergies,$medication,$dietaryPreferences,$anaphylaxis,$asthma,$maternityStartDate,$maternityEndDate)");
-	}
+// 		// public function addEmployeeToUsers($emails,$center,$area,$role,$manager,$level,$bonusRates){
+// 		// 	$this->load->database();
+// 		// 	$query = $this->db->query("INSERT INTO users () values ($emails,$center,$area,$role,$manager,$level,$bonusRates)");
+// 		// }
 
-	public function insertIntoHRrecord($employeeNo,$currentlyEmployed,$commencementDate,$contractPosition,$resumeSupplied,$resumeDoc,$employmentType,$currentContractNotes,$currentContractSignatureDate,$currentContractCommencementDate,$currentContractEndDate,$currentContractPaidStartDate,$probationEndDate,$industryYearsExpAsNov19,$prohibitionNoticeDeclaration,$VITcardNo,$VITexpiry,$WWCCcardNo,$WWCCexpiry,$foodHandlingSafety,$lastPoliceCheck,$childProtectionCheck,$nominatedSupervisor,$workcover,$PIAWE,$annualLeaveInContract,$otherQualifications,$otherQualDesc,$highestQualHeld,$highestQualType,$qualTowardsDesc,$qualTowardsPercentcomp,$contractAwardId,$paidAwardId,$visaType,$visaGrantDate,$visaEndDate,$visaConditions){
-		$this->load->database();
-		$uniqueId = uniqid();
-		$query = $this->db->query("INSERT into hr_record (employeeNo,uniqueId,currentlyEmployed,commencementDate,contractPosition,resumeSupplied,resumeDoc,employmentType,currentContractNotes,currentContractSignatureDate,currentContractCommencementDate,currentContractEndDate,currentContractPaidStartDate,probationEndDate,industryYearsExpAsNov19,prohibitionNoticeDeclaration,VITcardNo,VITexpiry,WWCCcardNo,WWCCexpiry,foodHandlingSafety,lastPoliceCheck,childProtectionCheck,nominatedSupervisor,workcover,PIAWE,annualLeaveInContract,otherQualifications,otherQualDesc,highestQualHeld,highestQualType,qualTowardsDesc,qualTowardsPercentcomp,contractAwardId,paidAwardId,visaType,visaGrantDate,visaEndDate,visaConditions) values ($employeeNo,$uniqueId,$currentlyEmployed,$commencementDate,$contractPosition,$resumeSupplied,$resumeDoc,$employmentType,$currentContractNotes,$currentContractSignatureDate,$currentContractCommencementDate,$currentContractEndDate,$currentContractPaidStartDate,$probationEndDate,$industryYearsExpAsNov19,$prohibitionNoticeDeclaration,$VITcardNo,$VITexpiry,$WWCCcardNo,$WWCCexpiry,$foodHandlingSafety,$lastPoliceCheck,$childProtectionCheck,$nominatedSupervisor,$workcover,$PIAWE,$annualLeaveInContract,$otherQualifications,$otherQualDesc,$highestQualHeld,$highestQualType,$qualTowardsDesc,$qualTowardsPercentcomp,$contractAwardId,$paidAwardId,$visaType,$visaGrantDate,$visaEndDate,$visaConditions)");
-	}
+// 		// add center 
+
+// public function addCenter($addStreet,$addCity,$addState,$addZip,$name,$centre_phone_number,$centre_mobile_number,$Centre_email){
+// 	$this->load->database();
+// 	$query = $this->load->db("INSERT INTO centers (addStreet, addCity, addState, addZip, name, centre_phone_number, centre_mobile_number, centre_email) VALUES ('$addStreet','$addCity','$addState','$addZip','$name','$centre_phone_number','$centre_mobile_number','$Centre_email')");
+// 	return $query->insert_id();
+// }
+// public function addRoom($centerid,$room_name,$capacity_,$minimum_age,$maximum_age){
+// 	$this->load->database();
+// 	$uniqueId = uniqid();
+// 	$query = $this->load->db("INSERT INTO room (roomId,centerid,name,capacity,careAgeFrom,careAgeTo) VALUES ('$uniqueId',$centerid,'$room_name','$capacity_','$minimum_age','$maximum_age')");
+// }
+
+// public function addCompliance($centerid,$compliance_name,$compliance_desc,$compliance_contact_name,$compliance_contact_number,$compliance_contact_email,$compliance_expiry_renewal_date,$compliance_document){
+// 	$this->load->database();
+// 		$uniqueId  = uniqid();
+// 	$query = $this->load->db("INSERT INTO centercomplianceinformation (centerId,uniqueId,complianceName,complianceDesc,complianceContactName,complianceContactNumber,complianceContactEmail,complianceExpiryRenewalDate,complianceDocument) VALUES ($centerid,'$uniqueId','$compliance_name','$compliance_desc','$compliance_contact_details','$compliance_contact_name','$compliance_contact_number','$compliance_contact_email','$compliance_expiry_renewal_date','$compliance_document')");
+// }
+
+// public function addSupplier($centerid,$supplier_desc,$supplier_account_no,$supplier_contact_name,$supplier_contact_number,$supplier_contact_email){
+// 	$this->load->database();
+// 	$query = $this->load->db("INSERT INTO centresupplierinfo (centerId,supplierDesc,supplierAccountNo,supplierContactName,supplierContactNumber,supplierContactEmail) VALUES ($centerid,'$supplier_desc','$supplier_account_no','$supplier_contact_name','$supplier_contact_number','$supplier_contact_email')");
+// }
+
+// public function addCenterRecord($centerid,$centre_abn,$centre_acn,$centre_se_no,$centre_date_opened,$centre_capacity,$approval_doc,$centre_approval_doc,$ccs_doc,$centre_ccs_doc,$manager_name,$centre_admin_name,$centre_nominated_supervisor){
+// 	$this->load->database();
+// 	$uniqueId  = uniqid();
+// 	$query = $this->load->db("INSERT INTO centerrecord (centerId,centerRecordUniqueId,centreABN,centreACN,centreSE_no,centreDateOpened,centreCapacity,centreApprovalDoc,centreCCSDoc,managerId,centreAdminId,centreNominatedSupervisorId) VALUES ($centerid,'$uniqueId','$centre_abn','$centre_acn','$centre_se_no','$centre_date_opened','$centre_capacity','$approval_doc','$centre_approval_doc','$centre_ccs_doc','$manager_name','$centre_admin_name','$centre_nominated_supervisor')");
+// }
 
 }
 
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 
 	

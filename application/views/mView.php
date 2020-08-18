@@ -746,7 +746,27 @@ p.ovrflowtext {
                   <div class="d-flex align-items-center justify-content-between mb-1">
                     <div class="rounded ">
 					 <h6 class="mb-0 left-bar-heading"><?php echo $rc->name;?></h6>
-					  <p class="text-small mb-0 text-muted ovrflowtext"><?php echo $rc->lastText;?></p>
+					  <p class="text-small mb-0 text-muted ovrflowtext"><?php 
+                            try{
+              if(is_string($rsa->decrypt(base64_decode($rc->lastText))) == 1){
+$expression = "/(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])?/i";
+$string = $rsa->decrypt(base64_decode($rc->lastText));
+                if(preg_match($expression,$string) == 1){
+                  // echo '<img src="'.$string.'">';
+                }elseif(preg_match('/data:image/i',$string) == 1){
+                  echo 'IMAGE';
+                }else{
+                  echo $string;
+                }
+              } 
+              else{
+                throw new Exception('Invalid Type');
+              }
+                }
+                catch(Exception $e){
+                    echo 'Not Known';
+                }
+            ?></p>
 					</div>
                   </div>
                 

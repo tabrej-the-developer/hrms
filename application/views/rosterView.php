@@ -461,7 +461,8 @@ table.dataTable{
 <div style="position: relative;margin-top:40px ">
  	<form id="create-roster-form"  method="POST" action=<?php echo base_url("roster/createRoster") ?>>
  		<span id="down-arrow" class="row" style="display:flex;justify-content: center;margin:20px">
- 			<input class="col-8" name="roster-date" id="roster-date" autocomplete="off" placeholder="Start Date"></span>
+ 			<input type = "date" placeholder = "dd-mm-yyyy" class="col-8" name="roster-date" id="roster-date">
+ 		</span>
  		<input type="text" name="userId" id="userId" style="display:none" value="<?php echo $userId?>">
  		
  		<?php if($this->session->userdata('UserType')==ADMIN) {?>
@@ -516,7 +517,7 @@ table.dataTable{
 
 		$(document).on('click','#tbody tr',function(){
 			var rosterId = $(this).prop('id')
-			var url = "<?php echo base_url();?>roster/getRosterDetails?rosterId="+rosterId;
+			var url = "<?php echo base_url();?>roster/getRosterDetails?rosterId="+rosterId+'&showBudgetYN=N';
 			window.location.href=url;
 		})
 })

@@ -192,22 +192,19 @@ font-family: 'Open Sans', sans-serif;
 	  display: inline-block;
 	  font-weight: 700;
 	  margin: 2px;
-	  width:5rem;
+	  min-width:5rem;
       border-radius: 20px;
       padding: 4px 8px;
       background: rgb(164, 217, 214);
       font-size: 1rem;
 	}
-	.close{
-		float: none; 
-	    font-size: inherit;  
-	    line-height: inherit; 
-	    color: inherit; 
-	    text-shadow: inherit; 
-	    opacity: inherit; 
+	.close_button{
+		cursor:pointer;
+		display: flex;
+		justify-content: center;
 	}
-	.close:hover{
-		background:#9E9E9E;
+	.close_button_div{
+		margin-top: 2rem;
 	}
    .modal-logout {
         position: fixed;
@@ -314,9 +311,12 @@ table.dataTable{
 	  0% { transform: rotate(0deg); }
 	  100% { transform: rotate(360deg); }
 	}
-.flag_button{
-	box-shadow: 0px 5px 6px #9a9999;
-}
+	.flag_button{
+		box-shadow: 0px 5px 6px #9a9999;
+	}
+	.FLAGGED_flag{
+		background:#FBECA4;
+	}
     @media only screen and (max-width :600px){
     	.modal-content {
 		  background-color: #fefefe;
@@ -401,7 +401,10 @@ table.dataTable{
 
 		<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
 		<span class="btn ml-auto d-flex align-self-center create">
-			<a href="javascript:void(0)" id="create-new-roster" class="d-flex" id="publish">Publish</a>
+			<a href="javascript:void(0)" id="create-new-roster" class="d-flex" id="publish">
+			<i>
+				<img src="<?php echo base_url('assets/images/icons/publish.png'); ?>" style="margin-right:10px">
+			</i>Publish</a>
 		</span>
 		<?php } ?>
 	</div>
@@ -473,7 +476,18 @@ table.dataTable{
 
 				 ?>
 					<td pay="<?php echo $totalTime; ?>" userid="<?php  echo $payrollShifts->employees[$i]->payrollShifts[0]->userid ?>" timesheetid="<?php  echo $payrollShifts->timesheetid ?>"><?php echo '$ '.$totalTime; ?></td>
-					<td><button class="button flag_button flagged" userid="<?php  echo $payrollShifts->employees[$i]->payrollShifts[0]->userid ?>"  timesheetid="<?php  echo $payrollShifts->timesheetid ?>">Flag</button></td>
+					<?php if($payrollShifts->employees[$i]->payrollShifts[0]->status != 'FLAGGED'){ ?>
+					<td >
+						<button class="button flag_button flagged" userid="<?php  echo $payrollShifts->employees[$i]->payrollShifts[0]->userid ?>"  timesheetid="<?php  echo $payrollShifts->timesheetid ?>">
+							<i>
+								<img src="<?php echo base_url('assets/images/icons/flag.png'); ?>" style="max-height:1.3rem;margin-right:10px">
+							</i>Flag</button>
+					</td>
+				<?php }else{ ?>
+						<td class="FLAGGED_flag">
+							<span>FLAGGED</span>
+						</td>
+					<?php } ?>
 				</tr>
 				<?php }?>
 		<?php } } ?>
@@ -498,12 +512,14 @@ table.dataTable{
 	  			<span class="box-name row"></span>
 	  			<span class="box-space row"></span>
 	  		</span>
-	  		<span class="close col-2 d-flex align-items-center" >&times;</span>
 	  	</span>
 	    
 	<div class="modalSpace">
 		
 	</div>
+	  		<div class="d-flex justify-content-center close_button_div">
+	  			<span class="close_button col-2 d-flex align-items-center button" >Close</span>
+	  		</div>
 	  </div>
 </div>
 <?php } ?>
@@ -554,7 +570,7 @@ table.dataTable{
 					 })
 				})
 
-				$(document).on('click','.close',function(){
+				$(document).on('click','.close_button',function(){
 					 modal.style.display = "none";
 					 $('.modalSpace').empty();
 					// $('timesheet-form').html(htmlVal);

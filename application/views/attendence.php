@@ -449,12 +449,38 @@ input[type=checkbox]:checked:before {
     width:25px;
     border-radius:50px;
 }
+.card-header{
+  background: #8D91AA;
+  color: #E7E7E7;
+  display: flex;
+  justify-content: center;
+  font-size:1.3rem;
+}
+.card-footer{
+  display: flex;
+  justify-content: flex-end;
+}
+  .button{
+    border: none;
+    color: rgb(23, 29, 75);
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-weight: 700;
+    margin: 2px;
+    min-width:6rem;
+      border-radius: 20px;
+      padding: 8px;
+      background: rgb(164, 217, 214);
+      display: flex !important;
+}
+}
 </style>
 </head>
 <body style="background-color:#eee;">
 <div class="container">
  <div class="card">
-  <div class="card-header bg-primary">
+  <div class="card-header ">
     Minutes of Meeting Attendence
   </div>
   <form action="<?php echo base_url() ; ?>mom/meetingAttendence/<?php echo $mId; ?>" method="post">
@@ -473,7 +499,7 @@ input[type=checkbox]:checked:before {
            
            </div>
          <div>
-         <h6><?php echo $partcipants[$i]->uid; ?></h6>
+         <h6><?php echo $partcipants[$i]->email; ?></h6>
          
          </div>
    </div>
@@ -484,7 +510,7 @@ input[type=checkbox]:checked:before {
 
 
   <div class="card-footer bg-default">
-       <button type="submit" class="btn btn-primary">Mark Absent</a>
+       <button type="submit" class="button">Mark Absent</a>
   </div>
  </form>
  </div>

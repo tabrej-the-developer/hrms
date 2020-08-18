@@ -36,7 +36,8 @@ font-family: 'Open Sans', sans-serif;
 }
 
 .login-container form{
-    padding: 15%;
+    padding-right: 15%;
+    padding-left: 15%;
 }
 .btnSubmit
 {
@@ -106,12 +107,22 @@ input[type="submit"]{
     text-align: left
 }
 .submit-block{
-    padding: 30% 30%;
+    width: 6rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    align-items: center;
+    margin-bottom: 0;
 }
 .remember-me{
     color: #9E9E9E;
     font-weight: 400;
     font-size: 13px
+}
+.remember_parent{
+    height: 3rem;
 }
 @media only screen and (max-width:600px){
     body{
@@ -158,16 +169,18 @@ input[type="submit"]{
 
                         <center><span style="color: red;"><?php echo $errorText;?></span></center>
                         
-                    <div class="d-flex justify-content-around position-relative">
-                        <div class="remember-me position-absolute ml-auto" style="left:0">
+                    <div class="d-flex justify-content-around position-relative remember_parent">
+                        <div class="remember-me position-absolute ml-auto " style="left:0">
                             <input type="checkbox" name="" class=""> Remember me</div>
                         <div class="form-group d-flex justify-content-end position-absolute mr-auto" style="right:0">
                              <a href="<?php echo site_url('welcome/forgotPassword') ?>" class="ForgetPwd">Forgot Password?</a> 
                         </div>
                     </div>
-						<div class="form-group submit-block">
-                            <input type="submit" name="insert" class="btnSubmit rounded" value="LOGIN" />
-                        </div>
+						<div style="display: flex;justify-content: center;height: 5rem;align-items: center;">
+                  <div class="form-group submit-block">
+                    <input type="submit" name="insert" class="btnSubmit rounded" value="LOGIN" />
+                  </div>                  
+              </div>
 
                     </form>
                 </div>
