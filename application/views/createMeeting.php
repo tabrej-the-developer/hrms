@@ -542,12 +542,14 @@ p.ovrflowtext {
        <input type="text" name="meetingTitle" class="form-control">
    </div> 
    <div class="form-group">
-   <select class="custom-select" name="invites[]" multiple id="inputGroupSelect01">
-    <option selected>Choose...</option>
-    <option value="1">One</option>
-    <option value="2">Two</option>
-    <option value="3">Three</option>
-  </select>
+    <span class="select_css">
+       <select class="custom-select" name="invites[]" multiple id="inputGroupSelect01">
+        <option selected>Choose...</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+      </select>
+    </span>
    </div>
    <div class="form-group">
        <input type="time" name="time">

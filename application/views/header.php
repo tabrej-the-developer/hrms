@@ -9,7 +9,7 @@ $url_page .= $_SERVER['REQUEST_URI'];
 $url_page_array = explode("/",$url_page);
 $selected = "";
 $nth_child = 0;
-  switch($url_page_array[array_search("PN101",$url_page_array) + 1]){
+  switch(strtolower($url_page_array[array_search("PN101",$url_page_array) + 1])){
     case strtolower("Dashboard"):
       $selected = "dashboard";
       $nth_child = 1;
@@ -51,20 +51,16 @@ $nth_child = 0;
       $selected = true;
       $nth_child = 8;
       break;
+    // case strtolower("settings"):
+    //     $selected = "settings";
+    //     $nth_child = 8;
+    //     break;
     case strtolower("settings"):
-        $selected = "settings";
-        $nth_child = 8;
-        break;
+      $nth_child_div = 1;
+      break;
     default:
       $nth_child = null;
   }
-  // switch($url_page_array[array_search("PN101",$url_page_array) + 1]){
-  //   case strtolower("settings"):
-      
-  //     $nth_child_div = 1;
-  //     break;
-// }
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -98,7 +94,7 @@ $nth_child = 0;
 <style type="text/css">
   *{
 font-family: 'Open Sans', sans-serif;
-
+outline: none !important;
   }
   input:focus{
     outline: none !important;
@@ -112,6 +108,15 @@ font-family: 'Open Sans', sans-serif;
   select:focus{
     outline: none !important;
   }
+  select::-ms-expand {  display: none; }
+select{
+    -webkit-appearance: none;
+    appearance: none;
+}
+select::after{
+  content: ' ';
+  
+}
 
  body{/* background:#f9f9f9; */}
 /*#wrapper{padding:32px 15px;}*/
@@ -132,16 +137,16 @@ font-family: 'Open Sans', sans-serif;
   position: absolute;
    }
 .navbar-nav.side-nav:hover {left:0;}
-.side-nav li a {padding: 15px 8px}
+.side-nav li a {padding: 0.6rem 8px}
 .navbar-nav li a .shortmenu {float: right;display: block;opacity: 1}
 
-.navbar-nav.side-nav{background: #f5f5f5; box-shadow: 2px 1px 2px rgba(0,0,0,.1); position:fixed; top:0px; flex-direction: column!important;left:0px;width:200px;overflow-y:auto;bottom:0;overflow-x:hidden;padding-bottom:40px}
+.navbar-nav.side-nav{box-shadow: 2px 1px 2px rgba(0,0,0,.1); position:fixed; top:0px; flex-direction: column!important;left:0px;width:200px;overflow-y:auto;bottom:0;overflow-x:hidden;padding-bottom:40px}
 .bg-info{
   background:#307bd3 !important;
 }
 
 .navbar-nav{
-    background:#142059 !important;
+    background:#171d4b; !important;
 }
 .nav-item-header:hover{
   background:white !important;
@@ -153,13 +158,13 @@ font-family: 'Open Sans', sans-serif;
   align-items: center;
   content: "";
   position: absolute;
-  height: 40px;
+  height: 30px;
   padding:5px;
   border-left:3px solid #307bd3;
   margin-top:5px;
 }
 .nav-item-header{
-    background:#142059 !important;
+    background:#171d4b; !important;
   padding: 0 0 0 20px;
 }
 .nav-item-header-div:hover{
@@ -172,16 +177,16 @@ font-family: 'Open Sans', sans-serif;
   align-items: center;
   content: "";
   position: absolute;
-  height: 40px;
+  height: 30px;
   padding:5px;
   border-left:3px solid #307bd3;
   margin-top:5px;
 }
 .nav-item-header-div{
-    background:#142059 !important;
+    background:#171d4b; !important;
   padding: 0 0 0 20px;
 }
-<?php if($nth_child != null){ ?>
+<?php if($nth_child != 0 || $nth_child != null){ ?>
 .nav-item-header:nth-of-type(<?php echo $nth_child ;?>){
   background:white !important;
   padding: 0 0 0 20px;
@@ -197,12 +202,12 @@ font-family: 'Open Sans', sans-serif;
   align-items: center;
   content: "";
   position: absolute;
-  height: 40px;
+  height: 30px;
   padding:5px;
   border-left:3px solid #307bd3;
   margin-top:5px;
 }
-<?php }else{ ?>
+<?php }else{  ?>
 .nav-item-header-div:nth-of-type(<?php echo $nth_child_div; ?>){
   background:white !important;
   padding: 0 0 0 20px;
@@ -212,6 +217,7 @@ font-family: 'Open Sans', sans-serif;
   color: #307bd3 !important;
   font-size: 1rem;
 }
+
 .nav-item-header-div:nth-of-type(<?php echo $nth_child_div; ?>)::before{
   display: flex;
   margin-left:-15px;
@@ -226,12 +232,12 @@ font-family: 'Open Sans', sans-serif;
 <?php } ?>
 .nav-item-header a{
   font-weight: 500;
-  color: rgba(255,255,255,.5) !important; ;
+  color: #F3F4F7 !important; ;
   font-size: 1rem;
 }
 .nav-item-header-div a{
   font-weight: 500;
-  color: rgba(255,255,255,.5) !important; ;
+  color: #F3F4F7 !important; ;
   font-size: 1rem;
 }
 .nav-item-header a:hover{
@@ -242,9 +248,14 @@ font-family: 'Open Sans', sans-serif;
 .nav-item-header-div a:hover{
   font-weight: bolder;
   color: #307bd3 !important;
+  text-decoration: none;
   font-size: 1rem;
 }
-
+i.mr-4{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .fixed-top{
   z-index: 0 !important;
@@ -261,20 +272,66 @@ font-family: 'Open Sans', sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-bottom: 2px solid #142059;
+    border-bottom: 2px solid #171d4b;;
 }
 .todquest-logo{
-  width: 3rem
+  max-width: 100%
 }
 .navbar-fixed-elements{
   border-top:1px solid white !important;
   position: absolute;
   bottom: 0;width: 100%
 }
+.todquest_logo_bottom{
+  width: 100%;
+  height: 4rem;
+    position: relative;
+    display: flex;
+    background: white;
+}
+.todq_logo{
+  height: 5rem;
+    position: relative;
+    display: flex;
+    background: white;
+    display: flex;
+    flex-direction: column;
+}
+.todq_logo span{
+  font-size: 0.7rem;
+    text-align: center;
+    font-weight: 700;
+    color: #4E4E4E
+}
+.todq_logo img{
+  height: 3rem !important;
+  padding: 0 4rem;
+}
+.select_css{
+  position: relative;
+}
+.select_css::after{
+  content: ' ';
+  position: absolute;
+  background: url(<?php echo base_url('assets/images/icons/down.png') ?>);
+  background-repeat: no-repeat;
+  padding: 15px;
+      margin-left: -28px;
+    margin-top: 15px;
+    background-size: 0.6rem 0.6rem;
+
+}
+select{
+  position: relative;
+  padding-right: 15px;
+  padding-left: 7px !important;
+  min-width: 5rem !important;
+}
+
 @media only screen and (max-width:600px){
   .navbar{
     position: relative;
-    background: #142059;
+    background: #171d4b;;
   }
   .navbar-fixed-elements{
     position: relative;
@@ -298,20 +355,21 @@ font-family: 'Open Sans', sans-serif;
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav animate side-nav">
           <div class="PN101">
-            <a class="mr-4" >
-              <i ><img src="<?php echo base_url('assets/images/Todquest_logo.png');?>" class="todquest-logo"></i>
-              <span>PN101 </span>
-              
+            <a class="" >
+              <i ><img src="<?php echo base_url('assets/images/icons/amigo.jpeg');?>" class="todquest-logo"></i>         
             </a>
-          </div>          
+          </div>  
+          <div userid="<?php echo $this->session->userdata('LoginId') ?>" id="user_data_id">
+            <span class="user_data_class"></span>
+          </div>        
           <li class="nav-item-header" onmouseover="hover('dashboard','<?php echo $selected;?>')" onmouseout="hoverOff('dashboard','<?php echo $selected;?>')">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('dashboard') ?>" title="Dashboard">
               <?php
               if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Dashboard")){ ?>
-              <i class="mr-4 " ><img id="dashboard" src="<?php echo base_url();?>assets/images/navbar-icons/dashboard_filled.png" style="max-height: 1rem"></i>
+              <i class="mr-4 " ><img id="dashboard" src="<?php echo base_url();?>assets/images/navbar-icons/dashboard.png" style="max-height: 1rem"></i>
               <?php }
               else{ ?>
-              <i class="mr-4 " ><img id="dashboard" src="<?php echo base_url();?>assets/images/navbar-icons/dashboard.png" style="max-height: 1rem"></i>
+              <i class="mr-4 " ><img id="dashboard" src="<?php echo base_url();?>assets/images/navbar-icons/dashboard_filled.png" style="max-height: 1rem"></i>
               <?php } ?>
               <span>Dashboard </span>
             </a>
@@ -321,10 +379,10 @@ font-family: 'Open Sans', sans-serif;
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('roster/roster_dashboard') ?>" title="roster">
               <?php
               if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Roster")){ ?>
-              <i class="mr-4 " ><img id="roster" src="<?php echo base_url();?>assets/images/navbar-icons/roster_filled.png" style="max-height: 1rem"></i>
+              <i class="mr-4 " ><img id="roster" src="<?php echo base_url();?>assets/images/navbar-icons/roster.png" style="max-height: 1rem"></i>
               <?php }
               else{ ?>
-                 <i class="mr-4 " ><img id="roster" src="<?php echo base_url();?>assets/images/navbar-icons/roster.png" style="max-height: 1rem"></i>
+                 <i class="mr-4 " ><img id="roster" src="<?php echo base_url();?>assets/images/navbar-icons/roster_filled.png" style="max-height: 1rem"></i>
               <?php } ?>
               <span>Roster </span>
             </a>
@@ -335,10 +393,10 @@ font-family: 'Open Sans', sans-serif;
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('timesheet/timesheetDashboard'); ?>" title="Leaves">
             <?php
               if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Timesheet")){ ?>
-              <i class="mr-4 " ><img id="timesheet" src="<?php echo base_url();?>assets/images/navbar-icons/timesheet_filled.png" style="max-height: 1rem"></i>
+              <i class="mr-4 " ><img id="timesheet" src="<?php echo base_url();?>assets/images/navbar-icons/timesheet.png" style="max-height: 1rem"></i>
               <?php }
               else{ ?>
-                <i class="mr-4 " ><img id="timesheet" src="<?php echo base_url();?>assets/images/navbar-icons/timesheet.png" style="max-height: 1rem"></i>
+                <i class="mr-4 " ><img id="timesheet" src="<?php echo base_url();?>assets/images/navbar-icons/timesheet_filled.png" style="max-height: 1rem"></i>
               <?php } ?>
               <span>Timesheet </span>
               </a>
@@ -349,10 +407,10 @@ font-family: 'Open Sans', sans-serif;
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('payroll/payrollList'); ?>" title="payroll"> 
             <?php
               if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Payroll")){ ?>
-              <i class="mr-4 " ><img id="payroll" src="<?php echo base_url();?>assets/images/navbar-icons/payroll_filled.png" style="max-height: 1rem"></i>
+              <i class="mr-4 " ><img id="payroll" src="<?php echo base_url();?>assets/images/navbar-icons/payroll.png" style="max-height: 1rem"></i>
               <?php }
               else{ ?>
-                <i class="mr-4 " ><img id="payroll" src="<?php echo base_url();?>assets/images/navbar-icons/payroll.png" style="max-height: 1rem"></i>
+                <i class="mr-4 " ><img id="payroll" src="<?php echo base_url();?>assets/images/navbar-icons/payroll_filled.png" style="max-height: 1rem"></i>
               <?php } ?>
               <span>Payroll </span>
              </a>
@@ -363,10 +421,10 @@ font-family: 'Open Sans', sans-serif;
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('leave') ?>" title="Leaves"> 
             <?php
               if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Leave")){ ?>
-              <i class="mr-4 " ><img id = "leaves" src="<?php echo base_url();?>assets/images/navbar-icons/leaves_filled.png" style="max-height: 1rem"></i>
+              <i class="mr-4 " ><img id = "leaves" src="<?php echo base_url();?>assets/images/navbar-icons/leaves.png" style="max-height: 1rem"></i>
               <?php }
               else{ ?>
-                <i class="mr-4 " ><img id = "leaves" src="<?php echo base_url();?>assets/images/navbar-icons/leaves.png" style="max-height: 1rem"></i>
+                <i class="mr-4 " ><img id = "leaves" src="<?php echo base_url();?>assets/images/navbar-icons/leaves_filled.png" style="max-height: 1rem"></i>
               <?php } ?>
               <span>Leaves </span>
              </a>
@@ -386,10 +444,10 @@ font-family: 'Open Sans', sans-serif;
         <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('messenger') ?>" title="Cart"> 
           <?php
               if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Messenger")){ ?>
-              <i class="mr-4 " ><img id = "messenger" src="<?php echo base_url();?>assets/images/navbar-icons/messenger_filled.png" style="max-height: 1rem"></i>
+              <i class="mr-4 " ><img id = "messenger" src="<?php echo base_url();?>assets/images/navbar-icons/messenger.png" style="max-height: 1rem"></i>
               <?php }
               else{ ?>
-                <i class="mr-4 " ><img id = "messenger" src="<?php echo base_url();?>assets/images/navbar-icons/messenger.png" style="max-height: 1rem"></i>
+                <i class="mr-4 " ><img id = "messenger" src="<?php echo base_url();?>assets/images/navbar-icons/messenger_filled.png" style="max-height: 1rem"></i>
               <?php } 
           ?>
           <span>Messenger </span>
@@ -399,10 +457,10 @@ font-family: 'Open Sans', sans-serif;
         <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('notice') ?>" title="Notices">
         <?php
               if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Notice")){ ?>
-              <i class="mr-4 " ><img id = "notices" src="<?php echo base_url();?>assets/images/navbar-icons/notices_filled.png" style="max-height: 1rem"></i>
+              <i class="mr-4 " ><img id = "notices" src="<?php echo base_url();?>assets/images/navbar-icons/notices.png" style="max-height: 1rem"></i>
               <?php }
               else{ ?>
-                <i class="mr-4 " ><img id = "notices" src="<?php echo base_url();?>assets/images/navbar-icons/notices.png" style="max-height: 1rem"></i>
+                <i class="mr-4 " ><img id = "notices" src="<?php echo base_url();?>assets/images/navbar-icons/notices_filled.png" style="max-height: 1rem"></i>
               <?php } 
           ?>
           <span>Notices </span>
@@ -440,19 +498,29 @@ font-family: 'Open Sans', sans-serif;
               <a class="nav-link-div d-flex justify-content-start" href="<?php echo site_url('settings') ?>" title="Settings">
               <?php
               if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Settings")){ ?>
-              <i class="mr-4 " ><img id = "settings" src="<?php echo base_url();?>assets/images/navbar-icons/settings_filled.png" style="max-height: 1rem"></i>
+              <i class="mr-4 " ><img id = "settings" src="<?php echo base_url();?>assets/images/navbar-icons/settings.png" style="max-height: 1rem"></i>
               <?php }
               else{ ?>
-                <i class="mr-4 " ><img id = "settings" src="<?php echo base_url();?>assets/images/navbar-icons/settings.png" style="max-height: 1rem"></i>
+                <i class="mr-4 " ><img id = "settings" src="<?php echo base_url();?>assets/images/navbar-icons/settings_filled.png" style="max-height: 1rem"></i>
               <?php } ?>
                 <span>Settings </span>
               </a>
             </li>
             <li class="nav-item-header-div" >
             <a class="nav-link-div d-flex justify-content-start" href="<?php echo base_url();?>welcome/logout" >
-                <i class="mr-4 " ><img src="<?php echo site_url();?>assets/images/navbar-icons/power.png" class="pr-2" style="height:1rem"></i>Logout</a>
+                <i class="mr-4 " >
+                  <img src="<?php echo site_url();?>assets/images/navbar-icons/logout.png"  style="height:1rem">
+                </i>Logout</a>
           </li>
+          <div class="todq_logo">
+            <img src="<?php echo base_url('assets/images/icons/todquest.jpeg'); ?>" class="todquest_logo_bottom">
+            <span >
+              <div>Powered by </div>
+              <div>TODQUEST ENTERPRISES PVT LTD</div>
+            </span>
+          </div>
         </div>
+        <div></div>
         </ul>
         <!-- <ul class="navbar-nav ml-md-auto d-md-flex"> -->
 <!--           <li class="nav-item-header">
@@ -465,16 +533,33 @@ font-family: 'Open Sans', sans-serif;
   
   </div>
   <script>
-    var base_url = "<?php echo site_url();?>assets/images/navbar-icons/";
     function hover(str,isCurrent){
-      if(str!=isCurrent)
-      document.getElementById(str).src = base_url+str+"_filled.png";
+      if(str!=isCurrent){
+        const base_url = "<?php echo site_url();?>"+"assets/images/navbar-icons/";
+        document.getElementById(str).src = base_url+str+".png";
+        // alert(base_url + str + "_filled.png")
+      }
     }
     function hoverOff(str,isCurrent){
-      if(str!=isCurrent)
-      document.getElementById(str).src = base_url+str+".png";
-
+      if(str!=isCurrent){
+        const base_url = "<?php echo site_url();?>"+"assets/images/navbar-icons/";
+        document.getElementById(str).src = base_url+str+"_filled.png";
+      }
     }
+  </script>
+  <script type="text/javascript">
+    function user(){
+      var user = document.getElementById('user_data_id');
+      var userid = user.getAttribute('userid');
+      var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+           document.getElementById("demo").innerHTML = this.responseText;
+          }
+        };
+        xhttp.open("GET", "ajax_info.txt", true);
+        xhttp.send();
+      }
   </script>
 
 </body>

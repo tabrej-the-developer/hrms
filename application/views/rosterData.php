@@ -99,7 +99,6 @@ table,tr,td{
 	text-align: left;
 	font-weight:bold;
 	font-size:2rem;
-	padding-left:50px;
 	display: flex;
 }
 .roster-dates{
@@ -634,7 +633,9 @@ td{
       padding: 4px 8px;
       background: rgb(164, 217, 214);
       font-size: 1rem;
-      margin-right:15px !important;
+}
+.close_priority{
+	margin-right: 15px;
 }
 .close_priorityed{
 	  border: none;
@@ -654,7 +655,7 @@ td{
 
 
 .edit_priority{
-	font-size: 1.5rem
+	font-size: 1rem
 }
    .modal-logout {
         position: fixed;
@@ -710,7 +711,7 @@ td{
     }
     label{
     	text-align: left;
-    padding: 0 0 0 3rem;
+    padding: 0 0 0 1rem;
     }
     .modal_label{
     	padding-left:3rem !important;
@@ -723,7 +724,7 @@ td{
     	padding:10px;
     }
     .casualEmployee_label label{
-    	width:40%;
+    	width:35%;
     }
     .casualEmployee_label select{
     	padding-left:50px;
@@ -851,8 +852,8 @@ td{
 			margin: 10%;
 		}
   /* Edit Permission Modal */
-.tokenize{
-	width:60%;
+.employee-id-class > .tokenize{
+	width:100%;
 }
 .tokens-container{
 	width:100%;
@@ -860,7 +861,13 @@ td{
 	background: #ebebeb;
   border: 1px solid #D2D0D0 !important;
 }
-
+ .tokenize > .tokens-container > .token-search > input{
+  border: none !important;
+ }
+  .tokenize > .tokens-container > .token-search{
+    border: none !important;
+    width: 100% !important;
+  }
 @media print{
 	td:nth-child(7),th:nth-child(7){
 		display: none;
@@ -1488,9 +1495,11 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 			</div>
 			<div class="row p-2">
 				<label class="col-4 modal_label">Area</label>
-				<select  class="col-7" name="areaId" id="areaId" style="padding-left:60px">
-					<option >Change Area</option>
-				</select>
+				<span class="select_css">
+					<select  class="col-7" name="areaId" id="areaId" style="padding-left:60px">
+						<option >Change Area</option>
+					</select>
+				</span>
 			</div>
 			<div class="row p-2">
 				<label class="col-4 modal_label">Role</label>
@@ -1603,11 +1612,13 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 		<div class="priority_areased">
 			<span class="casualEmployee_label">
 			<label >Employee</label>
-			<select id="casualEmp_id">
-			<?php foreach($casualEmployees->casualEmployees as $employee){ ?>
-					<option value="<?php echo $employee->empId; ?>" ><?php echo $employee->empName;?></option>
-		<?php	} ?>
-			</select>
+			<span class="select_css">
+				<select id="casualEmp_id" multiple>
+				<?php foreach($casualEmployees->casualEmployees as $employee){ ?>
+						<option value="<?php echo $employee->empId; ?>" ><?php echo $employee->empName;?></option>
+			<?php	} ?>
+				</select>
+			</span>
 			</span>
 			<span class="casualEmployee_label">
 				<label>Date</label>
@@ -1623,15 +1634,19 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 			</span>
 			<span class="casualEmployee_label">
 				<label>Area</label>
-				<select class="casualEmploye-area-select">
-					<option>Change Area</option>
-				</select>
+				<span class="select_css">
+					<select class="casualEmploye-area-select">
+						<option>Change Area</option>
+					</select>
+				</span>
 			</span>
 			<span class="casualEmployee_label">
 				<label>Role</label>
-				<select class="casualEmploye-role-select" id="casualEmp_role_id">
-				
-				</select>
+				<span class="select_css">
+					<select class="casualEmploye-role-select" id="casualEmp_role_id">
+					
+					</select>
+				</span>
 			</span>
 			<span></span>
 		</div>
@@ -1658,25 +1673,31 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 		<a class="text-center  modal_title " style="padding:1rem 0">Edit Permission</a>
 	</span>
 		<div class="modal_main">
-			<span class="span-class center-class">
-				<select placeholder="Select Center" id="centerValue" onchange="getEmployees()" id="employeeId">
-					<?php
-						$centers = json_decode($centers);
-						foreach($centers->centers as $center){
-					?>
-					<option value="<?php echo $center->centerid?>"><?php echo $center->name; ?></option>
-						<?php }?>
-				</select>
+			<div class="d-flex justify-content-around">
+				<span class="span-class center-class">
+					<span class="select_css">
+						<select placeholder="Select Center" id="centerValue" onchange="getEmployees()" id="employeeId">
+							<?php
+								$centers = json_decode($centers);
+								foreach($centers->centers as $center){
+							?>
+							<option value="<?php echo $center->centerid?>"><?php echo $center->name; ?></option>
+								<?php }?>
+						</select>
+					</span>
 			</span>
 			<span class="span-class employee-id-class">
-				<select placeholder="Select Center" id="employeeValue" onchange="getPermissions()">
+				<span class="select_css">
+					<select placeholder="Select Center" id="employeeValue" onchange="getPermissions()" multiple>
 
-				</select>
+					</select>
+				</span>
 			</span>
+			</div>
 			<div id="permissions_id">
 				<span>
 					<span><input type="checkbox" name="edit_roster" id="edit_roster"></span>
-					<span><label>Edit Permission</label></span>
+					<span><label>Edit Roster</label></span>
 				</span>
 			</div>
 		</div>
@@ -1715,13 +1736,19 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 		</span>
 		<span class="add_shift_span d-flex">
 			<label class="col-5">Area</label>
-			<select type="" name="" id="add_area_id" class="add_area_id col-7" style="padding-left:50px">
-				<option>Change Area</option>
-			</select>
+			<span class="select_css">
+				<select type="" name="" id="add_area_id" class="add_area_id col-7" style="padding-left:50px">
+					<option>Change Area</option>
+				</select>
+			</span>
 		</span>
 		<span class="add_shift_span d-flex">
 			<label class="col-5">Role</label>
-			<select type="" name="" id="add_role_id" class="add_role_id col-7"></select>
+			<span class="select_css">
+				<select type="" name="" id="add_role_id" class="add_role_id col-7">
+					
+				</select>
+			</span>
 		</span>
 	</div>
 	<div class="priority_buttonss">
@@ -2634,6 +2661,7 @@ $('.modal_body').draggable();
 <script type="text/javascript">
 	    $(document).ready(function(){
         $('#casualEmp_id').tokenize2();
+        $('#employeeValue').tokenize2();
     });
 </script>
 </body>

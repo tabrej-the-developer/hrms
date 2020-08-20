@@ -6,7 +6,7 @@ class NoticeModel extends CI_Model {
 
 	public function getAllNotices($userid,$startDate=null,$endDate=null){
 		$this->load->database();
-		$queryText = "SELECT * FROM notices WHERE receiverId = '$userid' OR senderId = '$userid'";
+		$queryText = "SELECT * FROM notices WHERE receiverId = '$userid' OR senderId = '$userid' ORDER BY id DESC";
 		if($startDate != null){
 			$queryText .= " AND sentDate >= $startDate";
 		}

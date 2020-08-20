@@ -549,7 +549,12 @@ input[type="date"],input[type=time]{
 .confirm_buttons{
   justify-content: space-evenly !important;
 }
-
+.status-reje{
+  color: rgba(0,0,0,0.7) !important;
+}
+.status-appr{
+  color: rgba(0,0,0,0.7) !important;
+}
 /*  .status-appr{
     font-size: 0.9rem;
     background: rgba(0,200,0,0.1)
@@ -693,7 +698,7 @@ input[type="date"],input[type=time]{
         <span class="">Sort&nbsp;by</span>
         <span class=""><img src="../assets/images/filter-icon.png" height="20px"></span>
       </div> -->
-
+        <span class="select_css">
          <select class="center-list " id="center-list">
           <?php $centers = json_decode($centers); 
             for($i=0;$i<count($centers->centers);$i++){
@@ -706,6 +711,7 @@ input[type="date"],input[type=time]{
            </option>
             <?php } ?>
           </select> 
+        </span>
 <?php } ?>
           </div>
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "N"){ ?>
@@ -1012,6 +1018,7 @@ input[type="date"],input[type=time]{
 									<div class="md-form">
 									<label>Leave Type</label>
 									<?php // $balance = json_decode($balance) ?>
+                  <span class="select_css">
 										<select class="form-control" id="applyLeaveId" name="applyLeaveId" required >
 										  <option value="" selected disabled>Select Leave Type </option>
 											<?php 
@@ -1022,6 +1029,7 @@ input[type="date"],input[type=time]{
                       </option>
 											<?php }?>
 										</select>
+                  </span>
 									</div>
 								</div>
 							</div>

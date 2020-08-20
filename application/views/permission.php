@@ -398,19 +398,23 @@ button[type=button]{
 			</div>
 
 		<span class="span-class center-class">
-			<select placeholder="Select Center" id="centerValue" onchange="getEmployees()">
-			<?php
-				$centers = json_decode($centers);
-				foreach($centers->centers as $center){
-			?>
-				<option value="<?php echo $center->centerid?>"><?php echo $center->name; ?></option>
-			<?php }?>
-			</select>
+			<span class="select_css">
+				<select placeholder="Select Center" id="centerValue" onchange="getEmployees()">
+				<?php
+					$centers = json_decode($centers);
+					foreach($centers->centers as $center){
+				?>
+					<option value="<?php echo $center->centerid?>"><?php echo $center->name; ?></option>
+				<?php }?>
+				</select>
+			</span>
 		</span>
 		<span class="span-class employee-id-class">
-			<select placeholder="Select Center" id="employeeValue" onchange="getPermissions()">
+			<span class="select_css">
+				<select placeholder="Select Center" id="employeeValue" onchange="getPermissions()">
 
-			</select>
+				</select>
+			</span>
 		</span>
 	<?php  } ?>
 	</div>

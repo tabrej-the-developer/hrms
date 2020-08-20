@@ -161,6 +161,7 @@ foreach($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes 
 
 		<span class="new-time-box"></span>
 		<span>
+			<span class="select_css">
 			<select class="shift-type-select" >
 				<?php foreach($shift->payrollTypes as $shifts){
 					if($shifts->earningType == strtolower("ORDINARYTIMEEARNINGS")){?>
@@ -173,6 +174,7 @@ foreach($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes 
 					}
 				} ?>
 			</select>
+		</span>
 		</span>
 
 	</span>

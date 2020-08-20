@@ -64,7 +64,6 @@ table,tr,td{
 	text-align: left;
 	font-size:2rem;
 	font-weight: bold;
-	padding-left:50px;
 }
 .timesheet-dates{
 	text-align:left;

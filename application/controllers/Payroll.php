@@ -87,6 +87,7 @@ class Payroll extends CI_Controller {
 
 		public function updateShiftStatus($timesheetid,$memberid){
 		if($this->session->has_userdata('LoginId')){
+			$form_data = $this->input->post();
 					//footprint start
 				if($this->session->has_userdata('current_url')){
 					footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
@@ -94,36 +95,40 @@ class Payroll extends CI_Controller {
 				}
 				// footprint end
 				$url = BASE_API_URL."payroll/updateShiftStatus/".$timesheetid."/".$memberid."/".$this->session->userdata('LoginId');
-				$ch = curl_init($url);
-				curl_setopt($ch, CURLOPT_URL,$url);
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-				curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-					'x-device-id: '.$this->session->userdata('x-device-id'),
-					'x-token: '.$this->session->userdata('AuthToken')
-				));
-				$server_output = curl_exec($ch);
-				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-				if($httpcode == 200){
-					return $server_output;
-					curl_close ($ch);
-				}
-					else if($httpcode == 401){
+				if($form_data != null){
+					$data['message'] = addslashes($this->input->post('message'));
+						$ch = curl_init($url);
+						curl_setopt($ch, CURLOPT_URL,$url);
+						curl_setopt($ch, CURLOPT_POST, 1);
+						curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+						curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+								'x-device-id: '.$this->session->userdata('x-device-id'),
+								'x-token: '.$this->session->userdata('AuthToken')
+							));
+						curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+							$server_output = curl_exec($ch);
+							$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+						if($httpcode == 200){
 
+						}
+						else if($httpcode == 401){
+
+						}
 					}
 				}
-		}
+			}
 
 		public function payrollShiftsModal(){
-		if($this->session->has_userdata('LoginId')){
-			$postData = $this->input->get();
-			if($postData != null ){
-				$data['x'] = $this->input->get('x');
-				$data['userId'] = $this->session->userdata('LoginId');
-				$data['timesheetId'] = $this->input->get('timesheetId');
-				$data['payrollShifts'] = $this->getAllPayrollShifts($data['timesheetId'] , $data['userId']);
-				$data['payrollTypes'] = $this->getAllPayrollTypes($data['userId']);
-				$data['entitlements'] = $this->getAllEntitlements($data['userId']);
-			}
+			if($this->session->has_userdata('LoginId')){
+				$postData = $this->input->get();
+				if($postData != null ){
+					$data['x'] = $this->input->get('x');
+					$data['userId'] = $this->session->userdata('LoginId');
+					$data['timesheetId'] = $this->input->get('timesheetId');
+					$data['payrollShifts'] = $this->getAllPayrollShifts($data['timesheetId'] , $data['userId']);
+					$data['payrollTypes'] = $this->getAllPayrollTypes($data['userId']);
+					$data['entitlements'] = $this->getAllEntitlements($data['userId']);
+				}
 	//footprint start
 	if($this->session->has_userdata('current_url')){
 		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');

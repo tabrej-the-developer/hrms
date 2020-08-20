@@ -93,17 +93,18 @@
           <h4 style="font-weight: 700;padding:2rem 0;margin-bottom: 0rem;color: rgba(11, 36, 107)" class="text-center"> Edit Center Profile</h4>
           <div class=" center-select ml-auto align-items-center">
             <div class="d-flex pr-2">
-
-              <select id="centerList" class="form-control" onchange="filterCenter()">
-                <?php
-                $centers = json_decode($centers);
-                  foreach ($centers->centers as $center) {
+              <span class="select_css">
+                <select id="centerList" class="form-control" onchange="filterCenter()">
+                  <?php
+                  $centers = json_decode($centers);
+                    foreach ($centers->centers as $center) {
+                      ?>
+                      <option value="<?php echo $center->centerid?>" <?php if($center->centerid == $centerid) echo "Selected";?>><?php echo $center->name;?></option>
+                      <?php
+                    }
                     ?>
-                    <option value="<?php echo $center->centerid?>" <?php if($center->centerid == $centerid) echo "Selected";?>><?php echo $center->name;?></option>
-                    <?php
-                  }
-                  ?>
-            </select>
+              </select>
+            </span>
           </div>
           <span><button class="add-center">Add Center</button></span><!-- 
           <div><button class="add-employee">Add Employee</button></div> -->

@@ -157,11 +157,12 @@ class Payroll extends CI_Controller{
 	public function updateShiftStatus($timesheetid,$memberid,$userid){
 		$headers = $this->input->request_headers();
 		   if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+		   	$json = json_decode(file_get_contents('php://input'));
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			if($res != null && $res->userid == $userid){
 				$this->load->model('payrollModel');
-					$this->payrollModel->updateFlag($timesheetid,$memberid);
+					$this->payrollModel->updateFlag($timesheetid,$memberid,$json->message);
 					$data['status'] = 'SUCCESS';
 				}
 				http_response_code(200);
@@ -171,7 +172,7 @@ class Payroll extends CI_Controller{
 				http_response_code(401);
 				echo 'ERROR';
 			}
-	}
+		}
 
 	public function deleteEntitlement($entitlementId,$userid){
 		$headers = $this->input->request_headers();
