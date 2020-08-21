@@ -76,13 +76,13 @@ class PayrollModel extends CI_Model {
 		$this->db->query("DELETE FROM superfund");
 	}
 
-	public function updateFlag($timesheetid,$memberid){
+	public function updateFlag($timesheetid,$memberid,$message){
 		$this->load->database();
 		$query = $this->db->query("SELECT status from payrollshift where timesheetId='$timesheetid' and userid = '$memberid' ");
 		$result = $query->result();
 		foreach($result as $status){
 			if(strtolower($status->status) == "added")
-				$this->db->query("UPDATE payrollshift SET status = 'FLAGGED' where timesheetId='$timesheetid' and userid = '$memberid'");
+				$this->db->query("UPDATE payrollshift SET status = 'FLAGGED', message = '$message' where timesheetId='$timesheetid' and userid = '$memberid'");
 			if(strtolower($status->status) == "flagged")
 				$this->db->query("UPDATE payrollshift SET status = 'ADDED' where timesheetId='$timesheetid' and userid = '$memberid'");
 		}

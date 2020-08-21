@@ -386,7 +386,7 @@ table.dataTable{
 				<span class="">Sort&nbsp;by</span>
 				<span class=""><img src="../assets/images/filter-icon.png" height="20px"></span>
 			</div> -->
-		
+		<span class="select_css">
 				<select class="center-list " id="center-list">
 						<?php $centers = json_decode($centers);
 						
@@ -394,7 +394,8 @@ table.dataTable{
 					?>select
 					<option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid; ?>"><?php echo $centers->centers[$i]->name?></option>
 				<?php } ?>
-				</select>	
+				</select>
+		</span>	
 						<?php } ?>
 		</span>
 
@@ -455,8 +456,8 @@ table.dataTable{
 <div id="myModal" class="modal">
   <!-- Modal content -->
   <div class="modal-content">
-   <div class="row" style="background: #307bd3;padding: 0;margin: 0;position: absolute;top:0;width:100%;left:0;padding:10px">
-   	<span class="col-12 text-center" style="color:white;font-size:25px">Create New Roster </span>
+   <div class="row" style="background: #8D91AA;padding: 0;margin: 0;position: absolute;top:0;width:100%;left:0;padding:1rem">
+   	<span class="col-12 text-center" style="color:#F3F4F7;font-size:1rem">Create New Roster </span>
     
 </div>
 <div style="position: relative;margin-top:40px ">
@@ -603,7 +604,7 @@ $("#roster-date").datepicker();
 	$(document).ready(function(){
 			$('.dataTables_length').remove()
 			$('.dataTables_info').remove()
-			$('#ui-datepicker-div').hide()
+			$('#ui-datepicker-div').remove()
 			$('.table-div').css('maxWidth','100vw')
 		})
 </script>

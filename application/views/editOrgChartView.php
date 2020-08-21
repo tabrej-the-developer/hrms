@@ -196,6 +196,9 @@ font-family: 'Open Sans', sans-serif;
       display: flex;
       align-items: center;
 }
+.fas.fa-trash-alt::before,.fas.fa-plus::before,.fas.fa-pencil-alt::before{
+	color: #171d4b;
+}
 .li-c{
 	display: flex;
 }
@@ -226,12 +229,14 @@ font-family: 'Open Sans', sans-serif;
 	<div class="select-class">
 		<span class="center-select-span">Show Chart for:</span>
 		<?php $centersList = json_decode($centers); ?>
-		<select class="sellect">
-			<!-- <option>--Select Center--</option> -->
-			<?php foreach($centersList->centers as $centers){ ?>
-			<option value="<?php echo $centers->centerid;?>" class="opt"><?php echo $centers->name;?></option>
-		<?php } ?>
-		</select>
+		<span class="select_css">
+			<select class="sellect">
+				<!-- <option>--Select Center--</option> -->
+				<?php foreach($centersList->centers as $centers){ ?>
+				<option value="<?php echo $centers->centerid;?>" class="opt"><?php echo $centers->name;?></option>
+			<?php } ?>
+			</select>
+		</span>
 	</div>
 	<div class="thisOne">	
 		<div class="center-name">

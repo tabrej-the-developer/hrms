@@ -306,6 +306,73 @@ table.dataTable{
 		justify-content: center;
 		align-items: center;
 	}
+	.button{
+    border: none;
+    color: rgb(23, 29, 75);
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-weight: 700;
+    margin: 2px;
+    min-width:6rem;
+    border-radius: 20px;
+    padding: 4px 8px;
+    background: rgb(164, 217, 214);
+    font-size: 1rem;
+  }
+/* Sorted flag modal*/
+	.flag_textarea{
+		height: 60%;
+    width: 80%;
+    border-radius: 1rem;
+    background: #F3F4F7;
+    border: 1px solid #D2D0D0;
+    padding: 0.5rem;
+	}
+	.flag_textarea::placeholder{
+    text-align: center;
+    padding-top: 20%;
+	}
+	#flag_modal{
+	  width: 100%;
+	  height: 100%;
+	  background: transparent;
+	  position: absolute;
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	  top: 0;
+	  left: 0;
+	  display: none;
+	}
+	.flag_modal_heading{
+	  height: 15%;
+	  background: #8D91AA;
+	  display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    color: #E7E7E7;
+	}
+	.flag_modal{
+	  width: 30%;
+	  height: 70%;
+	  box-shadow: 0 0 0.5rem 0.5rem rgba(0,0,0,0.1)
+	}
+	.flag_buttons{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 15%;
+	}
+	.flag_body{
+	  height: 70%;
+	  background: #fff;
+	  display: flex;
+    justify-content: center;
+    align-items: center;
+	}
+/* Sorted flag modal*/
 
 	@keyframes spin {
 	  0% { transform: rotate(0deg); }
@@ -478,7 +545,7 @@ table.dataTable{
 					<td pay="<?php echo $totalTime; ?>" userid="<?php  echo $payrollShifts->employees[$i]->payrollShifts[0]->userid ?>" timesheetid="<?php  echo $payrollShifts->timesheetid ?>"><?php echo '$ '.$totalTime; ?></td>
 					<?php if($payrollShifts->employees[$i]->payrollShifts[0]->status != 'FLAGGED'){ ?>
 					<td >
-						<button class="button flag_button flagged" userid="<?php  echo $payrollShifts->employees[$i]->payrollShifts[0]->userid ?>"  timesheetid="<?php  echo $payrollShifts->timesheetid ?>">
+						<button class="button flag_button flagged" userid="<?php  echo $payrollShifts->employees[$i]->payrollShifts[0]->userid ?>"  timesheetid="<?php  echo $payrollShifts->timesheetid ?>" onclick="flag('<?php  echo $payrollShifts->timesheetid ?>','<?php  echo $payrollShifts->employees[$i]->payrollShifts[0]->userid ?>')">
 							<i>
 								<img src="<?php echo base_url('assets/images/icons/flag.png'); ?>" style="max-height:1.3rem;margin-right:10px">
 							</i>Flag</button>
@@ -501,6 +568,30 @@ table.dataTable{
 </div>
 </div>
 
+<!-- ----------------------
+		Payroll Flag Modal
+------------------------ -->
+<div id="flag_modal">
+    <span class="flag_modal">
+      <div class="flag_modal_heading">Flagged</div>
+      <div class="flag_body">
+      	<textarea class="flag_textarea" placeholder="Enter reason for flagging"></textarea>
+      </div>
+      <div class="flag_buttons">
+          <button onclick="closes()" id="flag_modal_close" class="button">
+            <i>
+              <img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:1rem;margin-right:10px">
+            </i>Close</button>
+          <button  id="flag_modal_save" class="button">
+            <i>
+              <img src="<?php echo base_url('assets/images/icons/flag.png'); ?>" style="max-height:1.3rem;margin-right:10px">
+            </i>Flag</button>
+      </div>
+    </span>
+</div>
+<!-- ----------------------
+		Payroll Flag Modal
+------------------------ -->
 
 <!--This is meant for admin-->
 <?php if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){ ?>
@@ -681,18 +772,39 @@ table.dataTable{
 </script>
 <script type="text/javascript">
 	$(document).ready(function(){
-		$(document).on('click','.flagged',function(){
-			var timesheetid = $(this).attr('timesheetid');
-			var userid = $(this).attr('userid')
-			var url = window.location.origin+`/PN101/payroll/updateShiftStatus/${timesheetid}/${userid}`;
-				$.ajax({
-					url : url,
-					success : function(response){
-						window.location.reload();
-					}
-				})
-		})
+		 $(document).on('click','#flag_modal_save',function(){
+		 	var timesheetid = $(this).attr('timesheetid');
+		 	var userid = $(this).attr('userid')
+		 	var url = window.location.origin+`/PN101/payroll/updateShiftStatus/${timesheetid}/${userid}`;
+		 	var message = $('.flag_textarea').val();
+		 		$.ajax({
+		 			url : url,
+		 			type : 'POST',
+		 			data : {
+		 				message : message
+		 			},
+		 			success : function(response){
+		 				window.location.reload();
+		 			}
+		 		})
+		 })
 	})
+</script>
+<script type="text/javascript">
+	function flag(timesheetid,userid){
+		var docs = document.getElementById('flag_modal');
+		var selector = document.getElementById('flag_modal_save');
+			selector.setAttribute("timesheetid",timesheetid);
+			selector.setAttribute("userid",userid);
+	  docs.style.display = "flex"
+	}
+	function closes(){
+		var selector = document.getElementById('flag_modal_save');
+			selector.removeAttribute('timesheetid');
+			selector.removeAttribute('userid');
+		var docss = document.getElementById('flag_modal');
+	  docss.style.display = "none"
+	}
 </script>
 </body>
 </html>

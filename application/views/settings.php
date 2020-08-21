@@ -15,6 +15,9 @@ font-family: 'Open Sans', sans-serif;
 	body{
 		background: #F2F2F2 !important;
 	}
+	a{
+		text-decoration: none;
+	}
 	.top-box{
 		width: 100%;
 	}
@@ -86,6 +89,14 @@ font-family: 'Open Sans', sans-serif;
     transform: scale(1.0);
     transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
 }
+.heading{
+	text-align: left;
+	font-weight:bold;
+	font-size:2rem;
+	display: flex; 
+	padding-left: 3rem;
+	color: #171D4B;
+}
 a[href*="settings"],.xero_settings a{
 	font-weight: 700 !important;
 	font-style: normal;
@@ -105,6 +116,7 @@ a[href*="settings"],.xero_settings a{
 	$permissions = json_decode($permissions);
  ?>
 <div class="containers ">
+		<div class="heading" id="center-id" >Settings</div>
 	<div class="ps-os-view" style="position: relative;">
 		<div style="font-size: 1rem;font-weight: 700;margin: 1.5rem 3rem">Organizational Settings</div>
 		<div class="top-box d-flex">

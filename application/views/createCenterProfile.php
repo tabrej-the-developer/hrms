@@ -47,9 +47,11 @@ font-family: 'Open Sans', sans-serif;
 				</div>
 			     <div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-map-marked-alt"></i> State</label>
-					<select class="form-control" name="" id="center-state">
-						<option value=""></option>
-					</select>
+					<span class="select_css">
+						<select class="form-control" name="" id="center-state">
+							<option value=""></option>
+						</select>
+					</span>
 				</div>
 			    <div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-sort-numeric-up"></i> PostCode</label>

@@ -33,6 +33,7 @@
 	}
   .cardContainer {
   display: flex;
+  justify-content: space-between;
   margin-left: 0 !important;
 	}
 	.cardItem {
@@ -40,6 +41,7 @@
 	  padding-left: 0 !important;
 	  padding-right: 0 !important;
     cursor: pointer;
+    box-shadow: 0 0 1rem 1px rgba(0,0,0,0.1);
 	}
   .cardItem > span:hover{
     box-shadow: 0 0 10px 3px rgba(0,0,0,0.3);
@@ -848,6 +850,23 @@ color:#FFFFFF;
   .click-remove{
     cursor: pointer;
   }
+  .fc-header-toolbar{
+    padding-top: 1rem;
+  }
+ .tokenize > .tokens-container > .token-search > input{
+  border: none !important;
+ }
+  .tokenize > .tokens-container > .token-search{
+    border: none !important;
+  }
+  .cardItem.col-3{
+    max-width: 24% !important;
+    flex: 0 0 24% !important;
+  }
+  .add_agenda_button{
+        height: 2rem;
+        margin-top: 1.5rem;
+  }
 </style>
 </head>
 <body>
@@ -866,7 +885,7 @@ color:#FFFFFF;
 		<?php $moduleRowCount = json_decode($moduleEntryCount); ?>
 		<div class="row mr-0 mt-3 cardContainer pl-4 pr-4">
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewTimesheetYN : "N") == "Y"){ ?>
-			<span class="col-3 cardItem pr-4" >
+			<span class="col-3 cardItem " >
 				<span class="row p-0 m-0 timesheets">
 					<span class="col-6 dashboard-icons" style="background:rgba(0, 84, 254,0.07)">
 						<img src="<?php echo base_url('assets/images/dashboard-icons/timesheets.png'); ?>">
@@ -881,7 +900,7 @@ color:#FFFFFF;
 			</span>
 <?php } ?>
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewRosterYN : "N") == "Y"){ ?>
-			<span class="col-3 cardItem pr-4" >
+			<span class="col-3 cardItem " >
 				<span class="row p-0 m-0 roster">
 					<span class="col-6 dashboard-icons" style="background:rgba(254, 237, 242)">
 						<img src="<?php echo base_url('assets/images/dashboard-icons/roster.png'); ?>">
@@ -896,7 +915,7 @@ color:#FFFFFF;
 			</span>
 <?php } ?>
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewPayrollYN : "N") == "Y"){ ?>
-			<span class="col-3 cardItem pr-4" >
+			<span class="col-3 cardItem " >
 				<span class="row p-0 m-0 payrolls">
 					<span class="col-6 dashboard-icons" style="background:rgba(233, 255, 208)">
 						<img src="<?php echo base_url('assets/images/dashboard-icons/payrolls.png'); ?>">
@@ -959,7 +978,7 @@ color:#FFFFFF;
 				<span class="ml-auto">
 					<button id="mom_button" type="button"  class="button" data-toggle="modal" data-target="#myModal">
             <i style="padding-right:0.5rem;padding-left:0.5rem">
-              <img src="<?php echo base_url('assets/images/icons/addEvent_calendar.png'); ?>" style="max-height:0.8rem">
+              <img src="<?php echo base_url('assets/images/icons/addEvent_calendar.png'); ?>" style="max-height:1rem">
             </i>
             <span style="padding-right:0.5rem">Add Event</span>
           </button>
@@ -1112,12 +1131,14 @@ color:#FFFFFF;
                     <span class="col-md-6">
                     <span class="date_span_label label_text">Repeat&nbsp;Event</span>
                     <span class="date_span_input">
+                      <span class="select_css">
                        <select name="meetingcollab" id="collab" class="input_box__">
                           <option value="O">Once</option>
                           <option value="A">Annual</option>
                           <option value="M">Monthly</option>
                           <option value="W">Weekly</option>
                        </select>
+                     </span>
                     </span>
                    </span>
                   </div>
@@ -1153,10 +1174,16 @@ color:#FFFFFF;
 
           <div class="agenda_block">
              <span style="position: absolute;margin-top: -15px;margin-left: 70px;background: white;padding:0 0.25rem">Agenda</span> 
-             <div id="agendaFile">
-              <span style="color:#8D91AA;margin-left: 1rem;position: absolute;" class="add_file" >Add File</span>
-               <input type="FILE" name="agendaFile" id="hide" class="agendaFile" onchange="add_file()" onchange=" return validate()">
+            <div class="d-flex">
+              <div id="agendaFile">
+                <span style="color:#8D91AA;margin-left: 1rem;position: absolute;" class="add_file" >Add File</span>
              </div>
+             <button class="add_agenda_button button" onclick="return false">
+            <i style="padding-right:0.5rem;padding-left:0.5rem">
+              <img src="<?php echo base_url('assets/images/icons/plus.png'); ?>" style="max-height:1rem">
+            </i>Add File</button>
+              <input type="FILE" name="agendaFile" id="hide" class="agendaFile d-none" onchange="validate()" >
+            </div>
             <span class="click-add">
               <i class="icon_i">
                 <img src="<?php echo base_url('assets/images/circle_plus.png');?>" height="25px">
@@ -1181,11 +1208,11 @@ color:#FFFFFF;
         <div class="m_footer" style="margin:auto">
           <button type="button" class="btn button_form clos" data-dismiss="modal">
             <i style="padding-right:0.5rem;padding-left:0.5rem">
-              <img src="<?php echo base_url('assets/images/icons/close.png'); ?>" style="max-height:0.8rem">
+              <img src="<?php echo base_url('assets/images/icons/close.png'); ?>" style="max-height:1rem">
             </i>Close</button>
           <button class="btn button_form">
             <i style="padding-right:0.5rem;padding-left:0.5rem">
-              <img src="<?php echo base_url('assets/images/icons/send.png'); ?>" style="max-height:0.8rem">
+              <img src="<?php echo base_url('assets/images/icons/send.png'); ?>" style="max-height:1rem">
             </i>Submit</button>
           </div>
         </div>
@@ -1369,15 +1396,25 @@ color:#FFFFFF;
     </script>
   <script type="text/javascript">
     function validate(){
+
       var fileInput =  $('.agendaFile').val();
       var allowedExtensions =  /(\.pdf)$/i; 
-        
       if (!allowedExtensions.exec(fileInput)) { 
           alert('Invalid file type'); 
           $('.agendaFile').val(''); 
+          $('.add_file').text('Add File');
+        $('.add_agenda_button').html(`<i style="padding-right:0.5rem;padding-left:0.5rem">
+                <img src="<?php echo base_url('assets/images/icons/plus.png'); ?>" style="max-height:1rem">
+              </i>Add File`)
           return false; 
     }
+    if(allowedExtensions.exec(fileInput)){
+      add_file();
+    }
   }
+  $(document).on('click','.add_agenda_button',function(){
+    $('.agendaFile').trigger('click')
+  })
   </script>
 <script type="text/javascript" language="javascript" >
 $('#toggle').remove();
@@ -1475,6 +1512,9 @@ $('#toggle').remove();
       if($('.agendaFile').val() == "" || $('.agendaFile').val() ==  null){
         $('.add_file').text('Add File')
       }else{
+        $('.add_agenda_button').html(`<i style="padding-right:0.5rem;padding-left:0.5rem">
+                <img src="<?php echo base_url('assets/images/icons/del.png'); ?>" style="max-height:1rem">
+              </i>Delete`)
         $('.add_file').text($('.agendaFile')[0].files[0].name)
       }
     }

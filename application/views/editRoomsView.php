@@ -51,11 +51,13 @@ input[type="text"],input[type=time],input[type="number"]{
       background: #f2f2f2;
      }
     select{
-      background: #E7E7E7 !important;
-      border: none !important;
-      height: 2.5rem !important;
+      background: rgb(164, 217, 214) !important;
+      font-weight: 700 !important;
+      color: rgb(23, 29, 75) !important;
       border-radius: 20px !important;
-      border: 1px solid #D2D0D0 !important;
+      padding: 5px !important;
+      padding-left: 20px !important;
+      border: 2px solid #e9e9e9 !important;
     }
     label{
       font-weight: 600;
@@ -73,7 +75,7 @@ input[type="text"],input[type=time],input[type="number"]{
       justify-content: center;
     }
     #content-wrappers{
-      padding: 2rem 3rem 2rem 2rem;
+      padding: 0.5rem 3rem 2rem 2rem;
       height:calc(100vh - 4rem);
     }
     .content-wrappers-child{
@@ -101,7 +103,6 @@ input[type="text"],input[type=time],input[type="number"]{
     }
     .heading{
       position: relative;
-      top:20px;
       padding-left: 2rem;
       width: 100%;
     }
@@ -146,16 +147,18 @@ input[type="text"],input[type=time],input[type="number"]{
           <span class=" text-right">
                 Showing&nbsp;rooms&nbsp;for&nbsp;
           </span>
-          <select id="centerList" class="form-control " onchange="changeCenter()">
-            <?php
-            $centers = json_decode($centers);
-            $count = count($centers->centers);
-              for($i=0;$i<$count;$i++) {
-                ?><option value="<?php echo $centers->centers[$i]->centerid;?>"><?php echo $centers->centers[$i]->name;?></option>
-                <?php
-              }
-              ?>
-          </select> 
+          <span class="select_css">
+            <select id="centerList" class="form-control " onchange="changeCenter()">
+              <?php
+              $centers = json_decode($centers);
+              $count = count($centers->centers);
+                for($i=0;$i<$count;$i++) {
+                  ?><option value="<?php echo $centers->centers[$i]->centerid;?>"><?php echo $centers->centers[$i]->name;?></option>
+                  <?php
+                }
+                ?>
+            </select>
+          </span> 
         </span>
         <?php } ?>
     </span>

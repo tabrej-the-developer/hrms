@@ -306,7 +306,7 @@ table.dataTable{
 				<span class="col">Sort&nbsp;by</span>
 				<span class="col"><img src="../assets/images/filter-icon.png" height="20px"></span>
 			</div> -->
-		
+		<span class="select_css">
 				<select class="center-list " id="center-list">
 						<?php $centers = json_decode($centers);
 						
@@ -317,6 +317,7 @@ table.dataTable{
 					</option>
 				<?php } ?>
 				</select>	
+			</span>
 		</span>
 		<?php } ?>
 		<?php if($this->session->userdata('UserType') == SUPERADMIN || $this->session->userdata('UserType') == ADMIN ){?>

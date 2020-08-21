@@ -96,9 +96,11 @@ ul.mail-list li span.mail-message-preview{
 }
   .create_group_block{
     height:50%;
+    overflow-y: auto;
   }
   .list_of_groups{
     height:50%;
+    overflow-y: auto;
   }
   .create_group_parent{
     height: 100%;
@@ -247,6 +249,13 @@ label{
     font-weight: 700;
     color:#171D4B
 }
+ .tokenize > .tokens-container > .token-search > input{
+  border: none !important;
+ }
+  .tokenize > .tokens-container > .token-search{
+    border: none !important;
+    width: 100% !important;
+  }
 .pagination a:hover:not(.active) {background-color: #ddd;}
 /*pagination end*/
 
@@ -482,7 +491,7 @@ $("#mytable #checkall").click(function () {
             groupMembers : groupMembers
           },
           success : function(response){
-            console.log(response);
+            window.location.reload()
           }
         })
       }
@@ -493,14 +502,13 @@ $("#mytable #checkall").click(function () {
   $(document).ready(function(){
     $(document).on('change','.group_list',function(){
         var value = $(this).val()
-        var code = `<option value="${value}" selected="selected">${$('.group_name_list').eq($(this).index()).text()}</option>`
+        var code = `<option value="${value}" selected="selected">${$(this).closest('.group_name_li_tag').children('.group_name_list').text()}</option>`
         var liAppend = `<li class="token" data-value="${value}">
                             <a class="dismiss"></a>
-                            <span>${$('.group_name_list').eq($(this).index()).text()}</span>
+                            <span>${$(this).closest('.group_name_li_tag').children('.group_name_list').text()}</span>
                         </li>`
             $('.tokens-container.form-control').eq(0).prepend(liAppend)
             $('.demo').append(code)
-
     })
   })
 

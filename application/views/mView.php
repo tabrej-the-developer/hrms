@@ -1,5 +1,5 @@
 <?php
-$colors_array = ['#8dba5e','#9ebdff','#dd91ee','#f7c779','#a9bfaf','#6b88ca'];
+$colors_array = ['#A4D9D6','#A4D9D6','#A4D9D6','#A4D9D6','#A4D9D6','#A4D9D6'];
 $this->load->library('Crypt_RSA');
    $rsa = new Crypt_RSA();
    // echo extract($rsa->createKey());
@@ -77,11 +77,13 @@ body {
   padding-left: 1.5rem 
 }
 .chat-box {
-  height: 550px;
+  height: calc(100vh - 6rem);
   overflow-y: scroll;
   background-color:#fff;
 }
-
+.row.rounded-lg.overflow-hidden.shadow{
+  max-height: 100vh
+}
 .rounded-lg {
   border-radius: 0 !important;
   margin-left: 0;
@@ -392,7 +394,8 @@ p.ovrflowtext {
   align-self: center;
   border-radius: 50%;
   padding:0.25rem 0;
-  color:white;
+  color:#707070;
+  font-weight: 700;
   height: 1.5rem;
   width: 1.5rem;
 }
@@ -648,7 +651,10 @@ p.ovrflowtext {
         transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
     }
     .chat-box{
-      min-height:85vh;
+      min-height:0;
+    }
+    #chatForm{
+          border-top: 1px solid rgba(0,0,0,.2);
     }
 
     /*-------------------*/
@@ -669,6 +675,33 @@ p.ovrflowtext {
 .general_heading{
   height:5.33vh;
 }
+.modal-header{
+  background: #8D91AA;
+  display: flex;
+    justify-content: center;
+}
+.modal-header h5{
+  font-size: 1rem;
+  color: #F3F4F7 !important;
+}
+.button{
+  /*position: absolute;*/
+/*  right: 0;*/
+    border: none !important;
+    color: rgb(23, 29, 75) !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    display: inline-block;
+    font-weight: 700 !important;
+    margin: 2px !important;
+    min-width:6rem !important;
+      border-radius: 20px !important;
+      padding: 4px 8px !important;
+      background: rgb(164, 217, 214) !important;
+      font-size: 1rem !important;
+      margin-right:5px !important;
+      justify-content: center !important;
+}
     @media only screen and (max-width: 600px){
       .left-bar{
         max-width:auto;
@@ -687,6 +720,8 @@ p.ovrflowtext {
       }
     }
 </style>
+<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/tokenize2.css">
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tokenize2.js"></script>
 </head>
 
 <body>
@@ -877,10 +912,23 @@ $string = $rsa->decrypt(base64_decode($rc->lastText));
             if(isset($currentUserInfo->avatarUrl)){
               if($currentUserInfo->avatarUrl == null || $currentUserInfo->avatarUrl == ""){
                 $currentUserInfo->avatarUrl = base_url().'assets/images/defaultUser.png';
-              }
-            }
+              } ?>
+
+            <img src="<?php if(isset($currentUserInfo->avatarUrl)){
+              echo $currentUserInfo->avatarUrl;}?>" alt="user" width="35" class="rounded-circle">
+             <?php }else{ ?>
+                  <span class="icon-parent">
+                    <span class=" icon" style="
+                      <?php echo "background:".$colors_array[rand(0,5)]?>">
+                      <?php echo icon($currentUserInfo->memberName);?>
+                    </span>
+                  </span>
+          <?php   }
+          if(isset($currentUserInfo->groupName) ? $currentUserInfo->groupName : null != null){
+            print_r($currentUserInfo->groupName);
+          }
           ?>
-	<img src="<?php if(isset($currentUserInfo->avatarUrl)){echo $currentUserInfo->avatarUrl;}?>" alt="user" width="35" class="rounded-circle">
+
 	</a>
 	<p class="text-capitalize" style="margin:0; font-size:18px; font-weight:500; padding:3px 0 0 10px; color:#307bd3;">
 		<?php 
@@ -1135,10 +1183,7 @@ $string = $rsa->decrypt(base64_decode($chats->chatText));
 						<div class="modal-content">
 						  <div class="modal-header" style="border-bottom:none;">
 							<h5 class="modal-title" id="exampleModalLongTitle" style="color: #2196f3;">Add New Group</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							  <span aria-hidden="true">&times;</span>
-							</button>
-						  </div>
+					  </div>
 					<div class="modal-body">
 					  <div class="container-fluid">
 						<form id="groupForm" method="post" action="<?php echo base_url().'messenger/creategroup';?>">
@@ -1153,80 +1198,27 @@ $string = $rsa->decrypt(base64_decode($chats->chatText));
 						  </div>
 						  <hr>
 						  <div class="search-table">
-							<div class="search-box">
-                <div class="row mb-2">
-                    <div class="col-sm-12 has-search">
-					<i class="fas fa-search feedback"></i>
-                        <input type="text" id="myInput" class="form-control rounded-0" placeholder="Search Employee">
-                        <script>
-                            $(document).ready(function () {
-                                $("#myInput").on("keyup", function () {
-                                    var value = $(this).val().toLowerCase();
-                                    $("#myTable tr").filter(function () {
-                                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                                    });
-                                });
-                            });
-                        </script>
-                    </div> 
-                </div>
-            </div>
+
 			<div class="search-list">
-                <table class="table" id="myTable" style="border:none;">
-                    <thead>
-                        <tr></tr>
-                    </thead>
-                    <tbody class="tbodyscroll">  
+        <select class="tokenize_class" name="tokenize_class[]" multiple>
 					<?php
                      foreach ($users->users as $chat) {
                       if($chat->imageUrl == null || $chat->imageUrl == ""){
                         $chat->imageUrl = base_url().'assets/images/defaultUser.png';
                       }
                     ?>					
-                    <tr>
-                        <td> 
-						<label class="checkbox">
-                            <input type="checkbox" name="<?php echo $chat->userid;?>" id="<?php echo $chat->userid;?>" />
-                            <span class="default"></span>
-                        </label>
-						</td>
-                        <td>
-							<a href="javascript:void(0);" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people">
-							  <div class="media">
-							  <div class="icon-container">
-                  <?php if($chat->imageUrl != null || $chat->imageUrl != ''){ ?>
-                <img src="<?php echo $chat->imageUrl;?>" alt="user" width="20" class="rounded-circle">
-                  <?php }else{?>
-                  <span class="icon-parent">
-                    <span class=" icon" style="
-                      <?php echo "background:".$colors_array[rand(0,5)]?>">
-                      <?php echo icon($chat->username);?>
-                    </span>
-                  </span>
+                      <option value="<?php echo $chat->userid; ?>"><?php echo $chat->username;?></option>
                   <?php } ?>
-							  <div class='status-circle-online'></div>
-							  </div>
-								<div class="media-body ml-0">
-								  <div class="d-flex align-items-center justify-content-between ">
-									<h6 class="mb-0 left-bar-heading"><?php echo $chat->username;?></h6>
-								  </div>
-								  
-								</div>
-							  </div>
-							</a>
-						</td>
-                    </tr>
-					<?php }	?>
-                    
-                    </tbody>
-                </table>
+        </select>
+                </div>
+					<?php 	?>
 
             </div>
 						  </div>
 						  
 					<div class="text-center mt-2 mb-4">
-						<button class="btn btn-secondary rounded-0" type="button" onclick="saveGroup()">Save</button>
-						<button class="btn btn-secondary rounded-0" type="button" data-dismiss="modal">Cancel</button> 
+						<button class="btn btn-secondary rounded-0 button" type="button" onclick="saveGroup()">Save</button>
+						<button class="btn btn-secondary rounded-0 button" type="button" data-dismiss="modal">Cancel</button> 
 					</div> 
 						  
 						</form>
@@ -1345,7 +1337,7 @@ $('.save').click(function(){
 
     function sendMessage(){
       var text = document.getElementById("chatText").value;
-      if(text != ""){
+      if(text != "" || $('#upload_image')[0].files[0].name != ""){
         document.getElementById("chatForm").submit();
       }
     }
@@ -1384,6 +1376,11 @@ else{
       return false;
     }
   }
+</script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.tokenize_class').tokenize2();
+  })
 </script>
     </html>
 

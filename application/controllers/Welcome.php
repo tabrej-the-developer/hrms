@@ -58,7 +58,7 @@ class Welcome extends CI_Controller {
 					));
 					footprint(currentUrl(),' ',$this->session->userdata('LoginId'),'LogIn');
                		$this->session->set_userdata('current_url', currentUrl());
-					redirect('Dashboard');
+					redirect('dashboard');
 				}
 				else{
 					$data['errorText'] = $jsonOutput->Message;

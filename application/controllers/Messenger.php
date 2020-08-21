@@ -218,14 +218,12 @@ QxwY1MEhvTKeGIDB37JHP+cXM0O6OkvU+iUGLG3alpNV22VNY5FiGiAu8J47ZVTa
 		$this->session->set_userdata('current_url',currentUrl());
 	}
 	// footprint end
-			$data['groupName'] = $form_data['recipient-name'];
+			$data['groupName'] = addslashes($form_data['recipient-name']);
 			if($data['groupName'] != ""){
 				$users = json_decode($this->getUsers());
 				$members = array();
-				foreach ($users->users as $chatUser) {
-					if(isset($form_data[$chatUser->userid])){
-						array_push($members,$chatUser->userid);
-					}
+				foreach ($form_data['tokenize_class'] as $chatUser) {
+					array_push($members,$chatUser);
 				}
 				if(count($members) > 0){
 					$data['members'] = $members;
@@ -233,8 +231,6 @@ QxwY1MEhvTKeGIDB37JHP+cXM0O6OkvU+iUGLG3alpNV22VNY5FiGiAu8J47ZVTa
 					$data['avatarUrl'] = "";
 					$url=BASE_API_URL."messenger/createGroup";
 					$ch = curl_init($url);
-					
-
 					curl_setopt($ch, CURLOPT_URL,$url);
 					curl_setopt($ch, CURLOPT_POST, 1);
 					curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
@@ -243,9 +239,9 @@ QxwY1MEhvTKeGIDB37JHP+cXM0O6OkvU+iUGLG3alpNV22VNY5FiGiAu8J47ZVTa
 						'x-token: '.$this->session->userdata('AuthToken')
 					));
 					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
 					$server_output = curl_exec($ch);
 					$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+					print_r($httpcode);
 					if($httpcode == 200){
 						$jsonOutput = json_decode($server_output);
 						curl_close ($ch);

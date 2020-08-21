@@ -14,7 +14,7 @@
    body{
     background: #F3F4F7
    }
-  img{
+  .userIcon{
    max-width:75%;
  }
 
@@ -376,6 +376,10 @@ input.rounded:focus {
   color: #171D4B;
   font-weight: 700;
 }
+.chat_list.active_chat{
+  cursor: pointer;
+}
+
 </style>
 </head>
 <body>
@@ -455,7 +459,7 @@ input.rounded:focus {
               ?>
             <div class="chat_list <?php if($notice->noticeId == $currentNotice->noticeId) echo 'active_chat';?>" onclick="loadNewNotice('<?php echo $notice->noticeId;?>')" id="<?php echo 'chat_list_'.$notice->noticeId;?>">
               <div class="chat_people">
-                <div class="chat_img"> <img src="<?php echo base_url().'assets/images/defaultUser.png';?>" alt="user photo"> </div>
+                <div class="chat_img"> <img src="<?php echo base_url().'assets/images/defaultUser.png';?>" alt="user photo" class="userIcon"> </div>
                 <div class="chat_ib">
                   <h5><div class="text-muted h7 mb-2"><?php echo $notice->senderName;?></div><span class="chat_date"><?php echo dateToDay(date_format($date,"d/m/Y"));?></span></h5>
 				   <h5 class="card-title"><?php echo $notice->subject;?></h5>
@@ -469,7 +473,7 @@ input.rounded:focus {
               ?>
             <div class="chat_list <?php if($notice->noticeId == $currentNotice->noticeId) echo 'active_chat';?>" onclick="loadNewNotice('<?php echo $notice->noticeId;?>')" id="<?php echo 'chat_list_'.$notice->noticeId;?>">
               <div class="chat_people">
-                <div class="chat_img"> <img src="<?php echo base_url().'assets/images/defaultUser.png';?>" alt="user photo"> </div>
+                <div class="chat_img"> <img src="<?php echo base_url().'assets/images/defaultUser.png';?>" alt="user photo" class="userIcon"> </div>
                 <div class="chat_ib">
                   <h5><div class="text-muted h7 mb-2"><?php echo $notice->receiverId;?></div><span class="chat_date"><?php echo dateToDay(date_format($date,"d/m/Y"));?></span></h5>
            <h5 class="card-title"><?php echo $notice->subject;?></h5>

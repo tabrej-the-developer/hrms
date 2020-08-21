@@ -85,7 +85,7 @@ input[type="text"],input[type=email],select{
     line-height: 2rem;
 }
 input.form-control::placeholder{
-  padding-left: 2rem;
+  text-align: center;
 }
 .back_to_sign_in a{
   font-weight: 700;

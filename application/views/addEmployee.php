@@ -237,11 +237,13 @@
 		<span class="d-flex">
 		<span class="span-class ">
 			<label>Title</label>
-			<select placeholder="Title" id="title"  class="" type="text"> 
-				<option value="Ms">Ms</option> 
-				<option value="Mr">Mr</option>
-				<option value="Mrs">Mrs</option>
-			</select>
+			<span class="select_css">
+				<select placeholder="Title" id="title"  class="" type="text"> 
+					<option value="Ms">Ms</option> 
+					<option value="Mr">Mr</option>
+					<option value="Mrs">Mrs</option>
+				</select>
+			</span>
 		</span>
 	<span class="span-class name__">
 		<label>Name</label>
@@ -276,12 +278,14 @@
 		</span>
 		<span class="span-class">
 			<label>Gender</label>
-			<select placeholder="Gender" id="gender"  class="" >
-				<option value="N">Not Given</option>
-				<option value="M">Male</option>
-				<option value="F">Female</option>
-				<option value="I">Non binary</option>
-			</select>
+			<span class="select_css">
+				<select placeholder="Gender" id="gender"  class="" >
+					<option value="N">Not Given</option>
+					<option value="M">Male</option>
+					<option value="F">Female</option>
+					<option value="I">Non binary</option>
+				</select>				
+			</span>
 		</span>
 				
 		<span class="span-class">
@@ -305,16 +309,18 @@
 			</span>				
 			<span class="span-class col-4">
 				<!-- <label>Region</label> -->
-				<select placeholder="Region" id="homeAddRegion"  class="" type="text">
-					<option value="ACT">Australian Capital Territory</option>
-					<option value="NSW">New South Wales</option>
-					<option value="NT">Northern Territory</option>
-					<option value="QLD">Queensland </option>
-					<option value="SA">South Australia</option>
-					<option value="TAS">Tasmania </option>
-					<option value="VIC">Victoria</option>
-					<option value="WA">Western Australia</option>
-				</select>
+				<span class="select_css">
+					<select placeholder="Region" id="homeAddRegion"  class="" type="text">
+						<option value="ACT">Australian Capital Territory</option>
+						<option value="NSW">New South Wales</option>
+						<option value="NT">Northern Territory</option>
+						<option value="QLD">Queensland </option>
+						<option value="SA">South Australia</option>
+						<option value="TAS">Tasmania </option>
+						<option value="VIC">Victoria</option>
+						<option value="WA">Western Australia</option>
+					</select>
+				</span>
 			</span>
 			<span class="span-class col-4">
 				<!-- <label>Postal</label> -->
@@ -426,11 +432,13 @@
 					<span class="span-class col-4">
 						<label>Super Fund Id</label>
 						<?php $superfunds = json_decode($superfunds); ?>
-						<select placeholder="Super Fund Id" class="superFundId" >
-							<?php foreach($superfunds->superfunds as $superfund){ ?>
-							<option value="<?php echo $superfund->usi; ?>"><?php echo $superfund->name; ?></option>
-							<?php } ?>
-						</select>
+						<span class="select_css">
+							<select placeholder="Super Fund Id" class="superFundId" >
+								<?php foreach($superfunds->superfunds as $superfund){ ?>
+								<option value="<?php echo $superfund->usi; ?>"><?php echo $superfund->name; ?></option>
+								<?php } ?>
+							</select>
+						</span>
 					</span>
 					<span class="span-class col-4">
 						<label>Employee Number</label>
@@ -454,23 +462,27 @@
 
 		<span class="span-class col-4">
 			<label>Employment Basis</label>
-			<select placeholder="employmentBasis" id="employmentBasis">
-				<option value="FULLTIME">FULLTIME </option>
-				<option value="PARTTIME">PARTTIME</option>
-				<option value="CASUAL">CASUAL</option>
-				<option value="LABOURHIRE">LABOURHIRE</option>
-				<option value="SUPERINCOMEST">SUPERINCOMEST</option>
-			</select>
+			<span class="select_css">
+				<select placeholder="employmentBasis" id="employmentBasis">
+					<option value="FULLTIME">FULLTIME </option>
+					<option value="PARTTIME">PARTTIME</option>
+					<option value="CASUAL">CASUAL</option>
+					<option value="LABOURHIRE">LABOURHIRE</option>
+					<option value="SUPERINCOMEST">SUPERINCOMEST</option>
+				</select>
+			</span>
 		</span> 
 		<span class="span-class col-4">
 			<label>TFN Exemption Type</label>
-			<select placeholder="tfnExemptionType" id="tfnExemptionType">
-				<option value="NONE">NONE</option>
-				<option value="NOTQUOTED">NOTQUOTED</option>
-				<option value="PENDING">PENDING</option>
-				<option value="PENSIONER">PENSIONER</option>
-				<option value="UNDER18">UNDER18</option>
-			</select>
+			<span class="select_css">
+				<select placeholder="tfnExemptionType" id="tfnExemptionType">
+					<option value="NONE">NONE</option>
+					<option value="NOTQUOTED">NOTQUOTED</option>
+					<option value="PENDING">PENDING</option>
+					<option value="PENSIONER">PENSIONER</option>
+					<option value="UNDER18">UNDER18</option>
+				</select>
+			</span>
 		</span> 
 		<div class="tax-declaration-class col-lg-12">
 		<span class="span-class col-4">
@@ -486,11 +498,13 @@
 		</span>
 		<span class="span-class col-3">
 			<label>Residency Statue</label>
-			<select placeholder="residencyStatue" id="residencyStatue">
-				<option value="AUSTRALIANRESIDENT">Australian Resident</option>
-				<option value="FOREIGNRESIDENT">Foreign Resident</option>
-				<option value="WORKINGHOLIDAY">Working Holiday</option>
-			</select>
+			<span class="select_css">
+				<select placeholder="residencyStatue" id="residencyStatue">
+					<option value="AUSTRALIANRESIDENT">Australian Resident</option>
+					<option value="FOREIGNRESIDENT">Foreign Resident</option>
+					<option value="WORKINGHOLIDAY">Working Holiday</option>
+				</select>
+			</span>
 		</span>
 		<span class="span-class col-4">
 			<label>Tax Free Threshold Claimed</label>
@@ -552,44 +566,49 @@
 		</span>
 		<span class="span-class">
 			<label>Center</label>
-
-			<select placeholder="Center" id="center">
-				<option>--Center--</option>
-				<?php 
-					$centers = json_decode($centers);
-				foreach($centers->centers as $center){ ?> 
-					<option value="<?php echo $center->centerid;?>"><?php echo $center->name;?></option>
-				<?php } ?>
-			</select>
-		</span>
-
-		<span class="span-class">
-			<label>Area</label>
-
-				<span class="" id="area-select">
-					<select placeholder="Area" id="area">
-						<option>--select--</option>
+			<span class="select_css">
+				<select placeholder="Center" id="center">
+					<option>--Center--</option>
 					<?php 
-					$areas = json_decode($areas);
-					foreach($areas->areas as $area){
-					?>
-					<option value="<?php echo $area->areaId; ?>" ><?php echo $area->areaName; ?></option>
+						$centers = json_decode($centers);
+					foreach($centers->centers as $center){ ?> 
+						<option value="<?php echo $center->centerid;?>"><?php echo $center->name;?></option>
 					<?php } ?>
 				</select>
 			</span>
 		</span>
 
 		<span class="span-class">
+			<label>Area</label>
+
+				<span class="" id="area-select">
+					<span class="select_css">
+						<select placeholder="Area" id="area">
+							<option>--select--</option>
+						<?php 
+						$areas = json_decode($areas);
+						foreach($areas->areas as $area){
+						?>
+						<option value="<?php echo $area->areaId; ?>" ><?php echo $area->areaName; ?></option>
+						<?php } ?>
+					</select>
+				</span>
+			</span>
+		</span>
+
+		<span class="span-class">
 			<label>Role</label>
 			<span id="role-select">
-			<select placeholder="Role" id="role">
-				<option>--select--</option>
+				<span class="select_css">
+					<select placeholder="Role" id="role">
+						<option>--select--</option>
 
-				<?php foreach($areas->areas as $roles){?>
-					<?php foreach($roles->roles as $role){?>
-				<option area-id="<?php print_r($role->areaid); ?>" ><?php print_r($role->roleName) ?></option>
-				<?php } } ?>
-			</select>
+						<?php foreach($areas->areas as $roles){?>
+							<?php foreach($roles->roles as $role){?>
+						<option area-id="<?php print_r($role->areaid); ?>" ><?php print_r($role->roleName) ?></option>
+						<?php } } ?>
+					</select>
+				</span>
 		</span>
 		</span>
 
@@ -601,13 +620,15 @@
 
 		<span class="span-class">
 			<label>Level</label>
-			<select placeholder="Level" id="level">
-				<?php $levels = json_decode($levels);
-					foreach($levels->entitlements as $level){
-					?>
-				<option><?php echo $level->name; ?></option>
-				<?php } ?>
-			</select>
+			<span class="select_css">
+				<select placeholder="Level" id="level">
+					<?php $levels = json_decode($levels);
+						foreach($levels->entitlements as $level){
+						?>
+					<option><?php echo $level->name; ?></option>
+					<?php } ?>
+				</select>
+			</span>
 		</span>
 		<span class="span-class">
 			<label>Bonus Rates</label>
@@ -649,11 +670,13 @@
 
 		<span class="span-class">
 			<label>Employment-type</label>
-			<select id="employement_type">
-				<option value="FT">Full Time</option>
-				<option value="PT">Part Time</option>
-				<option value="Casual">Casual</option>
-			</select>
+			<span class="select_css">
+				<select id="employement_type">
+					<option value="FT">Full Time</option>
+					<option value="PT">Part Time</option>
+					<option value="Casual">Casual</option>
+				</select>
+			</span>
 		</span>
 <!-- 		<span class="span-class">
 			<label>Current-contract-notes</label>
@@ -727,14 +750,16 @@
 		</span>
 		<span class="span-class">
 			<label>Ordinary Earning Rate Id</label>
-			<select placeholder="Ordinary Earning Rate Id" id="ordinaryEarningRateId"  class="" type="text">
-			<?php
-					$ordinaryEarningRate = json_decode($ordinaryEarningRate);
-					foreach($ordinaryEarningRate->awards as $rate){
-			?>
-				<option value="<?php echo $rate->earningRateId?>"><?php echo $rate->name?></option>
-			<?php }?>
-			</select>
+			<span class="select_css">
+				<select placeholder="Ordinary Earning Rate Id" id="ordinaryEarningRateId"  class="" type="text">
+				<?php
+						$ordinaryEarningRate = json_decode($ordinaryEarningRate);
+						foreach($ordinaryEarningRate->awards as $rate){
+				?>
+					<option value="<?php echo $rate->earningRateId?>"><?php echo $rate->name?></option>
+				<?php }?>
+				</select>
+			</span>
 		</span>
 
 		<span class="span-class">
