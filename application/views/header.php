@@ -321,6 +321,17 @@ i.mr-4{
     background-size: 0.6rem 0.6rem;
 
 }
+#user_data_id{
+  height: 4rem;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.user_data_class{
+  width: 80%;
+    text-align: center;
+}
 select{
   position: relative;
   padding-right: 15px;
@@ -360,7 +371,15 @@ select{
             </a>
           </div>  
           <div userid="<?php echo $this->session->userdata('LoginId') ?>" id="user_data_id">
-            <span class="user_data_class"></span>
+            <?php $side_bar_name =  $this->session->userdata('Name');
+              $side_bar_name = explode(' ',$side_bar_name);
+             ?>
+            <span class="user_data_class"><?php echo $side_bar_name[0]; ?></span>
+            <span>
+              <i>
+                <img src="<?php echo base_url('assets/images/icons/user_more.png'); ?>" style="max-height:1rem;margin-right:10px">
+              </i>
+            </span>
           </div>        
           <li class="nav-item-header" onmouseover="hover('dashboard','<?php echo $selected;?>')" onmouseout="hoverOff('dashboard','<?php echo $selected;?>')">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('dashboard') ?>" title="Dashboard">
@@ -546,20 +565,6 @@ select{
         document.getElementById(str).src = base_url+str+"_filled.png";
       }
     }
-  </script>
-  <script type="text/javascript">
-    function user(){
-      var user = document.getElementById('user_data_id');
-      var userid = user.getAttribute('userid');
-      var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {
-           document.getElementById("demo").innerHTML = this.responseText;
-          }
-        };
-        xhttp.open("GET", "ajax_info.txt", true);
-        xhttp.send();
-      }
   </script>
 
 </body>
