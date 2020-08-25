@@ -21,17 +21,18 @@
     border-bottom: 2px solid #dee2e6;
 		}
 		thead tr{
-			background:rgba(255,255,255,1) !important;
+			background-color: #8D91AA !important;
+	    color: #F3F4F7;
 		}
 		tr:nth-child(even){
-			background:rgb(255,255,255);
+			background: #FFF;
 		}
 		tr:nth-child(odd){
 
-			background:rgb(243, 244, 247);
+			background: #FFF;
 		}
 		tbody tr{
-			font-size: 0.8rem;
+			font-size: 0.85rem;
 		}
 		body{
 			background: #f2f2f2;
@@ -233,16 +234,33 @@ border-bottom-right-radius: 20px;
     .awards-container{
     	padding: 4rem 3rem 2rem 2rem;
     	height: 100%;
-    overflow: hidden;
+	    overflow: hidden;
+	    padding: 1rem 0 1rem 2rem;
+	    margin: 0 !important;
+	    color: rgba(11, 36, 107);width: 100%
     }
 		.awards-container-child{
-			background: white;
-			height: 100%;
-
+    	/*padding: 4rem 3rem 2rem 2rem;*/
+    	height: 100%;
+	    overflow: hidden;
+	    font-weight: 700;
+	    /*padding: 1rem 0 1rem 2rem;*/
+	    margin: 0 !important;
+	    color: rgba(11, 36, 107);
+	    width: 100%;
+	    font-size: 1.75rem;
 		}
 		thead{
 			height: 100%;
 						overflow-y: auto;
+		}
+		.awards_header_container{
+			padding: 1rem 1rem 0rem 2rem;
+			display: flex;
+		}
+		tr{
+	    border-top: 1px solid #d2d0d0;
+	    border-bottom: 1px solid #d2d0d0;
 		}
 		#awards{
   /*position: absolute;*/
@@ -309,34 +327,30 @@ border-bottom-right-radius: 20px;
 		}
 	?>
 <div class="containers">
-	<span style="position: absolute;top:20px;padding-left: 2rem">
-      <a href="<?php echo base_url();?>/settings">
-        <button class="btn back-button">
-          <img src="<?php echo base_url('assets/images/back.svg');?>">
-          <span style="font-size:0.8rem">Awards</span>
-        </button>
-      </a>
+	<span class="awards_header_container">
+		      <a href="<?php echo base_url();?>/settings">
+		        <button class="btn back-button">
+			          <img src="<?php echo base_url('assets/images/back.svg');?>">
+		        </button>
+		      </a>
+          <span  class="awards-container-child">Awards</span>
+          <span>
+          	<button id="awards">
+	            <i>
+	              <img src="<?php echo base_url('assets/images/icons/xero.png'); ?>" style="max-height:02rem;margin-right:10px">
+	            </i>Sync&nbsp;Xero&nbsp;Awards
+	       	  </button>
+          </span>
     </span>
 	<div class="awards-container">
-		<div class="awards-container-child">
+		<div >
 	<?php $permissions = json_decode($permissions); ?>
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewAwardsYN : "N") == "Y"){ ?>
-	<div class="d-flex">
-		<h4 style="font-weight: 700;
-                      padding: 1rem 0 1rem 2rem;
-                      margin: 0 !important;
-                      color: rgba(11, 36, 107);width: 100%"
-                class="text-left">Awards</h4>
+
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editAwardsYN : "N") == "Y"){ ?>
-<span class="d-flex align-items-center pr-4">
-	<button id="awards">
-            <i>
-              <img src="<?php echo base_url('assets/images/icons/xero.png'); ?>" style="max-height:02rem;margin-right:10px">
-            </i>Sync&nbsp;Xero&nbsp;Awards
-        </button>
-    </span>
+
 <?php } ?>
-	</div>
+
 	<div class="table-div">
 		<table class="table">
 			<thead>

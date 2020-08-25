@@ -20,31 +20,36 @@
     overflow-y: hidden;
 	}
 		thead tr{
-			background:rgba(255,255,255,1) !important;
+			background-color: #8D91AA !important;
+	    color: #F3F4F7;
+		}
+		thead tr th{
+	    vertical-align: middle !important;
 		}
 		tbody{
 			overflow-y: auto
 		}
 		tr:nth-child(even){
-			background:rgb(255,255,255);
+			background:#fff;
 		}
 		tr:nth-child(odd){
 
-			background:rgb(243, 244, 247);
+			background:#fff;
 		}
 		tr{
 			line-height: 1rem
+	    border-top: 1px solid #d2d0d0;
+	    border-bottom: 1px solid #d2d0d0;
 		}
 		td{
-			font-size: 0.8rem;
+			font-size: 0.85rem;
 			line-height: 1rem;
 
 		}
 
 		.table-div{
-			height:80%;
+			height:100%;
 			overflow-y: auto;
-			padding: 0 20px;
 		}	
 		.table  td,.table th{
 			padding: 1rem;
@@ -53,9 +58,7 @@
 		.sort-by{
 
 		}
-		table{
-			box-shadow: 0 0 20px 2px #eeeff2;
-		}
+
 		.center-list{
 			display:none;
 			box-shadow:0 0 1px 1px rgb(242, 242, 242) ;
@@ -195,10 +198,10 @@ border-bottom-right-radius: 20px;
   margin: 2px
 }
 .dataTables_info{
-	font-size:0.8rem;
+	font-size:0.85rem;
 }
 .dataTables_paginate{
-	font-size:0.8rem;
+	font-size:0.85rem;
 }
 .paginate_button{
 	background:transparent;
@@ -234,17 +237,58 @@ border-bottom-right-radius: 20px;
         transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
     }
     .superfunds-container{
-    	padding: 4rem 3rem 2rem 2rem;
+    	padding: 1rem 1rem 1rem 2rem;
     	height: 100%;
     overflow: hidden;
     }
     .superfunds-container-child{
     	background: white;
     	height: 100%;
+	    height: calc(100vh - 6rem);
     }
 .buttonn,
 .button,
 #superfunds{
+  /*position: absolute;*/
+/*  right: 0;*/
+    border: none !important;
+    color: rgb(23, 29, 75) !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    display: inline-block;
+    font-weight: 700 !important;
+    margin: 2px !important;
+    min-width:6rem !important;
+      border-radius: 20px !important;
+      padding: 4px 8px !important;
+      background: rgb(164, 217, 214) !important;
+      font-size: 1rem !important;
+      margin-right:5px !important;
+      justify-content: center !important;
+      display: flex;
+      align-items: center;
+}
+.back-button span{
+    font-size: 1.75rem;
+    color: #171D4B;
+    font-weight: 700;
+}
+		.superfund-container-child{
+    	/*padding: 4rem 3rem 2rem 2rem;*/
+    	height: 100%;
+	    overflow: hidden;
+	    font-weight: 700;
+	    /*padding: 1rem 0 1rem 2rem;*/
+	    margin: 0 !important;
+	    color: rgba(11, 36, 107);
+	    width: 100%;
+	    font-size: 1.75rem;
+		}
+		.superfunds_header_container{
+	    padding: 1rem 1rem 0rem 2rem;
+			display: flex;
+		}
+		#superfunds{
   /*position: absolute;*/
 /*  right: 0;*/
     border: none !important;
@@ -284,34 +328,31 @@ border-bottom-right-radius: 20px;
 		}
 	?>
 <div class="containers">
-		<span style="position: absolute;top:20px;padding-left: 2rem">
+
+	<span class="superfunds_header_container">
       <a href="<?php echo base_url();?>/settings">
         <button class="btn back-button">
-          <img src="<?php echo base_url('assets/images/back.svg');?>">
-          <span style="font-size:0.8rem">Superannuations</span>
+	          <img src="<?php echo base_url('assets/images/back.svg');?>">
         </button>
       </a>
-    </span>
+      <span  class="superfund-container-child">Superannuations</span>
+      <span>
+				<button id="superfunds">
+	            <i>
+	              <img src="<?php echo base_url('assets/images/icons/xero.png'); ?>" style="max-height:02rem;margin-right:10px">
+	            </i>Sync&nbsp;Xero&nbsp;Superannuations
+				</button>
+      </span>
+  </span>
 	<div class="superfunds-container">
 		<div class="superfunds-container-child">
 	<?php $permissions = json_decode($permissions); ?>
 <?php if(isset($permissions->permissions) ? $permissions->permissions->viewPermissionYN : "N" == "Y"){ ?>
-	<div class="d-flex">
-			<h4 style="font-weight: 700;
-                      padding: 1rem 0 0 2rem;
-                      margin: 0 !important;
-                      color: rgba(11, 36, 107);width: 100%"
-                class="text-left">Superannuations</h4>
+
 <?php if(isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N" == "Y"){ ?>
-		<span class="d-flex align-items-center pr-4">
-			<button id="superfunds">
-            <i>
-              <img src="<?php echo base_url('assets/images/icons/xero.png'); ?>" style="max-height:02rem;margin-right:10px">
-            </i>Sync&nbsp;Xero&nbsp;Superannuations
-			</button>
-		</span>
+
 <?php } ?>
-	</div>
+
 	<div class="table-div">
 		<table class="table">
 			<thead>

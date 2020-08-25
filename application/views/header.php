@@ -224,7 +224,7 @@ select::after{
   align-items: center;
   content: "";
   position: absolute;
-  height: 40px;
+  height: 30px;
   padding:5px;
   border-left:3px solid #307bd3;
   margin-top:5px;

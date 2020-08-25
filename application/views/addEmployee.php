@@ -232,13 +232,14 @@
 		<span class="nav-button m-i"><span>Medical Info</span></span>
 		</div>	
 	</section>
+<form method="POST" action="createEmployeeProfile" style="height: 100%">
 	<section class="employee-section">	
 		<!-- <h3>Personal</h3> -->
 		<span class="d-flex">
 		<span class="span-class ">
 			<label>Title</label>
 			<span class="select_css">
-				<select placeholder="Title" id="title"  class="" type="text"> 
+				<select placeholder="Title" id="title"  class="" type="text" name="title"> 
 					<option value="Ms">Ms</option> 
 					<option value="Mr">Mr</option>
 					<option value="Mrs">Mrs</option>
@@ -250,15 +251,15 @@
 		<span class="row ml-1 ">
 		<span class="span-class col-4 ">
 			<!-- <label>First Name</label> -->
-			<input placeholder="First Name" id="fname"  class="" type="text">
+			<input placeholder="First Name" id="fname"  class="" type="text" name="fname">
 		</span>
 		<span class="span-class col-4 ">
 			<!-- <label>Middle Name</label> -->
-			<input placeholder="Middle Name" id="mname"  class="" type="text">
+			<input placeholder="Middle Name" id="mname"  class="" type="text" name="mname">
 		</span>
 		<span class="span-class col-4 ">
 			<!-- <label>Last Name</label> -->
-			<input placeholder="Last Name" id="lname"  class="" type="text">
+			<input placeholder="Last Name" id="lname"  class="" type="text" name="lname">
 		</span>
 	</span>
 	</span>
@@ -266,20 +267,20 @@
 		
 		<span class="span-class">
 			<label>Email</label>
-			<input placeholder="Emails" id="emails"  class="" type="text">
+			<input placeholder="Emails" id="emails"  class="" type="text" name="emails">
 		</span>
 		<span class="span-class">
 			<label>Alias</label>
-			<input placeholder="Alias" id="alias"  class="" type="text">
+			<input placeholder="Alias" id="alias"  class="" type="text" name="alias">
 		</span>
 		<span class="span-class">
 			<label>Date Of Birth</label>
-			<input placeholder="Date Of Birth" id="dateOfBirth"  class="" type="date">
+			<input placeholder="Date Of Birth" id="dateOfBirth"  class="" type="date" name="dateOfBirth">
 		</span>
 		<span class="span-class">
 			<label>Gender</label>
 			<span class="select_css">
-				<select placeholder="Gender" id="gender"  class="" >
+				<select placeholder="Gender" id="gender"  class="" name="gender">
 					<option value="N">Not Given</option>
 					<option value="M">Male</option>
 					<option value="F">Female</option>
@@ -290,27 +291,27 @@
 				
 		<span class="span-class">
 			<label>Job Title</label>
-			<input placeholder="Job Title" id="jobTitle"  class="" type="text">
+			<input placeholder="Job Title" id="jobTitle"  class="" type="text" name="jobTitle">
 		</span>
 	
 		<span class="span-class row">
 		<label>Address</label>	
 			<span class="span-class  col-4">
 				<!-- <label>Home Address Line1</label> -->
-				<input placeholder="Home Address Line1" id="homeAddLine1"  class="" type="text">
+	<input placeholder="Home Address Line1" id="homeAddLine1"  class="" type="text" name="homeAddLine1">
 			</span>
 			<span class="span-class col-4">
 				<!-- <label>Home Address Line2</label> -->
-				<input placeholder="Home Address Line2" id="homeAddLine2"  class="" type="text">
+	<input placeholder="Home Address Line2" id="homeAddLine2"  class="" type="text" name="homeAddLine2">
 			</span>
 			<span class="span-class col-4">
 				<!-- <label>City</label> -->
-				<input  type="text" placeholder="City" id="homeAddCity"  class="" >
+	<input  type="text" placeholder="City" id="homeAddCity"  class=""  name="homeAddCity">
 			</span>				
 			<span class="span-class col-4">
 				<!-- <label>Region</label> -->
 				<span class="select_css">
-					<select placeholder="Region" id="homeAddRegion"  class="" type="text">
+		<select placeholder="Region" id="homeAddRegion"  class="" type="text" name="homeAddRegion">
 						<option value="ACT">Australian Capital Territory</option>
 						<option value="NSW">New South Wales</option>
 						<option value="NT">Northern Territory</option>
@@ -324,30 +325,30 @@
 			</span>
 			<span class="span-class col-4">
 				<!-- <label>Postal</label> -->
-				<input placeholder="Postal" id="homeAddPostal"  class="" type="text">
+				<input placeholder="Postal" id="homeAddPostal"  class="" type="text" name="homeAddPostal">
 			</span>
 			<span class="span-class col-4">
 				<!-- <label>Country</label> -->
-				<input placeholder="Country" id="homeAddCountry"  class="" type="text">
+				<input placeholder="Country" id="homeAddCountry"  class="" type="text" name="homeAddCountry">
 			</span>
 		</span>
 		<span class="span-class contact__">
 			<label>Contact</label>
 				<span class="span-class">
-					<input placeholder="Phone" id="phone"  class="" type="text">
+					<input placeholder="Phone" id="phone"  class="" type="text" name="phone">
 				</span>
 				<span class="span-class">
-					<input placeholder="Mobile" id="mobile"  class="" type="text">
+					<input placeholder="Mobile" id="mobile"  class="" type="text" name="mobile">
 				</span>
 		</span>
 	<span class="d-block">
 		<span class="span-class col-3">
 			<label>Start Date</label>
-			<input placeholder="Start Date" id="startDate"  class="" type="date">
+		<input placeholder="Start Date" id="startDate"  class="" type="date" name="startDate">
 		</span>
 		<span class="span-class col-3">
 			<label>Termination Date</label>
-			<input placeholder="Termination Date" id="terminationDate"  class="" type="date">
+		<input placeholder="Termination Date" id="terminationDate"  class="" type="date" name="terminationDate">
 		</span>
 	</span>
 <!-- 		<span class="span-class">
@@ -360,15 +361,15 @@
 		</span> -->
 		<span class="span-class col-3">
 			<label>Emergency Contact</label>
-			<input placeholder="Emergency Contact" id="emergency_contact"  class="" type="text">
+		<input placeholder="Emergency Contact" id="emergency_contact"  class="" type="text" name="emergency_contact">
 		</span>
 		<span class="span-class col-3">
 			<label>Relationship</label>
-			<input placeholder="Relationship" id="relationship"  class="" type="text">
+		<input placeholder="Relationship" id="relationship"  class="" type="text" name="relationship">
 		</span>
 		<span class="span-class col-3">
 			<label>Emergency Contact Email</label>
-			<input placeholder="Emergency Contact Email" id="emergency_contact_email"  class="" type="email">
+			<input placeholder="Emergency Contact Email" id="emergency_contact_email"  class="" type="email" name="emergency_contact_email">
 		</span>
 	</section>
 
@@ -384,18 +385,18 @@
 		</span> -->
 		<span class="span-class col-4">
 			<label>Account Name</label>
-			<input placeholder="Account Name" type="text" class="accountName" >
+			<input placeholder="Account Name" type="text" class="accountName" name="accountName">
 		</span>
 		<span class="span-class col-4">
 			<label>BSB</label>
-			<input placeholder="BSB" type="text" class="bsb" >
+			<input placeholder="BSB" type="text" class="bsb" name="bsb">
 		</span>
 	</div>
 		
 	<span class="row">
 		<span class="span-class col-4">
 			<label>Account Number</label>
-			<input placeholder="Account Number" type="text" class="accountNumber" >
+			<input placeholder="Account Number" type="text" class="accountNumber" name="accountNumber">
 		</span>
 		<span class="span-class col-4">
 			<label>Remainder</label>
@@ -411,7 +412,7 @@
 		<span class="span-class amount-class-parent col-4">
 			<div class="amount-class">
 				<label>Amount</label>
-				<input placeholder="Amount" type="text" class="amount" >
+				<input placeholder="Amount" type="text" class="amount" name="amount">
 			</div>
 		</span>
 	</span>
@@ -433,7 +434,7 @@
 						<label>Super Fund Id</label>
 						<?php $superfunds = json_decode($superfunds); ?>
 						<span class="select_css">
-							<select placeholder="Super Fund Id" class="superFundId" >
+							<select placeholder="Super Fund Id" class="superFundId" name="superFundId[]">
 								<?php foreach($superfunds->superfunds as $superfund){ ?>
 								<option value="<?php echo $superfund->usi; ?>"><?php echo $superfund->name; ?></option>
 								<?php } ?>
@@ -441,12 +442,8 @@
 						</span>
 					</span>
 					<span class="span-class col-4">
-						<label>Employee Number</label>
-						<input placeholder="Employee Number" class="employeeNumber" type="text">
-					</span>
-					<span class="span-class col-4">
 						<label>Super Membership Id</label>
-						<input placeholder="Super Membership Id" class="superMembershipId" type="text">
+						<input placeholder="Super Membership Id" class="superMembershipId" type="text" name="superMembershipId[]">
 					</span>
 				</div>
 			</div>
@@ -463,7 +460,7 @@
 		<span class="span-class col-4">
 			<label>Employment Basis</label>
 			<span class="select_css">
-				<select placeholder="employmentBasis" id="employmentBasis">
+				<select placeholder="employmentBasis" id="employmentBasis" name="employmentBasis">
 					<option value="FULLTIME">FULLTIME </option>
 					<option value="PARTTIME">PARTTIME</option>
 					<option value="CASUAL">CASUAL</option>
@@ -475,7 +472,7 @@
 		<span class="span-class col-4">
 			<label>TFN Exemption Type</label>
 			<span class="select_css">
-				<select placeholder="tfnExemptionType" id="tfnExemptionType">
+				<select placeholder="tfnExemptionType" id="tfnExemptionType" name="tfnExemptionType">
 					<option value="NONE">NONE</option>
 					<option value="NOTQUOTED">NOTQUOTED</option>
 					<option value="PENDING">PENDING</option>
@@ -487,7 +484,7 @@
 		<div class="tax-declaration-class col-lg-12">
 		<span class="span-class col-4">
 			<label>Tax File Number</label>
-			<input placeholder="Tax File Number" id="taxFileNumber" type="text">
+			<input placeholder="Tax File Number" id="taxFileNumber" name="taxFileNumber" type="text">
 		</span>
 		<span class="span-class col-4">
 			<label>Australian Resident For TaxPurpose</label>
@@ -499,7 +496,7 @@
 		<span class="span-class col-3">
 			<label>Residency Statue</label>
 			<span class="select_css">
-				<select placeholder="residencyStatue" id="residencyStatue">
+				<select placeholder="residencyStatue" id="residencyStatue" name="residencyStatue">
 					<option value="AUSTRALIANRESIDENT">Australian Resident</option>
 					<option value="FOREIGNRESIDENT">Foreign Resident</option>
 					<option value="WORKINGHOLIDAY">Working Holiday</option>
@@ -515,7 +512,7 @@
 		</span>
 		<span class="span-class col-4">
 			<label>Tax Offset Estimated Amount</label>
-			<input placeholder="Tax Offset Estimated Amount" id="taxOffsetEstimatedAmount" type="text">
+			<input placeholder="Tax Offset Estimated Amount" id="taxOffsetEstimatedAmount" type="text" name="taxOffsetEstimatedAmount">
 		</span>
 		<span class="span-class col-3">
 			<label>Has HELP Debt</label>
@@ -541,7 +538,7 @@
 		</span>
 		<span class="span-class col-3">
 			<label>Upward Variation Tax Witholding Amount</label>
-			<input placeholder="Upward Variation Tax Witholding Amount" id="upwardVariationTaxWitholdingAmount" type="text">
+			<input placeholder="Upward Variation Tax Witholding Amount" id="upwardVariationTaxWitholdingAmount" name="upwardVariationTaxWitholdingAmount" type="text">
 		</span>
 		<span class="span-class col-4">
 			<label>Eligible To Receive Leave Loading</label>
@@ -552,7 +549,7 @@
 		</span>
 		<span class="span-class col-4">
 			<label>Approved Witholding Variation Percentage</label>
-			<input placeholder="Approved Witholding Variation Percentage" id="approvedWitholdingVariationPercentage" type="text">
+			<input placeholder="Approved Witholding Variation Percentage" id="approvedWitholdingVariationPercentage" name="approvedWitholdingVariationPercentage" type="text">
 		</span>
 		
 	</div>
@@ -562,12 +559,16 @@
 	<section class="employee-details">
 		<span class="span-class">
 			<label>Employee Number</label>
-			<input placeholder="Employee Number" id="employee_no" type="text">
+			<input placeholder="Employee Number" id="employee_no" type="text" name="employee_no">
+		</span>
+		<span class="span-class">
+			<label>Xero Employee Id</label>
+			<input placeholder="Xero Employee Id" id="xeroEmployeeId" type="text" name="xeroEmployeeId">
 		</span>
 		<span class="span-class">
 			<label>Center</label>
 			<span class="select_css">
-				<select placeholder="Center" id="center">
+				<select placeholder="Center" id="center" name="center">
 					<option>--Center--</option>
 					<?php 
 						$centers = json_decode($centers);
@@ -583,7 +584,7 @@
 
 				<span class="" id="area-select">
 					<span class="select_css">
-						<select placeholder="Area" id="area">
+						<select placeholder="Area" id="area" name="area">
 							<option>--select--</option>
 						<?php 
 						$areas = json_decode($areas);
@@ -600,7 +601,7 @@
 			<label>Role</label>
 			<span id="role-select">
 				<span class="select_css">
-					<select placeholder="Role" id="role">
+					<select placeholder="Role" id="role" name="role">
 						<option>--select--</option>
 
 						<?php foreach($areas->areas as $roles){?>
@@ -614,14 +615,14 @@
 
 		<span class="span-class">
 			<label>Manager</label>
-			<input placeholder="Manager" id="manager" type="text">
+			<input placeholder="Manager" id="manager" type="text" name="manager">
 		</span>
 
 
 		<span class="span-class">
 			<label>Level</label>
 			<span class="select_css">
-				<select placeholder="Level" id="level">
+				<select placeholder="Level" id="level" name="level">
 					<?php $levels = json_decode($levels);
 						foreach($levels->entitlements as $level){
 						?>
@@ -632,7 +633,7 @@
 		</span>
 		<span class="span-class">
 			<label>Bonus Rates</label>
-			<input placeholder="Bonus Rates" id="bonusRates" type="number" step="0.01" min="0">
+			<input placeholder="Bonus Rates" id="bonusRates" name="bonusRates" type="number" step="0.01" min="0">
 		</span>
 
 <!-- 		<span class="span-class">
@@ -661,17 +662,17 @@
  -->
 		<span class="span-class">
 			<label>Resume Document </label>
-			<input  id="resume_doc" type="file">
+			<input  id="resume_doc" name="resume_doc" type="file">
 		</span>
 		<span class="span-class">
 			<label>Contract Document </label>
-			<input  id="contract_doc" type="file">
+			<input  id="contract_doc" name="contract_doc" type="file">
 		</span>
 
 		<span class="span-class">
 			<label>Employment-type</label>
 			<span class="select_css">
-				<select id="employement_type">
+				<select id="employement_type" name="employement_type">
 					<option value="FT">Full Time</option>
 					<option value="PT">Part Time</option>
 					<option value="Casual">Casual</option>
@@ -709,15 +710,15 @@
 
 		<span class="span-class">
 			<label>Highest-qual-held</label>
-			<input placeholder="Highest-qual-held" id="highest_qual_held" type="text">
+		<input placeholder="Highest-qual-held" id="highest_qual_held" name="highest_qual_held" type="text">
 		</span>
 		<span class="span-class">
 			<label>Date Obtained</label>
-			<input placeholder="Date Obtained" id="highest_qual_date_obtained" type="text">
+		<input placeholder="Date Obtained" id="highest_qual_date_obtained" name="highest_qual_date_obtained" type="text">
 		</span>
 		<span class="span-class">
 			<label>Highest Qualification Certificate</label>
-			<input placeholder="Date Obtained" id="highest_qual_cert" type="text">
+		<input placeholder="Date Obtained" id="highest_qual_cert" name="highest_qual_cert" type="text">
 		</span>
 <!-- 		<span class="span-class">
 			<label>Highest-qual-type	 </label>
@@ -725,11 +726,11 @@
 		</span>
  -->		<span class="span-class">
 			<label>Qualification working Toward</label>
-			<input placeholder="Qual-towards-desc" id="qual_towards_desc" type="text">
+		<input placeholder="Qual-towards-desc" id="qual_towards_desc" name="qual_towards_desc" type="text">
 		</span>
 		<span class="span-class">
 			<label>Qual-towards-%-comp</label>
-			<input placeholder="Qual towards % comp" id="qual_towards_percent_comp" type="text">
+		<input placeholder="Qual towards % comp" id="qual_towards_percent_comp" name="qual_towards_percent_comp" type="text">
 		</span>
 
 <!-- 		<span class="span-class">
@@ -746,12 +747,12 @@
 		</span> -->
 		<span class="span-class">
 			<label>Classification</label>
-			<input placeholder="Classification" id="classification" type="text">
+			<input placeholder="Classification" id="classification" name="classification" type="text">
 		</span>
 		<span class="span-class">
 			<label>Ordinary Earning Rate Id</label>
 			<span class="select_css">
-				<select placeholder="Ordinary Earning Rate Id" id="ordinaryEarningRateId"  class="" type="text">
+				<select placeholder="Ordinary Earning Rate Id" id="ordinaryEarningRateId" name="ordinaryEarningRateId"  class="" type="text">
 				<?php
 						$ordinaryEarningRate = json_decode($ordinaryEarningRate);
 						foreach($ordinaryEarningRate->awards as $rate){
@@ -764,15 +765,15 @@
 
 		<span class="span-class">
 			<label>Payroll Calendar</label>
-			<input placeholder="Payroll Calendar" id="payroll_calendar" type="text">
+			<input placeholder="Payroll Calendar" id="payroll_calendar" name="payroll_calendar" type="text">
 		</span>
 		<span class="span-class">
 			<label>Employee Group</label>
-			<input placeholder="Employee Group" id="employee_group" type="text">
+			<input placeholder="Employee Group" id="employee_group" name="employee_group" type="text">
 		</span>
 		<span class="span-class">
 			<label>Holiday Group</label>
-			<input placeholder="Holiday Group" id="holiday_group" type="text">
+			<input placeholder="Holiday Group" id="holiday_group" name="holiday_group" type="text">
 		</span>
 		<span class="span-class">
 			<label>Visa Holder</label>
@@ -783,41 +784,41 @@
 		</span>
 		<span class="span-class">
 			<label>	Visa-type		</label>
-			<input placeholder="Visa-type		" id="visa_type		" type="text">
+			<input placeholder="Visa-type" id="visa_type" name="visa_type" type="text">
 		</span>
 		<span class="span-class">
 			<label>	Visa-grant-date	</label>
-			<input placeholder="Visa-grant-date	" id="visa_grant_date	" type="text">
+			<input placeholder="Visa-grant-date" id="visa_grant_date" name="visa_grant_date" type="text">
 		</span>
 		<span class="span-class">
 			<label>	Visa-end-date	</label>
-			<input placeholder="Visa-end-date	" id="visa_end_date	" type="text">
+			<input placeholder="Visa-end-date" id="visa_end_date" name="visa_end_date" type="text">
 		</span>
 		<span class="span-class">
 			<label>	Visa-conditions</label>
-			<input placeholder="Visa-conditions" id="visa_conditions" type="text">
+			<input placeholder="Visa-conditions" id="visa_conditions" name="visa_conditions" type="text">
 		</span>
 
 		<div>
 				<span class="span-class">
 					<label>Course Name</label>
-					<input placeholder="Course Name" class="course_name" type="text">
+					<input placeholder="Course Name" class="course_name" name="course_name[]" type="text">
 				</span>
 				<span class="span-class">
 					<label>course Description</label>
-					<input placeholder="course Description" class="course_description" type="text">
+					<input placeholder="course Description" class="course_description" name="course_description[]" type="text">
 				</span>
 				<span class="span-class">
 					<label>Date Obtained</label>
-					<input placeholder="Date Obtained" class="date_obtained" type="text">
+					<input placeholder="Date Obtained" class="date_obtained" name="date_obtained[]" type="text">
 				</span>
 				<span class="span-class">
 					<label>Expiry Date</label>
-					<input placeholder="Expiry Date" class="expiry_date" type="date">
+					<input placeholder="Expiry Date" class="expiry_date" name="expiry_date[]" type="date">
 				</span>
 				<span class="span-class">
 					<label>Certificate </label>
-					<input placeholder="Certificate " class="certificate " type="FILE">
+					<input placeholder="Certificate" class="certificate" name="certificate[]" type="FILE">
 				</span>
 		</div>
 <!-- 		<span class="span-class">
@@ -924,13 +925,13 @@
 				<input  type="date"  name="maternityEndDate" class="maternityEndDate">
 		</span> -->
 	</section>
-
 	<div class="submit-div">
 		<button id="submit">
 			<i>
 				<img src="<?php echo base_url('assets/images/icons/send.png'); ?>" style="max-height:1rem;margin-right:10px">
 			</i>Submit</button>
 	</div>
+</form>
 <?php } ?>
 		</div>
 	</div>
@@ -956,333 +957,7 @@
 	<?php }
 ?>
 <?php if(isset($permissions->permissions) ? $permissions->permissions->editEmployeeYN : "N" == "Y"){ ?>
-<script type="text/javascript">
-	$(document).ready(function(){
-		$(document).on('click','#submit',function(){
-		var title = $('#title').val();
-		var fname = $('#fname').val();
-		var mname = $('#mname').val();
-		var lname = $('#lname').val();
-		var emails = $('#emails').val();
-		var alias = $('#alias').val();
-		var dateOfBirth = $('#dateOfBirth').val();
-		var jobTitle = $('#jobTitle').val();
-		var gender = $('#gender').val();
-		var homeAddLine1 = $('#homeAddLine1').val();
-		var homeAddLine2 = $('#homeAddLine2').val();
-		var homeAddCity = $('#homeAddCity').val();
-		var homeAddRegion = $('#homeAddRegion').val();
-		var homeAddPostal = $('#homeAddPostal').val();
-		var homeAddCountry = $('#homeAddCountry').val();
-		var phone = $('#phone').val();
-		var mobile = $('#mobile').val();
-		var startDate = $('#startDate').val();
-		var terminationDate = $('#terminationDate').val();
-		var ordinaryEarningRateId = $('#ordinaryEarningRateId').val();
-		var emergency_contact = $('#emergency_contact').val();
-		var relationship = $('#relationship').val();
-		var emergency_contact_email = $('#emergency_contact_email').val();
-		var classification 	= $('#classification').val();
-		var payroll_calendar 	= $('#payroll_calendar').val();
-		var employee_group 	= $('#employee_group').val();
-		var holiday_group 	= $('#holiday_group').val();
-		// var created_at = $('#created_at').val();
-		// var created_by = $('#created_by').val();
-		// var employeeId = $('#employeeId').val();
-		// var statementText = $('.statementText').val();
-		// var accountName = $('.accountName').val();
-		// var bsb = $('.bsb').val();
-		// var accountNumber = $('.accountNumber').val();
-		// var remainderYN = $('.remainderYN').val();
-		// var amount = $('.amount').val();
-		// var employeeId = $('#employeeId').val();
-		// var superFundId = $('#superFundId').val();
-		// var employeeNumber = $('#employeeNumber').val();
-		// var superMembershipId = $('#superMembershipId').val();
-		// var employeeId = $('#employeeId').val();
-		var employmentBasis = $('#employmentBasis').val();
-		var tfnExemptionType = $('#tfnExemptionType').val();
-		var taxFileNumber = $('#taxFileNumber').val();
-		var australiantResidentForTaxPurposeYN = $('input[name=australiantResidentForTaxPurposeYN]:checked').val()
-		var residencyStatue = $('#residencyStatue').val();
-		var taxFreeThresholdClaimedYN = $("input[name='taxFreeThresholdClaimedYN']:checked").val()
-		var taxOffsetEstimatedAmount = $('#taxOffsetEstimatedAmount').val();
-		var hasHELPDebtYN = $('input[name=hasHELPDebtYN]:checked').val()
-		var hasSFSSDebtYN = $('input[name=hasSFSSDebtYN]:checked').val()
-		var hasTradeSupportLoanDebtYN = $('input[name=hasTradeSupportLoanDebtYN]:checked').val()
-		var upwardVariationTaxWitholdingAmount =  $('#upwardVariationTaxWitholdingAmount').val();
-		var eligibleToReceiveLeaveLoadingYN = $('input[name=eligibleToReceiveLeaveLoadingYN]:checked').val()
-		var approvedWitholdingVariationPercentage = $('#approvedWitholdingVariationPercentage').val();
-    var medicareNo = $('.medicareNo').val();
-    var medicareRefNo = $('.medicareRefNo').val();
-    var healthInsuranceFund = $('.healthInsuranceFund').val();
-    var healthInsuranceNo = $('.healthInsuranceNo').val();
-    var ambulanceSubscriptionNo = $('.ambulanceSubscriptionNo').val();
-    var medicalConditions = $('.medicalConditions').val();
-    var medicalAllergies = $('.medicalAllergies').val();
-    var medication = $('.medication').val();
-    var dietaryPreferences = $('.dietaryPreferences').val();
-    // var anaphylaxis = $('.anaphylaxis').val();
-    // var asthma = $('.asthma').val();
-    // var maternityStartDate = $('.maternityStartDate').val();
-    // var maternityEndDate = $('.maternityEndDate').val();
-		var employee_no = $('#employee_no').val();
-		// var currently_employed = $('input[name=currently_employed]:checked').val();
-		// var commencement_date = $('#commencement_date').val();
-		// var resume_supplied = $('input[name=resume_supplied]:checked').val();
-		var resume_doc = $('#resume_doc').val();
-		var contract_doc = $('#contract_doc').val();
-		var employement_type = $('#employement_type').val();
-		// var current_contract_notes = $('#current_contract_notes').val();
-		// var current_contract_signature = $('#current_contract_signature_date').val();
-		// var current_contract_commencement = $('#current_contract_commencement_date').val();
-		// var current_contract_end_date = $('#current_contract_end_date').val();
-		// var current_contract_paid_start_date = $('#current_contract_paid_start_date').val();
-		// var probation_end_date = $('#probation_end_date').val();
-		// var industry_years_exp_as_nov19 = $('#industry_years_exp_as_nov19').val();
-		var highest_qual_held = $('#highest_qual_held').val();
-		// var highest_qual_type = $('#highest_qual_type').val();
-		var highest_qual_date_obtained = $('highest_qual_date_obtained').val();
-		var highest_qual_cert = $('highest_qual_cert').val();
-		var qual_towards_desc = $('#qual_towards_desc').val();
-		var qual_towards_percent_comp = $('#qual_towards_percent_comp').val();
-		var course_name = $('.course_name').val();
-		var course_description = $('.course_description').val();
-		var date_obtained = $('.date_obtained').val();
-		var expiry_date = $('.expiry_date').val();
-		var certificate = $('.certificate').val();
-		// var workcover = $('#workcover').val();
-		// var piawe = $('#piawe').val();
-		// var annual_leave_in_contract = $('#annual_leave_in_contract').val();
-		var visa_holder = $('input[name=visa_holder]:checked').val();
-		var visa_type = $('#visa_type').val();
-		var visa_grant_date = $('#visa_grant_date').val();
-		var visa_end_date = $('#visa_end_date').val();
-		var visa_conditions = $('#visa_conditions').val();
-		// var first_aid_expiry = $('#first_aid_expiry').val();
-		// var cpr_expiry = $('#cpr_expiry').val();
-		// var prohibition_notice_declaration = $('#prohibition_notice_declaration').val();
-		// var vit_card_no = $('#vit_card_no').val();
-		// var vit_expiry = $('#vit_expiry').val();
-		// var wwcc_card_no = $('#wwcc_card_no').val();
-		// var wwcc_expiry = $('#wwcc_expiry').val();
-		// var food_handling_safety = $('#food_handling_safety').val();
-		// var last_police_check = $('#last_police_check').val();
-		// var child_protection_check = $('#child_protection_check').val();
-		// var nominated_supervisor = $('input[name=nominated_supervisor]:checked').val();
 
-		var bankAccount = [];
-		var superfund = [];
-		var medicals = [];
-		var courses = [];
-		var banckAccountArray =	function(accountName,bsb,accountNumber,remainderYN,amount){
-				// this.statementText = statementText;
-				this.accountName = accountName;
-				this.bsb = bsb;
-				this.accountNumber = accountNumber;
-				this.remainderYN = remainderYN;
-				this.amount = amount;
-				return {accountName : accountName,bsb : bsb,accountNumber : accountNumber,remainderYN : remainderYN,amount : amount}
-			}
-		var bankAccountCount = $('.child').length;
-			for(x=0;x<bankAccountCount;x++){
-				let accountName = $('.accountName').eq(x).val();
-				let bsb = $('.bsb').eq(x).val();
-				let accountNumber = $('.accountNumber').eq(x).val();
-				let remainderYN = $('.remainderYN[name=remainderYN]:checked').eq(x).val();
-				let amount = $('.amount').eq(x).val();
-	bankAccount.push(banckAccountArray(accountName,bsb,accountNumber,remainderYN,amount));
-			}
-
-		// var courseArray =	function(course_name,course_description,date_obtained,expiry_date,certificate){
-		// 		// this.statementText = statementText;
-		// 		this.course_name = course_name;
-		// 		this.course_description = course_description;
-		// 		this.date_obtained = date_obtained;
-		// 		this.expiry_date = expiry_date;
-		// 		this.certificate = certificate;
-		// 		return {course_name : course_name,course_description : course_description,date_obtained : date_obtained,expiry_date : expiry_date,certificate : certificate}
-		// 	}
-		var courseCount = $('.course_name').length;
-		var course_name = [];
-		var course_description = [];
-		var date_obtained = [];
-		var expiry_date = [];
-		var certificate = [];
-			for(x=0;x<courseCount;x++){
-					course_name.push($('.course_name').eq(x).val());
-					course_description.push($('.course_description').eq(x).val());
-					date_obtained.push($('.date_obtained').eq(x).val());
-					expiry_date.push($('.certificate').eq(x).val());
-					certificate.push($('.expiry_date').eq(x).val());
-			}
-
-		// var medicalArray =	function(medicalConditions,medicalAllergies,medication,dietaryPreferences,medicareNo,medicareRefNo,healthInsuranceFund,healthInsuranceNo,ambulanceSubscriptionNo){
-
-		// 		return {
-		// 			medicareNo : medicareNo,
-		// 			medicareRefNo : medicareRefNo,
-		// 			healthInsuranceFund : healthInsuranceFund,
-		// 			healthInsuranceNo : healthInsuranceNo,
-		// 			ambulanceSubscriptionNo : ambulanceSubscriptionNo,
-		// 			medicalConditions : medicalConditions,
-		// 			medicalAllergies : medicalAllergies,
-		// 			medication : medication,
-		// 			dietaryPreferences : dietaryPreferences
-		// 		}
-		// 	}
-		var medicalCount = $('.medicalConditions').length;
-		var medicalConditions = [];
-		var medicalAllergies = [];
-		var medication = [];
-		var dietaryPreferences = [];
-			for(x=0;x<medicalCount;x++){
-				medicalConditions.push($('.medicalConditions').eq(x).val());
-				medicalAllergies.push($('.medicalAllergies').eq(x).val());
-				medication.push($('.medication').eq(x).val());
-				dietaryPreferences.push($('.dietaryPreferences').eq(x).val());
-
-			}
-
-			var superfundArray =	function(superFundId,employeeNumber){
-				this.superFundId = superFundId;
-				this.employeeNumber = employeeNumber;
-				// this.superMembershipId = superMembershipId;
-				return {
-					superFundId : superFundId,
-					employeeNumber : employeeNumber
-				}
-			}
-			var superfundCount = $('.superfund-child').length;
-			for(x=0;x<superfundCount;x++){
-				let	superFundId = $('.superFundId').eq(x).val();
-				let	employeeNumber = $('.employeeNumber').eq(x).val();
-	superfund.push(superfundArray(superFundId,employeeNumber));
-			}
-			var center = $('#center').val();
-			var area = $('#area').val();
-			var role = $('#role').val();
-			var manager = $('#manager').val();
-			var level = $('#level').val();
-			var bonusRates = $('#bonusRates').val();
-			var url = window.location.origin + "/PN101/settings/createEmployeeProfile";
-				$.ajax({
-			url:url,
-			data:{
-				title: title,
-				fname: fname,
-				mname: mname,
-				lname: lname,
-				emails: emails,
-				alias : alias,
-				dateOfBirth: dateOfBirth,
-				jobTitle: jobTitle,
-				gender: gender,
-				homeAddLine1: homeAddLine1,
-				homeAddLine2: homeAddLine2,
-				homeAddCity: homeAddCity,
-				homeAddRegion: homeAddRegion,
-				homeAddPostal: homeAddPostal,
-				homeAddCountry: homeAddCountry,
-				phone: phone,
-				mobile: mobile,
-				startDate: startDate,
-				terminationDate: terminationDate,
-				ordinaryEarningRateId: ordinaryEarningRateId,
-				emergency_contact : emergency_contact,
-				relationship : relationship,
-				emergency_contact_email : emergency_contact_email,
-				medicareNo : medicareNo,
-				medicareRefNo : medicareRefNo,
-				healthInsuranceFund : healthInsuranceFund,
-				healthInsuranceNo : healthInsuranceNo,
-				ambulanceSubscriptionNo : ambulanceSubscriptionNo,
-				medicalConditions : medicalConditions,
-				medicalAllergies : medicalAllergies,
-				medication : medication,
-				dietaryPreferences : dietaryPreferences,
-				course_name : course_name,
-				course_description : course_description,
-				date_obtained : date_obtained,
-				expiry_date : expiry_date,
-				certificate : certificate,
-				superfund: superfund,
-				bankAccount: bankAccount,
-				employmentBasis: employmentBasis,
-				tfnExemptionType: tfnExemptionType,
-				taxFileNumber: taxFileNumber,
-				australiantResidentForTaxPurposeYN: australiantResidentForTaxPurposeYN,
-				residencyStatue: residencyStatue,
-				taxFreeThresholdClaimedYN: taxFreeThresholdClaimedYN,
-				taxOffsetEstimatedAmount: taxOffsetEstimatedAmount,
-				hasHELPDebtYN: hasHELPDebtYN,
-				hasSFSSDebtYN: hasSFSSDebtYN,
-				hasTradeSupportLoanDebtYN: hasTradeSupportLoanDebtYN,
-				upwardVariationTaxWitholdingAmount: upwardVariationTaxWitholdingAmount,
-				eligibleToReceiveLeaveLoadingYN: eligibleToReceiveLeaveLoadingYN,
-				approvedWitholdingVariationPercentage: approvedWitholdingVariationPercentage,
-				center : center,
-				area : area,
-				role : role,
-				manager : manager,
-				level : level,
-				bonusRates : bonusRates,
-				
-				// anaphylaxis : anaphylaxis,
-				// asthma : asthma,
-				// maternityStartDate : maternityStartDate,
-				// maternityEndDate : maternityEndDate,
-				employee_no : employee_no,
-				// currently_employed : currently_employed, 
-				// commencement_date : commencement_date, 
-				// resume_supplied : resume_supplied, 
-				resume_doc : resume_doc, 
-				contract_doc : contract_doc,
-				employement_type : employement_type, 
-				// current_contract_notes : current_contract_notes, 
-				// current_contract_signature : current_contract_signature, 
-				// current_contract_commencement : current_contract_commencement, 
-				// current_contract_end_date : current_contract_end_date, 
-				// current_contract_paid_start_date : current_contract_paid_start_date, 
-				// probation_end_date : probation_end_date, 
-				// industry_years_exp_as_nov19 : industry_years_exp_as_nov19, 
-				highest_qual_held : highest_qual_held, 
-				// highest_qual_type : highest_qual_type, 
-				qual_towards_desc : qual_towards_desc, 
-				qual_towards_percent_comp : qual_towards_percent_comp, 
-				// workcover : workcover, 
-				// piawe : piawe, 
-				// annual_leave_in_contract : annual_leave_in_contract,
-				classification : classification,
-				payroll_calendar : payroll_calendar,
-				employee_group : employee_group,
-				holiday_group : holiday_group,
-				visa_holder : visa_holder, 
-				visa_type : visa_type, 
-				visa_grant_date : visa_grant_date, 
-				visa_end_date : visa_end_date, 
-				visa_conditions : visa_conditions, 
-				// first_aid_expiry : first_aid_expiry, 
-				// cpr_expiry : cpr_expiry, 
-				// prohibition_notice_declaration : prohibition_notice_declaration, 
-				// vit_card_no : vit_card_no, 
-				// vit_expiry : vit_expiry, 
-				// wwcc_card_no : wwcc_card_no, 
-				// wwcc_expiry : wwcc_expiry, 
-				// food_handling_safety : food_handling_safety, 
-				// last_police_check : last_police_check, 
-				// child_protection_check : child_protection_check, 
-				// nominated_supervisor : nominated_supervisor 
-			},
-			method:'POST',
-			success:function(response){
-
-			}
-		})
-
-		})
-	})
-</script>
 
 <script type="text/javascript">
 	$(document).ready(function(){
