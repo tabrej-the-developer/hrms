@@ -434,7 +434,7 @@
 						<label>Super Fund Id</label>
 						<?php $superfunds = json_decode($superfunds); ?>
 						<span class="select_css">
-							<select placeholder="Super Fund Id" class="superFundId" name="superFundId[]">
+							<select placeholder="Super Fund Id" class="superFundId" name="superFundId">
 								<?php foreach($superfunds->superfunds as $superfund){ ?>
 								<option value="<?php echo $superfund->usi; ?>"><?php echo $superfund->name; ?></option>
 								<?php } ?>
@@ -443,7 +443,7 @@
 					</span>
 					<span class="span-class col-4">
 						<label>Super Membership Id</label>
-						<input placeholder="Super Membership Id" class="superMembershipId" type="text" name="superMembershipId[]">
+						<input placeholder="Super Membership Id" class="superMembershipId" type="text" name="superMembershipId">
 					</span>
 				</div>
 			</div>
@@ -894,19 +894,19 @@
 		</span>
 		<span class="span-class">
 			<label>Medical Conditions</label>
-				<input  type="text"  name="medicalConditions" class="medicalConditions">
+				<input  type="text"  name="medicalConditions[]" class="medicalConditions">
 		</span>
 		<span class="span-class">
 			<label>Medical Allergies</label>
-				<input  type="text"  name="medicalAllergies" class="medicalAllergies">
+				<input  type="text"  name="medicalAllergies[]" class="medicalAllergies">
 		</span>
 		<span class="span-class">
 			<label>Medication</label>
-				<input  type="text"  name="medication" class="medication">
+				<input  type="text"  name="medication[]" class="medication">
 		</span>
 		<span class="span-class">
 			<label>Dietary Preferences</label>
-				<input  type="text"  name="dietaryPreferences" class="dietaryPreferences">
+				<input  type="text"  name="dietaryPreferences[]" class="dietaryPreferences">
 		</span>
 <!-- 		<span class="span-class">
 			<label>Anaphylaxis</label>

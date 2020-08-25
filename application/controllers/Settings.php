@@ -1019,7 +1019,7 @@ $server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			print_r($server_output);
 			if($httpcode == 200){
-
+				redirect(base_url('settings'));
 				curl_close ($ch);
 
 			}
