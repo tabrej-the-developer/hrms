@@ -123,7 +123,7 @@ class SettingsModel extends CI_Model {
 		}
 		public function addToEmployeeBankAccount( $xeroEmployeeId,$accountName,$bsb,$accountNumber,$remainderYN,$amount){
 			$this->load->database();
-			$query = $this->db->query("INSERT INTO employeebankacount (employeeId, accountName, bsb, accountNumber, remainderYN, amount) VALUES ( '$xeroEmployeeId','$accountName','$bsb','$accountNumber','$remainderYN','$amount')");
+			$query = $this->db->query("INSERT INTO employeebankaccount (employeeId, accountName, bsb, accountNumber, remainderYN, amount) VALUES ( '$xeroEmployeeId','$accountName','$bsb','$accountNumber','$remainderYN','$amount')");
 		}
 		public function addToEmployeeMedicalInfo($xeroEmployeeId,$medicareNo, $medicareRefNo,$healthInsuranceFund,$healthInsuranceNo, $ambulanceSubscriptionNo){
 			$this->load->database();
