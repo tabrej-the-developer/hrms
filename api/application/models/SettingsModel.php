@@ -127,11 +127,11 @@ class SettingsModel extends CI_Model {
 		}
 		public function addToEmployeeMedicalInfo($xeroEmployeeId,$medicareNo, $medicareRefNo,$healthInsuranceFund,$healthInsuranceNo, $ambulanceSubscriptionNo){
 			$this->load->database();
-			$query = $this->db->query("INSERT INTO medicalinfo (employeeNo, medicareNo, medicareRefNo, healthInsuranceFund, healthInsuranceNo, ambulanceSubscriptionNo) VALUES ('$xeroEmployeeId','$medicareNo', '$medicareRefNo','$healthInsuranceFund','$healthInsuranceNo', '$ambulanceSubscriptionNo')");
+			$query = $this->db->query("INSERT INTO employeemedicalinfo (employeeNo, medicareNo, medicareRefNo, healthInsuranceFund, healthInsuranceNo, ambulanceSubscriptionNo) VALUES ('$xeroEmployeeId','$medicareNo', '$medicareRefNo','$healthInsuranceFund','$healthInsuranceNo', '$ambulanceSubscriptionNo')");
 		}
 		public function addToEmployeeMedicals( $xeroEmployeeId,$medC,$medA,$medic,$dietary){
 			$this->load->database();
-			$query = $this->db->query("INSERT INTO medicals (employeeId, medicalConditions, medicalAllergies, medication, dietaryPreferences) VALUES ('$xeroEmployeeId','$medC','$medA','$medic','$dietary')");
+			$query = $this->db->query("INSERT INTO employeemedicals (employeeId, medicalConditions, medicalAllergies, medication, dietaryPreferences) VALUES ('$xeroEmployeeId','$medC','$medA','$medic','$dietary')");
 		}
 		public function addToEmployeeRecord($employee_no, $xeroEmployeeId, $uniqueId,$resume_doc, $employement_type, $qual_towards_desc, $highest_qual_held, $qual_towards_percent_comp, $visa_type, $visa_grant_date, $visa_end_date, $visa_conditions, $contract_doc, $highest_qual_date_obtained, $highest_qual_cert, $visa_holder){
 			$this->load->database();
@@ -139,15 +139,15 @@ class SettingsModel extends CI_Model {
 		}
 		public function addToEmployeeSuperfunds( $xeroEmployeeId, $superFundId, $superMembershipId){
 			$this->load->database();
-			$query = $this->db->query("INSERT INTO employeesuperfund (employeeId, superFundId, employeeNumber, superMembershipId) VALUES ('$xeroEmployeeId', '$superFundId', '$superMembershipId')");
+			$query = $this->db->query("INSERT INTO employeesuperfund (employeeId, superFundId, superMembershipId) VALUES ('$xeroEmployeeId', '$superFundId', '$superMembershipId')");
 		}
 		public function addToEmployeeTaxDeclaration($xeroEmployeeId,$employmentBasis,$tfnExemptionType,$taxFileNumber,$australiantResidentForTaxPurposeYN,$residencyStatue,$taxFreeThresholdClaimedYN,$taxOffsetEstimatedAmount,$hasHELPDebtYN,$hasSFSSDebtYN,$hasTradeSupportLoanDebtYN_,$upwardVariationTaxWitholdingAmount,$eligibleToReceiveLeaveLoadingYN,$approvedWitholdingVariationPercentage){
 			$this->load->database();
 			$query = $this->db->query("INSERT INTO employeetaxdeclaration (employeeId, employmentBasis, tfnExemptionType, taxFileNumber, australiantResidentForTaxPurposeYN, residencyStatue, taxFreeThresholdClaimedYN, taxOffsetEstimatedAmount, hasHELPDebtYN, hasSFSSDebtYN, hasTradeSupportLoanDebtYN, upwardVariationTaxWitholdingAmount, eligibleToReceiveLeaveLoadingYN, approvedWitholdingVariationPercentage) VALUES ('$xeroEmployeeId','$employmentBasis','$tfnExemptionType','$taxFileNumber','$australiantResidentForTaxPurposeYN','$residencyStatue','$taxFreeThresholdClaimedYN','$taxOffsetEstimatedAmount','$hasHELPDebtYN','$hasSFSSDebtYN','$hasTradeSupportLoanDebtYN_','$upwardVariationTaxWitholdingAmount','$eligibleToReceiveLeaveLoadingYN','$approvedWitholdingVariationPercentage')");
 		}
-		public function addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$fname,$mname,$lname,$status,$emails,$dateOfBirth,$jobTitle,$gender,$homeAddLine1,$homeAddLine2,$homeAddCity,$homeAddRegion,$homeAddPostal,$homeAddCountry,$phone,$mobile,$startDate,$terminationDate,$ordinaryEarningRateId,$payrollCalendarId,$created_at,$created_by,$classification,$holiday_group,$employee_group,$emergency_contact,$relationship,$emergency_contact_email){
+		public function addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$fname,$mname,$lname,$emails,$dateOfBirth,$jobTitle,$gender,$homeAddLine1,$homeAddLine2,$homeAddCity,$homeAddRegion,$homeAddPostal,$homeAddCountry,$phone,$mobile,$startDate,$terminationDate,$ordinaryEarningRateId,$payrollCalendarId,$userid,$classification,$holiday_group,$employee_group,$emergency_contact,$relationship,$emergency_contact_email){
 			$this->load->database();
-			$query = $this->db->query("INSERT INTO employee (userid, xeroEmployeeId, title, fname, mname, lname, status, emails, dateOfBirth, jobTitle, gender, homeAddLine1, homeAddLine2, homeAddCity, homeAddRegion, homeAddPostal, homeAddCountry, phone, mobile, startDate, terminationDate, ordinaryEarningRateId, payrollCalendarId, created_at, created_by, classification, holiday_group, employee_group, emergency_contact, relationship, emergency_contact_email) VALUES ('$employee_no', '$xeroEmployeeId','$title','$fname','$mname','$lname','$status','$emails','$dateOfBirth','$jobTitle','$gender','$homeAddLine1','$homeAddLine2','$homeAddCity','$homeAddRegion','$homeAddPostal','$homeAddCountry','$phone','$mobile','$startDate','$terminationDate','$ordinaryEarningRateId','$payrollCalendarId','$created_at','$created_by','$classification','$holiday_group','$employee_group','$emergency_contact','$relationship','$emergency_contact_email')");
+			$query = $this->db->query("INSERT INTO employee (userid, xeroEmployeeId, title, fname, mname, lname, emails, dateOfBirth, jobTitle, gender, homeAddLine1, homeAddLine2, homeAddCity, homeAddRegion, homeAddPostal, homeAddCountry, phone, mobile, startDate, terminationDate, ordinaryEarningRateId, payrollCalendarId, created_at, created_by, classification, holiday_group, employee_group, emergency_contact, relationship, emergency_contact_email) VALUES ('$employee_no', '$xeroEmployeeId','$title','$fname','$mname','$lname','emails','$dateOfBirth','$jobTitle','$gender','$homeAddLine1','$homeAddLine2','$homeAddCity','$homeAddRegion','$homeAddPostal','$homeAddCountry','$phone','$mobile','$startDate','$terminationDate','$ordinaryEarningRateId','$payrollCalendarId',NOW(),'$userid','$classification','$holiday_group','$employee_group','$emergency_contact','$relationship','$emergency_contact_email')");
 		}
 
 // 		// add center 
