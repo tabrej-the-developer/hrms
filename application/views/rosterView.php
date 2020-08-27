@@ -383,7 +383,7 @@ table.dataTable{
 	<?php $permissions = json_decode($permissions); ?>
 	<div class="d-flex heading-bar">
 		<span class="m-3" id="roster-heading" style="">Rosters</span>
-		<span class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
+		<span class="btn sort-by m-3 ">
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?> 
 <!-- 			<div class="filter-icon d-flex">
 				<span class="">Sort&nbsp;by</span>
@@ -469,12 +469,7 @@ table.dataTable{
  			<input type = "date" placeholder = "dd-mm-yyyy" class="col-8" name="roster-date" id="roster-date">
  		</span>
  		<input type="text" name="userId" id="userId" style="display:none" value="<?php echo $userId?>">
- 		
- 		<?php if($this->session->userdata('UserType')==ADMIN) {?>
- 			<input type="text" name="centerId" id="center-id" value="<?php echo $cents;?>" style="display:none">
- 	<?php } ?>
- 		<?php if($this->session->userdata('UserType')==SUPERADMIN){ ?>
- 			<input type="text" name="centerId" id="center-id" value="<?php echo $centerId;?>" style="display:none"><?php } ?>
+ 			<input type="text" name="centerId" id="center-id" value="<?php echo $centerId;?>" style="display:none">
  		<div class="text-center">
  		<input type="submit" name="roster-submit" id="roster-submit" class="button" value="Create">
  		<input type="reset" name="" id="" class="button" value="Reset">
