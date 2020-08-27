@@ -27,6 +27,7 @@ public function roster_dashboard(){
 		$var['userId'] 	= $this->session->userdata('LoginId');
 		if( $this->getAllCenters() != 'error'){
 			$var['centers'] = $this->getAllCenters();
+			$var['center__'] = json_decode($var['centers'])->centers[$id]->centerid;
 			$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[$id]->centerid);
 			}
 			else{
