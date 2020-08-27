@@ -156,6 +156,11 @@ class RostersModel extends CI_Model {
 		$this->load->database();
 		$query = $this->db->query("INSERT into editpermissions (rosterid,userid,created_by,created_at, editRoster) VALUES ('$rosterId','$employeeId','$userid',NOW(),'$editRoster')");
 	}
+	public function getShiftAndRoleDetails($shiftId,$role){
+		$this->load->database();
+		$query = $this->db->query("SELECT * from shift INNER JOIN orgchartroles on orgchartroles.roleid = shift.roleid where id='$shiftId'");
+		return $query->row();
+	}
 
 }
 
