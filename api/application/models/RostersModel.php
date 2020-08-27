@@ -72,9 +72,9 @@ class RostersModel extends CI_Model {
 		return $query->result();
 	}
 
-	public function updateShift($shiftid,$startTime,$endTime,$roleid,$status){
+	public function updateShift($shiftid,$startTime,$endTime,$roleid,$status,$message){
 		$this->load->database();
-		$query = $this->db->query("UPDATE shift SET startTime = $startTime, endTime = $endTime,roleid = $roleid,status = $status WHERE id = '$shiftid'");
+		$query = $this->db->query("UPDATE shift SET startTime = $startTime, endTime = $endTime,roleid = $roleid,status = $status,message='$message' WHERE id = '$shiftid'");
 	}
 
 	public function updateRoster($rosterid,$status){

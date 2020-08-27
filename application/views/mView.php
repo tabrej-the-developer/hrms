@@ -920,7 +920,7 @@ $string = $rsa->decrypt(base64_decode($rc->lastText));
                   <span class="icon-parent">
                     <span class=" icon" style="
                       <?php echo "background:".$colors_array[rand(0,5)]?>">
-                      <?php echo icon($currentUserInfo->memberName);?>
+                      <?php echo isset($currentUserInfo->memberName) ? icon($currentUserInfo->memberName) : "";?>
                     </span>
                   </span>
           <?php   }

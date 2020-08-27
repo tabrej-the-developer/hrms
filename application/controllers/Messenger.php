@@ -33,7 +33,9 @@ class Messenger extends CI_Controller {
 				}
 			if($currentUserId == null){
 				if(isset($data['recentChats'])){
-					$currentUserId = (json_decode($data['recentChats'])->chats)[0];
+					if(count(json_decode($data['recentChats'])->chats) > 0){
+						$currentUserId = (json_decode($data['recentChats'])->chats)[0];
+					}
 				}
 				if(isset( $currentUserId->isGroupYN )){
 					$isGroupYN = $currentUserId->isGroupYN;

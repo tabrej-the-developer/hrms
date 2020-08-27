@@ -40,6 +40,10 @@ font-family: 'Open Sans', sans-serif;
 			overflow-y: auto;
 			padding: 0 20px 0 20px;
 		}	
+		.center-list {
+			width: 12rem ;
+			max-width: 12rem ;
+		}
 		.sort-by{
 
 		}
