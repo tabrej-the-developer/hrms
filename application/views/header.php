@@ -349,7 +349,7 @@ select{
 .tokenize:before{
       content: ' ';
     position: absolute;
-    background: url(http://localhost/PN101/assets/images/icons/search.png);
+    background: url(<?php echo base_url('assets/images/icons/search.png')?>);
     background-repeat: no-repeat;
     padding: 15px;
     margin-top: 15px;

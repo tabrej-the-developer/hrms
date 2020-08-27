@@ -262,6 +262,7 @@ class Rosters extends CI_Controller {
 										$shiftObj['startTime'] = $shiftOb->startTime;
 										$shiftObj['endTime'] = $shiftOb->endTime;
 										$shiftObj['shiftid'] = $shiftOb->id;
+										$shiftObj['message'] = $shiftOb->message;
 										$shiftObj['status'] = $shiftOb->status == 1 ? "Added" : ($shiftOb->status == 2 ? "Published" : ($shiftOb->status == 3 ? "Accepted":"Rejected"));
 									}
 									else{
@@ -550,4 +551,25 @@ class Rosters extends CI_Controller {
 			http_response_code(401);
 		}
 	}
+
+	public function getShiftDetails($shiftId,$role,$userid){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+					$this->load->model('rostersModel');
+					$data['shiftDetails'] = $this->rostersModel->getShiftAndRoleDetails($shiftId,$role);
+					http_response_code(200);
+					echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
 }

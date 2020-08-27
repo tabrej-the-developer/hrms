@@ -1253,7 +1253,10 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 					 	<?php if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave != "Y"){ 	?>
 					 		<span class="row m-0 d-flex justify-content-center"><?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleName;?></span>
 					 	<?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)). "-" .timex( intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime));
-
+					 	?>
+				<span class="row m-0 d-flex justify-content-center">
+					<?php echo isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->message) ? $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->message : "";?></span>
+					 	<?php
 		 if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status != "Rejected"){ 
 					  $weeklyTotal = $weeklyTotal + $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?>
 					  				
@@ -1387,6 +1390,8 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 					 	<?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)). "-" .timex( intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime));
 if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$counter]->empId){ 
 					  $weeklyTotal = $weeklyTotal + $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?> 
+				<span class="row m-0 d-flex justify-content-center">
+					<?php echo isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->message) ? $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->message : "";?></span>
 					<?php } } else{
 						echo 'On Leave';
 					} ?>
@@ -1810,12 +1815,12 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 	var role = $(this).attr('name2');
 	var userid = "<?php echo $userid ?>";
 	var shiftid = $(this).attr('name4');
-	document.getElementsByClassName('box-name')[0].innerHTML = $('th').eq(name).html();
-	document.getElementsByClassName('box-space')[0].innerHTML = timings;
-	document.getElementById('starts').value = starts; 
-	document.getElementById('ends').value = ends;
-	document.getElementById('role-Id').value = role;
-	document.getElementById('shift-Id').value = shiftid;
+			document.getElementsByClassName('box-name')[0].innerHTML = $('th').eq(name).html();
+			document.getElementsByClassName('box-space')[0].innerHTML = timings;
+			document.getElementById('starts').value = starts; 
+			document.getElementById('ends').value = ends;
+			document.getElementById('role-Id').value = role;
+			document.getElementById('shift-Id').value = shiftid;
 	})
 </script>
 
@@ -2019,8 +2024,47 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 			document.getElementById('endTime').value = timer(parseInt(yvalue));
 			document.getElementById('userId').value = "<?php echo $userid ?>";
 			document.getElementById('roleId').value = $(this).attr('name2');
-			document.getElementById('shiftId').value = $(this).attr('name4');
-						})
+			document.getElementById('shiftId').value = $(this).attr('name4');	
+			let shiftid = $(this).attr('name4');
+			let role = $(this).attr('name2');
+			var areaId = $(this).attr('area-id');
+			$('#areaId').val(areaId);
+			var url = window.location.origin+'/PN101/roster/getShiftDetails/'+shiftid+'/'+role
+				$.ajax({
+					url: url,
+					type: 'GET',
+					success : function(response){
+						var centerid = $('#center-id').attr('c_id');
+		// var userid = $('#user-id-select').text();
+		var response = JSON.parse(response);
+		var data = "";
+		var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
+		$.ajax({
+			method:'GET',
+			url:url,
+			dataType: 'JSON',
+			success:function(response){
+					$('#role').empty()
+				response['orgchart'].forEach(function(index){
+					index['roles'].forEach(function(values){
+						if(areaId == values.areaid){
+							if(role != values.roleid ){
+								 data = "<option value="+values.roleid+">"+values.roleName+"</option>";
+							}
+							if(role == values.roleid){
+								data = "<option value="+values.roleid+" selected>"+values.roleName+"</option>";
+							}
+
+								$('#role').append(data)
+										}
+									})
+					})
+				}
+			})
+						$('#message').val(response.shiftDetails.message);
+					}
+				})
+			})
 		
 		$(document).on('click','#shift-submit',function(){
 			var startingTime = document.getElementById('startTime').value ;
