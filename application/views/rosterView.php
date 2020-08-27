@@ -640,7 +640,7 @@ $("#roster-date").datepicker();
 		$('.loading').show();
 	};
 	//----------------
-	$('select').val(1)
+
 </script>
 <script type="text/javascript">
 	$('#ui-datepicker-div').remove()
