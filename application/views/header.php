@@ -304,8 +304,10 @@ i.mr-4{
     color: #4E4E4E
 }
 .todq_logo img{
-  height: 3rem !important;
-  padding: 0 4rem;
+    height: calc(3rem - 5px) !important;
+    padding: 0 calc(4rem + 5px);
+    width: 100%;
+    padding-top: 5px;
 }
 .select_css{
   position: relative;
@@ -321,6 +323,9 @@ i.mr-4{
     background-size: 0.6rem 0.6rem;
 
 }
+.no_drop_icon.select_css::after{
+  background: none !important;
+}
 #user_data_id{
   height: 4rem;
     color: white;
@@ -334,11 +339,25 @@ i.mr-4{
 }
 select{
   position: relative;
-  padding-right: 15px;
+  padding-right: 2rem !important;
   padding-left: 7px !important;
   min-width: 5rem !important;
 }
-
+.tokenize{
+  position: relative !important;
+}
+.tokenize:before{
+      content: ' ';
+    position: absolute;
+    background: url(http://localhost/PN101/assets/images/icons/search.png);
+    background-repeat: no-repeat;
+    padding: 15px;
+    margin-top: 15px;
+    left: 0;
+    margin-left: 10px;
+    z-index:1;
+    background-size: 0.8rem 0.8rem;
+}
 @media only screen and (max-width:600px){
   .navbar{
     position: relative;
@@ -376,9 +395,9 @@ select{
              ?>
             <span class="user_data_class"><?php echo $side_bar_name[0]; ?></span>
             <span>
-              <i>
+<!--               <i>
                 <img src="<?php echo base_url('assets/images/icons/user_more.png'); ?>" style="max-height:1rem;margin-right:10px">
-              </i>
+              </i> -->
             </span>
           </div>        
           <li class="nav-item-header" onmouseover="hover('dashboard','<?php echo $selected;?>')" onmouseout="hoverOff('dashboard','<?php echo $selected;?>')">
@@ -532,10 +551,10 @@ select{
                 </i>Logout</a>
           </li>
           <div class="todq_logo">
-            <img src="<?php echo base_url('assets/images/icons/todquest.jpeg'); ?>" class="todquest_logo_bottom">
+            <img src="<?php echo base_url('assets/images/icons/Todquest_logo.png'); ?>" class="todquest_logo_bottom">
             <span >
               <div>Powered by </div>
-              <div>TODQUEST ENTERPRISES PVT LTD</div>
+              <div>TODQUEST Edtech101 Pty Ltd</div>
             </span>
           </div>
         </div>

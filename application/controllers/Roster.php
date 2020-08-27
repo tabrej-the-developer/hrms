@@ -376,7 +376,7 @@ public	function updateShift(){
 			$data['roleid'] = $this->input->post('roleid');
 			$data['shiftid'] = $this->input->post('shiftid');
 			$data['userid'] = $this->session->userdata('LoginId');
-			$data['message'] = $this->input->post('message');
+			$data['message'] = addslashes($this->input->post('message'));
 
 			$url = BASE_API_URL."rosters/updateShift";
 			$ch = curl_init($url);

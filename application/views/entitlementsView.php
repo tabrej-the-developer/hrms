@@ -193,7 +193,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
         <span class=" create-ent ml-auto">
           <button class="button ent-btn">
             <i>
-              <img src="<?php echo base_url('assets/images/icons/xero.png'); ?>" style="max-height:02rem;margin-right:10px">
+              <img src="<?php echo base_url('assets/images/icons/plus.png'); ?>" style="max-height:1rem;margin-right:10px">
             </i>Create Entitlement
         </button>
         </span>

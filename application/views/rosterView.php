@@ -39,7 +39,10 @@ font-family: 'Open Sans', sans-serif;
 		.sort-by{
 
 		}
-		
+		.center-list {
+			width: 12rem ;
+			max-width: 12rem ;
+		}
 		.table-div{
 			height:80vh;
 			padding: 0 20px 0 20px;
@@ -495,6 +498,27 @@ table.dataTable{
 </div>
 
 <script type="text/javascript">
+	/*		---------------
+						This code contains the session storage
+				---------------   */
+	// localStorage.setItem('currentCenter',2)
+	// currentCenter();
+	// 			document.getElementsByClassName('center-list')[0].value=2;
+	// function currentCenter() {
+	// 	// if(typeof(Storage) != undefined){
+	// 	// 	let val = localStorage.getItem('currentCenter');
+	// 	var url = "<?php // echo base_url();?>roster/roster_dashboard?center="+parseInt(val);
+	// 	$.ajax({
+	// 		url:url,
+	// 		type:'GET',
+	// 		success:function(response){
+	// 			remove_loader_icon();
+	// 			$('#tbody').html($(response).find('#tbody').html());
+	// 			document.getElementById('center-id').value = parseInt(val);
+	// 		}
+	// 	});
+	// }
+// }
 	$(document).ready(function(){
 		<?php if($this->session->userdata('UserType')==SUPERADMIN){?>
 		$(document).on('change','.center-list',function(){

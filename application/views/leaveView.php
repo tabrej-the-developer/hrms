@@ -45,6 +45,10 @@
       padding-top:1rem;
       margin-bottom:0;
     }
+    .center-list {
+      width: 12rem ;
+      max-width: 12rem ;
+    }
 	.containers{
 		background:	rgb(243, 244, 247);
 		height: calc(100vh);
@@ -275,6 +279,7 @@ img{ max-width:140%;}
   border-radius: 20px;
     padding: 5px;
     padding-left: 20px;
+    padding-right: 2rem !important;
     border: 2px solid #e9e9e9 !important;
     font-size: 1rem !important;
     }
@@ -412,6 +417,7 @@ input[type="date"],input[type=time]{
     color: rgb(23, 29, 75) !important;
     border-radius: 20px !important;
     padding: 5px !important;
+    padding-right: 2rem !important;
     padding-left: 20px !important;
     border: 2px solid #e9e9e9 !important;
     }
@@ -555,6 +561,10 @@ input[type="date"],input[type=time]{
 .status-appr{
   color: rgba(0,0,0,0.7) !important;
 }
+#applyLeaveId{
+  width: 79%;
+}
+
 /*  .status-appr{
     font-size: 0.9rem;
     background: rgba(0,200,0,0.1)
@@ -1019,7 +1029,7 @@ input[type="date"],input[type=time]{
 									<label>Leave Type</label>
 									<?php // $balance = json_decode($balance) ?>
                   <span class="select_css">
-										<select class="form-control" id="applyLeaveId" name="applyLeaveId" required >
+										<select class="" id="applyLeaveId" name="applyLeaveId" required >
 										  <option value="" selected disabled>Select Leave Type </option>
 											<?php 
 												foreach ($balance->balance as $bal) { ?>

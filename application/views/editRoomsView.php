@@ -56,6 +56,7 @@ input[type="text"],input[type=time],input[type="number"]{
       color: rgb(23, 29, 75) !important;
       border-radius: 20px !important;
       padding: 5px !important;
+      padding-right: 2rem !important;
       padding-left: 20px !important;
       border: 2px solid #e9e9e9 !important;
     }
@@ -148,7 +149,7 @@ input[type="text"],input[type=time],input[type="number"]{
                 Showing&nbsp;rooms&nbsp;for&nbsp;
           </span>
           <span class="select_css">
-            <select id="centerList" class="form-control " onchange="changeCenter()">
+            <select id="centerList"  onchange="changeCenter()">
               <?php
               $centers = json_decode($centers);
               $count = count($centers->centers);

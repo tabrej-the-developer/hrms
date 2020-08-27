@@ -11,7 +11,6 @@
 	*{
 		font-family: 'Open Sans', sans-serif;
 		max-height: 100vw;
-		overflow-y: hidden;
 	}
 	body{
 		background: #f2f2f2;
@@ -146,14 +145,14 @@ border-bottom-right-radius: 20px;
 	text-align: center;
 	margin:30px 30px 10px 30px;
 }
-#down-arrow::after{
+/*#down-arrow::after{
 		position:relative;
         content: " \2193";
         top: 0px;
         right: 20px;
         height: 10px;
         width: 20px;
-}
+}*/
 .ui-datepicker-current-day{
 	background:green;
 }
@@ -247,13 +246,13 @@ border-bottom-right-radius: 20px;
     justify-content: center;
     align-items: center;
     }
-    .center-class:after{
+/*    .center-class:after{
     	background: url("../assets/images/dropdown.png");
     	padding:10px;
     	position:absolute;
     	right:25px;
     	content: " "
-    }
+    }*/
     .employee-id-class{
     	padding-right: 2%;
     	position: relative;
@@ -261,25 +260,23 @@ border-bottom-right-radius: 20px;
     justify-content: center;
     align-items: center;
     }
-    .employee-id-class:after{
+/*    .employee-id-class:after{
     	background: url("../assets/images/dropdown.png");
     	padding:10px;
     	position:absolute;
     	right:25px;
     	content: " "
-    }
+    }*/
     #centerValue{
-    	width:15rem;
     	border-radius: 3px;
     	background-color:#F0F0F0; 
     }
     #employeeValue{
-    	width:15rem;
     	border-radius: 3px;
     	background-color:#F0F0F0; 
     }
-    select {
-    -webkit-appearance: none
+select::-ms-expand {
+    display: none;
 }
 input[type=checkbox] + label {
   display: block;
@@ -353,6 +350,7 @@ button[type=button]{
     padding: 5px !important;
     padding-left: 20px !important;
     border: 2px solid #e9e9e9 !important;
+    padding-right: 2rem !important;
 		}
 @media only screen and (max-width:1024px) {
 .modal-content{
@@ -623,13 +621,16 @@ button[type=button]{
 		var centerId = document.getElementById("centerValue").value;
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
-				var employees = JSON.parse(xhttp.responseText);
+				var employees = xhttp.responseText;
+				if(employees != "" && employees != null){
+					employees = JSON.parse(employees)
 				var finalStr = "";
 				for(var i=0;i<employees.employees.length;i++){
 					finalStr += '<option value = "' + employees.employees[i].id +  '">' + employees.employees[i].name + '</option>';
 				}
 				document.getElementById("employeeValue").innerHTML = finalStr;
 				getPermissions();
+				}
 			}
 		};
 		xhttp.open("GET", base_url+"settings/getEmployeesByCenter/"+centerId, true);
@@ -641,7 +642,9 @@ button[type=button]{
 		var empId = document.getElementById("employeeValue").value;
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
-				var permissions = JSON.parse(xhttp.responseText);
+				var permissions = xhttp.responseText;
+				if(permissions != "" && permissions != null){
+					permissions = JSON.parse(permissions)
 				if(permissions.permissions != null){
 					document.getElementById("isQrReaderYN").checked = permissions.permissions.isQrReaderYN == "Y";
 					document.getElementById("viewRosterYN").checked = permissions.permissions.viewRosterYN == "Y";
@@ -699,6 +702,7 @@ button[type=button]{
 					document.getElementById("createMomYN").checked = false;
 					document.getElementById("editPermissionYN").checked = false;
 					document.getElementById("viewPermissionYN").checked = false;
+				}
 				}
 			}
 		};
@@ -797,5 +801,6 @@ button[type=button]{
 		})
 	})
 </script>
+
 </body>
 </html>

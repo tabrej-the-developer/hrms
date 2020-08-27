@@ -306,10 +306,11 @@ class Rosters extends CI_Controller {
 				$shiftid = $json->shiftid;
 				$roleid = $json->roleid;
 				$status = $json->status;
+				$message = $json->message;
 				if($startTime != null && $startTime != "" && $endTime != null && $endTime != "" &&
 					$shiftid != null && $shiftid != "" && $roleid != null && $roleid != "" && $status != null && $status != ""){
 					$this->load->model('rostersModel');
-					$this->rostersModel->updateShift($shiftid,$startTime,$endTime,$roleid,$status);
+					$this->rostersModel->updateShift($shiftid,$startTime,$endTime,$roleid,$status,$message);
 					$data['Status'] = 'SUCCESS';
 					http_response_code(200);
 					echo json_encode($data);

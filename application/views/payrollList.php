@@ -3,7 +3,7 @@
 <head>
 	<?php $this->load->view('header'); ?>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Timesheet</title>
+	<title>Payroll</title>
 	
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
@@ -34,6 +34,10 @@
 		    td:hover{
     	cursor: pointer
     }
+	.center-list {
+		width: 12rem ;
+		max-width: 12rem ;
+	}
     #payroll-heading{
     	font-size: 2rem;
     	font-weight: bold

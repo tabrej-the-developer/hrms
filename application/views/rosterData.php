@@ -90,6 +90,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
     padding: 5px;
     border: 1px solid #D2D0D0 !important;
     border-radius: 20px;
+    padding-left: 50px !important;
 }
 
 table,tr,td{
@@ -729,7 +730,13 @@ td{
     .casualEmployee_label select{
     	padding-left:50px;
     }
-    .casualEmployee_label select,.casualEmployee_label input{
+    .casualEmployee_label select{
+    	width : 100%
+    }
+    .proper_width_select{
+    	width: 60%;
+    }
+    .casualEmployee_label input{
     	width:60%;
     }
     #message{
@@ -860,6 +867,7 @@ td{
 	border-radius: 20px;
 	background: #ebebeb;
   border: 1px solid #D2D0D0 !important;
+  margin-bottom: 0;
 }
  .tokenize > .tokens-container > .token-search > input{
   border: none !important;
@@ -867,6 +875,15 @@ td{
   .tokenize > .tokens-container > .token-search{
     border: none !important;
     width: 100% !important;
+  }
+  .roster_dropdown_parent{
+  	padding: 0 !important;
+  }
+  .roster_dropdown{
+  	width: 100% !important;
+  }
+  .select_css.no_drop_icon{
+  	width: 60%;
   }
 @media print{
 	td:nth-child(7),th:nth-child(7){
@@ -894,6 +911,7 @@ td{
 	nav{
 		display: none;
 	}
+
 	.containers{
 		padding-left: 0 !important;
 		width: 100vw !important;
@@ -1495,8 +1513,8 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 			</div>
 			<div class="row p-2">
 				<label class="col-4 modal_label">Area</label>
-				<span class="select_css">
-					<select  class="col-7" name="areaId" id="areaId" style="padding-left:60px">
+				<span class="select_css roster_dropdown_parent col-7">
+					<select  class="roster_dropdown" name="areaId" id="areaId" style="padding-left:60px">
 						<option >Change Area</option>
 					</select>
 				</span>
@@ -1612,7 +1630,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 		<div class="priority_areased">
 			<span class="casualEmployee_label">
 			<label >Employee</label>
-			<span class="select_css">
+			<span class="select_css no_drop_icon">
 				<select id="casualEmp_id" multiple>
 				<?php foreach($casualEmployees->casualEmployees as $employee){ ?>
 						<option value="<?php echo $employee->empId; ?>" ><?php echo $employee->empName;?></option>
@@ -1634,15 +1652,15 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 			</span>
 			<span class="casualEmployee_label">
 				<label>Area</label>
-				<span class="select_css">
+				<span class="select_css proper_width_select">
 					<select class="casualEmploye-area-select">
 						<option>Change Area</option>
 					</select>
 				</span>
 			</span>
-			<span class="casualEmployee_label">
+			<span class="casualEmployee_label ">
 				<label>Role</label>
-				<span class="select_css">
+				<span class="select_css proper_width_select">
 					<select class="casualEmploye-role-select" id="casualEmp_role_id">
 					
 					</select>
@@ -1687,7 +1705,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 					</span>
 			</span>
 			<span class="span-class employee-id-class">
-				<span class="select_css">
+				<span class="select_css no_drop_icon">
 					<select placeholder="Select Center" id="employeeValue" onchange="getPermissions()" multiple>
 
 					</select>
@@ -1736,16 +1754,16 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 		</span>
 		<span class="add_shift_span d-flex">
 			<label class="col-5">Area</label>
-			<span class="select_css">
-				<select type="" name="" id="add_area_id" class="add_area_id col-7" style="padding-left:50px">
+			<span class="select_css roster_dropdown_parent col-7">
+				<select type="" name="" id="add_area_id" class=" roster_dropdown" style="">
 					<option>Change Area</option>
 				</select>
 			</span>
 		</span>
 		<span class="add_shift_span d-flex">
 			<label class="col-5">Role</label>
-			<span class="select_css">
-				<select type="" name="" id="add_role_id" class="add_role_id col-7">
+			<span class="select_css proper_width_select">
+				<select type="" name="" id="add_role_id" class="add_role_id col-12">
 					
 				</select>
 			</span>

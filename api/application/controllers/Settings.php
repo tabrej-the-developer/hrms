@@ -701,7 +701,8 @@ $this->settingsModel->addToEmployeeCourses( $xeroEmployeeId,$course_nme,$course_
 					}
 // Users	
 					$name = $fname." ".$mname." ".$lname;
-$this->settingsModel->addToUsers($employee_no,$emails,$name,$title,$center,$manager,$userid,$role,$level,$alias);
+					$password = $fname."@123";
+$this->settingsModel->addToUsers($employee_no,$password,$emails,$name,$jobTitle,$center,$manager,$userid,$role,$level,$alias);
 // Employee bank account	
 $this->settingsModel->addToEmployeeBankAccount( $xeroEmployeeId,$accountName,$bsb,$accountNumber,$remainderYN,$amount);
 // Employee medical info	
@@ -772,7 +773,176 @@ $this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$f
 		return $server_output;
 	}
 
-		
+// Edit Employee 
+
+	public function getEmployeeData($userid){
+		$headers = $this->input->request_headers();
+	   if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+		$this->load->model('authModel');
+		$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+		if($res != null && $res->userid == $userid){
+			$this->load->model('settingsModel');
+				$data['users'] = $this->settingsModel->getUserData($userid);
+				$data['employee']	= $this->settingsModel->getEmployeeData($userid);
+				$data['employeeBankAccount']	= $this->settingsModel->getEmployeeBankAccount($userid);
+				$data['employeeCourses']	= $this->settingsModel->getEmployeeCourses($userid);
+				$data['employeeMedicalInfo']	= $this->settingsModel->getEmployeeMedicalInfo($userid);
+				$data['employeeMedicals']	= $this->settingsModel->getEmployeeMedicals($userid);
+				$data['employeeRecord']	= $this->settingsModel->getEmployeeRecord($userid);
+				$data['employeeSuperfunds']	= $this->settingsModel->getEmployeeSuperfunds($userid);
+				$data['employeeTaxDeclaration'] = $this->settingsModel->getEmployeeTaxDec($userid);
+
+
+				$data['status'] = 'SUCCESS';
+			}
+			http_response_code(200);
+			echo json_encode($data);
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
+	public function updateEmployeeProfile(){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$this->load->model('settingsModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $json->userid){
+					$userid = $json->userid;
+					$title = $json->title;
+					$fname = $json->fname;
+					$mname = $json->mname;
+					$lname = $json->lname;
+					$emails = $json->emails;
+					$alias = $json->alias;
+					$dateOfBirth = $json->dateOfBirth;
+					$gender = $json->gender;
+					// $jobTitle = $json->jobTitle;
+					$homeAddLine1 = $json->homeAddLine1;
+					$homeAddLine2 = $json->homeAddLine2;
+					$homeAddCity = $json->homeAddCity;
+					$homeAddRegion = $json->homeAddRegion;
+					$homeAddPostal = $json->homeAddPostal;
+					$homeAddCountry = $json->homeAddCountry;
+					$phone = $json->phone;
+					$mobile = $json->mobile;
+					$terminationDate = $json->terminationDate;
+					$emergency_contact = $json->emergency_contact;
+					$relationship = $json->relationship;
+					$emergency_contact_email = $json->emergency_contact_email;
+					$accountName = $json->accountName;
+					$bsb = $json->bsb;
+					$accountNumber = $json->accountNumber;
+					$remainderYN = $json->remainderYN;
+					$amount = $json->amount;
+					$superFundId = $json->superFundId;
+					$superMembershipId = $json->superMembershipId;
+					$tfnExemptionType = $json->tfnExemptionType;
+					$taxFileNumber = $json->taxFileNumber;
+					$australiantResidentForTaxPurposeYN = $json->australiantResidentForTaxPurposeYN;
+					$residencyStatue = $json->residencyStatue;
+					$taxFreeThresholdClaimedYN = $json->taxFreeThresholdClaimedYN;
+					$taxOffsetEstimatedAmount = $json->taxOffsetEstimatedAmount;
+					$hasHELPDebtYN = $json->hasHELPDebtYN;
+					$hasSFSSDebtYN = $json->hasSFSSDebtYN;
+					$hasTradeSupportLoanDebtYN_ = $json->hasTradeSupportLoanDebtYN_;
+					$upwardVariationTaxWitholdingAmount = $json->upwardVariationTaxWitholdingAmount;
+					$eligibleToReceiveLeaveLoadingYN = $json->eligibleToReceiveLeaveLoadingYN;
+					$approvedWitholdingVariationPercentage = $json->approvedWitholdingVariationPercentage;
+					$employee_no = $json->employee_no;
+					$resume_doc = $json->resume_doc;
+					$classification = $json->classification;
+					$ordinaryEarningRateId = $json->ordinaryEarningRateId;
+					// $payroll_calendar = $json->payroll_calendar;
+					$employee_group = $json->employee_group;
+					$holiday_group = $json->holiday_group;
+					$medicareNo = $json->medicareNo;
+					$medicareRefNo = $json->medicareRefNo;
+					$healthInsuranceFund = $json->healthInsuranceFund;
+					$healthInsuranceNo = $json->healthInsuranceNo;
+					$ambulanceSubscriptionNo = $json->ambulanceSubscriptionNo;
+					$xeroEmployeeId = $json->xeroEmployeeId;
+
+// Employee Courses	
+						$course_name = $json->course_name;
+						$course_description = $json->course_description;
+						$date_obtained = $json->date_obtained;
+						$expiry_date = $json->expiry_date;
+						$certificate = $json->certificate;
+						$course_id = $json->course_id;
+					for($i=0;$i<count($course_name);$i++){
+						$course_nme = $course_name[$i];
+						$course_desc = $course_description[$i];
+						$date_obt = $date_obtained[$i];
+						$exp_date = $expiry_date[$i];
+						$id = $course_id[$i];
+						// $cert = $certificate[$i];
+						// get employee Id
+$this->settingsModel->updateEmployeeCourses( $id,$xeroEmployeeId,$course_nme,$course_desc,$date_obt,$exp_date);
+					}
+// Users	
+					$name = $fname." ".$mname." ".$lname;
+$this->settingsModel->updateUsers($employee_no,$emails,$name,$title,$userid,$alias);
+// Employee bank account	
+$this->settingsModel->updateEmployeeBankAccount( $xeroEmployeeId,$accountName,$bsb,$accountNumber,$remainderYN,$amount);
+// Employee medical info	
+$this->settingsModel->updateEmployeeMedicalInfo($xeroEmployeeId,$medicareNo, $medicareRefNo,$healthInsuranceFund,$healthInsuranceNo, $ambulanceSubscriptionNo);
+// Employee medicals	
+						$medicalConditions = $json->medicalConditions;
+						$medicalAllergies = $json->medicalAllergies;
+						$medication = $json->medication;
+						$dietaryPreferences = $json->dietaryPreferences;
+						$medicals_id = $json->medicals_id;
+				for($i=0;$i<count($medicalConditions);$i++){
+						$medC = $medicalConditions[$i];
+						$medA = $medicalAllergies[$i];
+						$medic = $medication[$i];
+						$dietary = $dietaryPreferences[$i];
+						$id = $medicals_id[$i];
+$this->settingsModel->updateEmployeeMedicals( $id,$xeroEmployeeId,$medC,$medA,$medic,$dietary);
+				}
+// Employee record	
+					// $employement_type = $json->employement_type;
+					$highest_qual_held = $json->highest_qual_held;
+					$highest_qual_date_obtained = $json->highest_qual_date_obtained;
+					// $highest_qual_cert = $json->highest_qual_cert;
+					$qual_towards_desc = $json->qual_towards_desc;
+					$qual_towards_percent_comp = $json->qual_towards_percent_comp;
+					$visa_holder = $json->visa_holder;
+					$visa_type = $json->visa_type;
+					$visa_grant_date = $json->visa_grant_date;
+					$visa_end_date = $json->visa_end_date;
+					$visa_conditions = $json->visa_conditions;
+					$contract_doc = $json->contract_doc;
+
+				// Employee No from Users 
+				$uniqueId = uniqid();
+$this->settingsModel->updateEmployeeRecord($employee_no, $xeroEmployeeId, $qual_towards_desc, $highest_qual_held, $qual_towards_percent_comp, $visa_type, $visa_grant_date, $visa_end_date, $visa_conditions, $highest_qual_date_obtained,  $visa_holder);
+// Employee superfunds	
+
+$this->settingsModel->updateEmployeeSuperfunds( $xeroEmployeeId, $superFundId,
+$superMembershipId);
+// Employee Tax Declaration
+
+$this->settingsModel->updateEmployeeTaxDeclaration($xeroEmployeeId,$tfnExemptionType,$taxFileNumber,$australiantResidentForTaxPurposeYN,$residencyStatue,$taxFreeThresholdClaimedYN,$taxOffsetEstimatedAmount,$hasHELPDebtYN,$hasSFSSDebtYN,$hasTradeSupportLoanDebtYN_,$upwardVariationTaxWitholdingAmount,$eligibleToReceiveLeaveLoadingYN,$approvedWitholdingVariationPercentage);
+// Employee Table
+
+$this->settingsModel->updateEmployeeTable($employee_no, $xeroEmployeeId,$title,$fname,$mname,$lname,$emails,$dateOfBirth,$gender,$homeAddLine1,$homeAddLine2,$homeAddCity,$homeAddRegion,$homeAddPostal,$homeAddCountry,$phone,$mobile,$terminationDate,$ordinaryEarningRateId,$userid,$classification,$holiday_group,$employee_group,$emergency_contact,$relationship,$emergency_contact_email);
+
+			$data['status'] = 'SUCCESS';
+			http_response_code(200);
+			echo json_encode($data);
+				}
+		else{
+			http_response_code(401);
+		}
+	}
+}
+
+
 
 	public function addEmployee(){
 		$json = json_decode(file_get_contents('php://input'));

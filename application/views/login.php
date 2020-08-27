@@ -154,7 +154,7 @@ input[type="submit"]{
 				
                 <div class="col-12 col-md-5 login-form-1">
                     <div class="col-md-3 login-form-2 d-flex justify-content-center">
-                        <img src="<?php echo base_url();?>assets/images/Todquest_logo.png" alt="company_logo" class="img-fluid " width="200" height="200">
+                        <img src="<?php echo base_url();?>assets/images/icons/Todquest_logo.png" alt="company_logo" class="img-fluid " width="200" height="200">
                     </div> 
                     <div><h1 style="font-weight: 900;font-family: Open Sans;color: #9B9B9B">Login</h1></div>
                      <form method="post" action="<?php echo base_url('welcome/login'); ?>">    
