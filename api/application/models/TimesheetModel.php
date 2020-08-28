@@ -120,9 +120,12 @@ class TimesheetModel extends CI_Model {
 
 	public function getEarningsRateFromId($id){
 		$this->load->database();
-		$query = $this->load->query("SELECT * from payrollshifttype_v1 where payrollshifttype_v1='$id'");
+		$query = $this->db->query("SELECT * from payrollshifttype_v1 where payrollshifttype_v1='$id'");
 		return $query->row();
 	}
 
-
+	public function discardTimesheet($timesheetid){
+		$this->load->database();
+		$query = $this->db->query("DELETE from timesheet where id = '$timesheetid'");
+	}
 }

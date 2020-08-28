@@ -1330,6 +1330,21 @@ $(document).on('click','.buttonn',function(){
 	})
 </script>
 
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(document).on('click','#discard-timesheet',function(){
+			var url = window.location.origin+"/PN101/timesheet/discardTimesheet/<?php echo $_GET['timesheetId']; ?>";
+			$.ajax({
+				url : url,
+				type : 'GET',
+				success : function(){
+					window.location.href = window.location.origin+'/PN101/timesheet/timesheetDashboard'
+				}
+			})
+		})
+	})
+</script>
+
 </body>
 </html>
 
