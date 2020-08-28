@@ -323,6 +323,7 @@ body{
 </head>
 <body>
 	<?php
+		$permissions = json_decode($permissions);
 		function dateToDayAndYear($date){
 			$date = explode("-",$date);
 			return date("M d,Y",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
@@ -336,8 +337,8 @@ body{
 <div class="containers">
 	<div class="d-flex heading-bar">
 		<span class="m-3" style="font-size: 1.75rem;font-weight: bold;color: rgb(23, 29, 75) !important;">Timesheet</span>
-		<span class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
-			<?php if($this->session->userdata('UserType') == SUPERADMIN){?> 
+		<span class="btn sort-by m-3 ">
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y"){ ?> 
 <!-- 			<div class="filter-icon row">
 				<span class="col">Sort&nbsp;by</span>
 				<span class="col"><img src="../assets/images/filter-icon.png" height="20px"></span>
@@ -354,7 +355,7 @@ body{
 		</span>
 		</span>
 		<?php } ?>
-		<?php if($this->session->userdata('UserType') == SUPERADMIN || $this->session->userdata('UserType') == ADMIN ){?>
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y"){ ?> 
 		<span class="btn ml-auto d-flex align-self-center create">
 			<a href="javascript:void(0)" id="create-new-timesheet" class="d-flex">
 				<span style="margin:0 10px 0 10px">
@@ -367,7 +368,7 @@ body{
 		<table class="table">
 			<thead>
 				<th>S.No</th>
-				<?php if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')== ADMIN) {?>
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y"){ ?> 
 				<th>Timesheet Name</th>
 				<!-- <th>Edit Y/N</th> -->
 			<?php } ?>
@@ -383,16 +384,13 @@ body{
 				 $timesheet = json_decode($timesheets);
 				for($i=0;$i<count($timesheet->timesheets);$i++){
 				?>
-				<?php if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')== ADMIN) {?>
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y"){ ?> 
 				<tr id="<?php echo $timesheet->timesheets[$i]->id?>">
 					<td><?php echo $i+1 ?></td>
-					<?php if($this->session->userdata('UserType') == ADMIN ){?>
-						<td><?php echo 'Timesheet | '.dateToDay($timesheet->timesheets[$i]->startDate).'-'.dateToDay($timesheet->timesheets[$i]->endDate) ?></td>
-					<?php } ?>
-					<?php if($this->session->userdata('UserType') ==SUPERADMIN ) { ?>
+
 					<td><?php echo  'Timesheet | '.dateToDay($timesheet->timesheets[$i]->startDate).'-'.dateToDay($timesheet->timesheets[$i]->endDate) ?></td>
 					<!-- <td><?php // echo $timesheet->timesheets[$i]->isEditYN ?></td> -->
-				<?php }?>
+
 					<td><?php echo dateToDayAndYear($timesheet->timesheets[$i]->startDate) ?></td>
 					<td><?php echo dateToDayAndYear($timesheet->timesheets[$i]->endDate) ?></td>
 					<td><?php echo $timesheet->timesheets[$i]->status ?></td>
@@ -430,10 +428,7 @@ body{
  			
  			<input class="col-8" name="timesheet-date" id="timesheet-date" autocomplete="off" placeholder="Start Date" type="date"></span>
  		<input type="text " name="userId" id="userId" style="display:none" value="<?php echo $userId?>">
- 		
- 		<?php if($this->session->userdata('UserType')==ADMIN) {?><input type="text" name="centerId" id="center-id" value="<?php echo $cents;?>" style="display:none">
- 	<?php } ?>
- 		<?php if($this->session->userdata('UserType')==SUPERADMIN){ ?><input type="text" name="centerId" id="center-id" value="<?php echo $centerId;?>" style="display:none"><?php } ?>
+		<input type="text" name="centerId" id="center-id" value="<?php echo $center__;?>" style="display:none">
  		<div class="text-center">
  		<input type="submit" name="timesheet-submit" id="timesheet-submit" class="button" value="Create">
  		<input type="reset" name="" id="" class="button" value="Reset">
@@ -555,7 +550,7 @@ body{
 			$('.dataTables_length').remove()
 			$('.dataTables_info').remove()
 			$('#ui-datepicker-div').remove()
-			$('select').val(1)
+
 	})
 </script>
 </body>
