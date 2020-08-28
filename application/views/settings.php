@@ -131,7 +131,7 @@ a[href*="settings"],.xero_settings a{
 				</div>
 			</div>
 			
-			<?php if(isset($permissions->permissions) ? $permissions->permissions->viewOrgChartYN : "N" == "Y"){ ?>
+			<?php if(isset($permissions->permissions) && $permissions->permissions->viewOrgChartYN == "Y"){ ?>
 			<div class="tile-box col-3 d-md-flex">
 				<div class=" col-6">
 					<a href="<?php echo base_url()?>settings/orgChart">
@@ -151,7 +151,7 @@ a[href*="settings"],.xero_settings a{
 	<div class="cp-rs-view">
 		<div style="font-size: 1rem;font-weight: 700;margin-left: 3rem">Center Level Settings</div>
 		<div class="top-box top-box-bottom justify-content-right">
-			<?php if(isset($permissions->permissions) ? $permissions->permissions->viewCenterProfileYN : "N" == "Y"){ ?>
+			<?php if(isset($permissions->permissions) && $permissions->permissions->viewCenterProfileYN == "Y"){ ?>
 			<div class="tile-box d-md-flex col-3">
 				<div class="col-6">
 					<a href="<?php echo base_url()?>settings/centerProfile">
@@ -163,7 +163,7 @@ a[href*="settings"],.xero_settings a{
 					</div>
 			</div>
 		<?php } ?>
-			<?php if(isset($permissions->permissions) ? $permissions->permissions->viewRoomSettingsYN : "N" == "Y"){ ?>
+			<?php if(isset($permissions->permissions) && $permissions->permissions->viewRoomSettingsYN == "Y"){ ?>
 			<div class="tile-box d-md-flex col-3">
 				<div class="col-6">
 					<a href="<?php echo base_url()?>settings/editRooms">
@@ -175,7 +175,7 @@ a[href*="settings"],.xero_settings a{
 				</div>
 			</div>
 		<?php } ?>
-			<?php if(isset($permissions->permissions) ? $permissions->permissions->viewEntitlementsYN : "N" == "Y"){ ?>
+			<?php if(isset($permissions->permissions) && $permissions->permissions->viewEntitlementsYN == "Y"){ ?>
 			<div class="tile-box d-md-flex col-3">
 				<div class="col-6">
 					<img src="<?php echo site_url('assets/images/settings-icons/entitlement-settings.png') ?>">
@@ -185,7 +185,7 @@ a[href*="settings"],.xero_settings a{
 				</div>
 			</div>
 		<?php } ?>
-			<?php if(isset($permissions->permissions) ? $permissions->permissions->editEmployeeYN : "N" == "Y"){ ?>
+			<?php if(isset($permissions->permissions) && $permissions->permissions->editEmployeeYN == "Y"){ ?>
 			<div class="tile-box  d-md-flex col-3">
 				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/add-employee.png'); ?>"></div>
 				<div class="col-6">
@@ -193,7 +193,7 @@ a[href*="settings"],.xero_settings a{
 				</div>
 			</div>
 		<?php } ?>
-			<?php if(isset($permissions->permissions) ? $permissions->permissions->editEmployeeYN : "N" == "N"){ ?>			
+			<?php if(isset($permissions->permissions) && $permissions->permissions->editEmployeeYN == "N"){ ?>			
 			<div class="tile-box  d-md-flex col-3">
 				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/add-employee.png'); ?>"></div>
 				<div class="col-6">
@@ -202,7 +202,7 @@ a[href*="settings"],.xero_settings a{
 			</div>
 		<?php } ?>
 			<!-- <button class="add-employee">Add Employee</button></div> -->
-			<?php if(isset($permissions->permissions) ? $permissions->permissions->xeroYN : "N" == "Y"){ ?>
+			<?php if(isset($permissions->permissions) && $permissions->permissions->xeroYN == "Y"){ ?>
 			<div class="tile-box d-md-flex col-3">
 				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/xero.png'); ?>"></div>
 				<div class="col-6 xero_settings">
@@ -210,7 +210,7 @@ a[href*="settings"],.xero_settings a{
 				</div>
 			</div>
 		<?php } ?>
-			<?php if(isset($permissions->permissions) ? $permissions->permissions->viewAwardsYN : "N" == "Y"){ ?>
+			<?php if(isset($permissions->permissions) && $permissions->permissions->viewAwardsYN == "Y"){ ?>
 			<div class="tile-box d-md-flex col-3">
 				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/award-settings.png'); ?>"></div>
 				<div class="col-6">
@@ -218,7 +218,7 @@ a[href*="settings"],.xero_settings a{
 				</div>
 			</div>
 		<?php } ?>
-			<?php if(isset($permissions->permissions) ? $permissions->permissions->viewSuperfundsYN : "N" == "Y"){ ?>
+			<?php if(isset($permissions->permissions) && $permissions->permissions->viewSuperfundsYN == "Y"){ ?>
 			<div class="tile-box d-md-flex col-3">
 				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/superfund-settings.png'); ?>"></div>
 				<div class="col-6">
@@ -226,7 +226,7 @@ a[href*="settings"],.xero_settings a{
 				</div>
 			</div>
 		<?php } ?>
-			<?php if(isset($permissions->permissions) ? $permissions->permissions->viewPermissionYN : "N" == "Y"){ ?>
+			<?php if(isset($permissions->permissions) && $permissions->permissions->viewPermissionYN == "Y"){ ?>
 			<div class="tile-box d-md-flex col-3">
 				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/permission-settings.png'); ?>"></div>
 				<div class="col-6">
@@ -234,7 +234,7 @@ a[href*="settings"],.xero_settings a{
 				</div>
 			</div>
 		<?php } ?>
-			<?php if(isset($permissions->permissions) ? $permissions->permissions->viewLeaveTypeYN : "N" == "Y"){ ?>
+			<?php if(isset($permissions->permissions) && $permissions->permissions->viewLeaveTypeYN == "Y"){ ?>
 			<div class="tile-box d-md-flex col-3">
 				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/leave-settings.png'); ?>"></div>
 				<div class="col-6">
