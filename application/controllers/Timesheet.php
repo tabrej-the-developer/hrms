@@ -25,8 +25,10 @@ class Timesheet extends CI_Controller {
 		$var['id'] = $id;
 		$var['centerId'] = $oldid;
 		$var['userId'] 	= $this->session->userdata('LoginId');
+		$var['permissions'] = $this->fetchPermissions();
 		if($this->getAllCenters() != 'error'){
 		$var['centers'] = $this->getAllCenters();
+		$var['center__'] = json_decode($var['centers'])->centers[$id]->centerid;
 		$var['timesheets'] = $this->getPasttimesheets(json_decode($var['centers'])->centers[$id]->centerid);
 			}
 		else{
@@ -315,5 +317,24 @@ $server_output = curl_exec($ch);
 		else if($httpcode == 401){
 
 			}		
+		}
+		function fetchPermissions(){
+			$url = BASE_API_URL."auth/fetchMyPermissions/".$this->session->userdata('LoginId');
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				return $server_output;
+				curl_close ($ch);
+			}
+			else if($httpcode == 401){
+
+			}
 		}
 }
