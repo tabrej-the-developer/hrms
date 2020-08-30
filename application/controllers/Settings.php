@@ -876,6 +876,40 @@ $server_output = curl_exec($ch);
 	// }
 
 		// Old add employee 
+
+// View Employee 
+		public function viewEmployee($employeeId=null){
+			// $centerid,$employeeid
+			// $form_data = $this->input->post();
+			// if($form_data != null){
+				if($this->session->has_userdata('LoginId')){
+					//footprint start
+					if($this->session->has_userdata('current_url')){
+						footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+						$this->session->set_userdata('current_url',currentUrl());
+					}
+					// footprint end
+					// $data['centerid'] = $centerid;
+					// $data['employeeid'] = $employeeid;
+					$data['userid'] = $this->session->userdata('LoginId');
+					$data['centers'] = $this->getAllCenters();
+					if($employeeId != null){
+						$data['getEmployeeData'] = $this->getEmployeeProfile($employeeId);
+					}
+					// $data['areas'] = $this->getAreas($data['centerid']);
+					// $data['ordinaryEarningRate'] = $this->getAwardSettings($data['userid']);
+					// $data['levels'] = $this->getAllEntitlements($data['userid']);
+					// $data['superfunds'] = $this->getSuperfunds($data['userid']);
+					$data['permissions'] = $this->fetchPermissions();
+					// var_dump($data);
+					$this->load->view('viewEmployee',$data);
+				}
+				else{
+					$this->load->view('redirectToLogin');
+				}
+			// }
+		}
+
 	// Edit employee
 	public function editEmployee($centerid=1){
 			if($this->session->has_userdata('LoginId')){
@@ -1231,6 +1265,27 @@ $server_output = curl_exec($ch);
 	}
 	// footprint end
 		$this->load->view('awardSettings',$data);
+	}
+
+	function getEmployeeProfile($employeeId){
+		$userid = $this->session->userdata('LoginId');
+		$url = BASE_API_URL."/settings/getEmployeeProfile/".$userid."/".$employeeId;
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			return $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+
+		}
 	}
 
 	function getEmployeeData($userid){

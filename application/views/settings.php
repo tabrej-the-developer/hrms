@@ -201,6 +201,14 @@ a[href*="settings"],.xero_settings a{
 				</div>
 			</div>
 		<?php } ?>
+			<?php if(isset($permissions->permissions) && $permissions->permissions->editEmployeeYN == "Y"){ ?>			
+			<div class="tile-box  d-md-flex col-3">
+				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/add-employee.png'); ?>"></div>
+				<div class="col-6">
+					<a href="<?php echo base_url()?>settings/viewEmployee">View Employee</a>
+				</div>
+			</div>
+		<?php } ?>
 			<!-- <button class="add-employee">Add Employee</button></div> -->
 			<?php if(isset($permissions->permissions) && $permissions->permissions->xeroYN == "Y"){ ?>
 			<div class="tile-box d-md-flex col-3">
