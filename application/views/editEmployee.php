@@ -441,12 +441,8 @@
 				<div class="superfund-child row">
 					<span class="span-class col-4">
 						<label>Super Fund Id</label>
-						<?php $superfunds = json_decode($superfunds); ?>
 						<span class="select_css">
 							<select placeholder="Super Fund Id" class="superFundId" name="superFundId" value="<?php echo isset($employeeData->employeesuperfund->superFundId) ? $employeeData->employeesuperfund->superFundId : ''; ?>">
-								<?php foreach($superfunds->superfunds as $superfund){ ?>
-								<option value="<?php echo $superfund->usi; ?>"><?php echo $superfund->name; ?></option>
-								<?php } ?>
 							</select>
 						</span>
 					</span>
@@ -680,12 +676,7 @@
 			<label>Ordinary Earning Rate Id</label>
 			<span class="select_css">
 				<select placeholder="Ordinary Earning Rate Id" id="ordinaryEarningRateId" name="ordinaryEarningRateId"  class="" type="text" value="<?php echo isset($employeeData->employee->ordinaryEarningRateId) ? $employeeData->employee->ordinaryEarningRateId : ''; ?>">
-				<?php
-						$ordinaryEarningRate = json_decode($ordinaryEarningRate);
-						foreach($ordinaryEarningRate->awards as $rate){
-				?>
-					<option value="<?php echo $rate->earningRateId?>"><?php echo $rate->name?></option>
-				<?php }?>
+
 				</select>
 			</span>
 		</span>

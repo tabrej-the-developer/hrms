@@ -773,6 +773,34 @@ $this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$f
 		return $server_output;
 	}
 
+// View Employee
+
+	public function getEmployeeProfile($userid,$employeeId){
+		$headers = $this->input->request_headers();
+	   if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+		$this->load->model('authModel');
+		$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+		if($res != null && $res->userid == $userid){
+			$this->load->model('settingsModel');
+				$data['users'] = $this->settingsModel->getUserData($employeeId);
+				$data['employee']	= $this->settingsModel->getEmployeeData($employeeId);
+				$data['employeeBankAccount']	= $this->settingsModel->getEmployeeBankAccount($employeeId);
+				$data['employeeCourses']	= $this->settingsModel->getEmployeeCourses($employeeId);
+				$data['employeeMedicalInfo']	= $this->settingsModel->getEmployeeMedicalInfo($employeeId);
+				$data['employeeMedicals']	= $this->settingsModel->getEmployeeMedicals($employeeId);
+				$data['employeeRecord']	= $this->settingsModel->getEmployeeRecord($employeeId);
+				$data['employeeSuperfunds']	= $this->settingsModel->getEmployeeSuperfunds($employeeId);
+				$data['employeeTaxDeclaration'] = $this->settingsModel->getEmployeeTaxDec($employeeId);
+				$data['status'] = 'SUCCESS';
+			}
+			http_response_code(200);
+			echo json_encode($data);
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
 // Edit Employee 
 
 	public function getEmployeeData($userid){
@@ -791,8 +819,6 @@ $this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$f
 				$data['employeeRecord']	= $this->settingsModel->getEmployeeRecord($userid);
 				$data['employeeSuperfunds']	= $this->settingsModel->getEmployeeSuperfunds($userid);
 				$data['employeeTaxDeclaration'] = $this->settingsModel->getEmployeeTaxDec($userid);
-
-
 				$data['status'] = 'SUCCESS';
 			}
 			http_response_code(200);
