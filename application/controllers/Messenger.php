@@ -62,7 +62,7 @@ class Messenger extends CI_Controller {
 				$this->session->set_userdata('current_url',currentUrl());
 			}
 			// footprint end
-			$this->load->view('mView',$data);
+			$this->load->view('mView_temp',$data);
 		}
 		else{
 			$this->load->view('redirectToLogin');
