@@ -382,14 +382,12 @@ class Timesheet extends CI_Controller{
 									$mar['startTime'] = $clocks->signInTime;
 									$mar['endTime'] = $clocks->signOutTime;
 									$mar['message'] = $clocks->message;
-									$mar['reason'] = $clocks->reason;
 									array_push($var['clockedTimes'],$mar);
 								}
 								foreach ($meetingTimes as $mee) {
 									$meet['startTime'] = intval($mee->time)*100;
 									$meet['endTime'] = intval($mee->eTime)*100;
 									$meet['message'] = "Meeting";
-									$meet['reason'] = "Meeting";
 									array_push($var['clockedTimes'],$meet);
 								}
 
@@ -419,7 +417,6 @@ class Timesheet extends CI_Controller{
 								$mar['startTime'] = $clocks->signInTime;
 								$mar['endTime'] = $clocks->signOutTime;
 								$mar['message'] = $clocks->message;
-								$mar['reason'] = $clocks->reason;
 								array_push($var['clockedTimes'],$mar);
 							}
 							$payedShifts = $this->timesheetModel->getPayrollShifts($currentDate,$timesheetid,$empId->users);
