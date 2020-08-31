@@ -431,8 +431,36 @@ class Settings extends CI_Controller {
 		}
 	}
 	
-	public function editCenter(){}
-	public function viewCenter(){}
+	public function editCenter($centerid){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+				$this->load->model('settingsModel');
+				$allRooms = $this->settingsModel->getRooms($centerid);
+				$data['rooms'] = [];
+				foreach ($allRooms as $room) {
+					$var['roomId'] = $room->roomId;
+					$var['name'] = $room->name;
+					$var['careAgeFrom'] = $room->careAgeFrom;
+					$var['careAgeTo'] = $room->careAgeTo;
+					$var['capacity'] = $room->capacity;
+					$var['studentRatio'] = $room->studentRatio;
+					array_push($data['rooms'],$var);
+				}
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+	// public function updateCenter(){}
 
 	public function updateCenter(){
 		$headers = $this->input->request_headers();

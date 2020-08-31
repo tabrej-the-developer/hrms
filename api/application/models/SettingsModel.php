@@ -268,6 +268,17 @@ class SettingsModel extends CI_Model {
 			$query = $this->db->query("INSERT INTO centerrecord (centerId,centerRecordUniqueId,centreABN,centreACN,centreSE_no,centreDateOpened,centreCapacity,centreApprovalDoc,centreCCSDoc,managerId,centreAdminId,centreNominatedSupervisorId) VALUES ($centerid,'$centerRecordUniqueId','$centre_abn','$centre_acn','$centre_se_no','$centre_date_opened','$centre_capacity','$centre_approval_doc','$centre_ccs_doc','$manager_name','$centre_admin_name','$centre_nominated_supervisor')");
 		}
 
+		public function getCenterDetails($centerid){
+			$this->load->database();
+			$query = $this->db->query("SELECT * FROM centers inner join centerrecord on centerrecord.centerid = centers.centerid where centers.centerid='$centerid'");
+			return $query->row();
+		}
+		public function roomsForCenter($centerid){
+			$this->load->database();
+			$query = $this->db->query("SELECT * FROM room where centerid='$centerid' ");
+			return $query->result();
+		}
+
 }
 
 

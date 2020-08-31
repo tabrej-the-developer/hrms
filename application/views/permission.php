@@ -404,6 +404,7 @@ button[type=button]{
 </head>
 <body>
 <?php $permissions = json_decode($permissions); ?>
+<input type="text" id="emplId" value="<?php echo $this->session->userdata('LoginId'); ?>" style="display:none">
 <div class="containers">
 	<div class="permission-container">
 		<span style="position: absolute;top:20px;padding-left: 0rem">
@@ -417,7 +418,7 @@ button[type=button]{
 		<div class="permission-container-child">
 			<div class="d-flex">
 
-<?php  if((isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N") == "Y"){ ?>
+
 	<div class="select-class">
 	<h4 style="font-weight: 700;
                       padding: 1rem 0 0 2rem;
@@ -439,6 +440,7 @@ button[type=button]{
 				</select>
 			</span>
 		</span>
+<?php  if((isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N") == "Y"){ ?>
 		<span class="span-class employee-id-class">
 			<span class="select_css">
 				<select placeholder="Select Center" id="employeeValue" onchange="getPermissions()">
@@ -671,12 +673,14 @@ button[type=button]{
 			if (this.readyState == 4 && this.status == 200) {
 				var employees = xhttp.responseText;
 				if(employees != "" && employees != null){
+<?php  if((isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N") == "Y"){ ?>
 					employees = JSON.parse(employees)
 				var finalStr = "";
 				for(var i=0;i<employees.employees.length;i++){
 					finalStr += '<option value = "' + employees.employees[i].id +  '">' + employees.employees[i].name + '</option>';
 				}
 				document.getElementById("employeeValue").innerHTML = finalStr;
+<?php } ?>
 				getPermissions();
 				}
 			}
@@ -687,7 +691,12 @@ button[type=button]{
 
 	function getPermissions(){
 		var xhttp = new XMLHttpRequest();
+<?php  if((isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N") == "Y"){ ?>
 		var empId = document.getElementById("employeeValue").value;
+	<?php } ?>
+<?php  if((isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N") == "N"){ ?>
+		var empId = document.getElementById("emplId").value;
+	<?php } ?>
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
 				var permissions = xhttp.responseText;
