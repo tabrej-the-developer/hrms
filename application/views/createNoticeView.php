@@ -244,6 +244,9 @@ input[type="text"],input[type=time],select,.tokens-container,textarea,.text_area
 .text_area > div:nth-child(2){
   padding: 1rem;
 }
+.tokens-container.form-control{
+  padding-left: 2rem !important;
+}
 label{
     margin-bottom: 0;
     font-weight: 700;

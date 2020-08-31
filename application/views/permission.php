@@ -25,11 +25,20 @@
 
 			background:rgb(243, 244, 247);
 		}
+<?php  if((isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N") == "Y"){ ?>
 		.table-div{
 			overflow-y: auto;
 			height: 75%;
 			padding: 0;
 		}	
+<?php } ?>
+<?php  if((isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N") == "N"){ ?>
+	.table-div{
+			overflow-y: auto;
+			height: 100%;
+			padding: 0;
+		}	
+<?php } ?>
 		.table  td,.table th{
 			padding: 0.25rem;
 			padding-left: 4rem;
@@ -267,6 +276,30 @@ border-bottom-right-radius: 20px;
     	right:25px;
     	content: " "
     }*/
+
+	.loader {
+	  border: 16px solid #f3f3f3;
+	  border-radius: 50%;
+	  border-top: 16px solid #307bd3;
+	  width: 120px;
+	  height: 120px;
+	  animation: spin 2s linear infinite;
+	}
+	.loading{
+		position: fixed;
+		height: 100vh;
+		width: 100vw;
+		top: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background: rgba(255,255,255);
+	}
+
+	@keyframes spin {
+	  0% { transform: rotate(0deg); }
+	  100% { transform: rotate(360deg); }
+	}
     #centerValue{
     	border-radius: 3px;
     	background-color:#F0F0F0; 
@@ -384,9 +417,8 @@ button[type=button]{
 		<div class="permission-container-child">
 			<div class="d-flex">
 
-
-	<div class="select-class">
 <?php  if((isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N") == "Y"){ ?>
+	<div class="select-class">
 	<h4 style="font-weight: 700;
                       padding: 1rem 0 0 2rem;
                       margin: 0 !important;
@@ -604,7 +636,9 @@ button[type=button]{
 	</div>
 </div>
 
-
+<div class="loading">
+	<div class="loader"></div>
+</div>
 
 <div class="modal-logout">
     <div class="modal-content-logout">
@@ -613,8 +647,22 @@ button[type=button]{
     </div>
 </div>
 
-
 <script type="text/javascript">
+	$(document).ready(()=>{
+		if($(document).width() > 1024){
+		    $('.containers').css('paddingLeft',$('.side-nav').width());
+		}
+});
+</script>
+<script type="text/javascript">
+
+
+	function remove_loader_icon(){
+		$('.loading').hide();
+	};
+	function loader_icon(){
+		$('.loading').show();
+	};
 	var base_url = "<?php echo base_url();?>";
 	function getEmployees(){
 		var xhttp = new XMLHttpRequest();
@@ -673,6 +721,7 @@ button[type=button]{
 					document.getElementById("createMomYN").checked = permissions.permissions.createMomYN == "Y";
 					document.getElementById("editPermissionYN").checked = permissions.permissions.editPermissionYN == "Y";
 					document.getElementById("viewPermissionYN").checked = permissions.permissions.viewPermissionYN == "Y";
+					setTimeout(remove_loader_icon,200)
 				}
 				else{
 					document.getElementById("isQrReaderYN").checked = false;
@@ -702,6 +751,7 @@ button[type=button]{
 					document.getElementById("createMomYN").checked = false;
 					document.getElementById("editPermissionYN").checked = false;
 					document.getElementById("viewPermissionYN").checked = false;
+					setTimeout(remove_loader_icon,200)
 				}
 				}
 			}
@@ -766,13 +816,7 @@ button[type=button]{
 	</script>
 <?php  } ?>
 
-<script type="text/javascript">
-	$(document).ready(()=>{
-		if($(document).width() > 1024){
-		    $('.containers').css('paddingLeft',$('.side-nav').width());
-		}
-});
-</script>
+
 
 <?php if( isset($error) ){ ?>
 <script type="text/javascript">
