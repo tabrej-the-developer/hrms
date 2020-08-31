@@ -70,10 +70,6 @@ class SettingsModel extends CI_Model {
 		$this->db->query("UPDATE centers SET logo = '$logo',name = '$name', addStreet = '$addStreet', addCity = '$addCity',addState = '$addState' , addZip = '$addZip' where centerid = '$centerid'");
 	}
 
-	public function addCenter($centerid,$logo,$name,$addStreet,$addCity,$addState,$addZip){
-		$this->load->database();
-		$this->db->query("INSERT INTO centers (centerid,logo,name,addStreet,addCity,addState,addZip) values('$centerid','$logo','$name', '$addStreet', '$addCity', '$addState' , '$addZip')");
-	}
 
 	public function getRooms($centerid){
 		$this->load->database();
@@ -254,33 +250,23 @@ class SettingsModel extends CI_Model {
 		}
 // 		// add center 
 
-// public function addCenter($addStreet,$addCity,$addState,$addZip,$name,$centre_phone_number,$centre_mobile_number,$Centre_email){
-// 	$this->load->database();
-// 	$query = $this->load->db("INSERT INTO centers (addStreet, addCity, addState, addZip, name, centre_phone_number, centre_mobile_number, centre_email) VALUES ('$addStreet','$addCity','$addState','$addZip','$name','$centre_phone_number','$centre_mobile_number','$Centre_email')");
-// 	return $query->insert_id();
-// }
-// public function addRoom($centerid,$room_name,$capacity_,$minimum_age,$maximum_age){
-// 	$this->load->database();
-// 	$uniqueId = uniqid();
-// 	$query = $this->load->db("INSERT INTO room (roomId,centerid,name,capacity,careAgeFrom,careAgeTo) VALUES ('$uniqueId',$centerid,'$room_name','$capacity_','$minimum_age','$maximum_age')");
-// }
+	public function addCenter($addStreet,$addCity,$addState,$addZip,$name,$centre_phone_number,$centre_mobile_number,$Centre_email){
+		$this->load->database();
+		$query = $this->db->query("INSERT INTO centers (addStreet, addCity, addState, addZip, name, centre_phone_number, centre_mobile_number, centre_email) VALUES ('$addStreet','$addCity','$addState','$addZip','$name','$centre_phone_number','$centre_mobile_number','$Centre_email')");
+		$id = $this->db->query("SELECT centerid FROM centers ORDER BY centerid DESC LIMIT 1");
+		return strval(($id->row())->centerid);
+	}
 
-// public function addCompliance($centerid,$compliance_name,$compliance_desc,$compliance_contact_name,$compliance_contact_number,$compliance_contact_email,$compliance_expiry_renewal_date,$compliance_document){
-// 	$this->load->database();
-// 		$uniqueId  = uniqid();
-// 	$query = $this->load->db("INSERT INTO centercomplianceinformation (centerId,uniqueId,complianceName,complianceDesc,complianceContactName,complianceContactNumber,complianceContactEmail,complianceExpiryRenewalDate,complianceDocument) VALUES ($centerid,'$uniqueId','$compliance_name','$compliance_desc','$compliance_contact_details','$compliance_contact_name','$compliance_contact_number','$compliance_contact_email','$compliance_expiry_renewal_date','$compliance_document')");
-// }
+	public function addRoom($centerid,$room_name,$capacity_,$minimum_age,$maximum_age){
+		$this->load->database();
+		$uniqueId = uniqid();
+		$query = $this->db->query("INSERT INTO room (roomId,centerid,name,capacity,careAgeFrom,careAgeTo) VALUES ('$uniqueId',$centerid,'$room_name','$capacity_','$minimum_age','$maximum_age')");
+	}
 
-// public function addSupplier($centerid,$supplier_desc,$supplier_account_no,$supplier_contact_name,$supplier_contact_number,$supplier_contact_email){
-// 	$this->load->database();
-// 	$query = $this->load->db("INSERT INTO centresupplierinfo (centerId,supplierDesc,supplierAccountNo,supplierContactName,supplierContactNumber,supplierContactEmail) VALUES ($centerid,'$supplier_desc','$supplier_account_no','$supplier_contact_name','$supplier_contact_number','$supplier_contact_email')");
-// }
-
-// public function addCenterRecord($centerid,$centre_abn,$centre_acn,$centre_se_no,$centre_date_opened,$centre_capacity,$approval_doc,$centre_approval_doc,$ccs_doc,$centre_ccs_doc,$manager_name,$centre_admin_name,$centre_nominated_supervisor){
-// 	$this->load->database();
-// 	$uniqueId  = uniqid();
-// 	$query = $this->load->db("INSERT INTO centerrecord (centerId,centerRecordUniqueId,centreABN,centreACN,centreSE_no,centreDateOpened,centreCapacity,centreApprovalDoc,centreCCSDoc,managerId,centreAdminId,centreNominatedSupervisorId) VALUES ($centerid,'$uniqueId','$centre_abn','$centre_acn','$centre_se_no','$centre_date_opened','$centre_capacity','$approval_doc','$centre_approval_doc','$centre_ccs_doc','$manager_name','$centre_admin_name','$centre_nominated_supervisor')");
-// }
+		public function addCenterRecord($centerid,$centerRecordUniqueId,$centre_abn,$centre_acn,$centre_se_no,$centre_date_opened,$centre_capacity,$centre_approval_doc,$centre_ccs_doc,$manager_name,$centre_admin_name,$centre_nominated_supervisor){
+			$this->load->database();
+			$query = $this->db->query("INSERT INTO centerrecord (centerId,centerRecordUniqueId,centreABN,centreACN,centreSE_no,centreDateOpened,centreCapacity,centreApprovalDoc,centreCCSDoc,managerId,centreAdminId,centreNominatedSupervisorId) VALUES ($centerid,'$centerRecordUniqueId','$centre_abn','$centre_acn','$centre_se_no','$centre_date_opened','$centre_capacity','$centre_approval_doc','$centre_ccs_doc','$manager_name','$centre_admin_name','$centre_nominated_supervisor')");
+		}
 
 }
 

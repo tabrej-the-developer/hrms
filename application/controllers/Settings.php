@@ -165,27 +165,34 @@ public function editRooms(){
 	}
 	// footprint end
 		$data['userid'] = $this->session->userdata('LoginId');
-		$data['addStreet'] = $this->input->post('addStreet');
-		$data['addCity'] = $this->input->post('addCity');
-		$data['addState'] = $this->input->post('addState');
-		$data['addZip'] = $this->input->post('addZip');
-		$data['name'] = $this->input->post('name');
-		$data['centre_phone_number'] = $this->input->post('centre_phone_number');
-		$data['centre_mobile_number'] = $this->input->post('centre_mobile_number');
-		$data['Centre_email'] = $this->input->post('Centre_email');
-		$data['centre_abn'] = $this->input->post('centre_abn');
-		$data['centre_acn'] = $this->input->post('centre_acn');
-		$data['centre_se_no'] = $this->input->post('centre_se_no');
-		$data['centre_date_opened'] = $this->input->post('centre_date_opened');
-		$data['centre_capacity'] = $this->input->post('centre_capacity');
-		$data['centre_approval_doc'] = $this->input->post('centre_approval_doc');
-		$data['centre_ccs_doc'] = json_encode(file_get_contents($this->input->post('centre_ccs_doc')));
-		$data['manager_name'] = json_encode(file_get_contents($this->input->post('manager_name')));
-		$data['centre_admin_name'] = $this->input->post('centre_admin_name');
+		$data['center_name'] = $this->input->post('center_name');
+		$data['center_city'] = $this->input->post('center_city');
+		$data['center_street'] = $this->input->post('center_street');
+		$data['center_state'] = $this->input->post('center_state');
+		$data['center_zip'] = $this->input->post('center_zip');
+		$data['center_phone'] = $this->input->post('center_phone');
+		$data['center_mobile'] = $this->input->post('center_mobile');
+		$data['center_email'] = $this->input->post('center_email');
+		$data['center_abn'] = $this->input->post('center_abn');
+		$data['center_acn'] = $this->input->post('center_acn');
+		$data['center_se_no'] = $this->input->post('center_se_no');
+		$data['center_date_opened'] = $this->input->post('center_date_opened');
+		$data['center_capacity'] = $this->input->post('center_capacity');
+		if($_FILES['center_approval_doc']['name'] != null && $_FILES['center_approval_doc']['name'] != "")
+			$data['center_approval_doc'] = base64_encode(file_get_contents($_FILES['center_approval_doc']['tmp_name']));
+		else
+			$data['center_approval_doc'] = "";
+		if($_FILES['center_ccs_doc']['name'] != null && $_FILES['center_ccs_doc']['name'] != "")
+			$data['center_ccs_doc'] = base64_encode(file_get_contents($_FILES['center_ccs_doc']['tmp_name']));
+		else
+			$data['center_ccs_doc'] = "";
+		$data['manager_name'] = $this->input->post('manager_name');
+		$data['center_admin_name'] = $this->input->post('center_admin_name');
 		$data['centre_nominated_supervisor'] = $this->input->post('centre_nominated_supervisor');
-		$data['rooms'] = $this->input->post('rooms');
-		$data['suppliers'] = $this->input->post('suppliers');
-		$data['compliances'] = $this->input->post('compliances');
+		$data['room_name'] = $this->input->post('room_name');
+		$data['capacity_'] = $this->input->post('capacity_');
+		$data['minimum_age'] = $this->input->post('minimum_age');
+		$data['maximum_age'] = $this->input->post('maximum_age');
 		$url = BASE_API_URL."settings/addCenter";
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
@@ -198,8 +205,9 @@ public function editRooms(){
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
 			if($httpcode == 200){
-				return $server_output;
+				redirect(base_url('settings/createCenterProfile'));
 				curl_close ($ch);
 			}
 			else if($httpcode == 401){
@@ -207,6 +215,8 @@ public function editRooms(){
 			}			
 		}
 	}
+
+
 
 	public function centerProfile($centerid = 1){
 		if($this->session->has_userdata('LoginId')){

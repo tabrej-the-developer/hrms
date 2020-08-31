@@ -363,86 +363,61 @@ class Settings extends CI_Controller {
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			$json = json_decode(file_get_contents('php://input'));
 			if($json!= null && $res != null && $res->userid == $json->userid){
-					$addStreet = $json->addStreet;
-					$addCity = $json->addCity;
-					$addState = $json->addState;
-					$addZip = $json->addZip;
-					$name = $json->name;
-					$centre_phone_number = $json->centre_phone_number;
-					$centre_mobile_number = $json->centre_mobile_number;
-					$Centre_email = $json->Centre_email;
-					$centre_abn = $json->centre_abn;
-					$centre_acn = $json->centre_acn;
-					$centre_se_no = $json->centre_se_no;
-					$centre_date_opened = $json->centre_date_opened;
-					$centre_capacity = $json->centre_capacity;
-					$approval_doc = $json->centre_approval_doc;
-					$centre_approval_doc = uniqid().'-CenterApprovalDoc-'.uniqid().'pdf';
-					file_put_contents(json_decode($approval_doc),$centre_approval_doc);
-					$ccs_doc = $json->centre_ccs_doc;
-					$centre_ccs_doc = uniqid().'-CCS_Doc-'.uniqid().'pdf';
-					file_put_contents(json_decode($ccs_doc),$centre_ccs_doc);
+					$center_name = $json->center_name;
+					$center_city = $json->center_city;
+					$center_street = $json->center_street;
+					$center_state = $json->center_state;
+					$center_zip = $json->center_zip;
+					$center_phone = $json->center_phone;
+					$center_mobile = $json->center_mobile;
+					$center_email = $json->center_email;
+					$center_abn = $json->center_abn;
+					$center_acn = $json->center_acn;
+					$center_se_no = $json->center_se_no;
+					$center_date_opened = $json->center_date_opened;
+					$center_capacity = $json->center_capacity;
+					$center_approval_doc = $json->center_approval_doc;
+					print_r($center_approval_doc);
+								$this->load->model('settingsModel');
+					if($center_approval_doc != ""){
+						$destination = "application/assets/files/";
+						$file_name = "center_approval_doc_".uniqid().".pdf";
+						file_put_contents("$destination".$file_name,base64_decode($center_approval_doc));
+
+						$center_approval_doc = $file_name;
+						// move_uploaded_file("/".$file_name, $destination);
+					}
+					else{
+						$center_approval_doc = ""; 
+					}
+					$center_ccs_doc = $json->center_ccs_doc;
+					if($center_ccs_doc != ""){
+						$destination = "application/assets/files/";
+						$file_name = "center_ccs_doc_".uniqid().".pdf";
+						file_put_contents("$destination".$file_name,base64_decode($center_ccs_doc));
+						$center_ccs_doc = $file_name;
+						// move_uploaded_file("/".$file_name, $destination);
+					}
+					else{
+						$center_ccs_doc = ""; 
+					}
 					$manager_name = $json->manager_name;
-					$centre_admin_name = $json->centre_admin_name;
+					$center_admin_name = $json->center_admin_name;
 					$centre_nominated_supervisor = $json->centre_nominated_supervisor;
-					$rooms = $json->rooms;
-					$suppliers = $json->suppliers;
-					$compliances = $json->compliances;
-				//$this->load->model('UtilModel');
-				$this->load->model('settingsModel');
-				$centerid = $this->settingsModel->addCenter($addStreet,$addCity,$addState,$addZip,$name,$centre_phone_number,$centre_mobile_number,$Centre_email);
-						$this->settingsModel->addCenterRecord($centerid,$centre_abn,$centre_acn,$centre_se_no,$centre_date_opened,$centre_capacity,$approval_doc,$centre_approval_doc,$ccs_doc,$centre_ccs_doc,$manager_name,$centre_admin_name,$centre_nominated_supervisor);
-				foreach ($rooms as $r) {
-					if($r->name != null ){
-						$room_name = $r->room_name;
-						$capacity_ = $r->capacity_;
-						$minimum_age = $r->minimum_age;
-						$maximum_age = $r->maximum_age;
-			$room = $this->settingsModel->addRoom($centerid,
-																						$room_name,
-																						$capacity_,
-																						$minimum_age,
-																						$maximum_age);
+					$room_name = $json->room_name;
+					$capacity_ = $json->capacity_;
+					$minimum_age = $json->minimum_age;
+					$maximum_age = $json->maximum_age;
+					$centerid = $this->settingsModel->addCenter($center_city,$center_street,$center_state,$center_zip,$center_name,$center_phone,$center_mobile,$center_email);
+					$centerRecordUniqueId = uniqid();
+					$this->settingsModel->addCenterRecord($centerid,$centerRecordUniqueId,$center_abn,$center_acn,$center_se_no,$center_date_opened,$center_capacity,$center_approval_doc,$center_ccs_doc,$manager_name,$center_admin_name,$centre_nominated_supervisor);
+					for($i=0;$i<count($room_name);$i++){
+						$room_name = $room_name[$i];
+						$capacity_ = $capacity_[$i];
+						$minimum_age = $minimum_age[$i];
+						$maximum_age = $maximum_age[$i];
+						$this->settingsModel->addRoom($centerid,$room_name,$capacity_,$minimum_age,$maximum_age);
 					}
-				}
-				foreach($compliances as $c){
-					if($c->compliance_name != null){
-						$compliance_name = $c->compliance_name;
-						$compliance_desc = $c->compliance_desc;
-						$compliance_contact_details = $c->compliance_contact_details;
-						$compliance_contact_name = $c->compliance_contact_name;
-						$compliance_contact_number = $c->compliance_contact_number;
-						$compliance_contact_email = $c->compliance_contact_email;
-						$compliance_expiry_renewal_date = $c->compliance_expiry_renewal_date;
-						$compliance_document = $c->compliance_document;
-						$supplierInfo = $this->settingsModel->addCompliance(
-																													$centerid,
-																													$compliance_name,
-																													$compliance_desc,
-																													$compliance_contact_details,
-																													$compliance_contact_name,
-																													$compliance_contact_number,
-																													$compliance_contact_email,
-																													$compliance_expiry_renewal_date,
-																													$compliance_document);
-					}
-				}
-				foreach ($suppliers as $supplier) {
-					if($supplier->name != null ){
-							$supplier_desc = $supplier->supplier_desc;
-							$supplier_account_no = $supplier->supplier_account_no;
-							$supplier_contact_name = $supplier->supplier_contact_name;
-							$supplier_contact_number = $supplier->supplier_contact_number;
-							$supplier_contact_email = $supplier->supplier_contact_email;
-			$room = $this->settingsModel->addSupplier($centerid,
-																								$supplier_desc,
-																								$supplier_account_no,
-																								$supplier_contact_name,
-																								$supplier_contact_number,
-																								$supplier_contact_email);
-					}
-				}
-				$center = 
 					$data['Status'] = "SUCCESS";
 				http_response_code(200);
 				echo json_encode($data);
@@ -455,6 +430,9 @@ class Settings extends CI_Controller {
 			http_response_code(401);
 		}
 	}
+	
+	public function editCenter(){}
+	public function viewCenter(){}
 
 	public function updateCenter(){
 		$headers = $this->input->request_headers();
