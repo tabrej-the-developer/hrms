@@ -12,7 +12,7 @@ class AttendanceModel extends CI_Model {
 
 	public function insertLog($memberid,$centerid,$startTime,$signInDate,$reason){
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO visitis VALUES(0,'$memberid','$centerid','$signInDate',$startTime,null,'$reason','Added')");
+		$query = $this->db->query("INSERT INTO visitis VALUES(0,'$memberid','$centerid','$signInDate',$startTime,null,'N','','Added')");
 	}
 
 	public function getVisitEntry($userid,$centerid,$startDate){

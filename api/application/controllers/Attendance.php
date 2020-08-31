@@ -62,7 +62,7 @@ class Attendance extends CI_Controller {
 					$data['visitId'] = $visit->id;
 					$data['signInTime'] = $visit->signInTime;
 					$data['signOutTime'] = $clockedTime;
-					$data['reason'] = $visit->reason;
+					$data['message'] = $visit->message;
 				}
 				$data['type'] = "attendance";
 				$data['Status'] = "SUCCESS";

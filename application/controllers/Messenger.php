@@ -106,7 +106,8 @@ QxwY1MEhvTKeGIDB37JHP+cXM0O6OkvU+iUGLG3alpNV22VNY5FiGiAu8J47ZVTa
 -----END RSA PRIVATE KEY-----';
 
 			$rsa->loadKey($privatekey);
-			$data['chatText'] = base64_encode($rsa->encrypt($plaintext));
+			$data['chatText'] = $plaintext;
+			//$data['chatText'] = base64_encode($rsa->encrypt($plaintext));
 			$data['mediaContent'] = isset($_FILES['upload_image']['tmp_name']) ? base64_encode(file_get_contents(addslashes($_FILES['upload_image']['tmp_name']))) : null;
 			$data['userid'] = $this->session->userdata('LoginId');
 			$url=BASE_API_URL."messenger/postChat";
