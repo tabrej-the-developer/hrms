@@ -12,7 +12,7 @@ class AttendanceModel extends CI_Model {
 
 	public function insertLog($memberid,$centerid,$startTime,$signInDate,$reason){
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO visitis VALUES(0,'$memberid','$centerid','$signInDate',$startTime,null,'$reason','Added','N')");
+		$query = $this->db->query("INSERT INTO visitis VALUES(0,'$memberid','$centerid','$signInDate',$startTime,null,'N','','Added')");
 	}
 
 	public function getVisitEntry($userid,$centerid,$startDate){
@@ -24,6 +24,6 @@ class AttendanceModel extends CI_Model {
 
 	public function updateLog($visitId,$signOutTime,$reason,$leftCampus){
 		$this->load->database();
-		$query = $this->db->query("UPDATE visitis SET signOutTime = $signOutTime,reason='$reason',leftCampusYN='$leftCampus' WHERE id = $visitId");
+		$query = $this->db->query("UPDATE visitis SET signOutTime = $signOutTime,message='$reason',leftCampusYN='$leftCampus' WHERE id = $visitId");
 	}
 }
