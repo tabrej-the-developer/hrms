@@ -1,16 +1,16 @@
 <?php
 $colors_array = ['#A4D9D6','#A4D9D6','#A4D9D6','#A4D9D6','#A4D9D6','#A4D9D6'];
-$this->load->library('Crypt_RSA');
-   $rsa = new Crypt_RSA();
-   // echo extract($rsa->createKey());
-$publickey = '-----BEGIN PUBLIC KEY-----
-MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDGCglgIcCG5a8xlZHEDRtQQTc4
-kfxENNBtVN8bE4errA06mJ10WavP2Hg+k11NQip71IQPfIF9jlk1CsqT5ZHXOrOq
-RmufHFLa3fiuPvFiMB1NjK4F28Gk4LwyZrfTWc2V6S0xpL5XkFeWRW6I69xckOXj
-GqkC5dsWv/IlvPeVbwIDAQAB
------END PUBLIC KEY-----';
+// $this->load->library('Crypt_RSA');
+//    $rsa = new Crypt_RSA();
+//    // echo extract($rsa->createKey());
+// $publickey = '-----BEGIN PUBLIC KEY-----
+// MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDGCglgIcCG5a8xlZHEDRtQQTc4
+// kfxENNBtVN8bE4errA06mJ10WavP2Hg+k11NQip71IQPfIF9jlk1CsqT5ZHXOrOq
+// RmufHFLa3fiuPvFiMB1NjK4F28Gk4LwyZrfTWc2V6S0xpL5XkFeWRW6I69xckOXj
+// GqkC5dsWv/IlvPeVbwIDAQAB
+// -----END PUBLIC KEY-----';
 
-$rsa->loadKey($publickey);
+// $rsa->loadKey($publickey);
 
 
    // echo $ciphertext;
@@ -781,26 +781,27 @@ p.ovrflowtext {
                   <div class="d-flex align-items-center justify-content-between mb-1">
                     <div class="rounded ">
 					 <h6 class="mb-0 left-bar-heading"><?php echo $rc->name;?></h6>
-					  <p class="text-small mb-0 text-muted ovrflowtext"><?php 
-                            try{
-              if(is_string($rsa->decrypt(base64_decode($rc->lastText))) == 1){
-$expression = "/(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])?/i";
-$string = $rsa->decrypt(base64_decode($rc->lastText));
-                if(preg_match($expression,$string) == 1){
-                  // echo '<img src="'.$string.'">';
-                }elseif(preg_match('/data:image/i',$string) == 1){
-                  echo 'Media';
-                }else{
-                  echo $string;
-                }
-              } 
-              else{
-                throw new Exception('Invalid Type');
-              }
-                }
-                catch(Exception $e){
-                    echo 'Not Known';
-                }
+                      <p class="text-small mb-0 text-muted ovrflowtext"><?php 
+                      echo $rc->lastText;
+//                             try{
+//               if(is_string($rsa->decrypt(base64_decode($rc->lastText))) == 1){
+// $expression = "/(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])?/i";
+// $string = $rsa->decrypt(base64_decode($rc->lastText));
+//                 if(preg_match($expression,$string) == 1){
+//                   // echo '<img src="'.$string.'">';
+//                 }elseif(preg_match('/data:image/i',$string) == 1){
+//                   echo 'Media';
+//                 }else{
+//                   echo $string;
+//                 }
+//               } 
+//               else{
+//                 throw new Exception('Invalid Type');
+//               }
+//                 }
+//                 catch(Exception $e){
+//                     echo 'Not Known';
+//                 }
             ?></p>
 					</div>
                   </div>
@@ -961,28 +962,29 @@ $string = $rsa->decrypt(base64_decode($rc->lastText));
              </p>
           <div class="bg-light rounded py-2  pl-0 mb-2">
               <p class="text-small-chat-message mb-0 text-muted"><?php
-                try{
-              if(is_string($rsa->decrypt(base64_decode($chats->chatText))) == 1){
-$expression = "/(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])?/i";
-$string = $rsa->decrypt(base64_decode($chats->chatText));
-                if(preg_match($expression,$string) == 1){
-                  echo '<img src="'.$string.'">';
-                }elseif(preg_match('/data:image/i',$string) == 1){
-                  echo '<img src="'.$string.'">';
-                }else{
-                  echo $string;
-                }
-                if($chats->mediaContent != null && $chats->mediaContent != ''){
-                  echo '<img src="data:image/png;base64,'.$chats->mediaContent.'">';
-                }
-              } 
-              else{
-                throw new Exception('Invalid Type');
-              }
-                }
-                catch(Exception $e){
-                    echo 'Not Known';
-                }
+              echo $chats->chatText;
+//                 try{
+//               if(is_string($rsa->decrypt(base64_decode($chats->chatText))) == 1){
+// $expression = "/(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])?/i";
+// $string = $rsa->decrypt(base64_decode($chats->chatText));
+//                 if(preg_match($expression,$string) == 1){
+//                   echo '<img src="'.$string.'">';
+//                 }elseif(preg_match('/data:image/i',$string) == 1){
+//                   echo '<img src="'.$string.'">';
+//                 }else{
+//                   echo $string;
+//                 }
+//                 if($chats->mediaContent != null && $chats->mediaContent != ''){
+//                   echo '<img src="data:image/png;base64,'.$chats->mediaContent.'">';
+//                 }
+//               } 
+//               else{
+//                 throw new Exception('Invalid Type');
+//               }
+//                 }
+//                 catch(Exception $e){
+//                     echo 'Not Known';
+//                 }
 
 
                 ?></p>
@@ -1006,10 +1008,10 @@ $string = $rsa->decrypt(base64_decode($chats->chatText));
 
       <!-- Typing area -->
       <form action="<?php echo base_url().'messenger/postNewMessage';?>" class="d-flex" method="post" id="chatForm" enctype="multipart/form-data">
-        <span class="attach_file">
+        <!-- <span class="attach_file">
           <img src="<?php echo site_url().'assets/images/attach_file.png'; ?>" id="upload_attachment">
           <input type="file" name="upload_image" id="upload_image" onchange="validate()">
-        </span>
+        </span> -->
         <div class="input-group">
           <input type="text" id="chatText" name="chatText" placeholder="Type message here.."  class="form-control rounded-0 border-0 py-4 bg-white">
 		  <input type="hidden" name="receiverId" id="receiverId" value="<?php echo $currentUserId;?>">
