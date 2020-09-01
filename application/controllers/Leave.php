@@ -299,8 +299,8 @@ class Leave extends CI_Controller {
 			$data['notes'] = $form_data['applyLeaveNotes'];
 			$data['userid'] = $this->session->userdata('LoginId');
 			$data['hours'] = $form_data['total_leave_hours'];
-			
-			$url = BASE_API_URL."leave/applyLeave";
+
+			$url = BASE_API_URL."leave/ApplyLeave";
 
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
@@ -315,6 +315,8 @@ class Leave extends CI_Controller {
 			$server_output = curl_exec($ch);
 			//var_dump($server_output);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			print_r($httpcode);
+			print_r($server_output);
 			if($httpcode == 200){
 				$jsonOutput = json_decode($server_output);
 				curl_close ($ch);

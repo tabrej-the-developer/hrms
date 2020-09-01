@@ -421,7 +421,9 @@ input[type="date"],input[type=time]{
     padding-left: 20px !important;
     border: 2px solid #e9e9e9 !important;
     }
-
+    .carousel-item.row.no-gutters.active{
+      display: flex !important;
+    }
 
 
 	.confirm_button{
@@ -1077,7 +1079,7 @@ input[type="date"],input[type=time]{
 				<div class="md-form">
 					<label>Total leave hours</label>
 				<span class="row ">
-					<input type="number" name="total-leave-hours" id="total-leave-hours" step="0.5">
+					<input type="number" name="total_leave_hours" id="total-leave-hours" step="0.5">
           <i class="total-leave-hours"></i>
 				</span>		
 				</div>

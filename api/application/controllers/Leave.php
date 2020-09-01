@@ -385,12 +385,14 @@ class Leave extends CI_Controller{
 				$notes = $json->notes;
 				$noOfHours = $json->hours;
 				// $title = $json->leaveTitle;
-
+		print_r($json);
 				$this->load->model('employeeModel');
 				$this->load->model('xeroModel');
 				$this->load->model('leaveModel');
-				$employeeDets = $this->employeeModel->getUserFromId($userid);
-				if($employeeDets != null){
+				// $employeeDets = $this->employeeModel->getUserFromId($userid);
+				$this->leaveModel->applyLeave($userid,$leaveTypeId,$noOfHours,$startDate,$endDate,$notes);
+				$this->leaveModel->updateLeaveBalance($userid,$leaveTypeId,-1*$noOfHours);
+		/*		if($employeeDets != null){
 					$xeroTokens = $this->xeroModel->getXeroToken();	
 					$access_token = $xeroTokens->access_token;
 					$tenant_id = $xeroTokens->tenant_id;
@@ -460,7 +462,7 @@ class Leave extends CI_Controller{
 						$data['Status'] = "ERROR";
 						$data['Message'] = "User's payroll calendar needs to be set up before applying for leave";
 					}
-				}
+				}			*/
 
 				http_response_code(200);
 				echo json_encode($data);
