@@ -89,25 +89,10 @@ class Messenger extends CI_Controller {
 			$data['isGroupYN'] = $form_data['isGroupYN'];
 			$data['chatText'] = $form_data['chatText'];
 			$plaintext = $data['chatText'];
-$privatekey = '-----BEGIN RSA PRIVATE KEY-----
-MIICXQIBAAKBgQDGCglgIcCG5a8xlZHEDRtQQTc4kfxENNBtVN8bE4errA06mJ10
-WavP2Hg+k11NQip71IQPfIF9jlk1CsqT5ZHXOrOqRmufHFLa3fiuPvFiMB1NjK4F
-28Gk4LwyZrfTWc2V6S0xpL5XkFeWRW6I69xckOXjGqkC5dsWv/IlvPeVbwIDAQAB
-AoGBAJj1yZYJm8XVg8Kdjs/Je846AOfdweYAkPfRNN2Z8RFEu5cFp5/lXtITlZRn
-iAoTT/MDCtlXRkDvALH6Wstu5nvk+Xz5dFlZ6OUmK04YakHc0N5NABMygvCmGdnr
-BoTJx70dPVFXqiq/ft5KRLEdxVWvex+odgWunqSJXMperrhxAkEA89/A7jadwCjA
-iyaTmGEMqerN4XdTtQj4NpKorTv9FlmU9U9XWmv0wk5ExmUzjo9gs71a06/ecaHc
-xJUj3X1O5wJBAM/i2zmAg1vhR/s23b70LPf4O1/d5GdQTJwHhZp4OMzW6qt7qmRR
-vIzHHPbljOwvUzNtoXhez3TNsgtWg9XaXDkCQQDujYJgwoYfEP3/X9XiqZREpg2M
-LjhwjvyWDXH4OwT/ltNR/rF5Hr8GTp+R3i7HldLHH0O4bIFQcD/PAABcSZYjAkAZ
-QxwY1MEhvTKeGIDB37JHP+cXM0O6OkvU+iUGLG3alpNV22VNY5FiGiAu8J47ZVTa
-/wuMMRlMvGJSdmT2694hAkBjqYMwpYg+MXhY9zKYM8lGISpirz+pKSpKwB90FASY
-4AIuFBFHV5F5iqrSKNU39Rv+alYAKP/UuqPVH84GlWjl
------END RSA PRIVATE KEY-----';
-
+			$privatekey = $this->config->item('privateKey');
 			$rsa->loadKey($privatekey);
 			$data['chatText'] = $plaintext;
-			//$data['chatText'] = base64_encode($rsa->encrypt($plaintext));
+			$data['chatText'] = base64_encode($rsa->encrypt($plaintext));
 			$data['mediaContent'] = isset($_FILES['upload_image']['tmp_name']) ? base64_encode(file_get_contents(addslashes($_FILES['upload_image']['tmp_name']))) : null;
 			$data['userid'] = $this->session->userdata('LoginId');
 			$url=BASE_API_URL."messenger/postChat";

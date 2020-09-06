@@ -412,15 +412,15 @@ class Settings extends CI_Controller {
 					$centerRecordUniqueId = uniqid();
 					$this->settingsModel->addCenterRecord($centerid,$centerRecordUniqueId,$center_abn,$center_acn,$center_se_no,$center_date_opened,$center_capacity,$center_approval_doc,$center_ccs_doc,$manager_name,$center_admin_name,$centre_nominated_supervisor);
 					for($i=0;$i<count($room_name);$i++){
-						$room_name = $room_name[$i];
-						$capacity_ = $capacity_[$i];
-						$minimum_age = $minimum_age[$i];
-						$maximum_age = $maximum_age[$i];
-						$this->settingsModel->addRoom($centerid,$room_name,$capacity_,$minimum_age,$maximum_age);
+						$roo = $room_name[$i];
+						$cap = $capacity_[$i];
+						$minim = $minimum_age[$i];
+						$maxim = $maximum_age[$i];
+						$this->settingsModel->addRoom($centerid,$roo,$cap,$minim,$maxim);
 					}
 					$data['Status'] = "SUCCESS";
 				http_response_code(200);
-				echo json_encode($data);
+				echo json_encode($room_name);
 			}
 			else{
 				http_response_code(401);
@@ -460,7 +460,6 @@ class Settings extends CI_Controller {
 			http_response_code(401);
 		}
 	}
-	// public function updateCenter(){}
 
 	public function updateCenter(){
 		$headers = $this->input->request_headers();
@@ -617,7 +616,76 @@ class Settings extends CI_Controller {
 		}
 	}
 
+	public function addMultipleEmployees($userid){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$this->load->model('settingsModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $userid){
+					$array = $json->details;
+					for($i=1;$i<count($array);$i++){
+						$index = 0;
+						$data['emails']	 = $array[$i][$index];
 
+						$index = 1;
+						$data['name']	 = $array[$i][$index];
+
+						$index = 2;
+						$data['alias']	 = $array[$i][$index];
+
+						$index = 3;
+						$data['role']	 = $array[$i][$index];
+
+						$index = 4;
+						$data['level']	 = $array[$i][$index];
+
+						$index = 5;
+						$data['jobTitle']	 = $array[$i][$index];
+
+						$index = 6;
+						$data['startDate'] = $array[$i][$index];
+
+						// $index = array_search("xeroEmployeeId", array_keys($array[0]));
+						// $xeroEmployeeId = $array[$i][$index];
+
+						$index = 7;
+						$data['employee_no'] = $array[$i][$index];
+
+						$index = 8 ;
+						$data['manager']  = $array[$i][$index];
+
+						$index = 9;
+						$data['center'] = $array[$i][$index];
+
+						$index = 10;
+						$data['startDate'] = $array[$i][$index];
+
+						// $index = array_search("ordinaryEarningRateId", array_keys($array[0]));
+						// $ordinaryEarningRateId = $array[$i][$index];
+
+						// $index = array_search("payroll_calendar", array_keys($array[0]));
+						// $payroll_calendar = $array[$i][$index];
+						$data['uniqueId'] = uniqid();
+						
+						$data['password'] = md5((explode(" ",$data['name']))[0]."@123");
+						// $this->settingsModel->addToEmployeeCourses( $xeroEmployeeId,$course_nme=null,$course_desc=null,$date_obt=null,$exp_date=null);
+						$this->settingsModel->addToUsers($data['employee_no'],$data['password'],$data['emails'],$data['name'],$data['jobTitle'],$data['center'],$data['manager'],$userid,$data['role'],$data['level'],$data['alias']);
+
+					}
+					$data['Status'] = "SUCCESS";
+				}
+				else{
+					
+				}
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
 
 	public function createEmployeeProfile(){
 		$headers = $this->input->request_headers();

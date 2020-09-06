@@ -1,16 +1,17 @@
 <?php
 $colors_array = ['#A4D9D6','#A4D9D6','#A4D9D6','#A4D9D6','#A4D9D6','#A4D9D6'];
-// $this->load->library('Crypt_RSA');
-//    $rsa = new Crypt_RSA();
-//    // echo extract($rsa->createKey());
+$this->load->library('Crypt_RSA');
+   $rsa = new Crypt_RSA();
+   // echo extract($rsa->createKey());
 // $publickey = '-----BEGIN PUBLIC KEY-----
 // MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDGCglgIcCG5a8xlZHEDRtQQTc4
 // kfxENNBtVN8bE4errA06mJ10WavP2Hg+k11NQip71IQPfIF9jlk1CsqT5ZHXOrOq
 // RmufHFLa3fiuPvFiMB1NjK4F28Gk4LwyZrfTWc2V6S0xpL5XkFeWRW6I69xckOXj
 // GqkC5dsWv/IlvPeVbwIDAQAB
 // -----END PUBLIC KEY-----';
+$publickey = $this->config->item('publicKey');
 
-// $rsa->loadKey($publickey);
+$rsa->loadKey($publickey);
 
 
    // echo $ciphertext;
@@ -903,7 +904,7 @@ p.ovrflowtext {
 	 <div class="group-box"></div>
     <!-- Chat Box-->
 	
-    <div class="col px-0" style="min-height:100vh">
+    <div class="col px-0" style="min-height:100vh;word-break: break-word">
 			
    <div class="media headind_srchs">
     <i class="message-back"></i>

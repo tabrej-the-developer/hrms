@@ -902,7 +902,7 @@ $string = $rsa->decrypt(base64_decode($rc->lastText));
 	 <div class="group-box"></div>
     <!-- Chat Box-->
 	
-    <div class="col px-0" style="min-height:100vh">
+    <div class="col px-0" style="min-height:100vh;word-break: break-word;">
 			
    <div class="media headind_srchs">
     <i class="message-back"></i>

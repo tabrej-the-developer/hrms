@@ -1,0 +1,256 @@
+									
+
+
+									/*	PN101-Stylesheet	*/
+
+
+
+/*	------------------------------------------------------------------------------------
+										addEmployee.php                            START
+	------------------------------------------------------------------------------------ */
+		*{
+			font-family: 'Open Sans', sans-serif;
+		}
+		.labels__{
+			font-weight: bolder;
+			width:100%;
+			margin: 0 !important;
+		}
+		.add_employee_body{
+			background: #f2f2f2 !important;
+			font-size: 0.8rem;
+		}
+		input[type="text"],input[type=time],input[type=date],input[type=email],input[type=number]
+			,textarea,select{
+			min-width: 12rem !important;
+			width: 12rem !important;
+			max-width: 12rem !important;
+		}
+		.employee-section{
+			padding-left: 10px;
+		}
+		.employee-bank-account-section{
+			display: none;
+			padding-left: 10px;
+			flex-wrap: wrap
+		}
+		.employee-superfund-section{
+			display: none;
+			padding-left: 10px;
+			flex-wrap: wrap
+		}
+		.employee-tax-declaration-section{
+			display: none;
+			padding-left: 10px;
+			flex-wrap: wrap
+		}
+		.employee-details{
+			display: none;
+			padding-left: 10px;
+			flex-wrap: wrap
+		}
+		.medical-info{
+			display: none;
+			padding-left: 10px;
+			flex-wrap: wrap
+		}
+		.tab-buttons{
+			margin-bottom:10px;
+			display: flex;
+			justify-content: center;
+			align-content: center;
+			color: white;
+			width:100%;
+		}
+		.tab-buttons-div{
+			border-radius: 4px;
+			display: flex;
+
+			justify-content: center;
+			width: 100%;
+		}
+		.nav-button{
+			position: relative;
+			color: #171D4B;
+			background: #A4D9D6;
+			font-size:0.95rem;
+			flex: 1 1 0px;
+			display: flex;
+			justify-content: center;
+			font-weight: 700
+		}
+		.nav-button > span{
+/*			border:1px solid #307bd3;
+			background:  #307bd3;
+			color: white;
+			padding:5px;
+			border-radius: 3px*/
+			padding: 10px;
+		    width: 100%;
+		    display: flex;
+		    justify-content: center;
+		}
+		.nav-button > span:hover{
+			cursor: pointer;
+		}
+/*		input,select{
+			display: block;
+		    width: auto;
+		    height: 1.5rem;
+		    font-size: 0.8rem;
+		    font-weight: 400;
+		    line-height: 1.5;
+		    color: #495057;
+		    background-color: #fff;
+		    background-clip: padding-box;
+		    border: 1px solid #ced4da;
+		    border-radius: .25rem;
+		    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+		} */
+    input[type="text"],input[type=time],input[type=date],input[type=email],input[type=number],select,textarea{
+      background: #ebebeb !important;
+      border-radius: 5px !important;
+      padding: 5px !important;
+      border: 1px solid #D2D0D0 !important;
+      border-radius: 20px !important;
+      padding-left: 1rem;
+      font-size: 0.85rem !important;
+    }
+    select{
+      background: #E7E7E7 !important;
+      border: none !important;
+      border-radius: 20px !important;
+      border: 1px solid #D2D0D0 !important;
+      padding-left: 1rem !important;
+      font-size: 0.75rem !important;
+    }
+
+		.span-class{
+			padding:10px;
+			display: inline-block;
+			width: 33%;
+		}
+		.span-class .col-4{
+			padding-left:0;
+		}
+		.name__{
+			width: 66%;
+		}
+		.contact__{
+			width: 66%;
+		}
+
+		#submit{
+	  	border: none;
+	  	color: rgb(23, 29, 75);
+	  	text-align: center;
+	  	text-decoration: none;
+	  	display: inline-block;
+	  	font-weight: 700;
+	  	margin: 2px;
+	  	width:8rem;
+    	border-radius: 20px;
+    	padding: 8px;
+    	background: rgb(164, 217, 214);
+			}
+		#addEmployee_multipleEmployees{
+	  	border: none;
+	  	color: rgb(23, 29, 75);
+	  	text-align: center;
+	  	text-decoration: none;
+	  	display: inline-block;
+	  	font-weight: 700;
+	  	margin: 2px;
+	  	width:auto;
+    	border-radius: 20px;
+    	padding: 8px;
+    	background: rgb(164, 217, 214);
+			}
+		.span-class.row_addEmployee{
+			margin:0;
+			width:100%;
+		}
+		.span-class.row_addEmployee span input{
+			padding:10px;
+			width:auto;
+		}
+		.yn-input{
+			width:auto;
+			display: inline;
+			height: auto
+		}
+		.yn-label{
+			display: inline;
+			font-weight: normal;
+		}
+		.submit_addEmployee{
+			display: flex;
+			justify-content: flex-end;
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			border-top:1px solid #979797;
+			padding: 0.5%;
+		}
+		.row_addEmployee.ml-1 > .span-class{
+			padding:0;
+			padding-left: 10px
+		}
+		.row_addEmployee.ml-1 > .span-class:nth-of-type(1){
+			padding-left: 0;
+		}
+		.row_addEmployee{
+			margin-left: 0 !important;
+			margin-right: 0 !important
+		}
+		.arrow_addEmployee{
+			border:1px solid #D2D0D0;
+		    background: #F3F4F7;
+		    color:  #171D4B;
+		    padding:3px;
+		    border-radius:;
+		}
+	.arrow{
+			border:1px solid #D2D0D0;
+		    background: #F3F4F7;
+		    color:  #171D4B;
+		    padding:3px;
+		    border-radius:;
+		}
+
+	.addEmployee-container{
+		height:100vh;
+		padding:1.1rem 3rem 2rem 2rem;
+	}
+	.addEmployee-container-child{
+		height:100%;
+		background: white;
+		position: relative;
+	}
+	.employee-section,.employee-bank-account-section,.employee-superfund-section, 
+	.employee-tax-declaration-section,.employee-details,.medical-info{
+		max-height: 80%;
+		height: 80%;
+		overflow: auto
+	}
+	.row.employee-bank-account-section_row{
+		margin-right:0 !important;
+		margin-left: 0 !important;
+	}
+	.addEmployee_top_select{
+		padding-right: 3rem;
+	}
+/*	------------------------------------------------------------------------------------
+									addEmployee.php																									 END
+   	------------------------------------------------------------------------------------ */
+
+
+
+
+/*	------------------------------------------------------------------------------------
+									attendence.php																									 START
+		------------------------------------------------------------------------------------ */
+
+/*	------------------------------------------------------------------------------------
+									attendence.php								 																		END
+		------------------------------------------------------------------------------------ */

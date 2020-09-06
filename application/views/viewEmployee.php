@@ -226,7 +226,7 @@
 <?php $this->load->view('header'); ?>
 <div class="containers">
 	<div>
-		<span >
+	<span style="padding-left: 2rem;">
       <a href="<?php echo base_url();?>/settings">
         <button class="btn back-button">
           <img src="<?php echo base_url('assets/images/back.svg');?>">

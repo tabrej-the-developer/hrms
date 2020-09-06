@@ -30,6 +30,7 @@ class Welcome extends CI_Controller {
 		$form_data = $this->input->post();
 		$data['errorText'] = "";
 		$data['email'] = "";
+		$data['title'] = 'Login';
 		if($form_data != null){
 			$data['email'] = $form_data['email'];
 			$data['password'] = md5($form_data['password']);

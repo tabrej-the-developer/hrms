@@ -394,34 +394,34 @@
 		</span> -->
 		<span class="span-class col-4">
 			<label>Account Name</label>
-			<input placeholder="Account Name" type="text" class="accountName" name="accountName" value="<?php echo isset($employeeData->employeebankaccount->accountName) ? $employeeData->employeebankaccount->accountName : ''; ?>">
+			<input placeholder="Account Name" type="text" class="accountName" name="accountName" value="<?php echo isset($employeeData->employeeBankAccount->accountName) ? $employeeData->employeeBankAccount->accountName : ''; ?>">
 		</span>
 		<span class="span-class col-4">
 			<label>BSB</label>
-			<input placeholder="BSB" type="text" class="bsb" name="bsb" value="<?php echo isset($employeeData->employeebankaccount->bsb) ? $employeebankaccount->employee->bsb : ''; ?>">
+			<input placeholder="BSB" type="text" class="bsb" name="bsb" value="<?php echo isset($employeeData->employeeBankAccount->bsb) ? $employeeData->employeeBankAccount->bsb : ''; ?>">
 		</span>
 	</div>
 		
 	<span class="row">
 		<span class="span-class col-4">
 			<label>Account Number</label>
-			<input placeholder="Account Number" type="text" class="accountNumber" name="accountNumber" value="<?php echo isset($employeeData->employeebankaccount->accountNumber) ? $employeeData->employeebankaccount->accountNumber : ''; ?>">
+			<input placeholder="Account Number" type="text" class="accountNumber" name="accountNumber" value="<?php echo isset($employeeData->employeeBankAccount->accountNumber) ? $employeeData->employeeBankAccount->accountNumber : ''; ?>">
 		</span>
 		<span class="span-class col-4">
 			<label>Remainder</label>
 				<span>
 					<label class="yn-label">Yes</label>
-					<input value="Y" class="remainderYN yn-input" type="radio" name="remainderYN" <?php echo isset($employeeData->employeebankaccount->remainderYN) ? ($employeeData->employeebankaccount->remainderYN == 'Y' ? 'checked' : '') : ''; ?>>
+					<input value="Y" class="remainderYN yn-input" type="radio" name="remainderYN" <?php echo isset($employeeData->employeeBankAccount->remainderYN) ? ($employeeData->employeeBankAccount->remainderYN == 'Y' ? 'checked' : '') : ''; ?>>
 				</span>
 				<span>
 					<label class="yn-label">No</label>
-					<input value="N" class="remainderYN yn-input" type="radio" name="remainderYN" <?php echo isset($employeeData->employeebankaccount->remainderYN) ? (($employeeData->employeebankaccount->remainderYN == 'Y') ? 'checked' : '') : ''; ?>>
+					<input value="N" class="remainderYN yn-input" type="radio" name="remainderYN" <?php echo isset($employeeData->employeeBankAccount->remainderYN) ? (($employeeData->employeeBankAccount->remainderYN == 'Y') ? 'checked' : '') : ''; ?>>
 				</span>
 		</span>
 		<span class="span-class amount-class-parent col-4">
 			<div class="amount-class">
 				<label>Amount</label>
-				<input placeholder="Amount" type="text" class="amount" name="amount" value="<?php echo isset($employeeData->employeebankaccount->amount) ? $employeeData->employeebankaccount->amount : ''; ?>">
+				<input placeholder="Amount" type="text" class="amount" name="amount" value="<?php echo isset($employeeData->employeeBankAccount->amount) ? $employeeData->employeeBankAccount->amount : ''; ?>">
 			</div>
 		</span>
 	</span>

@@ -24,6 +24,7 @@ class Settings extends CI_Controller {
 			$this->load->view('redirectToLogin');
 		}
 	}
+
 	public function editPassword(){
 		if($this->session->has_userdata('LoginId')){
 	//footprint start
@@ -193,6 +194,7 @@ public function editRooms(){
 		$data['capacity_'] = $this->input->post('capacity_');
 		$data['minimum_age'] = $this->input->post('minimum_age');
 		$data['maximum_age'] = $this->input->post('maximum_age');
+		var_dump($data);
 		$url = BASE_API_URL."settings/addCenter";
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
@@ -205,9 +207,9 @@ public function editRooms(){
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
+			var_dump($httpcode);
 			if($httpcode == 200){
-				redirect(base_url('settings/createCenterProfile'));
+				redirect(base_url('settings/createCenter'));
 				curl_close ($ch);
 			}
 			else if($httpcode == 401){
@@ -1069,12 +1071,12 @@ $server_output = curl_exec($ch);
 
 		public function addEmployee($centerid=1){
 			if($this->session->has_userdata('LoginId')){
-	//footprint start
-	if($this->session->has_userdata('current_url')){
-		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-		$this->session->set_userdata('current_url',currentUrl());
-	}
-	// footprint end
+				//footprint start
+				if($this->session->has_userdata('current_url')){
+					footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+					$this->session->set_userdata('current_url',currentUrl());
+				}
+				// footprint end
 				$data['centerid'] = $centerid;
 				$data['userid'] = $this->session->userdata('LoginId');
 				$data['centers'] = $this->getAllCenters();
@@ -1216,6 +1218,75 @@ $server_output = curl_exec($ch);
 
 			}
 		}
+	}
+
+	public function AddMultipleEmployees(){
+			if($this->session->has_userdata('LoginId')){
+					$data['permissions'] = $this->fetchPermissions();
+					//footprint start
+					if($this->session->has_userdata('current_url')){
+						footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+						$this->session->set_userdata('current_url',currentUrl());
+					}
+					// footprint end
+					$this->load->view('AddMultipleEmployees',$data);
+				}
+			else{
+				$this->load->view('redirectToLogin');
+			}
+	}
+
+	public function AddEmployeesMultiple(){
+		if($this->session->has_userdata('LoginId')){
+				if($_FILES['addemployee']['name'] != null && $_FILES['addemployee']['name'] != ""){
+					$file = $_FILES['addemployee']['tmp_name'];
+					$handle = fopen($file, "r");
+					$array['details'] = [];
+					$val = 0;
+						while ($row = fgetcsv($handle)) {
+						   // if($val >0){
+						   	$array['details'][$val] = $row;
+						   // }
+						   $val++;
+						}	
+					  fclose($handle);
+					  // print_r(json_encode($array));
+					$url = BASE_API_URL."/settings/addMultipleEmployees/".$this->session->userdata('LoginId');
+					$ch = curl_init($url);
+					curl_setopt($ch, CURLOPT_URL,$url);
+					curl_setopt($ch, CURLOPT_POST, 1);
+					curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($array));
+					curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+							'x-device-id: '.$this->session->userdata('x-device-id'),
+							'x-token: '.$this->session->userdata('AuthToken')
+						));
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+					$server_output = curl_exec($ch);
+					$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				if($httpcode == 200){
+					echo $server_output;
+					curl_close ($ch);
+
+				}
+				else if($httpcode == 401){
+
+				}	
+
+				}
+			}
+		else{
+			$this->load->view('redirectToLogin');
+		}
+	}
+
+	function addEmployeesMul($array){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
+		
 	}
 
 	public function savePermission(){

@@ -219,65 +219,23 @@
 		margin-left: 0.5rem;
 	}
 	/*---------------------------------------------------------------------------------------*/
-  *{
-font-family: 'Open Sans', sans-serif;
-  }
-  .placePickerUIButton{
-    position:absolute;
-    z-index:1000;
-    top:269px;
-    left:1000px;
-  }
-  .form-signin {
-    width: 100%;
-    max-width: 70vw;
-    padding: 15px;
-    margin: 0 auto;
-}
-        .card-header {
-            padding: 0.2rem 1.25rem;
-            /* margin-bottom: 0; */
-            background-color: #ffffff;
-            border-bottom: 0px;
-        }
-        
-        .card-body {
-            padding: 0rem 1.25rem;
-        }
-        
-        p {
-            margin-top: 0;
-            margin-bottom: 10px;
-        }
-        
-        .card {
-            border-radius: 0px;
-            padding-top: 15px;
-            padding-bottom: 15px;
-			border:none;
-			box-shadow: none;
-        }
-        
-        .flex-wrap {
-            margin-bottom: -35px;
-        }
-        
-        div.dataTables_wrapper div.dataTables_paginate {
-            margin-top: -25px;
-            position: fixed;
-            bottom: 0.2rem;
-            right: 1rem
-        }
-        .dataTables_info{
-          display: none;
-        }
-        .page-item.active .page-link {
-            z-index: 1;
-            color: #fff;
-            background-color: #5D78FF;
-            border-color: #5D78FF;
-			
-        }
+
+
+    div.dataTables_wrapper div.dataTables_paginate {
+        margin-top: -25px;
+        position: fixed;
+        bottom: 0.2rem;
+        right: 1rem
+    }
+    .dataTables_info{
+      display: none;
+    }
+    .page-item.active .page-link {
+        z-index: 1;
+        color: #fff;
+        background-color: #5D78FF;
+        border-color: #5D78FF;
+    }
 		.btn.focus, .btn:focus {
 			outline: 0;
 			box-shadow: none;
@@ -312,7 +270,7 @@ font-family: 'Open Sans', sans-serif;
     Schedule meeting modal : key (321x)
    ---------------------- */
 
-   input{
+   .dashboard_input{
     padding-left: 2rem;
     padding-right:1rem;
    }
@@ -464,7 +422,7 @@ font-family: 'Open Sans', sans-serif;
   .calendar_text{
   	color: white !important;
   }
-.table td{
+.dashboard_table td{
   padding: 0 1rem 1rem 0;
 }
 .has-search .feedback{
@@ -478,12 +436,6 @@ font-family: 'Open Sans', sans-serif;
     pointer-events: none;
     color: #aaa;
     margin: 0 0 0 10px;
-}
-.body{
-    /* background-color:#8798ab26;  */
-}
-.container{
-    /* background-color:#8798ab26; */
 }
 table.main-table tr:nth-child(odd){
    background-color:#eee !important;
@@ -545,46 +497,7 @@ table.main-table tr:nth-child(odd){
 } */
 	
 /*corousol end*/		
-	#participant{
-       /* border:1px solid black;*/
-        border-radius:50px;
-        height:25px;
-        background-color:skyblue;
-        display:inline-block;
-    }
 
-    #participant1{
-        /*border:1px solid black;*/
-        border-radius:50px;
-        background-color:skyblue;
-        height:25px;
-        width:25px;
-        margin-left:-17px;
-        z-index:-1;
-        display:inline-block;
-    }
-
-    #participant1:nth-last-child(1){
-        /*border:1px solid black;*/
-        border-radius:50px;
-        background-color:lightblue;
-        height:25px;
-        width:25px;
-        margin-left:-17px;
-        z-index:-1;
-        display:inline-block;
-    }
-
-    #participant2{
-        /*border:1px solid black;*/
-        border-radius:50px;
-        height:25px;
-        width:25px;
-        background-color:lightblue;
-        color:white;
-        margin-right:-12px;
-        display:inline-block;
-    }
     .modal-header{
         text-align:left;
     }
@@ -607,57 +520,6 @@ input#add_meeting{
     color:black;
 }
 
-.footer div{
-   
-    display:inline-block;
-    margin:5px;
-    float:right;
-
-}
-.footer button{
-    background-color:white;
-    /*border:1px solid black;*/
-    color:black;
-}
-
-.dropbtn {
-  /* background-color: #4CAF50;
-  color: white; */
-  padding: 16px;
-  font-size: 16px;
-  border: none;
-  
-}
-
-/* .dropbtn:hover, .dropbtn:focus {
-  background-color: #3e8e41;
-} */
-
-.dropdown {
-  float: right;
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: white;
-  min-width: 160px;
-  overflow: auto;
-  /*box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);*/
-  right: 0;
-  z-index: 1;
-}
-
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-/* .dropdown a:hover {background-color: #ddd;} */
 
 .show {display: block;}
 #main-table_filter{
@@ -689,7 +551,7 @@ margin-top:-3px;
   color:white;
   max-width: 100%;
 }
-table{
+.dashboard_table{
   width: 100% !important;
 }
 .fc-col-header-cell-cushion {
@@ -715,14 +577,8 @@ table{
 .futt:hover{
     background:rgba(48, 123, 211,0.7);
 }
-.table{
+.dashboard_table{
   border-radius:10px;
-}
-.dataTables_paginate{
-  margin:0 !important;
-}
-.table.dataTable.no-footer{
-  border-bottom: 0;
 }
 table.dataTable thead th, table.dataTable thead td{
   border:0 !important;
@@ -740,29 +596,7 @@ table.dataTable thead th, table.dataTable thead td{
     border-top: 15px solid rgba(137, 144, 151, 0.3);
     border-left: 10px solid transparent;
 }
-.modal-logout {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    visibility: hidden;
-    transform: scale(1.1);
-    transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
-    text-align: center;
-}
-.modal-content-logout {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 1rem 1.5rem;
-    width: 50%;
-    border-radius: 0.5rem;
-}
+
   #mom_button{
     padding:0.25rem
   }
@@ -828,19 +662,12 @@ color:#FFFFFF;
     margin-top:1rem;
     margin-bottom:3rem;
   }
-  .input-class{
-    padding-right:4rem !important;
-  }
   .input-group-parent{
     width:50% !important;
   }
 .form-group{
   margin-bottom: 0 !important;
 }
-  .label-class{
-    padding-left:8rem !important;
-    text-align:left;
-  }
   .form-control{
     padding: 0.25rem 0 !important;
   }
@@ -1061,16 +888,16 @@ color:#FFFFFF;
           <h3 class="modal-title ">Schedule New Event</h3>
         </div>
         <div class="modal-body container">
-             <form method="post" action="<?php echo base_url() ?>mom/addMeeting">
+             <form method="post" action="<?php echo base_url() ?>mom/addMeeting" class="dashboard_form">
               <div class="form-group modal_title_div">
                    <span class="title_span_label">
                       <label class="label_text">Title</label>
                     </span>
                     <span class="title_span_input">
-                      <input type="text" name="meetingTitle" id="add_meeting" class="input_box__" placeholder="Enter Title">
+                      <input type="text" name="meetingTitle" id="add_meeting" class="input_box__ dashboard_input" placeholder="Enter Title">
                     </span>  
               </div>
-               <table class="table table-borderless modal_table">
+               <table class="table table-borderless modal_table dashboard_table">
                <tr>
                   <td class="col-md-4 input-group-parent">
                     <div class="d-flex blocks_modal">
@@ -1079,7 +906,7 @@ color:#FFFFFF;
                             <label class="label_text">Start&nbsp;Date</label>
                           </span>
                           <span class=" date_span_input">
-                            <input type="date" id="date" name="meetingDate" class="input_box__" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                            <input type="date" id="date" name="meetingDate" class="input_box__ dashboard_input" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
                           </span>
                         </span>
                         <span class="col-md-6 ">
@@ -1087,7 +914,7 @@ color:#FFFFFF;
                             <label class="label_text">End&nbsp;Date</label>
                           </span>
                           <span class=" date_span_input">
-                            <input type="date" id="date" name="meetingDate" class="input_box__" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                            <input type="date" id="date" name="meetingDate" class="input_box__ dashboard_input" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
                           </span>
                         </span>
                       </div>
@@ -1101,7 +928,7 @@ color:#FFFFFF;
                          <span class=" label_text" id="basic-addon1">Start&nbsp;Time</span>
                       </span>
                       <span class="date_span_input">
-                        <input type="time" name="meetingTime" id="time" class="input_box__" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                        <input type="time" name="meetingTime" id="time" class="input_box__ dashboard_input" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
                       </span>
                     </span>
                     <span class="col-md-6 ">
@@ -1109,7 +936,7 @@ color:#FFFFFF;
                         <span class=" label_text" id="basic-addon1">End&nbsp;Time</span>
                       </span>
                       <span class="date_span_input">
-                        <input type="time" name="meetingEndTime" id="time" class="input_box__" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                        <input type="time" name="meetingEndTime" id="time" class="input_box__ dashboard_input" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
                       </span>
                     </span>
                   </div>
@@ -1121,11 +948,11 @@ color:#FFFFFF;
                     <span class="col-md-6">
                       <span class="date_span_label label_text">Where</span>
                       <span class="date_span_input">
-                        <input id="location" type="text" class="input_box__" id="autocomplete" placeholder="Type Address..." name="meetingLocation">
+                        <input id="location" type="text" class="input_box__ dashboard_input" id="autocomplete" placeholder="Type Address..." name="meetingLocation">
                       </span>
                       <div class="form-group">
-                       <input type="hidden">
-                       <input type="hidden">
+                       <input type="hidden" class="dashboard_input">
+                       <input type="hidden" class="dashboard_input">
                       </div>
                     </span>
                     <span class="col-md-6">
@@ -1146,7 +973,7 @@ color:#FFFFFF;
                </tr>
                </table>
 
-              <table class="table table-borderless">
+              <table class="table table-borderless dashboard_table">
 
 
                <tr>
@@ -1182,7 +1009,7 @@ color:#FFFFFF;
             <i style="padding-right:0.5rem;padding-left:0.5rem">
               <img src="<?php echo base_url('assets/images/icons/plus.png'); ?>" style="max-height:1rem">
             </i>Add File</button>
-              <input type="FILE" name="agendaFile" id="hide" class="agendaFile d-none" onchange="validate()" >
+              <input type="FILE" name="agendaFile" id="hide" class="agendaFile d-none dashboard_input" onchange="validate()" >
             </div>
             <span class="click-add">
               <i class="icon_i">
@@ -1394,6 +1221,7 @@ color:#FFFFFF;
     	})
     	})
     </script>
+
   <script type="text/javascript">
     function validate(){
 
@@ -1422,15 +1250,15 @@ $('#toggle').remove();
 				$('.remove').remove();
               		 
          if(this.value === "m"){  
-               $('#colab').after("<input type='date' class='remove' id='month'>");
+               $('#colab').after("<input type='date' class='remove dashboard_input' id='month'>");
 		 }
          if(this.value === "y"){
 
-			$('#colab').after("<input type='date' class='remove'  id='year'>");
+			$('#colab').after("<input type='date' class='remove dashboard_input'  id='year'>");
 			 
 			}
 			if(this.value === "w"){
-				$('#colab').after("<input type='date' class='remove' id='weekly'>");
+				$('#colab').after("<input type='date' class='remove dashboard_input' id='weekly'>");
 			 
 			}
 

@@ -10,10 +10,7 @@
   <script src="https://kit.fontawesome.com/ca2871ad31.js" crossorigin="anonymous"></script>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style type="text/css">
-  *{
 
-font-family: 'Open Sans', sans-serif;
-  }
   
   
 
@@ -27,10 +24,6 @@ font-family: 'Open Sans', sans-serif;
             padding: 0rem 1.25rem;
         } */
         
-        p {
-            margin-top: 0;
-            margin-bottom: 10px;
-        }
 /*         
         .card {
             border-radius: 0px;
@@ -40,21 +33,20 @@ font-family: 'Open Sans', sans-serif;
 			box-shadow: none;
         } */
         
-        .flex-wrap {
-            margin-bottom: -35px;
-        }
         
-        div.dataTables_wrapper div.dataTables_paginate {
-            margin-top: -25px;
-        }
-        
-        .page-item.active .page-link {
-            z-index: 1;
-            color: #fff;
-            background-color: #5D78FF;
-            border-color: #5D78FF;
-			
-        }
+      .flex-wrap attendance_flexWrap {
+          margin-bottom: -35px;
+      }
+      
+      div.dataTables_wrapper div.dataTables_paginate {
+          margin-top: -25px;
+      }
+    .page-item.active .page-link {
+        z-index: 1;
+        color: #fff;
+        background-color: #5D78FF;
+        border-color: #5D78FF;
+    }
 		.btn.focus, .btn:focus {
 			outline: 0;
 			box-shadow: none;
@@ -73,20 +65,19 @@ font-family: 'Open Sans', sans-serif;
 			    box-shadow: 0 3px 10px rgba(0,0,0,.1);
 
 		}
-		.modal-header {
+/*	.modal-header {
 			border-bottom:none;
 			border-top-left-radius:0;
 			border-top-right-radius:0;
 			background-color: #307bd3;
-			color: #fff;
-           
+			color: #fff;       
 		}
-		.modal-content {
+    .modal-content {
 			border-radius:0;	
-		}
+		}*/
 		
 		/* tabs */
-nav > div a.nav-item.nav-link,
+/* nav > div a.nav-item.nav-link,
 nav > div a.nav-item.nav-link.active
 {
   border: none;
@@ -119,26 +110,58 @@ nav > div a.nav-item.nav-link:focus
     color:#212528;
     border-radius:0;
     transition:background 0.20s linear;
-}
+} */
 		/* tabs end */
 		
 		
 /* Toggle */
-.switchToggle input[type=checkbox]{height: 0; width: 0; visibility: hidden; position: absolute; }
-.switchToggle label {cursor: pointer; text-indent: -9999px; width: 70px; max-width: 70px; height: 30px; background: #d1d1d1; display: block; border-radius: 100px; position: relative; }
-.switchToggle label:after {content: ''; position: absolute; top: 2px; left: 2px; width: 26px; height: 26px; background: #fff; border-radius: 90px; transition: 0.3s; }
-.switchToggle input:checked + label, .switchToggle input:checked + input + label  {background: #4caf50a6; }
-.switchToggle input + label:before, .switchToggle input + input + label:before {content: 'No'; position: absolute; top: 1px; left: 35px; width: 26px; height: 26px; border-radius: 90px; transition: 0.3s; text-indent: 0; color: #fff; }
-.switchToggle input:checked + label:before, .switchToggle input:checked + input + label:before {content: 'Yes'; position: absolute; top: 1px; left: 10px; width: 26px; height: 26px; border-radius: 90px; transition: 0.3s; text-indent: 0; color: #fff; }
-.switchToggle input:checked + label:after, .switchToggle input:checked + input + label:after {left: calc(100% - 2px); transform: translateX(-100%); }
-.switchToggle label:active:after {width: 60px; } 
-.toggle-switchArea { margin: 10px 0 10px 0; }
+  /*.switchToggle input[type=checkbox]{height: 0; width: 0; visibility: hidden; position: absolute; }
+  .switchToggle label {cursor: pointer; text-indent: -9999px; width: 70px; max-width: 70px; height: 30px; background: #d1d1d1; display: block; border-radius: 100px; position: relative; }
+  .switchToggle label:after {content: ''; position: absolute; top: 2px; left: 2px; width: 26px; height: 26px; background: #fff; border-radius: 90px; transition: 0.3s; }
+  .switchToggle input:checked + label, .switchToggle input:checked + input + label  {background: #4caf50a6; }
+  .switchToggle input + label:before, .switchToggle input + input + label:before {content: 'No'; position: absolute; top: 1px; left: 35px; width: 26px; height: 26px; border-radius: 90px; transition: 0.3s; text-indent: 0; color: #fff; }
+  .switchToggle input:checked + label:before, .switchToggle input:checked + input + label:before {content: 'Yes'; position: absolute; top: 1px; left: 10px; width: 26px; height: 26px; border-radius: 90px; transition: 0.3s; text-indent: 0; color: #fff; }
+  .switchToggle input:checked + label:after, .switchToggle input:checked + input + label:after {left: calc(100% - 2px); transform: translateX(-100%); }
+  .switchToggle label:active:after {width: 60px; } 
+  .toggle-switchArea { margin: 10px 0 10px 0; }*/
 /* Toggle end */
 		/*leaves balance bar*/
 
-		.checkbox{background-color:#fff;display:inline-block;height:18px;margin:0.6em 0 0 0;width:18px;border-radius:0;border:1px solid #ccc;float:right}
-  .checkbox span{display:block;height:20px;position:relative;width:20px;padding:0}
-  .checkbox span:after{-moz-transform:scaleX(-1) rotate(135deg);-ms-transform:scaleX(-1) rotate(135deg);-webkit-transform:scaleX(-1) rotate(135deg);transform:scaleX(-1) rotate(135deg);-moz-transform-origin:left top;-ms-transform-origin:left top;-webkit-transform-origin:left top;transform-origin:left top;border-right:3px solid #fff;border-top:3px solid #fff;content:'';display:block;height:13px;left:0;position:absolute;top:8px;width:8px}
+		.checkbox{
+      background-color:#fff;
+      display:inline-block;
+      height:18px;
+      margin:0.6em 0 0 0;
+      width:18px;border-radius:0;
+      border:1px solid #ccc;
+      float:right
+    }
+  .checkbox span{
+    display:block;
+    height:20px;
+    position:relative;
+    width:20px;
+    padding:0
+  }
+  .checkbox span:after{
+    -moz-transform:scaleX(-1) rotate(135deg);
+    -ms-transform:scaleX(-1) rotate(135deg);
+    -webkit-transform:scaleX(-1) rotate(135deg);
+    transform:scaleX(-1) rotate(135deg);
+    -moz-transform-origin:left top;
+    -ms-transform-origin:left top;
+    -webkit-transform-origin:left top;
+    transform-origin:left top;
+    border-right:3px solid #fff;
+    border-top:3px solid #fff;
+    content:'';
+    display:block;
+    height:13px;
+    left:0;
+    position:absolute;
+    top:8px;
+    width:8px
+  }
   
   .checkbox input{display:none}
 .checkbox input:checked + .default:after{border-color:#242121ad}
@@ -157,10 +180,6 @@ input::placeholder {
   float: left;
   width: 11%;
 }
-
-.chat_ib h5{ font-size:15px; color:#464646; margin:0 0 8px 0;}
-
-.chat_ib p{ font-size:14px; color:#989898; margin:auto}
 .chat_img {
   float: left;
   width: 11%;
@@ -170,9 +189,9 @@ input::placeholder {
   padding: 0 0 0 15px;
   width: 88%;
 }
-img{ max-width:140%;}
+.attendance_image{ max-width:140%;}
 
-.row.vdivide [class*='col-']:not(:last-child):after {
+/*.row.vdivide [class*='col-']:not(:last-child):after {
   background: #e0e0e0;
   width: 1px;
   content: "";
@@ -182,7 +201,7 @@ img{ max-width:140%;}
   bottom: 0;
   right: 0;
   min-height: 70px;
-}
+}*/
 /*leaves balance bar end*/
 .dropdown-toggle::after {
             content: none;
@@ -314,9 +333,9 @@ table#main-table tr:nth-child(odd){
         margin-right:-12px;
         display:inline-block;
     }
-    .modal-header{
+/*    .modal-header{
         text-align:left;
-    }
+    }*/
     .modal{
  padding: 0 !important;
 }
@@ -327,10 +346,10 @@ table#main-table tr:nth-child(odd){
   margin:auto;
 }
 
-.modal-content {
+/*.modal-content {
   border-radius: 0 !important;
-  /* height: 100%; */
-}
+  height: 100%;
+}*/
 input#add_meeting{
     background-color:#eee;
     color:black;
@@ -487,7 +506,7 @@ input[type=checkbox]:checked:before {
       background: rgb(164, 217, 214);
       display: flex !important;
 }
-form{
+.attendance_form{
   background: white;
   height: calc(100vh - 8rem);
   overflow-y: auto;
@@ -496,7 +515,7 @@ form{
   display: flex;
   border-bottom: 1px solid rgba(0,0,0,0.4);
 }
-.bg-default{
+.bg-default.attendance_background{
   padding:1rem;
 }
 </style>
@@ -508,7 +527,7 @@ form{
     <span class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
   </div>
  <div class="card">
-  <form action="<?php echo base_url() ; ?>mom/meetingAttendence/<?php echo $mId; ?>" method="post">
+  <form class="attendance_form" action="<?php echo base_url() ; ?>mom/meetingAttendence/<?php echo $mId; ?>" method="post">
    <?php
       $partcipants = json_decode($partcipants);
       $len = count($partcipants);
@@ -520,7 +539,7 @@ form{
             
             </div>
                <div>
-               <img src="<?php echo base_url() ?>assets/images/boyunnamed.jpg">
+               <img class="attendance_image" src="<?php echo base_url() ?>assets/images/boyunnamed.jpg">
                
                </div>
              <div>
@@ -530,10 +549,10 @@ form{
        </div>
       </div>
           <?php } ?>
-      <div class="d-flex bg-default">
+      <div class="d-flex bg-default attendance_background">
            <button type="submit" class="button">
             <i>
-              <img src="<?php echo base_url('assets/images/icons/attendance.png'); ?>" style="max-height:1.2rem;margin-right:10px">
+              <img class="attendance_image" src="<?php echo base_url('assets/images/icons/attendance.png'); ?>" style="max-height:1.2rem;margin-right:10px">
             </i>Mark Absent</a>
       </div>
   </form>
