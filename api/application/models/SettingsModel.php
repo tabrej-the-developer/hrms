@@ -234,6 +234,11 @@ class SettingsModel extends CI_Model {
 			$query = $this->db->query("UPDATE employeerecord SET   EmployeeId = '$xeroEmployeeId',  otherQualDesc = '$qual_towards_desc', highestQualHeld = '$highest_qual_held', qualTowardsPercentcomp = '$qual_towards_percent_comp', visaType = '$visa_type', visaGrantDate = '$visa_grant_date', visaEndDate = '$visa_end_date', visaConditions = '$visa_conditions', highestQualDateObtained = '$highest_qual_date_obtained',  visaHolderYN = '$visa_holder' where employeeNo = '$employee_no'");
 		}
 
+		public function getStates(){
+			$this->load->database();
+			$query = $this->db->query("SELECT * FROM states");
+			return $query->result();
+		}
 		public function updateEmployeeSuperfunds( $xeroEmployeeId, $superFundId,$superMembershipId){
 			$this->load->database();
 			$query = $this->db->query("UPDATE employeesuperfund SET superFundId = '$superFundId', 
@@ -263,9 +268,9 @@ class SettingsModel extends CI_Model {
 		$query = $this->db->query("INSERT INTO room (roomId,centerid,name,capacity,careAgeFrom,careAgeTo) VALUES ('$uniqueId',$centerid,'$room_name','$capacity_','$minimum_age','$maximum_age')");
 	}
 
-		public function addCenterRecord($centerid,$centerRecordUniqueId,$centre_abn,$centre_acn,$centre_se_no,$centre_date_opened,$centre_capacity,$centre_approval_doc,$centre_ccs_doc,$manager_name,$centre_admin_name,$centre_nominated_supervisor){
+		public function addCenterRecord($centerid,$centerRecordUniqueId,$centre_abn,$centre_acn,$centre_se_no,$centre_date_opened,$centre_capacity,$centre_approval_doc,$centre_ccs_doc,$centre_admin_name,$centre_nominated_supervisor){
 			$this->load->database();
-			$query = $this->db->query("INSERT INTO centerrecord (centerId,centerRecordUniqueId,centreABN,centreACN,centreSE_no,centreDateOpened,centreCapacity,centreApprovalDoc,centreCCSDoc,managerId,centreAdminId,centreNominatedSupervisorId) VALUES ($centerid,'$centerRecordUniqueId','$centre_abn','$centre_acn','$centre_se_no','$centre_date_opened','$centre_capacity','$centre_approval_doc','$centre_ccs_doc','$manager_name','$centre_admin_name','$centre_nominated_supervisor')");
+			$query = $this->db->query("INSERT INTO centerrecord (centerId,centerRecordUniqueId,centreABN,centreACN,centreSE_no,centreDateOpened,centreCapacity,centreApprovalDoc,centreCCSDoc,centreAdminId,centreNominatedSupervisorId) VALUES ($centerid,'$centerRecordUniqueId','$centre_abn','$centre_acn','$centre_se_no','$centre_date_opened','$centre_capacity','$centre_approval_doc','$centre_ccs_doc','$centre_admin_name','$centre_nominated_supervisor')");
 		}
 
 		public function getCenterDetails($centerid){

@@ -57,7 +57,7 @@
 		<span class="span-class ">
 			<label class="labels__">Title</label>
 			<span class="select_css">
-				<select placeholder="Title" id="title"  class="" type="text" name="title"> 
+				<select  id="title"  class="" type="text" name="title"> 
 					<option value="Ms">Ms</option> 
 					<option value="Mr">Mr</option>
 					<option value="Mrs">Mrs</option>
@@ -69,15 +69,15 @@
 		<span class=" row row_addEmployee ml-1 ">
 		<span class="span-class col-4 ">
 			<!-- <label class="labels__">First Name</label> -->
-			<input placeholder="First Name" id="fname"  class="" type="text" name="fname">
+			<input id="fname"  class="" type="text" name="fname">
 		</span>
 		<span class="span-class col-4 ">
 			<!-- <label class="labels__">Middle Name</label> -->
-			<input placeholder="Middle Name" id="mname"  class="" type="text" name="mname">
+			<input id="mname"  class="" type="text" name="mname">
 		</span>
 		<span class="span-class col-4 ">
 			<!-- <label class="labels__">Last Name</label> -->
-			<input placeholder="Last Name" id="lname"  class="" type="text" name="lname">
+			<input id="lname"  class="" type="text" name="lname">
 		</span>
 	</span>
 	</span>
@@ -85,20 +85,20 @@
 		
 		<span class="span-class">
 			<label class="labels__">Email</label>
-			<input placeholder="Emails" id="emails"  class="" type="text" name="emails">
+			<input id="emails"  class="" type="text" name="emails">
 		</span>
 		<span class="span-class">
 			<label class="labels__">Alias</label>
-			<input placeholder="Alias" id="alias"  class="" type="text" name="alias">
+			<input id="alias"  class="" type="text" name="alias">
 		</span>
 		<span class="span-class">
 			<label class="labels__">Date Of Birth</label>
-			<input placeholder="Date Of Birth" id="dateOfBirth"  class="" type="date" name="dateOfBirth">
+			<input id="dateOfBirth"  class="" type="date" name="dateOfBirth">
 		</span>
 		<span class="span-class">
 			<label class="labels__">Gender</label>
 			<span class="select_css">
-				<select placeholder="Gender" id="gender"  class="" name="gender">
+				<select id="gender"  class="" name="gender">
 					<option value="N">Not Given</option>
 					<option value="M">Male</option>
 					<option value="F">Female</option>
@@ -109,27 +109,27 @@
 				
 		<span class="span-class">
 			<label class="labels__">Job Title</label>
-			<input placeholder="Job Title" id="jobTitle"  class="" type="text" name="jobTitle">
+			<input id="jobTitle"  class="" type="text" name="jobTitle">
 		</span>
 	
 		<span class="span-class row row_addEmployee ">
 		<label class="labels__">Address</label>	
 			<span class="span-class  col-4">
 				<!-- <label class="labels__">Home Address Line1</label> -->
-	<input placeholder="Home Address Line1" id="homeAddLine1"  class="" type="text" name="homeAddLine1">
+	<input id="homeAddLine1"  class="" type="text" name="homeAddLine1">
 			</span>
 			<span class="span-class col-4">
 				<!-- <label class="labels__">Home Address Line2</label> -->
-	<input placeholder="Home Address Line2" id="homeAddLine2"  class="" type="text" name="homeAddLine2">
+	<input id="homeAddLine2"  class="" type="text" name="homeAddLine2">
 			</span>
 			<span class="span-class col-4">
 				<!-- <label class="labels__">City</label> -->
-	<input  type="text" placeholder="City" id="homeAddCity"  class=""  name="homeAddCity">
+	<input  type="text" id="homeAddCity"  class=""  name="homeAddCity">
 			</span>				
 			<span class="span-class col-4">
 				<!-- <label class="labels__">Region</label> -->
 				<span class="select_css">
-		<select placeholder="Region" id="homeAddRegion"  class="" type="text" name="homeAddRegion">
+		<select id="homeAddRegion"  class="" type="text" name="homeAddRegion">
 						<option value="ACT">Australian Capital Territory</option>
 						<option value="NSW">New South Wales</option>
 						<option value="NT">Northern Territory</option>
@@ -143,30 +143,30 @@
 			</span>
 			<span class="span-class col-4">
 				<!-- <label class="labels__">Postal</label> -->
-				<input placeholder="Postal" id="homeAddPostal"  class="" type="text" name="homeAddPostal">
+				<input id="homeAddPostal"  class="" type="text" name="homeAddPostal">
 			</span>
 			<span class="span-class col-4">
 				<!-- <label class="labels__">Country</label> -->
-				<input placeholder="Country" id="homeAddCountry"  class="" type="text" name="homeAddCountry">
+				<input id="homeAddCountry"  class="" type="text" name="homeAddCountry">
 			</span>
 		</span>
 		<span class="span-class contact__">
 			<label class="labels__">Contact</label>
 				<span class="span-class">
-					<input placeholder="Phone" id="phone"  class="" type="text" name="phone">
+					<input id="phone"  class="" type="text" name="phone">
 				</span>
 				<span class="span-class">
-					<input placeholder="Mobile" id="mobile"  class="" type="text" name="mobile">
+					<input id="mobile"  class="" type="text" name="mobile">
 				</span>
 		</span>
 	<span class="d-block">
 		<span class="span-class col-3">
 			<label class="labels__">Start Date</label>
-		<input placeholder="Start Date" id="startDate"  class="" type="date" name="startDate">
+		<input id="startDate"  class="" type="date" name="startDate">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Termination Date</label>
-		<input placeholder="Termination Date" id="terminationDate"  class="" type="date" name="terminationDate">
+		<input id="terminationDate"  class="" type="date" name="terminationDate">
 		</span>
 	</span>
 <!-- 		<span class="span-class">
@@ -179,15 +179,15 @@
 		</span> -->
 		<span class="span-class col-4">
 			<label class="labels__">Emergency Contact</label>
-		<input placeholder="Emergency Contact" id="emergency_contact"  class="" type="text" name="emergency_contact">
+		<input id="emergency_contact"  class="" type="text" name="emergency_contact">
 		</span>
 		<span class="span-class col-4">
 			<label class="labels__">Relationship</label>
-		<input placeholder="Relationship" id="relationship"  class="" type="text" name="relationship">
+		<input id="relationship"  class="" type="text" name="relationship">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Emergency Contact Email</label>
-			<input placeholder="Emergency Contact Email" id="emergency_contact_email"  class="" type="email" name="emergency_contact_email">
+			<input id="emergency_contact_email"  class="" type="email" name="emergency_contact_email">
 		</span>
 	</section>
 
@@ -199,22 +199,22 @@
 					<div class="row employee-bank-account-section_row">
 				<!-- 		<span class="span-class col-4">
 							<label class="labels__">Statement Text</label>
-							<input placeholder="Statement Text" type="text" class="statementText" >
+							<input type="text" class="statementText" >
 						</span> -->
 						<span class="span-class col-4">
 							<label class="labels__">Account Name</label>
-							<input placeholder="Account Name" type="text" class="accountName" name="accountName">
+							<input type="text" class="accountName" name="accountName">
 						</span>
 						<span class="span-class col-4">
 							<label class="labels__">BSB</label>
-							<input placeholder="BSB" type="text" class="bsb" name="bsb">
+							<input type="text" class="bsb" name="bsb">
 						</span>
 					</div>
 		
 	<span class="row employee-bank-account-section_row">
 		<span class="span-class col-4">
 			<label class="labels__">Account Number</label>
-			<input placeholder="Account Number" type="text" class="accountNumber" name="accountNumber">
+			<input type="text" class="accountNumber" name="accountNumber">
 		</span>
 		<span class="span-class col-4">
 			<label class="labels__">Remainder</label>
@@ -230,7 +230,7 @@
 		<span class="span-class amount-class-parent col-4">
 			<div class="amount-class">
 				<label class="labels__">Amount</label>
-				<input placeholder="Amount" type="text" class="amount" name="amount">
+				<input type="text" class="amount" name="amount">
 			</div>
 		</span>
 	</span>
@@ -244,7 +244,7 @@
 		<h3> Superannuation <span id="superfund-add"> + </span></h3>
 <!-- 		<span class="span-class">
 			<label class="labels__">Employee Id</label>
-			<input placeholder="Employee Id" id="employeeId" >
+			<input id="employeeId" >
 		</span> -->
 			<div class="superfund-parent">
 				<div class="superfund-child row row_addEmployee ">
@@ -252,7 +252,7 @@
 						<label class="labels__">Super Fund Id</label>
 						<?php $superfunds = json_decode($superfunds); ?>
 						<span class="select_css">
-							<select placeholder="Super Fund Id" class="superFundId" name="superFundId">
+							<select class="superFundId" name="superFundId">
 								<?php foreach($superfunds->superfunds as $superfund){ ?>
 								<option value="<?php echo $superfund->usi; ?>"><?php echo $superfund->name; ?></option>
 								<?php } ?>
@@ -261,7 +261,7 @@
 					</span>
 					<span class="span-class col-4">
 						<label class="labels__">Super Membership Id</label>
-						<input placeholder="Super Membership Id" class="superMembershipId" type="text" name="superMembershipId">
+						<input class="superMembershipId" type="text" name="superMembershipId">
 					</span>
 				</div>
 			</div>
@@ -278,7 +278,7 @@
 		<span class="span-class col-4">
 			<label class="labels__">Employment Basis</label>
 			<span class="select_css">
-				<select placeholder="employmentBasis" id="employmentBasis" name="employmentBasis">
+				<select id="employmentBasis" name="employmentBasis">
 					<option value="FULLTIME">FULLTIME </option>
 					<option value="PARTTIME">PARTTIME</option>
 					<option value="CASUAL">CASUAL</option>
@@ -290,7 +290,7 @@
 		<span class="span-class col-4">
 			<label class="labels__">TFN Exemption Type</label>
 			<span class="select_css">
-				<select placeholder="tfnExemptionType" id="tfnExemptionType" name="tfnExemptionType">
+				<select id="tfnExemptionType" name="tfnExemptionType">
 					<option value="NONE">NONE</option>
 					<option value="NOTQUOTED">NOTQUOTED</option>
 					<option value="PENDING">PENDING</option>
@@ -302,13 +302,13 @@
 		<div class="tax-declaration-class col-lg-12">
 		<span class="span-class col-4">
 			<label class="labels__">Tax File Number</label>
-			<input placeholder="Tax File Number" id="taxFileNumber" name="taxFileNumber" type="text">
+			<input id="taxFileNumber" name="taxFileNumber" type="text">
 		</span>
 		<span class="span-class col-4">
 			<label class="labels__">Australian Resident For TaxPurpose</label>
 			<span>
 				<label class="yn-label">Yes</label>
-				<input placeholder="Australian Resident For TaxPurpose" type="radio"  name="australiantResidentForTaxPurposeYN" class="australiantResidentForTaxPurposeYN yn-input" value="Y">
+				<input type="radio"  name="australiantResidentForTaxPurposeYN" class="australiantResidentForTaxPurposeYN yn-input" value="Y">
 			</span>
 			<span>
 				<label class="yn-label">No</label>
@@ -318,7 +318,7 @@
 		<span class="span-class col-3">
 			<label class="labels__">Residency Statue</label>
 			<span class="select_css">
-				<select placeholder="residencyStatue" id="residencyStatue" name="residencyStatue">
+				<select id="residencyStatue" name="residencyStatue">
 					<option value="AUSTRALIANRESIDENT">Australian Resident</option>
 					<option value="FOREIGNRESIDENT">Foreign Resident</option>
 					<option value="WORKINGHOLIDAY">Working Holiday</option>
@@ -328,25 +328,25 @@
 		<span class="span-class col-4">
 			<label class="labels__">Tax Free Threshold Claimed</label>
 			<label class="yn-label">Yes</label>
-				<input placeholder="taxFreeThresholdClaimedYN" type="radio" name="taxFreeThresholdClaimedYN" class="taxFreeThresholdClaimedYN yn-input" value="Y">
+				<input type="radio" name="taxFreeThresholdClaimedYN" class="taxFreeThresholdClaimedYN yn-input" value="Y">
 			<label class="yn-label">No</label>
 				<input type="radio" name="taxFreeThresholdClaimedYN" class="taxFreeThresholdClaimedYN yn-input" value="N">
 		</span>
 		<span class="span-class col-4">
 			<label class="labels__">Tax Offset Estimated Amount</label>
-			<input placeholder="Tax Offset Estimated Amount" id="taxOffsetEstimatedAmount" type="text" name="taxOffsetEstimatedAmount">
+			<input id="taxOffsetEstimatedAmount" type="text" name="taxOffsetEstimatedAmount">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Has HELP Debt</label>
 			<label class="yn-label">Yes</label>
-			<input placeholder="hasHELPDebtYN" name="hasHELPDebtYN" class="hasHELPDebtYN yn-input" value="Y" type="radio">
+			<input name="hasHELPDebtYN" class="hasHELPDebtYN yn-input" value="Y" type="radio">
 			<label class="yn-label">No</label>
 			<input type="radio" name="hasHELPDebtYN" class="hasHELPDebtYN yn-input" value="N">	
 		</span>
 		<span class="span-class col-4">
 			<label class="labels__">Has SFSS Debt</label>
 			<label class="yn-label">Yes</label>
-			<input placeholder="hasSFSSDebtYN" type="radio" name="hasSFSSDebtYN" class="hasSFSSDebtYN yn-input"
+			<input type="radio" name="hasSFSSDebtYN" class="hasSFSSDebtYN yn-input"
 			 value="Y">
 			<label class="yn-label">No</label>
 			<input type="radio" name="hasSFSSDebtYN" class="hasSFSSDebtYN yn-input" value="N">
@@ -354,24 +354,24 @@
 		<span class="span-class col-4">
 			<label class="labels__">Has Trade Support Loan Debt</label>
 			<label class="yn-label">Yes</label>
-			<input placeholder="hasTradeSupportLoanDebtYN" type="radio" name="hasTradeSupportLoanDebtYN " class="hasTradeSupportLoanDebtYN yn-input" value="Y">
+			<input type="radio" name="hasTradeSupportLoanDebtYN " class="hasTradeSupportLoanDebtYN yn-input" value="Y">
 			<label class="yn-label">No</label>
 			<input type="radio" name="hasTradeSupportLoanDebtYN " class="hasTradeSupportLoanDebtYN yn-input" value="N">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Upward Variation Tax Witholding Amount</label>
-			<input placeholder="Upward Variation Tax Witholding Amount" id="upwardVariationTaxWitholdingAmount" name="upwardVariationTaxWitholdingAmount" type="text">
+			<input id="upwardVariationTaxWitholdingAmount" name="upwardVariationTaxWitholdingAmount" type="text">
 		</span>
 		<span class="span-class col-4">
 			<label class="labels__">Eligible To Receive Leave Loading</label>
 			<label class="yn-label">Yes</label>
-			<input placeholder="eligibleToReceiveLeaveLoadingYN" type="radio" class="eligibleToReceiveLeaveLoadingYN yn-input" name="eligibleToReceiveLeaveLoadingYN" value="Y">
+			<input type="radio" class="eligibleToReceiveLeaveLoadingYN yn-input" name="eligibleToReceiveLeaveLoadingYN" value="Y">
 			<label class="yn-label">No</label>
 			<input type="radio" name="eligibleToReceiveLeaveLoadingYN" class="eligibleToReceiveLeaveLoadingYN yn-input" value="N">
 		</span>
 		<span class="span-class col-4">
 			<label class="labels__">Approved Witholding Variation Percentage</label>
-			<input placeholder="Approved Witholding Variation Percentage" id="approvedWitholdingVariationPercentage" name="approvedWitholdingVariationPercentage" type="text">
+			<input id="approvedWitholdingVariationPercentage" name="approvedWitholdingVariationPercentage" type="text">
 		</span>
 		
 	</div>
@@ -381,16 +381,16 @@
 	<section class="employee-details">
 		<span class="span-class">
 			<label class="labels__">Employee Number</label>
-			<input placeholder="Employee Number" id="employee_no" type="text" name="employee_no">
+			<input id="employee_no" type="text" name="employee_no">
 		</span>
 		<span class="span-class">
 			<label class="labels__">Xero Employee Id</label>
-			<input placeholder="Xero Employee Id" id="xeroEmployeeId" type="text" name="xeroEmployeeId">
+			<input id="xeroEmployeeId" type="text" name="xeroEmployeeId">
 		</span>
 		<span class="span-class">
 			<label class="labels__">Center</label>
 			<span class="select_css">
-				<select placeholder="Center" id="center" name="center">
+				<select id="center" name="center">
 					<option>--Center--</option>
 					<?php 
 						$centers = json_decode($centers);
@@ -411,7 +411,7 @@
 
 				<span class="" id="area-select">
 					<span class="select_css">
-						<select placeholder="Area" id="area" name="area">
+						<select id="area" name="area">
 							<option>--select--</option>
 						<?php 
 						$areas = json_decode($areas);
@@ -428,7 +428,7 @@
 			<label class="labels__">Role</label>
 			<span id="role-select">
 				<span class="select_css">
-					<select placeholder="Role" id="role" name="role">
+					<select id="role" name="role">
 						<option>--select--</option>
 
 						<?php foreach($areas->areas as $roles){?>
@@ -442,14 +442,14 @@
 
 		<span class="span-class">
 			<label class="labels__">Manager</label>
-			<input placeholder="Manager" id="manager" type="text" name="manager">
+			<input id="manager" type="text" name="manager">
 		</span>
 
 
 		<span class="span-class">
 			<label class="labels__">Level</label>
 			<span class="select_css">
-				<select placeholder="Level" id="level" name="level">
+				<select id="level" name="level">
 					<?php $levels = json_decode($levels);
 						foreach($levels->entitlements as $level){
 						?>
@@ -460,7 +460,7 @@
 		</span>
 		<span class="span-class">
 			<label class="labels__">Bonus Rates</label>
-			<input placeholder="Bonus Rates" id="bonusRates" name="bonusRates" type="number" step="0.01" min="0">
+			<input id="bonusRates" name="bonusRates" type="number" step="0.01" min="0">
 		</span>
 
 <!-- 		<span class="span-class">
@@ -528,7 +528,7 @@
 		</span>
 		<span class="span-class">
 			<label class="labels__">Probation-end-date 	</label>
-			<input placeholder="Probation end date" id="probation_end_date" type="date">
+			<input id="probation_end_date" type="date">
 		</span> -->
 <!-- 		<span class="span-class">
 			<label class="labels__">Industry-years-exp-as-nov19	</label>
@@ -541,11 +541,11 @@
 		</span>
 		<span class="span-class">
 			<label class="labels__">Date Obtained</label>
-		<input placeholder="Date Obtained" id="highest_qual_date_obtained" name="highest_qual_date_obtained" type="text">
+		<input id="highest_qual_date_obtained" name="highest_qual_date_obtained" type="text">
 		</span>
 		<span class="span-class">
 			<label class="labels__">Highest Qualification Certificate</label>
-		<input placeholder="Date Obtained" id="highest_qual_cert" name="highest_qual_cert" type="text">
+		<input id="highest_qual_cert" name="highest_qual_cert" type="text">
 		</span>
 <!-- 		<span class="span-class">
 			<label class="labels__">Highest-qual-type	 </label>
@@ -562,11 +562,11 @@
 
 <!-- 		<span class="span-class">
 			<label class="labels__">	Workcover</label>
-			<input placeholder="Workcover" id="workcover" type="text">
+			<input id="workcover" type="text">
 		</span>
 		<span class="span-class">
 			<label class="labels__">	PIAWE</label>
-			<input placeholder="PIAWE" id="piawe" type="text">
+			<input id="piawe" type="text">
 		</span>
 		<span class="span-class">
 			<label class="labels__">	Annual-leave-in-contract</label>
@@ -574,12 +574,12 @@
 		</span> -->
 		<span class="span-class">
 			<label class="labels__">Classification</label>
-			<input placeholder="Classification" id="classification" name="classification" type="text">
+			<input id="classification" name="classification" type="text">
 		</span>
 		<span class="span-class">
 			<label class="labels__">Ordinary Earning Rate Id</label>
 			<span class="select_css">
-				<select placeholder="Ordinary Earning Rate Id" id="ordinaryEarningRateId" name="ordinaryEarningRateId"  class="" type="text">
+				<select id="ordinaryEarningRateId" name="ordinaryEarningRateId"  class="" type="text">
 				<?php
 						$ordinaryEarningRate = json_decode($ordinaryEarningRate);
 						foreach($ordinaryEarningRate->awards as $rate){
@@ -592,15 +592,15 @@
 
 		<span class="span-class">
 			<label class="labels__">Payroll Calendar</label>
-			<input placeholder="Payroll Calendar" id="payroll_calendar" name="payroll_calendar" type="text">
+			<input id="payroll_calendar" name="payroll_calendar" type="text">
 		</span>
 		<span class="span-class">
 			<label class="labels__">Employee Group</label>
-			<input placeholder="Employee Group" id="employee_group" name="employee_group" type="text">
+			<input id="employee_group" name="employee_group" type="text">
 		</span>
 		<span class="span-class">
 			<label class="labels__">Holiday Group</label>
-			<input placeholder="Holiday Group" id="holiday_group" name="holiday_group" type="text">
+			<input id="holiday_group" name="holiday_group" type="text">
 		</span>
 		<span class="span-class">
 			<label class="labels__">Visa Holder</label>
@@ -629,23 +629,23 @@
 		<div>
 				<span class="span-class">
 					<label class="labels__">Course Name</label>
-					<input placeholder="Course Name" class="course_name" name="course_name[]" type="text">
+					<input class="course_name" name="course_name[]" type="text">
 				</span>
 				<span class="span-class">
 					<label class="labels__">course Description</label>
-					<input placeholder="course Description" class="course_description" name="course_description[]" type="text">
+					<input class="course_description" name="course_description[]" type="text">
 				</span>
 				<span class="span-class">
 					<label class="labels__">Date Obtained</label>
-					<input placeholder="Date Obtained" class="date_obtained" name="date_obtained[]" type="date">
+					<input class="date_obtained" name="date_obtained[]" type="date">
 				</span>
 				<span class="span-class">
 					<label class="labels__">Expiry Date</label>
-					<input placeholder="Expiry Date" class="expiry_date" name="expiry_date[]" type="date">
+					<input class="expiry_date" name="expiry_date[]" type="date">
 				</span>
 				<span class="span-class">
 					<label class="labels__">Certificate </label>
-					<input placeholder="Certificate" class="certificate" name="certificate[]" type="FILE">
+					<input class="certificate" name="certificate[]" type="FILE">
 				</span>
 		</div>
 <!-- 		<span class="span-class">
@@ -697,7 +697,7 @@
 		<h3>Medical Information<!-- <span id="Medical Information"> + </span> --></h3>
 <!-- 		<span class="span-class">
 			<label class="labels__">Employee Id</label>
-			<input placeholder="Employee Id" id="employeeId" >
+			<input id="employeeId" >
 		</span> -->
 		<span class="span-class">
 			<label class="labels__">Medicare Number</label>

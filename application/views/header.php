@@ -48,7 +48,7 @@ $nth_child = 0;
     //   $nth_child = 10;
     //   break;
     case strtolower("MOM"):
-      $selected = true;
+      $selected = "MOM";
       $nth_child = 8;
       break;
     // case strtolower("settings"):
@@ -56,6 +56,7 @@ $nth_child = 0;
     //     $nth_child = 8;
     //     break;
     case strtolower("settings"):
+      $selected = "settings";
       $nth_child_div = 1;
       break;
     default:
@@ -544,10 +545,10 @@ select{
                 <span>Settings </span>
               </a>
             </li>
-            <li class="nav-item-header-div" >
+            <li class="nav-item-header-div" onmouseover="hover('logout','<?php echo $selected;?>')" onmouseout="hoverOff('logout','<?php echo $selected;?>')">
             <a class="nav-link-div d-flex justify-content-start" href="<?php echo base_url();?>welcome/logout" >
                 <i class="mr-4 " >
-                  <img src="<?php echo site_url();?>assets/images/navbar-icons/logout.png"  style="height:1rem">
+                  <img id="logout" src="<?php echo site_url();?>assets/images/navbar-icons/logout_filled.png"  style="height:1rem">
                 </i>Logout</a>
           </li>
           <div class="todq_logo">
