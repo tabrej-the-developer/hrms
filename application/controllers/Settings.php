@@ -286,10 +286,8 @@ public function editRooms(){
 		if($this->session->has_userdata('LoginId')){
 			if($this->input->post('centerid') != null){
 		$data['centerid'] = $this->input->post('centerid');
-		$data['centerx'] = $data['centerid']-1;
 	}else{
-		$data['centerid'] = 1;
-		$data['centerx'] = 0;
+		$data['centerid'] = (json_decode($this->getAllCenters())->centers[0])->centerid;
 	}
 		$data['permissions'] = $this->fetchPermissions();
 		$data['centers'] = $this->getAllCenters();

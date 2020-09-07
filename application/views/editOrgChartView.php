@@ -241,7 +241,14 @@ font-family: 'Open Sans', sans-serif;
 	<div class="thisOne">	
 		<div class="center-name">
 			<span>
-				<?php print_r($centersList->centers[$centerid-1]->name);
+				<?php
+				if(isset($centerid)){
+					foreach($centersList->centers as $center){
+						if($center->centerid == $centerid){
+							print_r($center->name);
+						}
+					}
+				}
 				echo "<br>";
 		 		?>
 		 	</span>
