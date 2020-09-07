@@ -425,7 +425,8 @@ class Settings extends CI_Controller {
 					$capacity_ = $json->capacity_;
 					$minimum_age = $json->minimum_age;
 					$maximum_age = $json->maximum_age;
-					$centerid = $this->settingsModel->addCenter($center_city,$center_street,$center_state,$center_zip,$center_name,$center_phone,$center_mobile,$center_email);
+if($center_name != null && $center_name != ""){
+					$centerid = $this->settingsModel->addCenter($center_city,$center_street,$center_state,$center_zip,$center_name,$center_phone,$center_mobile,$center_email,$json->userid);
 					$centerRecordUniqueId = uniqid();
 					$this->settingsModel->addCenterRecord($centerid,$centerRecordUniqueId,$center_abn,$center_acn,$center_se_no,$center_date_opened,$center_capacity,$center_approval_doc,$center_ccs_doc,$center_admin_name,$centre_nominated_supervisor);
 					for($i=0;$i<count($room_name);$i++){
@@ -435,6 +436,7 @@ class Settings extends CI_Controller {
 						$maxim = $maximum_age[$i];
 						$this->settingsModel->addRoom($centerid,$roo,$cap,$minim,$maxim);
 					}
+}
 					$data['Status'] = "SUCCESS";
 				http_response_code(200);
 				echo json_encode($room_name);
@@ -448,24 +450,16 @@ class Settings extends CI_Controller {
 		}
 	}
 	
-	public function editCenter($centerid){
+	public function editCenter($centerid,$userid){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			if($res != null && $res->userid == $userid){
 				$this->load->model('settingsModel');
-				$allRooms = $this->settingsModel->getRooms($centerid);
-				$data['rooms'] = [];
-				foreach ($allRooms as $room) {
-					$var['roomId'] = $room->roomId;
-					$var['name'] = $room->name;
-					$var['careAgeFrom'] = $room->careAgeFrom;
-					$var['careAgeTo'] = $room->careAgeTo;
-					$var['capacity'] = $room->capacity;
-					$var['studentRatio'] = $room->studentRatio;
-					array_push($data['rooms'],$var);
-				}
+				$data['centerDetails'] = $this->settingsModel->centerDetails($centerid);
+				$data['centerRecord'] = $this->settingsModel->centerRecord($centerid);
+				$data['rooms'] = $this->settingsModel->getRooms($centerid);
 				http_response_code(200);
 				echo json_encode($data);
 			}
@@ -688,16 +682,22 @@ class Settings extends CI_Controller {
 						
 						$data['password'] = md5((explode(" ",$data['name']))[0]."@123");
 						// $this->settingsModel->addToEmployeeCourses( $xeroEmployeeId,$course_nme=null,$course_desc=null,$date_obt=null,$exp_date=null);
-						$this->settingsModel->addToUsers($data['employee_no'],$data['password'],$data['emails'],$data['name'],$data['jobTitle'],$data['center'],$data['manager'],$userid,$data['role'],$data['level'],$data['alias']);
+						if(($data['employee_no'] != null && $data['employee_no'] != "") && ($data['emails'] != null && $data['emails'] != "") && ($data['center'] != null && $data['center'] != "")){
+								$this->settingsModel->addToUsers($data['employee_no'],$data['password'],$data['emails'],$data['name'],$data['jobTitle'],$data['center'],$data['manager'],$userid,$data['role'],$data['level'],$data['alias']);
+								$ouput['Status'] = "Records Added Successfully";
+						}
+						else{
+							$ouput['Status'] = "Some of the mandatory fields seems to be missing";
+						}
 
 					}
-					$data['Status'] = "SUCCESS";
-				}
-				else{
 					
 				}
+				else{
+					$ouput['Status'] = "ERROR";
+				}
 				http_response_code(200);
-				echo json_encode($data);
+				echo json_encode($ouput);
 			}
 			else{
 				http_response_code(401);
@@ -788,16 +788,32 @@ class Settings extends CI_Controller {
 						$exp_date = $expiry_date[$i];
 						// $cert = $certificate[$i];
 						// get employee Id
+						if($xeroEmployeeId != null && $xeroEmployeeId != "" ){
+							if($course_nme != "" && $course_nme != null){
 $this->settingsModel->addToEmployeeCourses( $xeroEmployeeId,$course_nme,$course_desc,$date_obt,$exp_date);
+						}
 					}
+				}
 // Users	
 					$name = $fname." ".$mname." ".$lname;
 					$password = $fname."@123";
+			if($employee_no != null && $employee_no != "" ){
+				if($emails != "" && $emails != null){
 $this->settingsModel->addToUsers($employee_no,$password,$emails,$name,$jobTitle,$center,$manager,$userid,$role,$level,$alias);
+						}
+					}
 // Employee bank account	
+						if($xeroEmployeeId != null && $xeroEmployeeId != "" ){
+							if($accountName != "" && $accountName != null){
 $this->settingsModel->addToEmployeeBankAccount( $xeroEmployeeId,$accountName,$bsb,$accountNumber,$remainderYN,$amount);
+						}
+					}
 // Employee medical info	
+						if($xeroEmployeeId != null && $xeroEmployeeId != "" ){
+							if($medicareNo != "" && $medicareNo != null){
 $this->settingsModel->addToEmployeeMedicalInfo($xeroEmployeeId,$medicareNo, $medicareRefNo,$healthInsuranceFund,$healthInsuranceNo, $ambulanceSubscriptionNo);
+						}
+					}
 // Employee medicals	
 						$medicalConditions = $json->medicalConditions;
 						$medicalAllergies = $json->medicalAllergies;
@@ -808,7 +824,11 @@ $this->settingsModel->addToEmployeeMedicalInfo($xeroEmployeeId,$medicareNo, $med
 						$medA = $medicalAllergies[$i];
 						$medic = $medication[$i];
 						$dietary = $dietaryPreferences[$i];
+						if($xeroEmployeeId != null && $xeroEmployeeId != "" ){
+							if($medC != "" && $medC != null){
 $this->settingsModel->addToEmployeeMedicals( $xeroEmployeeId,$medC,$medA,$medic,$dietary);
+									}
+								}
 				}
 // Employee record	
 					$employement_type = $json->employement_type;
@@ -826,28 +846,40 @@ $this->settingsModel->addToEmployeeMedicals( $xeroEmployeeId,$medC,$medA,$medic,
 
 				// Employee No from Users 
 				$uniqueId = uniqid();
+						if(($xeroEmployeeId != null && $xeroEmployeeId != "" ) || ($employee_no != null && $employee_no != "" )){
+							if($medC != "" && $medC != null){
 $this->settingsModel->addToEmployeeRecord($employee_no, $xeroEmployeeId, $uniqueId,$resume_doc, 
 	$employement_type, $qual_towards_desc, $highest_qual_held, $qual_towards_percent_comp, $visa_type, $visa_grant_date, $visa_end_date, $visa_conditions, $contract_doc, $highest_qual_date_obtained, $highest_qual_cert, $visa_holder);
 // Employee superfunds	
-
+						if($xeroEmployeeId != null && $xeroEmployeeId != "" ){
+							if($superFundId != "" && $superFundId != null){
 $this->settingsModel->addToEmployeeSuperfunds( $xeroEmployeeId, $superFundId,
 $superMembershipId);
+										}
+									}
 // Employee Tax Declaration
-
+						if($xeroEmployeeId != null && $xeroEmployeeId != "" ){
+							if($employmentBasis != "" && $employmentBasis != null){
 $this->settingsModel->addToEmployeeTaxDeclaration($xeroEmployeeId,$employmentBasis,$tfnExemptionType,$taxFileNumber,$australiantResidentForTaxPurposeYN,$residencyStatue,$taxFreeThresholdClaimedYN,$taxOffsetEstimatedAmount,$hasHELPDebtYN,$hasSFSSDebtYN,$hasTradeSupportLoanDebtYN_,$upwardVariationTaxWitholdingAmount,$eligibleToReceiveLeaveLoadingYN,$approvedWitholdingVariationPercentage);
+										}
+									}
 // Employee Table
-
+						if($xeroEmployeeId != null && $xeroEmployeeId != "" ){
+							if($employee_no != "" && $employee_no != null){
 $this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$fname,$mname,$lname,$emails,$dateOfBirth,$jobTitle,$gender,$homeAddLine1,$homeAddLine2,$homeAddCity,$homeAddRegion,$homeAddPostal,$homeAddCountry,$phone,$mobile,$startDate,$terminationDate,$ordinaryEarningRateId,$payroll_calendar,$userid,$classification,$holiday_group,$employee_group,$emergency_contact,$relationship,$emergency_contact_email);
-
-			$data['status'] = 'SUCCESS';
-			http_response_code(200);
-			echo json_encode($data);
+											}
+										}
+					$data['status'] = 'SUCCESS';
+					http_response_code(200);
+					echo json_encode($data);
+									}
+					else{
+						http_response_code(401);
+							}
+						}
+					}
 				}
-		else{
-			http_response_code(401);
-		}
-	}
-}
+			}
  	function postToXero($access_token,$tenant_id,$data){
  		$url = "https://api.xero.com/payroll.xro/1.0/Employees/";
 		$ch =  curl_init($url);

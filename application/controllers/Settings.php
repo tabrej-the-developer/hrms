@@ -160,13 +160,16 @@ public function editRooms(){
 	public function createCenterProfile(){
 		$input = $this->input->post();
 		if($input != null){
-	//footprint start
-	if($this->session->has_userdata('current_url')){
-		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-		$this->session->set_userdata('current_url',currentUrl());
-	}
-	// footprint end
+			//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+				$this->session->set_userdata('current_url',currentUrl());
+			}
+			// footprint end
 		$data['userid'] = $this->session->userdata('LoginId');
+		// if( $this->session->userdata('UserType') != SUPERADMIN ){
+		// 	$data['superadmin'] = superadmin;
+		// }
 		$data['center_name'] = $this->input->post('center_name');
 		$data['center_city'] = $this->input->post('center_city');
 		$data['center_street'] = $this->input->post('center_street');
@@ -220,26 +223,51 @@ public function editRooms(){
 
 
 
-	public function centerProfile($centerid = 1){
+	public function centerProfile($centerid = null){
 		if($this->session->has_userdata('LoginId')){
-			if($this->input->get('centerid') != null){
-			$centerid = $this->input->get('centerid');
+			//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+				$this->session->set_userdata('current_url',currentUrl());
+			}
+			// footprint end
+			$data['centers'] = $this->getAllCenters();
+			$data['permissions'] = $this->fetchPermissions();
+			if($centerid == null){
+				$data['centerid'] = $centerid;
+				$data['centerData'] = $this->editCenterProfile($data['centerid']);
+			}
+			else{
+				$data['centerid'] = (json_decode($this->getAllCenters())->centers[0])->centerid;
+				$data['centerData'] = $this->editCenterProfile($data['centerid']);
+			}
+				$this->load->view('editCenterProfile',$data);
 		}
-		$data['centerid'] = $centerid;
-		$data['centers'] = $this->getAllCenters();
-		$data['center_profile'] = json_decode($data['centers'])->centers[$centerid-1];
-		$data['permissions'] = $this->fetchPermissions();
-	//footprint start
-	if($this->session->has_userdata('current_url')){
-		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-		$this->session->set_userdata('current_url',currentUrl());
-	}
-	// footprint end
-		$this->load->view('editCenterProfile',$data);
-	}
-	else{
-		$this->load->view('redirectToLogin');
-	}
+		else{
+			$this->load->view('redirectToLogin');
+		}
+	}	
+
+	function editCenterProfile($centerid){
+		if($this->session->has_userdata('LoginId')){
+		$url = BASE_API_URL."settings/editCenter/".$centerid."/".$this->session->userdata('LoginId');
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			return $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+			return 'error';
+		}
+		}
 	}	
 
 	public function updateCenter(){
@@ -361,7 +389,7 @@ $server_output = curl_exec($ch);
 
 			}
 
-	}
+		}
 	}
 		public function addRole(){
 		$form_data = $this->input->post();
@@ -1227,7 +1255,7 @@ $server_output = curl_exec($ch);
 						$this->session->set_userdata('current_url',currentUrl());
 					}
 					// footprint end
-					$this->load->view('AddMultipleEmployees',$data);
+					$this->load->view('addMultipleEmployees',$data);
 				}
 			else{
 				$this->load->view('redirectToLogin');
@@ -1261,8 +1289,9 @@ $server_output = curl_exec($ch);
 					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 					$server_output = curl_exec($ch);
 					$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+					var_dump($server_output);
 				if($httpcode == 200){
-					echo $server_output;
+					// echo $server_output;
 					curl_close ($ch);
 
 				}

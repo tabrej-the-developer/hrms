@@ -65,11 +65,16 @@ class SettingsModel extends CI_Model {
 		$this->db->query("UPDATE users SET password = '$password' WHERE id = '$userid' and password = '$passcode'");
 	}
 
-	public function updateCenterProfile($centerid,$logo,$name,$addStreet,$addCity,$addState,$addZip){
+	public function centerDetails($centerid){
 		$this->load->database();
-		$this->db->query("UPDATE centers SET logo = '$logo',name = '$name', addStreet = '$addStreet', addCity = '$addCity',addState = '$addState' , addZip = '$addZip' where centerid = '$centerid'");
+		$query = $this->db->query("SELECT * FROM centers where centerid = $centerid");
+		return $query->row();
 	}
-
+	public function centerRecord($centerid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM centerrecord where centerId = $centerid");
+		return $query->row();
+	}
 
 	public function getRooms($centerid){
 		$this->load->database();
@@ -255,10 +260,13 @@ class SettingsModel extends CI_Model {
 		}
 // 		// add center 
 
-	public function addCenter($addStreet,$addCity,$addState,$addZip,$name,$centre_phone_number,$centre_mobile_number,$Centre_email){
+	public function addCenter($addStreet,$addCity,$addState,$addZip,$name,$centre_phone_number,$centre_mobile_number,$Centre_email,$userid){
 		$this->load->database();
 		$query = $this->db->query("INSERT INTO centers (addStreet, addCity, addState, addZip, name, centre_phone_number, centre_mobile_number, centre_email) VALUES ('$addStreet','$addCity','$addState','$addZip','$name','$centre_phone_number','$centre_mobile_number','$Centre_email')");
 		$id = $this->db->query("SELECT centerid FROM centers ORDER BY centerid DESC LIMIT 1");
+		$centers = $this->db->query("SELECT center FROM users where id = '$userid'");
+		$centerId = strval(($id->row())->centerid);
+					$this->db->query("UPDATE users set center = CONCAT(center,'|$centerId') where id='$userid'");
 		return strval(($id->row())->centerid);
 	}
 

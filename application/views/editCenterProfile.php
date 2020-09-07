@@ -71,7 +71,11 @@ font-family: 'Open Sans', sans-serif;
   </style>
 </head>
 <body id="page-top">
-  <?php $permissions = json_decode($permissions); ?>
+  <?php $permissions = json_decode($permissions); 
+        $centerData = json_decode($centerData);
+        $centers = json_decode($centers);
+        print_r($centers->centers[0]->centerid);
+  ?>
      <?php require_once('header.php') ?>
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewCenterProfileYN : "N")== "Y"){ ?>
   <div id="wrappers"> 
