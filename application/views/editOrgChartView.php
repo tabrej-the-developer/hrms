@@ -230,7 +230,7 @@ font-family: 'Open Sans', sans-serif;
 		<span class="center-select-span">Show Chart for:</span>
 		<?php $centersList = json_decode($centers); ?>
 		<span class="select_css">
-			<select class="sellect">
+			<select class="sellect" id="sellect">
 				<!-- <option>--Select Center--</option> -->
 				<?php foreach($centersList->centers as $centers){ ?>
 				<option value="<?php echo $centers->centerid;?>" class="opt"><?php echo $centers->name;?></option>
@@ -240,11 +240,6 @@ font-family: 'Open Sans', sans-serif;
 	</div>
 	<div class="thisOne">	
 		<div class="center-name">
-			<span>
-				<?php print_r($centersList->centers[$centerid-1]->name);
-				echo "<br>";
-		 		?>
-		 	</span>
 		 	<?php if(isset($permissions->permissions) ? $permissions->permissions->editOrgChartYN : "N" == "Y"){ ?>
 		 <span onclick="newArea()" style="font-size:25px">
 			<a href="javascript:void(0)" >
@@ -292,6 +287,27 @@ font-family: 'Open Sans', sans-serif;
 	</div>
 </div>
 <script type="text/javascript">
+	<?php 
+		if(isset($_GET['centerid'])) {?>
+			document.getElementById("sellect").value = "<?php echo $_GET['centerid'];?>";
+			selectChange();
+			<?php }?>
+
+	function selectChange(){
+		var url = window.location.origin+"/PN101/settings/orgChart";
+		var centerid = document.getElementById("sellect").value;
+		$.ajax({
+			url : url,
+			type : 'POST',
+			data : {centerid:centerid} ,
+			success:function(response){
+				$('.thisOne').html($(response).find('.thisOne').html())
+			} 
+		}).fail(function(){
+			alert('Failed')
+		});
+	}
+
 	function newArea(){
 		var insertForm = document.createElement('form');
 		var formParent = document.getElementById('form-space');
@@ -379,6 +395,7 @@ font-family: 'Open Sans', sans-serif;
 					isRoomYN:isRoomYN,
 				},
 				success:function(response){
+					window.history.replaceState(null, null, "?centerid="+centerid);
 					window.location.reload();
 				}
 			})
@@ -389,6 +406,7 @@ font-family: 'Open Sans', sans-serif;
 			var url = window.location.origin+"/PN101/settings/addRole";
 			var areaid = $(this).parent().parent().parent().attr('areaId');
 			var roleName = $(this).parent().parent().children().children().next().val();
+			var centerid = $('.sellect').prop('value');
 			$.ajax({
 				url:url,
 				type:'POST',
@@ -397,6 +415,7 @@ font-family: 'Open Sans', sans-serif;
 					roleName:roleName,
 				},
 				success:function(response){
+					window.history.replaceState(null, null, "?centerid="+centerid);
 					window.location.reload();
 				}
 			})
@@ -409,6 +428,7 @@ font-family: 'Open Sans', sans-serif;
 			var areaid = $(this).parent().parent().attr('areaId');
 			var areaName = $(this).parent().prev().prev().children().val();
 			var isRoomYN = $(this).parent().prev().children().val();
+			var centerid = $('.sellect').prop('value');
 			$.ajax({
 				url:url,
 				type:'POST',
@@ -418,6 +438,7 @@ font-family: 'Open Sans', sans-serif;
 					isRoomYN : isRoomYN
 				},
 				success:function(response){
+					window.history.replaceState(null, null, "?centerid="+centerid);
 					window.location.reload();
 				}
 			}).fail(function(){
@@ -431,6 +452,7 @@ font-family: 'Open Sans', sans-serif;
 			var url = window.location.origin+"/PN101/settings/UpdateRole";
 			var roleid = $(this).parent().prev().children().val();
 			var roleName = $(this).parent().prev().prev().children().val();
+			var centerid = $('.sellect').prop('value');
 			$.ajax({
 				url:url,
 				type:'POST',
@@ -439,8 +461,9 @@ font-family: 'Open Sans', sans-serif;
 					roleName:roleName,
 				},
 				success:function(response){
+					window.history.replaceState(null, null, "?centerid="+centerid);
 					window.location.reload();
-					alert(roleid + " " + roleName )
+					// alert(roleid + " " + roleName )
 				}
 			})
 		})
@@ -449,24 +472,12 @@ font-family: 'Open Sans', sans-serif;
 			$('#form-space').empty();
 	}
 
-	$(document).on('change','.sellect',function(){
-		var url = window.location.origin+"/PN101/settings/orgChart";
-		var centerid = parseInt($(this).prop('value'));
-		$.ajax({
-			url : url,
-			type : 'POST',
-			data : {centerid:centerid} ,
-			success:function(response){
-				$('.thisOne').html($(response).find('.thisOne').html())
-			} 
-		}).fail(function(){
-			alert('Failed')
-		})
-	})
+	$(document).on('change','.sellect',selectChange)
 
 	$(document).on('click','.delete-role',function(){
 		var url = window.location.origin+"/PN101/settings/deleteRole"
 		var id = $(this).attr('d-val');
+		var centerid = $('.sellect').prop('value');
 		$.ajax({
 			url : url ,
 			type: 'POST',
@@ -474,6 +485,7 @@ font-family: 'Open Sans', sans-serif;
 				id : id
 			},
 			success : function(response){
+				window.history.replaceState(null, null, "?centerid="+centerid);
 				window.location.reload();
 			}
 		})
@@ -482,6 +494,7 @@ font-family: 'Open Sans', sans-serif;
 	$(document).on('click','.delete-area',function(){
 		var url = window.location.origin+"/PN101/settings/deleteArea"
 		var id = $(this).attr('d-val');
+		var centerid = $('.sellect').prop('value');
 		$.ajax({
 			url : url ,
 			type: 'POST',
@@ -489,6 +502,7 @@ font-family: 'Open Sans', sans-serif;
 				id : id
 			},
 			success : function(response){
+				window.history.replaceState(null, null, "?centerid="+centerid);
 				window.location.reload();
 			}
 		})

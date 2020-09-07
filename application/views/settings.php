@@ -164,7 +164,7 @@ a[href*="settings"],.xero_settings a{
 			</div>
 		<?php } ?>
 			<?php if(isset($permissions->permissions) && $permissions->permissions->viewRoomSettingsYN == "Y"){ ?>
-			<div class="tile-box d-md-flex col-3">
+			<!-- <div class="tile-box d-md-flex col-3">
 				<div class="col-6">
 					<a href="<?php echo base_url()?>settings/editRooms">
 						<img src="<?php echo site_url('assets/images/settings-icons/room-settings.png') ?>">
@@ -173,7 +173,7 @@ a[href*="settings"],.xero_settings a{
 				<div class="col-6">
 					<a href="<?php echo base_url()?>settings/editRooms">Room Settings</a>
 				</div>
-			</div>
+			</div> -->
 		<?php } ?>
 			<?php if(isset($permissions->permissions) && $permissions->permissions->viewEntitlementsYN == "Y"){ ?>
 			<div class="tile-box d-md-flex col-3">

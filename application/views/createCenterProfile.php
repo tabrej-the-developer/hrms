@@ -93,96 +93,103 @@ font-family: 'Open Sans', sans-serif;
 				 		<div class="row">
 						<span id="addCenter_heading">Center Details</span>
 							
-						<div class="" style="padding: 5px;"></div>
+						<!-- <div class="" style="padding: 5px;"></div> -->
 						<div class="input_box">
 							<label><i style="color: #aa63ff;" class=""></i> Center Name</label>
-							<input type="text" class="" name="center_name" id="ceter name" placeholder="Center name" value="" required>
+							<input type="text" class="" name="center_name" id="ceter name" value="" required>
 						</div>
 				    	<div class="input_box">
 							<label><i style="color: #aa63ff;" class=""></i> City</label>
-						<input type="text" class="" name="center_city" id="center city" placeholder = "City" value="">
+						<input type="text" class="" name="center_city" id="center city" value="">
 						</div>
 						<div class="street_address">
 							<label><i style="color: #aa63ff;" class=""></i> Street Address</label>
-							<textarea class="street_address" name="center_street" id="center street" placeholder="Street Address"></textarea>
+							<textarea class="street_address" name="center_street" id="center street" ></textarea>
 						</div>
 					     <div class="input_box">
 							<label><i style="color: #aa63ff;" class=""></i> State</label>
 							<span class="select_css">
 								<select class="" name="center_state" id="center state">
-									<option value=""></option>
+									<option value="1">New South Wales</option>
+									<option value="2">Queensland</option>
+									<option value="3">South Australia</option>
+									<option value="4">Tasmania</option>
+									<option value="5" selected>Victoria</option>
+									<option value="6">Western Australia</option>
+									<option value="7">Australian Capital Territory</option>
+									<option value="8">Northern Territory</option>
 								</select>
 							</span>
 						</div>
 					    <div class="input_box">
 							<label><i style="color: #aa63ff;" class=""></i> Postcode</label>
-							<input class="" type="number" name="center_zip" id="center zip" value="" placeholder = "Postcode" required>
+							<input class="" type="number" name="center_zip" id="center zip" value="" required>
 						</div>	
 					  <div class="input_box">
 							<label><i style="color: #aa63ff;" class=""></i> Centre Phone Number</label>
-							<input class="" type="number" name="center_phone" id="centre_phone_number" value="" placeholder = "Centre phone number">
+							<input class="" type="number" name="center_phone" id="centre_phone_number" value="">
 						</div>
 					    <div class="input_box">
 							<label><i style="color: #aa63ff;" class=""></i> Centre Mobile Number</label>
-							<input class="" type="number" name="center_mobile" id="centre_mobile_number" value="" placeholder = "Centre mobile number">
+							<input class="" type="number" name="center_mobile" id="centre_mobile_number" value="" >
 						</div>
 					    <div class="input_box">
 							<label><i style="color: #aa63ff;" class=""></i> Centre Email	</label>
-							<input class="" type="email" name="center_email" id="Centre_email	" value="" placeholder = "Centre email	">
+							<input class="" type="email" name="center_email" id="Centre_email	" value="">
 						</div>
 						<div class="input_box">
 							<label>
 								<i style="color: #aa63ff;" class=""></i> Centre ABN</label>
-							<input class="" type="text" name="center_abn" id="centre_abn" placeholder="Centre ABN" value="" >
+							<input class="" type="text" name="center_abn" id="centre_abn" value="" >
 						</div>
 						<div class="input_box">
 							<label>
 								<i style="color: #aa63ff;" class=""></i> Centre ACN</label>
-							<input class="" type="text" name="center_acn" id="centre_acn" placeholder="Centre ACN" value="">
+							<input class="" type="text" name="center_acn" id="centre_acn" value="">
 						</div>
 						<div class="input_box">
 							<label>
 								<i style="color: #aa63ff;" class=""></i> Centre SE Number</label>
-							<input class="" type="text" name="center_se_no" id="centre_se_no" placeholder="Centre SE no" value="">
+							<input class="" type="text" name="center_se_no" id="centre_se_no" value="">
 						</div>
 						<div class="input_box">
 							<label>
 								<i style="color: #aa63ff;" class=""></i> Center Date Opened</label>
-							<input class="" type="date" name="center_date_opened" id="centre_date_opened" placeholder="Center date-opened" value="">
+							<input class="" type="date" name="center_date_opened" placeholder="dd-mm-yyyy" id="centre_date_opened" value="">
 						</div>
 						<div class="input_box">
 							<label>
 								<i style="color: #aa63ff;" class=""></i> Centre Capacity</label>
-							<input class="" type="text" name="center_capacity" id="centre_capacity" placeholder="Centre capacity" value="">
+							<input class="" type="text" name="center_capacity" id="centre_capacity" value="">
 						</div>
 						<div class="input_box">
 							<label>
 								<i style="color: #aa63ff;" class=""></i> Centre Approval Doc</label>
-							<input class="" type="file" name="center_approval_doc" id="centre_approval_doc" placeholder="Centre approval doc" value="" onchange="validate('centre_approval_doc')">
+							<input class="" type="file" name="center_approval_doc" id="centre_approval_doc"  value="" onchange="validate('centre_approval_doc')">
 						</div>
 						<div class="input_box">
 							<label>
 								<i style="color: #aa63ff;" class=""></i> Center CCS Doc</label>
-							<input class="" type="file" name="center_ccs_doc" id="centre_ccs_doc" placeholder="Center CCS-doc" value="" onchange="validate('centre_ccs_doc')">
+							<input class="" type="file" name="center_ccs_doc" id="centre_ccs_doc"  value="" onchange="validate('centre_ccs_doc')">
 						</div>
-						<div class="input_box">
+						<!-- <div class="input_box">
 							<label>
 								<i style="color: #aa63ff;" class=""></i> Manager Name</label>
-							<input class="" type="text" name="manager_name" id="manager_name" placeholder="Manager-name" value="">
-						</div>
-						<div class="input_box">
+							<input class="" type="text" name="manager_name" id="manager_name" value="">
+						</div> -->
+						<!-- <div class="input_box">
 							<label>
 								<i style="color: #aa63ff;" class=""></i> Center Admin Name</label>
 							<input class="" type="text" name="center_admin_name" id="centre_admin_name" placeholder="Center admin-name" value="">
-						</div>
-						<div class="input_box">
+						</div> -->
+						<!-- <div class="input_box">
 							<label>
 								<i style="color: #aa63ff;" class="fas "></i> Center Nominated Supervisor</label>
 							<input class="" type="text" name="centre_nominated_supervisor" id="centre_nominated_supervisor" placeholder="Center nominated-supervisor" value="">
-						</div>
+						</div> -->
 					</div>
-				<hr>
-					<div class="row">
+				<!-- <hr> -->
+					<!-- <div class="row">
 					  <div class="col-lg-6"><h3>Organize Rooms</h3></div>
 						<div class="col-lg-6 text-right">
 							<div id="AddRoom" >
@@ -190,16 +197,16 @@ font-family: 'Open Sans', sans-serif;
 							</div>
 						</div>
 						<div class="" style="padding: 5px;"></div>
-					</div>
-					<span id="" class="room-class">
+					</div> -->
+					<!-- <span id="" class="room-class">
 					<div class="row">
           <div class="input_box">
 						<label><i style="color: #aa63ff;" class=""></i> Room Name</label>
-						<input type="text" class="room_name" name="room_name[]" id="" value="" placeholder="Room name">
+						<input type="text" class="room_name" name="room_name[]" id="" value="" >
 					</div>
 	      	<div class="input_box">
 						<label><i style="color: #aa63ff;" class=""></i> Capacity</label>
-						<input type="number" class="capacity_" name="capacity_[]" value="" placeholder="Capacity" > 
+						<input type="number" class="capacity_" name="capacity_[]" value=""  > 
 					</div>
 		      <div class="input_box">
 						<label><i style="color: #aa63ff;" class=""></i> Minimum Age</label>
@@ -211,7 +218,7 @@ font-family: 'Open Sans', sans-serif;
 						<input type="number" class="maximum_age" name="maximum_age[]" id="" value="" placeholder="Max age in months" > 
 					</div>
 						</div>
-					</span>	
+					</span>	 -->
 				<hr>
 
 					<div class="row text-center justify-content-center align-self-center">
