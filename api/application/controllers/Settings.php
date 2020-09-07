@@ -217,7 +217,25 @@ class Settings extends CI_Controller {
 		}
 	}
 
-
+	public function getStates($userid){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+				$this->load->model('settingsModel');
+				$data['states'] = $this->settingsModel->getStates($userid);
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
 
 	public function getRooms($centerid,$userid){
 		$headers = $this->input->request_headers();
@@ -401,7 +419,6 @@ class Settings extends CI_Controller {
 					else{
 						$center_ccs_doc = ""; 
 					}
-					$manager_name = $json->manager_name;
 					$center_admin_name = $json->center_admin_name;
 					$centre_nominated_supervisor = $json->centre_nominated_supervisor;
 					$room_name = $json->room_name;
@@ -410,7 +427,7 @@ class Settings extends CI_Controller {
 					$maximum_age = $json->maximum_age;
 					$centerid = $this->settingsModel->addCenter($center_city,$center_street,$center_state,$center_zip,$center_name,$center_phone,$center_mobile,$center_email);
 					$centerRecordUniqueId = uniqid();
-					$this->settingsModel->addCenterRecord($centerid,$centerRecordUniqueId,$center_abn,$center_acn,$center_se_no,$center_date_opened,$center_capacity,$center_approval_doc,$center_ccs_doc,$manager_name,$center_admin_name,$centre_nominated_supervisor);
+					$this->settingsModel->addCenterRecord($centerid,$centerRecordUniqueId,$center_abn,$center_acn,$center_se_no,$center_date_opened,$center_capacity,$center_approval_doc,$center_ccs_doc,$center_admin_name,$centre_nominated_supervisor);
 					for($i=0;$i<count($room_name);$i++){
 						$roo = $room_name[$i];
 						$cap = $capacity_[$i];

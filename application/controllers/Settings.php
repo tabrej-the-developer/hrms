@@ -149,11 +149,12 @@ public function editRooms(){
 		$this->session->set_userdata('current_url',currentUrl());
 	}
 	// footprint end
+			$data['states'] = $this->getStates();
 			$this->load->view('createCenterProfile',$data);
 		}
 	else{
 		$this->load->view('redirectToLogin');
-	}
+		}
 	}
 
 	public function createCenterProfile(){
@@ -187,7 +188,6 @@ public function editRooms(){
 			$data['center_ccs_doc'] = base64_encode(file_get_contents($_FILES['center_ccs_doc']['tmp_name']));
 		else
 			$data['center_ccs_doc'] = "";
-		$data['manager_name'] = $this->input->post('manager_name');
 		$data['center_admin_name'] = $this->input->post('center_admin_name');
 		$data['centre_nominated_supervisor'] = $this->input->post('centre_nominated_supervisor');
 		$data['room_name'] = $this->input->post('room_name');
@@ -286,10 +286,8 @@ public function editRooms(){
 		if($this->session->has_userdata('LoginId')){
 			if($this->input->post('centerid') != null){
 		$data['centerid'] = $this->input->post('centerid');
-		$data['centerx'] = $data['centerid']-1;
 	}else{
-		$data['centerid'] = 1;
-		$data['centerx'] = 0;
+		$data['centerid'] = (json_decode($this->getAllCenters())->centers[0])->centerid;
 	}
 		$data['permissions'] = $this->fetchPermissions();
 		$data['centers'] = $this->getAllCenters();
@@ -1758,6 +1756,24 @@ $server_output = curl_exec($ch);
 			}
 		}
 
+	function getStates(){
+		$url = BASE_API_URL."/settings/getStates/".$this->session->userdata('LoginId');
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			return $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
 
+		}
+	}
 
 }
