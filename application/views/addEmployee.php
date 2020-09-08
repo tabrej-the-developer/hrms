@@ -14,8 +14,8 @@
     margin-left: -28px;
     margin-top: 10px !important;
     background-size: 0.6rem 0.6rem;
-
 	}
+
 	</style>
 </head>
 <body class="add_employee_body">
@@ -50,7 +50,7 @@
 		<span class="nav-button m-i"><span>Medical Info</span></span>
 		</div>	
 	</section>
-<form method="POST" action="createEmployeeProfile" style="height: 100%">
+<form method="POST" action="createEmployeeProfile" style="height: 100%" onsubmit="return onFormSubmit()">
 	<section class="employee-section">	
 		<!-- <h3>Personal</h3> -->
 		<span class="d-flex">
@@ -65,7 +65,9 @@
 			</span>
 		</span>
 	<span class="span-class name__">
-		<label class="labels__">Name</label>
+		<label class="labels__">Name<sup>
+				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+			</sup></label>
 		<span class=" row row_addEmployee ml-1 ">
 		<span class="span-class col-4 ">
 			<!-- <label class="labels__">First Name</label> -->
@@ -84,11 +86,15 @@
 </span>
 		
 		<span class="span-class">
-			<label class="labels__">Email</label>
+			<label class="labels__">Email<sup>
+				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+			</sup></label>
 			<input id="emails"  class="" type="text" name="emails">
 		</span>
 		<span class="span-class">
-			<label class="labels__">Alias</label>
+			<label class="labels__">Alias<sup>
+				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+			</sup></label>
 			<input id="alias"  class="" type="text" name="alias">
 		</span>
 		<span class="span-class">
@@ -108,7 +114,9 @@
 		</span>
 				
 		<span class="span-class">
-			<label class="labels__">Job Title</label>
+			<label class="labels__">Job Title<sup>
+				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+			</sup></label>
 			<input id="jobTitle"  class="" type="text" name="jobTitle">
 		</span>
 	
@@ -161,7 +169,9 @@
 		</span>
 	<span class="d-block">
 		<span class="span-class col-3">
-			<label class="labels__">Start Date</label>
+			<label class="labels__">Start Date<sup>
+				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+			</sup></label>
 		<input id="startDate"  class="" type="date" name="startDate">
 		</span>
 		<span class="span-class col-3">
@@ -380,7 +390,9 @@
 
 	<section class="employee-details">
 		<span class="span-class">
-			<label class="labels__">Employee Number</label>
+			<label class="labels__">Employee Number<sup>
+				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+			</sup></label>
 			<input id="employee_no" type="text" name="employee_no">
 		</span>
 		<span class="span-class">
@@ -407,7 +419,9 @@
 		</span>
 
 		<span class="span-class">
-			<label class="labels__">Area</label>
+			<label class="labels__">Area<sup>
+				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+			</sup></label>
 
 				<span class="" id="area-select">
 					<span class="select_css">
@@ -425,7 +439,9 @@
 		</span>
 
 		<span class="span-class">
-			<label class="labels__">Role</label>
+			<label class="labels__">Role<sup>
+				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+			</sup></label>
 			<span id="role-select">
 				<span class="select_css">
 					<select id="role" name="role">
@@ -447,7 +463,9 @@
 
 
 		<span class="span-class">
-			<label class="labels__">Level</label>
+			<label class="labels__">Level<sup>
+				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+			</sup></label>
 			<span class="select_css">
 				<select id="level" name="level">
 					<?php $levels = json_decode($levels);
@@ -945,7 +963,64 @@ $(document).ready(function(){
 
 
 </script>
-
+<script type="text/javascript">
+	function onFormSubmit(e){
+		if($('#fname').val() == null || $('#fname').val() == "" || 	$('#lname').val() == null || $('#lname').val() == ""){
+		$('#fname').css({"border-color": "red", 
+             "border-width":"1px", 
+             "border-style":"solid"})
+		return false;
+		}
+		if($('#emails').val() == null || $('#emails').val() == ""){
+			$('#emails').css({"border-color": "red", 
+             "border-width":"1px", 
+             "border-style":"solid"})
+			return false;
+		}
+		if($('#alias').val() == null || $('#alias').val() == ""){
+			$('#alias').css({"border-color": "red", 
+             "border-width":"1px", 
+             "border-style":"solid"})
+			return false;
+		}
+		if($('#jobTitle').val() == null || $('#jobTitle').val() == ""){
+			$('#jobTitle').css({"border-color": "red", 
+             "border-width":"1px", 
+             "border-style":"solid"})
+			return false;
+		}
+		if($('#startDate').val() == null || $('#startDate').val() == ""){
+			$('#startDate').css({"border-color": "red", 
+             "border-width":"1px", 
+             "border-style":"solid"})
+			return false;
+		}
+		if( $('#employee_no').val() == null || $('#employee_no').val() == "" ){
+			$('#employee_no').css({"border-color": "red", 
+             "border-width":"1px", 
+             "border-style":"solid"})
+			return false;
+		}
+		if( $('#role').val() == null || $('#role').val() == "" ){
+			$('#role').css({"border-color": "red", 
+             "border-width":"1px", 
+             "border-style":"solid"})
+			return false;
+		}
+		if( $('#area').val() == null || $('#area').val() == "" ){
+			$('#area').css({"border-color": "red", 
+             "border-width":"1px", 
+             "border-style":"solid"})
+			return false;
+		}
+		if( $('#level').val() == null || $('#level').val() == "" ){
+			$('#level').css({"border-color": "red", 
+             "border-width":"1px", 
+             "border-style":"solid"})
+			return false;
+		}
+	}
+</script>
 
 <script type="text/javascript">
 	$(document).ready(function(){

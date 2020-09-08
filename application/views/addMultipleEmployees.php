@@ -18,6 +18,7 @@
 	.addMultipleEmployee_div{
 		height: 100%;
 		display: flex;
+		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 	}
@@ -45,21 +46,33 @@
 <?php if(isset($permissions->permissions) ? $permissions->permissions->editEmployeeYN : "N" == "Y"){ ?>
 	<section class="tab-buttons">
 		<div class="tab-buttons-div">
-		<span class="nav-button e-s"><span>Personal</span></span>
-		<span class="nav-button e-b-a-s"><span>Bank Account</span></span>
-		<span class="nav-button e-s-s"><span> Superannuation </span></span>
-		<span class="nav-button e-t-d-s"><span>Tax Declaration </span></span>
-		<span class="nav-button e-u-s"><span>Employment</span></span>	
-		<span class="nav-button m-i"><span>Medical Info</span></span>
+
 		</div>	
 	</section>
 <form method="POST" action="AddEmployeesMultiple" style="height: 100%" enctype="multipart/form-data">
 	<section class="employee-section">
 		<div class="addMultipleEmployee_div">
-			<span class="addMultipleEmployee_span">
+			<div>
+				<label>Center</label>
+				<span class="select_css">
+						<?php $centers = json_decode($centers);
+						?>
+					<select  name="centerid">
+						<?php foreach($centers->centers as $center){ ?>
+						<option value="<?php echo $center->centerid ?>"><?php echo $center->name ?></option>
+					<?php } ?>
+					</select>
+				</span>
+			</div>
+			<br>
+			<span class="addMultipleEmployee_span d-block">
 				<input type="file" name="addemployee">
 				<input type="submit" name="submit" value="submit">
 			</span>
+			<div style="position: absolute;bottom:5rem">
+				<span>Download a sample file structure</span>
+				<span><a href="<?php echo base_url('assets/files/sample.csv'); ?>" download>Download</a></span>
+			</div>
 		</div>
 	</section>
 </form>

@@ -2558,6 +2558,7 @@ $('.modal_body').draggable();
 		casualEmp_end_time = parseInt(casualEmp_end_time.replace(":",""));
 		var casualEmp_role_id = $('#casualEmp_role_id').val();
 		console.log(date+ "---"+roster_id+ "---"+emp_id+ "---"+casualEmp_start_time+ "---"+casualEmp_end_time+ "---"+casualEmp_role_id)
+		if(date != null && date != "" && roster_id != null && roster_id != "" && emp_id != null && emp_id != "" && casualEmp_start_time != null && casualEmp_start_time != "" && casualEmp_end_time != null && casualEmp_end_time != "" && casualEmp_role_id != null && casualEmp_role_id != ""){
 		var url = window.location.origin+"/PN101/roster/addCasualEmployee";
 		$.ajax({
 			url:url,
@@ -2578,6 +2579,10 @@ $('.modal_body').draggable();
 				}
 			}
 		})
+		}else{
+			
+		}
+
 	})
 </script>
 <script type="text/javascript">

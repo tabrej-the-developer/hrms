@@ -335,23 +335,23 @@ public function editRooms(){
 
 
 		function getAllCenters(){
-		$url = BASE_API_URL."util/getAllCenters/".$this->session->userdata('LoginId');
-		$ch = curl_init($url);
-		curl_setopt($ch, CURLOPT_URL,$url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-			'x-device-id: '.$this->session->userdata('x-device-id'),
-			'x-token: '.$this->session->userdata('AuthToken')
-		));
-		$server_output = curl_exec($ch);
-		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		if($httpcode == 200){
-			return $server_output;
-			curl_close ($ch);
-		}
-		else if($httpcode == 401){
-			return 'error';
-		}
+			$url = BASE_API_URL."util/getAllCenters/".$this->session->userdata('LoginId');
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				return $server_output;
+				curl_close ($ch);
+			}
+			else if($httpcode == 401){
+				return 'error';
+			}
 	}
 
 	public function addArea(){
@@ -1255,6 +1255,7 @@ $server_output = curl_exec($ch);
 						$this->session->set_userdata('current_url',currentUrl());
 					}
 					// footprint end
+					$data['centers'] = $this->getAllCenters();
 					$this->load->view('addMultipleEmployees',$data);
 				}
 			else{
@@ -1269,6 +1270,7 @@ $server_output = curl_exec($ch);
 					$handle = fopen($file, "r");
 					$array['details'] = [];
 					$val = 0;
+					$array['center'] = $this->input->post('centerid');
 						while ($row = fgetcsv($handle)) {
 						   // if($val >0){
 						   	$array['details'][$val] = $row;
@@ -1289,7 +1291,7 @@ $server_output = curl_exec($ch);
 					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 					$server_output = curl_exec($ch);
 					$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-					var_dump($server_output);
+					print_r($server_output);
 				if($httpcode == 200){
 					// echo $server_output;
 					curl_close ($ch);

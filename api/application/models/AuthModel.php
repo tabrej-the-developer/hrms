@@ -27,7 +27,12 @@ class AuthModel extends CI_Model {
 		$query = $this->db->query("SELECT * FROM users where email = '$email'");
 		return $query->row();
 	}
-
+		public function getUserFromId($email){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM users where id = '$email'");
+		return $query->row();
+	}
+	
 	public function insertUser($email,$password,$name,$role,$title,$center,$manager,$createdBy,$roleid,$level,$bonusRate){
 		$this->load->database();
 		$uid = uniqid();

@@ -91,17 +91,19 @@ class Notice extends CI_Controller {
 					$text = $json->text;
 					$subject = $json->subject;
 					$this->load->model('noticeModel');
-					foreach ($json->members as $memberid) {
-						if(preg_match('/[a-z]/i',$memberid) == 1){
-							$this->noticeModel->addNotice($userid,$memberid,$subject,$text);
-						}
-						if(preg_match('/[a-z]/i',$memberid) == 0 ){
-							$groupMembers = $this->noticeModel->getMembersOfGroup($memberid);
-							foreach($groupMembers as $member){
-								$this->noticeModel->addNotice($userid,$member->memberid,$subject,$text);
+						if($text != null && $text != "" $subject != null && $subject != "" && ( count($json->members) > 0) ){
+							foreach ($json->members as $memberid) {
+								if(preg_match('/[a-z]/i',$memberid) == 1){
+									$this->noticeModel->addNotice($userid,$memberid,$subject,$text);
+								}
+								if(preg_match('/[a-z]/i',$memberid) == 0 ){
+									$groupMembers = $this->noticeModel->getMembersOfGroup($memberid);
+									foreach($groupMembers as $member){
+										$this->noticeModel->addNotice($userid,$member->memberid,$subject,$text);
+									}
+								}
 							}
 						}
-					}
 					http_response_code(200);				
 				}
 				else{
@@ -129,14 +131,16 @@ class Notice extends CI_Controller {
 					$userid = $userid;
 					$groupName = $json->groupName;
 					$groupMembers = $json->groupMembers;
-					$groupId = $this->noticeModel->createGroup($userid,$groupName);
-					echo $groupId;
-					foreach ($groupMembers as $memberid) {
-						$this->noticeModel->addGroupMembers($memberid,$groupId);
-					}
-					$data['status'] = 'SUCCESS';
-					http_response_code(200);	
-					echo json_encode($data);			
+					if($groupName != null && $groupName != "" && (count($groupMembers) > 0) ){
+						$groupId = $this->noticeModel->createGroup($userid,$groupName);
+						echo $groupId;
+						foreach ($groupMembers as $memberid) {
+							$this->noticeModel->addGroupMembers($memberid,$groupId);
+						}
+						$data['status'] = 'SUCCESS';
+						http_response_code(200);	
+						echo json_encode($data);	
+					}		
 				}
 				else{
 					http_response_code(401);

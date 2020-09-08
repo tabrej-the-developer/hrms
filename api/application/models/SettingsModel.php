@@ -130,9 +130,20 @@ class SettingsModel extends CI_Model {
 			$this->load->database();
 			$query = $this->db->query("INSERT INTO employeecourses (employeeId, courseName, courseDescription, dateObtained, courseExpiryDate) VALUES ( '$xeroEmployeeId','$course_nme','$course_desc','$date_obt','$exp_date')");
 		}
-		public function addToUsers($employee_no,$password, $emails,$name,$title,$center,$manager,$userid,$role,$level,$alias){
+		public function getAreaId($centerid,$areaName){
 			$this->load->database();
-			$query = $this->db->query("INSERT INTO users (id,password, email, name,title,center, manager,created_at, created_by,roleid,level,alias) VALUES ('$employee_no','$password','$emails','$name','$title','$center','$manager',NOW(),'$userid','$role','$level','$alias')");
+			$query = $this->db->query("SELECT areaid FROM orgchartareas WHERE centerid = '$centerid' and areaName = '$areaName'");
+			return $query->row();
+		}
+		public function getRoledId($areaId,$roleName){
+			$this->load->database();
+			$query = $this->db->query("SELECT roleid FROM orgchartroles WHERE areaid = '$areaId' and roleName = '$roleName'");
+			return $query->row();
+		}
+
+		public function addToUsers($employee_no,$password, $emails,$name,$center,$userid,$role,$level,$alias){
+			$this->load->database();
+			$query = $this->db->query("INSERT INTO users (id,password, email, name,center,created_at, created_by,roleid,level,alias) VALUES ('$employee_no','$password','$emails','$name','$center',NOW(),'$userid',$role,'$level','$alias')");
 		}
 
 		public function addToEmployeeBankAccount( $xeroEmployeeId,$accountName,$bsb,$accountNumber,$remainderYN,$amount){

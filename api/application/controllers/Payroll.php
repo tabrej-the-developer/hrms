@@ -73,10 +73,16 @@ class Payroll extends CI_Controller{
 				$userDetails = $this->authModel->getUserDetails($userid);
 				if($userDetails != null && $userDetails->role == SUPERADMIN){
 					$this->load->model('payrollModel');
-					$this->payrollModel->updateEntitlement($id,$name,$rate);
-					$data['Status'] = 'SUCCESS';
-					http_response_code(200);
-					echo json_encode($data);
+					if($name != null && $name != "" && $rate != null && $rate != ""){
+						$this->payrollModel->updateEntitlement($id,$name,$rate);
+						$data['Status'] = 'SUCCESS';
+						http_response_code(200);
+						echo json_encode($data);
+					}else{
+						$data['Status'] = 'ERROR - Some fields are empty';
+						http_response_code(200);
+						echo json_encode($data);
+					}
 				}
 				else{
 
@@ -103,7 +109,9 @@ class Payroll extends CI_Controller{
 				$userDetails = $this->authModel->getUserDetails($userid);
 				if($userDetails != null && $userDetails->role == SUPERADMIN){
 					$this->load->model('payrollModel');
-					$this->payrollModel->addEntitlement($name,$rate,$userid);
+				if($name != null && $name != "" && $rate != null && $rate != ""){
+						$this->payrollModel->addEntitlement($name,$rate,$userid);
+					}
 					$data['Status'] = 'SUCCESS';
 				}
 				else{
@@ -162,7 +170,9 @@ class Payroll extends CI_Controller{
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			if($res != null && $res->userid == $userid){
 				$this->load->model('payrollModel');
-					$this->payrollModel->updateFlag($timesheetid,$memberid,$json->message);
+					if($timesheetid != null && $memberid != null ){
+						$this->payrollModel->updateFlag($timesheetid,$memberid,$json->message);
+					}
 					$data['status'] = 'SUCCESS';
 				}
 				http_response_code(200);
@@ -181,7 +191,9 @@ class Payroll extends CI_Controller{
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			if($res != null && $res->userid == $userid){
 				$this->load->model('payrollModel');
-					$this->payrollModel->deleteEntitlement($entitlementId);
+					if($entitlementId != null){
+						$this->payrollModel->deleteEntitlement($entitlementId);
+					}
 					$data['status'] = 'SUCCESS';
 				}
 				http_response_code(200);

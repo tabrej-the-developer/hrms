@@ -888,7 +888,7 @@ color:#FFFFFF;
           <h3 class="modal-title ">Schedule New Event</h3>
         </div>
         <div class="modal-body container">
-             <form method="post" action="<?php echo base_url() ?>mom/addMeeting" class="dashboard_form">
+             <form method="post" action="<?php echo base_url() ?>mom/addMeeting" class="dashboard_form" onsubmit="return onFormSubmit()">
               <div class="form-group modal_title_div">
                    <span class="title_span_label">
                       <label class="label_text">Title</label>
@@ -1347,5 +1347,51 @@ $('#toggle').remove();
       }
     }
   </script>
+<script type="text/javascript">
+    function onFormSubmit(e){
+      if( $('input[name="meetingTitle"]').val() == null ||  $('input[name="meetingTitle"]').val() == "" ){
+        $('input[name="meetingTitle"]').css({"border-color": "red", 
+               "border-width":"1px", 
+               "border-style":"solid"})
+      return false;
+      }
+      if( $('input[name="meetingDate"]').val() == null || $('input[name="meetingDate"]').val() == "" ){
+        $('input[name="meetingDate"]').css({"border-color": "red", 
+               "border-width":"1px", 
+               "border-style":"solid"})
+      return false;
+      }
+      if( $('input[name="meetingDate"]').val() == null || $('input[name="meetingDate"]').val() == "" ){
+      $('input[name="meetingDate"]').css({"border-color": "red", 
+               "border-width":"1px", 
+               "border-style":"solid"})
+      return false;
+      }
+      if($('input[name="meetingTime"]').val()  == null ||  $('input[name="meetingTime"]').val() == "" ){
+      $('input[name="meetingTime"]').css({"border-color": "red", 
+               "border-width":"1px", 
+               "border-style":"solid"})
+      return false;
+      }
+      if($('input[name="meetingLocation"]').val() == null || $('input[name="meetingLocation"]').val() == "" ){
+      $('input[name="meetingLocation"]').css({"border-color": "red", 
+               "border-width":"1px", 
+               "border-style":"solid"})
+      return false;
+      }
+      if( $('select[name="meetingcollab"]').val() == null ||  $('select[name="meetingcollab"]').val() == "" ){
+      $('select[name="meetingcollab"]').css({"border-color": "red", 
+               "border-width":"1px", 
+               "border-style":"solid"})
+      return false;
+      }
+      if($('select[name="invites"]').val() == null || $('select[name="invites"]').val() == "" ){
+      $('select[name="invites"]').css({"border-color": "red", 
+               "border-width":"1px", 
+               "border-style":"solid"})
+      return false;
+      }
+  }
+</script>
 </body>
 </html>

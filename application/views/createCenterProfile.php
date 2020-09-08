@@ -88,14 +88,16 @@ font-family: 'Open Sans', sans-serif;
 		<div  id="content-wrappers-element" >
 		<div class="card_future" style="padding: 20px;">
 	
-			<form name="userinput" action="createCenterProfile" method="post" enctype="multipart/form-data" >
+			<form name="userinput" action="createCenterProfile" method="post" enctype="multipart/form-data" onsubmit="onFormSubmit">
 				 	<span id="centerDetailsYo">
 				 		<div class="row">
 						<span id="addCenter_heading">Center Details</span>
 							
 						<!-- <div class="" style="padding: 5px;"></div> -->
 						<div class="input_box">
-							<label><i style="color: #aa63ff;" class=""></i> Center Name</label>
+							<label><i style="color: #aa63ff;" class=""></i> Center Name<sup>
+				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+					</sup></label>
 							<input type="text" class="" name="center_name" id="ceter name" value="" required>
 						</div>
 				    	<div class="input_box">
@@ -103,7 +105,9 @@ font-family: 'Open Sans', sans-serif;
 						<input type="text" class="" name="center_city" id="center city" value="">
 						</div>
 						<div class="street_address">
-							<label><i style="color: #aa63ff;" class=""></i> Street Address</label>
+							<label><i style="color: #aa63ff;" class=""></i> Street Address<sup>
+				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+			</sup></label>
 							<textarea class="street_address" name="center_street" id="center street" ></textarea>
 						</div>
 					     <div class="input_box">
@@ -256,6 +260,22 @@ font-family: 'Open Sans', sans-serif;
 			alert('File size must be less than 4MB')
 		}
 	}
+</script>
+<script type="text/javascript">
+function	onFormSubmit(){
+		if( $('#level').val() == null || $('#level').val() == "" ){
+			$('#level').css({"border-color": "red", 
+             "border-width":"1px", 
+             "border-style":"solid"})
+			return false;
+		}
+				if( $('#level').val() == null || $('#level').val() == "" ){
+			$('#level').css({"border-color": "red", 
+             "border-width":"1px", 
+             "border-style":"solid"})
+			return false;
+		}
+}
 </script>
 </body>
 </html>

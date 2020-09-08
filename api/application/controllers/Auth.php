@@ -26,9 +26,15 @@ class Auth extends CI_Controller {
 				
 				$this->load->model('authModel');
 				$user = $this->authModel->getUser($email,$password);
+				$emailExist = $this->authModel->getUserFromEmail($email);
+				$userExist = $this->authModel->getUserFromId($email);
 				if($user == null){
 					$data['Status'] = "ERROR";
 					$data['Message'] = "Invalid email id or password";
+					if($emailExist == null && $userExist == null){
+						$data['Status'] = "ERROR";
+						$data['Message'] = "User doesnot exist";
+					}
 				}
 				else{
 					$authToken = uniqid();

@@ -68,24 +68,41 @@ font-family: 'Open Sans', sans-serif;
     .street_address textarea{
       width: 66% !important;
     }
+  #addCenter_multipleEmployees{
+      border: none;
+      color: rgb(23, 29, 75);
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-weight: 700;
+      margin: 2px;
+      width:auto;
+      border-radius: 20px;
+      padding: 8px;
+      background: rgb(164, 217, 214);
+      }
   </style>
 </head>
 <body id="page-top">
   <?php $permissions = json_decode($permissions); 
         $centerData = json_decode($centerData);
         $centers = json_decode($centers);
-        print_r($centers->centers[0]->centerid);
   ?>
      <?php require_once('header.php') ?>
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewCenterProfileYN : "N")== "Y"){ ?>
   <div id="wrappers"> 
-  <div>
-    <span >
+  <div class="d-flex justify-content-between">
+    <span class="d-flex align-items-center">
       <a href="<?php echo base_url();?>/settings">
         <button class="back-button">
           <img src="<?php echo base_url('assets/images/back.svg');?>">
-          <span style="font-size:1.75rem;font-weight: bold;color: rgb(23, 29, 75); ">Edit Center</span>
         </button>
+      </a>
+      <span style="font-size:1.75rem;font-weight: bold;color: rgb(23, 29, 75); ">Edit Center</span>
+    </span>
+    <span class="addEmployee_top_select pr-5">
+      <a href="<?php echo base_url('settings/createCenter');?>">
+        <button id="addCenter_multipleEmployees">Add Center</button>
       </a>
     </span>
   </div> 

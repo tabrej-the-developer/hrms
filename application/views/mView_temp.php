@@ -40,6 +40,7 @@ body {
 
 ::-webkit-scrollbar {
   width: 5px;
+  border: none;
 }
 
 ::-webkit-scrollbar-track {
@@ -50,7 +51,7 @@ body {
 ::-webkit-scrollbar-thumb {
   width: 1em;
   background-color: #ddd;
-  outline: 1px solid slategrey;
+  
   border-radius: 1rem;
 }
 
@@ -73,7 +74,7 @@ body {
 }
 .messages-box{
   height: 25vh;
-  overflow-y: scroll;
+  overflow-y: auto;
   background-color:#fff;
   padding-left: 1.5rem 
 }
@@ -774,7 +775,9 @@ p.ovrflowtext {
           <span class="icon-parent">
             <span class=" icon" style="
               <?php echo "background:".$colors_array[rand(0,5)].";"?>">
-              <?php echo icon($rc->name)?>
+              <?php if(isset($rc->name)){
+                echo icon($rc->name);
+              }?>
             </span>
           </span>
 			  </div>
@@ -835,13 +838,17 @@ p.ovrflowtext {
               <span class="icon-parent">
                 <span class=" icon" style="
                   <?php echo "background:".$colors_array[rand(0,5)].";"?>">
-                  <?php echo icon($chat->username)?>
+                  <?php if(isset($chat->username)){
+                    echo icon($chat->username);
+                  }?>
                 </span>
               </span>
               </div>
                 <div class="media-body ml-0">
                   <div class="d-flex align-items-center justify-content-between mb-1">
-                    <h6 class="mb-0 left-bar-heading"><?php echo $chat->username;?></h6>
+                    <h6 class="mb-0 left-bar-heading"><?php if(isset($chat->username)){
+                    echo $chat->username;
+                  }?></h6>
                   </div>
                 </div>
               </div>

@@ -74,7 +74,9 @@ class Rosters extends CI_Controller {
 				$newid = $json->newid;
 				$userid = $userid;
 			$this->load->model('rostersModel');
-			$this->rostersModel->changePriority($areaid,$newid);
+			if($areaid != null && $areaid != "" && $newid != "" && $newid != null){
+				$this->rostersModel->changePriority($areaid,$newid);
+				}
 			}
 		}
 		else{
@@ -92,7 +94,9 @@ class Rosters extends CI_Controller {
 					$areaid = $shiftId;
 					$userid = $userid;
 				$this->load->model('rostersModel');
-				$this->rostersModel->deleteShift($shiftId);
+				if($areaid != null && $areaid != "" ){
+					$this->rostersModel->deleteShift($shiftId);
+				}
 			}
 		}
 		else{
@@ -311,7 +315,9 @@ class Rosters extends CI_Controller {
 				if($startTime != null && $startTime != "" && $endTime != null && $endTime != "" &&
 					$shiftid != null && $shiftid != "" && $roleid != null && $roleid != "" && $status != null && $status != ""){
 					$this->load->model('rostersModel');
+				if($shiftid != null && $startTime != null && $endTime != null && $roleid != null && $status != null  && $shiftid != "" && $startTime != "" && $endTime != "" && $roleid != "" && $status != ""){
 					$this->rostersModel->updateShift($shiftid,$startTime,$endTime,$roleid,$status,$message);
+				}
 					$data['Status'] = 'SUCCESS';
 					http_response_code(200);
 					echo json_encode($data);
@@ -343,7 +349,8 @@ class Rosters extends CI_Controller {
 				$editRoster = $json->editRoster;
 				$rosterId = $json->rosterId;
 					$this->load->model('rostersModel');
-					$rosterPermission = $this->rostersModel->getRosterPermissions($employeeId,$rosterId,$userid);
+					if($employeeId != null && $employeeId != "" && $editRoster != null && $rosterId != null && $editRoster != "" && $rosterId != ""){
+						$rosterPermission = $this->rostersModel->getRosterPermissions($employeeId,$rosterId,$userid);
 					if(count($rosterPermission)  > 0 ){
 							$this->rostersModel->updateRosterPermission($employeeId,$rosterId,$userid,$editRoster);
 							$data['Status'] = 'SUCCESS';
@@ -355,6 +362,7 @@ class Rosters extends CI_Controller {
 							$data['Status'] = 'SUCCESS';
 							http_response_code(200);
 							echo json_encode($data);
+							}
 						}
 					}
 			else{

@@ -29,17 +29,19 @@ class Settings extends CI_Controller {
 				$areaName = $json->areaName;
 				$isRoomYN = $json->isRoomYN;
 				$this->load->model('settingsModel');
-				$area = $this->settingsModel->getAreaByName($centerid,$areaName);
-				if($area == null){
-					$area = $this->settingsModel->createArea($centerid,$areaName,$isRoomYN);
-					$data['Status'] = "SUCCESS";
-				}
-				else{
-					$data['Status'] = "ERROR";
-					$data['Message'] = "Area with the same name already exists";
-				}
-				http_response_code(200);
-				echo json_encode($data);
+				if($areaName != null & $areaName != ""){
+					$area = $this->settingsModel->getAreaByName($centerid,$areaName);
+					if($area == null){
+						$area = $this->settingsModel->createArea($centerid,$areaName,$isRoomYN);
+						$data['Status'] = "SUCCESS";
+					}
+					else{
+						$data['Status'] = "ERROR";
+						$data['Message'] = "Area with the same name already exists";
+					}
+					http_response_code(200);
+					echo json_encode($data);
+					}
 			}
 			else{
 				http_response_code(401);
@@ -650,10 +652,11 @@ if($center_name != null && $center_name != ""){
 						$data['role']	 = $array[$i][$index];
 
 						$index = 4;
-						$data['level']	 = $array[$i][$index];
+						$data['area']	 = $array[$i][$index];
 
 						$index = 5;
-						$data['jobTitle']	 = $array[$i][$index];
+						$data['level']	 = $array[$i][$index];
+
 
 						$index = 6;
 						$data['startDate'] = $array[$i][$index];
@@ -664,14 +667,8 @@ if($center_name != null && $center_name != ""){
 						$index = 7;
 						$data['employee_no'] = $array[$i][$index];
 
-						$index = 8 ;
-						$data['manager']  = $array[$i][$index];
 
-						$index = 9;
-						$data['center'] = $array[$i][$index];
-
-						$index = 10;
-						$data['startDate'] = $array[$i][$index];
+						$data['center'] = $json->center;
 
 						// $index = array_search("ordinaryEarningRateId", array_keys($array[0]));
 						// $ordinaryEarningRateId = $array[$i][$index];
@@ -682,8 +679,18 @@ if($center_name != null && $center_name != ""){
 						
 						$data['password'] = md5((explode(" ",$data['name']))[0]."@123");
 						// $this->settingsModel->addToEmployeeCourses( $xeroEmployeeId,$course_nme=null,$course_desc=null,$date_obt=null,$exp_date=null);
-						if(($data['employee_no'] != null && $data['employee_no'] != "") && ($data['emails'] != null && $data['emails'] != "") && ($data['center'] != null && $data['center'] != "")){
-								$this->settingsModel->addToUsers($data['employee_no'],$data['password'],$data['emails'],$data['name'],$data['jobTitle'],$data['center'],$data['manager'],$userid,$data['role'],$data['level'],$data['alias']);
+						if(($data['employee_no'] != null && $data['employee_no'] != "") && ($data['emails'] != null && $data['emails'] != "") && ($data['center'] != null && $data['center'] != "") && ($data['area'] != null && $data['area'] != "") && ($data['role'] != null && $data['role'] != "") ){
+							if(($this->settingsModel->getAreaId($data['center'],$data['area'])) != ""){
+								$areaId = ($this->settingsModel->getAreaId($data['center'],$data['area']))->areaid;
+									if($areaId != null && $areaId != ""){
+										if(($this->settingsModel->getRoledId($areaId,$data['role'])) != ""){
+										$roleId = ($this->settingsModel->getRoledId($areaId,$data['role']))->roleid;
+											if($roleId != null && $roleId != ""){
+												$this->settingsModel->addToUsers($data['employee_no'],$data['password'],$data['emails'],$data['name'],$data['center'],$userid,intval($roleId),$data['level'],$data['alias']);
+										  	}
+									  	}
+										}
+									}
 								$ouput['Status'] = "Records Added Successfully";
 						}
 						else{
