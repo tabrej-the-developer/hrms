@@ -1273,9 +1273,12 @@ $server_output = curl_exec($ch);
 					$array['center'] = $this->input->post('centerid');
 						while ($row = fgetcsv($handle)) {
 						   // if($val >0){
+							if($row[0] != ""){
 						   	$array['details'][$val] = $row;
+						   	$val++;
+						   }
 						   // }
-						   $val++;
+						   
 						}	
 					  fclose($handle);
 					  // print_r(json_encode($array));
@@ -1291,8 +1294,9 @@ $server_output = curl_exec($ch);
 					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 					$server_output = curl_exec($ch);
 					$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-					print_r($server_output);
+					// print_r($server_output);
 				if($httpcode == 200){
+					redirect(base_url('settings/AddMultipleEmployees'));
 					// echo $server_output;
 					curl_close ($ch);
 

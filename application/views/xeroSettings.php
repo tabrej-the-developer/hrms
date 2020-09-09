@@ -265,7 +265,7 @@
                       <?php if(isset($xeroToken[0]) != null ? false : true){ ?>
                       <span>
                         <button class="button">
-                          <a href="<?php echo base_url().'api/settings/startOauth/'.$xeroToken[1]; ?>" target="_blank">
+                          <a href="<?php echo base_url().'api/xero/startOauth/'.$this->session->userdata('LoginId').'/'.$xeroToken[1]; ?>" target="_blank">
                             Create Xero Token
                           </a>
                         </button>
