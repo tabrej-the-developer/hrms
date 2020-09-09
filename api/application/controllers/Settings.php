@@ -629,6 +629,7 @@ if($center_name != null && $center_name != ""){
 		}
 	}
 
+
 	public function addMultipleEmployees($userid){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
@@ -687,9 +688,26 @@ if($center_name != null && $center_name != ""){
 										$roleId = ($this->settingsModel->getRoledId($areaId,$data['role']))->roleid;
 											if($roleId != null && $roleId != ""){
 												$this->settingsModel->addToUsers($data['employee_no'],$data['password'],$data['emails'],$data['name'],$data['center'],$userid,intval($roleId),$data['level'],$data['alias']);
+												if($this->settingsModel->getPermissionForEmployee($userid) == null ){
+													$this->settingsModel->addPermissions($userid, $isQrReaderYN = 'N', $viewRosterYN = 'Y', $editRosterYN = 'N', $viewTimesheetYN = 'Y', $editTimesheetYN = 'N', $viewPayrollYN = 'Y', $editPayrollYN = 'N', $editLeaveTypeYN = 'N', $viewLeaveTypeYN = 'Y', $createNoticeYN = 'Y', $viewOrgChartYN = 'Y', $editOrgChartYN = 'N', $viewCenterProfileYN = 'Y', $editCenterProfileYN = 'Y', $viewRoomSettingsYN = 'Y', $editRoomSettingsYN = 'N', $viewEntitlementsYN = 'Y', $editEntitlementsYN = 'N', $editEmployeeYN = 'N', $xeroYN = 'N', $viewAwardsYN = 'Y', $editAwardsYN = 'N', $viewSuperfundsYN = 'Y', $editSuperfundsYN = 'N', $createMomYN = 'Y', $editPermissionYN = 'Y', $viewPermissionYN = 'Y');
+													}
 										  	}
 									  	}
 										}
+									}
+									if(($this->settingsModel->getAreaId($data['center'],$data['area'])) == ""){
+										$areaId = $this->settingsModel->addArea($data['center'],$data['area']);
+										if($areaId->areaid != null && $areaId->areaid != ""){
+											if(($this->settingsModel->getRoledId($areaId->areaid,$data['role'])) == ""){
+											$roleId = $this->settingsModel->addRole($areaId->areaid,$data['role']);
+												if($roleId->roleid != null && $roleId->roleid != ""){
+													$this->settingsModel->addToUsers($data['employee_no'],$data['password'],$data['emails'],$data['name'],$data['center'],$userid,intval($roleId->roleid),$data['level'],$data['alias']);
+													if($this->settingsModel->getPermissionForEmployee($userid) == null ){
+														$this->settingsModel->addPermissions($userid, $isQrReaderYN = 'N', $viewRosterYN = 'Y', $editRosterYN = 'N', $viewTimesheetYN = 'Y', $editTimesheetYN = 'N', $viewPayrollYN = 'Y', $editPayrollYN = 'N', $editLeaveTypeYN = 'N', $viewLeaveTypeYN = 'Y', $createNoticeYN = 'Y', $viewOrgChartYN = 'Y', $editOrgChartYN = 'N', $viewCenterProfileYN = 'Y', $editCenterProfileYN = 'Y', $viewRoomSettingsYN = 'Y', $editRoomSettingsYN = 'N', $viewEntitlementsYN = 'Y', $editEntitlementsYN = 'N', $editEmployeeYN = 'N', $xeroYN = 'N', $viewAwardsYN = 'Y', $editAwardsYN = 'N', $viewSuperfundsYN = 'Y', $editSuperfundsYN = 'N', $createMomYN = 'Y', $editPermissionYN = 'Y', $viewPermissionYN = 'Y');
+														}
+											  	}
+										  	}
+											}
 									}
 								$ouput['Status'] = "Records Added Successfully";
 						}

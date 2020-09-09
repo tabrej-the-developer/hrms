@@ -227,7 +227,7 @@
 	<div class="addEmployee-container">
 	<div class="addEmployee-container-child">
 	<?php $permissions = json_decode($permissions); ?>
-<?php if(isset($permissions->permissions) ? $permissions->permissions->editEmployeeYN : "N" == "N"){ ?>
+<?php // if(isset($permissions->permissions) ? $permissions->permissions->editEmployeeYN : "N" == "N"){ ?>
 	<section class="tab-buttons">
 		<div class="tab-buttons-div">
 		<span class="nav-button e-s"><span>Personal</span></span>
@@ -857,7 +857,7 @@
 			</i>Submit</button>
 	</div>
 </form>
-<?php } ?>
+<?php // } ?>
 		</div>
 	</div>
 </div>

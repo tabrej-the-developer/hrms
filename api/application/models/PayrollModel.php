@@ -55,25 +55,25 @@ class PayrollModel extends CI_Model {
 		return $query->result();
 	}
 
-	public function insertPayrollShifts($earningRateId,$name,$isExemptFromTax,$isExemptFromSuper,$isReportableAsW1,$earningType,$rateType,$multiplier,$currentRecord,$userid){
+	public function insertPayrollShifts($earningRateId,$name,$isExemptFromTax,$isExemptFromSuper,$isReportableAsW1,$earningType,$rateType,$multiplier,$currentRecord,$userid,$centerid){
 		$this->load->database();
-		$this->db->query("INSERT INTO payrollshifttype_v1 VALUES(0,'$earningRateId','$name','$isExemptFromTax','$isExemptFromSuper','$isReportableAsW1','$earningType','$rateType',$multiplier,'$currentRecord','$userid',now())");
+		$this->db->query("INSERT INTO payrollshifttype_v1 VALUES(0,'$earningRateId','$name','$isExemptFromTax','$isExemptFromSuper','$isReportableAsW1','$earningType','$rateType',$multiplier,'$currentRecord','$userid',now(),$centerid)");
 	}
 
-	public function insertSuperfund($abn,$usi,$type,$name,$bsb,$accountNumber,$accountName,$eServiceAdd,$employeeNo,$userid){
+	public function insertSuperfund($abn,$usi,$type,$name,$bsb,$accountNumber,$accountName,$eServiceAdd,$employeeNo,$userid,$centerid){
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO superfund VALUES(0,'$abn','$usi','$type','$name','$bsb','$accountNumber','$accountName','$eServiceAdd','$employeeNo',now(),'$userid')");
+		$query = $this->db->query("INSERT INTO superfund VALUES(0,'$abn','$usi','$type','$name','$bsb','$accountNumber','$accountName','$eServiceAdd','$employeeNo',now(),'$userid',$centerid)");
 		// var_dump($query);
 	}
 
-	public function deleteAllPayrollShiftTypes(){
+	public function deleteAllPayrollShiftTypes($centerid){
 		$this->load->database();
-		$this->db->query("DELETE FROM payrollshifttype_v1");
+		$this->db->query("DELETE FROM payrollshifttype_v1 where centerid = $centerid");
 	}
 	
-	public function deleteAllSuperFunds(){
+	public function deleteAllSuperFunds($centerid){
 		$this->load->database();
-		$this->db->query("DELETE FROM superfund");
+		$this->db->query("DELETE FROM superfund where centerid = $centerid");
 	}
 
 	public function updateFlag($timesheetid,$memberid,$message){

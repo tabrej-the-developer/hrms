@@ -10,10 +10,10 @@ class EmployeeModel extends CI_Model {
 		return $query->row();
 	}
 
-	public function insertEmployee($userid,$xeroEmployeeId,$title,$fname,$mname,$lname,$status,$emails,$dateOfBirth,$jobTitle,$gender,$homeAddLine1,$homeAddLine2,$homeAddCity,$homeAddRegion,$homeAddPostal,$homeAddCountry,$phone,$mobile,$startDate,$terminationDate,$ordinaryEarningRateId,$payrollCalendarId,$created_by){
+	public function insertEmployee($userid,$xeroEmployeeId,$title,$fname,$mname,$lname,$status,$emails,$dateOfBirth,$jobTitle,$gender,$homeAddLine1,$homeAddLine2,$homeAddCity,$homeAddRegion,$homeAddPostal,$homeAddCountry,$phone,$mobile,$startDate,$terminationDate,$ordinaryEarningRateId,$payrollCalendarId,$created_by,$classification){
 
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO employee VALUES('$userid','$xeroEmployeeId','$title','$fname','$mname','$lname','$status','$emails','$dateOfBirth','$jobTitle','$gender','$homeAddLine1','$homeAddLine2','$homeAddCity','$homeAddRegion','$homeAddPostal','$homeAddCountry','$phone','$mobile','$startDate','$terminationDate','$ordinaryEarningRateId','$payrollCalendarId',now(),'$created_by')");
+		$query = $this->db->query("INSERT INTO employee (userid, xeroEmployeeId, title, fname, mname, lname, status, emails, dateOfBirth, jobTitle, gender, homeAddLine1, homeAddLine2, homeAddCity, homeAddRegion, homeAddPostal, homeAddCountry, phone, mobile, startDate, terminationDate, ordinaryEarningRateId, payrollCalendarId, created_at, created_by, classification) VALUES('$userid','$xeroEmployeeId','$title','$fname','$mname','$lname','$status','$emails','$dateOfBirth','$jobTitle','$gender','$homeAddLine1','$homeAddLine2','$homeAddCity','$homeAddRegion','$homeAddPostal','$homeAddCountry','$phone','$mobile','$startDate','$terminationDate','$ordinaryEarningRateId','$payrollCalendarId',now(),'$created_by','$classification')");
 	}
 
 
@@ -48,3 +48,8 @@ class EmployeeModel extends CI_Model {
 		$query = $this->db->query("INSERT INTO employeesuperfund VALUES(0,'$employeeId','$superFundId','$employeeNumber','$superMembershipId')");
 	}
 }
+
+
+
+
+

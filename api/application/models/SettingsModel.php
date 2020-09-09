@@ -25,7 +25,18 @@ class SettingsModel extends CI_Model {
 		$this->load->database();
 		$query = $this->db->query("INSERT INTO orgchartareas VALUES(0,'$centerid','$areaName','$isRoomYN',0)");
 	}
-
+	public function addArea($centerid,$areaName){
+		$this->load->database();
+		$query = $this->db->query("INSERT INTO orgchartareas (centerid,areaName,isARoomYN,rosterPriority) VALUES('$centerid','$areaName','Y',0)");
+		$query = $this->db->query("SELECT areaid from orgchartareas ORDER BY areaid DESC");
+		return $query->row();
+	}
+	public function addRole($areaId,$roleName){
+		$this->load->database();
+		$query = $this->db->query("INSERT INTO orgchartroles (areaid,roleName) VALUES($areaId,'$roleName')");
+		$query = $this->db->query("SELECT roleid from orgchartroles ORDER BY roleid DESC ");
+		return $query->row();
+	}
 	public function getAllAreas($centerid){
 		$this->load->database();
 		$query = $this->db->query("SELECT * FROM orgchartareas WHERE centerid = '$centerid'");
@@ -303,23 +314,9 @@ class SettingsModel extends CI_Model {
 			return $query->result();
 		}
 
+		public function addPermissions($userid, $isQrReaderYN = 'N', $viewRosterYN = 'Y', $editRosterYN = 'N', $viewTimesheetYN = 'Y', $editTimesheetYN = 'N', $viewPayrollYN = 'Y', $editPayrollYN = 'N', $editLeaveTypeYN = 'N', $viewLeaveTypeYN = 'Y', $createNoticeYN = 'Y', $viewOrgChartYN = 'Y', $editOrgChartYN = 'N', $viewCenterProfileYN = 'Y', $editCenterProfileYN = 'Y', $viewRoomSettingsYN = 'Y', $editRoomSettingsYN = 'N', $viewEntitlementsYN = 'Y', $editEntitlementsYN = 'N', $editEmployeeYN = 'N', $xeroYN = 'N', $viewAwardsYN = 'Y', $editAwardsYN = 'N', $viewSuperfundsYN = 'Y', $editSuperfundsYN = 'N', $createMomYN = 'Y', $editPermissionYN = 'Y', $viewPermissionYN = 'Y'){
+				$this->load->database();
+				$query = $this->db->query("INSERT INTO permissions (userid, isQrReaderYN, viewRosterYN, editRosterYN, viewTimesheetYN, editTimesheetYN, viewPayrollYN, editPayrollYN, editLeaveTypeYN, viewLeaveTypeYN, createNoticeYN, viewOrgChartYN, editOrgChartYN, viewCenterProfileYN, editCenterProfileYN, viewRoomSettingsYN, editRoomSettingsYN, viewEntitlementsYN, editEntitlementsYN, editEmployeeYN, xeroYN, viewAwardsYN, editAwardsYN, viewSuperfundsYN, editSuperfundsYN, createMomYN, editPermissionYN, viewPermissionYN	) VALUES ($userid, $isQrReaderYN, $viewRosterYN, $editRosterYN, $viewTimesheetYN, $editTimesheetYN, $viewPayrollYN, $editPayrollYN, $editLeaveTypeYN, $viewLeaveTypeYN, $createNoticeYN, $viewOrgChartYN, $editOrgChartYN, $viewCenterProfileYN, $editCenterProfileYN, $viewRoomSettingsYN, $editRoomSettingsYN, $viewEntitlementsYN, $editEntitlementsYN, $editEmployeeYN, $xeroYN, $viewAwardsYN, $editAwardsYN, $viewSuperfundsYN, $editSuperfundsYN, $createMomYN, $editPermissionYN, $viewPermissionYN	)");
+		}
+
 }
-
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
-	
-
-
-

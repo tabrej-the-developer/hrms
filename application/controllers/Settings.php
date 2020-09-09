@@ -1696,6 +1696,24 @@ $server_output = curl_exec($ch);
 		}
 	}
 
+	public function xeroSettings(){
+			if($this->session->has_userdata('LoginId')){
+		//footprint start
+		if($this->session->has_userdata('current_url')){
+			footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+			$this->session->set_userdata('current_url',currentUrl());
+		}
+		// footprint end
+		$data['permissions'] = $this->fetchPermissions();
+		$data['xeroTokens'] = $this->fetchXeroToken();
+		$data['centers'] = $this->getAllCenters();
+				$this->load->view('xeroSettings',$data);
+					}
+			else{
+				$this->load->view('redirectToLogin');
+			}
+	}
+
 	public function updateLeaveApp(){
 		$this->load->helper('form');
 		$form_data = $this->input->post();
@@ -1766,6 +1784,25 @@ $server_output = curl_exec($ch);
 		}
 	}
 
+		function fetchXeroToken(){
+			$url = BASE_API_URL."xero/fetchXeroToken/".$this->session->userdata('LoginId');
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				return $server_output;
+				curl_close ($ch);
+			}
+			else if($httpcode == 401){
+
+			}
+		}
 
 		function fetchPermissions(){
 			$url = BASE_API_URL."auth/fetchMyPermissions/".$this->session->userdata('LoginId');

@@ -19,10 +19,13 @@ class Xero extends CI_Controller{
 	}
 
 	public function oauth(){
-
+		$this->load->library('session');
+		if($this->session->has_userdata('centerid')){
+			$centerid = $this->session->userdata('centerid');
+		}
 		$code = $_GET['code'];
 		$state = $_GET['state'];
-		$this->load->library('session');
+		
 		// $userid = $_GET['LoginId'];
 	 // 	if($userid == null) return;
 
@@ -50,7 +53,7 @@ class Xero extends CI_Controller{
 				$tjson = json_decode($tenant);
 				$tenant_id = $tjson[0]->tenantId;
 
-				$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in);
+				$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in,$centerid);
 
 				$payItems = $this->getPayItems($access_token,$tenant_id);
 				// var_dump($payItems);
@@ -58,7 +61,7 @@ class Xero extends CI_Controller{
 				$this->load->model('payrollModel');
 				//earning rates
 				$earningRates = json_decode($payItems)->PayItems->EarningsRates;
-				$this->payrollModel->deleteAllPayrollShiftTypes();
+				$this->payrollModel->deleteAllPayrollShiftTypes($centerid);
 				for($i = 0; $i < count($earningRates); $i++){
 					$RateType = $earningRates[$i]->RateType;
 					$EarningsRateID = $earningRates[$i]->EarningsRateID;
@@ -74,13 +77,13 @@ class Xero extends CI_Controller{
 						$Multiplier_Amount = $earningRates[$i]->Multiplier;
 					else
 						$Multiplier_Amount = 0;
-					$this->payrollModel->insertPayrollShifts($EarningsRateID,$Name,$IsExemptFromTax,$IsExemptFromSuper,$IsReportableAsW1,$EarningsType,$RateType,$Multiplier_Amount,$CurrentRecord,$userid);		
+					$this->payrollModel->insertPayrollShifts($EarningsRateID,$Name,$IsExemptFromTax,$IsExemptFromSuper,$IsReportableAsW1,$EarningsType,$RateType,$Multiplier_Amount,$CurrentRecord,$userid,$centerid);		
 				}
 
 				$this->load->model('leaveModel');
 				//leave types
 				$leaveTypes = json_decode($payItems)->PayItems->LeaveTypes;
-				$this->leaveModel->deleteAllLeaveTypes();
+				$this->leaveModel->deleteAllLeaveTypes($centerid);
 				for($i=0;$i<count($leaveTypes);$i++){
 					$LeaveTypeID = $leaveTypes[$i]->LeaveTypeID;
 					$Name = addslashes($leaveTypes[$i]->Name);
@@ -88,7 +91,7 @@ class Xero extends CI_Controller{
 					$ShowOnPayslip = $leaveTypes[$i]->ShowOnPayslip ? "Y" : "N";
 					$CurrentRecord = $leaveTypes[$i]->CurrentRecord ? "Y" : "N";
 					$slug = $Name[0];
-	 				$this->leaveModel->createLeaveType($LeaveTypeID,$Name,$IsPaidLeave,$slug,$ShowOnPayslip,$CurrentRecord,$userid);
+	 				$this->leaveModel->createLeaveType($LeaveTypeID,$Name,$IsPaidLeave,$slug,$ShowOnPayslip,$CurrentRecord,$userid,$centerid);
 				}
 
 				//superfunds
@@ -105,7 +108,7 @@ class Xero extends CI_Controller{
 					$ElectronicServiceAddress = isset($superFunds[$i]->ElectronicServiceAddress) ? $superFunds[$i]->ElectronicServiceAddress : "";
 					$EmployerNumber = $superFunds[$i]->EmployerNumber;
 					$Type = $superFunds[$i]->Type;
-					$this->payrollModel->insertSuperfund($ABN,$USI,$Type,$Name,$BSB,$AccountNumber,$AccountName,$ElectronicServiceAddress,$EmployerNumber,$userid);
+					$this->payrollModel->insertSuperfund($ABN,$USI,$Type,$Name,$BSB,$AccountNumber,$AccountName,$ElectronicServiceAddress,$EmployerNumber,$userid,$centerid);
 				}
 
 				//employees
@@ -129,6 +132,7 @@ class Xero extends CI_Controller{
 					preg_match( '/([\d]{9})/', $empDetails->DateOfBirth, $matches );
 					$DateOfBirth = date( 'Y-m-d', $matches[0] );
 					$Gender = $empDetails->Gender;
+					$classification = $empDetails->Classification;
 					$AddressLine1 = $empDetails->HomeAddress->AddressLine1;
 					$AddressLine2 = isset($empDetails->HomeAddress->AddressLine2) ?  $empDetails->HomeAddress->AddressLine2: "";
 					$City = $empDetails->HomeAddress->City;
@@ -137,6 +141,8 @@ class Xero extends CI_Controller{
 					$Country = $empDetails->HomeAddress->Country;
 					$Phone = isset($empDetails->Phone) ? $empDetails->Phone : "";
 					$Mobile = isset($empDetails->Mobile) ? $empDetails->Mobile : "";
+
+
 					if(isset($empDetails->TerminationDate)){
 						preg_match( '/([\d]{9})/', $empDetails->TerminationDate, $matches );
 						$TerminationDate = date( 'Y-m-d', $matches[0] );
@@ -166,7 +172,7 @@ class Xero extends CI_Controller{
 					$myEmployee = $this->employeeModel->getUserFromId($myUserid);
 					if($myEmployee == null){
 						//insert 
-						$this->employeeModel->insertEmployee($myUserid,$employeeId,$Title,$FirstName,$MiddleNames,$LastName,$Status,$Email,$DateOfBirth,$JobTitle,$Gender,$AddressLine1,$AddressLine2,$City,$Region,$PostalCode,$Country,$Phone,$Mobile,$StartDate,$TerminationDate,$OrdinaryEarningsRateID,$PayrollCalendarID,$userid);
+						$this->employeeModel->insertEmployee($myUserid,$employeeId,$Title,$FirstName,$MiddleNames,$LastName,$Status,$Email,$DateOfBirth,$JobTitle,$Gender,$AddressLine1,$AddressLine2,$City,$Region,$PostalCode,$Country,$Phone,$Mobile,$StartDate,$TerminationDate,$OrdinaryEarningsRateID,$PayrollCalendarID,$userid,$classification);
 					}
 					else{
 						//update
@@ -265,7 +271,8 @@ class Xero extends CI_Controller{
 						}
 						
 						if($val->Status == "OK"){
-							$this->payrollModel->deleteAllPayrollShiftTypes();
+							// NOTICE -- need to get the centerid
+							$this->payrollModel->deleteAllPayrollShiftTypes($centerid);
 							$earningRates = $val->PayItems->EarningsRates;
 							for($i=0;$i<count($earningRates);$i++){
 								$RateType = $earningRates[$i]->RateType;
@@ -282,7 +289,8 @@ class Xero extends CI_Controller{
 									$Multiplier_Amount = $earningRates[$i]->Multiplier;
 								else
 									$Multiplier_Amount = 0;
-								$this->payrollModel->insertPayrollShifts($EarningsRateID,$Name,$IsExemptFromTax,$IsExemptFromSuper,$IsReportableAsW1,$EarningsType,$RateType,$Multiplier_Amount,$CurrentRecord,$userid);
+								// NOTICE -- need to get the centerid
+								$this->payrollModel->insertPayrollShifts($EarningsRateID,$Name,$IsExemptFromTax,$IsExemptFromSuper,$IsReportableAsW1,$EarningsType,$RateType,$Multiplier_Amount,$CurrentRecord,$userid,$centerid);
 							}
 							$data['Status'] = 'SUCCESS';
 						}
@@ -343,7 +351,8 @@ class Xero extends CI_Controller{
 						if($val->Status == "OK"){
 							$leaveTypes = $val->PayItems->LeaveTypes;
 							var_dump($leaveTypes);
-							$this->leaveModel->deleteAllLeaveTypes();
+							// NOTICE -- need to get the centerid
+							$this->leaveModel->deleteAllLeaveTypes($centerid);
 							for($i=0;$i<count($leaveTypes);$i++){
 								$LeaveTypeID = $leaveTypes[$i]->LeaveTypeID;
 								$Name = addslashes($leaveTypes[$i]->Name);
@@ -351,7 +360,8 @@ class Xero extends CI_Controller{
 								$ShowOnPayslip = $leaveTypes[$i]->ShowOnPayslip ? "Y" : "N";
 								$CurrentRecord = $leaveTypes[$i]->CurrentRecord ? "Y" : "N";
 								$slug = $Name[0];
-								$this->leaveModel->createLeaveType($LeaveTypeID,$Name,$IsPaidLeave,$slug,$ShowOnPayslip,$CurrentRecord,$userid);
+								// NOTICE -- need to get the centerid
+								$this->leaveModel->createLeaveType($LeaveTypeID,$Name,$IsPaidLeave,$slug,$ShowOnPayslip,$CurrentRecord,$userid,$centerid);
 							}
 							$data['Status'] = 'SUCCESS';
 						}
@@ -412,7 +422,7 @@ class Xero extends CI_Controller{
 
 						if($val->Status == "OK"){
 							$superFunds = $val->SuperFunds;
-							$this->payrollModel->deleteAllSuperFunds();
+							$this->payrollModel->deleteAllSuperFunds($centerid);
 							for($i=0;$i<count($superFunds);$i++){
 								$SuperFundID = $superFunds[$i]->SuperFundID;
 								$Name = addslashes($superFunds[$i]->Name);
@@ -424,7 +434,8 @@ class Xero extends CI_Controller{
 								$ElectronicServiceAddress = isset($superFunds[$i]->ElectronicServiceAddress) ? $superFunds[$i]->ElectronicServiceAddress : "";
 								$EmployerNumber = isset($superFunds[$i]->EmployerNumber) ? $superFunds[$i]->EmployerNumber : "";
 								$Type = $superFunds[$i]->Type;
-								$this->payrollModel->insertSuperfund($ABN,$USI,$Type,$Name,$BSB,$AccountNumber,$AccountName,$ElectronicServiceAddress,$EmployerNumber,$userid);
+								// NOTICE -- need to get the centerid
+								$this->payrollModel->insertSuperfund($ABN,$USI,$Type,$Name,$BSB,$AccountNumber,$AccountName,$ElectronicServiceAddress,$EmployerNumber,$userid,$centerid);
 							}
 							$data['Status'] = 'SUCCESS';
 						}
@@ -451,6 +462,35 @@ class Xero extends CI_Controller{
 		}
 	}
 
+	public function fetchXeroToken($userid){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$this->load->model('settingsModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if( $res != null && $res->userid == $userid){
+				$this->load->model('xeroModel');
+				$userDetails = $this->authModel->getUserDetails($userid);
+				$userDetails = $userDetails->center;
+				$userCenters = explode("|",$userDetails);
+				$data['center'] = [];
+				$i= 0;
+				foreach($userCenters as $center){
+					if($center != "" ){
+						$data['center'][$i] = [];
+						array_push($data['center'][$i],$this->xeroModel->fetchXeroToken($center) );
+						array_push($data['center'][$i],$center);
+						$i++;
+					}
+				}
+			}
+			http_response_code(200);
+			echo json_encode($data);
+		}
+		else{
+			http_response_code(401);
+			}
+		}
 
 	function postToken($postData){
 		$url = "https://identity.xero.com/connect/token";
@@ -533,6 +573,7 @@ class Xero extends CI_Controller{
            'Authorization:Bearer '.$access_token,
            'Xero-tenant-id:'.$tenant_id
 		));
+		set_time_limit(60);
 		$server_output = curl_exec($ch);
 		return $server_output;
 	}
@@ -556,10 +597,11 @@ class Xero extends CI_Controller{
 		return $server_output;
 	}
 
-	public function startOauth($userid){
+	public function startOauth($userid,$centerid){
 		$client_id = XERO_CLIENT_ID;
 		$redirect_uri = base_url()."xero/oauth";
 		$this->load->library('session');
+		$this->session->set_userdata('centerid',$centerid);
 		$this->session->set_userdata('LoginId',$userid);
 		//$userid = $this->session->userdata('LoginId');
 		// $userid = "123";

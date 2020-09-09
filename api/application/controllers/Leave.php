@@ -100,7 +100,8 @@ class Leave extends CI_Controller{
 							for($i=0;$i<count($leaveTypes);$i++){
 								if($leaveTypes[$i]->Name == $name){
 									$LeaveTypeID = $leaveTypes[$i]->LeaveTypeID;
-										$this->leaveModel->createLeaveType($LeaveTypeID,$data['Name'],$isPaidYN,$slug,$showOnPaySlipYN,"Y",$userid);
+									// NOTICE -- need to get the centerid
+										$this->leaveModel->createLeaveType($LeaveTypeID,$data['Name'],$isPaidYN,$slug,$showOnPaySlipYN,"Y",$userid,$centerid);
 										break;
 								}
 							}
