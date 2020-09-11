@@ -65,6 +65,11 @@ class SettingsModel extends CI_Model {
 		$this->db->query("UPDATE orgchartroles SET roleName = '$roleName' WHERE roleid = $roleid");
 	}
 
+	public function updateEmployeeRole($employeeId,$roleId){
+		$this->load->database();
+		$this->db->query("UPDATE users SET roleid = $roleId WHERE id = '$employeeId'");
+	}	
+
 	public function getRolesFromArea($areaid){
 		$this->load->database();
 		$query = $this->db->query("SELECT * FROM orgchartroles where areaid = $areaid");

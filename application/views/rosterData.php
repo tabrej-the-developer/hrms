@@ -1810,11 +1810,11 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 	$(document).on('click','.shift-edit',function(){
 		var starts = $(this).attr('stime');
 		var ends = $(this).attr('etime');
-	var timings = $(this).text();
-	var name = $(this).index();
-	var role = $(this).attr('name2');
-	var userid = "<?php echo $userid ?>";
-	var shiftid = $(this).attr('name4');
+		var timings = $(this).text();
+		var name = $(this).index();
+		var role = $(this).attr('name2');
+		var userid = "<?php echo $userid ?>";
+		var shiftid = $(this).attr('name4');
 			document.getElementsByClassName('box-name')[0].innerHTML = $('th').eq(name).html();
 			document.getElementsByClassName('box-space')[0].innerHTML = timings;
 			document.getElementById('starts').value = starts; 

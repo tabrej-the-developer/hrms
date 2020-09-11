@@ -575,6 +575,27 @@ if($center_name != null && $center_name != ""){
 		}
 	}
 
+	public function getEmployeesForRoles($roleid,$userid){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+				$this->load->model('settingsModel');
+				$this->load->model('rostersModel');
+				$data['employees'] = $this->rostersModel->getAllEmployees($roleid);
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
 	public function deleteRoom($roomid,$userid){
 		$headers = $this->input->request_headers();
 	   if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
@@ -629,7 +650,36 @@ if($center_name != null && $center_name != ""){
 		}
 	}
 
-
+	public function changeEmployeeRole(){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $json->userid){
+					if($json->employeeId != null && $json->roleId != null){
+						$employeeId = $json->employeeId;
+						$roleId = $json->roleId;
+						$this->load->model('settingsModel');
+						$this->settingsModel->updateEmployeeRole($employeeId,$roleId);
+						$data['Status'] = "SUCCESS";
+						$data['Message'] = "Role Updated";
+					}
+				else{
+					$data['Status'] = "ERROR";
+					$data['Message'] = "Role Not Updated";
+				}
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
 	public function addMultipleEmployees($userid){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
