@@ -454,8 +454,10 @@ class Rosters extends CI_Controller {
 					$this->load->model('rostersModel');
 					if($status == "Discarded")
 						$this->rostersModel->deleteRoster($rosterid);
-					else if($status == "Published")
+					else if($status == "Published"){
 						$this->rostersModel->publishRoster($rosterid);
+						$this->notificationOnRosterPublish($rosterid,$userid);
+					}
 					else
 						$this->rostersModel->updateRoster($rosterid,$status);
 					$data['Status'] = 'SUCCESS';
@@ -476,6 +478,73 @@ class Rosters extends CI_Controller {
 		else{
 			http_response_code(401);
 		}
+	}
+
+	public function notificationOnRosterPublish($rosterid,$userid){
+		$this->load->model('rostersModel');
+		$this->load->model('leaveModel');
+		$this->load->model('authModel');
+		$config = Array(    
+			    'protocol'  => 'smtp',
+			    'smtp_host' => 'ssl://smtp.zoho.com',
+			    'smtp_port' => 465,
+			    'smtp_user' => 'demo@todquest.com',
+			    'smtp_pass' => 'K!ddz1ng',
+			    'mailtype'  => 'html',
+			    'charset'   => 'utf-8'
+		);
+
+		$this->load->library('email',$config); // Load email template
+		$this->email->set_newline("\r\n");
+		$this->email->from('demo@todquest.com', 'spotlist');
+
+		$roster = $this->rostersModel->getRosterFromId($rosterid);
+		$allAreas = $this->rostersModel->getAllAreas($roster->centerid);
+				foreach ($allAreas as $area) {
+					$var['areaName'] = $area->areaName;
+					$var['isRoomYN'] = $area->isARoomYN;
+					$var['roles'] = [];
+					$allRoles = $this->rostersModel->getAllRoles($area->areaid);
+					foreach ($allRoles as $role) {
+						$allEmployess = $this->rostersModel->getAllEmployeesFromRole($role->roleid,$rosterid);
+						foreach ($allEmployess as $employeeid) {
+								$rav['empId'] = $employeeid->userid;
+								$empDetails = $this->authModel->getUserDetails($employeeid->userid);
+								$rav['empName'] = $empDetails->name;
+								$rav['empTitle'] = $empDetails->title;
+								$rav['level'] = $empDetails->level;
+									$rav['shifts'] = [];
+								$allShifts = $this->rostersModel->getAllShiftsFromEmployee($rosterid,$employeeid->userid,$area->areaid);
+								foreach ($allShifts as $shiftOb) {
+									$shiftObj['currentDate'] = $shiftOb->rosterDate;
+									$leaveApp = $this->leaveModel->getLeaveApplicationForUser($employeeid->userid,$shiftOb->rosterDate);
+									if($leaveApp == null){
+										$shiftObj['isOnLeave'] = 'N';
+										$shiftObj['roleid'] = $shiftOb->roleid;
+										$roleObj = $this->rostersModel->getRole($shiftOb->roleid);
+										$shiftObj['roleName'] = $roleObj->roleName;
+										$shiftObj['startTime'] = $shiftOb->startTime;
+										$shiftObj['endTime'] = $shiftOb->endTime;
+									}
+									else{
+										$shiftObj['leaveStartDate'] = $leaveApp->startDate;
+										$shiftObj['leaveEndDate'] = $leaveApp->endDate;
+										$shiftObj['leaveNoOfHours'] = $leaveApp->noOfHours;
+										$shiftObj['leaveStatus'] = $leaveApp->status;
+									}
+									array_push($rav['shifts'],$shiftObj);
+								}
+								$user_email = "dheerajreddynannuri1709@gmail.com";
+								$subject = "No";
+									$this->email->to($user_email); // replace it with receiver email id
+									$this->email->subject($subject); // replace it with email subject
+									$message = $this->load->view('rosterPublishEmailTemplate',$rav,true);
+
+									$this->email->message($message); 
+									$this->email->send();
+						}
+					}
+				}
 	}
 
 	public function addCasualEmployee($userid){

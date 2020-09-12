@@ -313,26 +313,74 @@ public function editRooms(){
 	public function orgChart(){
 		if($this->session->has_userdata('LoginId')){
 			if($this->input->post('centerid') != null){
-		$data['centerid'] = $this->input->post('centerid');
-	}else{
-		$data['centerid'] = (json_decode($this->getAllCenters())->centers[0])->centerid;
-	}
-		$data['permissions'] = $this->fetchPermissions();
-		$data['centers'] = $this->getAllCenters();
-		$data['orgChart'] = $this->getOrgChart($data['centerid']);
-	//footprint start
-	if($this->session->has_userdata('current_url')){
-		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-		$this->session->set_userdata('current_url',currentUrl());
-	}
-	// footprint end
-		$this->load->view('editOrgChartView',$data);
-	}
-	else{
-		$this->load->view('redirectToLogin');
-	}
+			$data['centerid'] = $this->input->post('centerid');
+				}else{
+					$data['centerid'] = (json_decode($this->getAllCenters())->centers[0])->centerid;
+				}
+			$data['permissions'] = $this->fetchPermissions();
+			$data['centers'] = $this->getAllCenters();
+			$data['orgChart'] = $this->getOrgChart($data['centerid']);
+		//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+				$this->session->set_userdata('current_url',currentUrl());
+			}
+			// footprint end
+				$this->load->view('editOrgChartView',$data);
+			}
+			else{
+				$this->load->view('redirectToLogin');
+			}
 	}
 
+	public function getEmployeesForRoles($roleid){
+			$url = BASE_API_URL."settings/getEmployeesForRoles/".$roleid."/".$this->session->userdata('LoginId');
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				echo $server_output;
+				curl_close ($ch);
+			}
+			else if($httpcode == 401){
+
+			}
+	}
+
+	public function changeEmployeeRole(){
+		$formData = $this->input->post();
+		if($formData != null){
+			$data['employeeId'] = $formData['empId'];
+			$data['roleId'] = $formData['roleId'];  
+			$data['userid'] = $this->session->userdata('LoginId'); 
+		$url = BASE_API_URL."/settings/changeEmployeeRole";
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			print_r($data);
+			if($httpcode == 200){
+				print_r($data);
+				curl_close ($ch);
+			}
+			else if($httpcode == 401){
+
+			}
+		}
+	}
 
 		function getAllCenters(){
 			$url = BASE_API_URL."util/getAllCenters/".$this->session->userdata('LoginId');
@@ -1547,7 +1595,6 @@ $server_output = curl_exec($ch);
 
 
 	public function getEmployeesByCenter($centerid){
-
 		$url = BASE_API_URL."util/GetAllEmployeesByCenter/".$centerid.'/'.$this->session->userdata('LoginId');
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
@@ -1714,6 +1761,23 @@ $server_output = curl_exec($ch);
 		$data['xeroTokens'] = $this->fetchXeroToken();
 		$data['centers'] = $this->getAllCenters();
 				$this->load->view('xeroSettings',$data);
+					}
+			else{
+				$this->load->view('redirectToLogin');
+			}
+	}
+
+	public function viewEmployeeTable(){
+			if($this->session->has_userdata('LoginId')){
+		//footprint start
+		if($this->session->has_userdata('current_url')){
+			footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+			$this->session->set_userdata('current_url',currentUrl());
+		}
+		// footprint end
+				$data['centers'] = $this->getAllCenters();
+				$data['permissions'] = $this->fetchPermissions();
+				$this->load->view('viewEmployeeTable',$data);
 					}
 			else{
 				$this->load->view('redirectToLogin');
