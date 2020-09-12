@@ -786,6 +786,16 @@ font-family: 'Open Sans', sans-serif;
 					data.employees.forEach(function(employee){
 						var code = `<div id="change_role">
 							<span class="changeRole__" role_id="${employee.id}" role_name="${roleName}">${employee.name}</span>
+						<span class="select_css">
+							<select class="select_area">
+								<!-- <option>--Select Area--</option> -->
+							</select>
+							</span>
+						<span class="select_css">
+							<select class="select_role">
+								<!-- <option>--Select Area--</option> -->
+							</select>
+						</span>
 						</div>`;
 						$('.priority_areas').append(code);
 						// console.log(employee)
@@ -796,7 +806,7 @@ font-family: 'Open Sans', sans-serif;
 </script>
 <script type="text/javascript">
 	$(document).ready(function(){
-			$(document).on('click','.changeRole__',function(){
+			$(document).on('click','.roleNameClass',function(){
 				$('.box-name').text($(this).text())
 				$('.box-space').text($(this).attr('role_name'))
 				$('#currentRole').val($(this).attr('role_id'))
@@ -811,7 +821,7 @@ font-family: 'Open Sans', sans-serif;
 					console.log(response)
 					response['orgchart'].forEach(function(index){
 						var data = `<option value="${index.areaId}">${index.areaName}</option>`;
-						$('.changeRole__dropdown').append(data)
+						$('.select_area').append(data)
 					})
 				}
 			})
@@ -820,8 +830,9 @@ font-family: 'Open Sans', sans-serif;
 </script>
 <script type="text/javascript">
 	$(document).ready(function(){
-		$(document).on('change','.changeRole__dropdown',function(){
+		$(document).on('change','.select_area',function(){
 		 var centerid = $('.sellect').val();
+		 var index = $(this).index()
 		// var userid = $('#user-id-select').text();
 		var areaId = $(this).val();
 		var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
@@ -830,12 +841,12 @@ font-family: 'Open Sans', sans-serif;
 			url:url,
 			dataType: 'JSON',
 			success:function(response){
-					$('#role').empty()
+					$('.select_role').empty()
 				response['orgchart'].forEach(function(index){
 					index['roles'].forEach(function(values){
 						if(areaId == values.areaid){
 							var data = "<option value="+values.roleid+">"+values.roleName+"</option>";
-								$('#role').append(data)
+								$('.select_role').append(data)
 										}
 									})
 					})
