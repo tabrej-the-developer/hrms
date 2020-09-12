@@ -427,7 +427,7 @@ class Settings extends CI_Controller {
 					$capacity_ = $json->capacity_;
 					$minimum_age = $json->minimum_age;
 					$maximum_age = $json->maximum_age;
-if($center_name != null && $center_name != ""){
+					if($center_name != null && $center_name != ""){
 					$centerid = $this->settingsModel->addCenter($center_city,$center_street,$center_state,$center_zip,$center_name,$center_phone,$center_mobile,$center_email,$json->userid);
 					$centerRecordUniqueId = uniqid();
 					$this->settingsModel->addCenterRecord($centerid,$centerRecordUniqueId,$center_abn,$center_acn,$center_se_no,$center_date_opened,$center_capacity,$center_approval_doc,$center_ccs_doc,$center_admin_name,$centre_nominated_supervisor);
@@ -438,7 +438,7 @@ if($center_name != null && $center_name != ""){
 						$maxim = $maximum_age[$i];
 						$this->settingsModel->addRoom($centerid,$roo,$cap,$minim,$maxim);
 					}
-}
+					}
 					$data['Status'] = "SUCCESS";
 				http_response_code(200);
 				echo json_encode($room_name);
@@ -681,13 +681,19 @@ if($center_name != null && $center_name != ""){
 						$data['password'] = md5((explode(" ",$data['name']))[0]."@123");
 						// $this->settingsModel->addToEmployeeCourses( $xeroEmployeeId,$course_nme=null,$course_desc=null,$date_obt=null,$exp_date=null);
 						// var_dump($data);
-								$areaId = ($this->settingsModel->getAreaId($data['center'],$data['area']))->areaid;
+								$areaId = ($this->settingsModel->getAreaId($data['center'],$data['area']));
 								if($areaId == null){
 										$areaId = $this->settingsModel->addArea($data['center'],$data['area'])->areaid;
 								}
-								$roleId = ($this->settingsModel->getRoledId($areaId,$data['role']))->roleid;
+								else{
+									$areaId = $areaId->areaid;
+								}
+								$roleId = ($this->settingsModel->getRoledId($areaId,$data['role']));
 								if($roleId == null){
 									$roleId = ($this->settingsModel->addRole($areaId,$data['role']))->roleid;
+								}
+								else{
+									$roleId = $roleId->roleid;
 								}
 
 

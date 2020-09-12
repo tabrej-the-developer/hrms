@@ -2685,7 +2685,7 @@ $('.modal_body').draggable();
 			let employeeId = $('#employeeValue').val();
 			let editRoster = ($('#edit_roster').is(':checked') == true) ? 'Y' : 'N' ;
 			let rosterId = "<?php echo $rosterid; ?>";
-			alert(employeeId)
+			//alert(employeeId)
 			let url = window.location.origin+'/PN101/roster/saveRosterPermissions';
 			$.ajax({
 				url : url,

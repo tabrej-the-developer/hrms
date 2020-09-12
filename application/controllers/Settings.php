@@ -1265,36 +1265,39 @@ $server_output = curl_exec($ch);
 
 	public function AddEmployeesMultiple(){
 		if($this->session->has_userdata('LoginId')){
-				if($_FILES['addemployee']['name'] != null && $_FILES['addemployee']['name'] != ""){
-					$file = $_FILES['addemployee']['tmp_name'];
-					$handle = fopen($file, "r");
-					$array['details'] = [];
-					$val = 0;
-					$array['center'] = $this->input->post('centerid');
-						while ($row = fgetcsv($handle)) {
-						   // if($val >0){
-							if($row[0] != ""){
-						   	$array['details'][$val] = $row;
-						   	$val++;
-						   }
-						   // }
-						   
-						}	
-					  fclose($handle);
-					  // print_r(json_encode($array));
-					$url = BASE_API_URL."/settings/addMultipleEmployees/".$this->session->userdata('LoginId');
-					$ch = curl_init($url);
-					curl_setopt($ch, CURLOPT_URL,$url);
-					curl_setopt($ch, CURLOPT_POST, 1);
-					curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($array));
-					curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-							'x-device-id: '.$this->session->userdata('x-device-id'),
-							'x-token: '.$this->session->userdata('AuthToken')
-						));
-					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-					$server_output = curl_exec($ch);
-					$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-					// print_r($server_output);
+//var_dump($_FILES);
+			if($_FILES['addemployee']['name'] != null && $_FILES['addemployee']['name'] != ""){
+				$file = $_FILES['addemployee']['tmp_name'];
+				$handle = fopen($file, "r");
+				$array['details'] = [];
+				$val = 0;
+				$array['center'] = $this->input->post('centerid');
+
+				while ($row = fgetcsv($handle)) {
+//var_dump($row);
+				   // if($val >0){
+					if($row[0] != ""){
+				   	$array['details'][$val] = $row;
+				   	$val++;
+				   }
+				   // }
+				   
+				}	
+				fclose($handle);
+//var_dump($array);
+				$url = BASE_API_URL."/settings/addMultipleEmployees/".$this->session->userdata('LoginId');
+				$ch = curl_init($url);
+				curl_setopt($ch, CURLOPT_URL,$url);
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($array));
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+						'x-device-id: '.$this->session->userdata('x-device-id'),
+						'x-token: '.$this->session->userdata('AuthToken')
+					));
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				$server_output = curl_exec($ch);
+				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				// print_r($server_output);
 				if($httpcode == 200){
 					redirect(base_url('settings/AddMultipleEmployees'));
 					// echo $server_output;
@@ -1303,10 +1306,9 @@ $server_output = curl_exec($ch);
 				}
 				else if($httpcode == 401){
 
-				}	
-
 				}
 			}
+		}
 		else{
 			$this->load->view('redirectToLogin');
 		}
