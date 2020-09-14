@@ -234,9 +234,7 @@
                 <tr class="viewEmployeeTable_row">
                   <td >
                     <span id="" class="viewEmployeeTable_centerName">
-                      <?php 
 
-                      ?>
                     </span>
                    </td> 
                   <td class="">
@@ -246,7 +244,7 @@
                    </td> 
                     <td class="">
                       <span id="" class="viewEmployeeTable_memberName">
-                        <?php  ?>
+
                       </span>
                     </td>
                     <td class="">
@@ -298,6 +296,9 @@
             $('.viewEmployeeTable_centerName').eq(counter).text(employee.name);
             $('.viewEmployeeTable_memberId').eq(counter).text(employee.id);
             $('.viewEmployeeTable_memberName').eq(counter).text(employee.title);
+            $('.viewEmployeeTable_action').eq(counter).html(`
+                <button class="button"><a href="${window.location.origin+'/PN101/settings/viewEmployee/'+employee.id}">view</a></button>
+              `)
             counter++;
           })
           console.log(employees)

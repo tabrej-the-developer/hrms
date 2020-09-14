@@ -1096,7 +1096,7 @@ color:#FFFFFF;
     			events.forEach((item,index)=>{
 		    		x = fun(item,index,date)
 		    		if(x !== undefined){
-		    		console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/roster/getRosterDetails?rosterId=${x}" title="${role}">${role}</a>`));
+		    		console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/roster/getRosterDetails?rosterId=${x}&showBudgetYN=N" title="${role}">${role}</a>`));
 		    			}
 		    	});
     			counter++;

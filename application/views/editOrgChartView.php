@@ -212,10 +212,10 @@ font-family: 'Open Sans', sans-serif;
 .modal_priority {
   position: fixed;
   top: 30%;
-  left: 50%;
-  width: 400px;
+  left: 40vw;
+  width: 60vw;
   min-height: 400px;
-  margin-left: -200px;
+  margin-left: -15%;
   margin-top: -150px;
   background: #fff;
   z-index: 100;
@@ -389,6 +389,10 @@ font-family: 'Open Sans', sans-serif;
 .changeRole__{
 	cursor: pointer;
 }
+#change_role{
+	display: flex;
+	width: 100%;
+}
 </style>
 </head>
 <body>
@@ -458,7 +462,7 @@ font-family: 'Open Sans', sans-serif;
 				<div areaId="<?php echo $orgChart->areaId;?>" class="areaId"></div>
 				<div>
 					<?php foreach($orgChart->roles as $roles){
-					echo "<li class='li-c'><span class=\"roleNameClass\" r_id=".$roles->roleid.">".$roles->roleName."</span><span class=\"roleIdClass\" style=\"display:none\">".$roles->roleid."</span>";
+					echo "<li class='li-c'><span class=\"roleNameClass\"  a_id=".$orgChart->areaId." r_id=".$roles->roleid.">".$roles->roleName."</span><span class=\"roleIdClass\" style=\"display:none\">".$roles->roleid."</span>";
 					if(isset($permissions->permissions) ? $permissions->permissions->editOrgChartYN : 'N' == 'Y'){
 					echo "<span class=\"editRole\" style=\"padding-right:20px\"><i class=\"fas fa-pencil-alt\"></i>&nbsp; &nbsp;</span><span class=\"delete-role\" d-val=\"$roles->roleid\" style=\"padding-right:20px\"><i class=\"fas fa-trash-alt\"></i></span></li>";
 						}
@@ -773,6 +777,7 @@ font-family: 'Open Sans', sans-serif;
 		$(document).on('click','.roleNameClass',function(e){
 			var roleid = $(this).attr('r_id');
 			var roleName = $(this).text();
+			var x = 0;
 			$('.changeRole_heading').text(roleName)
 			var url = window.location.origin+"/PN101/settings/getEmployeesForRoles/"+roleid;
 			$.ajax({
@@ -785,19 +790,20 @@ font-family: 'Open Sans', sans-serif;
 
 					data.employees.forEach(function(employee){
 						var code = `<div id="change_role">
-							<span class="changeRole__" role_id="${employee.id}" role_name="${roleName}">${employee.name}</span>
-						<span class="select_css">
-							<select class="select_area">
+							<span class="changeRole__" role_id="${employee.id}" role_name="${roleName}" style="width:30%">${employee.name}</span>
+						<span class="select_css" style="width:35%;">
+							<select class="select_area" similarity="${x}" style="min-width:80% !important;max-width:80%">
 								<!-- <option>--Select Area--</option> -->
 							</select>
 							</span>
-						<span class="select_css">
-							<select class="select_role">
+						<span class="select_css" style="width:35%;">
+							<select class="select_role" similarity="${x}" style="min-width:80% !important;max-width:80%">
 								<!-- <option>--Select Area--</option> -->
 							</select>
 						</span>
 						</div>`;
 						$('.priority_areas').append(code);
+						x++;
 						// console.log(employee)
 					})					
 				}
@@ -806,10 +812,47 @@ font-family: 'Open Sans', sans-serif;
 </script>
 <script type="text/javascript">
 	$(document).ready(function(){
+
+		function roleChange(roleId,areaId,similarity=null){
+					 var centerid = $('.sellect').val();
+		// var userid = $('#user-id-select').text();
+				var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
+				$.ajax({
+					method:'GET',
+					url:url,
+					dataType: 'JSON',
+					success:function(response){
+							// $('.select_role').empty()
+						response['orgchart'].forEach(function(index){
+							index['roles'].forEach(function(values){
+								if(areaId == values.areaid){
+									if(roleId == values.roleid){
+										var data = "<option value="+values.roleid+" selected>"+values.roleName+"</option>";
+										}
+									else{
+										var data = "<option value="+values.roleid+">"+values.roleName+"</option>";
+									}
+									if(similarity != null){
+											$('.select_role[similarity='+similarity+']').append(data)
+										}
+										else{
+											$('.select_role').append(data)
+										}
+									}
+								})
+							})
+						}
+					})
+				}
+
+
 			$(document).on('click','.roleNameClass',function(){
 				$('.box-name').text($(this).text())
 				$('.box-space').text($(this).attr('role_name'))
 				$('#currentRole').val($(this).attr('role_id'))
+				var area_id = $(this).attr('a_id');
+				var role_id = $(this).attr('r_id');
+				var similarity = $(this).attr('similarity');
 			var centerid = $('.sellect').val();
 			// var userid = $('#user-id-select').text();
 			var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
@@ -820,38 +863,23 @@ font-family: 'Open Sans', sans-serif;
 				success:function(response){
 					console.log(response)
 					response['orgchart'].forEach(function(index){
-						var data = `<option value="${index.areaId}">${index.areaName}</option>`;
+						if(area_id == index.areaId){
+							var data = `<option value="${index.areaId}" selected>${index.areaName}</option>`;
+							roleChange(role_id,index.areaId)
+						}
+						else{
+						var data = `<option value="${index.areaId}" >${index.areaName}</option>`;
+					}
 						$('.select_area').append(data)
 					})
 				}
 			})
 		})
-	})
-</script>
-<script type="text/javascript">
-	$(document).ready(function(){
+
 		$(document).on('change','.select_area',function(){
-		 var centerid = $('.sellect').val();
-		 var index = $(this).index()
-		// var userid = $('#user-id-select').text();
-		var areaId = $(this).val();
-		var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
-		$.ajax({
-			method:'GET',
-			url:url,
-			dataType: 'JSON',
-			success:function(response){
-					$('.select_role').empty()
-				response['orgchart'].forEach(function(index){
-					index['roles'].forEach(function(values){
-						if(areaId == values.areaid){
-							var data = "<option value="+values.roleid+">"+values.roleName+"</option>";
-								$('.select_role').append(data)
-										}
-									})
-					})
-				}
-			})
+				var similarity = $(this).attr('similarity');
+				$('.select_role[similarity='+similarity+']').empty()
+				roleChange(null,$(this).val(),similarity)
 		})
 	})
 </script>

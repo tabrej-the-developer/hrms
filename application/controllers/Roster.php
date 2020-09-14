@@ -259,12 +259,12 @@ public function getRosterDetails(){
 	}
 	// footprint end
 		if($form_data != null){
-		$data['date'] = $this->input->post('date');
 		$data['roster_id'] = $this->input->post('roster_id');
 		$data['emp_id'] = $this->input->post('emp_id');
 		$data['add_start_time'] = $this->input->post('add_start_time');
 		$data['add_end_time'] = $this->input->post('add_end_time');
 		$data['add_role_id'] = $this->input->post('add_role_id');
+		$data['dates'] = $this->input->post('dates');
 		$data['userid'] = $this->session->userdata('LoginId');
 		// print_r($data);
 		 		$url = BASE_API_URL."Rosters/addNewShift";
@@ -280,7 +280,7 @@ public function getRosterDetails(){
 					$server_output = curl_exec($ch);
 					$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			if($httpcode == 200){
-				echo "success";
+				echo $server_output;
 				curl_close ($ch);
 			}
 			else if($httpcode == 401){

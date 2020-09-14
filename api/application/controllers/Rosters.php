@@ -413,15 +413,17 @@ class Rosters extends CI_Controller {
 				$endTime = $json->add_end_time;
 				$rosterid = $json->roster_id;//$json->roster_id;
 				$roleid = $json->add_role_id;
-				$date = $json->date;
 				$empid = $json->emp_id;
+				$dates = $json->dates;
 				$status = "1";
-				if($startTime != null && $endTime != null && $rosterid != null && $roleid != null && $date != null && $empid != null){
+				if($startTime != null && $endTime != null && $rosterid != null && $roleid != null && $dates != null && $empid != null){
 					$this->load->model('rostersModel');
-					$this->rostersModel->addNewShift($startTime,$endTime,$rosterid,$roleid,$date,$empid,$status);
+					foreach($dates as $da){
+					$d = $this->rostersModel->addNewShift($startTime,$endTime,$rosterid,$roleid,$da->date,$empid,$status);
+						}
 					$data['Status'] = 'SUCCESS';
 					http_response_code(200);
-					echo json_encode($data);
+					echo json_encode($json);
 				}
 				else{
 					$data['Status'] = 'ERROR';
@@ -484,7 +486,7 @@ class Rosters extends CI_Controller {
 		$this->load->model('rostersModel');
 		$this->load->model('leaveModel');
 		$this->load->model('authModel');
-				$config = Array(    
+		$config = Array(    
 			    'protocol'  => 'smtp',
 			    'smtp_host' => 'ssl://smtp.zoho.com',
 			    'smtp_port' => 465,
@@ -494,7 +496,7 @@ class Rosters extends CI_Controller {
 			    'charset'   => 'utf-8'
 		);
 
-		$this->load->library('email'); // Load email template
+		$this->load->library('email',$config); // Load email template
 		$this->email->set_newline("\r\n");
 		$this->email->from('demo@todquest.com', 'spotlist');
 
@@ -538,7 +540,7 @@ class Rosters extends CI_Controller {
 								$subject = "No";
 									$this->email->to($user_email); // replace it with receiver email id
 									$this->email->subject($subject); // replace it with email subject
-									$message = $this->load->view('rosterPublishEmailTemplate',$rav,TRUE);
+									$message = $this->load->view('rosterPublishEmailTemplate',$rav,true);
 
 									$this->email->message($message); 
 									$this->email->send();
