@@ -187,7 +187,7 @@ max-width:30vw;
 		padding:10px 20px;
 		margin:2px;
 	}
-	.button{
+	.button,.changeRolePriority_save,.changeRolePriority_close{
 	  border: none;
 	  color: rgb(23, 29, 75);
 	  text-align: center;
@@ -709,7 +709,7 @@ td{
     .priority_buttonsed{
     	padding: 1rem;
     }
-    .edit_priority,.edit_prioritys,.edit_priorityed{
+    .edit_priority,.edit_prioritys,.edit_priorityed,.changeRolePriority_heading{
     	padding: 0.5rem 0;
 	    position: relative;
 	    display: block;
@@ -790,6 +790,76 @@ td{
     .priority_headinged{
     	cursor: move;
     }
+
+/*  -----------------------------
+			CHANGE ROLE PRIORITY	MODAL
+		------------------------------ */
+.changeRolePriority_mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.1);
+  z-index: 50;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.7s;
+}
+.changeRolePriority_modal {
+  position: fixed;
+  top: 30%;
+  left: 50vw;
+  width: 30vw;
+  min-height: 400px;
+  margin-left: -15%;
+  margin-top: -150px;
+  background: #fff;
+  z-index: 100;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.5s ease-out;
+  transform: translateY(45px);
+}
+
+.active,.actived {
+  visibility: visible !important;
+  opacity: 1;
+}
+.active + .changeRolePriority_modal {
+  visibility: visible !important;
+  opacity: 1;
+  transform: translateY(0);
+}
+.actived + .changeRolePriority_modaled {
+  visibility: visible !important;
+  opacity: 1;
+  transform: translateY(0);
+}
+.changeRolePriority_body  tr td{
+	width: 30vw;
+	cursor: move;
+}
+.changeRolePriority_buttons{
+	position:absolute;
+	bottom: 2rem;
+	width:100%;
+	justify-content: center;
+	display: flex;
+	padding: 20px 0 0 0;
+}
+.changeRolePriority_body {
+	display: flex;
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
+    flex-direction: column;
+
+}
+/*  ------------------------------
+			CHANGE ROLE PRIORITY	MODAL
+		------------------------------ */
 
   /* Edit Permission Modal */
   .modal_title{
@@ -1151,7 +1221,13 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 					?>
 					<tr>
 				<tr class="area_name_class">
-					<td colspan="7" class="area-name" area-value="<?php echo $rosterDetails->roster[$x]->areaId ?> "><?php echo $rosterDetails->roster[$x]->areaName ?></td>
+					<td colspan="7" class="area-name" area-value="<?php echo $rosterDetails->roster[$x]->areaId ?> " ><?php echo $rosterDetails->roster[$x]->areaName ?>
+						<span area_id="<?php echo $rosterDetails->roster[$x]->areaId; ?>" style="position: absolute;right: 3%;cursor:pointer;" class="changeRoleOrder">
+						<i>
+							<img src="<?php echo base_url('assets/images/icons/priority.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+						</i>
+						</span>
+					</td>
 				</tr>
 				<?php $occupancy = 0; ?>
 				<?php
@@ -1298,7 +1374,13 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 		 if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N"){ 
 				for($x=0;$x<count($rosterDetails->roster);$x++){?>
 				<tr >
-					<td colspan="7" class="area-name"><?php echo $rosterDetails->roster[$x]->areaName ?></td>
+					<td colspan="7" class="area-name"><?php echo $rosterDetails->roster[$x]->areaName ?>
+						<span area_id="<?php echo $rosterDetails->roster[$x]->areaId; ?>" style="position: absolute;right: 3%;cursor:pointer;" class="changeRoleOrder">
+						<i>
+							<img src="<?php echo base_url('assets/images/icons/priority.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+						</i>
+						</span>
+					</td>
 				</tr>
 				<?php $occupancy = 0; 
  
@@ -1818,6 +1900,34 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
   </div>
 	</div>
 </div>
+
+
+<!-- /*  ------------------------------
+			CHANGE ROLE PRIORITY	MODAL
+		------------------------------ */ -->
+
+<div class="changeRolePriority_mask" ></div>
+<div class="changeRolePriority_modal" >
+	<span class="changeRolePriority_head" >
+		<a class="text-center  changeRolePriority_heading" style="padding:1rem 0">Edit Priority</a>
+	</span>
+		<div class="changeRolePriority_body"></div>
+		<div class="changeRolePriority_buttons">
+	  	<button class="changeRolePriority_close" role="button">
+				<i>
+					<img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+				</i>Cancel</button>
+	  	<button class="changeRolePriority_save">
+				<i>
+					<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+				</i>Save</button>
+	  </div>
+</div>
+
+<!-- /*  ------------------------------
+			CHANGE ROLE PRIORITY	MODAL
+		------------------------------ */ -->
+
 <?php } ?>
 <?php 		 if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N"){ ?>
 <script type="text/javascript">
@@ -2781,6 +2891,77 @@ $('.modal_body').draggable();
         $('#casualEmp_id').tokenize2();
         $('#employeeValue').tokenize2();
     });
+</script>
+<script type="text/javascript">
+/*  -----------------------------
+			CHANGE ROLE PRIORITY	MODAL
+		------------------------------ */
+
+
+	function closeChangeRolePriority(){
+	  $(".changeRolePriority_mask").removeClass("active");
+	}
+
+	$(".changeRolePriority_close").on("click", function(){
+		  closeChangeRolePriority();
+		$(".changeRolePriority_body").empty();
+	});
+/*  -----------------------------
+			CHANGE ROLE PRIORITY	MODAL
+		------------------------------ */
+	$(document).ready(function(){
+		$(document).on('click','.changeRoleOrder',function(){
+			$('.changeRolePriority_body').empty();
+			$('.changeRolePriority_mask').addClass("active");
+			var areaId = $(this).attr('area_id');
+			var centerid = $('#center-id').attr('c_id');
+			let url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
+			$.ajax({
+				url : url,
+				method : 'GET',
+				success : function(response){
+					response = JSON.parse(response)
+					response.orgchart.forEach(function(item){
+						if(item.areaId == areaId){
+							item.roles.forEach(function(role){
+								var code = `
+								<tr class="d-block">
+									<td class="change_role_priority area-name" roleId="${role.roleid}">${role.roleName}</td>
+								</tr>`;
+								$('.changeRolePriority_body').append(code);
+							})
+						}
+					})
+					// console.log(response)
+				}
+			})
+		})
+	})
+			$('.changeRolePriority_body').sortable()
+			$(".changeRolePriority_body").disableSelection();
+
+		$(document).on('click','.changeRolePriority_save',function(){
+			var url = window.location.origin+"/PN101/settings/changeRolePriority"
+			var order = [];
+			var obj = {};
+			for(let i=0;i<($('.change_role_priority').length);i++){
+				obj = {};
+				obj.roleid = $('.change_role_priority').eq(i).attr('roleid');
+				obj.priority = i;
+				order.push(obj);
+			}
+			$.ajax({
+				url : url,
+				method : 'POST',
+				data : {
+					order : order
+				},
+				success : function(response){
+					console.log(response)
+					window.location.reload();
+				}
+			})
+		})
 </script>
 </body>
 </html>

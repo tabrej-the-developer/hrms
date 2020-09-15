@@ -356,8 +356,7 @@ public function editRooms(){
 	public function changeEmployeeRole(){
 		$formData = $this->input->post();
 		if($formData != null){
-			$data['employeeId'] = $formData['empId'];
-			$data['roleId'] = $formData['roleId'];  
+			$data['details'] = $formData['details'];  
 			$data['userid'] = $this->session->userdata('LoginId'); 
 		$url = BASE_API_URL."/settings/changeEmployeeRole";
 		$ch = curl_init($url);
@@ -371,9 +370,9 @@ public function editRooms(){
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			print_r($data);
+			print_r($httpcode);
 			if($httpcode == 200){
-				print_r($data);
+				print_r($server_output);
 				curl_close ($ch);
 			}
 			else if($httpcode == 401){
@@ -557,7 +556,10 @@ $server_output = curl_exec($ch);
 
 
 
-	function getAllRooms($centerid = 1){
+	function getAllRooms($centerid = null){
+		if($centerid == null){
+			$centerid = (json_decode($this->getAllCenters())->centers[0])->centerid;
+		}
 		$url = BASE_API_URL."settings/getRooms/".$centerid."/".$this->session->userdata('LoginId');
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
@@ -576,7 +578,10 @@ $server_output = curl_exec($ch);
 
 		}
 	}
-	function getOrgChart($centerid=1){
+	function getOrgChart($centerid=null){
+		if($centerid == null){
+			$centerid = (json_decode($this->getAllCenters())->centers[0])->centerid;
+		}
 		$url = BASE_API_URL."settings/getOrgChart/".$centerid."/".$this->session->userdata('LoginId');
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
@@ -596,7 +601,10 @@ $server_output = curl_exec($ch);
 		}
 	}
 
-		public function getOrgCharts($centerid=1){
+		public function getOrgCharts($centerid=null){
+			if($centerid == null){
+				$centerid = (json_decode($this->getAllCenters())->centers[0])->centerid;
+			}
 		$url = BASE_API_URL."settings/getOrgChart/".$centerid."/".$this->session->userdata('LoginId');
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
@@ -616,7 +624,44 @@ $server_output = curl_exec($ch);
 		}
 	}
 
-	function getAreas($centerid=1){
+	public function changeRolePriority(){
+		$input = $this->input->post();
+		if($input != null){
+			//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+				$this->session->set_userdata('current_url',currentUrl());
+			}
+			// footprint end
+		$data['order'] = $this->input->post('order');
+		$data['userid'] = $this->session->userdata('LoginId');
+		$url = BASE_API_URL."settings/changeRolePriority/";
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$server_output = curl_exec($ch);
+			print_r($server_output);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				print_r($server_output);
+				curl_close ($ch);
+			}
+			else if($httpcode == 401){
+
+			}
+		}
+	}
+
+	function getAreas($centerid=null){
+		if($centerid == null){
+		$centerid = (json_decode($this->getAllCenters())->centers[0])->centerid;
+			}
 		$url = BASE_API_URL."settings/getAreas/".$centerid."/".$this->session->userdata('LoginId');
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
@@ -997,7 +1042,7 @@ $server_output = curl_exec($ch);
 		}
 
 	// Edit employee
-	public function editEmployee($centerid=1){
+	public function editEmployee($centerid=null){
 			if($this->session->has_userdata('LoginId')){
 	//footprint start
 	if($this->session->has_userdata('current_url')){
@@ -1005,6 +1050,9 @@ $server_output = curl_exec($ch);
 		$this->session->set_userdata('current_url',currentUrl());
 	}
 	// footprint end
+	if($centerid == null){
+		$centerid = (json_decode($this->getAllCenters())->centers[0])->centerid;
+	}
 				$data['centerid'] = $centerid;
 				$data['userid'] = $this->session->userdata('LoginId');
 				$data['centers'] = $this->getAllCenters();
@@ -1143,7 +1191,7 @@ $server_output = curl_exec($ch);
 	}
 	// New add Employee
 
-		public function addEmployee($centerid=1){
+		public function addEmployee($centerid=null){
 			if($this->session->has_userdata('LoginId')){
 				//footprint start
 				if($this->session->has_userdata('current_url')){
@@ -1151,6 +1199,9 @@ $server_output = curl_exec($ch);
 					$this->session->set_userdata('current_url',currentUrl());
 				}
 				// footprint end
+				if($centerid == null){
+					$centerid = (json_decode($this->getAllCenters())->centers[0])->centerid;
+				}
 				$data['centerid'] = $centerid;
 				$data['userid'] = $this->session->userdata('LoginId');
 				$data['centers'] = $this->getAllCenters();

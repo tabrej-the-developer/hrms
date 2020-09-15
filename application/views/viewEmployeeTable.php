@@ -204,18 +204,21 @@
         <span class="view_employee_title">View Employee Table</span>
         </span>
         <span class="viewEmployeeTable_center ml-auto">
-      <span class="select_css">
-        <select placehdr="Center" id="centerValue" name="centerValue" >
-          <?php 
-          foreach($centers->centers as $center){ ?> 
-            <option value="<?php echo $center->centerid;?>"><?php echo $center->name;?></option>
-          <?php } 
-          $centerId = "";
-          foreach($centers->centers as $center){ 
-              $centerId = $centerId . $center->centerid . "|";
-           } ?>
-        </select>
-      </span>
+          <span class="select_css">
+            <select placehdr="Center" id="centerValue" name="centerValue" >
+              <?php 
+              foreach($centers->centers as $center){ ?> 
+                <option value="<?php echo $center->centerid;?>"><?php echo $center->name;?></option>
+              <?php } 
+              $centerId = "";
+              foreach($centers->centers as $center){ 
+                  $centerId = $centerId . $center->centerid . "|";
+               } ?>
+            </select>
+          </span>
+        </span>
+        <span class="viewEmployeeTable_search ">
+          <input type="" name="" onkeyup="searchBy()" id="filter">
         </span>
       </span>
       <div id="content-wrappers" class="containers">
@@ -224,26 +227,26 @@
             <table class="table ">
               <thead>
                 <tr>
-                  <th>Center Name</th>
-                  <th>Member Id</th>
-                  <th>Member Name</th>
+                  <th>Name</th>
+                  <th>Id</th>
+                  <th>Role</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody id="filterList" > 
                 <tr class="viewEmployeeTable_row">
                   <td >
-                    <span id="" class="viewEmployeeTable_centerName">
+                    <span id="viewEmployeeTable_centerName" class="viewEmployeeTable_centerName">
 
                     </span>
                    </td> 
                   <td class="">
-                    <span id="" class="viewEmployeeTable_memberId">
+                    <span id="viewEmployeeTable_memberId" class="viewEmployeeTable_memberId">
                       
                     </span>
                    </td> 
                     <td class="">
-                      <span id="" class="viewEmployeeTable_memberName">
+                      <span id="viewEmployeeTable_memberName" class="viewEmployeeTable_memberName">
 
                       </span>
                     </td>
@@ -306,9 +309,24 @@
       })
     }
   })
+
+    function searchBy(){
+        var filter = $('#filter').val();
+        var i = 0;
+        var name = $(".viewEmployeeTable_row td #viewEmployeeTable_centerName");
+        var role = $(".viewEmployeeTable_row td #viewEmployeeTable_memberName");
+        var id = $(".viewEmployeeTable_row td #viewEmployeeTable_memberId");
+         $(".viewEmployeeTable_row td #viewEmployeeTable_centerName").each(function(){
+             if ((name.eq(i).text().search(new RegExp(filter, "i")) < 0) && (role.eq(i).text().search(new RegExp(filter, "i")) < 0) && (id.eq(i).text().search(new RegExp(filter, "i")) < 0)) {
+                $(this).parent().parent().fadeOut();
+             } else {
+                $(this).parent().parent().show();
+            }
+            i++;
+        });
+
+    }
 </script>
-
-
 
 </body>
 </html>

@@ -1089,7 +1089,7 @@ color:#FFFFFF;
     		
     		while(increment < count){
     			// rosters dates array
-    			if(($('.fc-event-title').eq(increment).text()).includes('Role')){
+    			if(($('.fc-event-title').eq(increment).text()).includes('Shift')){
     			element[counter] = $('.fc-event-title').eq(increment).closest('td').attr('data-date');
     			var date = element[counter];
     			var role = $('.fc-event-title').eq(increment).text();
@@ -1168,7 +1168,7 @@ color:#FFFFFF;
     		
     		while(increment < count){
     			// rosters dates array
-    			if(($('.fc-event-title').eq(increment).text()).includes('Role')){
+    			if(($('.fc-event-title').eq(increment).text()).includes('Shift')){
     			element[counter] = $('.fc-event-title').eq(increment).closest('td').attr('data-date');
     			var date = element[counter];
     			// var role = $('.fc-event-title').eq(increment).text();
