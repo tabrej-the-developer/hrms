@@ -104,6 +104,30 @@ class RostersModel extends CI_Model {
 		return $query->row();
 	}
 
+	public function getShiftDate($shiftid){
+		$this->load->database();
+		$query = $this->db->query("SELECT rosterDate FROM shift WHERE id = '$shiftid'");
+		return $query->row();
+	}
+
+	public function getEmployeeId($shiftid){
+		$this->load->database();
+		$query = $this->db->query("SELECT userid FROM shift WHERE id = '$shiftid'");
+		return $query->row();
+	}
+
+	public function getRosterId($shiftid){
+		$this->load->database();
+		$query = $this->db->query("SELECT roasterId FROM shift WHERE id = '$shiftid'");
+		return $query->row();
+	}
+
+	public function getShiftId($employeeId,$currentDate){
+		$this->load->database();
+		$query = $this->db->query("SELECT id FROM shift WHERE userid = '$employeeId' AND rosterDate = '$currentDate'");
+		return $query->row();
+	}
+
 	public function changePriority($areaid,$newid){
 		$this->load->database();
 		$query = $this->db->query("UPDATE orgchartareas set rosterPriority = '$newid' WHERE areaid = '$areaid' ");

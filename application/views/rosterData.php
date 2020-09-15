@@ -1625,6 +1625,31 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 	 		<input type="text" name="roleId" id="roleId" style="display:none">
 	 		<input type="text" name="status" value="2"  id="status" style="display:none">
 	 		<input type="text" name="userId"   id="userId" style="display:none">
+    <div class="row p-2">
+      <label class="col-4 modal_label">Days</label>
+      <span class="col-7">
+        <span class="d-inline-block">
+          <span>Mon</span>
+          <input type="checkbox" name="days" value="1" class="d-block edit_shift_checkbox_space" checked>
+        </span>
+        <span class="d-inline-block">
+          <span>Tue</span>
+          <input type="checkbox" name="days" value="2" class="d-block edit_shift_checkbox_space" checked>
+        </span>
+        <span class="d-inline-block">
+          <span>Wed</span>
+          <input type="checkbox" name="days" value="3" class="d-block edit_shift_checkbox_space" checked>
+        </span>
+        <span class="d-inline-block">
+          <span>Thu</span>
+          <input type="checkbox" name="days" value="4" class="d-block edit_shift_checkbox_space" checked>
+        </span>
+        <span class="d-inline-block">
+          <span>Fri</span>
+          <input type="checkbox" name="days" value="5" class="d-block edit_shift_checkbox_space" checked>
+        </span>
+      </span>
+    </div>
 			<div class="buttons_group">
 				 		<button type="button" name="modal-cancel"  value="Cancel"  class="close buttonn" style="width:5rem">
 								<i>
@@ -2223,7 +2248,13 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 			var status = document.getElementById('status').value;
 			var userid = "<?php echo $userid ?>";
 			var message = $('#message').val();
-
+      var days = [];
+      var obj = {};
+      for(var i=0;i<$('.edit_shift_checkbox_space').length;i++){
+        obj = {};
+        obj.YN = $('.edit_shift_checkbox_space').eq(i).is(':checked');
+        days.push(obj);
+      }
 			if($('#role').val() != null || $('#role').val() !=""){
 				var roleid = $('#role').val()
 			}else{			
@@ -2248,12 +2279,13 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 					status:status,
 					userid:userid,
 					areaid:areaid,
-					message:message
+					message:message,
+          days: days
 				},
 				success:function(response){
 											console.log(response)
 											$('#roster-form').trigger('reset');
-											window.location.reload();
+											// window.location.reload();
 				}
 			})
 		})

@@ -312,12 +312,30 @@ class Rosters extends CI_Controller {
 				$roleid = $json->roleid;
 				$status = $json->status;
 				$message = $json->message;
+				$days = $json->days;
 				if($startTime != null && $startTime != "" && $endTime != null && $endTime != "" &&
 					$shiftid != null && $shiftid != "" && $roleid != null && $roleid != "" && $status != null && $status != ""){
 					$this->load->model('rostersModel');
-				if($shiftid != null && $startTime != null && $endTime != null && $roleid != null && $status != null  && $shiftid != "" && $startTime != "" && $endTime != "" && $roleid != "" && $status != ""){
-					$this->rostersModel->updateShift($shiftid,$startTime,$endTime,$roleid,$status,$message);
-				}
+					$shiftDate = $this->rostersModel->getShiftDate($shiftid)->rosterDate;
+					$employeeId = $this->rostersModel->getEmployeeId($shiftid)->userid;
+					$rosterid = $this->rostersModel->getRosterId($shiftid)->roasterId;
+					$number = date('w',strtotime($shiftDate)) - 1;
+					$currentDate = date('Y-m-d',strtotime($shiftDate. '-' . $number  .' days')) ;
+
+					foreach ($days as $day) {
+						$getShiftId = $this->rostersModel->getShiftId($employeeId,$currentDate)->id;
+							if($day->YN == true){
+								if($getShiftId != null){
+								$this->rostersModel->updateShift($getShiftId,$startTime,$endTime,$roleid,$status,$message);
+									}
+									else{
+								$this->rostersModel->createNewShift($rosterid,$currentDate,$employeeId,$startTime,$endTime,$roleid,$message);
+									}
+							}
+						$currentDate = date('Y-m-d',strtotime($currentDate.'+1 days'));
+						echo $startTime;
+					}
+
 					$data['Status'] = 'SUCCESS';
 					http_response_code(200);
 					echo json_encode($data);
