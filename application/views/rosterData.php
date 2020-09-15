@@ -1922,7 +1922,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 	$(document).ready(function(){
 		$(document).on('click','#delete_shift',function(){
 			var shiftId = $("#shiftId").val();
-			alert(shiftId)
+			// alert(shiftId)
 			let bool = confirm("confirm delete shift?");
 			if(bool == true){
 				var url = window.location.origin+"/PN101/roster/deleteShift/"+shiftId;
@@ -2403,7 +2403,7 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 						add_role_id : add_role_id
 					},
 					success:function(response){
-						alert(response)
+						console.log(response)
 						window.location.reload();
 					}
 				})
@@ -2685,7 +2685,7 @@ $('.modal_body').draggable();
 			let employeeId = $('#employeeValue').val();
 			let editRoster = ($('#edit_roster').is(':checked') == true) ? 'Y' : 'N' ;
 			let rosterId = "<?php echo $rosterid; ?>";
-			alert(employeeId)
+			// alert(employeeId)
 			let url = window.location.origin+'/PN101/roster/saveRosterPermissions';
 			$.ajax({
 				url : url,
