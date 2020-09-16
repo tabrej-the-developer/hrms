@@ -523,19 +523,19 @@ class Rosters extends CI_Controller {
 		$this->load->model('rostersModel');
 		$this->load->model('leaveModel');
 		$this->load->model('authModel');
-		// $config = Array(    
-		// 	    'protocol'  => 'smtp',
-		// 	    'smtp_host' => 'ssl://smtp.zoho.com',
-		// 	    'smtp_port' => 465,
-		// 	    'smtp_user' => 'demo@todquest.com',
-		// 	    'smtp_pass' => 'K!ddz1ng',
-		// 	    'mailtype'  => 'html',
-		// 	    'charset'   => 'utf-8'
-		// );
+		$config = Array(    
+			    'protocol'  => 'smtp',
+			    'smtp_host' => 'ssl://smtp.zoho.com',
+			    'smtp_port' => 465,
+			    'smtp_user' => 'demo@todquest.com',
+			    'smtp_pass' => 'K!ddz1ng',
+			    'mailtype'  => 'html',
+			    'charset'   => 'utf-8'
+		);
 
-		// $this->load->library('email',$config); // Load email template
-		// $this->email->set_newline("\r\n");
-		// $this->email->from('demo@todquest.com', 'spotlist');
+		$this->load->library('email',$config); // Load email template
+		$this->email->set_newline("\r\n");
+		$this->email->from('demo@todquest.com', 'spotlist');
 
 		$roster = $this->rostersModel->getRosterFromId($rosterid);
 		$allAreas = $this->rostersModel->getAllAreas($roster->centerid);
@@ -574,14 +574,14 @@ class Rosters extends CI_Controller {
 									}
 									array_push($rav['shifts'],$shiftObj);
 								}
-								// $user_email = $empDetails->email;
-								// $subject = "Roster has been published";
-								// 	$this->email->to($user_email); // replace it with receiver email id
-								// 	$this->email->subject($subject); // replace it with email subject
-								// 	$message = $this->load->view('rosterPublishEmailTemplate',$rav,true);
+								$user_email = $empDetails->email;
+								$subject = "Roster has been published";
+									$this->email->to($user_email); // replace it with receiver email id
+									$this->email->subject($subject); // replace it with email subject
+									$message = $this->load->view('rosterPublishEmailTemplate',$rav,true);
 
-								// 	$this->email->message($message); 
-								// 	$this->email->send();
+									$this->email->message($message); 
+									$this->email->send();
 						}
 					}
 					print_r($rav);
