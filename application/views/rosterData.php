@@ -2108,8 +2108,8 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
         },
 				method : 'POST',
 				success: function(response){
-					// window.location.reload();
-          console.log(response)
+					window.location.reload();
+          // console.log(response)
 				}
 			})
 			}
