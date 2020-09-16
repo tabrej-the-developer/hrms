@@ -235,7 +235,7 @@
       </a>
     </span>
     <span class="top_select">
-			<span class="select_css">
+<!-- 			<span class="select_css">
 				<select placehdr="Center" id="centerValue" name="centerValue" onchange="getEmployees()">
 					<?php 
 						$employeeData = json_decode($getEmployeeData);
@@ -254,7 +254,7 @@
 				<select placehdr="Employee" id="employeeValue" name="employeeValue" onchange="getEmployeeProfile()">
 
 				</select>
-			</span>
+			</span> -->
     </span>
 	</div>
 	<div class="addEmployee-container">
@@ -982,7 +982,7 @@ $(document).ready(function(){
 	}
 })
 </script>
-
+<!-- 
 <script type="text/javascript">
 	$(document).ready(function(){
 		$('#center').change(function(){
@@ -1003,7 +1003,7 @@ $(document).ready(function(){
 			})
 		})
 	});
-</script>
+</script> -->
 
 <script type="text/javascript">
 		for(x=0;x<$('#role').children().length;x++){
@@ -1100,7 +1100,7 @@ $(document).ready(function(){
     });
 </script>
 <?php // } ?>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 	var base_url = "<?php echo base_url();?>";
 	window.addEventListener('DOMContentLoaded', (event) => {
 		getEmployees();
@@ -1138,6 +1138,6 @@ $(document).ready(function(){
 				}
 			})
 		}
-		</script>
+		</script> -->
 </body>
 </html>

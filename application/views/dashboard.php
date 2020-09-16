@@ -1089,14 +1089,14 @@ color:#FFFFFF;
     		
     		while(increment < count){
     			// rosters dates array
-    			if(($('.fc-event-title').eq(increment).text()).includes('Role')){
+    			if(($('.fc-event-title').eq(increment).text()).includes('Shift')){
     			element[counter] = $('.fc-event-title').eq(increment).closest('td').attr('data-date');
     			var date = element[counter];
     			var role = $('.fc-event-title').eq(increment).text();
     			events.forEach((item,index)=>{
 		    		x = fun(item,index,date)
 		    		if(x !== undefined){
-		    		console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/roster/getRosterDetails?rosterId=${x}" title="${role}">${role}</a>`));
+		    		console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/roster/getRosterDetails?rosterId=${x}&showBudgetYN=N" title="${role}">${role}</a>`));
 		    			}
 		    	});
     			counter++;
@@ -1168,7 +1168,7 @@ color:#FFFFFF;
     		
     		while(increment < count){
     			// rosters dates array
-    			if(($('.fc-event-title').eq(increment).text()).includes('Role')){
+    			if(($('.fc-event-title').eq(increment).text()).includes('Shift')){
     			element[counter] = $('.fc-event-title').eq(increment).closest('td').attr('data-date');
     			var date = element[counter];
     			// var role = $('.fc-event-title').eq(increment).text();

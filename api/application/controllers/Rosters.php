@@ -413,12 +413,19 @@ class Rosters extends CI_Controller {
 				$endTime = $json->add_end_time;
 				$rosterid = $json->roster_id;//$json->roster_id;
 				$roleid = $json->add_role_id;
-				$date = $json->date;
 				$empid = $json->emp_id;
+				$dates = $json->dates;
 				$status = "1";
-				if($startTime != null && $endTime != null && $rosterid != null && $roleid != null && $date != null && $empid != null){
+				if($startTime != null && $endTime != null && $rosterid != null && $roleid != null && $dates != null && $empid != null){
 					$this->load->model('rostersModel');
-					$this->rostersModel->addNewShift($startTime,$endTime,$rosterid,$roleid,$date,$empid,$status);
+					foreach($dates as $da){
+						$getShift = $this->rostersModel->getShiftDetails($empid,$da->date);
+						if($getShift == null){
+						$d = $this->rostersModel->addNewShift($startTime,$endTime,$rosterid,$roleid,date('Y-m-d',strtotime($da->date)),$empid,$status);
+							}else{
+							$this->rostersModel->updateShiftDetails($startTime,$endTime,$roleid,$status,date('Y-m-d',strtotime($da->date)),$empid);
+							}
+						}
 					$data['Status'] = 'SUCCESS';
 					http_response_code(200);
 					echo json_encode($data);

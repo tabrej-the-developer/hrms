@@ -17,13 +17,13 @@ class RostersModel extends CI_Model {
 
 	public function getAllRoles($areaid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM orgchartroles WHERE areaid = '$areaid'");
+		$query = $this->db->query("SELECT * FROM orgchartroles WHERE areaid = '$areaid' ORDER BY priority ASC");
 		return $query->result();
 	}
 
 	public function getRole($roleid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM orgchartroles WHERE roleid = $roleid");
+		$query = $this->db->query("SELECT * FROM orgchartroles WHERE roleid = $roleid ");
 		return $query->row();
 	}
 
@@ -75,6 +75,10 @@ class RostersModel extends CI_Model {
 	public function updateShift($shiftid,$startTime,$endTime,$roleid,$status,$message){
 		$this->load->database();
 		$query = $this->db->query("UPDATE shift SET startTime = $startTime, endTime = $endTime,roleid = $roleid,status = $status,message='$message' WHERE id = '$shiftid'");
+	}
+	public function updateShiftDetails($startTime,$endTime,$roleid,$status,$date,$empid){
+		$this->load->database();
+		$query = $this->db->query("UPDATE shift SET startTime = $startTime, endTime = $endTime,roleid = $roleid,status = $status WHERE rosterDate='$date' and userid='$empId'");
 	}
 
 	public function updateRoster($rosterid,$status){

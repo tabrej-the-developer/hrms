@@ -657,11 +657,12 @@ class Settings extends CI_Controller {
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			$json = json_decode(file_get_contents('php://input'));
 			if($json!= null && $res != null && $res->userid == $json->userid){
-					if($json->employeeId != null && $json->roleId != null){
-						$employeeId = $json->employeeId;
-						$roleId = $json->roleId;
+					if($json->details != null){
+						$details = $json->details;
 						$this->load->model('settingsModel');
-						$this->settingsModel->updateEmployeeRole($employeeId,$roleId);
+						foreach($details as $employee){
+							$this->settingsModel->updateEmployeeRole($employee->employeeId,$employee->roleId);
+						}
 						$data['Status'] = "SUCCESS";
 						$data['Message'] = "Role Updated";
 					}
@@ -680,6 +681,39 @@ class Settings extends CI_Controller {
 			http_response_code(401);
 		}
 	}
+
+	public function changeRolePriority(){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $json->userid){
+					if($json->order != null ){
+						$order = $json->order;
+						$this->load->model('settingsModel');
+						foreach($order as $o){
+							$this->settingsModel->updateRolePriority($o->roleid,$o->priority);
+						}
+						$data['Status'] = "SUCCESS";
+						$data['Message'] = "Priority Updated";
+					}
+				else{
+					$data['Status'] = "ERROR";
+					$data['Message'] = "Priority Not Updated";
+				}
+				http_response_code(200);
+				echo json_encode($order);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
 	public function addMultipleEmployees($userid){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){

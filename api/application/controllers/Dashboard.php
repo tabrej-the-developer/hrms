@@ -95,12 +95,12 @@ class Dashboard extends CI_Controller{
 				$getShiftDetails = $this->dashboardModel->getShiftDetails($userid,$currentDate);
 					if($getShiftDetails != null){
 						if($getShiftDetails != ""){
-							$mdata['title'] = 'Role - '.($this->rostersModel->getRole($getShiftDetails->roleid))->roleName;
+							$mdata['title'] = 'Shift - '.$getShiftDetails->startTime .' - '.$getShiftDetails->endTime;
 							$mdata['start'] = $currentDate;
 							$mdata['roster'] = $getShiftDetails->roasterId;
 							array_push($events,$mdata);
 					}
-				}
+				}	
 				$getLeaveDetails = $this->leaveModel->getLeaveApplicationForUser($userid,$currentDate);
 				if($getLeaveDetails != null ){
 						if( $getLeaveDetails != "" ){

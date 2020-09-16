@@ -205,7 +205,7 @@ a[href*="settings"],.xero_settings a{
 			<div class="tile-box  d-md-flex col-3">
 				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/add-employee.png'); ?>"></div>
 				<div class="col-6">
-					<a href="<?php echo base_url()?>settings/viewEmployee">View Employee</a>
+					<a href="<?php echo base_url()?>settings/viewEmployeeTable">View Employee</a>
 				</div>
 			</div>
 		<?php } ?>

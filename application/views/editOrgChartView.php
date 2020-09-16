@@ -197,6 +197,9 @@ font-family: 'Open Sans', sans-serif;
       align-items: center;
 }
 
+/*  -----------------------------
+						MODAL
+		------------------------------ */
 .mask {
   position: fixed;
   top: 0;
@@ -212,10 +215,10 @@ font-family: 'Open Sans', sans-serif;
 .modal_priority {
   position: fixed;
   top: 30%;
-  left: 50%;
-  width: 400px;
+  left: 40vw;
+  width: 60vw;
   min-height: 400px;
-  margin-left: -200px;
+  margin-left: -15%;
   margin-top: -150px;
   background: #fff;
   z-index: 100;
@@ -259,6 +262,9 @@ font-family: 'Open Sans', sans-serif;
     flex-direction: column;
 
 }
+/*  ------------------------------
+						MODAL
+		------------------------------ */
 .fas.fa-trash-alt::before,.fas.fa-plus::before,.fas.fa-pencil-alt::before{
 	color: #171d4b;
 }
@@ -389,6 +395,10 @@ font-family: 'Open Sans', sans-serif;
 .changeRole__{
 	cursor: pointer;
 }
+#change_role{
+	display: flex;
+	width: 100%;
+}
 </style>
 </head>
 <body>
@@ -458,7 +468,7 @@ font-family: 'Open Sans', sans-serif;
 				<div areaId="<?php echo $orgChart->areaId;?>" class="areaId"></div>
 				<div>
 					<?php foreach($orgChart->roles as $roles){
-					echo "<li class='li-c'><span class=\"roleNameClass\" r_id=".$roles->roleid.">".$roles->roleName."</span><span class=\"roleIdClass\" style=\"display:none\">".$roles->roleid."</span>";
+					echo "<li class='li-c'><span class=\"roleNameClass\"  a_id=".$orgChart->areaId." r_id=".$roles->roleid.">".$roles->roleName."</span><span class=\"roleIdClass\" style=\"display:none\">".$roles->roleid."</span>";
 					if(isset($permissions->permissions) ? $permissions->permissions->editOrgChartYN : 'N' == 'Y'){
 					echo "<span class=\"editRole\" style=\"padding-right:20px\"><i class=\"fas fa-pencil-alt\"></i>&nbsp; &nbsp;</span><span class=\"delete-role\" d-val=\"$roles->roleid\" style=\"padding-right:20px\"><i class=\"fas fa-trash-alt\"></i></span></li>";
 						}
@@ -501,55 +511,7 @@ font-family: 'Open Sans', sans-serif;
 						EMPLOYEES MODAL 
 			---------------------------- -->
 
-<!-- ----------------------------
-						CHANGE ROLE MODAL
-		----------------------------- -->
-	<div id="myModal" class="modal">
-	  <!-- Modal content -->
-	  <div class="modal-content">
-	  	<span class="row titl">
-	  		<span style="" class="box-name-space col-12">
-	  			<span class="box-name row"></span>
-	  			<span class="box-space row"></span>
-	  		</span>
-	  		<!-- <span class="close col-2 d-flex align-items-center" >&times;</span> -->
-	  	</span>
-	    
-	    <form  id="changeRole_form" >
 
-			<div class="row p-2">
-				<label class="col-4 modal_label">Area</label>
-				<span class="select_css changeRole__dropdown_parent col-7">
-					<select  class="changeRole__dropdown col-12" name="areaId" id="areaId" style="padding-left:60px">
-						<option >Change Area</option>
-					</select>
-				</span>
-			</div>
-			<input type="text" class="d-none" id="currentRole" name="empId">
-			<div class="row p-2">
-				<label class="col-4 modal_label">Role</label>
-				<span class="select_css changeRole__dropdown_parent col-7">
-					<select  name="role" id="role" class="col-12">				</select>
-				</span>
-			</div>
-			<div class="buttons_group">
-				 		<button type="button" name="modal-cancel"  value="Cancel"  class="close button" style="width:5rem">
-								<i>
-									<img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:0.8rem;margin-right:10px">
-						</i>Close</button>
-				 		<button type="button" name="roleSubmit" id="roleSubmit" value="Save" style="margin:30px;width:5rem" class="button">
-								<i>
-									<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
-						</i>Save</button>
-
-			</div>
-			<div><i style="font-size: 0.9rem; color:#a2a2a2">* Please select area to get roles</i></div>
-	 	</form>
-	  </div>
-</div>
-<!-- ----------------------------
-						CHANGE ROLE MODAL
-		----------------------------- -->
 <script type="text/javascript">
 	function newArea(){
 		var insertForm = document.createElement('form');
@@ -773,6 +735,7 @@ font-family: 'Open Sans', sans-serif;
 		$(document).on('click','.roleNameClass',function(e){
 			var roleid = $(this).attr('r_id');
 			var roleName = $(this).text();
+			var x = 0;
 			$('.changeRole_heading').text(roleName)
 			var url = window.location.origin+"/PN101/settings/getEmployeesForRoles/"+roleid;
 			$.ajax({
@@ -785,19 +748,20 @@ font-family: 'Open Sans', sans-serif;
 
 					data.employees.forEach(function(employee){
 						var code = `<div id="change_role">
-							<span class="changeRole__" role_id="${employee.id}" role_name="${roleName}">${employee.name}</span>
-						<span class="select_css">
-							<select class="select_area">
+							<span class="changeRole__" role_id="${employee.id}" role_name="${roleName}" style="width:30%">${employee.name}</span>
+						<span class="select_css" style="width:35%;">
+							<select class="select_area" similarity="${x}" style="min-width:80% !important;max-width:80%">
 								<!-- <option>--Select Area--</option> -->
 							</select>
 							</span>
-						<span class="select_css">
-							<select class="select_role">
+						<span class="select_css" style="width:35%;">
+							<select class="select_role" similarity="${x}" style="min-width:80% !important;max-width:80%">
 								<!-- <option>--Select Area--</option> -->
 							</select>
 						</span>
 						</div>`;
 						$('.priority_areas').append(code);
+						x++;
 						// console.log(employee)
 					})					
 				}
@@ -806,10 +770,47 @@ font-family: 'Open Sans', sans-serif;
 </script>
 <script type="text/javascript">
 	$(document).ready(function(){
+
+		function roleChange(roleId,areaId,similarity=null){
+					 var centerid = $('.sellect').val();
+		// var userid = $('#user-id-select').text();
+				var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
+				$.ajax({
+					method:'GET',
+					url:url,
+					dataType: 'JSON',
+					success:function(response){
+							// $('.select_role').empty()
+						response['orgchart'].forEach(function(index){
+							index['roles'].forEach(function(values){
+								if(areaId == values.areaid){
+									if(roleId == values.roleid){
+										var data = "<option value="+values.roleid+" selected>"+values.roleName+"</option>";
+										}
+									else{
+										var data = "<option value="+values.roleid+">"+values.roleName+"</option>";
+									}
+									if(similarity != null){
+											$('.select_role[similarity='+similarity+']').append(data)
+										}
+										else{
+											$('.select_role').append(data)
+										}
+									}
+								})
+							})
+						}
+					})
+				}
+
+
 			$(document).on('click','.roleNameClass',function(){
 				$('.box-name').text($(this).text())
 				$('.box-space').text($(this).attr('role_name'))
 				$('#currentRole').val($(this).attr('role_id'))
+				var area_id = $(this).attr('a_id');
+				var role_id = $(this).attr('r_id');
+				var similarity = $(this).attr('similarity');
 			var centerid = $('.sellect').val();
 			// var userid = $('#user-id-select').text();
 			var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
@@ -820,72 +821,54 @@ font-family: 'Open Sans', sans-serif;
 				success:function(response){
 					console.log(response)
 					response['orgchart'].forEach(function(index){
-						var data = `<option value="${index.areaId}">${index.areaName}</option>`;
+						if(area_id == index.areaId){
+							var data = `<option value="${index.areaId}" selected>${index.areaName}</option>`;
+							roleChange(role_id,index.areaId)
+						}
+						else{
+						var data = `<option value="${index.areaId}" >${index.areaName}</option>`;
+					}
 						$('.select_area').append(data)
 					})
 				}
 			})
 		})
-	})
-</script>
-<script type="text/javascript">
-	$(document).ready(function(){
+
 		$(document).on('change','.select_area',function(){
-		 var centerid = $('.sellect').val();
-		 var index = $(this).index()
-		// var userid = $('#user-id-select').text();
-		var areaId = $(this).val();
-		var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
-		$.ajax({
-			method:'GET',
-			url:url,
-			dataType: 'JSON',
-			success:function(response){
-					$('.select_role').empty()
-				response['orgchart'].forEach(function(index){
-					index['roles'].forEach(function(values){
-						if(areaId == values.areaid){
-							var data = "<option value="+values.roleid+">"+values.roleName+"</option>";
-								$('.select_role').append(data)
-										}
-									})
-					})
-				}
-			})
+				var similarity = $(this).attr('similarity');
+				$('.select_role[similarity='+similarity+']').empty()
+				roleChange(null,$(this).val(),similarity)
 		})
 	})
 </script>
-<script type="text/javascript">
-				var model = document.getElementById("myModal");
 
-				$(document).on('click','.changeRole__',function(){
-					 model.style.display = "block";
-				})
-
-				$(document).on('click','.close',function(){
-					 model.style.display = "none";
-				})
-			</script>
 <script type="text/javascript">
 	$(document).ready(function(){
-		$(document).on('click','#roleSubmit',function(){
-			var empId =  $('#currentRole').val();
-			var roleId = $('#role').val();
+		$(document).on('click','.priority_save',function(){
+			var details = [];
+			var obj = {};
+			for(var i=0;i<$('.changeRole__').length;i++){
+				obj = {};
+				obj.employeeId = $('.changeRole__').eq(i).attr('role_id');
+				obj.roleId = $('.changeRole__').eq(i).next().next().children().val();
+				details.push(obj);
+			}
 			var url = window.location.origin+"/PN101/settings/changeEmployeeRole"
 			$.ajax({
 				url : url,
 				method : 'POST',
 				data : {
-					empId : empId,
-					roleId : roleId
+					details : details
 				},
 				success: function(response){
 					console.log(response)
 					// window.location.reload();
 				}
 			})
+
 		})
 	})
 </script>
+
 </body>
 </html>

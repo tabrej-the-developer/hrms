@@ -187,7 +187,7 @@ max-width:30vw;
 		padding:10px 20px;
 		margin:2px;
 	}
-	.button{
+	.button,.changeRolePriority_save,.changeRolePriority_close{
 	  border: none;
 	  color: rgb(23, 29, 75);
 	  text-align: center;
@@ -226,7 +226,7 @@ max-width:30vw;
 }
 .cell-back-1{
 	margin:0 10px 0 10px;
-	font-size: 0.75rem;
+	font-size: 0.85rem;
 	padding:0.2rem;
 }
 .cell-boxes{
@@ -580,7 +580,14 @@ td{
       margin-right:5px !important;
       justify-content: center !important;
 }
-
+.roster_shift_message{
+	font-style: italic;
+	font-size: 0.75rem
+}
+.checkbox_space{
+	display: flex;
+	justify-content: center;
+}
 .casualEmploye-btn,
 .priority-btn,
 .print-btn,
@@ -702,7 +709,7 @@ td{
     .priority_buttonsed{
     	padding: 1rem;
     }
-    .edit_priority,.edit_prioritys,.edit_priorityed{
+    .edit_priority,.edit_prioritys,.edit_priorityed,.changeRolePriority_heading{
     	padding: 0.5rem 0;
 	    position: relative;
 	    display: block;
@@ -783,6 +790,76 @@ td{
     .priority_headinged{
     	cursor: move;
     }
+
+/*  -----------------------------
+			CHANGE ROLE PRIORITY	MODAL
+		------------------------------ */
+.changeRolePriority_mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.1);
+  z-index: 50;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.7s;
+}
+.changeRolePriority_modal {
+  position: fixed;
+  top: 30%;
+  left: 50vw;
+  width: 30vw;
+  min-height: 400px;
+  margin-left: -15%;
+  margin-top: -150px;
+  background: #fff;
+  z-index: 100;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.5s ease-out;
+  transform: translateY(45px);
+}
+
+.active,.actived {
+  visibility: visible !important;
+  opacity: 1;
+}
+.active + .changeRolePriority_modal {
+  visibility: visible !important;
+  opacity: 1;
+  transform: translateY(0);
+}
+.actived + .changeRolePriority_modaled {
+  visibility: visible !important;
+  opacity: 1;
+  transform: translateY(0);
+}
+.changeRolePriority_body  tr td{
+	width: 30vw;
+	cursor: move;
+}
+.changeRolePriority_buttons{
+	position:absolute;
+	bottom: 2rem;
+	width:100%;
+	justify-content: center;
+	display: flex;
+	padding: 20px 0 0 0;
+}
+.changeRolePriority_body {
+	display: flex;
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
+    flex-direction: column;
+
+}
+/*  ------------------------------
+			CHANGE ROLE PRIORITY	MODAL
+		------------------------------ */
 
   /* Edit Permission Modal */
   .modal_title{
@@ -1088,7 +1165,7 @@ function icon($str){
 	}
 }
 	if (strpos($str, ' ') == false && strpos($str, '.') == false) {
-		return $str[0];
+		return isset($str[0]) ? $str[0] : "";
 	}
 }
 
@@ -1144,7 +1221,13 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 					?>
 					<tr>
 				<tr class="area_name_class">
-					<td colspan="7" class="area-name" area-value="<?php echo $rosterDetails->roster[$x]->areaId ?> "><?php echo $rosterDetails->roster[$x]->areaName ?></td>
+					<td colspan="7" class="area-name" area-value="<?php echo $rosterDetails->roster[$x]->areaId ?> " ><?php echo $rosterDetails->roster[$x]->areaName ?>
+						<span area_id="<?php echo $rosterDetails->roster[$x]->areaId; ?>" style="position: absolute;right: 3%;cursor:pointer;" class="changeRoleOrder">
+						<i>
+							<img src="<?php echo base_url('assets/images/icons/priority.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+						</i>
+						</span>
+					</td>
 				</tr>
 				<?php $occupancy = 0; ?>
 				<?php
@@ -1254,7 +1337,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 					 		<span class="row m-0 d-flex justify-content-center"><?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleName;?></span>
 					 	<?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)). "-" .timex( intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime));
 					 	?>
-				<span class="row m-0 d-flex justify-content-center">
+				<span class="row m-0 d-flex justify-content-center roster_shift_message">
 					<?php echo isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->message) ? $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->message : "";?></span>
 					 	<?php
 		 if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status != "Rejected"){ 
@@ -1291,7 +1374,13 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 		 if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N"){ 
 				for($x=0;$x<count($rosterDetails->roster);$x++){?>
 				<tr >
-					<td colspan="7" class="area-name"><?php echo $rosterDetails->roster[$x]->areaName ?></td>
+					<td colspan="7" class="area-name"><?php echo $rosterDetails->roster[$x]->areaName ?>
+						<span area_id="<?php echo $rosterDetails->roster[$x]->areaId; ?>" style="position: absolute;right: 3%;cursor:pointer;" class="changeRoleOrder">
+						<i>
+							<img src="<?php echo base_url('assets/images/icons/priority.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+						</i>
+						</span>
+					</td>
 				</tr>
 				<?php $occupancy = 0; 
  
@@ -1390,7 +1479,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 					 	<?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)). "-" .timex( intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime));
 if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$counter]->empId){ 
 					  $weeklyTotal = $weeklyTotal + $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?> 
-				<span class="row m-0 d-flex justify-content-center">
+				<span class="row m-0 d-flex justify-content-center roster_shift_message">
 					<?php echo isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->message) ? $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->message : "";?></span>
 					<?php } } else{
 						echo 'On Leave';
@@ -1773,6 +1862,31 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 				</select>
 			</span>
 		</span>
+		<span class="add_shift_span d-flex">
+			<label class="col-5">Days</label>
+			<span>
+				<span class="d-inline-block">
+					<span>Mon</span>
+					<input type="checkbox" name="days" value="1" class="d-block checkbox_space" checked>
+				</span>
+				<span class="d-inline-block">
+					<span>Tue</span>
+					<input type="checkbox" name="days" value="2" class="d-block checkbox_space" checked>
+				</span>
+				<span class="d-inline-block">
+					<span>Wed</span>
+					<input type="checkbox" name="days" value="3" class="d-block checkbox_space" checked>
+				</span>
+				<span class="d-inline-block">
+					<span>Thu</span>
+					<input type="checkbox" name="days" value="4" class="d-block checkbox_space" checked>
+				</span>
+				<span class="d-inline-block">
+					<span>Fri</span>
+					<input type="checkbox" name="days" value="5" class="d-block checkbox_space" checked>
+				</span>
+			</span>
+		</span>
 	</div>
 	<div class="priority_buttonss">
   	<button class="close_priority" role="button">
@@ -1786,6 +1900,34 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
   </div>
 	</div>
 </div>
+
+
+<!-- /*  ------------------------------
+			CHANGE ROLE PRIORITY	MODAL
+		------------------------------ */ -->
+
+<div class="changeRolePriority_mask" ></div>
+<div class="changeRolePriority_modal" >
+	<span class="changeRolePriority_head" >
+		<a class="text-center  changeRolePriority_heading" style="padding:1rem 0">Edit Priority</a>
+	</span>
+		<div class="changeRolePriority_body"></div>
+		<div class="changeRolePriority_buttons">
+	  	<button class="changeRolePriority_close" role="button">
+				<i>
+					<img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+				</i>Cancel</button>
+	  	<button class="changeRolePriority_save">
+				<i>
+					<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
+				</i>Save</button>
+	  </div>
+</div>
+
+<!-- /*  ------------------------------
+			CHANGE ROLE PRIORITY	MODAL
+		------------------------------ */ -->
+
 <?php } ?>
 <?php 		 if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N"){ ?>
 <script type="text/javascript">
@@ -1922,7 +2064,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 	$(document).ready(function(){
 		$(document).on('click','#delete_shift',function(){
 			var shiftId = $("#shiftId").val();
-			// alert(shiftId)
+			alert(shiftId)
 			let bool = confirm("confirm delete shift?");
 			if(bool == true){
 				var url = window.location.origin+"/PN101/roster/deleteShift/"+shiftId;
@@ -2148,7 +2290,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 					data:{
 						userid: userid,
 						rosterid: rosterid,
-						status: 2
+						status: 'Draft'
 					},
 					success:function(response){
 window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";					}
@@ -2380,29 +2522,48 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 
 	$(document).on('click','.__addshift',function(){
 		$(".masks").addClass("actives");
-		var date = $(this).attr('date');
+		var date = new Date($(this).attr('date'));
+				date.setDate(date.getDate() - (date.getDay()-1));
+		var dates = [];
+		var obj = {};
 		var roster_id = $(this).attr('roster-id');
 		var emp_id = $(this).attr('emp-id');
 			$(document).on('click','.add_shift',function(){
+		for(var i=0;i<5;i++){
+			obj = {};
+			if(date.getMonth() < 10){
+			obj.date = `${date.getFullYear()}-0${date.getMonth()+1}-${date.getDate()}`;
+				}
+				if(date.getMonth >=10 ){
+			obj.date = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+				}
+				if($('.checkbox_space').eq(i).is(':checked') == true){
+					obj.status = true;
+					dates.push(obj)
+				}
+			date.setDate(date.getDate() + 1);
+		}
 				var add_start_time = $('#add_start_time').val();
 				var add_end_time = $('#add_end_time').val();
 				add_start_time = parseInt(add_start_time.replace(":",""));
 				add_end_time = parseInt(add_end_time.replace(":",""));
 				var add_role_id = $('#add_role_id').val();
-				console.log(date+ "---"+roster_id+ "---"+emp_id+ "---"+add_start_time+ "---"+add_end_time+ "---"+add_role_id)
+				// console.log(date+ "---"+roster_id+ "---"+emp_id+ "---"+add_start_time+ "---"+add_end_time+ "---"+add_role_id+)
+				console.log(dates)
 				var url = window.location.origin+"/PN101/roster/addNewshift";
 				$.ajax({
 					url:url,
 					method:'POST',
 					data:{
-						date : date,
 						roster_id : roster_id,
 						emp_id : emp_id,
 						add_start_time : add_start_time,
 						add_end_time : add_end_time,
-						add_role_id : add_role_id
+						add_role_id : add_role_id,
+						dates : dates
 					},
 					success:function(response){
+						alert(response)
 						console.log(response)
 						window.location.reload();
 					}
@@ -2685,7 +2846,7 @@ $('.modal_body').draggable();
 			let employeeId = $('#employeeValue').val();
 			let editRoster = ($('#edit_roster').is(':checked') == true) ? 'Y' : 'N' ;
 			let rosterId = "<?php echo $rosterid; ?>";
-			// alert(employeeId)
+			alert(employeeId)
 			let url = window.location.origin+'/PN101/roster/saveRosterPermissions';
 			$.ajax({
 				url : url,
@@ -2730,6 +2891,77 @@ $('.modal_body').draggable();
         $('#casualEmp_id').tokenize2();
         $('#employeeValue').tokenize2();
     });
+</script>
+<script type="text/javascript">
+/*  -----------------------------
+			CHANGE ROLE PRIORITY	MODAL
+		------------------------------ */
+
+
+	function closeChangeRolePriority(){
+	  $(".changeRolePriority_mask").removeClass("active");
+	}
+
+	$(".changeRolePriority_close").on("click", function(){
+		  closeChangeRolePriority();
+		$(".changeRolePriority_body").empty();
+	});
+/*  -----------------------------
+			CHANGE ROLE PRIORITY	MODAL
+		------------------------------ */
+	$(document).ready(function(){
+		$(document).on('click','.changeRoleOrder',function(){
+			$('.changeRolePriority_body').empty();
+			$('.changeRolePriority_mask').addClass("active");
+			var areaId = $(this).attr('area_id');
+			var centerid = $('#center-id').attr('c_id');
+			let url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
+			$.ajax({
+				url : url,
+				method : 'GET',
+				success : function(response){
+					response = JSON.parse(response)
+					response.orgchart.forEach(function(item){
+						if(item.areaId == areaId){
+							item.roles.forEach(function(role){
+								var code = `
+								<tr class="d-block">
+									<td class="change_role_priority area-name" roleId="${role.roleid}">${role.roleName}</td>
+								</tr>`;
+								$('.changeRolePriority_body').append(code);
+							})
+						}
+					})
+					// console.log(response)
+				}
+			})
+		})
+	})
+			$('.changeRolePriority_body').sortable()
+			$(".changeRolePriority_body").disableSelection();
+
+		$(document).on('click','.changeRolePriority_save',function(){
+			var url = window.location.origin+"/PN101/settings/changeRolePriority"
+			var order = [];
+			var obj = {};
+			for(let i=0;i<($('.change_role_priority').length);i++){
+				obj = {};
+				obj.roleid = $('.change_role_priority').eq(i).attr('roleid');
+				obj.priority = i;
+				order.push(obj);
+			}
+			$.ajax({
+				url : url,
+				method : 'POST',
+				data : {
+					order : order
+				},
+				success : function(response){
+					console.log(response)
+					window.location.reload();
+				}
+			})
+		})
 </script>
 </body>
 </html>
