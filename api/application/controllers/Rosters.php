@@ -88,15 +88,29 @@ class Rosters extends CI_Controller {
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
+			$this->load->model('rostersModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			if($res->userid == $userid){
 					$json = json_decode(file_get_contents('php://input'));
-					$areaid = $shiftId;
-					$userid = $userid;
-				$this->load->model('rostersModel');
-				if($areaid != null && $areaid != "" ){
-					$this->rostersModel->deleteShift($shiftId);
-				}
+
+					$shiftDate = $this->rostersModel->getShiftDate($shiftId)->rosterDate;
+					$employeeId = $this->rostersModel->getEmployeeId($shiftId)->userid;
+					$rosterid = $this->rostersModel->getRosterId($shiftId)->roasterId;
+					$number = date('w',strtotime($shiftDate)) - 1;
+					$currentDate = date('Y-m-d',strtotime($shiftDate. '-' . $number  .' days')) ;
+					$days = $json->days;
+					foreach ($days as $day) {
+						echo $day;
+						$getShiftId = $this->rostersModel->getShiftId($employeeId,$currentDate)->id;
+						echo "||".$getShiftId;
+							if($day->YN == true){
+								echo "||".$day->YN;
+								if($getShiftId != null){
+									$this->rostersModel->deleteShift($getShiftId);
+									}
+							}
+						$currentDate = date('Y-m-d',strtotime($currentDate.'+1 days'));
+					}
 			}
 		}
 		else{
@@ -509,19 +523,19 @@ class Rosters extends CI_Controller {
 		$this->load->model('rostersModel');
 		$this->load->model('leaveModel');
 		$this->load->model('authModel');
-		$config = Array(    
-			    'protocol'  => 'smtp',
-			    'smtp_host' => 'ssl://smtp.zoho.com',
-			    'smtp_port' => 465,
-			    'smtp_user' => 'demo@todquest.com',
-			    'smtp_pass' => 'K!ddz1ng',
-			    'mailtype'  => 'html',
-			    'charset'   => 'utf-8'
-		);
+		// $config = Array(    
+		// 	    'protocol'  => 'smtp',
+		// 	    'smtp_host' => 'ssl://smtp.zoho.com',
+		// 	    'smtp_port' => 465,
+		// 	    'smtp_user' => 'demo@todquest.com',
+		// 	    'smtp_pass' => 'K!ddz1ng',
+		// 	    'mailtype'  => 'html',
+		// 	    'charset'   => 'utf-8'
+		// );
 
-		$this->load->library('email',$config); // Load email template
-		$this->email->set_newline("\r\n");
-		$this->email->from('demo@todquest.com', 'spotlist');
+		// $this->load->library('email',$config); // Load email template
+		// $this->email->set_newline("\r\n");
+		// $this->email->from('demo@todquest.com', 'spotlist');
 
 		$roster = $this->rostersModel->getRosterFromId($rosterid);
 		$allAreas = $this->rostersModel->getAllAreas($roster->centerid);
@@ -538,6 +552,7 @@ class Rosters extends CI_Controller {
 								$rav['empName'] = $empDetails->name;
 								$rav['empTitle'] = $empDetails->title;
 								$rav['level'] = $empDetails->level;
+								$rav['email'] = $empDetails->email;
 									$rav['shifts'] = [];
 								$allShifts = $this->rostersModel->getAllShiftsFromEmployee($rosterid,$employeeid->userid,$area->areaid);
 								foreach ($allShifts as $shiftOb) {
@@ -559,16 +574,19 @@ class Rosters extends CI_Controller {
 									}
 									array_push($rav['shifts'],$shiftObj);
 								}
-								$user_email = "dheerajreddynannuri1709@gmail.com";
-								$subject = "No";
-									$this->email->to($user_email); // replace it with receiver email id
-									$this->email->subject($subject); // replace it with email subject
-									$message = $this->load->view('rosterPublishEmailTemplate',$rav,true);
+								// $user_email = $empDetails->email;
+								// $subject = "Roster has been published";
+								// 	$this->email->to($user_email); // replace it with receiver email id
+								// 	$this->email->subject($subject); // replace it with email subject
+								// 	$message = $this->load->view('rosterPublishEmailTemplate',$rav,true);
 
-									$this->email->message($message); 
-									$this->email->send();
+								// 	$this->email->message($message); 
+								// 	$this->email->send();
 						}
 					}
+					print_r($rav);
+					print_r($var);
+					print_r($shiftObj);
 				}
 	}
 
@@ -580,17 +598,18 @@ class Rosters extends CI_Controller {
 			$json = json_decode(file_get_contents('php://input'));
 			$this->load->model('rostersModel');
 			if($json!= null && $res != null && $res->userid == $userid){
-				$checkUserShift = $this->rostersModel->getShiftDetails($json->emp_id,$json->date);
+					$employees  = $json->emp_id;
+				foreach($employees as $emp){
+				$checkUserShift = $this->rostersModel->getShiftDetails($emp,$json->date);
 					if($checkUserShift == null){
 					$startTime = $json->casualEmp_start_time;
 					$endTime = $json->casualEmp_end_time;
 					$rosterid = $json->roster_id ;//$json->roster_id;
 					$roleid = $json->casualEmp_role_id;
 					$date = $json->date;
-					$empid = $json->emp_id;
 					$status = "1";
-					if($startTime != null && $endTime != null && $rosterid != null && $roleid != null && $date != null && $empid != null){
-						$this->rostersModel->addCasualEmployees($startTime,$endTime,$rosterid,$roleid,$date,$empid,$status);
+					if($startTime != null && $endTime != null && $rosterid != null && $roleid != null && $date != null && $emp != null){
+							$this->rostersModel->addCasualEmployees($startTime,$endTime,$rosterid,$roleid,$date,$emp,$status);
 						$data['Status'] = 'SUCCESS';
 						http_response_code(200);
 						echo json_encode($data);
@@ -608,6 +627,7 @@ class Rosters extends CI_Controller {
 						echo json_encode($data);
 				}
 			}
+		}
 			else{
 				http_response_code(401);
 			}
