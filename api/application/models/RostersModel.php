@@ -153,7 +153,7 @@ class RostersModel extends CI_Model {
 
 	public function getCasualEmployees(){
 		$this->load->database();
-		$query = $this->db->query("SELECT * from Users");
+		$query = $this->db->query("SELECT * from users");
 		return $query->result();
 	}
 
