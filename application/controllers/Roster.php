@@ -411,6 +411,7 @@ public	function updateShift(){
 			$data['shiftid'] = $this->input->post('shiftid');
 			$data['userid'] = $this->session->userdata('LoginId');
 			$data['message'] = addslashes($this->input->post('message'));
+			$data['days'] = $this->input->post('days');
 
 			$url = BASE_API_URL."rosters/updateShift";
 			$ch = curl_init($url);
@@ -421,10 +422,10 @@ public	function updateShift(){
 				'x-device-id: '.$this->session->userdata('x-device-id'),
 				'x-token: '.$this->session->userdata('AuthToken')
 			));
-			 curl_exec($ch);
+			 $server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			if($httpcode == 200){
-				
+				print_r($server_output);
 				curl_close ($ch);
 			}
 			else if($httpcode == 401){

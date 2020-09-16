@@ -78,7 +78,7 @@ class RostersModel extends CI_Model {
 	}
 	public function updateShiftDetails($startTime,$endTime,$roleid,$status,$date,$empid){
 		$this->load->database();
-		$query = $this->db->query("UPDATE shift SET startTime = $startTime, endTime = $endTime,roleid = $roleid,status = $status WHERE rosterDate='$date' and userid='$empId'");
+		$query = $this->db->query("UPDATE shift SET startTime = $startTime, endTime = $endTime,roleid = $roleid,status = $status WHERE rosterDate='$date' and userid='$empid'");
 	}
 
 	public function updateRoster($rosterid,$status){
@@ -101,6 +101,30 @@ class RostersModel extends CI_Model {
 	public function getShiftDetails($userid,$currentDate){
 		$this->load->database();
 		$query = $this->db->query("SELECT * FROM shift WHERE userid = '$userid' AND rosterDate = '$currentDate'");
+		return $query->row();
+	}
+
+	public function getShiftDate($shiftid){
+		$this->load->database();
+		$query = $this->db->query("SELECT rosterDate FROM shift WHERE id = '$shiftid'");
+		return $query->row();
+	}
+
+	public function getEmployeeId($shiftid){
+		$this->load->database();
+		$query = $this->db->query("SELECT userid FROM shift WHERE id = '$shiftid'");
+		return $query->row();
+	}
+
+	public function getRosterId($shiftid){
+		$this->load->database();
+		$query = $this->db->query("SELECT roasterId FROM shift WHERE id = '$shiftid'");
+		return $query->row();
+	}
+
+	public function getShiftId($employeeId,$currentDate){
+		$this->load->database();
+		$query = $this->db->query("SELECT id FROM shift WHERE userid = '$employeeId' AND rosterDate = '$currentDate'");
 		return $query->row();
 	}
 
