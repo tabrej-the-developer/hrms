@@ -1546,15 +1546,15 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 				if(isset($rosterDetails->status)){
 						if($rosterDetails->status === 'Draft'){ ?>
 						<div class="buttons d-flex justify-content-end">
-							<button id="discard-roster" class="button">
+							<button id="discard-roster" class="roster__ buttonn">
 								<i>
 									<img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:0.8rem;margin-right:10px">
 								</i>Discard</button>
-							<button id="draft-roster" class="button">
+							<button id="draft-roster" class="roster__ buttonn">
 								<i>
 									<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
 								</i>Save Draft</button>
-							<button id="publish-roster" class="button">
+							<button id="publish-roster" class="roster__ buttonn">
 								<i>
 									<img src="<?php echo base_url('assets/images/icons/publish.svg'); ?>" style="max-height:0.8rem;margin-right:10px">
 								</i>Publish</button>
@@ -1562,11 +1562,11 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 					<?php } ?>
 					<?php if($rosterDetails->status === 'Published') {?>
 					<div class="buttons d-flex justify-content-end">
-						<button id="discard-roster" class="button">
+						<button id="discard-roster" class="roster__ buttonn">
 								<i>
 									<img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:0.8rem;margin-right:10px">
 								</i>Discard</button>
-						<button id="publish-roster" class="button">
+						<button id="publish-roster" class="roster__ buttonn">
 						<i>
 							<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
 						</i>Save</button>
@@ -1575,7 +1575,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 			<?php } ?>
 			<?php if($this->session->userdata('UserType') == STAFF){?>
 			<div class="buttons d-flex justify-content-end">
-					<button id="publish-roster" class="button">
+					<button id="publish-roster" class="roster__ buttonn">
 						<i>
 							<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
 						</i>Save</button>
@@ -1596,7 +1596,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 	  		<!-- <span class="close col-2 d-flex align-items-center" >&times;</span> -->
 	  	</span>
 	    
-	    <form  id="roster-form">
+	    <!-- <form  id="roster-form"> -->
 			<div class="row p-2">
 				<label class="col-4 modal_label">Start Time</label>
 				<input class="col-7" type="time" name="startTime" id="startTime" >
@@ -1659,13 +1659,13 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 								<i>
 									<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
 								</i>Save</button>
-				 		<button type="button" name="delete_shift" id="delete_shift" value="Delete" style="width:5rem" class="button">
+				 		<button type="button" name="delete_shift" id="delete_shift" value="Delete" style="width:5rem" class="buttonn">
 								<i>
 									<img src="<?php echo base_url('assets/images/icons/delete.png'); ?>" style="max-height:0.8rem;margin-right:10px">
 								</i>Delete</button>
 			</div>
 			<div><i style="font-size: 0.9rem; color:#a2a2a2">* Please select area to get roles</i></div>
-	 	</form>
+	 	<!-- </form> -->
 	  </div>
 </div>
 <?php } ?>
@@ -1745,7 +1745,9 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 	<span class="priority_headinged" >
 		<a class="text-center  edit_priorityed" style="padding:1rem 0">Add Employee</a>
 	</span>
-	<?php $casualEmployees = json_decode($casualEmployees); ?>
+	<?php 
+ //   print_r($casualEmployees);
+  $casualEmployees = json_decode($casualEmployees); ?>
 		<div class="priority_areased">
 			<span class="casualEmployee_label">
 			<label >Employee</label>
@@ -2089,15 +2091,25 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 	$(document).ready(function(){
 		$(document).on('click','#delete_shift',function(){
 			var shiftId = $("#shiftId").val();
-			alert(shiftId)
+      var days = [];
+      var obj = {};
+      for(var i=0;i< ($('.edit_shift_checkbox_space').length);i++){
+        obj = {};
+        obj.YN = ($('.edit_shift_checkbox_space').eq(i).is(':checked'));
+        days.push(obj);
+      }
 			let bool = confirm("confirm delete shift?");
 			if(bool == true){
 				var url = window.location.origin+"/PN101/roster/deleteShift/"+shiftId;
 				$.ajax({
 				url : url,
+        data : {
+          days : days
+        },
 				method : 'POST',
-				success: function(){
-					window.location.reload();
+				success: function(response){
+					// window.location.reload();
+          console.log(response)
 				}
 			})
 			}
@@ -2296,7 +2308,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 
 <script type="text/javascript">
 	$(document).ready(function(){
-		$(document).on('click','.button',function(){
+		$(document).on('click','.roster__',function(){
 			var url = window.location.origin+"/PN101/roster/updateRoster";
 			var rosterid = "<?php echo $rosterid; ?>";
 			var userid = "<?php echo $userid; ?>";
@@ -2765,11 +2777,12 @@ $('.modal_body').draggable();
 				casualEmp_role_id : casualEmp_role_id
 			},
 			success:function(response){ 
-				if(JSON.parse(response).status == "REDUNDANT"){
-					alert('Shift for this user, for the particular date already exists in another center. Please delete the shift to add a new one');
-				}else{
-				window.location.reload();
-				}
+				// if(JSON.parse(response).status == "REDUNDANT"){
+				// 	alert('Shift for this user, for the particular date already exists in another center. Please delete the shift to add a new one');
+				// }else{
+          console.log(response)
+				// window.location.reload();
+				// }
 			}
 		})
 		}else{

@@ -495,6 +495,8 @@ public function updateRoster(){
 
 	public	function deleteShift($shiftId){
 		if($this->session->has_userdata('LoginId')){
+			$input = $this->input->post();
+			if($input != null && $input != ""){
 		//footprint start
 		if($this->session->has_userdata('current_url')){
 			footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
@@ -502,6 +504,7 @@ public function updateRoster(){
 		}
 		// footprint end
 			$userid = $this->session->userdata('LoginId');
+			$data['days'] = $input['days'];
 			$url = BASE_API_URL."rosters/deleteShift/".$shiftId."/".$userid;
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
@@ -511,14 +514,16 @@ public function updateRoster(){
 				'x-device-id: '.$this->session->userdata('x-device-id'),
 				'x-token: '.$this->session->userdata('AuthToken')
 			));
-			 curl_exec($ch);
+			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 				if($httpcode == 200){
+					print_r($server_output);
 					curl_close ($ch);
 				}
 				else if($httpcode == 401){
 					}
 				}
+			}
 		else{
 			$this->load->view('redirectToLogin');
 			}
