@@ -103,7 +103,7 @@ class Rosters extends CI_Controller {
 						echo $day;
 						$getShiftId = $this->rostersModel->getShiftId($employeeId,$currentDate)->id;
 						echo "||".$getShiftId;
-							if($day->YN == true){
+							if($day->YN == "true"){
 								echo "||".$day->YN;
 								if($getShiftId != null){
 									$this->rostersModel->deleteShift($getShiftId);
@@ -338,7 +338,7 @@ class Rosters extends CI_Controller {
 
 					foreach ($days as $day) {
 						$getShiftId = $this->rostersModel->getShiftId($employeeId,$currentDate)->id;
-							if($day->YN == true){
+							if($day->YN == "true"){
 								if($getShiftId != null){
 								$this->rostersModel->updateShift($getShiftId,$startTime,$endTime,$roleid,$status,$message);
 									}
