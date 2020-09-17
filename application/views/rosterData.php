@@ -2220,7 +2220,8 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 					}
 				})
 			})
-		
+
+
 		$(document).on('click','#shift-submit',function(){
 			var startingTime = document.getElementById('startTime').value ;
 			var endingTime = document.getElementById('endTime').value;
