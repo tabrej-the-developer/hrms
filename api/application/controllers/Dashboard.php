@@ -95,7 +95,7 @@ class Dashboard extends CI_Controller{
 				$getShiftDetails = $this->dashboardModel->getShiftDetails($userid,$currentDate);
 					if($getShiftDetails != null){
 						if($getShiftDetails != ""){
-							$mdata['title'] = 'Shift - '.$getShiftDetails->startTime .' - '.$getShiftDetails->endTime;
+							$mdata['title'] = 'Shift - '.$this->timex( $getShiftDetails->startTime) .' - '.$this->timex( $getShiftDetails->endTime);
 							$mdata['start'] = $currentDate;
 							$mdata['roster'] = $getShiftDetails->roasterId;
 							array_push($events,$mdata);
@@ -151,4 +151,49 @@ class Dashboard extends CI_Controller{
 			http_response_code(401);
 		}
 	}
+
+	function timex( $x)
+	{ 
+	    $output;
+	    if(($x/100) < 12){
+	        if(($x%100)==0){
+	         $output = intval($x/100) . ":00 AM";
+	        }
+	    	if(($x%100)!=0){
+		    	if(($x%100) < 10){
+		    		$output = intval($x/100) .":0". $x%100 . " AM";
+		    	}
+	    		if(($x%100) >= 10){
+	    			$output = intval($x/100) .":". $x%100 . " AM";
+	    		}
+	        }
+	    }
+	else if(intval($x/100)>12){
+	    if(($x%100)==0){
+	    $output = intval($x/100)-12 . ":00 PM";
+	    }
+	    if(($x%100)!=0){
+	    	if(($x%100) < 10){
+	    		$output = intval($x/100)-12 .":0". $x%100 . " PM";
+	    	}
+    		if(($x%100) >= 10){
+    			$output = intval($x/100)-12 .":". $x%100 . " PM";
+    		}
+	    }
+	}
+	else{
+	if(($x%100)==0){
+	     $output = intval($x/100) . ": 00 PM";
+	    }
+	    if(($x%100)!=0){
+	    	if(($x%100) < 10){
+	    		$output = intval($x/100) . ":0". $x%100 . " PM";
+	    	}
+	    	if(($x%100) >= 10){
+	    		$output = intval($x/100) . ":". $x%100 . " PM";
+	    	}
+	    }
+	}
+	return $output;
+}
 }

@@ -15,6 +15,18 @@ class RostersModel extends CI_Model {
 		return $query->result();
 	}
 
+	public function getAreaFromRoleId($roleid){
+		$this->load->database();
+		$query = $this->db->query("SELECT areaid FROM orgchartroles  WHERE roleid = '$roleid' ");
+		return $query->row();
+	}
+
+	public function getAreaFromAreaId($areaid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM orgchartareas  WHERE areaid = '$areaid' ");
+		return $query->row();
+	}
+
 	public function getAllRoles($areaid){
 		$this->load->database();
 		$query = $this->db->query("SELECT * FROM orgchartroles WHERE areaid = '$areaid' ORDER BY priority ASC");
@@ -155,6 +167,12 @@ class RostersModel extends CI_Model {
 		$this->load->database();
 		$query = $this->db->query("SELECT * from users");
 		return $query->result();
+	}
+
+	public function getEmployeeDetails($userid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * from users where id = '$userid'");
+		return $query->row();
 	}
 
 	public function getAllEmployeesFromRoster($rosterid){
