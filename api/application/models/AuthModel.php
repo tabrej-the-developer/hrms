@@ -68,7 +68,7 @@ class AuthModel extends CI_Model {
 
 	public function getUser($email,$password){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM users WHERE email='$email' and password='$password'");
+		$query = $this->db->query("SELECT * FROM users WHERE email='$email' OR id='$email' and password='$password'");
 		return $query->row();
 	}
 

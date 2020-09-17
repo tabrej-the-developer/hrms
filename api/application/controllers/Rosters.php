@@ -528,10 +528,12 @@ class Rosters extends CI_Controller {
 
 		$this->load->library('email',$config); // Load email template
 		$this->email->set_newline("\r\n");
+		$this->email->from('demo@todquest.com','Todquest');
 
 		$employees = $this->rostersModel->getAllEmployeesFromRoster($rosterid);
 		$roster = $this->rostersModel->getRosterFromId($rosterid);
 		$currentDate = $roster->startDate;
+		$arr['rosterid'] = $rosterid;
 		foreach($employees as $employee){
 			$currentDate = $roster->startDate;
 			$employeeEmail = $this->rostersModel->getEmployeeDetails($employee->userid)->email;
@@ -542,22 +544,19 @@ class Rosters extends CI_Controller {
 				$shift = $this->rostersModel->getShiftDetails($employee->userid,$currentDate);
 				if($shift != null){
 					$role = $shift->roleid;
-					print_r($role);
-					echo "||";
 					$area = $this->rostersModel->getAreaFromRoleId($role)->areaid;
-					$startTime = $shift->startTime;
-					$endTime = $shift->endTime;
+					$startTime = $this->timex($shift->startTime);
+					$endTime = $this->timex($shift->endTime);
 					$areaName = $this->rostersModel->getAreaFromAreaId($area)->areaName;
 					$roleName = $this->rostersModel->getRole($role)->roleName;
 				}
 				else{
-					$currentDate = "";
 					$startTime = "";
 					$endTime = "";
 					$areaName = "";
 					$roleName = "";
 				}
-					$data['date'] = $currentDate;
+					$data['date'] = $this->dateToDay($currentDate);
 					$data['startTime'] = $startTime;
 					$data['endTime'] = $endTime;
 					$data['areaName'] = $areaName;
@@ -566,7 +565,7 @@ class Rosters extends CI_Controller {
 				$currentDate = date('Y-m-d',strtotime($currentDate.'+1 days'));
 					array_push($arr['data'],$data);
 			}
-				$user_email = $employeeEmail;
+				$user_email = "dheerajreddynannuri1709@gmail.com";//$employeeEmail;
 				$subject = "Roster has been published";
 				$this->email->to($user_email); 
 				$this->email->subject($subject); 
@@ -576,6 +575,56 @@ class Rosters extends CI_Controller {
 				// $this->load->view('rosterPublishEmailTemplate',$arr);
 		}
 	}
+
+function timex( $x){ 
+		$x = intval($x);
+	    $output;
+	    if(($x/100) < 12){
+	        if(($x%100)==0){
+	         $output = intval($x/100) . ":00 AM";
+	        }
+	    	if(($x%100)!=0){
+		    	if(($x%100) < 10){
+		    		$output = intval($x/100) .":0". $x%100 . " AM";
+		    	}
+	    		if(($x%100) >= 10){
+	    			$output = intval($x/100) .":". $x%100 . " AM";
+	    		}
+	        }
+	    }
+	else if(intval($x/100)>12){
+	    if(($x%100)==0){
+	    $output = intval($x/100)-12 . ":00 PM";
+	    }
+	    if(($x%100)!=0){
+	    	if(($x%100) < 10){
+	    		$output = intval($x/100)-12 .":0". $x%100 . " PM";
+	    	}
+    		if(($x%100) >= 10){
+    			$output = intval($x/100)-12 .":". $x%100 . " PM";
+    		}
+	    }
+	}
+	else{
+	if(($x%100)==0){
+	     $output = intval($x/100) . ": 00 PM";
+	    }
+	    if(($x%100)!=0){
+	    	if(($x%100) < 10){
+	    		$output = intval($x/100) . ":0". $x%100 . " PM";
+	    	}
+	    	if(($x%100) >= 10){
+	    		$output = intval($x/100) . ":". $x%100 . " PM";
+	    	}
+	    }
+	}
+	return $output;
+}
+
+function dateToDay($date){
+	$date = explode("-",$date);
+	return date("M d, Y",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
+}
 
 	public function addCasualEmployee($userid){
 		$headers = $this->input->request_headers();
