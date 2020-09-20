@@ -24,14 +24,36 @@ class Welcome extends CI_Controller {
 	}
 
 	public function temp(){
+		$config = Array(    
+			    'protocol'  => 'smtp',
+			    'smtp_host' => 'ssl://smtp.zoho.com',
+			    'smtp_port' => 465,
+			    'smtp_user' => 'demo@todquest.com',
+			    'smtp_pass' => 'K!ddz1ng',
+			    'mailtype'  => 'html',
+			    'charset'   => 'utf-8'
+		);
+
+		$this->load->library('email',$config);
+		$this->email->set_newline("\r\n");
+		$this->email->from('demo@todquest.com','Todquest');
 
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM users WHERE role != 1");
-		$allUsers = $query->result();
-		foreach ($allUsers as $user) {
-			var_dump($user);
-			$userid = $user->id;
-			$this->db->query("INSERT INTO leavebalance VALUES(0,'$userid',2,12,20,1,'2020-01-01')");
+		$amvUsers = $this->db->query("SELECT *  FROM `users` WHERE `center` LIKE '6|' AND role != 1");
+		foreach ($amvUsers as $user) {
+			$var['name'] = $user->name;
+			$var['empCode'] = $user->id;
+			$exp = explode(' ', $var['name']);
+			$var['password'] = $exp[0].$exp[1].'@123';
+
+
+			$user_email = "arpitasaxena555@gmail.com";//$var['email'];
+			$subject = " Welcome to HRMS101";
+			$this->email->to($user_email); 
+			$this->email->subject($subject); 
+			$message = $this->load->view('onboardingMailView',$var,true);
+			$this->email->message($message); 
+			$this->email->send();
 		}
 	}
 }
