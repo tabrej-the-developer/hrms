@@ -142,6 +142,7 @@ public function roster_dashboard(){
 			'x-token: '.$this->session->userdata('AuthToken')
 		));
 		$server_output = curl_exec($ch);
+
 		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		if($httpcode == 200){
 			return $server_output;

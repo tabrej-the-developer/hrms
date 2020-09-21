@@ -782,4 +782,3 @@ $("#roster-date").datepicker();
 					$('#create-template').attr('href','<?php echo base_url('createRosterTemplate/') ?>'+$('.center-list').val());
 </script>-->
 
-

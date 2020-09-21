@@ -704,6 +704,7 @@ class Rosters extends CI_Controller {
 									$this->rostersModel->createNewShift($rosterid,$currentDate,$employeeId,$startTime,$endTime,$roleid,$message);
 										$subject = "Shift has been added";
 										}
+
 										if($rosterStatus == 'Published'){
 											$arr['startTime'] = $this->timex($startTime);
 											$arr['endTime'] = $this->timex($endTime);
@@ -719,6 +720,7 @@ class Rosters extends CI_Controller {
 										}
 								}
 							$currentDate = date('Y-m-d',strtotime($currentDate.'+1 days'));
+							//echo $startTime;
 						}
 					}
 					if($days == 'updateShiftByEmployee'){
@@ -735,7 +737,7 @@ class Rosters extends CI_Controller {
 						$arr['endTime'] = $endTime;
 						$arr['date'] = $currentDate;
 						$this->email->from('demo@todquest.com','Todquest');
-						$user_email = "dheerajreddynannuri1709@gmail.com";//$employeeEmail;
+						$user_email = $employeeEmail;
 						$this->email->to($user_email); 
 						$this->email->subject($subject); 
 						$mess = $this->load->view('rosterPublishEmailTemplate',$arr,true);
@@ -1037,7 +1039,6 @@ class Rosters extends CI_Controller {
 		);
 
 
-
 		$employees = $this->rostersModel->getAllEmployeesFromRoster($rosterid);
 		$roster = $this->rostersModel->getRosterFromId($rosterid);
 		$currentDate = $roster->startDate;
@@ -1077,7 +1078,7 @@ class Rosters extends CI_Controller {
 				$this->load->library('email',$config); // Load email template
 				$this->email->set_newline("\r\n");
 				$this->email->from('demo@todquest.com','Mail check');
-				$user_email = "dheerajreddynannuri1709@gmail.com";//$employeeEmail;
+				$user_email = $employeeEmail;
 				$subject = "Roster has been published";
 				$this->email->to($user_email); 
 				$this->email->subject($subject); 
