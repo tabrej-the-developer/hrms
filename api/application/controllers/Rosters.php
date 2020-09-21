@@ -689,7 +689,7 @@ class Rosters extends CI_Controller {
 										}
 								}
 							$currentDate = date('Y-m-d',strtotime($currentDate.'+1 days'));
-							echo $startTime;
+							//echo $startTime;
 						}
 					}
 					if($days == 'updateShiftByEmployee'){
@@ -966,7 +966,6 @@ class Rosters extends CI_Controller {
 
 		$this->load->library('email',$config); // Load email template
 		$this->email->set_newline("\r\n");
-		$this->email->from('demo@todquest.com','Todquest');
 
 		$employees = $this->rostersModel->getAllEmployeesFromRoster($rosterid);
 		$roster = $this->rostersModel->getRosterFromId($rosterid);
@@ -1003,7 +1002,8 @@ class Rosters extends CI_Controller {
 				$currentDate = date('Y-m-d',strtotime($currentDate.'+1 days'));
 					array_push($arr['data'],$data);
 			}
-				$user_email = "dheerajreddynannuri1709@gmail.com";//$employeeEmail;
+				$this->email->from('demo@todquest.com','Todquest');
+				$user_email = "arpitasaxena555@gmail.com";//$employeeEmail;
 				$subject = "Roster has been published";
 				$this->email->to($user_email); 
 				$this->email->subject($subject); 
