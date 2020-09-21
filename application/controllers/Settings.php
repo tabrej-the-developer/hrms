@@ -462,10 +462,11 @@ $server_output = curl_exec($ch);
 				'x-token: '.$this->session->userdata('AuthToken')
 			));
 					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-$server_output = curl_exec($ch);
+			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			print_r($server_output);
 			if($httpcode == 200){
-				return $server_output;
+				print_r($server_output);
 				curl_close ($ch);
 
 			}
@@ -716,15 +717,15 @@ $server_output = curl_exec($ch);
 	public function deleteArea(){
 		$input = $this->input->post();
 		if($input != null){
-	//footprint start
-	if($this->session->has_userdata('current_url')){
-		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-		$this->session->set_userdata('current_url',currentUrl());
-	}
-	// footprint end
+			//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+				$this->session->set_userdata('current_url',currentUrl());
+			}
+			// footprint end
 		$data['id'] = $this->input->post('id'); 
 		$data['userid'] = $this->session->userdata('LoginId');
-		$url = BASE_API_URL."/settings/deleteRoom/".$data['id']."/".$data['userid'];
+		$url = BASE_API_URL."/settings/deleteArea/".$data['id']."/".$data['userid'];
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -736,7 +737,7 @@ $server_output = curl_exec($ch);
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			if($httpcode == 200){
-				return $server_output;
+				echo $server_output;
 				curl_close ($ch);
 			}
 			else if($httpcode == 401){

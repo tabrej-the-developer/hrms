@@ -460,9 +460,20 @@ font-family: 'Open Sans', sans-serif;
 				<div id="areas-roles" areaId="<?php echo $orgChart->areaId; ?>" YN="<?php echo $orgChart->isARoomYN; ?>">
 					<span class="area-name"><?php echo $orgChart->areaName."<br>"; ?></span>
 <?php if(isset($permissions->permissions) ? $permissions->permissions->editOrgChartYN : "N" == "Y"){ ?>
-					<span  class="newRole"><a href="javascript:void(0)"><i class="fas fa-plus" ></i></a></span>
-					<span class="editArea "><a href="javascript:void(0)"><i class="fas fa-pencil-alt"></i></a></span>
-					<span class="delete-Area" style="padding-right:20px"><a class="delete-area" href="javascript:void(0)" d-val="<?php echo $orgChart->areaId ?>"><i class="fas fa-trash-alt" style="color: #ff3b30;"></i></a></span>
+					<span  class="newRole">
+						<a href="javascript:void(0)">
+							<i class="fas fa-plus" ></i>
+						</a>
+					</span>
+					<span class="editArea ">
+						<a href="javascript:void(0)">
+							<i class="fas fa-pencil-alt"></i>
+						</a>
+					</span>
+					<span class="delete-Area" style="padding-right:20px">
+						<a class="delete-area" href="javascript:void(0)" d-val="<?php echo $orgChart->areaId ?>"><i class="fas fa-trash-alt" style="color: #ff3b30;"></i>
+						</a>
+					</span>
 				<?php } ?>
 				</div>
 				<div areaId="<?php echo $orgChart->areaId;?>" class="areaId"></div>
@@ -619,6 +630,8 @@ font-family: 'Open Sans', sans-serif;
 				},
 				success:function(response){
 					window.location.reload();
+					// console.log(response)
+					// alert(areaid + " " + roleName)
 				}
 			})
 		})
@@ -661,7 +674,7 @@ font-family: 'Open Sans', sans-serif;
 				},
 				success:function(response){
 					window.location.reload();
-					alert(roleid + " " + roleName )
+					// alert(roleid + " " + roleName )
 				}
 			})
 		})
@@ -710,7 +723,9 @@ font-family: 'Open Sans', sans-serif;
 				id : id
 			},
 			success : function(response){
-				window.location.reload();
+				// console.log(response)
+				// console.log(id)
+				 window.location.reload();
 			}
 		})
 	})
@@ -861,8 +876,8 @@ font-family: 'Open Sans', sans-serif;
 					details : details
 				},
 				success: function(response){
-					console.log(response)
-					// window.location.reload();
+					// console.log(response)
+					window.location.reload();
 				}
 			})
 

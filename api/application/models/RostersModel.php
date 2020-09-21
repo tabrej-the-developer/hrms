@@ -222,7 +222,7 @@ class RostersModel extends CI_Model {
 
 	public function getRosterId($shiftid){
 		$this->load->database();
-		$query = $this->db->query("SELECT roasterId FROM shift WHERE id = '$shiftid'");
+		$query = $this->db->query("SELECT * FROM shift WHERE id = '$shiftid'");
 		return $query->row();
 	}
 

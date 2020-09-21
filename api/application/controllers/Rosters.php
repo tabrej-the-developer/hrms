@@ -687,6 +687,7 @@ class Rosters extends CI_Controller {
 					$shiftDate = $this->rostersModel->getShiftDate($shiftid)->rosterDate;
 					$employeeId = $this->rostersModel->getEmployeeId($shiftid)->userid;
 					$rosterid = $this->rostersModel->getRosterId($shiftid)->roasterId;
+					$rosterStatus = $this->rostersModel->getRosterId($shiftid)->roasterId;
 					$number = date('w',strtotime($shiftDate)) - 1;
 					$currentDate = date('Y-m-d',strtotime($shiftDate. '-' . $number  .' days')) ;
 					$employeeEmail = $this->rostersModel->getEmployeeEmail($employeeId)->email;
@@ -703,17 +704,19 @@ class Rosters extends CI_Controller {
 									$this->rostersModel->createNewShift($rosterid,$currentDate,$employeeId,$startTime,$endTime,$roleid,$message);
 										$subject = "Shift has been added";
 										}
-									$arr['startTime'] = $this->timex($startTime);
-									$arr['endTime'] = $this->timex($endTime);
-									$arr['date'] = $currentDate;
-									$user_email = "dheerajreddynannuri1709@gmail.com";//$employeeEmail;
-									$this->email->from('demo@todquest.com','Todquest');
-									$this->email->to($user_email); 
-									$this->email->subject($subject); 
-									$mess = $this->load->view('addShiftTemplate',$arr,true);
-									$this->email->message($mess); 
-									echo $this->email->print_debugger();
-									$this->email->send();
+										if($rosterStatus == 'Published'){
+											$arr['startTime'] = $this->timex($startTime);
+											$arr['endTime'] = $this->timex($endTime);
+											$arr['date'] = $currentDate;
+											$user_email = "dheerajreddynannuri1709@gmail.com";//$employeeEmail;
+											$this->email->from('demo@todquest.com','Todquest');
+											$this->email->to($user_email); 
+											$this->email->subject($subject); 
+											$mess = $this->load->view('addShiftTemplate',$arr,true);
+											$this->email->message($mess); 
+											echo $this->email->print_debugger();
+											$this->email->send();
+										}
 								}
 							$currentDate = date('Y-m-d',strtotime($currentDate.'+1 days'));
 						}

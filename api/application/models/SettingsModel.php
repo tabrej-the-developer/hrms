@@ -33,7 +33,7 @@ class SettingsModel extends CI_Model {
 	}
 	public function addRole($areaId,$roleName){
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO orgchartroles (areaid,roleName) VALUES($areaId,'$roleName')");
+		$query = $this->db->query("INSERT INTO orgchartroles (areaid ,roleName) VALUES ($areaId,'$roleName')");
 		$query = $this->db->query("SELECT roleid from orgchartroles ORDER BY roleid DESC ");
 		return $query->row();
 	}
@@ -110,7 +110,7 @@ class SettingsModel extends CI_Model {
 
 	public function deleteRoom($roomid){
 		$this->load->database();
-		$this->db->query("DELETE from room where roomId = '$roomid'");
+		$this->db->query("DELETE from orgchartareas where roomId = '$roomid'");
 	}
 
 	public function deleteArea($areaid){

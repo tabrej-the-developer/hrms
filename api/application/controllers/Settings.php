@@ -98,7 +98,7 @@ class Settings extends CI_Controller {
 				$this->load->model('settingsModel');
 				$role = $this->settingsModel->getRoleByName($areaid,$roleName);
 				if($role == null){
-					$role = $this->settingsModel->createRole($areaid,$roleName);
+					$role = $this->settingsModel->addRole($areaid,$roleName);
 					$data['Status'] = "SUCCESS";
 				}
 				else{
@@ -106,7 +106,7 @@ class Settings extends CI_Controller {
 					$data['Message'] = "Role with the same name already exists";
 				}
 				http_response_code(200);
-				echo json_encode($data);
+				echo json_encode($json);
 			}
 			else{
 				http_response_code(401);
@@ -1196,7 +1196,7 @@ $this->settingsModel->updateEmployeeTable($employee_no, $xeroEmployeeId,$title,$
 }
 
 
-
+/*
 	public function addEmployee(){
 		$json = json_decode(file_get_contents('php://input'));
 		$this->load->model('authModel');
@@ -1281,7 +1281,7 @@ $this->settingsModel->updateEmployeeTable($employee_no, $xeroEmployeeId,$title,$
 		}
 	
 	}
-
+*/
 
 	public function GetPermissionForEmployee($empId,$userid){
 		$headers = $this->input->request_headers();

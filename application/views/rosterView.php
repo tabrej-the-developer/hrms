@@ -441,14 +441,14 @@ table.dataTable{
 		</span>
 
 		<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
-<!-- 		<span class="btn ml-auto ml-auto d-flex align-self-center createTemplate">
+		<span class="btn ml-auto ml-auto d-flex align-self-center createTemplate invisible" >
 			<a href="javascript:void(0)" id="create-Template" class="d-flex">
 				<span style="margin:0 10px 0 10px">
 					<img src="../assets/images/plus.png" >
 				</span>
 				Create&nbsp;Roster&nbsp;Template
 			</a>
-		</span>  -->
+		</span> 
 
 		<span class="btn  d-flex align-self-center create"><a href="javascript:void(0)" id="create-new-roster" class="d-flex">
 			<span style="margin:0 10px 0 10px">
@@ -515,20 +515,23 @@ table.dataTable{
  		<span id="down-arrow" class="row" style="display:flex;justify-content: center;margin:20px">
  			<input type = "date" placeholder = "dd-mm-yyyy" class="col-8" name="roster-date" id="roster-date">
  		</span>
- 		<span class="templateSelect">
-		<span class="select_css">
-				<?php 
-					$rosterTemplates = json_decode($rosterTemplates);
-				?>
-				<select class="template-list " id="template-list" name="template-list">
-					<option value="not_selected">Select Template</option>
-					<?php
-						for($i=0;$i<count($rosterTemplates->templates);$i++){
+					<?php 
+						$rosterTemplates = json_decode($rosterTemplates);
 					?>
-					<option href="javascript:void(0)" class="center-class" id="<?php echo $rosterTemplates->templates[$i]->id ?>" value="<?php echo $rosterTemplates->templates[$i]->id; ?>"><?php echo $rosterTemplates->templates[$i]->name?></option>
-				<?php } ?>
-				</select>
-		</span>	 		</span>
+ 		<?php if(count($rosterTemplates->templates) > 0){ ?>
+ 		<span class="templateSelect">
+			<span class="select_css">
+					<select class="template-list " id="template-list" name="template-list">
+						<option value="not_selected">Select Template</option>
+						<?php
+							for($i=0;$i<count($rosterTemplates->templates);$i++){
+						?>
+						<option href="javascript:void(0)" class="center-class" id="<?php echo $rosterTemplates->templates[$i]->id ?>" value="<?php echo $rosterTemplates->templates[$i]->id; ?>"><?php echo $rosterTemplates->templates[$i]->name?></option>
+					<?php } ?>
+					</select>
+			</span>
+		</span>
+	<?php } ?>
  		<input type="text" name="userId" id="userId" style="display:none" value="<?php echo $userId?>">
  			<input type="text" name="centerId" id="center-id" value="<?php echo $center__;?>" style="display:none">
  		<div class="text-center">
