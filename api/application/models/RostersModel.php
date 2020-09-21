@@ -14,6 +14,11 @@ class RostersModel extends CI_Model {
 		$query = $this->db->query("SELECT * FROM orgchartareas WHERE centerid = '$centerid'   order by rosterPriority ASC");
 		return $query->result();
 	}
+	public function getAllRosterTemplates($centerid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM rostertemplates WHERE centerid = '$centerid'");
+		return $query->result();
+	}
 
 	public function getAreaFromRoleId($roleid){
 		$this->load->database();
@@ -51,12 +56,26 @@ class RostersModel extends CI_Model {
 		return $query->row();
 	}
 
+	// public function getRosterTemplateFromDate($startDate,$centerid){
+	// 	$this->load->database();
+	// 	$query = $this->db->query("SELECT * FROM rostertemplates WHERE startDate = '$startDate' and centerid = '$centerid'");
+	// 	return $query->row();
+	// }
+
 	public function createNewRoster($userid,$startDate,$endDate,$centerid){
 		$this->load->database();
 		$rosterid = uniqid();
 		$this->db->query("INSERT INTO rosters VALUES('$rosterid','$userid','$startDate','$endDate','$centerid','Draft')");
 		return $rosterid;
 	}
+
+	public function createNewRosterTemplate($userid,$templateName,$centerid){
+		$this->load->database();
+		$rosterid = uniqid();
+		$this->db->query("INSERT INTO rostertemplates (id,name,centerid,status,createdBy
+) VALUES('$rosterid','$templateName','$centerid','Draft','$userid')");
+		return $rosterid;
+	} // DB change
 
 	public function createNewShift($rosterid,$date,$userid,$startTime,$endTime,$roleid,$message=null){
 		$this->load->database();
@@ -66,9 +85,35 @@ class RostersModel extends CI_Model {
 		return $shiftid;
 	}
 
+	public function createNewTemplateShift($rosterid,$date,$userid,$startTime,$endTime,$roleid,$message=null){
+		$this->load->database();
+		$shiftid = uniqid();
+		if($message == null) $message = "";
+		$this->db->query("INSERT INTO templateshift VALUES('$shiftid','$rosterid','$date','$userid',$startTime,$endTime,$roleid,1,'$message')");
+		return $shiftid;
+	}
+
+	public function addNewShift($startTime,$endTime,$rosterid,$roleid,$date,$empid,$status){
+		$this->load->database();
+		$uniqueid = uniqid();
+		$query = $this->db->query("INSERT INTO shift (id,roasterId,rosterDate,userid,startTime,endTime,roleid,status) VALUES ('$uniqueid','$rosterid','$date','$empid','$startTime','$endTime',$roleid,$status) ");
+	}
+
+	public function addNewTemplateShift($startTime,$endTime,$rosterid,$roleid,$date,$empid,$status){
+		$this->load->database();
+		$uniqueid = uniqid();
+		$query = $this->db->query("INSERT INTO templateshift (id,roasterId,day,userid,startTime,endTime,roleid,status) VALUES ('$uniqueid','$rosterid','$date','$empid','$startTime','$endTime',$roleid,$status) ");
+	}
+
 	public function getRosterFromId($rosterid){
 		$this->load->database();
 		$query = $this->db->query("SELECT * FROM rosters WHERE id = '$rosterid'");
+		return $query->row();
+	}
+
+	public function getRosterTemplateFromId($rosterTemplateId){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM rostertemplates WHERE id = '$rosterTemplateId'");
 		return $query->row();
 	}
 
@@ -77,6 +122,12 @@ class RostersModel extends CI_Model {
 		$query = $this->db->query("SELECT DISTINCT(userid) FROM shift WHERE roleid	= $roleid AND roasterId = '$rosterid'");
 		return $query->result();
 	}
+	public function getAllTemplateEmployeesFromRole($roleid,$rosterid){
+		$this->load->database();
+		$query = $this->db->query("SELECT DISTINCT(userid) FROM templateshift WHERE roleid	= $roleid AND roasterId = '$rosterid'");
+		return $query->result();
+	}
+
 
 	public function getAllShiftsFromEmployee($rosterid,$userid,$areaid){
 		$this->load->database();
@@ -84,10 +135,27 @@ class RostersModel extends CI_Model {
 		return $query->result();
 	}
 
+	public function getAllTemplateShiftsFromEmployee($rosterid,$userid,$areaid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM templateshift WHERE roasterId = '$rosterid' AND userid = '$userid' AND roleid IN (SELECT roleid FROM orgchartroles WHERE areaid = $areaid) ORDER BY day");
+		return $query->result();
+	}
+
 	public function updateShift($shiftid,$startTime,$endTime,$roleid,$status,$message){
 		$this->load->database();
 		$query = $this->db->query("UPDATE shift SET startTime = $startTime, endTime = $endTime,roleid = $roleid,status = $status,message='$message' WHERE id = '$shiftid'");
 	}
+
+	public function updateShiftByEmployee($shiftid,$status){
+		$this->load->database();
+		$query = $this->db->query("UPDATE shift SET status = $status WHERE id = '$shiftid'");
+	}
+
+	public function updateTemplateShift($shiftid,$startTime,$endTime,$roleid,$status,$message){
+		$this->load->database();
+		$query = $this->db->query("UPDATE templateshift SET startTime = $startTime, endTime = $endTime,roleid = $roleid,status = $status,message='$message' WHERE id = '$shiftid'");
+	}
+
 	public function updateShiftDetails($startTime,$endTime,$roleid,$status,$date,$empid){
 		$this->load->database();
 		$query = $this->db->query("UPDATE shift SET startTime = $startTime, endTime = $endTime,roleid = $roleid,status = $status WHERE rosterDate='$date' and userid='$empid'");
@@ -116,9 +184,21 @@ class RostersModel extends CI_Model {
 		return $query->row();
 	}
 
+	public function getTemplateShift($empId,$rosterTemplateId,$day){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM templateshift WHERE userid = '$empId' AND day = '$day' AND roasterId = '$rosterTemplateId'");
+		return $query->row();
+	}
+
 	public function getShiftDate($shiftid){
 		$this->load->database();
 		$query = $this->db->query("SELECT rosterDate FROM shift WHERE id = '$shiftid'");
+		return $query->row();
+	}
+
+	public function getTemplateShiftDay($shiftid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM templateshift WHERE id = '$shiftid'");
 		return $query->row();
 	}
 
@@ -128,15 +208,33 @@ class RostersModel extends CI_Model {
 		return $query->row();
 	}
 
+	public function getTemplateEmployeeId($shiftid){
+		$this->load->database();
+		$query = $this->db->query("SELECT userid FROM templateshift WHERE id = '$shiftid'");
+		return $query->row();
+	}
+
 	public function getRosterId($shiftid){
 		$this->load->database();
 		$query = $this->db->query("SELECT roasterId FROM shift WHERE id = '$shiftid'");
 		return $query->row();
 	}
 
+	public function getTemplateRosterId($shiftid){
+		$this->load->database();
+		$query = $this->db->query("SELECT roasterId FROM templateshift WHERE id = '$shiftid'");
+		return $query->row();
+	}
+
 	public function getShiftId($employeeId,$currentDate){
 		$this->load->database();
 		$query = $this->db->query("SELECT id FROM shift WHERE userid = '$employeeId' AND rosterDate = '$currentDate'");
+		return $query->row();
+	}
+
+	public function getTemplateShiftId($employeeId,$currentDate,$rosterTemplateId){
+		$this->load->database();
+		$query = $this->db->query("SELECT id FROM templateshift WHERE userid = '$employeeId' AND day = '$currentDate'  AND roasterId = '$rosterTemplateId'");
 		return $query->row();
 	}
 
@@ -150,11 +248,11 @@ class RostersModel extends CI_Model {
 		$query = $this->db->query("DELETE from shift WHERE id = '$shiftId' ");
 	}
 
-	public function addNewShift($startTime,$endTime,$rosterid,$roleid,$date,$empid,$status){
+	public function deleteTemplateShift($shiftId){
 		$this->load->database();
-		$uniqueid = uniqid();
-		$query = $this->db->query("INSERT INTO shift (id,roasterId,rosterDate,userid,startTime,endTime,roleid,status) VALUES ('$uniqueid','$rosterid','$date','$empid','$startTime','$endTime',$roleid,$status) ");
+		$query = $this->db->query("DELETE from templateshift WHERE id = '$shiftId' ");
 	}
+
 
 	public function addCasualEmployees($startTime,$endTime,$rosterid,$roleid,$date,$empid,$status){
 		$this->load->database();
@@ -205,6 +303,11 @@ class RostersModel extends CI_Model {
 	public function getShiftAndRoleDetails($shiftId,$role){
 		$this->load->database();
 		$query = $this->db->query("SELECT * from shift INNER JOIN orgchartroles on orgchartroles.roleid = shift.roleid where id='$shiftId'");
+		return $query->row();
+	}
+	public function getTemplateShiftAndRoleDetails($shiftId,$role){
+		$this->load->database();
+		$query = $this->db->query("SELECT * from templateshift INNER JOIN orgchartroles on orgchartroles.roleid = templateshift.roleid where templateshift.id='$shiftId'");
 		return $query->row();
 	}
 

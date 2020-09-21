@@ -14,21 +14,26 @@ class Roster extends CI_Controller {
 
 public function roster_dashboard(){
   if($this->session->has_userdata('LoginId')){
-  	if(!isset($_GET['center'])){
-							$id = 0;
-							$oldid=1;
+		if( $this->getAllCenters() != 'error'){
+				$var['centers'] = $this->getAllCenters();
+			  	if(!isset($_GET['center'])){
+			  		if(!isset($_SESSION['centerr'])){
+							$id = json_decode($var['centers'])->centers[0]->centerid;
+							$_SESSION['centerr'] = $id;
+			  		}else{
+			  			$id = $_SESSION['centerr'];
+			  		}
+
 						}else{
 							$id = $_GET['center'];
-							$id = intval($id)-1;
-							$oldid = $id;
+							$_SESSION['centerr'] = $id;
 						}
-		$var['id'] = $id;
-		$var['centerId'] = $oldid;
-		$var['userId'] 	= $this->session->userdata('LoginId');
-		if( $this->getAllCenters() != 'error'){
-			$var['centers'] = $this->getAllCenters();
-			$var['center__'] = json_decode($var['centers'])->centers[$id]->centerid;
-			$var['rosters'] = $this->getPastRosters(json_decode($var['centers'])->centers[$id]->centerid);
+			$var['id'] = $id;
+			$var['centerId'] = $id;
+			$var['userId'] 	= $this->session->userdata('LoginId');
+			$var['center__'] = $id;
+			$var['rosterTemplates'] = $this->getRosterTemplates($id);
+			$var['rosters'] = $this->getPastRosters($id);
 			}
 			else{
 				$var['error'] = 'error';
@@ -77,7 +82,9 @@ public function roster_dashboard(){
 	}
 	// footprint end
 	$var['permissions'] = $this->fetchPermissions();
-			$this->load->view('rosterView',$var);
+
+		$this->load->view('rosterView',$var);
+
 
 	}
 		else{
@@ -173,6 +180,34 @@ public function getRosterDetails(){
 		}
 	}
 
+public function getRosterTemplateDetails($rosterTemplateId){
+	if($this->session->has_userdata('LoginId')){
+		$data['rosterid'] = $rosterTemplateId;
+		$data['userid'] = $this->session->userdata('LoginId');
+		$data['centers'] = $this->getAllCenters();
+		$data['entitlements'] = $this->getAllEntitlements($data['userid']);
+		$data['rosterDetails'] = $this->getRosterTemplate($data['rosterid'],$data['userid']);
+		$data['permissions'] = $this->fetchPermissions();
+		// $data['casualEmployees'] = $this->getCasualEmployees($data['rosterid']);
+			//footprint start
+		if($this->session->has_userdata('current_url')){
+			footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+			$this->session->set_userdata('current_url',currentUrl());
+		}
+		// footprint end
+		if( $this->getAllCenters() != 'error'){
+			// $var['centers'] = $this->getAllCenters();
+			}
+			else{
+				$data['error'] = 'error';
+			}
+			$this->load->view('rosterTemplateData',$data);
+		}
+		else{
+			$this->load->view('redirectToLogin');
+		}
+	}
+
 	 function getCasualEmployees($rosterid){
 			$url = BASE_API_URL."/rosters/getCasualEmployees/".$rosterid."/".$this->session->userdata('LoginId');
 			$ch = curl_init($url);
@@ -244,8 +279,28 @@ public function getRosterDetails(){
 		}
 		else if($httpcode == 401){
 
+			}
 		}
+
+	 function getRosterTemplate($rosterid,$userid){
 		
+		$url = BASE_API_URL."/rosters/getRosterTemplate/".$rosterid."/".$userid;
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			return $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+
+			}
 		}
 
 	public function addNewShift(){
@@ -294,6 +349,52 @@ public function getRosterDetails(){
 		}
 }
 
+	public function addNewTemplateShift(){
+		if($this->session->has_userdata('LoginId')){
+		$this->load->helper('form');
+		$form_data = $this->input->post();
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
+		if($form_data != null){
+		$data['date'] = $this->input->post('date');
+		$data['roster_id'] = $this->input->post('roster_id');
+		$data['emp_id'] = $this->input->post('emp_id');
+		$data['add_start_time'] = $this->input->post('add_start_time');
+		$data['add_end_time'] = $this->input->post('add_end_time');
+		$data['add_role_id'] = $this->input->post('add_role_id');
+		$data['userid'] = $this->session->userdata('LoginId');
+		// print_r($data);
+		 		$url = BASE_API_URL."Rosters/addNewTemplateShift";
+				$ch = curl_init($url);
+				curl_setopt($ch, CURLOPT_URL,$url);
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+						'x-device-id: '.$this->session->userdata('x-device-id'),
+						'x-token: '.$this->session->userdata('AuthToken')
+					));
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+					$server_output = curl_exec($ch);
+					$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				print_r($data);
+				curl_close ($ch);
+			}
+			else if($httpcode == 401){
+
+			}
+
+		}
+	}
+		else{
+			$this->load->view('redirectToLogin');
+		}
+}
+
 
 public function createRoster(){
 		if($this->session->has_userdata('LoginId')){
@@ -312,8 +413,59 @@ public function createRoster(){
 			$data['userid'] = $this->session->userdata('LoginId');
 			$data['staff'] = $this->getUsers();
 			$data['message'] = $this->input->post('message');
-
+			$template_list = $form_data['template-list'];
+			if($template_list == 'not_selected'){
 		 		$url = BASE_API_URL."/Rosters/createRoster";
+			}
+				else{
+			 		$url = BASE_API_URL."/Rosters/createRoster/".$template_list;
+				}
+
+				$ch = curl_init($url);
+				curl_setopt($ch, CURLOPT_URL,$url);
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+						'x-device-id: '.$this->session->userdata('x-device-id'),
+						'x-token: '.$this->session->userdata('AuthToken')
+					));
+							curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+					$server_output = curl_exec($ch);
+					$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				$jsonOutput = json_decode($server_output);
+				curl_close ($ch);
+				redirect(base_url("roster/roster_dashboard"));
+			}
+			else if($httpcode == 401){
+
+			}
+
+		}
+	}
+		else{
+			$this->load->view('redirectToLogin');
+		}
+}
+
+public function createRosterTemplate(){
+		if($this->session->has_userdata('LoginId')){
+		$this->load->helper('form');
+		$form_data = $this->input->post();
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
+		if($form_data != null){
+			$data['name'] = $this->input->post('roster-name');
+			$data['centerid'] = $this->input->post('centerId');
+			$data['userid'] = $this->session->userdata('LoginId');
+			$template_list = $form_data['template-list'];
+
+		 		$url = BASE_API_URL."/Rosters/createRosterTemplate";
+
 				$ch = curl_init($url);
 				curl_setopt($ch, CURLOPT_URL,$url);
 				curl_setopt($ch, CURLOPT_POST, 1);
@@ -362,6 +514,46 @@ public function createRoster(){
 		}	
 	}
 
+		function getRosterTemplates($centerid){
+		$url = BASE_API_URL."rosters/getRosterTemplates/".$centerid."/".$this->session->userdata('LoginId');
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			return $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+
+		}	
+	}
+
+		public function getTemplates($centerid){
+		$url = BASE_API_URL."rosters/getRosterTemplates/".$centerid."/".$this->session->userdata('LoginId');
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			echo $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+
+		}	
+	}
+
 	public function getShiftDetails($shiftId,$role){
 		if($this->session->has_userdata('LoginId')){
 		//footprint start
@@ -373,6 +565,39 @@ public function createRoster(){
 				$data['userid'] = $this->session->userdata('LoginId');
 
 				$url = BASE_API_URL."rosters/getShiftDetails/".$shiftId."/".$role."/".$data['userid'];
+				$ch = curl_init($url);
+				curl_setopt($ch, CURLOPT_URL,$url);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'x-device-id: '.$this->session->userdata('x-device-id'),
+					'x-token: '.$this->session->userdata('AuthToken')
+				));
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				if($httpcode == 200){
+					print_r($server_output);
+					curl_close ($ch);
+				}
+				else if($httpcode == 401){
+					return 'error';
+				}	
+			}
+		else{
+			$this->load->view('redirectToLogin');
+		}
+	}
+
+	public function getTemplateShiftDetails($shiftId,$role){
+		if($this->session->has_userdata('LoginId')){
+		//footprint start
+		if($this->session->has_userdata('current_url')){
+			footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+			$this->session->set_userdata('current_url',currentUrl());
+		}
+		// footprint end
+				$data['userid'] = $this->session->userdata('LoginId');
+
+				$url = BASE_API_URL."rosters/getTemplateShiftDetails/".$shiftId."/".$role."/".$data['userid'];
 				$ch = curl_init($url);
 				curl_setopt($ch, CURLOPT_URL,$url);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -414,6 +639,49 @@ public	function updateShift(){
 			$data['days'] = $this->input->post('days');
 
 			$url = BASE_API_URL."rosters/updateShift";
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+			 $server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				print_r($server_output);
+				curl_close ($ch);
+			}
+			else if($httpcode == 401){
+				
+
+			}
+		}
+		else{
+			$this->load->view('redirectToLogin');
+		}
+	}
+
+public	function updateTemplateShift(){
+
+		if($this->session->has_userdata('LoginId')){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
+			$data['startTime'] = $this->input->post('startTime');
+			$data['endTime'] = $this->input->post('endTime');
+			$data['status'] = $this->input->post('status');
+			$data['roleid'] = $this->input->post('roleid');
+			$data['shiftid'] = $this->input->post('shiftid');
+			$data['userid'] = $this->session->userdata('LoginId');
+			$data['message'] = addslashes($this->input->post('message'));
+			$data['days'] = $this->input->post('days');
+
+			$url = BASE_API_URL."rosters/updateTemplateShift";
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -506,6 +774,42 @@ public function updateRoster(){
 			$userid = $this->session->userdata('LoginId');
 			$data['days'] = $input['days'];
 			$url = BASE_API_URL."rosters/deleteShift/".$shiftId."/".$userid;
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				if($httpcode == 200){
+					print_r($server_output);
+					curl_close ($ch);
+				}
+				else if($httpcode == 401){
+					}
+				}
+			}
+		else{
+			$this->load->view('redirectToLogin');
+			}
+		}
+
+	public	function deleteTemplateShift($shiftId){
+		if($this->session->has_userdata('LoginId')){
+			$input = $this->input->post();
+			if($input != null && $input != ""){
+		//footprint start
+		if($this->session->has_userdata('current_url')){
+			footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+			$this->session->set_userdata('current_url',currentUrl());
+		}
+		// footprint end
+			$userid = $this->session->userdata('LoginId');
+			$data['days'] = $input['days'];
+			$url = BASE_API_URL."rosters/deleteTemplateShift/".$shiftId."/".$userid;
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
 			curl_setopt($ch, CURLOPT_POST, 1);
