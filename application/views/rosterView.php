@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -80,17 +82,17 @@ font-family: 'Open Sans', sans-serif;
 		.filter-icon span{
 			padding: 0 5px;
 		}
-		.create{
+		.create,.createTemplate{
 			border:3px solid rgb(242, 242, 242);
 			border-radius: 20px;
 			padding:8px;
 			background: rgb(164, 217, 214);
 		}
-		.create a{
+		.create a,.createTemplate a{
 		    color: rgb(23, 29, 75) !important;
 		    font-weight: 700;
 		}
-		#create-new-roster{
+		#create-new-roster,#create-Template{
 			color:white;
 		}
 		.data-buttons{
@@ -267,6 +269,12 @@ font-family: 'Open Sans', sans-serif;
 	background: white;
 	box-shadow: 0 0 4px 1px rgba(0,0,0,0.1);
 }
+.templateSelect{
+	width: 100%;
+    justify-content: center;
+    display: flex;
+    margin: 2rem 0;
+}
 table.dataTable tbody th, table.dataTable tbody td{
 	padding:1rem;
 	border: none !important;
@@ -309,6 +317,33 @@ table.dataTable{
 		justify-content: center;
 		align-items: center;
 	}
+
+		/* The Modal (background) */
+.templateModal {
+  display: none; 
+  position: fixed;
+  z-index: 1; 
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.4); 
+}
+
+/* Modal Content */
+.template-modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 30%;
+  position: relative;
+}
+
+/* The Close Button */
 
 	@keyframes spin {
 	  0% { transform: rotate(0deg); }
@@ -394,16 +429,28 @@ table.dataTable{
 						<?php $centers = json_decode($centers);
 						
 						for($i=0;$i<count($centers->centers);$i++){
-					?>select
+							if($_SESSION['centerr'] == $centers->centers[$i]->centerid){
+					?>
+					<option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid; ?>" selected><?php echo $centers->centers[$i]->name?></option>
+				<?php }else{ ?>
 					<option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid; ?>"><?php echo $centers->centers[$i]->name?></option>
-				<?php } ?>
+				 <?php }}  ?>
 				</select>
 		</span>	
 						<?php } ?>
 		</span>
 
 		<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
-		<span class="btn ml-auto d-flex align-self-center create"><a href="javascript:void(0)" id="create-new-roster" class="d-flex">
+<!-- 		<span class="btn ml-auto ml-auto d-flex align-self-center createTemplate">
+			<a href="javascript:void(0)" id="create-Template" class="d-flex">
+				<span style="margin:0 10px 0 10px">
+					<img src="../assets/images/plus.png" >
+				</span>
+				Create&nbsp;Roster&nbsp;Template
+			</a>
+		</span>  -->
+
+		<span class="btn  d-flex align-self-center create"><a href="javascript:void(0)" id="create-new-roster" class="d-flex">
 			<span style="margin:0 10px 0 10px">
 				<img src="../assets/images/plus.png" >
 			</span>Create&nbsp;New&nbsp;Roster</a></span>
@@ -468,11 +515,51 @@ table.dataTable{
  		<span id="down-arrow" class="row" style="display:flex;justify-content: center;margin:20px">
  			<input type = "date" placeholder = "dd-mm-yyyy" class="col-8" name="roster-date" id="roster-date">
  		</span>
+ 		<span class="templateSelect">
+		<span class="select_css">
+				<?php 
+					$rosterTemplates = json_decode($rosterTemplates);
+				?>
+				<select class="template-list " id="template-list" name="template-list">
+					<option value="not_selected">Select Template</option>
+					<?php
+						for($i=0;$i<count($rosterTemplates->templates);$i++){
+					?>
+					<option href="javascript:void(0)" class="center-class" id="<?php echo $rosterTemplates->templates[$i]->id ?>" value="<?php echo $rosterTemplates->templates[$i]->id; ?>"><?php echo $rosterTemplates->templates[$i]->name?></option>
+				<?php } ?>
+				</select>
+		</span>	 		</span>
  		<input type="text" name="userId" id="userId" style="display:none" value="<?php echo $userId?>">
  			<input type="text" name="centerId" id="center-id" value="<?php echo $center__;?>" style="display:none">
  		<div class="text-center">
  		<input type="submit" name="roster-submit" id="roster-submit" class="button" value="Create">
  		<input type="reset" name="" id="" class="button" value="Reset">
+ 		<input type="button" name="cancel" value="Cancel" class="close button">
+ 	</div>
+ 	</form>
+ </div>
+ 	<p id="alert-data"></p>
+  </div>
+</div>
+
+<div id="mxModal" class="templateModal">
+  <!-- Modal content -->
+  <div class="template-modal-content">
+   <div class="row" style="background: #8D91AA;padding: 0;margin: 0;position: absolute;top:0;width:100%;left:0;padding:1rem">
+   	<span class="col-12 text-center" style="color:#F3F4F7;font-size:1rem">Create Roster Template </span>
+    
+</div>
+<div style="position: relative;margin-top:40px ">
+ 	<form id="createTemplate"  method="POST" action=<?php echo base_url("roster/createRosterTemplate") ?>>
+ 		<span id="down-arrow" class="row" style="display:flex;justify-content: center;margin:20px">
+ 			<input type = "text" placeholder = "Roster Name" class="col-8" name="roster-name" id="roster-name">
+ 		</span>
+
+ 		<input type="text" name="userId" id="templateUserId" style="display:none" value="<?php echo $userId?>">
+ 			<input type="text" name="centerId" id="template-center-id" value="<?php echo $center__;?>" style="display:none">
+ 		<div class="text-center">
+ 		<input type="submit" name="roster-submit" id="roster-template-submit" class="button" value="Create">
+ 		<input type="reset"  class="button" value="Reset">
  		<input type="button" name="cancel" value="Cancel" class="close button">
  	</div>
  	</form>
@@ -523,6 +610,7 @@ table.dataTable{
 				val=1;
 			}
 		var url = "<?php echo base_url();?>roster/roster_dashboard?center="+val;
+
 				loader_icon();
 		$.ajax({
 			url:url,
@@ -531,6 +619,22 @@ table.dataTable{
 				remove_loader_icon();
 				$('#tbody').html($(response).find('#tbody').html());
 				document.getElementById('center-id').value = parseInt(val);
+				document.getElementById('template-center-id').value = parseInt(val);
+						var url_template = "<?php echo base_url();?>roster/getTemplates/"+val;
+				$.ajax({
+					url : url_template,
+					type : 'GET',
+					success : function(response){
+						$('#template-list').empty();
+						var resp = JSON.parse(response);
+						var co = `<option value="not_selected">Select Template</option>`;
+						$('#template-list').append(co)
+						resp.templates.forEach(function(item){
+						var code = `<option href="javascript:void(0)" class="center-class" id="${item.id}" value="${item.id}">${item.name}</option>`;
+						$('#template-list').append(code)
+						})
+					}
+				})
 			}
 		});
 	});
@@ -566,6 +670,17 @@ table.dataTable{
 	$(document).on('click','.close',function(){
 		 modal.style.display = "none";
 	})
+
+	var mod = document.getElementById("mxModal");
+
+	$(document).on('click','#create-Template',function(){
+		 mod.style.display = "block";
+	})
+
+	$(document).on('click','.close',function(){
+		 mod.style.display = "none";
+	})
+
 
 </script>
 <script type="text/javascript">
@@ -659,6 +774,9 @@ $("#roster-date").datepicker();
 		})
 	})
 		})
+
+
+					$('#create-template').attr('href','<?php echo base_url('createRosterTemplate/') ?>'+$('.center-list').val());
 </script>-->
 
 

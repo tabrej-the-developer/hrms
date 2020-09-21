@@ -1052,9 +1052,7 @@ td{
 				<span class="editPermission-span">
 					<button class="editPermission-btn">Permission</button>
 				</span>
-				<span class="casualEmploye-span">
-					<button class="casualEmploye-btn">Add Employee</button>
-				</span>
+
 				<span class="priority ">
 					<button class="priority-btn ">
 						<i>
@@ -1170,36 +1168,27 @@ function icon($str){
 }
 
 //PHP functions //
-		if(isset($rosterDetails->startDate)){
-			$str1 = $rosterDetails->startDate;
-		if(isset($rosterDetails->endDate)){
-		 $str2 = $rosterDetails->endDate; 
+		if(isset($rosterDetails->day)){
+			$str1 = 0;
+  		 $str2 = 4; 
 			 $v1 = explode("-",$str1);
 			 $v2 = explode("-",$str2);
-		 echo date("M d",mktime(0,0,0,$v1[1],intval($v1[2]),(intval($v1[0]))))." to ". 
-		 date("M d , Y",mktime(0,0,0,$v2[1],intval($v2[2]),(intval($v2[0]))));
-		}}
+		 echo "Mon to Fri"; 
+    }
 		 ?> </div>
 		<div class="table-div" style="">
 			<table>
 				<tr class="day-row">
 					<th id="table-id-1" class="day" style="width:16vw">Employees</th>	<?php $x=0;
-					if(isset($rosterDetails->startDate)){
-						$startDate = date('Y-m-d', strtotime($rosterDetails->startDate));
+					if(isset($rosterDetails->day)){
+						$startDate = date('Y-m-d', strtotime($rosterDetails->day));
 						?>
-					<th id="table-id-2" class="day" style="width:12vw">Mon<?php echo dateToDay($rosterDetails->startDate) ?></th>
-					<th id="table-id-3" class="day"  style="width:12vw">Tue<?php  
-						$endDate = date( "Y-m-d", strtotime( "$startDate +1 day" ));
-						echo dateToDay($endDate); ?></th>
-					<th id="table-id-4" class="day"  style="width:12vw">Wed<?php 
-						$endDate = date( "Y-m-d", strtotime( "$startDate +2 day" ));
-						echo dateToDay($endDate); ?></th>
-					<th id="table-id-5" class="day"  style="width:12vw">Thu<?php 
-						$endDate = date( "Y-m-d", strtotime( "$startDate +3 day" ));
-						echo dateToDay($endDate); ?></th>
-					<th id="table-id-6" class="day" style="width:12vw">Fri<?php 
-						$endDate = date( "Y-m-d", strtotime( "$startDate +4 day" ));
-						echo dateToDay($endDate); }?></th>
+					<th id="table-id-2" class="day" style="width:12vw">Mon</th>
+					<th id="table-id-3" class="day"  style="width:12vw">Tue</th>
+					<th id="table-id-4" class="day"  style="width:12vw">Wed</th>
+					<th id="table-id-5" class="day"  style="width:12vw">Thu</th>
+					<th id="table-id-6" class="day" style="width:12vw">Fri</th>
+        <?php } ?>
 					<th id="table-id-7" class="day"  style="width:12vw">
 						<span class="column_budget">
 							<span class="row d-flex justify-content-center m-0">Budget </span>
@@ -1282,7 +1271,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 					
 					</td>
 				
-					<?php $weeklyTotal=0; $p=0; $index=0;?>
+					<?php $weeklyTotal=0; $p=0; $index=0;$currentSequenceDay=0;?>
 
 					<?php for($fiveIterations=0;$fiveIterations<5;$fiveIterations++){
 						$variable = 0;
@@ -1296,24 +1285,16 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 
 		?>
 		<?php 
-				$date = date('Y-m-d',strtotime($rosterDetails->startDate)); 
+				$date = 0; 
 				// print_r($date);
-			$currentSequenceDate = date('Y-m-d',strtotime("$date".'+'.$fiveIterations.'days'));
+
 			// print_r($currentSequenceDate);
-			if(isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave)){
-			  if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" )
-			  	{ $currentDate = $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->currentDate; }
-			  else{ 
-			  	if(isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->currentDate)){
-			  	 $currentDate = $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->currentDate;
-			  	  }
-			  	else{ $currentDate = '00-00-00';}
-			  	 }
-			  	}
-			else{$currentDate = '00-00-00';}
+        if(count($rosterDetails->roster[$x]->roles[$counter]->shifts) > $p){
+     $currentDay = $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->currentDate; 
+
 			// if(isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave) == true){
 
-			if($currentSequenceDate  == $currentDate){
+			if($currentSequenceDay  == $currentDay){
 
 		 ?>
 
@@ -1343,9 +1324,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 		 if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status != "Rejected"){ 
 					  $weeklyTotal = $weeklyTotal + $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?>
 					  				
-					<?php  } }else{
-						echo 'On Leave';
-					} ?>
+					<?php  } } ?>
 
 					   </div>
 					</td>
@@ -1353,9 +1332,9 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 					  	$p = $p;
 					  	$index = $index+1;
 					  	 ?>
-					  	<td area-id="<?php echo $rosterDetails->roster[$x]->areaId;?>" date="<?php echo $currentSequenceDate; ?>" roster-id="<?php echo $rosterDetails->id; ?>" emp-id="<?php echo  $rosterDetails->roster[$x]->roles[$counter]->empId;?>" level="<?php  $rosterDetails->roster[$x]->roles[$counter]->level;?>" class="__addshift count-<?php echo $index;?>" name3="<?php echo intval(0)/100; ?>"></td>
+					  	<td area-id="<?php echo $rosterDetails->roster[$x]->areaId;?>" date="<?php echo $currentSequenceDay; ?>" roster-id="<?php echo $rosterDetails->id; ?>" emp-id="<?php echo  $rosterDetails->roster[$x]->roles[$counter]->empId;?>" level="<?php  $rosterDetails->roster[$x]->roles[$counter]->level;?>" class="__addshift count-<?php echo $index;?>" name3="<?php echo intval(0)/100; ?>"></td>
 					  	<?php
-					  }  } ?>
+					  } }        $currentSequenceDay++;} ?>
 					<td class=" " style="width:12vw;font-weight:bolder"><?php
 					if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){
 					 echo "$".number_format((float)$weeklyTotal, 2, '.', '');;
@@ -1371,135 +1350,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 	if(isset($rosterDetails->roster)){
 		$count = count($rosterDetails->roster);
 	}
-		 if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N"){ 
-				for($x=0;$x<count($rosterDetails->roster);$x++){?>
-				<tr >
-					<td colspan="7" class="area-name"><?php echo $rosterDetails->roster[$x]->areaName ?>
-						<span area_id="<?php echo $rosterDetails->roster[$x]->areaId; ?>" style="position: absolute;right: 3%;cursor:pointer;" class="changeRoleOrder">
-						<i>
-							<img src="<?php echo base_url('assets/images/icons/priority.png'); ?>" style="max-height:0.8rem;margin-right:10px">
-						</i>
-						</span>
-					</td>
-				</tr>
-				<?php $occupancy = 0; 
- 
-					if($rosterDetails->roster[$x]->isRoomYN == "Y")
-						{
-				?>
-				<tr>
-					<td></td>
-					<td><?php echo $rosterDetails->roster[$x]->occupancy[0]->occupancy?></td>
-					<td><?php echo $rosterDetails->roster[$x]->occupancy[1]->occupancy?></td>
-					<td><?php echo $rosterDetails->roster[$x]->occupancy[2]->occupancy?></td>
-					<td><?php echo $rosterDetails->roster[$x]->occupancy[3]->occupancy?></td>
-					<td><?php echo $rosterDetails->roster[$x]->occupancy[4]->occupancy?></td>
-					<td> </td>
-				</tr>
-				<?php 
-			}
-				$value = count($rosterDetails->roster[$x]->roles);
-
-				for($counter=0;$counter<$value;$counter++){ ?>
-				<tr  class="table-row">
-					<td   style="width:16vw" class=" cell-boxes left-most">
-						
-						<span class="row name-space" style="padding:0;margin:0;">
-							<span class="col-4 icon-parent">
-								<span class=" icon" style="
-									<?php	echo "background:#A4D9D6; color:#707070";?>"><?php echo icon($rosterDetails->roster[$x]->roles[$counter]->empName)?>
-								</span>
-							</span>
-							<span class="col-8 name-role">
-								<span class="empname row "><?php echo $rosterDetails->roster[$x]->roles[$counter]->empName?></span>
-			<?php
-						$variable = 0;
-						$userLevel = $rosterDetails->roster[$x]->roles[$counter]->level;
-						foreach($entitlement->entitlements as $e){
-								if($e->id == $userLevel ){
-									$variable = $e->hourlyRate;
-								}
-			?>
-			<?php } ?>
-			<?php if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$counter]->empId){ ?>
-								<span class="title hourly row"><?php echo  $variable; // echo $rosterDetails->roster[$x]->roles[$counter]->empTitle ?></span>
-							<?php } ?>
-							</span>
-
-							<span class=""><?php // echo  $variable?></span>
-						</span>
-					</td>
-				
-					<?php $weeklyTotal=0;$p=0;$index=0; ?>
-					<?php for($fiveIterations=0;$fiveIterations<5;$fiveIterations++){
-						$variable = 0;
-		$userLevel = $rosterDetails->roster[$x]->roles[$counter]->level;
-		foreach($entitlement->entitlements as $e){
-			if($e->id == $userLevel ){
-				$variable = $e->hourlyRate;
-			}
-		}
-		?>
-		<?php 
-				$date = date('Y-m-d',strtotime($rosterDetails->startDate)); 
-				// print_r($date);
-			$currentSequenceDate = date('Y-m-d',strtotime("$date".'+'.$fiveIterations.'days'));
-			// print_r($currentSequenceDate);
-			if(isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave)){
-			  if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" )
-			  	{ 
-			  		$currentDate = $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->currentDate;
-			  		 }
-			  else{ 
-			  	if(isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->currentDate)){
-			  	 $currentDate = $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->currentDate;
-			  	  }
-			  	else{ $currentDate = '00-00-00';}
-			  	 }
-			  	}
-			else{$currentDate = '00-00-00';}
-			// if(isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave) == true){
-
-			if($currentSequenceDate  == $currentDate){
-				?>
-
-					<td class="<?php if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$counter]->empId){ ?> shift-edit <?php } ?> cell-boxes count-<?php echo $index+1;?>  <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"  style="width:12vw" 
-					 name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->shiftid?>"  
-					 name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleid ?>"
-			<?php if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$counter]->empId){ ?>
-					 name3="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : intval($variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100); ?>" 
-					<?php } ?>
-					 stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime?>" etime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime?>" 
-					 name="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->empName?>"
-					 status="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>">
-
-					 <div class="cell-back-1 ">
-				<?php if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave != "Y"){ ?>
-					 	<span class="row m-0 d-flex justify-content-center"><?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleName;?></span>
-					 	<?php echo timex(intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)). "-" .timex( intval($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime));
-if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$counter]->empId){ 
-					  $weeklyTotal = $weeklyTotal + $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?> 
-				<span class="row m-0 d-flex justify-content-center roster_shift_message">
-					<?php echo isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->message) ? $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->message : "";?></span>
-					<?php } } else{
-						echo 'On Leave';
-					} ?>
-					</div>
-					</td>
- <?php $p++; $index++;}else{
-					  	$p = $p;
-					  		$index = $index+1;
-					  	 ?>
-					  	<td area-id="<?php echo $rosterDetails->roster[$x]->areaId;?>" date="<?php echo $currentSequenceDate; ?>" roster-id="<?php echo $rosterDetails->id; ?>" emp-id="<?php echo  $rosterDetails->roster[$x]->roles[$counter]->empId;?>" level="<?php  $rosterDetails->roster[$x]->roles[$counter]->level;?>" class="__addshift count-<?php echo $index;?>" name3="<?php echo intval(0)/100; ?>"></td>
-
-										  	<?php
-										  
-					  }  } ?>
-					<td class=" " style="width:12vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
-
-				</tr>
-			<?php }  } }?>
-
+?>
 
 
 
@@ -1554,24 +1405,10 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 								<i>
 									<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
 								</i>Save Draft</button>
-							<button id="publish-roster" class="roster__ buttonn">
-								<i>
-									<img src="<?php echo base_url('assets/images/icons/publish.svg'); ?>" style="max-height:0.8rem;margin-right:10px">
-								</i>Publish</button>
+
 						</div>
 					<?php } ?>
-					<?php if($rosterDetails->status === 'Published') {?>
-					<div class="buttons d-flex justify-content-end">
-						<button id="discard-roster" class="roster__ buttonn">
-								<i>
-									<img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:0.8rem;margin-right:10px">
-								</i>Discard</button>
-						<button id="publish-roster" class="roster__ buttonn">
-						<i>
-							<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
-						</i>Save</button>
-					</div>
-					<?php } }?>
+					<?php  }?>
 			<?php } ?>
 			<?php if($this->session->userdata('UserType') == STAFF){?>
 			<div class="buttons d-flex justify-content-end">
@@ -1671,38 +1508,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 <?php } ?>
 <!-- Till here -->>
 
-<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N"){ ?> 
-<div id="mxModal" class="modal">
- 
-	  <div class="modal-content">
-	  	<div class="row titl">
-	  		<div class="col-12 box-name-space">
-		  		<div style=""  class="row box-name">Title Here </div>
-		  		<div  class="row box-space">Time Here</div>
-		  	</div>
-		</div>
-		   <form  id="user-form">	
-		   		<input type="text"  name="" id="starts" style="display: none">
-		   		<input type="text"  name="" id="ends" style="display:none">
-		 		<input type="text" name="shiftId"  id="shift-Id" style="display:none">
-		 		<input type="text" name="roleId" id="role-Id" style="display:none">
-		 		<input type="text" name="userId"   id="user-Id" style="display:none">
-		 		<button type="button" name="user-submit" id="user-submit" value="Accept" style="width:5rem" class="button">
-					<i>
-						<img src="<?php echo base_url('assets/images/icons/tick.png'); ?>" style="max-height:0.8rem;margin-right:10px">
-					</i>Accept</button>
-		 		<button type="button" name="user-deny" id="user-deny" style="width:5rem" value="Deny" class="button">
-					<i>
-						<img src="<?php echo base_url('assets/images/icons/rejected.png'); ?>" style="max-height:1rem;margin-right:10px">
-					</i>Reject</button>
-		 		<button type="button" name="cancel" class="button close" value="Close" style="width:5rem">
-					<i>
-						<img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:0.8rem;margin-right:10px">
-					</i>Close</button>
-		 	</form>
-	  </div>
-</div>
-<?php } ?>
+
 
 <div class="modal-logout">
     <div class="modal-content-logout">
@@ -1740,7 +1546,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
  <!-- 	-----------------
 		Add Shift Modal
  		-----------------	-->
-<div class="masked" ></div>
+<!-- <div class="masked" ></div>
 <div class="modal_priorityed" >
 	<span class="priority_headinged" >
 		<a class="text-center  edit_priorityed" style="padding:1rem 0">Add Employee</a>
@@ -1799,7 +1605,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 						<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
 					</i>Save</button>
 	  </div>
-</div>
+</div> -->
 <!-- 	-----------------
 		Add Shift Modal
  		-----------------	-->
@@ -1808,9 +1614,9 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 		------------------- -->
 <div class="modal_outer" ></div>
 <div class="modal_body" >
-	<span class="modal_heading" >
+<!-- 	<span class="modal_heading" >
 		<a class="text-center  modal_title " style="padding:1rem 0">Edit Permission</a>
-	</span>
+	</span> -->
 		<div class="modal_main">
 			<div class="d-flex justify-content-around">
 				<span class="span-class center-class">
@@ -1889,7 +1695,8 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 				</select>
 			</span>
 		</span>
-
+    <input type="text" name="" id="store_day" class="d-none">
+    <input type="text" name="" id="store_empId" class="d-none">
 	</div>
 	<div class="priority_buttonss">
   	<button class="close_priority" role="button">
@@ -1979,50 +1786,6 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 <!-- This is meant for staff -->
 
 
-<script type="text/javascript">
-	$(document).ready(function(){
-		
-		$(document).on('click','.button',function(){
-			var startTime = parseInt($('#starts').prop('value')) ;
-			var endTime = parseInt($('#ends').prop('value'));
-			
-      var days = "updateShiftByEmployee";
-			var shiftid = $('#shift-Id').prop('value');
-			var status = $(this).prop('value');
-			var userid = "<?php echo $userid ?>";
-			var roleid = $('#role-Id').prop('value');
-
-console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
-				if(status == 'Accept'){
-				status = "3";
-				}
-				if(status == "Deny"){
-					status = "4";
-				}
-			url = window.location.origin+"/PN101/roster/updateShift";
-			$.ajax({
-				url:url,
-				type:'POST',
-				data:{
-					startTime:startTime,
-					endTime:endTime,
-					shiftid:shiftid,
-					roleid:roleid,
-					status:status,
-					userid:userid,
-          days : days
-					
-				},
-				success:function(response){
-						console.log(response)
-						window.location.reload();
-
-				}
-			})
-		})
-		
-	})
-</script>
 
 <!-- Till here -->
 
@@ -2077,7 +1840,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
       }
 			let bool = confirm("confirm delete shift?");
       if(bool == true){
-              var url = window.location.origin+"/PN101/roster/deleteShift/"+shiftId;
+              var url = window.location.origin+"/PN101/roster/deleteTemplateShift/"+shiftId;
               $.ajax({
               url : url,
               data : {
@@ -2089,8 +1852,8 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
                 // console.log(response)
               }
             })
-  		}	
-  	})
+      } 
+    })
   })
 </script>
 <?php if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){ ?>
@@ -2185,7 +1948,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 			let role = $(this).attr('name2');
 			var areaId = $(this).attr('area-id');
 			$('#areaId').val(areaId);
-			var url = window.location.origin+'/PN101/roster/getShiftDetails/'+shiftid+'/'+role
+			var url = window.location.origin+'/PN101/roster/getTemplateShiftDetails/'+shiftid+'/'+role
 				$.ajax({
 					url: url,
 					type: 'GET',
@@ -2256,7 +2019,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 						var areaid = $(this).attr('area-id');
 					}
 
-			url = window.location.origin+"/PN101/roster/updateShift";
+			url = window.location.origin+"/PN101/roster/updateTemplateShift";
 			console.log(startTime + " "+ endTime +" "+ shiftid+" "+roleid+" "+status +" "+userid+" "+areaid+ "" + message)
 			$.ajax({
 				url:url,
@@ -2275,7 +2038,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 				success:function(response){
 											console.log(response)
 											$('#roster-form').trigger('reset');
-											// window.location.reload();
+											window.location.reload();
 				}
 			})
 		})
@@ -2544,55 +2307,58 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 
 	$(document).on('click','.__addshift',function(){
 		$(".masks").addClass("actives");
-    var employeeName = $(this).closest('tr').children('.left-most').children('.name-space').children('.name-role').children('.empname').text();
-    var date = $(this).attr('date');
-		var dates = [];
-		var obj = {};
-		var roster_id = $(this).attr('roster-id');
-		var emp_id = $(this).attr('emp-id');
-    $('.edit_priority').html(employeeName)
-			$(document).on('click','.add_shift',function(){
-        // FOR MULTIPLE DAYS
-		// for(var i=0;i<5;i++){
-		// 	obj = {};
-		// 	if(date.getMonth() < 10){
-		// 	obj.date = `${date.getFullYear()}-0${date.getMonth()+1}-${date.getDate()}`;
-		// 		}
-		// 		if(date.getMonth >=10 ){
-		// 	obj.date = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
-		// 		}
-		// 		if($('.checkbox_space').eq(i).is(':checked') == true){
-		// 			obj.status = true;
-		// 			dates.push(obj)
-		// 		}
-		// 	date.setDate(date.getDate() + 1);
-		// }
-				var add_start_time = $('#add_start_time').val();
-				var add_end_time = $('#add_end_time').val();
-				add_start_time = parseInt(add_start_time.replace(":",""));
-				add_end_time = parseInt(add_end_time.replace(":",""));
-				var add_role_id = $('#add_role_id').val();
-				// console.log(date+ "---"+roster_id+ "---"+emp_id+ "---"+add_start_time+ "---"+add_end_time+ "---"+add_role_id+)
-				console.log(dates)
-				var url = window.location.origin+"/PN101/roster/addNewshift";
-				$.ajax({
-					url:url,
-					method:'POST',
-					data:{
-            date : date,
-						roster_id : roster_id,
-						emp_id : emp_id,
-						add_start_time : add_start_time,
-						add_end_time : add_end_time,
-						add_role_id : add_role_id
-					},
-					success:function(response){
-						window.location.reload();
-            // console.log(response)
-					}
-				})
-			})
+    let date = $(this).attr('date');
+      $('#store_day').val(date);
+		let dates = [];
+		let obj = {};
+		let emp_id = $(this).attr('emp-id');
+      $('#store_empId').val(emp_id);
+
 	})
+
+      $(document).on('click','.add_shift',function(){
+        // FOR MULTIPLE DAYS
+    // for(var i=0;i<5;i++){
+    //  obj = {};
+    //  if(date.getMonth() < 10){
+    //  obj.date = `${date.getFullYear()}-0${date.getMonth()+1}-${date.getDate()}`;
+    //    }
+    //    if(date.getMonth >=10 ){
+    //  obj.date = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+    //    }
+    //    if($('.checkbox_space').eq(i).is(':checked') == true){
+    //      obj.status = true;
+    //      dates.push(obj)
+    //    }
+    //  date.setDate(date.getDate() + 1);
+    // }
+        let date = $('#store_day').val();
+        let roster_id = "<?php echo $rosterDetails->id; ?>";
+        let emp_id = $('#store_empId').val();
+        let add_start_time = $('#add_start_time').val();
+        let add_end_time = $('#add_end_time').val();
+        add_start_time = parseInt(add_start_time.replace(":",""));
+        add_end_time = parseInt(add_end_time.replace(":",""));
+        let add_role_id = $('#add_role_id').val();
+        console.log(date+ "---"+roster_id+ "---"+emp_id+ "---"+add_start_time+ "---"+add_end_time+ "---"+add_role_id)
+        let url = window.location.origin+"/PN101/roster/addNewTemplateShift";
+        $.ajax({
+          url:url,
+          method:'POST',
+          data:{
+            date : date,
+            roster_id : roster_id,
+            emp_id : emp_id,
+            add_start_time : add_start_time,
+            add_end_time : add_end_time,
+            add_role_id : add_role_id
+          },
+          success:function(response){
+            window.location.reload();
+            // console.log(response)
+          }
+        })
+      })
 
 	$(document).on('click','.add_shift',function(){
 		// $(this).closest();
