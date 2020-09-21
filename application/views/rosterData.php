@@ -1470,7 +1470,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 			if($currentSequenceDate  == $currentDate){
 				?>
 
-					<td class="<?php if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$counter]->empId){ ?> shift-edit <?php } ?> cell-boxes count-<?php echo $index+1;?>  <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"  style="width:12vw" 
+					<td class="<?php if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$counter]->empId && $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status == 'Published'){ ?> shift-edit <?php } ?> cell-boxes count-<?php echo $index+1;?>  <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"  style="width:12vw" 
 					 name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->shiftid?>"  
 					 name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleid ?>"
 			<?php if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$counter]->empId){ ?>
