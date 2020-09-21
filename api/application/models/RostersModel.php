@@ -32,6 +32,12 @@ class RostersModel extends CI_Model {
 		return $query->row();
 	}
 
+	public  function getEmployeeEmail($empid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM users WHERE id = '$empid' ");
+		return $query->row();
+	}
+
 	public function getAllRoles($areaid){
 		$this->load->database();
 		$query = $this->db->query("SELECT * FROM orgchartroles WHERE areaid = '$areaid' ORDER BY priority ASC");

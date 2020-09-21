@@ -441,14 +441,14 @@ table.dataTable{
 		</span>
 
 		<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
-<!-- 		<span class="btn ml-auto ml-auto d-flex align-self-center createTemplate">
+		<!-- <span class="btn ml-auto ml-auto d-flex align-self-center createTemplate">
 			<a href="javascript:void(0)" id="create-Template" class="d-flex">
 				<span style="margin:0 10px 0 10px">
 					<img src="../assets/images/plus.png" >
 				</span>
 				Create&nbsp;Roster&nbsp;Template
 			</a>
-		</span>  -->
+		</span>  !-->
 
 		<span class="btn  d-flex align-self-center create"><a href="javascript:void(0)" id="create-new-roster" class="d-flex">
 			<span style="margin:0 10px 0 10px">
