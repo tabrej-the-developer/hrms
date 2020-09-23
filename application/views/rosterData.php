@@ -1105,7 +1105,7 @@ function timex( $x)
 	    $output;
 	    if(($x/100) < 12){
 	        if(($x%100)==0){
-	         $output = intval($x/100) . ":00 AM";
+	         $output = "12:00 AM";
 	        }
 	    	if(($x%100)!=0){
 		    	if(($x%100) < 10){
@@ -1131,14 +1131,14 @@ function timex( $x)
 	}
 	else{
 	if(($x%100)==0){
-	     $output = intval($x/100) . ": 00 PM";
+	     $output =  "12:00 PM";
 	    }
 	    if(($x%100)!=0){
 	    	if(($x%100) < 10){
-	    		$output = intval($x/100) . ":0". $x%100 . " PM";
+	    		$output = "12:0". $x%100 . " PM";
 	    	}
 	    	if(($x%100) >= 10){
-	    		$output = intval($x/100) . ":". $x%100 . " PM";
+	    		$output = "12:". $x%100 . " PM";
 	    	}
 	    }
 	}

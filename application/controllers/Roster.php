@@ -308,21 +308,21 @@ public function getRosterTemplateDetails($rosterTemplateId){
 		if($this->session->has_userdata('LoginId')){
 		$this->load->helper('form');
 		$form_data = $this->input->post();
-	//footprint start
-	if($this->session->has_userdata('current_url')){
-		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-		$this->session->set_userdata('current_url',currentUrl());
-	}
-	// footprint end
-		if($form_data != null){
-		$data['date'] = $this->input->post('date');
-		$data['roster_id'] = $this->input->post('roster_id');
-		$data['emp_id'] = $this->input->post('emp_id');
-		$data['add_start_time'] = $this->input->post('add_start_time');
-		$data['add_end_time'] = $this->input->post('add_end_time');
-		$data['add_role_id'] = $this->input->post('add_role_id');
-		$data['userid'] = $this->session->userdata('LoginId');
-		// print_r($data);
+			//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+				$this->session->set_userdata('current_url',currentUrl());
+			}
+			// footprint end
+				if($form_data != null){
+				$data['date'] = $this->input->post('date');
+				$data['roster_id'] = $this->input->post('roster_id');
+				$data['emp_id'] = $this->input->post('emp_id');
+				$data['add_start_time'] = $this->input->post('add_start_time');
+				$data['add_end_time'] = $this->input->post('add_end_time');
+				$data['add_role_id'] = $this->input->post('add_role_id');
+				$data['userid'] = $this->session->userdata('LoginId');
+				// print_r($data);
 		 		$url = BASE_API_URL."Rosters/addNewShift";
 				$ch = curl_init($url);
 				curl_setopt($ch, CURLOPT_URL,$url);

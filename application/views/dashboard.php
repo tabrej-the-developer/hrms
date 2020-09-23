@@ -733,12 +733,24 @@ color:#FFFFFF;
   crossorigin="anonymous"></script>
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/tokenize2.css">
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tokenize2.js"></script>
-	<?php $users =   json_decode($users); ?>
+	<?php 
+	if(isset($users)){
+		$users =   json_decode($users);
+	}
+	 ?>
 
 
 	<div class="containers">
-		<?php $permissions = json_decode($permissions); ?>
-		<?php $moduleRowCount = json_decode($moduleEntryCount); ?>
+		<?php 
+		if(isset($permissions)){
+			$permissions = json_decode($permissions); 
+		}
+		?>
+		<?php 	
+		if(isset($moduleEntryCount)){
+			$moduleRowCount = json_decode($moduleEntryCount);
+		}
+		 ?>
 		<div class="row mr-0 mt-3 cardContainer pl-4 pr-4">
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewTimesheetYN : "N") == "Y"){ ?>
 			<span class="col-3 cardItem " >
@@ -802,7 +814,10 @@ color:#FFFFFF;
 <?php } ?>	
 		</div>
 		<div class="row mr-0 ml-3 mr-3 mt-3 ">
-			<?php $footprints = json_decode($footprints); 
+			<?php
+			if(isset($footprints)){
+				 $footprints = json_decode($footprints); 
+				}
 			// print_r($footprints);
 			?>
 			<!-- <span class="col-12 footprints" style="background: white">
@@ -847,6 +862,7 @@ color:#FFFFFF;
 				<div class="upcoming_events_title text-center">Upcoming Events</div>
 				<div> <?php 
 				$array = [];
+				if(isset($calendarAnniversaries) || isset($calendarBirthdays)){
         $date = date('Y-m-d');
         $monthAndDate = date('m-d'); 
 				$calendarBirthdays = isset($calendar) ? 
@@ -868,7 +884,7 @@ color:#FFFFFF;
 								$array = $calendarBirthdays[0]->birthday;
 										} 
 
-
+					}
               
 
                     ?>
@@ -902,7 +918,13 @@ color:#FFFFFF;
 		</div>
 	</div>
 
-
+<div class="modal-logout">
+    <div class="modal-content-logout">
+        <h3>You have been logged out!!</h3>
+        <h4><a href="<?php echo base_url(); ?>">Click here</a> to login</h4>
+        
+    </div>
+</div>
 <!-- ---------------------------
 				Modal Schedule Event
 -------------------------------- -->
@@ -1074,13 +1096,7 @@ color:#FFFFFF;
       </div>
     </form>
   </div>
-<div class="modal-logout">
-    <div class="modal-content-logout">
-        <h3>You have been logged out!!</h3>
-        <h4><a href="<?php echo base_url(); ?>">Click here</a> to login</h4>
-        
-    </div>
-</div>
+
 
 <!-- ---------------------------
 				Modal Schedule Event
@@ -1090,7 +1106,7 @@ color:#FFFFFF;
 	    $('.containers').css('paddingLeft',$('.side-nav').width());
 	});
 </script>
-<?php //echo $calendar; ?>
+<?php if(isset($calendar)){ ?>
     <script>
 
       document.addEventListener('DOMContentLoaded', function() {
@@ -1429,7 +1445,9 @@ $('#toggle').remove();
       }
   }
 </script>
-<?php if( isset($error) != null){ ?>
+<?php } ?>
+<?php 
+if( isset($error) != null){ ?>
 	<script type="text/javascript">
    var modal = document.querySelector(".modal-logout");
        function toggleModal() {

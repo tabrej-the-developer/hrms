@@ -162,6 +162,9 @@ class Dashboard extends CI_Controller {
 		else if($httpcode == 401){
      		 return 'error';
 		}
+		else{
+     		 return 'error';
+		}
 	}
 
 }

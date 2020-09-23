@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+
+class Email  {
 	function sendEmail($user_email,$from_email,$subject,$template,$arr){
 		$config = Array(    
 			'protocol'  => 'smtp',
@@ -24,7 +26,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			echo $this->email->print_debugger();
 			$this->email->send();
 	}
-
-
-
+}
 

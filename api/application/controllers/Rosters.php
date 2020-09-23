@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Rosters extends CI_Controller {
+class Rosters extends MY_Controller {
 
 	function __construct() {
 		header('Access-Control-Allow-Origin: *');
@@ -502,9 +502,12 @@ class Rosters extends CI_Controller {
 					}
 					$var['roles'] = [];
 					$allRoles = $this->rostersModel->getAllRoles($area->areaid);
+					$emps = [];
 					foreach ($allRoles as $role) {
 						$allEmployess = $this->rostersModel->getAllEmployeesFromRole($role->roleid,$rosterid);
 						foreach ($allEmployess as $employeeid) {
+							if( !in_array($employeeid->userid,$emps)){
+							array_push($emps, $employeeid->userid);
 							// if($userDetails->role == SUPERADMIN || $userDetails->role == ADMIN || $userid == $employeeid->userid){
 								$rav['empId'] = $employeeid->userid;
 								$empDetails = $this->authModel->getUserDetails($employeeid->userid);
@@ -541,6 +544,7 @@ class Rosters extends CI_Controller {
 								}
 								array_push($var['roles'],$rav);
 							// }
+							}
 						}
 					}
 					array_push($data['roster'],$var);
@@ -909,18 +913,11 @@ class Rosters extends CI_Controller {
 					$arr['date'] = $date;
 
 					$this->rostersModel->addNewShift($startTime,$endTime,$rosterid,$roleid,$date,$empid,$status);
-						$employeeEmail = $this->rostersModel->getEmployeeEmail($empid)->email;
-						$config = Array(    
-							    'protocol'  => 'smtp',
-							    'smtp_host' => 'ssl://smtp.zoho.com',
-							    'smtp_port' => 465,
-							    'smtp_user' => 'demo@todquest.com',
-							    'smtp_pass' => 'K!ddz1ng',
-							    'mailtype'  => 'html',
-							    'charset'   => 'utf-8'
-						);
+						$employeeEmail = "dheerajreddynannuri1709@gmail.com";//$this->rostersModel->getEmployeeEmail($empid)->email;
 					if(($this->rostersModel->getRosterFromId($rosterid)->status) == 'Published'){
-						sendEmail("dheerajreddynannuri1709@gmail.com",'demo@todquest.com',"Shift has been added",'addShiftTemplate',$arr);
+						$subject = "Shift has been added";
+						$template = 'addShiftTemplate';
+						$this->Emails($employeeEmail,$template,$subject,$arr);
 					}
 					$data['Status'] = 'SUCCESS';
 					http_response_code(200);
@@ -1024,16 +1021,7 @@ class Rosters extends CI_Controller {
 		$this->load->model('rostersModel');
 		$this->load->model('leaveModel');
 		$this->load->model('authModel');
-		$config = Array(    
-			    'protocol'  => 'smtp',
-			    'smtp_host' => 'ssl://smtp.zoho.com',
-			    'smtp_port' => 465,
-			    'smtp_user' => 'demo@todquest.com',
-			    'smtp_pass' => 'K!ddz1ng',
-			    'mailtype'  => 'html',
-			    'charset'   => 'utf-8'
-		);
-
+		$this->load->model('utilModel');
 
 		$employees = $this->rostersModel->getAllEmployeesFromRoster($rosterid);
 		$roster = $this->rostersModel->getRosterFromId($rosterid);
@@ -1049,8 +1037,8 @@ class Rosters extends CI_Controller {
 			$payload['startDate'] = ($this->rostersModel->getRosterFromId($rosterid))->startDate;
 			$title = 'Roster published';
 			$body = 'Click to view the roster';
-			$this->utilModel->updateNotifications($userid,$title,$body,json_encode($payload));
-			$this->firebase->sendMessage($title,$body,$payload,$employee->userid);
+			$this->utilModel->insertNotification($userid,$title,$body,json_encode($payload));
+			// $this->firebase->sendMessage($title,$body,$payload,$employee->userid);
 			for($i=0;$i<5;$i++){
 				$leaveApplication = $this->leaveModel->getLeaveApplicationForUser($employee->userid,$currentDate);
 				$shift = $this->rostersModel->getShiftDetails($employee->userid,$currentDate);
@@ -1077,26 +1065,20 @@ class Rosters extends CI_Controller {
 				$currentDate = date('Y-m-d',strtotime($currentDate.'+1 days'));
 					array_push($arr['data'],$data);
 			}
-				$this->load->library('email',$config); // Load email template
-				$this->email->set_newline("\r\n");
-				$this->email->from('demo@todquest.com','Todquest');
-				$user_email = $employeeEmail;
-				$subject = "Roster has been published";
-				$this->email->to($user_email); 
-				$this->email->subject($subject); 
-				$message = $this->load->view('rosterPublishEmailTemplate',$arr,true);
-				$this->email->message($message); 
-				$this->email->send();
+				$employeeEmail = "dheerajreddynannuri1709@gmail.com";
+				$subject = "Roster has been published"; 
+				$template = 'rosterPublishEmailTemplate';
+					$this->Emails($employeeEmail,$template,$subject,$arr);
 				// $this->load->view('rosterPublishEmailTemplate',$arr);
 		}
 	}
 
-function timex( $x){ 
-		$x = intval($x);
+function timex( $x)
+	{ 
 	    $output;
 	    if(($x/100) < 12){
 	        if(($x%100)==0){
-	         $output = intval($x/100) . ":00 AM";
+	         $output = "12:00 AM";
 	        }
 	    	if(($x%100)!=0){
 		    	if(($x%100) < 10){
@@ -1122,19 +1104,20 @@ function timex( $x){
 	}
 	else{
 	if(($x%100)==0){
-	     $output = intval($x/100) . ": 00 PM";
+	     $output =  "12:00 PM";
 	    }
 	    if(($x%100)!=0){
 	    	if(($x%100) < 10){
-	    		$output = intval($x/100) . ":0". $x%100 . " PM";
+	    		$output = "12:0". $x%100 . " PM";
 	    	}
 	    	if(($x%100) >= 10){
-	    		$output = intval($x/100) . ":". $x%100 . " PM";
+	    		$output = "12:". $x%100 . " PM";
 	    	}
 	    }
 	}
 	return $output;
 }
+
 
 function dateToDay($date){
 	$date = explode("-",$date);
