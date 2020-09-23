@@ -10,12 +10,17 @@ class Dashboard extends CI_Controller {
 		$this->session->set_userdata('current_url',currentUrl());
 	}
 	// footprint end
-      $data['users'] = $this->getUsers();
-      $data['meetings'] = $this->getMeetings();
-			$data['calendar'] = $this->getCalendar();
-			$data['moduleEntryCount'] = $this->moduleEntryCounts();
-			$data['footprints'] = $this->getFootprints($this->session->userdata('LoginId'));
-			$data['permissions'] = $this->fetchPermissions();
+	if($this->getUsers() != 'error'){
+    $data['users'] = $this->getUsers();
+    $data['meetings'] = $this->getMeetings();
+		$data['calendar'] = $this->getCalendar();
+		$data['moduleEntryCount'] = $this->moduleEntryCounts();
+		$data['footprints'] = $this->getFootprints($this->session->userdata('LoginId'));
+		$data['permissions'] = $this->fetchPermissions();
+	}
+	else{
+		$data['error'] = 'error';
+	}
 		$this->load->view('dashboard',$data);
 	}
 
@@ -155,7 +160,7 @@ class Dashboard extends CI_Controller {
 			curl_close ($ch);
 		}
 		else if($httpcode == 401){
-      return 'error';
+     		 return 'error';
 		}
 	}
 

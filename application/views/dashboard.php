@@ -694,6 +694,35 @@ color:#FFFFFF;
         height: 2rem;
         margin-top: 1.5rem;
   }
+   .modal-logout {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        visibility: hidden;
+        transform: scale(1.1);
+        transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+        text-align: center;
+    }
+    .modal-content-logout {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 1rem 1.5rem;
+        width: 50%;
+        border-radius: 0.5rem;
+    }
+    .show-modal {
+        opacity: 1;
+        visibility: visible;
+        transform: scale(1.0);
+        transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+    }
 </style>
 </head>
 <body>
@@ -1031,21 +1060,28 @@ color:#FFFFFF;
               
            
        
-        <div class="modal-footer">
-        <div class="m_footer" style="margin:auto">
-          <button type="button" class="btn button_form clos" data-dismiss="modal">
-            <i style="padding-right:0.5rem;padding-left:0.5rem">
-              <img src="<?php echo base_url('assets/images/icons/close.png'); ?>" style="max-height:1rem">
-            </i>Close</button>
-          <button class="btn button_form">
-            <i style="padding-right:0.5rem;padding-left:0.5rem">
-              <img src="<?php echo base_url('assets/images/icons/send.png'); ?>" style="max-height:1rem">
-            </i>Submit</button>
-          </div>
+ 		<div class="modal-footer">
+      <div class="m_footer" style="margin:auto">
+        <button type="button" class="btn button_form clos" data-dismiss="modal">
+          <i style="padding-right:0.5rem;padding-left:0.5rem">
+            <img src="<?php echo base_url('assets/images/icons/close.png'); ?>" style="max-height:1rem">
+          </i>Close</button>
+        <button class="btn button_form">
+          <i style="padding-right:0.5rem;padding-left:0.5rem">
+            <img src="<?php echo base_url('assets/images/icons/send.png'); ?>" style="max-height:1rem">
+          </i>Submit</button>
         </div>
-        </form>
-      
-        </div>
+      </div>
+    </form>
+  </div>
+<div class="modal-logout">
+    <div class="modal-content-logout">
+        <h3>You have been logged out!!</h3>
+        <h4><a href="<?php echo base_url(); ?>">Click here</a> to login</h4>
+        
+    </div>
+</div>
+
 <!-- ---------------------------
 				Modal Schedule Event
 -------------------------------- -->
@@ -1393,5 +1429,16 @@ $('#toggle').remove();
       }
   }
 </script>
+<?php if( isset($error) != null){ ?>
+	<script type="text/javascript">
+   var modal = document.querySelector(".modal-logout");
+       function toggleModal() {
+   	     modal.classList.toggle("show-modal");
+    	}
+	$(document).ready(function(){
+  		toggleModal();	
+  		});
+	</script>
+<?php }	?>
 </body>
 </html>

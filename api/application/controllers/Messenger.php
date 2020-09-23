@@ -440,7 +440,7 @@ class Messenger extends CI_Controller {
 				   
 
 				// if($isGroupYN == "Y"){
-				// 	$gDetails = $this->messengerModel->GetGroupInfo($receiverId);
+				// $gDetails = $this->messengerModel->GetGroupInfo($receiverId);
 				// 	$allMembers = $this->messengerModel->GetAllMemberDetails($receiverId);
 				// 	$mdata['groupId'] = $receiverId;	
 				// 	$mdata['groupName'] = $gDetails->groupName;

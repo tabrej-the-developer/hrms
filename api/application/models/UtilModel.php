@@ -43,4 +43,9 @@ class UtilModel extends CI_Model {
 			$query = $this->db->query("SELECT * FROM users where id = '$userid' ");
 			return $query->result();
 		}
+
+		public function insertNotification($userid,$title,$body,$data){
+			$this->load->database();
+			$query = $this->db->query("INSERT INTO notifications (userid,title,body,data) VALUES ($userid,$title,$body,$data)  ");
+		}
 }

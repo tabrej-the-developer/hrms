@@ -687,10 +687,11 @@ class Rosters extends CI_Controller {
 					$shiftDate = $this->rostersModel->getShiftDate($shiftid)->rosterDate;
 					$employeeId = $this->rostersModel->getEmployeeId($shiftid)->userid;
 					$rosterid = $this->rostersModel->getRosterId($shiftid)->roasterId;
-					$rosterStatus = $this->rostersModel->getRosterId($shiftid)->roasterId;
+					$rosterStatus = $this->rostersModel->getRosterFromId($rosterid)->status;
 					$number = date('w',strtotime($shiftDate)) - 1;
 					$currentDate = date('Y-m-d',strtotime($shiftDate. '-' . $number  .' days')) ;
 					$employeeEmail = $this->rostersModel->getEmployeeEmail($employeeId)->email;
+					$publisherEmail = $this->rostersModel->getEmployeeDetails($json->userid)->email;
 
 					if($days != 'updateShiftByEmployee'){
 						foreach ($days as $day) {
@@ -698,7 +699,7 @@ class Rosters extends CI_Controller {
 								if($day->YN == "true"){
 									if($getShiftId != null){
 									$this->rostersModel->updateShift($getShiftId,$startTime,$endTime,$roleid,$status,$message);
-											$subject = "Shift has been added";
+											$subject = "Shift has been updated";
 										}
 										else{
 									$this->rostersModel->createNewShift($rosterid,$currentDate,$employeeId,$startTime,$endTime,$roleid,$message);
@@ -706,6 +707,8 @@ class Rosters extends CI_Controller {
 										}
 
 										if($rosterStatus == 'Published'){
+											$this->utilModel->updateNotifications($userid,$title,$body,json_encode($payload));
+											$this->firebase->sendMessage($title,$body,$payload,$employee->userid);
 											$arr['startTime'] = $this->timex($startTime);
 											$arr['endTime'] = $this->timex($endTime);
 											$arr['date'] = $currentDate;
@@ -732,15 +735,16 @@ class Rosters extends CI_Controller {
 						if($status == 4){
 							$status = 'Rejected';
 						}
-						$subject = "Shift for ". $currentDate. "has been ". $status;
-						$arr['startTime'] = $startTime;
-						$arr['endTime'] = $endTime;
+						$subject = "Shift for   ". $currentDate. " has been ". $status;
+						$arr['startTime'] = $this->timex($startTime);
+						$arr['endTime'] = $this->timex($endTime);
 						$arr['date'] = $currentDate;
+						$arr['message'] = $this->rostersModel->getEmployeeEmail($employeeId)->name;
 						$this->email->from('demo@todquest.com','Todquest');
-						$user_email = $employeeEmail;
+						$user_email = array($employeeEmail,$publisherEmail);//$employeeEmail;
 						$this->email->to($user_email); 
 						$this->email->subject($subject); 
-						$mess = $this->load->view('rosterPublishEmailTemplate',$arr,true);
+						$mess = $this->load->view('updateShiftTemplate',$arr,true);
 						$this->email->message($mess); 
 						$this->email->send();		
 					}
@@ -900,12 +904,12 @@ class Rosters extends CI_Controller {
 				$status = "1";
 				if($startTime != null && $endTime != null && $rosterid != null && $roleid != null && $date != null && $empid != null){
 					$this->load->model('rostersModel');
-					$arr['startTime'] = $startTime;
-					$arr['endTime'] = $endTime;
+					$arr['startTime'] = $this->timex($startTime);
+					$arr['endTime'] = $this->timex($endTime);
 					$arr['date'] = $date;
 
 					$this->rostersModel->addNewShift($startTime,$endTime,$rosterid,$roleid,$date,$empid,$status);
-						$employeeEmail = $this->rosterModel->getEmployeeEmail($empid)->email;
+						$employeeEmail = $this->rostersModel->getEmployeeEmail($empid)->email;
 						$config = Array(    
 							    'protocol'  => 'smtp',
 							    'smtp_host' => 'ssl://smtp.zoho.com',
@@ -915,17 +919,9 @@ class Rosters extends CI_Controller {
 							    'mailtype'  => 'html',
 							    'charset'   => 'utf-8'
 						);
-
-						$this->load->library('email',$config); // Load email template
-						$this->email->set_newline("\r\n");
-						$this->email->from('demo@todquest.com','Todquest');
-						$user_email = "dheerajreddynannuri1709@gmail.com";//$employeeEmail;
-						$subject = "Shift has been added";
-						$this->email->to($user_email); 
-						$this->email->subject($subject); 
-						$message = $this->load->view('rosterPublishEmailTemplate',$arr,true);
-						$this->email->message($message); 
-						$this->email->send();
+					if(($this->rostersModel->getRosterFromId($rosterid)->status) == 'Published'){
+						sendEmail("dheerajreddynannuri1709@gmail.com",'demo@todquest.com',"Shift has been added",'addShiftTemplate',$arr);
+					}
 					$data['Status'] = 'SUCCESS';
 					http_response_code(200);
 					echo json_encode($data);
@@ -1044,11 +1040,17 @@ class Rosters extends CI_Controller {
 		$currentDate = $roster->startDate;
 		$arr['rosterid'] = $rosterid;
 		foreach($employees as $employee){
-	    set_time_limit ( 0 ); //0 = unlimited
+	    set_time_limit ( 0 ); //0 == unlimited
 			$currentDate = $roster->startDate;
 			$employeeEmail = $this->rostersModel->getEmployeeDetails($employee->userid)->email;
 			$arr['data'] = [];
 			$data = [];
+			$payload['rosterid'] = $rosterid;
+			$payload['startDate'] = ($this->rostersModel->getRosterFromId($rosterid))->startDate;
+			$title = 'Roster published';
+			$body = 'Click to view the roster';
+			$this->utilModel->updateNotifications($userid,$title,$body,json_encode($payload));
+			$this->firebase->sendMessage($title,$body,$payload,$employee->userid);
 			for($i=0;$i<5;$i++){
 				$leaveApplication = $this->leaveModel->getLeaveApplicationForUser($employee->userid,$currentDate);
 				$shift = $this->rostersModel->getShiftDetails($employee->userid,$currentDate);
@@ -1077,7 +1079,7 @@ class Rosters extends CI_Controller {
 			}
 				$this->load->library('email',$config); // Load email template
 				$this->email->set_newline("\r\n");
-				$this->email->from('demo@todquest.com','Mail check');
+				$this->email->from('demo@todquest.com','Todquest');
 				$user_email = $employeeEmail;
 				$subject = "Roster has been published";
 				$this->email->to($user_email); 
