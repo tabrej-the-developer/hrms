@@ -412,70 +412,71 @@ td.shift-edit{
 </head>
 <body>
 
-	<?php 
-			$timesheetDetails = json_decode($timesheetDetails); 
-			if(isset($entitlements)){
-						$entitlements = json_decode($entitlements);
-					}
-	?>
-	<div class="containers" id="containers" style="overflow-x:scroll">
-		<div class="heading ">Timesheets</div>
-		<div class="timesheet-dates"><?php 
-
-
-		if(isset($timesheetDetails->timesheet[0]->currentDate)){
-		 $str1 = $timesheetDetails->timesheet[0]->currentDate;
-		 $str2 = $timesheetDetails->timesheet[13]->currentDate; 
-		 $v1 = explode("-",$str1);
-		 $v2 = explode("-",$str2);
-		 echo date("M d",mktime(0,0,0,$v1[1],intval($v1[2]),(intval($v1[0]))))." to ". 
-		 date("M d , Y",mktime(0,0,0,$v2[1],intval($v2[2]),(intval($v2[0]))));
-		}else{
-			echo "No Dates Available";
+<?php 
+	$timesheetDetails = json_decode($timesheetDetails); 
+		if(isset($entitlements)){
+			$entitlements = json_decode($entitlements);
 		}
-
-		 ?> 
-			<span>
-			 	<a href="#week1">
-			 		<button>week 1</button>
-			 	</a>
-			 	<a href="#week2">
-			 		<button>week 2</button>
-			 	</a>
-			</span>
-		</div>
-	<div class="owl-carousel">
-		<div class="table-div item" data-hash="week1">
-			<table style="" >
-				<tr>
-					<?php if(isset($timesheetDetails->timesheet)){ ?>
-					<th id="table-id-1" class="day">Employees</th>
-					<?php 
-						$x=0;
-						$incrementer =0;
+?>
+<div class="containers" id="containers" style="overflow-x:scroll">
+	<div class="heading ">Timesheets</div>
+	<div class="timesheet-dates">
+		<?php 
+			if(isset($timesheetDetails->timesheet[0]->currentDate)){
+			 $str1 = $timesheetDetails->timesheet[0]->currentDate;
+			 $str2 = $timesheetDetails->timesheet[13]->currentDate; 
+			 $v1 = explode("-",$str1);
+			 $v2 = explode("-",$str2);
+			 echo date("M d",mktime(0,0,0,$v1[1],intval($v1[2]),(intval($v1[0]))))." to ". 
+			 date("M d , Y",mktime(0,0,0,$v2[1],intval($v2[2]),(intval($v2[0]))));
+			}else{
+				echo "No Dates Available";
+			}
+	 ?> 
+		<span>
+	 	<a href="#week1">
+	 		<button>week 1</button>
+	 	</a>
+	 	<a href="#week2">
+	 		<button>week 2</button>
+	 	</a>
+		</span>
+	</div>
+<div class="owl-carousel">
+	<div class="table-div item" data-hash="week1">
+		<table style="" >
+			<tr>
+				<?php if(isset($timesheetDetails->timesheet)){ ?>
+				<th id="table-id-1" class="day">Employees</th>
+				<?php 
+					$x=0;
+					$incrementer =0;
 						
-					 foreach($timesheetDetails->timesheet as $timesheet) {
+				 foreach($timesheetDetails->timesheet as $timesheet) {
 						if($incrementer < 5){
-						//$p++;
+
 						$original = explode('-',$timesheet->currentDate);
 						$datts = $original[2].".".$original[1].".".$original[0]; 
 					 	 ?>
-					<th  class="day" date="<?php echo $timesheet->currentDate; ?>"><?php  echo date("D",strtotime($datts)); echo " ".dateToDay($timesheet->currentDate) ?></th>
-					<?php }
-					$incrementer++;
-					 } } ?>
-
-				</tr>
+					<th  class="day" date="<?php echo $timesheet->currentDate; ?>">
+						<?php  echo date("D",strtotime($datts)); echo " ".dateToDay($timesheet->currentDate) ?>
+					</th>
+			<?php
+										 } //end of if block
+								$incrementer++;
+						} //end of foreach
+					} // end of isset(timesheet) if block
+		 ?>
+			</tr>
 			
-				<?php 
-				if(isset($timesheetDetails->timesheet[0])){
-				$count = count($timesheetDetails->timesheet[0]->rosteredEmployees);
-if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){
+<?php 
+	if(isset($timesheetDetails->timesheet[0])){
+		$count = count($timesheetDetails->timesheet[0]->rosteredEmployees);
+		if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){
 	// $x is the total number of employees loop value;
-	$rosteredEmployees = $timesheetDetails->timesheet[0]->rosteredEmployees;
-	$x=0;
+			$rosteredEmployees = $timesheetDetails->timesheet[0]->rosteredEmployees;
+			$x=0;
 				foreach($rosteredEmployees as $rosteredEmployee){
-				
 					?>
 				<?php 
 				if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){
@@ -492,22 +493,30 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 				<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
 				<span class="row name-space m-0 p-0" style="padding:0;margin:0;margin-left: 0;margin-right: 0">
 					<span class="col-12 col-md-4 icon-parent">
-						<span class=" icon" style="<?php	echo "background:".$colors_array[rand(0,5)].";";?>"><?php echo icon($timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName)?></span>
+						<span class=" icon" style="<?php	echo "background:".$colors_array[rand(0,5)].";";?>">
+							<?php echo icon($timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName)?>
+						</span>
 					</span>
 					<span class=" col-12 col-md-8 name-role">
-					<span class="empname row"><?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName?></span>
+						<span class="empname row">
+							<?php 
+								echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName;
+							?>
+						</span>
 					<?php
-					$variable = 0; 
-						$userLevel = $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->level;
+									$variable = 0; 
+									$userLevel = $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->level;
 						foreach ($entitlements as $e) {
 							if($e[0]->id == $userLevel){
 								$variable = $e[0]->hourlyRate;
 							}
-
 						}
-
 					?>
-						<span class="hourly title row "><?php echo  $variable; ?></span>
+						<span class="hourly title row ">
+							<?php 
+								echo  $variable;
+							?>
+						</span>
 					</span>
 				</span>
 					<?php } ?>
@@ -1330,22 +1339,22 @@ $(document).on('click','.buttonn',function(){
 	})
 </script>
 
-<script type="text/javascript">
-	$(document).ready(function(){
-		$(document).on('click','#discard-timesheet',function(){
-			var url = window.location.origin+"/PN101/timesheet/discardTimesheet/<?php echo $_GET['timesheetId']; ?>";
-			$.ajax({
-				url : url,
-				type : 'GET',
-				success : function(){
-					window.location.href = window.location.origin+'/PN101/timesheet/timesheetDashboard'
-				}
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$(document).on('click','#discard-timesheet',function(){
+					var url = window.location.origin+"/PN101/timesheet/discardTimesheet/<?php echo $_GET['timesheetId']; ?>";
+					$.ajax({
+						url : url,
+						type : 'GET',
+						success : function(){
+							window.location.href = window.location.origin+'/PN101/timesheet/timesheetDashboard'
+						}
+					})
+				})
 			})
-		})
-	})
-</script>
+		</script>
 
-</body>
+	</body>
 </html>
 
 

@@ -662,6 +662,7 @@ class Rosters extends MY_Controller {
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
+			$this->load->model('utilModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			$json = json_decode(file_get_contents('php://input'));
 			if($json!= null && $res != null && $res->userid == $json->userid){
@@ -673,17 +674,6 @@ class Rosters extends MY_Controller {
 				$message = $json->message;
 				$days = $json->days;
 				set_time_limit ( 60 );
-						$config = Array(    
-							    'protocol'  => 'smtp',
-							    'smtp_host' => 'ssl://smtp.zoho.com',
-							    'smtp_port' => 465,
-							    'smtp_user' => 'demo@todquest.com',
-							    'smtp_pass' => 'K!ddz1ng',
-							    'mailtype'  => 'html',
-							    'charset'   => 'utf-8'
-						);
-						$this->load->library('email',$config); // Load email template
-						$this->email->set_newline("\r\n");
 
 				if($startTime != null && $startTime != "" && $endTime != null && $endTime != "" &&
 					$shiftid != null && $shiftid != "" && $roleid != null && $roleid != "" && $status != null && $status != ""){
@@ -711,19 +701,19 @@ class Rosters extends MY_Controller {
 										}
 
 										if($rosterStatus == 'Published'){
-											$this->utilModel->updateNotifications($userid,$title,$body,json_encode($payload));
-											$this->firebase->sendMessage($title,$body,$payload,$employee->userid);
+											$title =  "Shift updated";
+											$intent = "Roster";
+											$body = "Click here to view the roster";
+											$payload['shiftId'] = $getShiftId;
+											$payload['rosterId'] = $rosterid;
+											$this->utilModel->insertNotification($json->userid,$intent,$title,$body,json_encode($payload));
+											// $this->firebase->sendMessage($title,$body,$payload,$employee->userid);
 											$arr['startTime'] = $this->timex($startTime);
 											$arr['endTime'] = $this->timex($endTime);
 											$arr['date'] = $currentDate;
-											$user_email = "dheerajreddynannuri1709@gmail.com";//$employeeEmail;
-											$this->email->from('demo@todquest.com','Todquest');
-											$this->email->to($user_email); 
-											$this->email->subject($subject); 
-											$mess = $this->load->view('addShiftTemplate',$arr,true);
-											$this->email->message($mess); 
-											echo $this->email->print_debugger();
-											$this->email->send();
+											$to = $employeeEmail;
+											$template = 'addShiftTemplate';
+											$this->Emails($to,$template,$subject,$arr);
 										}
 								}
 							$currentDate = date('Y-m-d',strtotime($currentDate.'+1 days'));
@@ -744,13 +734,9 @@ class Rosters extends MY_Controller {
 						$arr['endTime'] = $this->timex($endTime);
 						$arr['date'] = $currentDate;
 						$arr['message'] = $this->rostersModel->getEmployeeEmail($employeeId)->name;
-						$this->email->from('demo@todquest.com','Todquest');
-						$user_email = array($employeeEmail,$publisherEmail);//$employeeEmail;
-						$this->email->to($user_email); 
-						$this->email->subject($subject); 
-						$mess = $this->load->view('updateShiftTemplate',$arr,true);
-						$this->email->message($mess); 
-						$this->email->send();		
+						$to = 'dheerajreddynannuri1709@gmail.com';
+						$template = 'updateShiftTemplate';
+						$this->Emails($to,$template,$subject,$arr);
 					}
 
 					$data['Status'] = 'SUCCESS';
@@ -1037,7 +1023,8 @@ class Rosters extends MY_Controller {
 			$payload['startDate'] = ($this->rostersModel->getRosterFromId($rosterid))->startDate;
 			$title = 'Roster published';
 			$body = 'Click to view the roster';
-			$this->utilModel->insertNotification($userid,$title,$body,json_encode($payload));
+			$intent = 'Roster';
+			$this->utilModel->insertNotification($userid,$intent,$title,$body,json_encode($payload));
 			// $this->firebase->sendMessage($title,$body,$payload,$employee->userid);
 			for($i=0;$i<5;$i++){
 				$leaveApplication = $this->leaveModel->getLeaveApplicationForUser($employee->userid,$currentDate);
@@ -1070,6 +1057,7 @@ class Rosters extends MY_Controller {
 				$template = 'rosterPublishEmailTemplate';
 					$this->Emails($employeeEmail,$template,$subject,$arr);
 				// $this->load->view('rosterPublishEmailTemplate',$arr);
+					echo 'SUCCESS';
 		}
 	}
 

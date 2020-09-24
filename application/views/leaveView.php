@@ -751,6 +751,7 @@ input[type="date"],input[type=time]{
               <div class="carousel-inner w-100" role="listbox">
               	<?php
               		// print_r($balance);
+                if(isset($balance)){
               		$balance = json_decode($balance);
               		// print_r($balance);
                   if(count($balance->balance) > 0){
@@ -779,7 +780,7 @@ input[type="date"],input[type=time]{
         				$var++;
         			}  ?>
               </div>
-        	<?php } } ?>
+        	<?php } } } ?>
             </div>
         <!-- <a class="carousel-control-prev" href="#recipeCarousel" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -828,6 +829,7 @@ input[type="date"],input[type=time]{
                 </thead>
                 <tbody>
                 	<?php
+                  if(isset($leaveRequests)){
                 	// print_r($leaveRequests);
                 		$leaveRequests = json_decode($leaveRequests);
                 		foreach ($leaveRequests->leaves as $leave) { 
@@ -877,7 +879,7 @@ input[type="date"],input[type=time]{
 										?>
 										</td>
 									</tr>
-								<?php }?>
+								<?php } }?>
 								
 	                        </tbody>
 	                    </table>

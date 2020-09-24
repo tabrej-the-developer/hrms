@@ -113,7 +113,9 @@ a[href*="settings"],.xero_settings a{
 <body>
 <?php
 	$this->load->view('header');
-	$permissions = json_decode($permissions);
+	if(isset($ermissions)){
+		$permissions = json_decode($permissions);
+	}
  ?>
 <div class="containers ">
 		<div class="heading" id="center-id" >Settings</div>

@@ -124,7 +124,7 @@ font-family: 'Open Sans', sans-serif;
 <?php 
 if($aT == 'rosteredEmployees'){
 	$variable = 0;
-		if(count($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes) <=2 || (count($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes) && (isset($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes[2]->reason) ? $timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes[2]->reason : "") == 'Meeting')){
+		if(count($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes) <=2 || (count($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes) && (isset($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes[2]->message) ? $timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes[2]->message : "") == 'Meeting')){
 			if(count($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes) <2){
 				$break = false; 
 			}else{
@@ -178,7 +178,7 @@ foreach($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes 
 		</span>
 
 	</span>
-		<div style="padding-left: 3rem;"><?php echo $visits->reason;?></div>
+		<div style="padding-left: 3rem;"><?php echo $visits->message;?></div>
 
 	</div>
 
@@ -227,7 +227,7 @@ foreach($timesheetDetails->timesheet[$ya]->unrosteredEmployees[$xa]->clockedTime
 			</select>
 		</span>
 	</span>
-		<div><?php echo $visits->reason;?></div>
+		<div><?php echo $visits->message;?></div>
 
 	</div>
 	<?php

@@ -13,13 +13,27 @@ class My_Controller extends CI_Controller {
 			    'mailtype'  => 'html',
 			    'charset'   => 'utf-8'
 		);
-		$this->load->library('email',$config); // Load email template
-		$this->email->set_newline("\r\n");
-		$this->email->from('demo@todquest.com','Todquest');
-		$this->email->to($to); 
-		$this->email->subject($subject); 
-		$mess = $this->load->view($template,$arr,true);
-		$this->email->message($mess); 
-		$this->email->send();
+		// $to = 'dheerajreddynannuri1709@gmail.com';
+		// $subject = 'roster published';
+		// $template = 'rosterPublishEmailTemplate';
+		if(!is_array($to)){
+			$this->load->library('email',$config); // Load email template
+			$this->email->set_newline("\r\n");
+			$this->email->from('demo@todquest.com','Todquest');
+			$this->email->to($to); 
+			$this->email->subject($subject); 
+			$mess = $this->load->view($template,$arr,true);
+			$this->email->message($mess); 
+			$this->email->send();
+		}else{
+			$this->load->library('email',$config); // Load email template
+			$this->email->set_newline("\r\n");
+			$this->email->from('demo@todquest.com','Todquest');
+			$this->email->to(implode(',',$to)); 
+			$this->email->subject($subject); 
+			$mess = $this->load->view($template,$arr,true);
+			$this->email->message($mess); 
+			$this->email->send();
+		}
 	} 
 }

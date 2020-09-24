@@ -25,16 +25,16 @@ class Notice extends CI_Controller {
 
 	public function notices($noticeStatus = 'Inbox',$currentNoticeId=null)
 	{
-
 	if($this->session->has_userdata('LoginId')){
 		$data['allNotices'] = array();
 		if($this->getAllNotices() != 'error'){
 				$allNotices = json_decode($this->getAllNotices());
 			}
 			else{
+
 				$data['error'] = 'error';
 			}
-		if($noticeStatus == 'Inbox' && $allNotices != null){
+		if($noticeStatus == 'Inbox' && isset($allNotices) && $allNotices != null){
 			foreach ($allNotices->notices as $notice) {
 				if($notice->status != "2" && $notice->senderId != $this->session->userdata('LoginId')){
 					array_push($data['allNotices'],$notice);
@@ -239,6 +239,9 @@ class Notice extends CI_Controller {
 			curl_close ($ch);
 		}
 		else if($httpcode == 401){
+			return 'error';
+		}
+		else{
 			return 'error';
 		}
 	}

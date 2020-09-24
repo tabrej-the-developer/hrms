@@ -1101,48 +1101,53 @@ td{
 //PHP functions //
 
 function timex( $x)
-	{ 
-	    $output;
-	    if(($x/100) < 12){
-	        if(($x%100)==0){
-	         $output = "12:00 AM";
-	        }
-	    	if(($x%100)!=0){
-		    	if(($x%100) < 10){
-		    		$output = intval($x/100) .":0". $x%100 . " AM";
-		    	}
-	    		if(($x%100) >= 10){
-	    			$output = intval($x/100) .":". $x%100 . " AM";
-	    		}
-	        }
-	    }
-	else if(intval($x/100)>12){
-	    if(($x%100)==0){
-	    $output = intval($x/100)-12 . ":00 PM";
-	    }
-	    if(($x%100)!=0){
-	    	if(($x%100) < 10){
-	    		$output = intval($x/100)-12 .":0". $x%100 . " PM";
-	    	}
-    		if(($x%100) >= 10){
-    			$output = intval($x/100)-12 .":". $x%100 . " PM";
-    		}
-	    }
-	}
-	else{
-	if(($x%100)==0){
-	     $output =  "12:00 PM";
-	    }
-	    if(($x%100)!=0){
-	    	if(($x%100) < 10){
-	    		$output = "12:0". $x%100 . " PM";
-	    	}
-	    	if(($x%100) >= 10){
-	    		$output = "12:". $x%100 . " PM";
-	    	}
-	    }
-	}
-	return $output;
+  { 
+      $output;
+      if(($x/100) < 12 ){
+          if(($x%100)==0){
+            if($x/1200 == 0){
+              $output = "12:00 AM";    
+            }
+            else{
+           $output = intval($x/100) . ":00 AM";
+            }
+          }
+        if(($x%100)!=0){
+          if(($x%100) < 10){
+            $output = intval($x/100) .":0". $x%100 . " AM";
+          }
+          if(($x%100) >= 10){
+            $output = intval($x/100) .":". $x%100 . " AM";
+          }
+          }
+      }
+  else if($x/100>12){
+      if(($x%100)==0){
+      $output = intval($x/100)-12 . ":00 PM";
+      }
+      if(($x%100)!=0){
+        if(($x%100) < 10){
+          $output = intval($x/100)-12 .":0". $x%100 . " PM";
+        }
+        if(($x%100) >= 10){
+          $output = intval($x/100)-12 .":". $x%100 . " PM";
+        }
+      }
+  }
+  else{
+  if(($x%100)==0){
+       $output = intval($x/100) . ": 00 PM";
+      }
+      if(($x%100)!=0){
+        if(($x%100) < 10){
+          $output = intval($x/100) . ":0". $x%100 . " PM";
+        }
+        if(($x%100) >= 10){
+          $output = intval($x/100) . ":". $x%100 . " PM";
+        }
+      }
+  }
+  return $output;
 }
 
 function dateToDay($date){
@@ -1768,7 +1773,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 			</span>
 			<span class="casualEmployee_label">
 				<label>Date</label>
-				<input type="date" name="" id="casualEmp_date">
+				<input type="date" name="" id="casualEmp_date" min="<?php echo $rosterDetails->startDate ?>" max="<?php echo date('Y-m-d',strtotime($rosterDetails->startDate.'+4 days')) ?>">
 			</span>
 			<span class="casualEmployee_label">
 				<label>Start Time</label>
@@ -1976,6 +1981,50 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 	})
 </script>
 
+<script type="text/javascript">
+  $(document).ready(function(){
+    
+    $(document).on('click','.button',function(){
+      var startTime = parseInt($('#starts').prop('value')) ;
+      var endTime = parseInt($('#ends').prop('value'));
+      
+      var days = "updateShiftByEmployee";
+      var shiftid = $('#shift-Id').prop('value');
+      var status = $(this).prop('value');
+      var userid = "<?php echo $userid ?>";
+      var roleid = $('#role-Id').prop('value');
+
+console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
+        if(status == 'Accept'){
+        status = "3";
+        }
+        if(status == "Deny"){
+          status = "4";
+        }
+      url = window.location.origin+"/PN101/roster/updateShift";
+      $.ajax({
+        url:url,
+        type:'POST',
+        data:{
+          startTime:startTime,
+          endTime:endTime,
+          shiftid:shiftid,
+          roleid:roleid,
+          status:status,
+          userid:userid,
+          days : days
+          
+        },
+        success:function(response){
+            console.log(response)
+            window.location.reload();
+
+        }
+      })
+    })
+    
+  })
+</script>
 
 <?php  } ?>
 <!-- Till here -->
@@ -1986,50 +2035,6 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 <!-- This is meant for staff -->
 
 
-<script type="text/javascript">
-	$(document).ready(function(){
-		
-		$(document).on('click','.button',function(){
-			var startTime = parseInt($('#starts').prop('value')) ;
-			var endTime = parseInt($('#ends').prop('value'));
-			
-      var days = "updateShiftByEmployee";
-			var shiftid = $('#shift-Id').prop('value');
-			var status = $(this).prop('value');
-			var userid = "<?php echo $userid ?>";
-			var roleid = $('#role-Id').prop('value');
-
-console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
-				if(status == 'Accept'){
-				status = "3";
-				}
-				if(status == "Deny"){
-					status = "4";
-				}
-			url = window.location.origin+"/PN101/roster/updateShift";
-			$.ajax({
-				url:url,
-				type:'POST',
-				data:{
-					startTime:startTime,
-					endTime:endTime,
-					shiftid:shiftid,
-					roleid:roleid,
-					status:status,
-					userid:userid,
-          days : days
-					
-				},
-				success:function(response){
-						console.log(response)
-						window.location.reload();
-
-				}
-			})
-		})
-		
-	})
-</script>
 
 <!-- Till here -->
 
@@ -2763,12 +2768,12 @@ $('.modal_body').draggable();
 				casualEmp_role_id : casualEmp_role_id
 			},
 			success:function(response){ 
-				// if(JSON.parse(response).status == "REDUNDANT"){
-				// 	alert('Shift for this user, for the particular date already exists in another center. Please delete the shift to add a new one');
-				// }else{
-          console.log(response)
-				// window.location.reload();
-				// }
+				if(JSON.parse(response).status == "REDUNDANT"){
+					alert('Shift for this user, for the particular date already exists in another center. Please delete the shift to add a new one');
+				}else{
+          // console.log(response)
+				window.location.reload();
+				}
 			}
 		})
 		}else{

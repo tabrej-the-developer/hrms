@@ -28,17 +28,17 @@ public function roster_dashboard(){
 							$id = $_GET['center'];
 							$_SESSION['centerr'] = $id;
 						}
-			$var['id'] = $id;
-			$var['centerId'] = $id;
-			$var['userId'] 	= $this->session->userdata('LoginId');
-			$var['center__'] = $id;
-			$var['rosterTemplates'] = $this->getRosterTemplates($id);
-			$var['rosters'] = $this->getPastRosters($id);
+				$var['id'] = $id;
+				$var['centerId'] = $id;
+				$var['userId'] 	= $this->session->userdata('LoginId');
+				$var['center__'] = $id;
+				$var['rosterTemplates'] = $this->getRosterTemplates($id);
+				$var['rosters'] = $this->getPastRosters($id);
+				$var['entitlement'] = $this->getAllEntitlements($var['userId']);
 			}
 			else{
 				$var['error'] = 'error';
 			}
-		$var['entitlement'] = $this->getAllEntitlements($var['userId']);
 	// if($this->session->userdata('UserType') == SUPERADMIN ){
 	// 	if(!isset($_GET['center'])){
 	// 						$id = 0;
@@ -132,7 +132,7 @@ public function roster_dashboard(){
 		}
 	}
 
-	function getPastRosters($centerId = 1){
+	function getPastRosters($centerId){
 		$url = BASE_API_URL."/rosters/getPastRosters/".$centerId."/".$this->session->userdata('LoginId');
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
@@ -735,6 +735,7 @@ public function updateRoster(){
 		$this->session->set_userdata('current_url',currentUrl());
 	}
 	// footprint end
+		 set_time_limit ( 0 ); //0 == unlimited
 		$data['userid'] = $this->input->post('userid');
 		$data['rosterid'] = $this->input->post('rosterid');
 		$data['status'] = $this->input->post('status');	
