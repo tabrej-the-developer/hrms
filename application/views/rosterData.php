@@ -2287,7 +2287,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 				success:function(response){
 											console.log(response)
 											$('#roster-form').trigger('reset');
-											// window.location.reload();
+											window.location.reload();
 				}
 			})
 		})

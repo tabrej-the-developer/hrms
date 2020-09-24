@@ -734,7 +734,7 @@ class Rosters extends MY_Controller {
 						$arr['endTime'] = $this->timex($endTime);
 						$arr['date'] = $currentDate;
 						$arr['message'] = $this->rostersModel->getEmployeeEmail($employeeId)->name;
-						$to = 'dheerajreddynannuri1709@gmail.com';
+						$to = $employeeEmail;//'dheerajreddynannuri1709@gmail.com';
 						$template = 'updateShiftTemplate';
 						$this->Emails($to,$template,$subject,$arr);
 					}
@@ -899,7 +899,7 @@ class Rosters extends MY_Controller {
 					$arr['date'] = $date;
 
 					$this->rostersModel->addNewShift($startTime,$endTime,$rosterid,$roleid,$date,$empid,$status);
-						$employeeEmail = "dheerajreddynannuri1709@gmail.com";//$this->rostersModel->getEmployeeEmail($empid)->email;
+						$employeeEmail = $this->rostersModel->getEmployeeEmail($empid)->email;
 					if(($this->rostersModel->getRosterFromId($rosterid)->status) == 'Published'){
 						$subject = "Shift has been added";
 						$template = 'addShiftTemplate';
@@ -1052,7 +1052,6 @@ class Rosters extends MY_Controller {
 				$currentDate = date('Y-m-d',strtotime($currentDate.'+1 days'));
 					array_push($arr['data'],$data);
 			}
-				$employeeEmail = "dheerajreddynannuri1709@gmail.com";
 				$subject = "Roster has been published"; 
 				$template = 'rosterPublishEmailTemplate';
 					$this->Emails($employeeEmail,$template,$subject,$arr);
