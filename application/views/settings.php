@@ -113,7 +113,7 @@ a[href*="settings"],.xero_settings a{
 <body>
 <?php
 	$this->load->view('header');
-	if(isset($ermissions)){
+	if(isset($permissions)){
 		$permissions = json_decode($permissions);
 	}
  ?>

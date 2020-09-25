@@ -1054,6 +1054,7 @@ class Rosters extends MY_Controller {
 			}
 				$subject = "Roster has been published"; 
 				$template = 'rosterPublishEmailTemplate';
+				//$employeeEmail = "arpitasaxena555@gmail.com";
 					$this->Emails($employeeEmail,$template,$subject,$arr);
 				// $this->load->view('rosterPublishEmailTemplate',$arr);
 					echo 'SUCCESS';
