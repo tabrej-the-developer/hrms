@@ -440,7 +440,7 @@ font-family: 'Open Sans', sans-serif;
 				echo "<br>";
 		 		?>
 		 	</span>
-		 	<?php if(isset($permissions->permissions) ? $permissions->permissions->editOrgChartYN : "N" == "Y"){ ?>
+		 	<?php if((isset($permissions->permissions) ? $permissions->permissions->editOrgChartYN : "N") == "Y"){ ?>
 		 <span onclick="newArea()" style="font-size:25px">
 			<a href="javascript:void(0)" >
 				<button class="btn btn-primary">
@@ -459,7 +459,7 @@ font-family: 'Open Sans', sans-serif;
 			<div id="<?php echo $orgChart->areaId .'-'.$orgChart->areaName?>" class="area-id">
 				<div id="areas-roles" areaId="<?php echo $orgChart->areaId; ?>" YN="<?php echo $orgChart->isARoomYN; ?>">
 					<span class="area-name"><?php echo $orgChart->areaName."<br>"; ?></span>
-<?php if(isset($permissions->permissions) ? $permissions->permissions->editOrgChartYN : "N" == "Y"){ ?>
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editOrgChartYN : "N") == "Y"){ ?>
 					<span  class="newRole">
 						<a href="javascript:void(0)">
 							<i class="fas fa-plus" ></i>
@@ -480,7 +480,7 @@ font-family: 'Open Sans', sans-serif;
 				<div>
 					<?php foreach($orgChart->roles as $roles){
 					echo "<li class='li-c'><span class=\"roleNameClass\"  a_id=".$orgChart->areaId." r_id=".$roles->roleid.">".$roles->roleName."</span><span class=\"roleIdClass\" style=\"display:none\">".$roles->roleid."</span>";
-					if(isset($permissions->permissions) ? $permissions->permissions->editOrgChartYN : 'N' == 'Y'){
+					if((isset($permissions->permissions) ? $permissions->permissions->editOrgChartYN : 'N') == 'Y'){
 					echo "<span class=\"editRole\" style=\"padding-right:20px\"><i class=\"fas fa-pencil-alt\"></i>&nbsp; &nbsp;</span><span class=\"delete-role\" d-val=\"$roles->roleid\" style=\"padding-right:20px\"><i class=\"fas fa-trash-alt\"></i></span></li>";
 						}
 					}
@@ -566,7 +566,9 @@ font-family: 'Open Sans', sans-serif;
 	
 			})
 		})
-
+<?php 
+	if((isset($permissions->permissions) ? $permissions->permissions->editOrgChartYN : 'N') == 'Y'){
+ ?>
 		$(document).on('click','.editRole',function(){
 			var parent = $(this).parent();
 			var parentData = $(parent).html();
@@ -588,7 +590,7 @@ font-family: 'Open Sans', sans-serif;
 			})
 		})
 
-
+<?php } ?>
 
 
 		$(document).on('click','.resets',function(){
