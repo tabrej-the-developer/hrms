@@ -315,11 +315,23 @@ table.dataTable{
 						<?php $centers = json_decode($centers);
 						
 						for($i=0;$i<count($centers->centers);$i++){
+							if($centers->centers[$i]->centerid == $id){
 					?>
-					<option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid ?>">
-						<?php echo $centers->centers[$i]->name?>
+					<option selected href="javascript:void(0)" 
+									class="center-class" 
+									id="<?php echo $centers->centers[$i]->centerid ?>" 
+									value="<?php echo $centers->centers[$i]->centerid; ?>" >
+										<?php echo $centers->centers[$i]->name?></option>
+				<?php }
+				else{ ?>
+					<option href="javascript:void(0)" 
+									class="center-class" 
+									id="<?php echo $centers->centers[$i]->centerid ?>" 
+									value="<?php echo $centers->centers[$i]->centerid; ?>">
+									<?php echo $centers->centers[$i]->name?>
 					</option>
-				<?php } ?>
+		<?php		}
+			} ?>
 				</select>	
 			</span>
 		</span>
@@ -521,7 +533,6 @@ $("#timesheet-date").datepicker();
 			$('.dataTables_info').remove()
 			$('#ui-datepicker-div').hide()
 			$('.table-div').css('maxWidth','100vw')
-			$('select').val(1)
 		})
 </script>
 </body>

@@ -724,6 +724,54 @@ p.ovrflowtext {
 </style>
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/tokenize2.css">
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tokenize2.js"></script>
+  <script type="text/javascript">
+      var firebaseConfig = {
+    apiKey: "AIzaSyC_JyXX3uMpFiLXbkbGr4WhBsECY3sCFS4",
+    authDomain: "personnal-8f7c9.firebaseapp.com",
+    databaseURL: "https://personnal-8f7c9.firebaseio.com",
+    projectId: "personnal-8f7c9",
+    storageBucket: "personnal-8f7c9.appspot.com",
+    messagingSenderId: "1060379292734",
+    appId: "1:1060379292734:web:d7427124ff401d0d168d6f",
+    measurementId: "G-EB151W6QQ8"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const messaging = firebase.messaging();
+      messaging.requestPermission().then(()=>{
+      console.log("permission granted")
+    if(isTokenSentToServer()) {
+      console.log('Token already saved.');
+    } else {
+      getRegToken();
+    }
+    })
+    .catch((err)=>{
+      alert();
+    })
+  function setTokenSentToServer(sent) {
+      window.localStorage.setItem('sentToServer', sent ? 1 : 0);
+  }
+    function isTokenSentToServer() {
+      return window.localStorage.getItem('sentToServer') == 1;
+  }
+    function getRegToken(argument) {
+    messaging.getToken()
+      .then(function(currentToken) {
+        if (currentToken) {
+          saveToken(currentToken);
+          console.log(currentToken);
+          setTokenSentToServer(true);
+        } else {
+          console.log('No Instance ID token available. Request permission to generate one.');
+          setTokenSentToServer(false);
+        }
+      })
+      .catch(function(err) {
+        console.log('An error occurred while retrieving token. ', err);
+        setTokenSentToServer(false);
+      });
+  }
+  </script>
 </head>
 
 <body>
@@ -1353,9 +1401,9 @@ $('.save').click(function(){
     }
   </script>
   <script type="text/javascript">
-    messaging.onMessage(function(payload){
-      console.log('wow');
-    })
+    // messaging.onMessage(function(payload){
+      // console.log('wow');
+    // })
   </script>
 
 <?php if( isset($error) != null){ ?>

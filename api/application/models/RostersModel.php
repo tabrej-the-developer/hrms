@@ -75,9 +75,9 @@ class RostersModel extends CI_Model {
 		return $rosterid;
 	}
 
-	public function createNewRosterTemplate($userid,$templateName,$centerid){
+	public function createNewRosterTemplate($userid,$rosterid,$templateName,$centerid){
 		$this->load->database();
-		$rosterid = uniqid();
+		
 		$this->db->query("INSERT INTO rostertemplates (id,name,centerid,status,createdBy
 ) VALUES('$rosterid','$templateName','$centerid','Draft','$userid')");
 		return $rosterid;

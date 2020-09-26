@@ -14,22 +14,27 @@ class Timesheet extends CI_Controller {
 
 	public function timesheetDashboard(){
 		if($this->session->has_userdata('LoginId')){
-			if(!isset($_GET['center'])){
-							$id = 0;
-							$oldid=1;
+			if($this->getAllCenters() != 'error'){
+				$var['centers'] = $this->getAllCenters();
+			  	if(!isset($_GET['center'])){
+			  		if(!isset($_SESSION['centerr'])){
+							$id = json_decode($var['centers'])->centers[0]->centerid;
+							$_SESSION['centerr'] = $id;
+			  		}else{
+			  			$id = $_SESSION['centerr'];
+			  		}
+
 						}else{
 							$id = $_GET['center'];
-							$id = intval($id)-1;
-							$oldid = $id;
+							$_SESSION['centerr'] = $id;
 						}
-		$var['id'] = $id;
-		$var['centerId'] = $oldid;
-		$var['userId'] 	= $this->session->userdata('LoginId');
+				$var['id'] = $id;
+				$var['centerId'] = $id;
+				$var['userId'] 	= $this->session->userdata('LoginId');
 		$var['permissions'] = $this->fetchPermissions();
-		if($this->getAllCenters() != 'error'){
 		$var['centers'] = $this->getAllCenters();
-		$var['center__'] = json_decode($var['centers'])->centers[$id]->centerid;
-		$var['timesheets'] = $this->getPasttimesheets(json_decode($var['centers'])->centers[$id]->centerid);
+		$var['center__'] = $id;
+		$var['timesheets'] = $this->getPasttimesheets($id);
 			}
 		else{
 			$var['error'] = 'error';

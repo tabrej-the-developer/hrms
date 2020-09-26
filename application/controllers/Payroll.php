@@ -10,20 +10,27 @@ class Payroll extends CI_Controller {
 
 	public function payrollList(){
 	if($this->session->has_userdata('LoginId')){
-		if(!isset($_GET['center'])){
-							$id = 0;
-							$oldid=1;
+		if( $this->getAllCenters() != 'error'){
+				$var['centers'] = $this->getAllCenters();
+			  	if(!isset($_GET['center'])){
+			  		if(!isset($_SESSION['centerr'])){
+							$id = json_decode($var['centers'])->centers[0]->centerid;
+							$_SESSION['centerr'] = $id;
+			  		}else{
+			  			$id = $_SESSION['centerr'];
+			  		}
+
 						}else{
 							$id = $_GET['center'];
-							$id = intval($id)-1;
-							$oldid = $id;
+							$_SESSION['centerr'] = $id;
 						}
-		$var['id'] = $id;
-		$var['centerId'] = $oldid;
-		$var['userId'] 	= $this->session->userdata('LoginId');
-		if( $this->getAllCenters() != 'error'){
-			$var['centers'] = $this->getAllCenters();
-			$var['payrolls'] = $this->getPastPayrolls(json_decode($var['centers'])->centers[$id]->centerid);
+				$var['id'] = $id;
+				$var['centerId'] = $id;
+				$var['userId'] 	= $this->session->userdata('LoginId');
+				$var['permissions'] = $this->fetchPermissions();
+				$var['centers'] = $this->getAllCenters();
+				$var['center__'] = $id;
+				$var['payrolls'] = $this->getPastPayrolls($id);
 		}
 		else{
 			$var['error'] = 'error';

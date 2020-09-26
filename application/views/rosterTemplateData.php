@@ -1189,12 +1189,7 @@ function icon($str){
 					<th id="table-id-5" class="day"  style="width:12vw">Thu</th>
 					<th id="table-id-6" class="day" style="width:12vw">Fri</th>
         <?php } ?>
-					<th id="table-id-7" class="day"  style="width:12vw">
-						<span class="column_budget">
-							<span class="row d-flex justify-content-center m-0">Budget </span>
-							<span class="row d-flex justify-content-center m-0" style="font-size:0.7rem">(Emp wise)</span>
-						</span>
-					</td>
+
 				</tr>
 			
 				<?php 
@@ -1210,7 +1205,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 					?>
 					<tr>
 				<tr class="area_name_class">
-					<td colspan="7" class="area-name" area-value="<?php echo $rosterDetails->roster[$x]->areaId ?> " ><?php echo $rosterDetails->roster[$x]->areaName ?>
+					<td colspan="6" class="area-name" area-value="<?php echo $rosterDetails->roster[$x]->areaId ?> " ><?php echo $rosterDetails->roster[$x]->areaName ?>
 						<span area_id="<?php echo $rosterDetails->roster[$x]->areaId; ?>" style="position: absolute;right: 3%;cursor:pointer;" class="changeRoleOrder">
 						<i>
 							<img src="<?php echo base_url('assets/images/icons/priority.png'); ?>" style="max-height:0.8rem;margin-right:10px">
@@ -1263,7 +1258,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 			?>
 			<?php } ?>
 			<?php if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){ ?>
-				<span class="title hourly row"><?php echo  $variable; // echo $rosterDetails->roster[$x]->roles[$counter]->empTitle ?></span><?php } ?>
+<?php } ?>
 							</span>
 
 							<span class=""><?php // echo  $variable?></span>
@@ -1335,11 +1330,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 					  	<td area-id="<?php echo $rosterDetails->roster[$x]->areaId;?>" date="<?php echo $currentSequenceDay; ?>" roster-id="<?php echo $rosterDetails->id; ?>" emp-id="<?php echo  $rosterDetails->roster[$x]->roles[$counter]->empId;?>" level="<?php  $rosterDetails->roster[$x]->roles[$counter]->level;?>" class="__addshift count-<?php echo $index;?>" name3="<?php echo intval(0)/100; ?>"></td>
 					  	<?php
 					  } }        $currentSequenceDay++;} ?>
-					<td class=" " style="width:12vw;font-weight:bolder"><?php
-					if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){
-					 echo "$".number_format((float)$weeklyTotal, 2, '.', '');;
-					}
-					 ?></td>
+
 
 				</tr>
 			</tr>
@@ -1361,33 +1352,33 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 		<div class="total-budget" >
 			<table>
 				<tr class="total-budget-row">
-					<td class="total-budget-box" style="width:16vw">Total Budget</td>
-				<td class="total-budget-box" style="width:12vw" id="count-1" >
+					<td class="" style="width:16vw"></td>
+				<td class="" style="width:12vw" id="" >
 					<?php if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){ ?>
-						$
+						
 					<?php } ?>
 				</td>
-				<td class="total-budget-box" style="width:12vw" id="count-2">
+				<td class="" style="width:12vw" id="">
 					<?php if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){ ?>
-						$
+						
 					<?php } ?>
 				</td>
-				<td class="total-budget-box" style="width:12vw" id="count-3">
+				<td class="" style="width:12vw" id="">
 					<?php if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){ ?>
-						$
+						
 					<?php } ?>
 				</td>
-				<td class="total-budget-box" style="width:12vw" id="count-4">
+				<td class="" style="width:12vw" id="">
 					<?php if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){ ?>
-						$
+						
 					<?php } ?>
 				</td>
-				<td class="total-budget-box" style="width:12vw" id="count-5">
+				<td class="" style="width:12vw" id="">
 					<?php if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){ ?>
-						$
+						
 					<?php } ?>
 				</td>
-					<td class="total-budget-box" style="width:12vw">---</td>
+					<td class="" style="width:12vw">---</td>
 				</tr>
 			</table>
 		</div>

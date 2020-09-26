@@ -463,7 +463,7 @@ public function createRosterTemplate(){
 			$data['name'] = $this->input->post('roster-name');
 			$data['centerid'] = $this->input->post('centerId');
 			$data['userid'] = $this->session->userdata('LoginId');
-			$template_list = $form_data['template-list'];
+
 
 		 		$url = BASE_API_URL."/Rosters/createRosterTemplate";
 
@@ -481,7 +481,7 @@ public function createRosterTemplate(){
 			if($httpcode == 200){
 				$jsonOutput = json_decode($server_output);
 				curl_close ($ch);
-				redirect(base_url("roster/roster_dashboard"));
+				redirect(base_url().'roster/getRosterTemplateDetails/'.json_decode($server_output)->rosterid);
 			}
 			else if($httpcode == 401){
 

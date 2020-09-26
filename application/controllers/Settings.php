@@ -757,7 +757,7 @@ $server_output = curl_exec($ch);
 	// footprint end
 		$data['id'] = $this->input->post('id'); 
 		$data['userid'] = $this->session->userdata('LoginId');
-		$url = BASE_API_URL."/settings/deleteRoom/".$data['id']."/".$data['userid'];
+		$url = BASE_API_URL."/settings/deleteRole/".$data['id']."/".$data['userid'];
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -768,6 +768,7 @@ $server_output = curl_exec($ch);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			print_r($server_output);
 			if($httpcode == 200){
 				return $server_output;
 				curl_close ($ch);

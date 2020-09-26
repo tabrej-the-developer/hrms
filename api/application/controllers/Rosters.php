@@ -377,6 +377,7 @@ class Rosters extends MY_Controller {
 				$current = 0; //----------------remove
 				$userid = $json->userid;
 				$centerid = $json->centerid;
+				$rosterid = uniqid();
 				$userDetails = $this->authModel->getUserDetails($userid);
 				// if(date('D',strtotime($startDate)) != 'Mon'){
 				// 		$data['Status'] = 'ERROR';
@@ -388,7 +389,7 @@ class Rosters extends MY_Controller {
 
 					//	$startDate = date('Y-m-d', strtotime($startDate));//----------------remove
 					//	$endDate = date( "Y-m-d", strtotime( "$startDate +4 day" ));//----------------remove
-						$currentRoster = $this->rostersModel->createNewRosterTemplate($userid,$templateName,$centerid);//----------------remove
+						$currentRoster = $this->rostersModel->createNewRosterTemplate($userid,$rosterid,$templateName,$centerid);//----------------remove
 						$allAreas = $this->rostersModel->getAllAreas($centerid);
 						$data['id'] = $currentRoster;
 																					 //----------------remove
@@ -448,7 +449,7 @@ class Rosters extends MY_Controller {
 							array_push($data['roster'],$var);
 						}
 						// var_dump($data);
-
+					$data['rosterid'] = $rosterid;
 				}
 				else{
 

@@ -34,7 +34,7 @@ font-family: 'Open Sans', sans-serif;
     margin: -13px 0px 0px -30px;
 	}
 	.li-c span[class="roleNameClass"]{
-
+		cursor: pointer;
 	}
 	.center-name{
 		display: inline-flex;
@@ -711,6 +711,7 @@ font-family: 'Open Sans', sans-serif;
 			},
 			success : function(response){
 				window.location.reload();
+				// console.log(response)
 			}
 		})
 	})
@@ -749,45 +750,6 @@ font-family: 'Open Sans', sans-serif;
 	});
 </script>
 <script type="text/javascript">
-		$(document).on('click','.roleNameClass',function(e){
-			var roleid = $(this).attr('r_id');
-			var roleName = $(this).text();
-			var x = 0;
-			$('.changeRole_heading').text(roleName)
-			var url = window.location.origin+"/PN101/settings/getEmployeesForRoles/"+roleid;
-			$.ajax({
-				url:url,
-				type:'GET',
-				success:function(response){
-					data = JSON.parse(response);
-						$('.priority_areas').empty();
-						$('.mask').addClass("active");
-
-					data.employees.forEach(function(employee){
-						var code = `<div id="change_role">
-							<span class="changeRole__" role_id="${employee.id}" role_name="${roleName}" style="width:30%">${employee.name}</span>
-						<span class="select_css" style="width:35%;">
-							<select class="select_area" similarity="${x}" style="min-width:80% !important;max-width:80%">
-								<!-- <option>--Select Area--</option> -->
-							</select>
-							</span>
-						<span class="select_css" style="width:35%;">
-							<select class="select_role" similarity="${x}" style="min-width:80% !important;max-width:80%">
-								<!-- <option>--Select Area--</option> -->
-							</select>
-						</span>
-						</div>`;
-						$('.priority_areas').append(code);
-						x++;
-						// console.log(employee)
-					})					
-				}
-			})
-		})
-</script>
-<script type="text/javascript">
-	$(document).ready(function(){
-
 		function roleChange(roleId,areaId,similarity=null){
 					 var centerid = $('.sellect').val();
 		// var userid = $('#user-id-select').text();
@@ -820,15 +782,9 @@ font-family: 'Open Sans', sans-serif;
 					})
 				}
 
+			function addAreaToSelect(area_id,role_id,similarity,centerid){
 
-			$(document).on('click','.roleNameClass',function(){
-				$('.box-name').text($(this).text())
-				$('.box-space').text($(this).attr('role_name'))
-				$('#currentRole').val($(this).attr('role_id'))
-				var area_id = $(this).attr('a_id');
-				var role_id = $(this).attr('r_id');
-				var similarity = $(this).attr('similarity');
-			var centerid = $('.sellect').val();
+			var data = "";
 			// var userid = $('#user-id-select').text();
 			var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
 			$.ajax({
@@ -839,17 +795,71 @@ font-family: 'Open Sans', sans-serif;
 					console.log(response)
 					response['orgchart'].forEach(function(index){
 						if(area_id == index.areaId){
-							var data = `<option value="${index.areaId}" selected>${index.areaName}</option>`;
-							roleChange(role_id,index.areaId)
+							 dat = `<option value="${index.areaId}" selected>${index.areaName}</option>`;
+							 data = data+dat;
+							roleChange(role_id,index.areaId);
+
 						}
 						else{
-						var data = `<option value="${index.areaId}" >${index.areaName}</option>`;
-					}
-						$('.select_area').append(data)
+						 dat = `<option value="${index.areaId}" >${index.areaName}</option>`;
+						data = data+dat;
+						}
 					})
+												console.log(data)
+					$('.select_area').append(data)
+				}
+			})
+		}
+
+		$(document).on('click','.roleNameClass',function(e){
+			var roleid = $(this).attr('r_id');
+			var roleName = $(this).text();
+			var x = 0;
+			$('.changeRole_heading').text(roleName);
+				$('.box-name').text($(this).text())
+				$('.box-space').text($(this).attr('role_name'))
+				$('#currentRole').val($(this).attr('role_id'))
+				var area_id = $(this).attr('a_id');
+				var role_id = $(this).attr('r_id');
+				var similarity = $(this).attr('similarity');
+			var centerid = $('.sellect').val();
+			var url = window.location.origin+"/PN101/settings/getEmployeesForRoles/"+roleid;
+			$.ajax({
+				url:url,
+				type:'GET',
+				success:function(response){
+					data = JSON.parse(response);
+						$('.priority_areas').empty();
+						$('.mask').addClass("active");
+
+					data.employees.forEach(function(employee){
+						var code = `<div id="change_role">
+							<span class="changeRole__" role_id="${employee.id}" role_name="${roleName}" style="width:30%">${employee.name}</span>
+						<span class="select_css" style="width:35%;">
+							<select class="select_area" similarity="${x}" style="min-width:80% !important;max-width:80%">
+								<!-- <option>--Select Area--</option> -->
+							</select>
+							</span>
+						<span class="select_css" style="width:35%;">
+							<select class="select_role" similarity="${x}" style="min-width:80% !important;max-width:80%">
+								<!-- <option>--Select Area--</option> -->
+							</select>
+						</span>
+						</div>`;
+						$('.priority_areas').append(code);
+						x++;
+						// console.log(employee)
+					})			
+					addAreaToSelect(area_id,role_id,similarity,centerid)		
 				}
 			})
 		})
+	$(document).ready(function(){
+
+
+
+
+
 
 		$(document).on('change','.select_area',function(){
 				var similarity = $(this).attr('similarity');

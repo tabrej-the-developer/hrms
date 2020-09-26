@@ -91,7 +91,7 @@ class Notice extends CI_Controller {
 					$text = $json->text;
 					$subject = $json->subject;
 					$this->load->model('noticeModel');
-						if($text != null && $text != "" $subject != null && $subject != "" && ( count($json->members) > 0) ){
+						if($text != null && $text != "" && $subject != null && $subject != "" && ( count($json->members) > 0) ){
 							foreach ($json->members as $memberid) {
 								if(preg_match('/[a-z]/i',$memberid) == 1){
 									$this->noticeModel->addNotice($userid,$memberid,$subject,$text);

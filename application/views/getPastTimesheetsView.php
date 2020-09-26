@@ -348,9 +348,23 @@ body{
 						<?php $centers = json_decode($centers);
 						
 						for($i=0;$i<count($centers->centers);$i++){
+							if($centers->centers[$i]->centerid == $center__){
 					?>
-					<option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid; ?>"><?php echo $centers->centers[$i]->name?></option>
-				<?php } ?>
+					<option href="javascript:void(0)" 
+									class="center-class" 
+									id="<?php echo $centers->centers[$i]->centerid ?>" 
+									value="<?php echo $centers->centers[$i]->centerid; ?>" selected>
+										<?php echo $centers->centers[$i]->name?></option>
+				<?php }
+				else{ ?>
+					<option href="javascript:void(0)" 
+									class="center-class" 
+									id="<?php echo $centers->centers[$i]->centerid ?>" 
+									value="<?php echo $centers->centers[$i]->centerid; ?>">
+									<?php echo $centers->centers[$i]->name?>
+					</option>
+		<?php		}
+			} ?>
 				</select>	
 		</span>
 		</span>
@@ -455,9 +469,11 @@ body{
 		$(document).on('change','.center-list',function(){
 			var val = $(this).val();
 			if(val == null || val == ""){
-				val=1;
+				var url = "<?php echo base_url();?>timesheet/timesheetDashboard";
+			}else{
+				var url = "<?php echo base_url();?>timesheet/timesheetDashboard?center="+val;
 			}
-		var url = "<?php echo base_url();?>timesheet/timesheetDashboard?center="+val;
+
 		$.ajax({
 			url:url,
 			type:'GET',

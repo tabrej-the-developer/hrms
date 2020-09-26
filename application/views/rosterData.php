@@ -965,7 +965,75 @@ td{
   .select_css.no_drop_icon{
   	width: 60%;
   }
+  .loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #307bd3;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+    z-index: 9999;
+  }
+  .loading{
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    background: rgba(0,0,0,0.2)
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
 @media print{
+  td,th,table,tr{
+    border: 0.5px dotted black !important;
+  }
+  .left-most{
+  border-top:0.5px dotted black !important;
+  border-bottom:0.5px dotted black !important;
+}
+  .Published .cell-back-1::before {
+    border-left: 0;
+    content: ' ';
+    position: absolute;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+.Added .cell-back-1::before {
+    border-left: 0;
+    content: ' ';
+    position: absolute;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+.Accepted .cell-back-1::before {
+    border-left: 0;
+    content: ' ';
+    position: absolute;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+  *{
+    padding: 0 !important;
+     page-break-after: auto;
+}
+    .heading{
+    display: none !important;
+    visibility: hidden;
+  }
+  #center-id{
+    display: none !important;
+    visibility: hidden;
+  }
 	td:nth-child(7),th:nth-child(7){
 		display: none;
 	}
@@ -1007,6 +1075,7 @@ td{
 		}
 }
 @media only screen and (max-width: 1050px) {
+
 			.header-top{
 			max-width: 100vw !important;
 		}
@@ -1048,6 +1117,9 @@ td{
 		$entitlement = json_decode($entitlements);
 		$permissions = json_decode($permissions);
 	?>
+<div class="loading">
+  <div class="loader"></div>
+</div>
 	<div class="containers" id="containers">
 		<div class="heading" id="center-id" c_id="<?php echo isset($rosterDetails->centerid) ? $rosterDetails->centerid : null; ?>">Rosters
 			<span class="top_buttons ml-auto">
@@ -1518,6 +1590,8 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 
 			</table>
 		</div>
+
+
 		<div class="budget-table-parent">
 		<div class="total-budget" >
 			<table>
@@ -1552,6 +1626,8 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 				</tr>
 			</table>
 		</div>
+
+
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?> 
 
 					<?php 
@@ -1944,8 +2020,17 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 		------------------------------ */ -->
 
 <?php } ?>
-<?php 		 if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N"){ ?>
 <script type="text/javascript">
+  remove_loader_icon();
+    function remove_loader_icon(){
+    $('.loading').hide();
+  };
+  function loader_icon(){
+    $('.loading').show();
+  };
+
+<?php 		 if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N"){ ?>
+
 				var model = document.getElementById("mxModal");
 
 				$(document).on('click','.shift-edit',function(){
@@ -1961,9 +2046,6 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 					window.location.href = window.location.origin+"/PN101/roster/roster_dashboard"
 				})
 
-			</script>
-
-<script type="text/javascript">
 	$(document).on('click','.shift-edit',function(){
 		var starts = $(this).attr('stime');
 		var ends = $(this).attr('etime');
@@ -1979,9 +2061,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 			document.getElementById('role-Id').value = role;
 			document.getElementById('shift-Id').value = shiftid;
 	})
-</script>
 
-<script type="text/javascript">
   $(document).ready(function(){
     
     $(document).on('click','.button',function(){
@@ -2002,6 +2082,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
           status = "4";
         }
       url = window.location.origin+"/PN101/roster/updateShift";
+        loader_icon();
       $.ajax({
         url:url,
         type:'POST',
@@ -2020,27 +2101,17 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
             window.location.reload();
 
         }
+      }).fail(function(){
+          window.location.reload();
       })
     })
     
   })
-</script>
 
 <?php  } ?>
-<!-- Till here -->
-
-
-
-
-<!-- This is meant for staff -->
-
-
-
-<!-- Till here -->
 
 
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?> 
-<script type="text/javascript">
 				var modal = document.getElementById("myModal");
 
 				$(document).on('click','.shift-edit',function(){
@@ -2053,30 +2124,26 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 					 modal.style.display = "none";
 					 $('#roster-form').trigger('reset');
 				})
-</script>
+
 
 <?php }?>
-<!-- <script type="text/javascript">
-	function uiFunction(){
-  if(screen.width > 768){
-	    var sideNav = document.getElementsByClassName('side-nav')[0].offsetWidth
-	    document.getElementById('containers').style.paddingLeft = 60+"px"
-	    document.getElementsByClassName("side-nav")[0].addEventListener("mouseover", mouseOver);
-	    document.getElementsByClassName("side-nav")[0].addEventListener("mouseleave", mouseLeave);
-	  }
-			}
-			function mouseOver(){
-			      document.getElementById('containers').style.paddingLeft = 200+"px"
-			}
-			function mouseLeave(){
-			      document.getElementById('containers').style.paddingLeft = 60+"px"
-			}
-			// calling the function
-			  uiFunction();
-</script>
+	// function uiFunction(){
+ //  if(screen.width > 768){
+	//     var sideNav = document.getElementsByClassName('side-nav')[0].offsetWidth
+	//     document.getElementById('containers').style.paddingLeft = 60+"px"
+	//     document.getElementsByClassName("side-nav")[0].addEventListener("mouseover", mouseOver);
+	//     document.getElementsByClassName("side-nav")[0].addEventListener("mouseleave", mouseLeave);
+	//   }
+	// 		}
+	// 		function mouseOver(){
+	// 		      document.getElementById('containers').style.paddingLeft = 200+"px"
+	// 		}
+	// 		function mouseLeave(){
+	// 		      document.getElementById('containers').style.paddingLeft = 60+"px"
+	// 		}
+	// 		// calling the function
+	// 		  uiFunction();
 
- -->
-<script type="text/javascript">
 	$(document).ready(function(){
 		$(document).on('click','#delete_shift',function(){
 			var shiftId = $("#shiftId").val();
@@ -2090,6 +2157,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 			let bool = confirm("confirm delete shift?");
       if(bool == true){
               var url = window.location.origin+"/PN101/roster/deleteShift/"+shiftId;
+              loader_icon()
               $.ajax({
               url : url,
               data : {
@@ -2104,9 +2172,9 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
   		}	
   	})
   })
-</script>
+
 <?php if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){ ?>
-<script type="text/javascript">
+
 				$(document).ready(function(){
 				var	total = 0;
 				var count = $('.count-1').length
@@ -2173,12 +2241,12 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 			}
 				$('#count-5').html('$'+total)
 				})
-</script>
+
 
 <?php } ?>
 
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?> 
-<script type="text/javascript">
+
 	$(document).ready(function(){
 
 
@@ -2270,6 +2338,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 
 			url = window.location.origin+"/PN101/roster/updateShift";
 			console.log(startTime + " "+ endTime +" "+ shiftid+" "+roleid+" "+status +" "+userid+" "+areaid+ "" + message)
+      loader_icon();
 			$.ajax({
 				url:url,
 				type:'POST',
@@ -2289,14 +2358,13 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 											$('#roster-form').trigger('reset');
 											window.location.reload();
 				}
-			})
+			}).fail(function(){
+        window.location.reload();
+      })
 		})
 		
 	})
-</script>
 
-
-<script type="text/javascript">
 	$(document).ready(function(){
 		$(document).on('click','.roster__',function(){
 			var url = window.location.origin+"/PN101/roster/updateRoster";
@@ -2315,7 +2383,9 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 						window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";
 					}
 
-				})
+				}).fail(function(){
+        window.location.reload();
+      })
 			}
 			if($(this).prop('id') == "draft-roster"){
 				$.ajax({
@@ -2329,9 +2399,12 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 					success:function(response){
 window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";					}
 
-				})
+				}).fail(function(){
+        window.location.reload();
+      })
 			}
 			if($(this).prop('id') == "publish-roster"){
+        loader_icon();
 				$.ajax({
 					url:url,
 					type:'POST',
@@ -2345,18 +2418,18 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 						window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";
 					}
 
-				})
+				}).fail(function(){
+        window.location.reload();
+      })
 			}
 		})
 	})
-</script>
+
 <?php }?>
-<script type="text/javascript">
+
 
     $('.containers').css('paddingLeft',$('.side-nav').width());
 
-</script>
-	<script type="text/javascript">
 	function timer( x)
 	{ 
 	    var output="";
@@ -2419,10 +2492,6 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 	return output;
 }
 
-</script>
-
-
-<script type="text/javascript">
 	$(document).ready(function(){
 		var centerid = $('#center-id').attr('c_id');
 		// var userid = $('#user-id-select').text();
@@ -2437,10 +2506,12 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 					$('#areaId').append(data)
 				})
 			}
-		})
+		}).fail(function(){
+        window.location.reload();
+      })
 	})
-</script>
-<script type="text/javascript">
+
+
 	$(document).ready(function(){
 		$(document).on('change','#areaId',function(){
 		 var centerid = $('#center-id').attr('c_id');
@@ -2462,11 +2533,13 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 									})
 					})
 				}
-			})
+			}).fail(function(){
+        window.location.reload();
+      })
 		})
 	})
-</script>
-<script type="text/javascript">
+
+
 	$(document).ready(function(){
 		let height = $('td[name2 != ""] div').eq(0).height();
 		let count =	 $('td[name2 = ""]').length;
@@ -2475,9 +2548,9 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 			}
 			console.log(height)
 	})
-</script>
+
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?> 
-<script type="text/javascript">
+
 	$(document).ready(function(){
 	  $(document).on('click','.priority-btn',function(){
 		let count = $('tr').length ;
@@ -2502,8 +2575,8 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 			$(".priority_areas").append(array)
 	   })
 	})
-</script>
-<script type="text/javascript">
+
+
 	$(document).ready(function(){
 	  $(document).on('click','.priority_save',function(){
 	  	console.log($('.priority_areas tr').length);
@@ -2530,14 +2603,16 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 		  			closeModal()
 		  			window.location.reload();
 		  		}
-		  	})
+		  	}).fail(function(){
+        window.location.reload();
+      })
 				}}
 		  })
 
 	  })
-</script>
+
 <?php } ?>
-<script type="text/javascript">
+
 	function closeModal(){
 	  $(".mask").removeClass("active");
 	}
@@ -2546,10 +2621,10 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 		  closeModal();
 		$(".priority_areas").empty();
 	});
-</script>
+
 
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
-<script type="text/javascript">
+
 /* ----------------------------------------
 						add shift modal 							
 	----------------------------------------*/
@@ -2587,6 +2662,7 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 				// console.log(date+ "---"+roster_id+ "---"+emp_id+ "---"+add_start_time+ "---"+add_end_time+ "---"+add_role_id+)
 				console.log(dates)
 				var url = window.location.origin+"/PN101/roster/addNewshift";
+        loader_icon();
 				$.ajax({
 					url:url,
 					method:'POST',
@@ -2602,7 +2678,9 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 						window.location.reload();
             // console.log(response)
 					}
-				})
+				}).fail(function(){
+        window.location.reload();
+        })
 			})
 	})
 
@@ -2617,11 +2695,11 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 	$(".close_priority").on("click", function(){
 		  closeAddShitModal();
 		});
-</script>
+
 <?php } ?>
 
 <?php if( isset($error) != null){ ?>
-	<script type="text/javascript">
+
 		
    var modal = document.querySelector(".modal-logout");
        function toggleModal() {
@@ -2630,10 +2708,10 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 	$(document).ready(function(){
   		toggleModal();	
   		});
-	</script>
+
 <?php }	?>
 
-<script type="text/javascript">
+
 	$(document).ready(function(){
 		var centerid = $('#center-id').attr('c_id');
 		// var userid = $('#user-id-select').text();
@@ -2648,10 +2726,12 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 					$('#add_area_id').append(data)
 				})
 			}
-		})
+		}).fail(function(){
+        window.location.reload();
+      })
 	})
-</script>
-<script type="text/javascript">
+
+
 	$(document).ready(function(){
 		$(document).on('change','#add_area_id',function(){
 		 var centerid = $('#center-id').attr('c_id');
@@ -2673,11 +2753,13 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 									})
 					})
 				}
-			})
+			}).fail(function(){
+        window.location.reload();
+      })
 		})
 	})
-</script>
-<script>
+
+
 $( ".modal_prioritys" ).draggable();
 $( ".modal-content" ).draggable();
 $( ".modal_priority" ).draggable();
@@ -2685,8 +2767,8 @@ $('.modal_priorityed').draggable();
 $('.modal_body').draggable();
 
 
-</script>
-<script type="text/javascript">
+
+
 	$(document).on('click','.casualEmploye-btn',function(){
 			$(".masked").addClass("actived");
 		});
@@ -2698,8 +2780,8 @@ $('.modal_body').draggable();
 	$(".close_priorityed").on("click", function(){
 	 		 closeModalEmp();
 	});
-</script>
-<script type="text/javascript">
+
+
 	$(document).ready(function(){
 		var centerid = $('#center-id').attr('c_id');
 		// var userid = $('#user-id-select').text();
@@ -2714,10 +2796,12 @@ $('.modal_body').draggable();
 					$('.casualEmploye-area-select').append(data)
 				})
 			}
-		})
+		}).fail(function(){
+        window.location.reload();
+      })
 	})
-</script>
-<script type="text/javascript">
+
+
 	$(document).ready(function(){
 		$(document).on('change','.casualEmploye-area-select',function(){
 		 var centerid = $('#center-id').attr('c_id');
@@ -2739,11 +2823,13 @@ $('.modal_body').draggable();
 									})
 					})
 				}
-			})
+			}).fail(function(){
+        window.location.reload();
+      })
 		})
 	})
-</script>
-<script type="text/javascript">
+
+
 	$(document).on('click','.priority_saveed',function(){
 		var date = $('#casualEmp_date').val();
 		var roster_id = "<?php echo $rosterDetails->id; ?>";
@@ -2781,8 +2867,8 @@ $('.modal_body').draggable();
 		}
 
 	})
-</script>
-<script type="text/javascript">
+
+
 	$(document).ready(function(){
 		// url modifiers
 		$(document).on('click','.showBudget-btn',function(){
@@ -2798,8 +2884,8 @@ $('.modal_body').draggable();
 				window.location.href= url.href
 		})
 	})
-</script>
-<script type="text/javascript">
+
+
 		//	Printing
 	function landscape(){
 			var css = '@page { size: landscape; }',
@@ -2837,8 +2923,8 @@ $('.modal_body').draggable();
 
 		window.print();
 	}
-</script>
-<script type="text/javascript">
+
+
 	// Edit Roster Permissions start (e-r-p):key
 
 	$(document).on('click','.editPermission-btn',function(){
@@ -2854,8 +2940,8 @@ $('.modal_body').draggable();
 	 		 close_modal();
 	});
 
-</script>
-<script type="text/javascript">
+
+
 	var base_url = "<?php echo base_url();?>";
 	function getEmployees(){
 		var xhttp = new XMLHttpRequest();
@@ -2875,8 +2961,8 @@ $('.modal_body').draggable();
 		xhttp.send();
 	}
 
-</script>
-<script type="text/javascript">
+
+
 	$(document).ready(function(){
 		$(document).on('click','#modal_permission',function(){
 			let employeeId = $('#employeeValue').val();
@@ -2893,17 +2979,19 @@ $('.modal_body').draggable();
 					rosterId : rosterId
 				},
 				success : function(response){
-
+                  window.location.reload();
 				}
-			})
+			}).fail(function(){
+        window.location.reload();
+      })
 		})
 	})
-</script>
-<script type="text/javascript">
+
+
 	function getPermissions(){
 		let rosterId = "<?php echo $rosterid; ?>";
 		let employeeId = $('#employeeValue').val();
-		console.log(employeeId)
+		alert(employeeId)
 		let url = window.location.origin+'/PN101/Roster/getRosterPermissions/'+employeeId+'/'+rosterId;
 	 	$.ajax({
 	 		url : url,
@@ -2911,24 +2999,24 @@ $('.modal_body').draggable();
 	 		success : function(response){
 	 			if(JSON.parse(response).getPermissions[0] != null){
 	 			document.getElementById('edit_roster').checked = (((JSON.parse(response).getPermissions[0].editRoster) == 'Y') ? true : false ) ;
-	 			console.log(JSON.parse(response).getPermissions[0].editRoster)
+	 			console.log(JSON.parse(response).getPermissions[0].editRoster);
+          window.location.reload();
 	 		}
 	 		else{
-						document.getElementById('edit_roster').checked = false
-						}
-	 			
-	 		}
+						document.getElementById('edit_roster').checked = false;
+                      window.location.reload();
+						}	 			
+    	 		}
+    	 	})
+  	  }
 
-	 	})
-	 }
-</script>
-<script type="text/javascript">
+
 	    $(document).ready(function(){
         $('#casualEmp_id').tokenize2();
         $('#employeeValue').tokenize2();
     });
-</script>
-<script type="text/javascript">
+
+
 /*  -----------------------------
 			CHANGE ROLE PRIORITY	MODAL
 		------------------------------ */
@@ -2939,8 +3027,8 @@ $('.modal_body').draggable();
 	}
 
 	$(".changeRolePriority_close").on("click", function(){
-		  closeChangeRolePriority();
-		$(".changeRolePriority_body").empty();
+	  closeChangeRolePriority();
+	  $(".changeRolePriority_body").empty();
 	});
 /*  -----------------------------
 			CHANGE ROLE PRIORITY	MODAL
@@ -2970,7 +3058,9 @@ $('.modal_body').draggable();
 					})
 					// console.log(response)
 				}
-			})
+			}).fail(function(){
+        window.location.reload();
+      })
 		})
 	})
 			$('.changeRolePriority_body').sortable()
@@ -2996,7 +3086,9 @@ $('.modal_body').draggable();
 					console.log(response)
 					window.location.reload();
 				}
-			})
+			}).fail(function(){
+        window.location.reload();
+      })
 		})
 </script>
 </body>

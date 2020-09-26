@@ -39,7 +39,7 @@ font-family: 'Open Sans', sans-serif;
       background: #ebebeb !important;
       border-radius: 5px !important;
       padding: 5px !important;
-      border: 1px solid #D2D0D0 !important;
+      border: 1px solid #D2D0D0 ;
       border-radius: 20px !important;
       padding-left: 1rem;
       font-size: 0.85rem !important;
@@ -88,7 +88,7 @@ font-family: 'Open Sans', sans-serif;
 		<div  id="content-wrappers-element" >
 		<div class="card_future" style="padding: 20px;">
 	
-			<form name="userinput" action="createCenterProfile" method="post" enctype="multipart/form-data" onsubmit="onFormSubmit">
+			<form name="userinput" action="createCenterProfile" method="post" enctype="multipart/form-data" onsubmit="return onFormSubmit()">
 				 	<span id="centerDetailsYo">
 				 		<div class="row">
 						<span id="addCenter_heading">Center Details</span>
@@ -98,7 +98,7 @@ font-family: 'Open Sans', sans-serif;
 							<label><i style="color: #aa63ff;" class=""></i> Center Name<sup>
 				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
 					</sup></label>
-							<input type="text" class="" name="center_name" id="ceter name" value="" required>
+							<input type="text" class="" name="center_name" id="center_name" value="" required>
 						</div>
 				    	<div class="input_box">
 							<label><i style="color: #aa63ff;" class=""></i> City</label>
@@ -108,7 +108,7 @@ font-family: 'Open Sans', sans-serif;
 							<label><i style="color: #aa63ff;" class=""></i> Street Address<sup>
 				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
 			</sup></label>
-							<textarea class="street_address" name="center_street" id="center street" ></textarea>
+							<textarea class="street_address" name="center_street" id="center_street" ></textarea>
 						</div>
 					     <div class="input_box">
 							<label><i style="color: #aa63ff;" class=""></i> State</label>
@@ -262,17 +262,22 @@ font-family: 'Open Sans', sans-serif;
 	}
 </script>
 <script type="text/javascript">
-function	onFormSubmit(){
-		if( $('#level').val() == null || $('#level').val() == "" ){
-			$('#level').css({"border-color": "red", 
+function onFormSubmit(){
+		if( $('#center_name').val() == null || $('#center_name').val() == "" ){
+			$('#center_name').css({"border-color": "red", 
              "border-width":"1px", 
              "border-style":"solid"})
 			return false;
 		}
-				if( $('#level').val() == null || $('#level').val() == "" ){
-			$('#level').css({"border-color": "red", 
+				if( $('#center_street').val() == null || $('#center_street').val() == "" ){
+			$('#center_street').css({"border-color": "red", 
              "border-width":"1px", 
              "border-style":"solid"})
+			setTimeout(function(){
+				$('#center_street').css({"border-color": "#D2D0D0", 
+	             "border-width":"1px", 
+	             "border-style":"solid"})
+			},6000)
 			return false;
 		}
 }
