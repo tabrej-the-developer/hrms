@@ -430,7 +430,7 @@ font-family: 'Open Sans', sans-serif;
 		</span>
 		<span class="select-class ml-auto">
 			<span class="select_css">
-				<select class="sellect">
+				<select class="sellect" > 
 					<!-- <option>--Select Center--</option> -->
 					<?php foreach($centersList->centers as $centers){ ?>
 					<option value="<?php echo $centers->centerid;?>" class="opt"><?php echo $centers->name;?></option>
@@ -720,7 +720,8 @@ font-family: 'Open Sans', sans-serif;
 			type : 'POST',
 			data : {centerid:centerid} ,
 			success:function(response){
-				$('.thisOne').html($(response).find('.thisOne').html())
+				$('.thisOne').html($(response).find('.thisOne').html());
+				getEmployeesCountByRole();
 			} 
 		}).fail(function(){
 			alert('Failed')
@@ -903,9 +904,33 @@ font-family: 'Open Sans', sans-serif;
 			})
 		})
 
+		$(document).ready(function(){
+				getEmployeesCountByRole()
+			})
+
+		function getEmployeesCountByRole(){
+			var count = $('.roleNameClass').length;
+			var c = 0;
+			for(var i=0;i<count;i++){
+				var role = $('.roleNameClass').eq(i).attr('r_id');
+				url = window.location.origin+"/PN101/settings/getEmployeesForRoles/"+role;
+					$.ajax({
+						url : url,
+						type : 'GET',
+						success : function(response){
+							empCount = JSON.parse(response).employees.length
+							console.log(i)
+							$('.roleNameClass').eq(c).append(` (${empCount})`);
+							c++;
+						}
+					})
+				}
+		}
+
 $(document).ajaxStop(function(){
 
 })
+
 	$(document).ready(function(){
 		$(document).on('change','.select_area',function(){
 				var similarity = $(this).attr('similarity');
