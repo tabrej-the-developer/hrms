@@ -399,7 +399,7 @@ body{
 				for($i=0;$i<count($timesheet->timesheets);$i++){
 				?>
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y"){ ?> 
-				<tr id="<?php echo $timesheet->timesheets[$i]->id?>">
+				<tr id="<?php echo $timesheet->timesheets[$i]->id?>" clickable="yes">
 					<td><?php echo $i+1 ?></td>
 
 					<td><?php echo  'Timesheet | '.dateToDay($timesheet->timesheets[$i]->startDate).'-'.dateToDay($timesheet->timesheets[$i]->endDate) ?></td>
@@ -408,15 +408,15 @@ body{
 					<td><?php echo dateToDayAndYear($timesheet->timesheets[$i]->startDate) ?></td>
 					<td><?php echo dateToDayAndYear($timesheet->timesheets[$i]->endDate) ?></td>
 					<td><?php echo $timesheet->timesheets[$i]->status ?></td>
-					</tr>
+				</tr>
 				<?php }?>
 			<?php if($this->session->userdata('UserType') == STAFF ) { ?>
-					<tr id="<?php echo $timesheet->timesheets[$i]->id?>">
+				<tr id="<?php echo $timesheet->timesheets[$i]->id?>" clickable="yes">
 					<td><?php echo $i+1 ?></td>
 					<td><?php echo $timesheet->timesheets[$i]->startDate ?></td>
 					<td><?php echo $timesheet->timesheets[$i]->endDate ?></td>
 					<td><?php echo $timesheet->timesheets[$i]->status ?></td>
-					</tr>
+				</tr>
 				<?php } ?>
 <?php }} ?>
 			</tbody>
@@ -485,7 +485,7 @@ body{
 	});
 	<?php } ?>
 
-		$(document).on('click','#tbody tr',function(){
+		$(document).on('click','#tbody tr[clickable="yes"]',function(){
 			var timesheetId = $(this).prop('id')
 	var url = "<?php echo base_url();?>timesheet/gettimesheetDetails?timesheetId="+timesheetId;
 			window.location.href=url;

@@ -33,14 +33,13 @@ font-family: 'Open Sans', sans-serif;
     border-bottom: 1px solid black;
     margin: -13px 0px 0px -30px;
 	}
-	.li-c span[class="roleNameClass"]{
-		cursor: pointer;
-	}
+
 	.center-name{
-		display: inline-flex;
+		display: flex;
 		font-size: 1.5rem;
 		padding-left: 2rem;
 		font-weight: 700;
+		justify-content: space-between;
 	}
 	.none{
 		display:none;
@@ -132,19 +131,22 @@ font-family: 'Open Sans', sans-serif;
 	    border-radius: 20px;
 	}
 	.select-class{
-		padding: 1.5rem;
+		padding: 1rem 1.5rem 0 1.5rem;
+    position: absolute;
+    right: 1rem;
+    top: 0;
 	}
 	.this-one{
 		
 		padding: 3rem 2rem 2rem 1rem;
 	}
 	#areas-roles-list{
-		height: 100%;
+		height: calc(100% - 3rem);
 		overflow-y: auto;
 	}
 	.container-child{
-		padding: 3rem 2rem 2rem 1rem;
-			 height: 100% !important;
+		padding: 0 2rem 2rem 1rem;
+			 height: 90% !important;
 	}
 	.container-actual-element{
 		background: white;
@@ -155,10 +157,11 @@ font-family: 'Open Sans', sans-serif;
 	}
 .containers{
 	height: 100vh;
+	overflow: hidden;
 	}   
 
   .thisOne{
-  	    height: 75% !important;
+  	    height: 100% !important;
   }
 .areas-roles-list{
   	height: 100% !important;
@@ -217,7 +220,7 @@ font-family: 'Open Sans', sans-serif;
   top: 30%;
   left: 40vw;
   width: 60vw;
-  min-height: 400px;
+  min-height: 90vh;
   margin-left: -15%;
   margin-top: -150px;
   background: #fff;
@@ -247,7 +250,7 @@ font-family: 'Open Sans', sans-serif;
 }
 .priority_buttons{
 	position:absolute;
-	bottom: 2rem;
+	bottom: 1rem;
 	width:100%;
 	justify-content: center;
 	display: flex;
@@ -258,9 +261,9 @@ font-family: 'Open Sans', sans-serif;
     text-align: center;
     justify-content: center;
     width: 100%;
+    height: 65vh;
     flex-wrap: wrap;
-    flex-direction: column;
-
+    overflow-y: scroll;
 }
 /*  ------------------------------
 						MODAL
@@ -399,33 +402,48 @@ font-family: 'Open Sans', sans-serif;
 	display: flex;
 	width: 100%;
 }
+.back-button{
+	padding: 1rem 0 ;
+}
+.back_span{
+		display: flex;
+	align-items: center;
+	padding-left: 1rem;
+}
 </style>
 </head>
 <body>
 <div class="containers">
-  <span style="position: absolute">
-	  <a href="<?php echo base_url();?>/settings">
-	    <button class="btn back-button">
-	      <img src="<?php echo base_url('assets/images/back.svg');?>"> <span style="font-size:0.8rem">Organisational Chart</span>
-	    </button>
-	  </a>
+	<?php $centersList = json_decode($centers); ?>
+  <span >
+		<span class="back_span">
+			<a href="<?php echo base_url();?>/settings">
+		    <button class="btn back-button">
+		      <img src="<?php echo base_url('assets/images/back.svg');?>">
+		    </button>
+		  </a>
+    <span style="	text-align: left;
+						font-weight:bold;
+						font-size: 1.5rem;
+						display: flex; 
+						color: #171D4B;">Organisational Chart</span>
+		</span>
+		<span class="select-class ml-auto">
+			<span class="select_css">
+				<select class="sellect">
+					<!-- <option>--Select Center--</option> -->
+					<?php foreach($centersList->centers as $centers){ ?>
+					<option value="<?php echo $centers->centerid;?>" class="opt"><?php echo $centers->name;?></option>
+				<?php } ?>
+				</select>
+			</span>
+		</span>
 	</span>
 	<div class="container-child">
 		<div class="container-actual-element">
 	<?php $permissions = json_decode($permissions); ?>
 <?php if(isset($permissions->permissions) ? $permissions->permissions->viewOrgChartYN : "N" == "Y"){ ?>
-	<div class="select-class">
-		<span class="center-select-span">Show Chart for:</span>
-		<?php $centersList = json_decode($centers); ?>
-		<span class="select_css">
-			<select class="sellect">
-				<!-- <option>--Select Center--</option> -->
-				<?php foreach($centersList->centers as $centers){ ?>
-				<option value="<?php echo $centers->centerid;?>" class="opt"><?php echo $centers->name;?></option>
-			<?php } ?>
-			</select>
-		</span>
-	</div>
+
 	<div class="thisOne">	
 		<div class="center-name">
 			<span>
@@ -441,14 +459,23 @@ font-family: 'Open Sans', sans-serif;
 		 		?>
 		 	</span>
 		 	<?php if((isset($permissions->permissions) ? $permissions->permissions->editOrgChartYN : "N") == "Y"){ ?>
-		 <span onclick="newArea()" style="font-size:25px">
-			<a href="javascript:void(0)" >
-				<button class="btn btn-primary">
-                        <i>
-                          <img src="<?php echo base_url('assets/images/icons/plus.png'); ?>" style="max-height:1rem;margin-right:10px">
-                        </i>Add New Area</button>
-			</a>
-		 </span>
+			<span style="position: absolute;right:0;display: flex;right:2rem">
+			 <span onclick="newArea()" style="font-size:25px;">
+				<a href="javascript:void(0)" >
+					<button class="btn btn-primary">
+			      <i>
+			        <img src="<?php echo base_url('assets/images/icons/plus.png'); ?>" style="max-height:1rem;margin-right:10px">
+			      </i>Add New Area</button>
+				</a>
+			 </span>
+			 <span>
+				<button class="btn btn-primary assign_roles">
+			    <i>
+			      <img src="<?php echo base_url('assets/images/icons/plus.png'); ?>" 
+			      		 style="max-height:1rem;margin-right:10px">
+			    </i>Assign Roles</button>
+			 </span>
+			</span>
 		<?php } ?>
 		</div>
 		<div id="areas-roles-list">
@@ -750,7 +777,7 @@ font-family: 'Open Sans', sans-serif;
 	});
 </script>
 <script type="text/javascript">
-		function roleChange(roleId,areaId,similarity=null){
+		function roleChange(roleId,areaId,similarity=null,x){
 					 var centerid = $('.sellect').val();
 		// var userid = $('#user-id-select').text();
 				var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
@@ -773,7 +800,7 @@ font-family: 'Open Sans', sans-serif;
 											$('.select_role[similarity='+similarity+']').append(data)
 										}
 										else{
-											$('.select_role').append(data)
+											$('.select_role').eq(x).append(data)
 										}
 									}
 								})
@@ -782,8 +809,8 @@ font-family: 'Open Sans', sans-serif;
 					})
 				}
 
-			function addAreaToSelect(area_id,role_id,similarity,centerid){
-
+			function addAreaToSelect(area_id,role_id,centerid,x){
+				console.log(area_id+" "+role_id+" "+centerid+" "+x)
 			var data = "";
 			// var userid = $('#user-id-select').text();
 			var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
@@ -792,26 +819,25 @@ font-family: 'Open Sans', sans-serif;
 				url:url,
 				dataType: 'JSON',
 				success:function(response){
-					console.log(response)
+					// console.log(response)
 					response['orgchart'].forEach(function(index){
 						if(area_id == index.areaId){
 							 dat = `<option value="${index.areaId}" selected>${index.areaName}</option>`;
 							 data = data+dat;
-							roleChange(role_id,index.areaId);
-
+							roleChange(role_id,index.areaId,x);
 						}
 						else{
 						 dat = `<option value="${index.areaId}" >${index.areaName}</option>`;
 						data = data+dat;
 						}
 					})
-												console.log(data)
-					$('.select_area').append(data)
+												// console.log(data)
+					$('.select_area').eq(x).append(data)
 				}
 			})
 		}
 
-		$(document).on('click','.roleNameClass',function(e){
+		$(document).on('click','.assign_roles',function(e){
 			var roleid = $(this).attr('r_id');
 			var roleName = $(this).text();
 			var x = 0;
@@ -823,44 +849,64 @@ font-family: 'Open Sans', sans-serif;
 				var role_id = $(this).attr('r_id');
 				var similarity = $(this).attr('similarity');
 			var centerid = $('.sellect').val();
-			var url = window.location.origin+"/PN101/settings/getEmployeesForRoles/"+roleid;
+			var y =0;
+			// var url = window.location.origin+"/PN101/settings/getEmployeesForRoles/"+roleid;
+			var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
 			$.ajax({
 				url:url,
 				type:'GET',
 				success:function(response){
-					data = JSON.parse(response);
+						data = JSON.parse(response);
 						$('.priority_areas').empty();
 						$('.mask').addClass("active");
+						data.orgchart.forEach(function(area){
+							// console.log(area);
+							area.roles.forEach(function(role){
+								// console.log(role);
+							url = window.location.origin+"/PN101/settings/getEmployeesForRoles/"+role.roleid;
+							// console.log(role.roleid)
+								$.ajax({
+									url : url,
+									type : 'GET',
+									success : function(res){
+										var res = JSON.parse(res)
+										// console.log(res)
+										res.employees.forEach(function(employee){
+											var code = `<div id="change_role">
+												<span class="changeRole__" role_id="${employee.id}"  style="width:30%">${employee.name}</span>
+											<span class="select_css" style="width:35%;">
+												<select class="select_area" similarity="${x}" style="min-width:80% !important;max-width:80%">
+													<!-- <option>--Select Area--</option> -->
+												</select>
+												</span>
+											<span class="select_css" style="width:35%;">
+												<select class="select_role" similarity="${x}" style="min-width:80% !important;max-width:80%">
+													<!-- <option>--Select Area--</option> -->
+												</select>
+											</span>
+											</div>`;
+											$('.priority_areas').append(code);
+											x++;
+											y++;
+											// console.log(employee)
+																					// console.log(y);
+										addAreaToSelect(role.areaid,role.roleid,centerid,y-1);
+										})			
 
-					data.employees.forEach(function(employee){
-						var code = `<div id="change_role">
-							<span class="changeRole__" role_id="${employee.id}" role_name="${roleName}" style="width:30%">${employee.name}</span>
-						<span class="select_css" style="width:35%;">
-							<select class="select_area" similarity="${x}" style="min-width:80% !important;max-width:80%">
-								<!-- <option>--Select Area--</option> -->
-							</select>
-							</span>
-						<span class="select_css" style="width:35%;">
-							<select class="select_role" similarity="${x}" style="min-width:80% !important;max-width:80%">
-								<!-- <option>--Select Area--</option> -->
-							</select>
-						</span>
-						</div>`;
-						$('.priority_areas').append(code);
-						x++;
-						// console.log(employee)
-					})			
-					addAreaToSelect(area_id,role_id,similarity,centerid)		
+
+									}
+								})
+							})
+						})
+		
 				}
 			})
 		})
+
+$(document).ajaxStop(function(){
+
+})
 	$(document).ready(function(){
-
-
-
-
-
-
 		$(document).on('change','.select_area',function(){
 				var similarity = $(this).attr('similarity');
 				$('.select_role[similarity='+similarity+']').empty()
@@ -889,7 +935,8 @@ font-family: 'Open Sans', sans-serif;
 				},
 				success: function(response){
 					// console.log(response)
-					window.location.reload();
+					console.log(details)
+					// window.location.reload();
 				}
 			})
 

@@ -602,7 +602,7 @@ td.shift-edit{
 		// This value should be changed to $value;
 		// Counter is the total number of days;
 				//for($counter=0;$counter<1;$counter++){ ?>
-				<tr  class="table-row">
+<!-- 				 <tr  class="table-row">
 					<td   style="min-width:14vw" class=" cell-boxes left-most">
 						<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
 
@@ -670,7 +670,7 @@ td.shift-edit{
 
 				  <?php } ?>
 
-				</tr>
+				</tr> -->
 			<?php 
 			//$x++; 
 		} 
@@ -826,7 +826,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 		// This value should be changed to $value;
 		// Counter is the total number of days;
 				//for($counter=0;$counter<1;$counter++){ ?>
-				<tr  class="table-row">
+<!-- 				<tr  class="table-row">
 					<td   style="min-width:14vw" class=" cell-boxes left-most">
 						<?php if($this->session->userdata('UserType')==ADMIN || $this->session->userdata('UserType')==SUPERADMIN){ ?>
 
@@ -889,7 +889,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 
 				  <?php } ?>
 
-				</tr>
+				</tr> -->
 			<?php 
 			//$x++; 
 		} 

@@ -52,7 +52,7 @@ class RostersModel extends CI_Model {
 
 	public function getAllEmployees($roleid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM users WHERE roleid='$roleid'");
+		$query = $this->db->query("SELECT * FROM users WHERE roleid=$roleid");
 		return $query->result();
 	}
 

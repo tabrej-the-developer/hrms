@@ -475,7 +475,7 @@ table.dataTable{
 				for($i=0;$i<count($roster->rosters);$i++){
 				?>
 				<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
-				<tr id="<?php echo $roster->rosters[$i]->id?>">
+				<tr id="<?php echo $roster->rosters[$i]->id?>" clickable="yes">
 					<td><?php echo $i+1 ?></td>
 					<td><?php echo 'Roster | '.dateToDay($roster->rosters[$i]->startDate).'-'.dateToDay($roster->rosters[$i]->endDate) ?></td>
 					<td><?php echo dateToDayAndYear($roster->rosters[$i]->startDate) ?></td>
@@ -484,7 +484,7 @@ table.dataTable{
 				</tr>
 				<?php }?>
 			<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N"){ ?>
-					<tr id="<?php echo $roster->rosters[$i]->id?>">
+					<tr id="<?php echo $roster->rosters[$i]->id?>" clickable="yes">
 					<td><?php echo $i+1 ?></td>
 					<td><?php echo 'Roster | '.dateToDay($roster->rosters[$i]->startDate).'-'.dateToDay($roster->rosters[$i]->endDate) ?></td>
 					<td><?php echo $roster->rosters[$i]->startDate ?></td>
@@ -643,7 +643,7 @@ table.dataTable{
 	});
 	<?php } ?>
 
-		$(document).on('click','#tbody tr',function(){
+		$(document).on('click','#tbody tr[clickable="yes"]',function(){
 			var rosterId = $(this).prop('id')
 			var url = "<?php echo base_url();?>roster/getRosterDetails?rosterId="+rosterId+'&showBudgetYN=N';
 			window.location.href=url;

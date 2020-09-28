@@ -162,9 +162,9 @@ class SettingsModel extends CI_Model {
 			return $query->row();
 		}
 
-		public function addToUsers($employee_no,$password, $emails,$name,$center,$userid,$role,$level,$alias){
+		public function addToUsers($employee_no,$password, $emails,$name,$jobTitle,$center,$userid,$role,$level,$alias){
 			$this->load->database();
-			$query = $this->db->query("INSERT INTO users (id,password, email, name,center,created_at, created_by,roleid,level,alias) VALUES ('$employee_no','$password','$emails','$name','$center|',NOW(),'$userid',$role,'$level','$alias')");
+			$query = $this->db->query("INSERT INTO users (id,password, email, name,center,created_at, $jobTitle,created_by,roleid,level,alias) VALUES ('$employee_no','$password','$emails','$name','$center|',NOW(),'$jobTitle',$userid',$role,'$level','$alias')");
 		}
 
 		public function addToEmployeeBankAccount( $xeroEmployeeId,$accountName,$bsb,$accountNumber,$remainderYN,$amount){
