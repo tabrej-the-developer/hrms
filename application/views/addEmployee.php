@@ -15,50 +15,7 @@
     margin-top: 10px !important;
     background-size: 0.6rem 0.6rem;
 	}
-/*Notification css*/
-      .notify_{
-        /*display: none;*/
-        visibility: hidden;
-        position: fixed;
-        min-height: 1.5rem;
-        width: 15rem;
-        background: #ff0038;
-        color: rgba(0,0,0,0.8);
-        right: 0;
-        top: 30%;
-        border-radius: 0.25rem;
-      }
-      .notify_body{
-        display: flex;
-        justify-content: center;
-        height: 100%;
-      }
-      ._notify_message{
-        width:90%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-      }
-      ._notify_close{
-        width:10%;
-        background: wheat;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        position: absolute;
-        height: 100%;
-        right: 0;
-      }
-      ._notify_close:hover{
-        background: white;
-      }
-      li{
-        list-style: none;
-      }
-/*Notification css*/
+
 	</style>
 </head>
 <body class="add_employee_body">
@@ -492,7 +449,7 @@
 
 						<?php foreach($areas->areas as $roles){?>
 							<?php foreach($roles->roles as $role){?>
-						<option area-id="<?php print_r($role->areaid); ?>" ><?php print_r($role->roleName) ?></option>
+						<option area-id="<?php print_r($role->areaid); ?>" value="<?php echo $role->roleid ?>"><?php print_r($role->roleName) ?></option>
 						<?php } } ?>
 					</select>
 				</span>

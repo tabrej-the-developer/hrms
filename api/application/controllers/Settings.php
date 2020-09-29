@@ -783,7 +783,7 @@ class Settings extends CI_Controller {
 
 
 						if(($data['employee_no'] != null && $data['employee_no'] != "") && ($data['emails'] != null && $data['emails'] != "") && ($data['center'] != null && $data['center'] != "") && ($data['area'] != null && $data['area'] != "") && ($data['role'] != null && $data['role'] != "") ){
-								$this->settingsModel->addToUsers($data['employee_no'],$data['password'],$data['emails'],$data['name'],$data['center'],$userid,intval($roleId),$data['level'],$data['alias']);
+								$this->settingsModel->addToUsersME($data['employee_no'],$data['password'],$data['emails'],$data['name'],$data['center'],$userid,intval($roleId),$data['level'],$data['alias']);
 									//var_dump($this->settingsModel->getPermissionForEmployee($data['employee_no']));
 									if($this->settingsModel->getPermissionForEmployee($data['employee_no']) == null ){
 										$this->settingsModel->addPermissions($data['employee_no'], $isQrReaderYN = 'N', $viewRosterYN = 'Y', $editRosterYN = 'N', $viewTimesheetYN = 'Y', $editTimesheetYN = 'N', $viewPayrollYN = 'Y', $editPayrollYN = 'N', $editLeaveTypeYN = 'N', $viewLeaveTypeYN = 'Y', $createNoticeYN = 'Y', $viewOrgChartYN = 'Y', $editOrgChartYN = 'N', $viewCenterProfileYN = 'Y', $editCenterProfileYN = 'Y', $viewRoomSettingsYN = 'Y', $editRoomSettingsYN = 'N', $viewEntitlementsYN = 'Y', $editEntitlementsYN = 'N', $editEmployeeYN = 'N', $xeroYN = 'N', $viewAwardsYN = 'Y', $editAwardsYN = 'N', $viewSuperfundsYN = 'Y', $editSuperfundsYN = 'N', $createMomYN = 'Y', $editPermissionYN = 'Y', $viewPermissionYN = 'Y');
@@ -904,7 +904,7 @@ $this->settingsModel->addToEmployeeCourses( $xeroEmployeeId,$course_nme,$course_
 					$password = $fname."@123";
 			if($employee_no != null && $employee_no != "" ){
 				if($emails != "" && $emails != null){
-$this->settingsModel->addToUsers($employee_no,$password,$emails,$name,$jobTitle,$center,$manager,$userid,$role,$level,$alias);
+$this->settingsModel->addToUsers($employee_no,$password,$emails,$name,$jobTitle,$center,$userid,$role,$level,$alias);
 						}
 					}
 // Employee bank account	
