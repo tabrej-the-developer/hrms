@@ -1013,7 +1013,15 @@ p.ovrflowtext {
           <div class="media-body ml-3">
            <?php $date=date_create($chats->sentDateTime);?>
              <p class="text-small-chat mb-0 text-muted text-muted font-weight-bold">
-                <a class="name-chat-box"><?php echo ucfirst('name');?></a> 
+                <a class="name-chat-box">
+                  <?php 
+                  if( $this->session->userdata('LoginId') == $chats->senderId ){
+                    echo $this->session->userdata('Name');
+                  }else{
+                    echo ucfirst($chats->senderId);
+                  }
+                  ?>
+                </a> 
                <small class="text-muted chat-message-time"><?php echo date_format($date,"d M y | H:i A");?></small>
              </p>
           <div class="bg-light rounded py-2  pl-0 mb-2">

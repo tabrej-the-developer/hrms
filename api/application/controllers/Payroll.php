@@ -171,7 +171,10 @@ class Payroll extends CI_Controller{
 			if($res != null && $res->userid == $userid){
 				$this->load->model('payrollModel');
 					if($timesheetid != null && $memberid != null ){
-						$this->payrollModel->updateFlag($timesheetid,$memberid,$json->message);
+						if($json->message != "")
+							$this->payrollModel->updateFlag($timesheetid,$memberid,$json->message);
+						else
+							$this->payrollModel->updateFlag($timesheetid,$memberid,"");
 					}
 					$data['status'] = 'SUCCESS';
 				}
@@ -183,6 +186,30 @@ class Payroll extends CI_Controller{
 				echo 'ERROR';
 			}
 		}
+
+	public function updateToPublished($userid){
+		$headers = $this->input->request_headers();
+		   if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+		   	$json = json_decode(file_get_contents('php://input'));
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+				$this->load->model('payrollModel');
+						if(count($json->array) > 0){
+							foreach($json->array as $payroll){
+								$this->payrollModel->updateShift($payroll->timesheetid,$payroll->userid);
+							}
+						}
+					$data['status'] = 'SUCCESS';
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+				echo 'ERROR';
+			}
+		}
+	}
 
 	public function deleteEntitlement($entitlementId,$userid){
 		$headers = $this->input->request_headers();

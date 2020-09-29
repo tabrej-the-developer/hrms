@@ -68,6 +68,7 @@ font-family: 'Open Sans', sans-serif;
     .street_address textarea{
     	width: 66% !important;
     }
+	
 	</style>
 </head>
 <body id="page-top">
@@ -236,10 +237,37 @@ font-family: 'Open Sans', sans-serif;
 	</div>	
 <div style="padding: 20px;"></div>
 </div>
+
+<div class="notify_">
+  <div class="notify_body">
+    <span class="_notify_message">
+      
+    </span>
+    <span class="_notify_close" onclick="closeNotification()">
+      &times;
+    </span>
+  </div>
+</div>
+
 <?php } ?>
 
-
 <script type="text/javascript">
+
+// Notification //
+
+    function showNotification(){
+      $('.notify_').css('visibility','visible');
+    }
+    function addMessageToNotification(message){
+      $('._notify_message').append(`<li>${message}</li>`)
+    }
+    function closeNotification(){
+      $('.notify_').css('visibility','hidden');
+      $('._notify_message').empty();
+    }
+  
+  // Notification //
+
 	$(document).ready(function(){
 		var newRoom = $('.room-class').html();
 		$(document).on('click','#AddRoom',function(){
@@ -250,29 +278,37 @@ font-family: 'Open Sans', sans-serif;
   $(document).ready(()=>{
     $('#wrappers').css('paddingLeft',$('.side-nav').width());
 });
-</script>
-<script type="text/javascript">
+
+
 	function validate(variable){
 		if(($('#'+variable)[0].files[0].size)/(1024*1024) < 4){
 			
 		}else{
 			$('#'+variable).val('');
-			alert('File size must be less than 4MB')
+		      showNotification();
+		      addMessageToNotification('File size must be less than 4MB');
+		      setTimeout(closeNotification,5000)
 		}
 	}
-</script>
-<script type="text/javascript">
+
+
 function onFormSubmit(){
 		if( $('#center_name').val() == null || $('#center_name').val() == "" ){
 			$('#center_name').css({"border-color": "red", 
              "border-width":"1px", 
-             "border-style":"solid"})
+             "border-style":"solid"});
+      showNotification();
+      addMessageToNotification('Enter Center Name');
+      setTimeout(closeNotification,5000)
 			return false;
 		}
 				if( $('#center_street').val() == null || $('#center_street').val() == "" ){
 			$('#center_street').css({"border-color": "red", 
              "border-width":"1px", 
-             "border-style":"solid"})
+             "border-style":"solid"});
+      showNotification();
+      addMessageToNotification('Enter Center Address');
+      setTimeout(closeNotification,5000)
 			setTimeout(function(){
 				$('#center_street').css({"border-color": "#D2D0D0", 
 	             "border-width":"1px", 
@@ -284,18 +320,3 @@ function onFormSubmit(){
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

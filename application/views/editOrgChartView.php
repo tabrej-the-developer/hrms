@@ -918,9 +918,15 @@ font-family: 'Open Sans', sans-serif;
 						url : url,
 						type : 'GET',
 						success : function(response){
-							empCount = JSON.parse(response).employees.length
+							emps = JSON.parse(response).employees;
+							empCount = JSON.parse(response).employees.length;
+							string = "";
 							console.log(i)
 							$('.roleNameClass').eq(c).append(` (${empCount})`);
+							emps.forEach(function(e){
+								string = string +'\n'+e.name
+							})
+							$('.roleNameClass').eq(c).attr('title',string)
 							c++;
 						}
 					})
@@ -960,8 +966,8 @@ $(document).ajaxStop(function(){
 				},
 				success: function(response){
 					// console.log(response)
-					console.log(details)
-					// window.location.reload();
+					// console.log(details)
+					window.location.reload();
 				}
 			})
 

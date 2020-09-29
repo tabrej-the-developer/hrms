@@ -125,6 +125,39 @@ class Payroll extends CI_Controller {
 				}
 			}
 
+		public function updateToPublished(){
+		if($this->session->has_userdata('LoginId')){
+			$form_data = $this->input->post();
+					//footprint start
+				if($this->session->has_userdata('current_url')){
+					footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+					$this->session->set_userdata('current_url',currentUrl());
+				}
+				// footprint end
+				$url = BASE_API_URL."payroll/updateToPublished/".$this->session->userdata('LoginId');
+				if($form_data != null){
+					$data['array'] = $this->input->post('array');
+						$ch = curl_init($url);
+						curl_setopt($ch, CURLOPT_URL,$url);
+						curl_setopt($ch, CURLOPT_POST, 1);
+						curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+						curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+								'x-device-id: '.$this->session->userdata('x-device-id'),
+								'x-token: '.$this->session->userdata('AuthToken')
+							));
+						curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+							$server_output = curl_exec($ch);
+							$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+						if($httpcode == 200){
+							print_r($server_output);
+						}
+						else if($httpcode == 401){
+
+						}
+					}
+				}
+			}
+
 		public function payrollShiftsModal(){
 			if($this->session->has_userdata('LoginId')){
 				$postData = $this->input->get();

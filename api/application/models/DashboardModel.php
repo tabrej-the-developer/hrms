@@ -4,9 +4,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class DashboardModel extends CI_Model {
 
-	public function timesheetCount($centerid){
+	public function timesheetCount($centerid,$status,$userid){
 		$this->load->database();
-			$query = $this->db->query("SELECT * FROM timesheet where centerid = '$centerid'");
+			if($status == 'Published')
+				$query = $this->db->query("SELECT * FROM timesheet where centerid = '$centerid' and status = 'Published' ");
+			if($status == 'Draft')
+				$query = $this->db->query("SELECT * FROM timesheet where centerid = '$centerid' and status = 'Draft' and  createdBy = '$userid' ");
 		return $query->result(); 
 	}
 	public function payrollCount($centerid){
@@ -19,9 +22,12 @@ class DashboardModel extends CI_Model {
 		$query = $this->db->query("SELECT * FROM leaveapplication where userid IN (SELECT id from users where center LIKE '%".$centerid."_' )");
 		return $query->result(); 
 	}
-	public function rosterCount($centerid){
+	public function rosterCount($centerid,$status,$userid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM rosters where centerid = '$centerid'");
+		if($status == 'Published')
+			$query = $this->db->query("SELECT * FROM rosters where centerid = '$centerid' and status = '$status' ");
+		if($status == 'Draft')
+			$query = $this->db->query("SELECT * FROM rosters where centerid = '$centerid' and status = '$status' and createdBy = '$userid' ");
 		return $query->result(); 
 	}
 

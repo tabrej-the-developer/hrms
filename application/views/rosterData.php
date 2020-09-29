@@ -664,6 +664,12 @@ td{
       margin-right:15px !important;
 }
 
+  #centerValue{
+    width: 15rem;
+  }
+  #employeeValue{
+    width: 15rem;
+  }
 
 .edit_priority{
 	font-size: 1rem
@@ -903,9 +909,9 @@ td{
 		.modal_body {
 		  position: fixed;
 		  top: 30%;
-		  left: 50%;
-		  width: 400px;
-		  min-height: 450px;
+		  left: 40%;
+		  width: 50%;
+		  min-height: 300px;
 		  margin-left: -200px;
 		  margin-top: -150px;
 		  background: #fff;
@@ -929,8 +935,8 @@ td{
 	    bottom: 10%;
 	    display: flex;
 	    justify-content: center;
-	    left: 15%;
-		}
+	    width: 100%;
+    }
 		.modal_main{
 			margin-top: 10%;
 			margin-bottom:10%;
@@ -1849,7 +1855,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 			</span>
 			<span class="casualEmployee_label">
 				<label>Date</label>
-				<input type="date" name="" id="casualEmp_date" min="<?php echo $rosterDetails->startDate ?>" max="<?php echo date('Y-m-d',strtotime($rosterDetails->startDate.'+4 days')) ?>">
+				<input type="text" onfocus="(this.type='date')" placeholder="MM/DD/YY" name="" id="casualEmp_date" min="<?php echo $rosterDetails->startDate ?>" max="<?php echo date('Y-m-d',strtotime($rosterDetails->startDate.'+4 days')) ?>" >
 			</span>
 			<span class="casualEmployee_label">
 				<label>Start Time</label>
@@ -1887,6 +1893,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 						<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
 					</i>Save</button>
 	  </div>
+    <i style="font-size: 0.9rem; color:#a2a2a2">* Please select area to get roles</i>
 </div>
 <!-- 	-----------------
 		Add Shift Modal
@@ -2968,7 +2975,6 @@ $('.modal_body').draggable();
 			let employeeId = $('#employeeValue').val();
 			let editRoster = ($('#edit_roster').is(':checked') == true) ? 'Y' : 'N' ;
 			let rosterId = "<?php echo $rosterid; ?>";
-			alert(employeeId)
 			let url = window.location.origin+'/PN101/roster/saveRosterPermissions';
 			$.ajax({
 				url : url,
@@ -2991,7 +2997,6 @@ $('.modal_body').draggable();
 	function getPermissions(){
 		let rosterId = "<?php echo $rosterid; ?>";
 		let employeeId = $('#employeeValue').val();
-		alert(employeeId)
 		let url = window.location.origin+'/PN101/Roster/getRosterPermissions/'+employeeId+'/'+rosterId;
 	 	$.ajax({
 	 		url : url,

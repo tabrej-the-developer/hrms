@@ -322,7 +322,7 @@ i.mr-4{
       margin-left: -28px;
     margin-top: 15px;
     background-size: 0.6rem 0.6rem;
-
+    pointer-events: none !important
 }
 .no_drop_icon.select_css::after{
   background: none !important;
@@ -359,6 +359,46 @@ select{
     z-index:1;
     background-size: 0.8rem 0.8rem;
 }
+/*Notification css*/
+      .notify_{
+        /*display: none;*/
+        visibility: hidden;
+        position: fixed;
+        min-height: 3rem;
+        width: 15rem;
+        background: #ff0038;
+        right: 0;
+        top: 30%;
+        border-radius: 0.25rem;
+      }
+      .notify_body{
+        display: flex;
+        justify-content: center;
+        height: 100%;
+      }
+      ._notify_message{
+        width:90%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      ._notify_close{
+        width:10%;
+        background: wheat;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      ._notify_close:hover{
+        background: white;
+      }
+      li{
+        list-style: none;
+      }
+/*Notification css*/
 @media only screen and (max-width:600px){
   .navbar{
     position: relative;

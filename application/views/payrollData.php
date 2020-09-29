@@ -551,7 +551,7 @@ table.dataTable{
 							</i>Flag</button>
 					</td>
 				<?php }else{ ?>
-						<td class="FLAGGED_flag">
+						<td class="FLAGGED_flag" userid="<?php  echo $payrollShifts->employees[$i]->payrollShifts[0]->userid ?>"  timesheetid="<?php  echo $payrollShifts->timesheetid ?>">
 							<span>FLAGGED</span>
 						</td>
 					<?php } ?>
@@ -745,8 +745,9 @@ table.dataTable{
 </script>
 <script type="text/javascript">
 	$(document).ready(function(){
-		$(document).on('click','#publish',function(){
+		$(document).on('click','.create',function(){
 			var length = $('[pay]').length;
+			// console.log(length)
 			var array = [];
 			var object = {};
 			var url = window.location.origin;
@@ -757,6 +758,7 @@ table.dataTable{
 				object.timesheetid = $('[pay]').eq(i).attr('timesheetid')
 				array.push(object)
 			}
+			console.log(array)
 				$.ajax({
 					url : url,
 					method : 'POST',
@@ -764,13 +766,41 @@ table.dataTable{
 						array : array
 					},
 					success : function(response){
-
-					}
-				})
+						var url_publish = window.location.origin+"/PN101/payroll/updateToPublished"
+						$.ajax({
+							url : url_publish,
+							method : 'POST',
+							data : {
+								array : array
+							},
+							success : function(res){
+								window.location.reload();
+						}
+					})
+				}
+			})
 		})
 	})
-</script>
-<script type="text/javascript">
+
+	$(document).ready(function(){
+		 $(document).on('click','.FLAGGED_flag',function(){
+		 	var timesheetid = $(this).attr('timesheetid');
+		 	var userid = $(this).attr('userid')
+		 	var url = window.location.origin+`/PN101/payroll/updateShiftStatus/${timesheetid}/${userid}`;
+		 	var message = "";
+		 		$.ajax({
+		 			url : url,
+		 			type : 'POST',
+		 			data : {
+		 				message : message
+		 			},
+		 			success : function(response){
+		 				window.location.reload();
+		 			}
+		 		})
+		 })
+	})
+
 	$(document).ready(function(){
 		 $(document).on('click','#flag_modal_save',function(){
 		 	var timesheetid = $(this).attr('timesheetid');
@@ -789,6 +819,7 @@ table.dataTable{
 		 		})
 		 })
 	})
+
 </script>
 <script type="text/javascript">
 	function flag(timesheetid,userid){

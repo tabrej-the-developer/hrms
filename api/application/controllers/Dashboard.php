@@ -35,8 +35,8 @@ class Dashboard extends CI_Controller{
 						$data['leavesCount'] = 0;
 						foreach($centers as $centerid){
 						if($centerid != null || $centerid != ""){
-						$data['rostersCount'] = $data['rostersCount']+sizeof($this->dashboardModel->rosterCount($centerid));
-						$data['timesheetsCount'] = $data['timesheetsCount']+sizeof($this->dashboardModel->timesheetCount($centerid));
+						$data['rostersCount'] = $data['rostersCount']+sizeof($this->dashboardModel->rosterCount($centerid,'Published',$userid)) + sizeof($this->dashboardModel->rosterCount($centerid,'Draft',$userid));
+						$data['timesheetsCount'] = $data['timesheetsCount']+sizeof($this->dashboardModel->timesheetCount($centerid,'Published',$userid))+sizeof($this->dashboardModel->timesheetCount($centerid,'Draft',$userid));
 						$data['payrollsCount'] = $data['payrollsCount']+sizeof($this->dashboardModel->payrollCount($centerid));
 						$data['leavesCount'] = $data['leavesCount'] + sizeof($this->dashboardModel->leavesCount($centerid));
 						}

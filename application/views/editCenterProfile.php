@@ -81,12 +81,60 @@ font-family: 'Open Sans', sans-serif;
       padding: 8px;
       background: rgb(164, 217, 214);
       }
+      .center-list{
+        width: 13rem;
+      }
+      .center_list{
+        margin-left: auto;
+      }
+      .submit_button{
+        padding: 1rem;
+      }
+      .notify_{
+        /*display: none;*/
+        position: fixed;
+        min-height: 3rem;
+        width: 15rem;
+        background: #ff0038;
+        right: 0;
+        top: 30%;
+        border-radius: 0.25rem;
+      }
+      .notify_body{
+        display: flex;
+        justify-content: center;
+        height: 100%;
+      }
+      ._notify_message{
+        width:90%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      ._notify_close{
+        width:10%;
+        background: wheat;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      ._notify_close:hover{
+        background: white;
+      }
+      li{
+        list-style: none;
+      }
   </style>
 </head>
 <body id="page-top">
   <?php $permissions = json_decode($permissions); 
         $centerData = json_decode($centerData);
         $centers = json_decode($centers);
+        $states = json_decode($states);
+        $cD = $centerData->centerDetails;
   ?>
      <?php require_once('header.php') ?>
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewCenterProfileYN : "N")== "Y"){ ?>
@@ -100,6 +148,29 @@ font-family: 'Open Sans', sans-serif;
       </a>
       <span style="font-size:1.75rem;font-weight: bold;color: rgb(23, 29, 75); ">Edit Center</span>
     </span>
+    <span class="select_css center_list">
+        <select class="center-list " id="center-list">
+
+        <?php    for($i=0;$i<count($centers->centers);$i++){
+              if($centers->centers[$i]->centerid == $centerid){
+          ?>
+          <option selected href="javascript:void(0)" 
+                  class="center-class" 
+                  id="<?php echo $centers->centers[$i]->centerid ?>" 
+                  value="<?php echo $centers->centers[$i]->centerid; ?>" >
+                    <?php echo $centers->centers[$i]->name?></option>
+        <?php }
+        else{ ?>
+          <option href="javascript:void(0)" 
+                  class="center-class" 
+                  id="<?php echo $centers->centers[$i]->centerid ?>" 
+                  value="<?php echo $centers->centers[$i]->centerid; ?>">
+                  <?php echo $centers->centers[$i]->name?>
+          </option>
+    <?php   }
+      } ?>
+        </select> 
+      </span>
     <span class="addEmployee_top_select pr-5">
       <a href="<?php echo base_url('settings/createCenter');?>">
         <button id="addCenter_multipleEmployees">Add Center</button>
@@ -116,40 +187,44 @@ font-family: 'Open Sans', sans-serif;
               
             <div class="" style="padding: 5px;"></div>
             <div class="input_box">
-              <label><i style="color: #aa63ff;" class=""></i> Center Name</label>
-              <input type="text" class="" name="center_name" id="ceter name" placeholder="Center name" value="" required>
+              <label>
+                <i style="color: #aa63ff;" class=""></i> Center Name</label>
+              <input type="text" class="" name="center_name" id="ceter name" placeholder="Center name" value="<?php echo isset($cD->name) ? $cD->name : ''; ?>" required>
             </div>
               <div class="input_box">
               <label><i style="color: #aa63ff;" class=""></i> City</label>
-            <input type="text" class="" name="center_city" id="center city" placeholder = "City" value="">
+            <input type="text" class="" name="center_city" id="center city" placeholder = "City" value="<?php echo isset($cD->addCity) ? $cD->addCity : ''; ?>">
             </div>
             <div class="street_address">
               <label><i style="color: #aa63ff;" class=""></i> Street Address</label>
-              <textarea class="street_address" name="center_street" id="center street" placeholder="Street Address"></textarea>
+              <textarea class="street_address" name="center_street" id="center street" placeholder="Street Address"><?php echo isset($cD->addStreet) ? $cD->addStreet : ''; ?></textarea>
             </div>
                <div class="input_box">
               <label><i style="color: #aa63ff;" class=""></i> State</label>
               <span class="select_css">
-                <select class="" name="center_state" id="center state">
-                  <option value=""></option>
+                <select class="" name="center_state" id="center state" value="<?php  echo isset($cD->addState) ? $cD->addState : ''; ?>">
+                  <?php foreach($states->states as $state){ ?>
+                  <option value="<?php echo $state->stateId; ?>"><?php echo $state->stateName; ?></option>
+                <?php } ?>
                 </select>
               </span>
             </div>
+             
               <div class="input_box">
               <label><i style="color: #aa63ff;" class=""></i> Postcode</label>
-              <input class="" type="number" name="center_zip" id="center zip" value="" placeholder = "Postcode" required>
+              <input class="" type="number" name="center_zip" id="center zip" value="<?php echo isset($cD->addZip) ? $cD->addZip : ''; ?>" placeholder = "Postcode" required>
             </div>  
             <div class="input_box">
               <label><i style="color: #aa63ff;" class=""></i> Centre Phone Number</label>
-              <input class="" type="number" name="center_phone" id="centre_phone_number" value="" placeholder = "Centre phone number">
+              <input class="" type="number" name="center_phone" id="centre_phone_number" value="<?php echo isset($cD->centre_phone_number) ? $cD->centre_phone_number : ''; ?>" placeholder = "Centre phone number">
             </div>
               <div class="input_box">
               <label><i style="color: #aa63ff;" class=""></i> Centre Mobile Number</label>
-              <input class="" type="number" name="center_mobile" id="centre_mobile_number" value="" placeholder = "Centre mobile number">
+              <input class="" type="number" name="center_mobile" id="centre_mobile_number" value="<?php echo isset($cD->centre_mobile_number) ? $cD->centre_mobile_number : ''; ?>" placeholder = "Centre mobile number">
             </div>
               <div class="input_box">
               <label><i style="color: #aa63ff;" class=""></i> Centre Email  </label>
-              <input class="" type="email" name="center_email" id="Centre_email " value="" placeholder = "Centre email  ">
+              <input class="" type="email" name="center_email" id="Centre_email " value="<?php echo isset($cD->centre_email) ? $cD->centre_email : ''; ?>" placeholder = "Centre email  ">
             </div>
             <div class="input_box">
               <label>
@@ -202,8 +277,8 @@ font-family: 'Open Sans', sans-serif;
               <input class="" type="text" name="centre_nominated_supervisor" id="centre_nominated_supervisor" placeholder="Center nominated-supervisor" value="">
             </div>
           </div>
-        <hr>
-          <div class="row">
+        <!-- <hr> -->
+<!--           <div class="row">
             <div class="col-lg-6"><h3>Organize Rooms</h3></div>
 
             <div class="" style="padding: 5px;"></div>
@@ -228,10 +303,10 @@ font-family: 'Open Sans', sans-serif;
             <input type="number" class="maximum_age" name="maximum_age[]" id="" value="" placeholder="Max age in months" > 
           </div>
             </div>
-          </span> 
-        <hr>
+          </span>  -->
+        <!-- <hr> -->
 
-          <div class="row text-center justify-content-center align-self-center">
+          <div class="row text-center justify-content-center align-self-center submit_button">
             <div class=""></div>
             <center><button type="submit" class="btn btn-success" style="padding: 6px 30px;"><i style="color: #fff;" class=""></i>&nbsp;  Save</button></center>
           </div>
@@ -242,30 +317,68 @@ font-family: 'Open Sans', sans-serif;
   </div>  
 <div style="padding: 20px;"></div>
 </div>
+<div class="notify_">
+  <div class="notify_body">
+    <span class="_notify_message">
+      
+    </span>
+    <span class="_notify_close" onclick="closeNotification()">
+      &times;
+    </span>
+  </div>
+</div>
 <?php } ?>
 
 
 <script type="text/javascript">
-  $(document).ready(function(){
-    var newRoom = $('.room-class').html();
-    $(document).on('click','#AddRoom',function(){
-      var length = $('.room-class').length;
-      $('.room-class').eq(length-1).after(newRoom);
+  $(document).on('change','#center-list',function(){
+    var centerid = $('#center-list').val();
+    var url = window.location.origin+"/PN101/settings/centerProfile/"+centerid
+    $.ajax({
+      url : url,
+      type : 'GET',
+      success : function(response){
+        console.log(response)
+        $('#content-wrappers-element').html($(response).find('#content-wrappers-element').html());
+          // document.getElementById('center-list').value = parseInt(centerid);
+      }
     })
   })
+
   $(document).ready(()=>{
-    $('#wrappers').css('paddingLeft',$('.side-nav').width());
+    if($(document).width() > 1024){
+        $('#wrappers').css('paddingLeft',$('.side-nav').width());
+    }
 });
-</script>
-<script type="text/javascript">
+
+// Notification //
+
+    function showNotification(){
+      $('.notify_').css('visibility','visible');
+    }
+    function addMessageToNotification(message){
+      $('._notify_message').append(`<li>${message}</li>`)
+    }
+    function closeNotification(){
+      $('.notify_').css('visibility','hidden');
+      $('._notify_message').empty();
+    }
+  
+  // Notification //
+
+
   function validate(variable){
     if(($('#'+variable)[0].files[0].size)/(1024*1024) < 4){
       
     }else{
       $('#'+variable).val('');
-      alert('File size must be less than 4MB')
+      showNotification();
+      addMessageToNotification('File size must be less than 4MB');
+      setTimeout(closeNotification,5000)
     }
   }
+
+
 </script>
 </body>
 </html>

@@ -15,7 +15,50 @@
     margin-top: 10px !important;
     background-size: 0.6rem 0.6rem;
 	}
-
+/*Notification css*/
+      .notify_{
+        /*display: none;*/
+        visibility: hidden;
+        position: fixed;
+        min-height: 1.5rem;
+        width: 15rem;
+        background: #ff0038;
+        color: rgba(0,0,0,0.8);
+        right: 0;
+        top: 30%;
+        border-radius: 0.25rem;
+      }
+      .notify_body{
+        display: flex;
+        justify-content: center;
+        height: 100%;
+      }
+      ._notify_message{
+        width:90%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      ._notify_close{
+        width:10%;
+        background: wheat;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        position: absolute;
+        height: 100%;
+        right: 0;
+      }
+      ._notify_close:hover{
+        background: white;
+      }
+      li{
+        list-style: none;
+      }
+/*Notification css*/
 	</style>
 </head>
 <body class="add_employee_body">
@@ -781,6 +824,18 @@
 		</div>
 	</div>
 </div>
+<div class="notify_">
+	<div class="note">
+		  <div class="notify_body">
+    <span class="_notify_message">
+      
+    </span>
+    <span class="_notify_close" onclick="closeNotification()">
+      &times;
+    </span>
+  </div>
+	</div>
+</div>
 <script type="text/javascript">
 	$(document).ready(()=>{
 		if($(document).width() > 1024){
@@ -805,6 +860,20 @@
 
 
 <script type="text/javascript">
+
+// Notification //
+    function showNotification(){
+      $('.notify_').css('visibility','visible');
+    }
+    function addMessageToNotification(message){
+      $('._notify_message').append(`<li>${message}</li>`)
+    }
+    function closeNotification(){
+      $('.notify_').css('visibility','hidden');
+      $('._notify_message').empty();
+    }
+  // Notification //
+
 	$(document).ready(function(){
 		$(document).on('click','.e-b-a-s',function(){
 			$('.employee-bank-account-section').css('display','block')
@@ -871,9 +940,7 @@
 
 	accountCount();
 		
-</script>
 
-<script type="text/javascript">
 	$(document).ready(function(){
 		$(document).on('click','.add-row',function(){
 			var count = $('.statement').length;
@@ -893,8 +960,7 @@
 			});
 					$('.remainderYN[value="N"]').eq(0).prop('checked',true);
 		});
-</script>
-<script type="text/javascript">
+
 	
 $(document).ready(function(){
 	var saved = $('.tax-declaration-class').html();
@@ -910,9 +976,7 @@ $(document).ready(function(){
 		$('.tax-declaration-class').empty();
 	}
 })
-</script>
 
-<script type="text/javascript">
 	$(document).ready(function(){
 		$('#center').change(function(){
 	var id = this.value;
@@ -932,9 +996,7 @@ $(document).ready(function(){
 			})
 		})
 	});
-</script>
 
-<script type="text/javascript">
 		for(x=0;x<$('#role').children().length;x++){
 		if($('#role').children('option').eq(x).attr('area-id') == 1){
 			
@@ -962,67 +1024,91 @@ $(document).ready(function(){
 		});
 
 
-</script>
-<script type="text/javascript">
+
 	function onFormSubmit(e){
 		if($('#fname').val() == null || $('#fname').val() == "" || 	$('#lname').val() == null || $('#lname').val() == ""){
 		$('#fname').css({"border-color": "red", 
              "border-width":"1px", 
              "border-style":"solid"})
+	    showNotification();
+      addMessageToNotification('Enter First Name');
+      setTimeout(closeNotification,5000)
 		return false;
 		}
 		if($('#emails').val() == null || $('#emails').val() == ""){
 			$('#emails').css({"border-color": "red", 
              "border-width":"1px", 
              "border-style":"solid"})
+      showNotification();
+      addMessageToNotification('Enter Email');
+      setTimeout(closeNotification,5000)
 			return false;
 		}
 		if($('#alias').val() == null || $('#alias').val() == ""){
 			$('#alias').css({"border-color": "red", 
              "border-width":"1px", 
              "border-style":"solid"})
+      showNotification();
+      addMessageToNotification('Enter Alias Name');
+      setTimeout(closeNotification,5000)
 			return false;
 		}
 		if($('#jobTitle').val() == null || $('#jobTitle').val() == ""){
 			$('#jobTitle').css({"border-color": "red", 
              "border-width":"1px", 
              "border-style":"solid"})
+      showNotification();
+      addMessageToNotification('Enter Job Title');
+      setTimeout(closeNotification,5000)
 			return false;
 		}
 		if($('#startDate').val() == null || $('#startDate').val() == ""){
 			$('#startDate').css({"border-color": "red", 
              "border-width":"1px", 
              "border-style":"solid"})
+      showNotification();
+      addMessageToNotification('Enter Start Date');
+      setTimeout(closeNotification,5000)
 			return false;
 		}
 		if( $('#employee_no').val() == null || $('#employee_no').val() == "" ){
 			$('#employee_no').css({"border-color": "red", 
              "border-width":"1px", 
              "border-style":"solid"})
-			return false;
-		}
-		if( $('#role').val() == null || $('#role').val() == "" ){
-			$('#role').css({"border-color": "red", 
-             "border-width":"1px", 
-             "border-style":"solid"})
+      showNotification();
+      addMessageToNotification('Enter Employee Number');
+      setTimeout(closeNotification,5000)
 			return false;
 		}
 		if( $('#area').val() == null || $('#area').val() == "" ){
 			$('#area').css({"border-color": "red", 
              "border-width":"1px", 
              "border-style":"solid"})
+      showNotification();
+      addMessageToNotification('Select Area');
+      setTimeout(closeNotification,5000)
+			return false;
+		}
+		if( $('#role').val() == null || $('#role').val() == "" ){
+			$('#role').css({"border-color": "red", 
+             "border-width":"1px", 
+             "border-style":"solid"})
+      showNotification();
+      addMessageToNotification('Select Role');
+      setTimeout(closeNotification,5000)
 			return false;
 		}
 		if( $('#level').val() == null || $('#level').val() == "" ){
 			$('#level').css({"border-color": "red", 
              "border-width":"1px", 
              "border-style":"solid"})
+      showNotification();
+      addMessageToNotification('Select Level');
+      setTimeout(closeNotification,5000)
 			return false;
 		}
 	}
-</script>
 
-<script type="text/javascript">
 	$(document).ready(function(){
 
 		var superfundHTML = $('.superfund-parent').html();
@@ -1030,9 +1116,7 @@ $(document).ready(function(){
 		$('.superfund-parent').append(superfundHTML);
 		})
 	})
-</script>
 
-<script type="text/javascript">
 	$(document).ready(()=>{
 			$('.e-s span').addClass('arrow');
         $('.e-s').click(function(){
@@ -1088,3 +1172,5 @@ $(document).ready(function(){
 <?php } ?>
 </body>
 </html>
+
+

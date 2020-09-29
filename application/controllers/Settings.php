@@ -233,14 +233,32 @@ public function editRooms(){
 			// footprint end
 			$data['centers'] = $this->getAllCenters();
 			$data['permissions'] = $this->fetchPermissions();
-			if($centerid == null){
-				$data['centerid'] = $centerid;
-				$data['centerData'] = $this->editCenterProfile($data['centerid']);
-			}
-			else{
-				$data['centerid'] = (json_decode($this->getAllCenters())->centers[0])->centerid;
-				$data['centerData'] = $this->editCenterProfile($data['centerid']);
-			}
+			$data['states'] = $this->getStates();
+		  	if($centerid == null){
+		  		if(!isset($_SESSION['centerr'])){
+							$centerid = json_decode($data['centers'])->centers[0]->centerid;
+							$_SESSION['centerr'] =$centerid;
+							$data['centerid'] = $centerid;
+							$data['centerData'] = $this->editCenterProfile($centerid);
+		  		}else{
+			  			$centerid = $_SESSION['centerr'];
+			  			$data['centerid'] = $centerid;
+			  			$data['centerData'] = $this->editCenterProfile($centerid);
+		  		}
+				}else{
+					$_SESSION['centerr'] = $centerid;
+					$data['centerid'] = $centerid;
+	  			$data['centerData'] = $this->editCenterProfile($centerid);
+				}
+
+			// if($centerid == null){
+			// 	$data['centerid'] = $centerid;
+			// 	$data['centerData'] = $this->editCenterProfile($data['centerid']);
+			// }
+			// else{
+			// 	$data['centerid'] = (json_decode($this->getAllCenters())->centers[0])->centerid;
+			// 	$data['centerData'] = $this->editCenterProfile($data['centerid']);
+			// }
 				$this->load->view('editCenterProfile',$data);
 		}
 		else{
