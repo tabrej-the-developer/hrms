@@ -723,6 +723,9 @@ color:#FFFFFF;
         transform: scale(1.0);
         transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
     }
+    .tokens-container.form-control{
+      padding-left: 2rem !important;
+    }
 </style>
 </head>
 <body>

@@ -901,10 +901,10 @@ $this->settingsModel->addToEmployeeCourses( $xeroEmployeeId,$course_nme,$course_
 				}
 // Users	
 					$name = $fname." ".$mname." ".$lname;
-					$password = $fname."@123";
+					$password = strtolower($fname)."@123";
 			if($employee_no != null && $employee_no != "" ){
 				if($emails != "" && $emails != null){
-$this->settingsModel->addToUsers($employee_no,$password,$emails,$name,$jobTitle,$center,$userid,$role,$level,$alias);
+$this->settingsModel->addToUsers($employee_no,md5($password),$emails,$name,$jobTitle,$center,$userid,$role,$level,$alias);
 						}
 					}
 // Employee bank account	
@@ -978,11 +978,11 @@ $this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$f
 					http_response_code(200);
 					echo json_encode($data);
 									}
+									}
 					else{
 						http_response_code(401);
 							}
 						}
-					}
 				}
 			}
  	function postToXero($access_token,$tenant_id,$data){

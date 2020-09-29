@@ -1340,6 +1340,7 @@ $server_output = curl_exec($ch);
 		$data['medicals_id'] = isset($_POST['medicals_id']) ? $_POST['medicals_id']: "";
 	$data['dietaryPreferences'] = isset($_POST['dietaryPreferences']) ? $_POST['dietaryPreferences']: "";
 			$data['userid'] = $this->session->userdata('LoginId');
+		}
 			$url = BASE_API_URL."settings/createEmployeeProfile";
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
@@ -1352,7 +1353,8 @@ $server_output = curl_exec($ch);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			print_r($server_output);
+			var_dump($httpcode);
+			var_dump($server_output);
 			if($httpcode == 200){
 				redirect(base_url('settings'));
 				curl_close ($ch);
@@ -1362,7 +1364,6 @@ $server_output = curl_exec($ch);
 
 			}
 		}
-	}
 
 	public function AddMultipleEmployees(){
 			if($this->session->has_userdata('LoginId')){
