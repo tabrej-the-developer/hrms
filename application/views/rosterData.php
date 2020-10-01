@@ -72,42 +72,46 @@ function timex( $x)
       if($mode == 'L'){
         $cellSize = 57.1428;
         $size = 400;
+        $leftSpaceLeftImage = 10;
+        $leftSpaceRightImage = 380;
       }
       if($mode == 'P'){
         $cellSize = 39.285;
         $size = 275;
+        $leftSpaceLeftImage = 10;
+        $leftSpaceRightImage = 260;
       }
       $this->SetFont('Arial','B',10);
       $roster = $GLOBALS['roDetails']->roster; 
             $this->SetFont('Arial','B',25);
-      $this->Image(base_url('assets/images/icons/amigo.jpeg'),10,6,60);
-      $this->Cell($size,20,'Roster from '.$GLOBALS['roDetails']->startDate.' to '.$GLOBALS['roDetails']->endDate,0,0,'C');
-      $this->Image(base_url('assets/images/icons/Todquest_logo.png'),260,10,20);
+      $this->Image(base_url('assets/images/icons/amigo.jpeg'),$leftSpaceLeftImage,6,60);
+      $this->Cell($size,20,'Roster '.$GLOBALS['roDetails']->startDate.' to '.$GLOBALS['roDetails']->endDate,0,0,'C');
+      $this->Image(base_url('assets/images/icons/Todquest_logo.png'),$leftSpaceRightImage,10,20);
                 $this->Ln();
     /* Header*/
           $this->SetFont('Arial','B',10);
-              $this->Cell($cellSize,10,'Role',1,0,'C');
-              $this->Cell($cellSize,10,'Name',1,0,'C');
+              $this->Cell($cellSize,8,'Role',1,0,'C');
+              $this->Cell($cellSize,8,'Name',1,0,'C');
         for($i=0;$i<5;$i++){
           $date = $GLOBALS['roDetails']->startDate;
-          $this->Cell($cellSize,10,date('D',strtotime($date.'+'.$i. 'days'))." ".'('.date('dS',strtotime($date.'+'.$i. 'days')).')',1,0,'C');
+          $this->Cell($cellSize,8,date('D',strtotime($date.'+'.$i. 'days'))." ".'('.date('dS',strtotime($date.'+'.$i. 'days')).')',1,0,'C');
           }
           $this->Ln();
     foreach($roster as $ro){
-      $this->Cell($size,10,$ro->areaName,1,0,'C');
+      $this->Cell($size,8,$ro->areaName,1,0,'C');
       $this->Ln();
       $roles = $ro->roles;
       foreach($roles as $role){
         // print_r($role);
-        $this->Cell($cellSize,10,$role->empTitle,1,0,'C');
-        $this->Cell($cellSize,10,$role->empName,1,0,'C');
+        $this->Cell($cellSize,8,$role->empTitle,1,0,'C');
+        $this->Cell($cellSize,8,$role->empName,1,0,'C');
         for($i=0;$i<5;$i++){
         // foreach($role->shifts as $r){
           if(isset($role->shifts[$i]->startTime)){
-          $this->Cell($cellSize,10,$this->timex($role->shifts[$i]->startTime).'-'.$this->timex($role->shifts[$i]->endTime),1,0,'C');
+          $this->Cell($cellSize,8,$this->timex($role->shifts[$i]->startTime).'-'.$this->timex($role->shifts[$i]->endTime),1,0,'C');
           }
           else{
-          $this->Cell($cellSize,10,"",1,0,'C');
+          $this->Cell($cellSize,8,"",1,0,'C');
           }
         }
           $this->Ln();
@@ -1306,8 +1310,8 @@ td{
 							<img src="<?php echo base_url('assets/images/icons/print.png'); ?>" style="max-height:1rem;margin-right:10px">
 						</i>Print</button>
 					<span class="print-hidden-btn">
-						<button class="print-landscape" onclick="landscape()"><a href="<?php echo base_url('roster/getRosterDetails?rosterId='.$rosterid.'&showBudgetYN=N&printMode=L'); ?>">Landscape</a></button>
-						<button class="print-portrait" onclick="portrait()"><a href="<?php echo base_url('roster/getRosterDetails?rosterId='.$rosterid.'&showBudgetYN=N&printMode=P'); ?>">Portrait</a>a></button>
+						<button class="print-landscape" onclick="landscape()"><a href="<?php echo base_url('roster/getRosterDetails?rosterId='.$rosterid.'&showBudgetYN=N&printMode=L'); ?>" target="_blank">Landscape</a></button>
+						<button class="print-portrait" onclick="portrait()"><a href="<?php echo base_url('roster/getRosterDetails?rosterId='.$rosterid.'&showBudgetYN=N&printMode=P'); ?>" target="_blank">Portrait</a></button>
 					</span>
 				</span>
 			</span>
