@@ -177,6 +177,11 @@ class RostersModel extends CI_Model {
 		$this->db->query("DELETE FROM shift WHERE roasterId='$rosterid'");
 		$this->db->query("DELETE FROM rosters WHERE id='$rosterid'");
 	}
+	public function deleteRosterTemplate($rosterid){
+		$this->load->database();
+		$this->db->query("DELETE FROM templateshift WHERE roasterId='$rosterid'");
+		$this->db->query("DELETE FROM rostertemplates WHERE id='$rosterid'");
+	}
 
 	public function publishRoster($rosterid){
 		$this->load->database();
@@ -267,7 +272,7 @@ class RostersModel extends CI_Model {
 
 	}
 
-	public function getCasualEmployees(){
+	public function getCasualEmployees($centerid){
 		$this->load->database();
 		$query = $this->db->query("SELECT * from users");
 		return $query->result();

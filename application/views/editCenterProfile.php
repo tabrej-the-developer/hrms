@@ -90,43 +90,7 @@ font-family: 'Open Sans', sans-serif;
       .submit_button{
         padding: 1rem;
       }
-      .notify_{
-        /*display: none;*/
-        position: fixed;
-        min-height: 3rem;
-        width: 15rem;
-        background: #ff0038;
-        right: 0;
-        top: 30%;
-        border-radius: 0.25rem;
-      }
-      .notify_body{
-        display: flex;
-        justify-content: center;
-        height: 100%;
-      }
-      ._notify_message{
-        width:90%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-      }
-      ._notify_close{
-        width:10%;
-        background: wheat;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-      }
-      ._notify_close:hover{
-        background: white;
-      }
-      li{
-        list-style: none;
-      }
+
   </style>
 </head>
 <body id="page-top">

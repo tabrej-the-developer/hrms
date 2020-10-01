@@ -258,8 +258,9 @@
 			border-bottom:none;
 			background-color:#8D91AA;
 			color: #E7E7E7;
-          display: flex;
-          justify-content: center; 
+      display: flex;
+      justify-content: center;
+      border-radius: 0 !important; 
 		}
 		.modal-content {
 			border-radius:0;	
@@ -726,6 +727,12 @@ color:#FFFFFF;
     .tokens-container.form-control{
       padding-left: 2rem !important;
     }
+    @media only screen and (max-width: 780px ){
+        #calendar{
+          width: 100%;
+        }
+
+    } 
 </style>
 </head>
 <body>
@@ -754,7 +761,7 @@ color:#FFFFFF;
 			$moduleRowCount = json_decode($moduleEntryCount);
 		}
 		 ?>
-		<div class="row mr-0 mt-3 cardContainer pl-4 pr-4">
+		<div class="row mr-0 mt-3 cardContainer pl-md-4 pr-md-4">
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewTimesheetYN : "N") == "Y"){ ?>
 			<span class="col-3 cardItem " >
 				<span class="row p-0 m-0 timesheets">
@@ -859,8 +866,8 @@ color:#FFFFFF;
 				</span>
 			</span>
 		</div>
-		<div class="d-flex calendar-parent-div">
 			<div id="calendar" class="col-md-9"></div>
+		<div class="d-md-flex  calendar-parent-div">
 			<div class="col-md-3 upcoming_events">
 				<div class="upcoming_events_title text-center">Upcoming Events</div>
 				<div> <?php 
@@ -939,7 +946,7 @@ color:#FFFFFF;
       <div class="modal-content">
         <div class="modal-header ">
     
-          <h3 class="modal-title ">Schedule New Event</h3>
+          <h3 class="modal-title ">Create Event</h3>
         </div>
         <div class="modal-body container">
              <form method="post" action="<?php echo base_url() ?>mom/addMeeting" class="dashboard_form" onsubmit="return onFormSubmit()">

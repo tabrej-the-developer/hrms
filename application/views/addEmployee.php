@@ -555,7 +555,7 @@
 
 		<span class="span-class">
 			<label class="labels__">Highest-qual-held</label>
-		<input placeholder="Highest-qual-held" id="highest_qual_held" name="highest_qual_held" type="text">
+		<input id="highest_qual_held" name="highest_qual_held" type="text">
 		</span>
 		<span class="span-class">
 			<label class="labels__">Date Obtained</label>
@@ -571,11 +571,11 @@
 		</span>
  -->		<span class="span-class">
 			<label class="labels__">Qualification working Toward</label>
-		<input placeholder="Qual-towards-desc" id="qual_towards_desc" name="qual_towards_desc" type="text">
+		<input  id="qual_towards_desc" name="qual_towards_desc" type="text">
 		</span>
 		<span class="span-class">
 			<label class="labels__">Qual-towards-%-comp</label>
-		<input placeholder="Qual towards % comp" id="qual_towards_percent_comp" name="qual_towards_percent_comp" type="text">
+		<input  id="qual_towards_percent_comp" name="qual_towards_percent_comp" type="text">
 		</span>
 
 <!-- 		<span class="span-class">
@@ -629,19 +629,19 @@
 		</span>
 		<span class="span-class">
 			<label class="labels__">	Visa-type		</label>
-			<input placeholder="Visa-type" id="visa_type" name="visa_type" type="text">
+			<input id="visa_type" name="visa_type" type="text">
 		</span>
 		<span class="span-class">
 			<label class="labels__">	Visa-grant-date	</label>
-			<input placeholder="Visa-grant-date" id="visa_grant_date" name="visa_grant_date" type="date">
+			<input  id="visa_grant_date" name="visa_grant_date" type="date">
 		</span>
 		<span class="span-class">
 			<label class="labels__">	Visa-end-date	</label>
-			<input placeholder="Visa-end-date" id="visa_end_date" name="visa_end_date" type="date">
+			<input  id="visa_end_date" name="visa_end_date" type="date">
 		</span>
 		<span class="span-class">
 			<label class="labels__">	Visa-conditions</label>
-			<input placeholder="Visa-conditions" id="visa_conditions" name="visa_conditions" type="text">
+			<input  id="visa_conditions" name="visa_conditions" type="text">
 		</span>
 
 		<div>

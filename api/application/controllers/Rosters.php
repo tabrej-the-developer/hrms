@@ -1004,6 +1004,47 @@ class Rosters extends MY_Controller {
 		}
 	}
 
+	public function updateRosterTemplate(){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $json->userid){
+				$rosterid = $json->rosterid;
+				$status = $json->status;
+				$userid = $json->userid;
+				if($rosterid != null && $rosterid != "" && $status != null && $status != "" &&
+					$userid != null && $userid != ""){
+					$this->load->model('rostersModel');
+					if($status == "Discarded")
+						$this->rostersModel->deleteRosterTemplate($rosterid);
+					else if($status == "Published"){
+						$this->rostersModel->publishRoster($rosterid);
+						$this->notificationOnRosterPublish($rosterid,$userid);
+					}
+					else
+						$this->rostersModel->updateRoster($rosterid,$status);
+					$data['Status'] = 'SUCCESS';
+					http_response_code(200);
+					echo json_encode($data);
+				}
+				else{
+					$data['Status'] = 'ERROR';
+					$data['Message'] = "Invalid Parameters";
+					http_response_code(200);
+					echo json_encode($data);
+				}
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
 	public function notificationOnRosterPublish($rosterid,$userid){
 		$this->load->model('rostersModel');
 		$this->load->model('leaveModel');
@@ -1169,13 +1210,41 @@ function dateToDay($date){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
+			$this->load->model('utilModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			if($res != null && $res->userid == $userid){
 				$this->load->model('rostersModel');
-				$casualEmployees = $this->rostersModel->getCasualEmployees();
-				$data['casualEmployees'] = [];
 
+				$data['casualEmployees'] = [];
 				$rosterEmployees = $this->rostersModel->getAllEmployeesFromRoster($rosterid);
+
+				$userDetails = ($this->utilModel->getUserDetails($userid));
+				$getSuperAdmins = $this->utilModel->getSuperAdmins();
+				$casualEmployees= [];
+				// if($userDetails->role != 1){
+					foreach($getSuperAdmins as $superadmin){
+						$centers = explode('|',$superadmin->center);
+						foreach($centers as $cent){
+							$cs = explode('|',$userDetails->center);
+							foreach($cs as $c){
+								if($c == $cent && $c != "" && $c != null){
+									$admin = $superadmin->center;
+									$allusers = $this->utilModel->getAllUsers();
+									foreach($allusers as $u){
+										if($u->role != 1){
+											$cntrs = explode('|',$u->center);
+											foreach($cntrs as $cntr){
+												if($cntr == $cent){
+													array_push($casualEmployees,$u);
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				// }
 				foreach ($casualEmployees as $emp) {
 					$emp_exists = false;
 					foreach($rosterEmployees as $roster_emp){

@@ -2041,7 +2041,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 <script type="text/javascript">
 	$(document).ready(function(){
 		$(document).on('click','.roster__',function(){
-			var url = window.location.origin+"/PN101/roster/updateRoster";
+			var url = window.location.origin+"/PN101/roster/updateRosterTemplate";
 			var rosterid = "<?php echo $rosterid; ?>";
 			var userid = "<?php echo $userid; ?>";
 			if($(this).prop('id') == "discard-roster"){

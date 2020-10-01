@@ -375,6 +375,14 @@ td{
 	align-items: center;
 	justify-content: center;
 }
+.leave::before{
+  border-left: 0.25rem solid rgba(253, 179, 93, 1) ;
+  content: ' ';
+  position: absolute;
+  height: 100%;
+  left: 0;
+  top: 0; 
+}
 .budget-table-parent{
 	position: fixed;
 	bottom: 0;
@@ -997,6 +1005,12 @@ td{
   }
 
 @media print{
+.occupancy_css{
+  display: none !important;
+}
+#message{
+  border: none !important;
+}
   td,th,table,tr{
     border: 0.5px dotted black !important;
   }
@@ -1203,12 +1217,20 @@ function timex( $x)
       if(($x%100)==0){
       $output = intval($x/100)-12 . ":00 PM";
       }
-      if(($x%100)!=0){
+      if(($x%100)!=0 && intval($x/100)!=12){
         if(($x%100) < 10){
           $output = intval($x/100)-12 .":0". $x%100 . " PM";
         }
         if(($x%100) >= 10){
           $output = intval($x/100)-12 .":". $x%100 . " PM";
+        }
+      }
+      if(($x%100)!=0 && intval($x/100)==12){
+        if(($x%100) < 10){
+          $output = intval($x/100) .":0". $x%100 . " PM";
+        }
+        if(($x%100) >= 10){
+          $output = intval($x/100) .":". $x%100 . " PM";
         }
       }
   }
@@ -1320,7 +1342,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 					if($rosterDetails->roster[$x]->isRoomYN == "Y")
 						{
 				?>
-				<tr>
+				<tr class="occupancy_css">
 					<td>Occupancy</td>
 					<td><?php echo $rosterDetails->roster[$x]->occupancy[0]->occupancy?></td>
 					<td><?php echo $rosterDetails->roster[$x]->occupancy[1]->occupancy?></td>
@@ -1403,7 +1425,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 
 		 ?>
 
-					<td class="shift-edit cell-boxes count-<?php echo $index+1;?> <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"  style="width:12vw" 
+					<td class="shift-edit cell-boxes count-<?php echo $index+1;?> <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "leave" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"  style="width:12vw" 
 					 name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->shiftid ?>"  
 
 					 name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleid ?>"
@@ -1429,9 +1451,11 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 		 if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status != "Rejected"){ 
 					  $weeklyTotal = $weeklyTotal + $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?>
 					  				
-					<?php  } }else{
-						echo 'On Leave';
-					} ?>
+          <?php } } else{ ?>
+            <span class="">
+              <?php echo 'On Leave'; ?>
+            </span>
+        <?php     } ?>
 
 					   </div>
 					</td>
@@ -1473,7 +1497,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 					if($rosterDetails->roster[$x]->isRoomYN == "Y")
 						{
 				?>
-				<tr>
+				<tr class="occupancy_css">
 					<td></td>
 					<td><?php echo $rosterDetails->roster[$x]->occupancy[0]->occupancy?></td>
 					<td><?php echo $rosterDetails->roster[$x]->occupancy[1]->occupancy?></td>
@@ -1553,7 +1577,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 			if($currentSequenceDate  == $currentDate){
 				?>
 
-					<td class="<?php if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$counter]->empId && $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status == 'Published'){ ?> shift-edit <?php } ?> cell-boxes count-<?php echo $index+1;?>  <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"  style="width:12vw" 
+					<td class="<?php if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$counter]->empId && $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status == 'Published'){ ?> shift-edit <?php } ?> cell-boxes count-<?php echo $index+1;?>  <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "leave" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"  style="width:12vw" 
 					 name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->shiftid?>"  
 					 name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleid ?>"
 			<?php if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$counter]->empId){ ?>
@@ -1571,9 +1595,11 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 					  $weeklyTotal = $weeklyTotal + $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?> 
 				<span class="row m-0 d-flex justify-content-center roster_shift_message">
 					<?php echo isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->message) ? $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->message : "";?></span>
-					<?php } } else{
-						echo 'On Leave';
-					} ?>
+					<?php } } else{ ?>
+            <span class="leave">
+              <?php echo 'On Leave'; ?>
+            </span>
+			<?php		} ?>
 					</div>
 					</td>
  <?php $p++; $index++;}else{
@@ -2040,18 +2066,18 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 
 				var model = document.getElementById("mxModal");
 
-				$(document).on('click','.shift-edit',function(){
-					 model.style.display = "block";
-				})
+	$(document).on('click','.shift-edit',function(){
+		 model.style.display = "block";
+	})
 
-				$(document).on('click','.close',function(){
-					 model.style.display = "none";
-					 ('#user-form').trigger('reset');
-				})
-				
-				$(document).on('click','.buttons',function(){
-					window.location.href = window.location.origin+"/PN101/roster/roster_dashboard"
-				})
+	$(document).on('click','.close',function(){
+		 model.style.display = "none";
+		 ('#user-form').trigger('reset');
+	})
+	
+	$(document).on('click','.buttons',function(){
+		window.location.href = window.location.origin+"/PN101/roster/roster_dashboard"
+	})
 
 	$(document).on('click','.shift-edit',function(){
 		var starts = $(this).attr('stime');
@@ -2437,66 +2463,62 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 
     $('.containers').css('paddingLeft',$('.side-nav').width());
 
-	function timer( x)
-	{ 
-	    var output="";
-	    if((x/100) < 12){
-	        if((x%100)==0 ){
-	        	if((x/100)<10){
-	         output = "0"+Math.floor(x/100) + ":00" ;
-	   		 }
-		    if((x/100)>9){
-		    	output = Math.floor(x/100) + ":00" ;
-		    }
-	    }
-	    if((x%100)!=0){
-	        if((x/100)<10){
-	        	if(x%100 <10){
-	        		 output = "0"+Math.floor(x/100) + ":0" + String(x%100) ;
-	        	}
-	        	else{
-	        		 output = "0"+Math.floor(x/100) + ":" + String(x%100) ;
-	        	}
-	        }
-	    }
-	     if((x/100)>10){
-	         if(x%100 <10){
-	        		 output = Math.floor(x/100) + ":0" + String(x%100) ;
-	        	}
-	        	else{
-	        		 output = Math.floor(x/100) + ":" + String(x%100) ;
-	        	}
-	        }
-	    }
-	
-	else if((x/100)>12){
-	    if((x%100)==0){
-	    output = x/100 + ":00";
-	    }
-	    if((x%100)!=0){
-	    	if(x%100 <10){
-	        		 output = Math.floor(x/100) +":0" + x%100 ;
-	        	}
-	        	else{
-	        		 output = Math.floor(x/100) +":" + x%100 ;
-	        	}
-	    
-	    }
-	}
-	else{
-	if((x%100)==0){
-	     output = Math.floor(parseInt(x/100)) + ":00";
-	    }
-	    if((x%100)!=0){
-	    	if(x%100 <10){
-	        		 output = Math.floor(x/100) +":0" + x%100 ;
-	        	}
-	        	else{
-	        		 output = Math.floor(x/100) +":" + x%100 ;
-	        	}
-	    }
-	}
-	return output;
+function timer(x)
+  { 
+      var output;
+      if((x/100) < 12 ){
+          if((x%100)==0){
+            if(x/1200 == 0){
+              output = "12:00 AM";    
+            }
+            else{
+           output = parseInt(x/100) + ":00 AM";
+            }
+          }
+        if((x%100)!=0){
+          if((x%100) < 10){
+            output = parseInt(x/100) +":0"+ x%100 + " AM";
+          }
+          if((x%100) >= 10){
+            output = parseInt(x/100) +":"+ x%100 + " AM";
+          }
+          }
+      }
+  else if(x/100>12){
+      if((x%100)==0){
+      output = parseInt(x/100)-12 + ":00 PM";
+      }
+      if((x%100)!=0 && parseInt(x/100)!=12){
+        if((x%100) < 10){
+          output = parseInt(x/100)-12 +":0"+ x%100 + " PM";
+        }
+        if((x%100) >= 10){
+          output = parseInt(x/100)-12 +":"+ x%100 + " PM";
+        }
+      }
+      if((x%100)!=0 && parseInt(x/100)==12){
+        if((x%100) < 10){
+          output = parseInt(x/100) +":0"+ x%100 + " PM";
+        }
+        if((x%100) >= 10){
+          output = parseInt(x/100) +":"+ x%100 + " PM";
+        }
+      }
+  }
+  else{
+  if((x%100)==0){
+       output = parseInt(x/100) + ": 00 PM";
+      }
+      if((x%100)!=0){
+        if((x%100) < 10){
+          output = parseInt(x/100) + ":0"+ x%100 + " PM";
+        }
+        if((x%100) >= 10){
+          output = parseInt(x/100) + ":"+ x%100 + " PM";
+        }
+      }
+  }
+  return output;
 }
 
 	$(document).ready(function(){

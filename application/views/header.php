@@ -74,15 +74,15 @@ $nth_child = 0;
   <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/bootstrap.min.css');?>">
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="<?php echo base_url('assets/js/bootstrap.min.js');?>"></script>
-
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
   <!-- icons css-->
  
   <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <!--datepicker css -->
-<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+
 
   <!--datepicker css end -->
   
@@ -366,10 +366,11 @@ select{
         position: fixed;
         min-height: 3rem;
         width: 15rem;
-        background: #ff0038;
+        background: #003153;
         right: 0;
         top: 30%;
         border-radius: 0.25rem;
+        color: white
       }
       .notify_body{
         display: flex;
@@ -385,15 +386,19 @@ select{
         justify-content: center;
       }
       ._notify_close{
-        width:10%;
-        background: wheat;
+        width: 10%;
+        background: rgba(255,255,255,1);
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
+        position: absolute;
+        right: 0;
+        height: 100%;
+        color: black;
       }
       ._notify_close:hover{
-        background: white;
+        background: rgba(255,255,255,0.8);
       }
       li{
         list-style: none;

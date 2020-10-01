@@ -41,11 +41,23 @@ class UtilModel extends CI_Model {
 		public function getUserDetails($userid){
 			$this->load->database();
 			$query = $this->db->query("SELECT * FROM users where id = '$userid' ");
+			return $query->row();
+		}
+
+		public function getSuperAdmins(){
+			$this->load->database();
+			$query = $this->db->query("SELECT * FROM users where role = 1 ");
 			return $query->result();
 		}
 
 		public function insertNotification($userid,$intent,$title,$body,$data){
 			$this->load->database();
 			$query = $this->db->query("INSERT INTO notifications (userid,intent,title,body,data) VALUES ('$userid','$intent','$title','$body','$data')  ");
+		}
+
+		public function getAllUsers(){
+			$this->load->database();
+			$query = $this->db->query("SELECT * FROM users ");
+			return $query->result();
 		}
 }

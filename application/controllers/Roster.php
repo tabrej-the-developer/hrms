@@ -763,6 +763,42 @@ public function updateRoster(){
 		}
 }
 
+public function updateRosterTemplate(){
+	if($this->session->has_userdata('LoginId')){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
+		 set_time_limit ( 0 ); //0 == unlimited
+		$data['userid'] = $this->input->post('userid');
+		$data['rosterid'] = $this->input->post('rosterid');
+		$data['status'] = $this->input->post('status');	
+		$url = BASE_API_URL."rosters/updateRosterTemplate";
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+			));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+		$jsonOutput = json_decode($server_output);
+		curl_close ($ch);
+		}
+		else if($httpcode == 401){
+	
+		}
+	}
+		else{
+			$this->load->view('redirectToLogin');
+		}
+}
+
 	public	function deleteShift($shiftId){
 		if($this->session->has_userdata('LoginId')){
 			$input = $this->input->post();

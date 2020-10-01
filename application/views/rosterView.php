@@ -318,6 +318,57 @@ table.dataTable{
 		align-items: center;
 	}
 
+/* Templates dropdown*/
+	.templates_block{
+		display: block;
+		text-align: center;
+		justify-content: center;
+		margin-bottom: 1rem;
+		background: #e2e4e7;
+		border-radius: 20px;
+		width: 12rem;
+		align-items: center;
+		    margin-left: auto;
+    margin-right: auto;
+    padding: 0.5rem 0;
+	}
+	.templates_list{
+		display: none;
+				min-width:10rem;
+				text-align: left
+	}
+	.templates_list a{
+		color: black;
+	}
+	.templates_list a:hover{
+		color: black;
+	}
+	.templates_list>span{
+		padding: 0.25rem;
+				min-width:10rem;
+				position: relative;
+	}
+	.templates_list span:hover{
+		background: rgba(0,0,0,0.4);
+		cursor: pointer;
+	}
+	.templates_block:hover .templates_list{
+		display: block;
+		position:absolute;
+		max-height:10rem;
+		overflow-y: auto;
+		min-width:10rem;
+		max-width:auto;
+		background: white;
+		border-radius: 0.25rem;
+	}
+	.roster_template_style{
+		position: absolute;
+		right: 0;
+		justify-content: center;
+	}
+/* Templates dropdown*/
+
 		/* The Modal (background) */
 .templateModal {
   display: none; 
@@ -560,11 +611,24 @@ table.dataTable{
 
  		<input type="text" name="userId" id="templateUserId" style="display:none" value="<?php echo $userId?>">
  			<input type="text" name="centerId" id="template-center-id" value="<?php echo $center__;?>" style="display:none">
+ 			 	<?php 
+		 			echo "<div class='templates_block'>";
+		 			print_r('<span class="">Select Roster Template</span>');
+			 			echo "<div class='templates_list '>";
+	 			 		foreach($rosterTemplates->templates as $templates){
+	 			 			print_r('<span class="d-block"><a href="'.base_url('roster/getRosterTemplateDetails/').$templates->id.'/'.$this->session->userdata("LoginId").'">'.$templates->name.'</a><span class="roster_template_style" id='.$templates->id.'>
+	 			 				<i>
+									<img src="'.base_url("assets/images/icons/x.png").'" style="max-height:0.8rem;margin-right:10px">
+								</i></span></span>');
+	 			 		} 
+	 			 		echo "</div>";
+		 			echo "</div>";
+ 			 		?>
  		<div class="text-center">
- 		<input type="submit" name="roster-submit" id="roster-template-submit" class="button" value="Create">
- 		<input type="reset"  class="button" value="Reset">
- 		<input type="button" name="cancel" value="Cancel" class="close button">
- 	</div>
+	 		<input type="submit" name="roster-submit" id="roster-template-submit" class="button" value="Create">
+	 		<input type="reset"  class="button" value="Reset">
+	 		<input type="button" name="cancel" value="Cancel" class="close button">
+ 		</div>
  	</form>
  </div>
  	<p id="alert-data"></p>
@@ -754,6 +818,26 @@ $("#roster-date").datepicker();
 	};
 	//----------------
 
+$(document).ready(function(){
+	$(document).on('click','.roster_template_style',function(){
+			var url = window.location.origin+"/PN101/roster/updateRosterTemplate";
+			var rosterTemplateId = $(this).attr('id');
+			var userid = "<?php echo $this->session->userdata('LoginId'); ?>";
+				$.ajax({
+					url:url,
+					type:'POST',
+					data:{
+						userid: userid,
+						rosterid: rosterTemplateId,
+						status: 'Discarded'
+					},
+					success:function(response){
+						window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";
+					}
+
+				})
+	})
+})
 </script>
 <script type="text/javascript">
 	$('#ui-datepicker-div').remove()

@@ -841,6 +841,7 @@ font-family: 'Open Sans', sans-serif;
 		$(document).on('click','.assign_roles',function(e){
 			var roleid = $(this).attr('r_id');
 			var roleName = $(this).text();
+			var employees_array = [];
 			var x = 0;
 			$('.changeRole_heading').text(roleName);
 				$('.box-name').text($(this).text())
@@ -873,6 +874,7 @@ font-family: 'Open Sans', sans-serif;
 										var res = JSON.parse(res)
 										// console.log(res)
 										res.employees.forEach(function(employee){
+											employees_array.push(employee.id.toLowerCase());
 											var code = `<div id="change_role">
 												<span class="changeRole__" role_id="${employee.id}"  style="width:30%">${employee.name}</span>
 											<span class="select_css" style="width:35%;">
@@ -899,7 +901,46 @@ font-family: 'Open Sans', sans-serif;
 								})
 							})
 						})
-		
+					var emp_url = window.location.origin+"/PN101/settings/getEmployeesByCenter/"+centerid;
+					$.ajax({
+						url:emp_url,
+						type:'GET',
+						success:function(re){
+							re = JSON.parse(re)
+							re.employees.forEach(function(em){
+								if(employees_array.indexOf(em.id.toLowerCase()) === -1){
+										code = `<div id="change_role">
+												<span class="changeRole__" role_id="${em.id}"  style="width:30%">${em.name}</span>
+											<span class="select_css" style="width:35%;">
+												<select class="select_area" similarity="${x}" style="min-width:80% !important;max-width:80%">
+														<option value="-1" disabled selected>--Select Area--</option>
+												</select>
+												</span>
+											<span class="select_css" style="width:35%;">
+												<select class="select_role" similarity="${x}" style="min-width:80% !important;max-width:80%">
+													 <option value="-1" disabled selected>--Select Role--</option> 
+												</select>
+											</span>
+											</div>`;
+											$('.priority_areas').append(code);
+									var add_area = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
+									$.ajax({
+										method:'GET',
+										url:add_area,
+										dataType: 'JSON',
+										success:function(r){
+											r['orgchart'].forEach(function(ind){
+												var da = "<option value="+ind.areaId+">"+ind.areaName+"</option>";
+													console.log(x)
+												$('.select_area[similarity='+x+']').append(da)
+											})
+																			x++;
+										}
+									})
+								}
+							})
+						}
+					})
 				}
 			})
 		})
@@ -907,6 +948,8 @@ font-family: 'Open Sans', sans-serif;
 		$(document).ready(function(){
 				getEmployeesCountByRole()
 			})
+
+
 
 		function getEmployeesCountByRole(){
 			var count = $('.roleNameClass').length;
@@ -944,9 +987,7 @@ $(document).ajaxStop(function(){
 				roleChange(null,$(this).val(),similarity)
 		})
 	})
-</script>
 
-<script type="text/javascript">
 	$(document).ready(function(){
 		$(document).on('click','.priority_save',function(){
 			var details = [];
@@ -955,7 +996,9 @@ $(document).ajaxStop(function(){
 				obj = {};
 				obj.employeeId = $('.changeRole__').eq(i).attr('role_id');
 				obj.roleId = $('.changeRole__').eq(i).next().next().children().val();
-				details.push(obj);
+				if(obj.roleId  != -21){
+					details.push(obj);
+				}
 			}
 			var url = window.location.origin+"/PN101/settings/changeEmployeeRole"
 			$.ajax({

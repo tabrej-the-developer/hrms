@@ -10,7 +10,6 @@ $this->load->library('Crypt_RSA');
 // GqkC5dsWv/IlvPeVbwIDAQAB
 // -----END PUBLIC KEY-----';
 $publickey = $this->config->item('publicKey');
-
 $rsa->loadKey($publickey);
 
 
@@ -746,7 +745,7 @@ p.ovrflowtext {
     }
     })
     .catch((err)=>{
-      alert();
+
     })
   function setTokenSentToServer(sent) {
       window.localStorage.setItem('sentToServer', sent ? 1 : 0);

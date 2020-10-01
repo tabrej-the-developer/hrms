@@ -39,43 +39,43 @@ font-family: 'Open Sans', sans-serif;
 				</div>
 		    	<div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-city"></i>Employee Email</label>
-				<input type="text" class="form-control"  name="email"  placeholder = "Enter Email" >
+				<input type="text" class="form-control"  name="email"   >
 				</div>
 		    	<div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-city" ></i>Password </label>
-				<input type="text" class="form-control" name="password"  placeholder = "Enter Password" >
+				<input type="text" class="form-control" name="password"   >
 				</div>
 		    	<div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-city" ></i>Role</label>
-				<input type="text" class="form-control" name="role" placeholder = "Enter Role" >
+				<input type="text" class="form-control" name="role"  >
 				</div>
 
 			    <div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-sort-numeric-up" ></i> Center</label>
-					<input type="text" class="form-control"  name="center"  placeholder = "Enter center" >
+					<input type="text" class="form-control"  name="center"   >
 				</div>
 			    <div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-sort-numeric-up" ></i> Manager</label>
-					<input type="text" class="form-control"  name="manager"  placeholder = "Enter Manager" >
+					<input type="text" class="form-control"  name="manager"   >
 				</div>
 			    <div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-sort-numeric-up" ></i> Role Name</label>
-					<input type="text" class="form-control"  name="roleName" placeholder = "Enter User Id" >
+					<input type="text" class="form-control"  name="roleName"  >
 				</div>
 			    <div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-sort-numeric-up" name="roleid"></i> Role Id</label>
-					<input type="text" class="form-control"  name="roleid"   placeholder = "Enter Role Id" >
+					<input type="text" class="form-control"  name="roleid"    >
 				</div>
 			    <div class="col-lg-6 form-group">
 					<label><i style="color: #aa63ff;" class="fas fa-sort-numeric-up" ></i> Level Id</label>
-					<input type="text" class="form-control"  name="levelId"   placeholder = "Enter Level Id" >
+					<input type="text" class="form-control"  name="levelId"  >
 				</div>
 
 
 			<div class="col-lg-6 form-group">
 				<label>
 					<i style="color: #aa63ff;" class="fas "></i> Logo</label>
-				<input class="form-control" type="file" name="" id="center-logo" placeholder="Logo" >
+				<input class="form-control" type="file" name="" id="center-logo"  >
 			</div>
 		</div>
 
