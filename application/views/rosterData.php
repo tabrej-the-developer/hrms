@@ -2463,59 +2463,63 @@ window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";		
 
     $('.containers').css('paddingLeft',$('.side-nav').width());
 
-function timer(x)
+  function timer( x)
   { 
-      var output;
-      if((x/100) < 12 ){
-          if((x%100)==0){
-            if(x/1200 == 0){
-              output = "12:00 AM";    
+      var output="";
+      if((x/100) < 12){
+          if((x%100)==0 ){
+            if((x/100)<10){
+           output = "0"+Math.floor(x/100) + ":00" ;
+         }
+        if((x/100)>9){
+          output = Math.floor(x/100) + ":00" ;
+        }
+      }
+      if((x%100)!=0){
+          if((x/100)<10){
+            if(x%100 <10){
+               output = "0"+Math.floor(x/100) + ":0" + String(x%100) ;
             }
             else{
-           output = parseInt(x/100) + ":00 AM";
+               output = "0"+Math.floor(x/100) + ":" + String(x%100) ;
             }
           }
-        if((x%100)!=0){
-          if((x%100) < 10){
-            output = parseInt(x/100) +":0"+ x%100 + " AM";
-          }
-          if((x%100) >= 10){
-            output = parseInt(x/100) +":"+ x%100 + " AM";
-          }
+      }
+       if((x/100)>10){
+           if(x%100 <10){
+               output = Math.floor(x/100) + ":0" + String(x%100) ;
+            }
+            else{
+               output = Math.floor(x/100) + ":" + String(x%100) ;
+            }
           }
       }
-  else if(x/100>12){
+  
+  else if((x/100)>12){
       if((x%100)==0){
-      output = parseInt(x/100)-12 + ":00 PM";
+      output = x/100 + ":00";
       }
-      if((x%100)!=0 && parseInt(x/100)!=12){
-        if((x%100) < 10){
-          output = parseInt(x/100)-12 +":0"+ x%100 + " PM";
-        }
-        if((x%100) >= 10){
-          output = parseInt(x/100)-12 +":"+ x%100 + " PM";
-        }
-      }
-      if((x%100)!=0 && parseInt(x/100)==12){
-        if((x%100) < 10){
-          output = parseInt(x/100) +":0"+ x%100 + " PM";
-        }
-        if((x%100) >= 10){
-          output = parseInt(x/100) +":"+ x%100 + " PM";
-        }
+      if((x%100)!=0){
+        if(x%100 <10){
+               output = Math.floor(x/100) +":0" + x%100 ;
+            }
+            else{
+               output = Math.floor(x/100) +":" + x%100 ;
+            }
+      
       }
   }
   else{
   if((x%100)==0){
-       output = parseInt(x/100) + ": 00 PM";
+       output = Math.floor(parseInt(x/100)) + ":00";
       }
       if((x%100)!=0){
-        if((x%100) < 10){
-          output = parseInt(x/100) + ":0"+ x%100 + " PM";
-        }
-        if((x%100) >= 10){
-          output = parseInt(x/100) + ":"+ x%100 + " PM";
-        }
+        if(x%100 <10){
+               output = Math.floor(x/100) +":0" + x%100 ;
+            }
+            else{
+               output = Math.floor(x/100) +":" + x%100 ;
+            }
       }
   }
   return output;

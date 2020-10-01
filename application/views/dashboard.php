@@ -1,7 +1,7 @@
 <?php // print_r(json_encode(json_decode($calendar)->event[0])); ?>
 <html>
 <head>
-	<title>Dashboard</title>
+  <title>Dashboard</title>
 <link  href="https://cdn.jsdelivr.net/npm/fullcalendar@5.1.0/main.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.1.0/main.js"></script>
 <link href='https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.css' rel='stylesheet' />
@@ -10,14 +10,14 @@
 
 
 <style type="text/css">
-	body{
-		background: #F2F2F2 !important;
-	}
-	.containers{
+  body{
+    background: #F2F2F2 !important;
+  }
+  .containers{
 
-	}
+  }
 
-	.btn{
+  .btn{
     display:  inherit;
     font-weight:  inherit;
     color:  inherit;
@@ -30,195 +30,195 @@
     font-size:  inherit;
     line-height: inherit; 
     border-radius:  inherit;
-	}
+  }
   .cardContainer {
   display: flex;
   justify-content: space-between;
   margin-left: 0 !important;
-	}
-	.cardItem {
-	  height: 8rem;
-	  padding-left: 0 !important;
-	  padding-right: 0 !important;
+  }
+  .cardItem {
+    height: 8rem;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
     cursor: pointer;
     box-shadow: 0 0 1rem 1px rgba(0,0,0,0.1);
-	}
+  }
   .cardItem > span:hover{
     box-shadow: 0 0 10px 3px rgba(0,0,0,0.3);
   }
-	.cardItem > span{
-		min-height: 100%;
-		display: block;
-	  background: white;
-	}
-	.cardItemChild{
+  .cardItem > span{
+    min-height: 100%;
+    display: block;
+    background: white;
+  }
+  .cardItemChild{
 
-	}
+  }
   .module-name{
-	width: 100%;
-	display: block;
-	padding-left: 45%
-	}
-	.module-balance{
-		display: block;
-		padding-left: 45%;
-		font-size: 2rem;
-	}
-	.footprints{
-		height: calc( 100vh - 11rem);
-		overflow-y: scroll
-	}
-	.dashboard-icons{
+  width: 100%;
+  display: block;
+  padding-left: 45%
+  }
+  .module-balance{
+    display: block;
+    padding-left: 45%;
+    font-size: 2rem;
+  }
+  .footprints{
+    height: calc( 100vh - 11rem);
+    overflow-y: scroll
+  }
+  .dashboard-icons{
     padding: 20px;
     border-radius: 5px;
     position: relative;
     top: 50;
     left: 30;
-	}
-	.dashboard-icons > img{
-		height: 2rem;
-	}
-	.activity{
-		line-height: 2rem;
-	}
-	.activity-row{
-		line-height: 2.5rem;
-		font-size:0.8rem;
-		font-weight: 700;
-	}
-	.activity-heading{
-		font-weight: 700;
-		line-height: 2.5rem;
-	}
-	.activity-row:nth-of-type(odd){
-		background:#F5F6FA;
-	}
-	#calendar{
-		width: 70%;
-	}
-	.fc-view-harness{
-		padding-bottom: 100% !important;
-	}
-	.fc-col-header{
-		width: 100% !important;
-	}
-	.fc-scrollgrid-sync-table{
-		width: 100% !important;
-		max-height:50px;
-		height: 50px;
-	    border-spacing: 10px !important;
-	    border-collapse: separate !important;
-	}
-	.fc-daygrid-body-unbalanced{
-		width: 100% !important;
-	}
-	.calendar_text{
-		color:white;
-		font-size:0.7rem;
-	}
-	.fc-theme-standard th{
-		border: none;
-	}
-	.fc-theme-standard td{
-		border-radius: 20px;
-		border: 1px solid #8D91AA;
-	}
-	.fc-daygrid-day-number{
-		font-size: 1.5rem !important;
-		color: #171D4B !important;
-	}
-	.fc-scrollgrid-section>td{
-		border: none;
-	}
-	.fc-scrollgrid.fc-scrollgrid-liquid{
-		border: none;
-	}
-	.fc-scroller.fc-scroller-liquid-absolute{
-		overflow: visible !important;
-	}
-	.fc-daygrid-day.fc-day{
-		background: #D2D0D0  ;
-		border-radius: 20px;
-		/*height: 100px !important;*/
-	}
+  }
+  .dashboard-icons > img{
+    height: 2rem;
+  }
+  .activity{
+    line-height: 2rem;
+  }
+  .activity-row{
+    line-height: 2.5rem;
+    font-size:0.8rem;
+    font-weight: 700;
+  }
+  .activity-heading{
+    font-weight: 700;
+    line-height: 2.5rem;
+  }
+  .activity-row:nth-of-type(odd){
+    background:#F5F6FA;
+  }
+  #calendar{
+    width: 70%;
+  }
+  .fc-view-harness{
+    padding-bottom: 100% !important;
+  }
+  .fc-col-header{
+    width: 100% !important;
+  }
+  .fc-scrollgrid-sync-table{
+    width: 100% !important;
+    max-height:50px;
+    height: 50px;
+      border-spacing: 10px !important;
+      border-collapse: separate !important;
+  }
+  .fc-daygrid-body-unbalanced{
+    width: 100% !important;
+  }
+  .calendar_text{
+    color:white;
+    font-size:0.7rem;
+  }
+  .fc-theme-standard th{
+    border: none;
+  }
+  .fc-theme-standard td{
+    border-radius: 20px;
+    border: 1px solid #8D91AA;
+  }
+  .fc-daygrid-day-number{
+    font-size: 1.5rem !important;
+    color: #171D4B !important;
+  }
+  .fc-scrollgrid-section>td{
+    border: none;
+  }
+  .fc-scrollgrid.fc-scrollgrid-liquid{
+    border: none;
+  }
+  .fc-scroller.fc-scroller-liquid-absolute{
+    overflow: visible !important;
+  }
+  .fc-daygrid-day.fc-day{
+    background: #D2D0D0  ;
+    border-radius: 20px;
+    /*height: 100px !important;*/
+  }
   .fc-day-other{
     background: #E7E7E7 !important;
   }
 
-	.fc-day.fc-day-today{
-		background: #8D91AA !important;
-	}
-	.calendar-parent-div{
-		background: white !important;
-		margin: 0 1.5rem 0 1.5rem;
-	}
-	.fc-daygrid-day-frame::before{
-		content: none !important;
-	}
-	.fc-daygrid-day-events::before{
-		content: none !important;
-	}
-	.fc-daygrid-event-harness::after{
-		content: none !important;
-	}
-	.fc-today-button.fc-button.fc-button-primary{
-		display: none;
-	}
-	.fc-toolbar-chunk:nth-of-type(1){
-		width: 100%;
-		text-align: center;
-	}
-	.fc-daygrid-day-frame:after{
-		content: none !important;
-	}
-	.fc-daygrid-day-events:after,
-	.fc-daygrid-day-events:before,
-	.fc-daygrid-day-frame:after,
-	.fc-daygrid-day-frame:before,
-	.fc-daygrid-event-harness:after,
-	.fc-daygrid-event-harness:before{
-		content: none !important;
-	}
-	.fc-scrollgrid-sync-table>tbody>tr{
-		height: 100px;
-		display: table-row;
-	}
-	.upcoming_events{
-		width: 100%;
-		margin-top:3.25rem;
-	}
-	.upcoming_events_title{
-		font-weight:  700;
-		font-size: 1.5rem;
-	}
-	.event_date{
-		background: #AFE19F;
-		color: #171D4B;
-		display: flex;
-		justify-content: center;
-		border-radius: 8px;
-		padding: 0.5rem;
-	}
-	.event_title{
-		background: #F3F4F7;
-	}
-	.event_details{
-		background: #F3F4F7;
-	}
-	.event_box{
-		background: #F3F4F7;
-	}
-	.button_class{
-		width: 100%;
-		display: flex;
-	}
-	.events_title{
-		font-size: 2rem;
-		color: #171D4B;
-		font-weight: 700;
-		margin-left: 0.5rem;
-	}
-	/*---------------------------------------------------------------------------------------*/
+  .fc-day.fc-day-today{
+    background: #8D91AA !important;
+  }
+  .calendar-parent-div{
+    background: white !important;
+    margin: 0 1.5rem 0 1.5rem;
+  }
+  .fc-daygrid-day-frame::before{
+    content: none !important;
+  }
+  .fc-daygrid-day-events::before{
+    content: none !important;
+  }
+  .fc-daygrid-event-harness::after{
+    content: none !important;
+  }
+  .fc-today-button.fc-button.fc-button-primary{
+    display: none;
+  }
+  .fc-toolbar-chunk:nth-of-type(1){
+    width: 100%;
+    text-align: center;
+  }
+  .fc-daygrid-day-frame:after{
+    content: none !important;
+  }
+  .fc-daygrid-day-events:after,
+  .fc-daygrid-day-events:before,
+  .fc-daygrid-day-frame:after,
+  .fc-daygrid-day-frame:before,
+  .fc-daygrid-event-harness:after,
+  .fc-daygrid-event-harness:before{
+    content: none !important;
+  }
+  .fc-scrollgrid-sync-table>tbody>tr{
+    height: 100px;
+    display: table-row;
+  }
+  .upcoming_events{
+    width: 100%;
+    margin-top:3.25rem;
+  }
+  .upcoming_events_title{
+    font-weight:  700;
+    font-size: 1.5rem;
+  }
+  .event_date{
+    background: #AFE19F;
+    color: #171D4B;
+    display: flex;
+    justify-content: center;
+    border-radius: 8px;
+    padding: 0.5rem;
+  }
+  .event_title{
+    background: #F3F4F7;
+  }
+  .event_details{
+    background: #F3F4F7;
+  }
+  .event_box{
+    background: #F3F4F7;
+  }
+  .button_class{
+    width: 100%;
+    display: flex;
+  }
+  .events_title{
+    font-size: 2rem;
+    color: #171D4B;
+    font-weight: 700;
+    margin-left: 0.5rem;
+  }
+  /*---------------------------------------------------------------------------------------*/
 
 
     div.dataTables_wrapper div.dataTables_paginate {
@@ -236,36 +236,35 @@
         background-color: #5D78FF;
         border-color: #5D78FF;
     }
-		.btn.focus, .btn:focus {
-			outline: 0;
-			box-shadow: none;
-		}
-		.btn-group-sm>.btn, .btn-sm {
-			padding: .25rem .5rem;
-			font-size: .875rem;
-			line-height: 1.5;
-			border-radius: 1.2rem;
-/*			border: 1px solid #ccc;*/
-		}
-		#example_filter input {
-		  border-radius: 1.2rem;
-		}
-		.border-shadow{
-			    /*box-shadow: 0 3px 10px rgba(0,0,0,.1);*/
+    .btn.focus, .btn:focus {
+      outline: 0;
+      box-shadow: none;
+    }
+    .btn-group-sm>.btn, .btn-sm {
+      padding: .25rem .5rem;
+      font-size: .875rem;
+      line-height: 1.5;
+      border-radius: 1.2rem;
+/*      border: 1px solid #ccc;*/
+    }
+    #example_filter input {
+      border-radius: 1.2rem;
+    }
+    .border-shadow{
+          /*box-shadow: 0 3px 10px rgba(0,0,0,.1);*/
 
-		}
-		.modal-header {
-			border-bottom:none;
-			background-color:#8D91AA;
-			color: #E7E7E7;
-      display: flex;
-      justify-content: center;
-      border-radius: 0 !important; 
-		}
-		.modal-content {
-			border-radius:0;	
-		}
-		
+    }
+    .modal-header {
+      border-bottom:none;
+      background-color:#8D91AA;
+      color: #E7E7E7;
+          display: flex;
+          justify-content: center; 
+    }
+    .modal-content {
+      border-radius:0;  
+    }
+    
 
 /* ----------------------
     Schedule meeting modal : key (321x)
@@ -277,13 +276,13 @@
    }
    .button_form{
         border: none !important;
-	    color: rgb(23, 29, 75) !important;
-	    text-align: center !important;
-	    text-decoration: none !important;
-	    display: inline-block !important;
-	    font-weight: 700 !important;
-	    margin: 2px !important;
-	    width:8rem !important;
+      color: rgb(23, 29, 75) !important;
+      text-align: center !important;
+      text-decoration: none !important;
+      display: inline-block !important;
+      font-weight: 700 !important;
+      margin: 2px !important;
+      width:8rem !important;
       border-radius: 20px !important;
       padding: 4px 8px !important;
       background: rgb(164, 217, 214) !important;
@@ -366,7 +365,7 @@
     background: rgba(231, 231, 231, 1);
   }
   .agendaFile{
-  	opacity: 0;
+    opacity: 0;
     height:100%;
   }
   .add_member_span{
@@ -421,14 +420,14 @@
         padding: 0 1rem 0 3rem;
   }
   .calendar_text{
-  	color: white !important;
+    color: white !important;
   }
 .dashboard_table td{
   padding: 0 1rem 1rem 0;
 }
 .has-search .feedback{
-	position:absolute;
-	z-index: 2;
+  position:absolute;
+  z-index: 2;
     display: block;
     width: 1.375rem;
     height: 2.375rem;
@@ -496,8 +495,8 @@ table.main-table tr:nth-child(odd){
 /* .container{
     background-color:#607d8bc9 !important;
 } */
-	
-/*corousol end*/		
+  
+/*corousol end*/    
 
     .modal-header{
         text-align:left;
@@ -556,7 +555,7 @@ margin-top:-3px;
   width: 100% !important;
 }
 .fc-col-header-cell-cushion {
-	color: #707070 !important;
+  color: #707070 !important;
 }
 .prevv{
   background:#307bd3 ;
@@ -634,7 +633,7 @@ table.dataTable thead th, table.dataTable thead td{
       font-size: 1rem;
     }
 .input-group-append, .input-group-prepend{
-	display: inline-block !important;
+  display: inline-block !important;
 }
   #hide input[type=file] {
 display:none;
@@ -727,179 +726,183 @@ color:#FFFFFF;
     .tokens-container.form-control{
       padding-left: 2rem !important;
     }
-    @media only screen and (max-width: 780px ){
-        #calendar{
-          width: 100%;
-        }
-
+@media only screen and (max-width: 780px ){
+      #calendar{
+        width: 100%;
+        padding: 0;
+      }
+      .calendar-parent-div {
+        background: white !important;
+        margin: 0 ;
+      }
     } 
 </style>
 </head>
 <body>
-	<?php include 'header.php'; ?>
+  <?php include 'header.php'; ?>
 <script
   src="https://code.jquery.com/jquery-3.5.1.js"
   integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
   crossorigin="anonymous"></script>
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/tokenize2.css">
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tokenize2.js"></script>
-	<?php 
-	if(isset($users)){
-		$users =   json_decode($users);
-	}
-	 ?>
+  <?php 
+  if(isset($users)){
+    $users =   json_decode($users);
+  }
+   ?>
 
 
-	<div class="containers">
-		<?php 
-		if(isset($permissions)){
-			$permissions = json_decode($permissions); 
-		}
-		?>
-		<?php 	
-		if(isset($moduleEntryCount)){
-			$moduleRowCount = json_decode($moduleEntryCount);
-		}
-		 ?>
-		<div class="row mr-0 mt-3 cardContainer pl-md-4 pr-md-4">
+  <div class="containers">
+    <?php 
+    if(isset($permissions)){
+      $permissions = json_decode($permissions); 
+    }
+    ?>
+    <?php   
+    if(isset($moduleEntryCount)){
+      $moduleRowCount = json_decode($moduleEntryCount);
+    }
+     ?>
+    <div class="row mr-0 mb-5 mb-md-0 mt-3 cardContainer pl-0 pl-md-4 pr-0 pr-md-4">
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewTimesheetYN : "N") == "Y"){ ?>
-			<span class="col-3 cardItem " >
-				<span class="row p-0 m-0 timesheets">
-					<span class="col-6 dashboard-icons" style="background:rgba(0, 84, 254,0.07)">
-						<img src="<?php echo base_url('assets/images/dashboard-icons/timesheets.png'); ?>">
-					</span>
-					<span class="col-6" >
-						<span>
-							<span class="module-balance" style="color:rgba(0, 84, 254)"><?php echo $moduleRowCount->timesheetsCount; ?></span>
-							<span class="module-name">Total Timesheets</span>
-						</span>
-					</span>
-				</span>
-			</span>
+      <span class="col-3 cardItem " >
+        <span class="row p-0 m-0 timesheets">
+          <span class="col-6 dashboard-icons" style="background:rgba(0, 84, 254,0.07)">
+            <img src="<?php echo base_url('assets/images/dashboard-icons/timesheets.png'); ?>">
+          </span>
+          <span class="col-6" >
+            <span>
+              <span class="module-balance" style="color:rgba(0, 84, 254)"><?php echo $moduleRowCount->timesheetsCount; ?></span>
+              <span class="module-name">Total Timesheets</span>
+            </span>
+          </span>
+        </span>
+      </span>
 <?php } ?>
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewRosterYN : "N") == "Y"){ ?>
-			<span class="col-3 cardItem " >
-				<span class="row p-0 m-0 roster">
-					<span class="col-6 dashboard-icons" style="background:rgba(254, 237, 242)">
-						<img src="<?php echo base_url('assets/images/dashboard-icons/roster.png'); ?>">
-					</span>
-					<span class="col-6" >
-						<span>
-							<span class="module-balance" style="color:#FD5181"><?php echo $moduleRowCount->rostersCount; ?></span>
-							<span class="module-name">Total Rosters</span>
-						</span>
-					</span>
-				</span>
-			</span>
+      <span class="col-3 cardItem " >
+        <span class="row p-0 m-0 roster">
+          <span class="col-6 dashboard-icons" style="background:rgba(254, 237, 242)">
+            <img src="<?php echo base_url('assets/images/dashboard-icons/roster.png'); ?>">
+          </span>
+          <span class="col-6" >
+            <span>
+              <span class="module-balance" style="color:#FD5181"><?php echo $moduleRowCount->rostersCount; ?></span>
+              <span class="module-name">Total Rosters</span>
+            </span>
+          </span>
+        </span>
+      </span>
 <?php } ?>
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewPayrollYN : "N") == "Y"){ ?>
-			<span class="col-3 cardItem " >
-				<span class="row p-0 m-0 payrolls">
-					<span class="col-6 dashboard-icons" style="background:rgba(233, 255, 208)">
-						<img src="<?php echo base_url('assets/images/dashboard-icons/payrolls.png'); ?>">
-					</span>
-					<span class="col-6" >
-						<span class="col-12">
-							<span class="module-balance" style="color:rgba(102, 145, 54)"><?php echo $moduleRowCount->payrollsCount; ?></span>
-							<span class="module-name">Total Payrolls</span>
-						</span>
-					</span>
-				</span>
-			</span>
+      <span class="col-3 cardItem " >
+        <span class="row p-0 m-0 payrolls">
+          <span class="col-6 dashboard-icons" style="background:rgba(233, 255, 208)">
+            <img src="<?php echo base_url('assets/images/dashboard-icons/payrolls.png'); ?>">
+          </span>
+          <span class="col-6" >
+            <span class="col-12">
+              <span class="module-balance" style="color:rgba(102, 145, 54)"><?php echo $moduleRowCount->payrollsCount; ?></span>
+              <span class="module-name">Total Payrolls</span>
+            </span>
+          </span>
+        </span>
+      </span>
 <?php } ?>
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewLeaveTypeYN : "N") == "Y"){ ?>
-			<span class="col-3 cardItem " >
-				<span class="row p-0 m-0 onLeave">
-					<span class="col-6 dashboard-icons" style="background:rgba(253, 188, 0,0.18)">
-						<img src="<?php echo base_url('assets/images/dashboard-icons/onLeave.png'); ?>">
-					</span>
-					<span class="col-6" >
-						<span>
-							<span class="module-balance" style="color:rgba(253, 188, 0)"><?php echo $moduleRowCount->leavesCount; ?></span>
-							<span class="module-name">On leave</span>
-							</span>
-					</span>
-				</span>
-			</span>		
-<?php } ?>	
-		</div>
-		<div class="row mr-0 ml-3 mr-3 mt-3 ">
-			<?php
-			if(isset($footprints)){
-				 $footprints = json_decode($footprints); 
-				}
-			// print_r($footprints);
-			?>
-			<!-- <span class="col-12 footprints" style="background: white">
-				<span class="row activity" style="border-bottom:1px solid #979797;opacity:0.28">
-					<span class="mr-auto pl-3">Activity</span>
-					<span class="pr-3">Refresh</span>
-				</span>
-				<span class="row m-0 p-0 activity-heading">
-					<span class="col-2">S.No</span>
-					<span class="col-2">IP Address</span>
-					<span class="col-2">Date</span>
-					<span class="col-2">Last Activity Time</span>
-					<span class="col-3">Activity Description</span>
-				</span>
-				<?php 
-				//	$count = 1;
-				//foreach($footprints->footprints as $footprint){?>
-					<span class="row activity-row" >
-						<span class="col-2"><?php // echo  $count++ ;?></span>
-						<span class="col-2"><?php  // echo $footprint->ip ?></span>
-						<span class="col-2"><?php  // echo explode(" ",$footprint->start_time)[0] ?></span>
-						<span class="col-2"><?php  // echo explode(" ",$footprint->start_time)[1] ?></span>
-						<span style="background:transparent;" class="col-4 "> <?php  // echo $footprint->prev_page_tag != " " ? str_replace(base_url(),"",$footprint->prev_page_tag):"Login"; ?></span>
-					</span>
-			<?php // } ?>
-			</span> -->
-			<span class="button_class">
-				<span class="events_title">Events</span>
-				<span class="ml-auto">
-					<button id="mom_button" type="button"  class="button" data-toggle="modal" data-target="#myModal">
+      <span class="col-3 cardItem " >
+        <span class="row p-0 m-0 onLeave">
+          <span class="col-6 dashboard-icons" style="background:rgba(253, 188, 0,0.18)">
+            <img src="<?php echo base_url('assets/images/dashboard-icons/onLeave.png'); ?>">
+          </span>
+          <span class="col-6" >
+            <span>
+              <span class="module-balance" style="color:rgba(253, 188, 0)"><?php echo $moduleRowCount->leavesCount; ?></span>
+              <span class="module-name">On leave</span>
+              </span>
+          </span>
+        </span>
+      </span>   
+<?php } ?>  
+    </div>
+    <div class="row mr-0 ml-3 mr-3 mt-3 ">
+      <?php
+      if(isset($footprints)){
+         $footprints = json_decode($footprints); 
+        }
+      // print_r($footprints);
+      ?>
+      <!-- <span class="col-12 footprints" style="background: white">
+        <span class="row activity" style="border-bottom:1px solid #979797;opacity:0.28">
+          <span class="mr-auto pl-3">Activity</span>
+          <span class="pr-3">Refresh</span>
+        </span>
+        <span class="row m-0 p-0 activity-heading">
+          <span class="col-2">S.No</span>
+          <span class="col-2">IP Address</span>
+          <span class="col-2">Date</span>
+          <span class="col-2">Last Activity Time</span>
+          <span class="col-3">Activity Description</span>
+        </span>
+        <?php 
+        //  $count = 1;
+        //foreach($footprints->footprints as $footprint){?>
+          <span class="row activity-row" >
+            <span class="col-2"><?php // echo  $count++ ;?></span>
+            <span class="col-2"><?php  // echo $footprint->ip ?></span>
+            <span class="col-2"><?php  // echo explode(" ",$footprint->start_time)[0] ?></span>
+            <span class="col-2"><?php  // echo explode(" ",$footprint->start_time)[1] ?></span>
+            <span style="background:transparent;" class="col-4 "> <?php  // echo $footprint->prev_page_tag != " " ? str_replace(base_url(),"",$footprint->prev_page_tag):"Login"; ?></span>
+          </span>
+      <?php // } ?>
+      </span> -->
+      <span class="button_class">
+        <span class="events_title">Events</span>
+        <span class="ml-auto">
+          <button id="mom_button" type="button"  class="button" data-toggle="modal" data-target="#myModal">
             <i style="padding-right:0.5rem;padding-left:0.5rem">
               <img src="<?php echo base_url('assets/images/icons/addEvent_calendar.png'); ?>" style="max-height:1rem">
             </i>
             <span style="padding-right:0.5rem">Add Event</span>
           </button>
-				</span>
-			</span>
-		</div>
-			<div id="calendar" class="col-md-9"></div>
-		<div class="d-md-flex  calendar-parent-div">
-			<div class="col-md-3 upcoming_events">
-				<div class="upcoming_events_title text-center">Upcoming Events</div>
-				<div> <?php 
-				$array = [];
-				if(isset($calendarAnniversaries) || isset($calendarBirthdays)){
+        </span>
+      </span>
+    </div>
+    <div class="d-md-flex d-sm-block calendar-parent-div">
+      <div id="calendar" class="col-md-9"></div>
+      <div class="col-md-3 upcoming_events">
+        <div class="upcoming_events_title text-center">Upcoming Events</div>
+        <div> <?php 
+        $array = [];
+        if(isset($calendarAnniversaries) || isset($calendarBirthdays)){
         $date = date('Y-m-d');
         $monthAndDate = date('m-d'); 
-				$calendarBirthdays = isset($calendar) ? 
-														 ( isset(json_decode($calendar)->birthdays) ?
-														 				 json_decode($calendar)->birthdays : "") : "";
+        $calendarBirthdays = isset($calendar) ? 
+                             ( isset(json_decode($calendar)->birthdays) ?
+                                     json_decode($calendar)->birthdays : "") : "";
 
-				$calendarAnniversaries = isset($calendar) ?
-														(isset(json_decode($calendar)->anniversary) ? 
-																			json_decode($calendar)->anniversary : "") : "" ; 
+        $calendarAnniversaries = isset($calendar) ?
+                            (isset(json_decode($calendar)->anniversary) ? 
+                                      json_decode($calendar)->anniversary : "") : "" ; 
 
-					if((count($calendarAnniversaries) != 0)	|| (count($calendarBirthdays) != 0 )){
-						if((count($calendarAnniversaries) != 0) && (count($calendarBirthdays) != 0 )){
-								$array = array_merge($calendarBirthdays[0]->birthday,$calendarAnniversaries[0]->anniversary);
-										}
-					if((count($calendarAnniversaries) != 0) && (count($calendarBirthdays) == 0 )){
-								$array = $calendarAnniversaries[0]->anniversary;
-										}
-					if((count($calendarAnniversaries) == 0) && (count($calendarBirthdays) != 0 )){
-								$array = $calendarBirthdays[0]->birthday;
-										} 
+          if((count($calendarAnniversaries) != 0) || (count($calendarBirthdays) != 0 )){
+            if((count($calendarAnniversaries) != 0) && (count($calendarBirthdays) != 0 )){
+                $array = array_merge($calendarBirthdays[0]->birthday,$calendarAnniversaries[0]->anniversary);
+                    }
+          if((count($calendarAnniversaries) != 0) && (count($calendarBirthdays) == 0 )){
+                $array = $calendarAnniversaries[0]->anniversary;
+                    }
+          if((count($calendarAnniversaries) == 0) && (count($calendarBirthdays) != 0 )){
+                $array = $calendarBirthdays[0]->birthday;
+                    } 
 
-					}
+          }
               
 
                     ?>
                     <?php if(count($array) > 0){ ?>
-							<div >
+              <div >
               <?php  foreach($array as $arr){ ?>
                     <?php if(date('m') == date('m',strtotime($arr->dateOfBirth))){
                       $eventType = 'Birthday';
@@ -912,21 +915,21 @@ color:#FFFFFF;
                         $eventType = 'Anniversary & Birthday';
                     }
                      ?>
-								<span class="col-12 event_date" style="font-size:1rem;padding-top:0.5rem;padding-bottom:0.5rem"><?php echo $eventDate; ?></span>
-								<div class="d-flex event_box" style="font-size:0.75rem;font-weight:700;padding-top:0.5rem;padding-bottom:0.5rem">
-									<span class="col-4 event_title"><?php echo $eventType; ?></span>
-									<span class="col-8 event_details">
+                <span class="col-12 event_date" style="font-size:1rem;padding-top:0.5rem;padding-bottom:0.5rem"><?php echo $eventDate; ?></span>
+                <div class="d-flex event_box" style="font-size:0.75rem;font-weight:700;padding-top:0.5rem;padding-bottom:0.5rem">
+                  <span class="col-4 event_title"><?php echo $eventType; ?></span>
+                  <span class="col-8 event_details">
                     <?php echo $arr->fname.'  '.$arr->lname ?>
                   </span>
-								</div>
+                </div>
               <?php } ?>
-							</div>				
-				<?php	} }
-				?></div>
-			</div>
+              </div>        
+        <?php } }
+        ?></div>
+      </div>
 
-		</div>
-	</div>
+    </div>
+  </div>
 
 <div class="modal-logout">
     <div class="modal-content-logout">
@@ -936,7 +939,7 @@ color:#FFFFFF;
     </div>
 </div>
 <!-- ---------------------------
-				Modal Schedule Event
+        Modal Schedule Event
 -------------------------------- -->
 
 <div class="modal fade" id="myModal" role="dialog" style="z-index:1400px">
@@ -946,7 +949,7 @@ color:#FFFFFF;
       <div class="modal-content">
         <div class="modal-header ">
     
-          <h3 class="modal-title ">Create Event</h3>
+          <h3 class="modal-title ">Schedule New Event</h3>
         </div>
         <div class="modal-body container">
              <form method="post" action="<?php echo base_url() ?>mom/addMeeting" class="dashboard_form" onsubmit="return onFormSubmit()">
@@ -1092,7 +1095,7 @@ color:#FFFFFF;
               
            
        
- 		<div class="modal-footer">
+    <div class="modal-footer">
       <div class="m_footer" style="margin:auto">
         <button type="button" class="btn button_form clos" data-dismiss="modal">
           <i style="padding-right:0.5rem;padding-left:0.5rem">
@@ -1109,12 +1112,12 @@ color:#FFFFFF;
 
 
 <!-- ---------------------------
-				Modal Schedule Event
+        Modal Schedule Event
 -------------------------------- -->
 <script type="text/javascript">
-	$(document).ready(()=>{
-	    $('.containers').css('paddingLeft',$('.side-nav').width());
-	});
+  $(document).ready(()=>{
+      $('.containers').css('paddingLeft',$('.side-nav').width());
+  });
 </script>
 <?php if(isset($calendar)){ ?>
     <script>
@@ -1122,166 +1125,166 @@ color:#FFFFFF;
       document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {   events: <?php print_r(json_encode(json_decode($calendar)->event[0])); ?>
-				  } );
-				        calendar.render();
-				      });
+          } );
+                calendar.render();
+              });
 // fc-event-title
 // fc-daygrid-day 
 // data-date
 // fc-button
     </script>
      <script type="text/javascript">
-    	 $(document).ready(function(){
-				  $('.demo').tokenize2({
-				  	    dataSource: 'select'
-				  });
-				 });
+       $(document).ready(function(){
+          $('.demo').tokenize2({
+                dataSource: 'select'
+          });
+         });
 
     </script>
     <script type="text/javascript">
-    	$(document).ready(function(){
-    		var events = <?php print_r(json_encode(json_decode($calendar)->event[0])); ?>;
-    		console.log(events)
-    		var count = $('.fc-event-title').length; 
-    		var counter = 0;
-    		var increment = 0;
-    		var element = [];
-    		var meetingCount = 0;
-    		var meetingElement = [];
-    		
-    		while(increment < count){
-    			// rosters dates array
-    			if(($('.fc-event-title').eq(increment).text()).includes('Shift')){
-    			element[counter] = $('.fc-event-title').eq(increment).closest('td').attr('data-date');
-    			var date = element[counter];
-    			var role = $('.fc-event-title').eq(increment).text();
-    			events.forEach((item,index)=>{
-		    		x = fun(item,index,date)
-		    		if(x !== undefined){
-		    		console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/roster/getRosterDetails?rosterId=${x}&showBudgetYN=N" title="${role}">${role}</a>`));
-		    			}
-		    	});
-    			counter++;
-    			}
-					if(($('.fc-event-title').eq(increment).text()).includes('Leave')){
-	    			var status = $('.fc-event-title').eq(increment).text();
-	    				console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/Leave" title="${status}">${status}</a>`));
-			    	}
+      $(document).ready(function(){
+        var events = <?php print_r(json_encode(json_decode($calendar)->event[0])); ?>;
+        console.log(events)
+        var count = $('.fc-event-title').length; 
+        var counter = 0;
+        var increment = 0;
+        var element = [];
+        var meetingCount = 0;
+        var meetingElement = [];
+        
+        while(increment < count){
+          // rosters dates array
+          if(($('.fc-event-title').eq(increment).text()).includes('Shift')){
+          element[counter] = $('.fc-event-title').eq(increment).closest('td').attr('data-date');
+          var date = element[counter];
+          var role = $('.fc-event-title').eq(increment).text();
+          events.forEach((item,index)=>{
+            x = fun(item,index,date)
+            if(x !== undefined){
+            console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/roster/getRosterDetails?rosterId=${x}&showBudgetYN=N" title="${role}">${role}</a>`));
+              }
+          });
+          counter++;
+          }
+          if(($('.fc-event-title').eq(increment).text()).includes('Leave')){
+            var status = $('.fc-event-title').eq(increment).text();
+              console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/Leave" title="${status}">${status}</a>`));
+            }
 
-    			if(($('.fc-event-title').eq(increment).text()).includes('Meeting')){
-    			meetingElement[meetingCount] = $('.fc-event-title').eq(increment).closest('td').attr('data-date');
-    			var dateMeeting = meetingElement[meetingCount];
-    			var titleMeeting = $('.fc-event-title').eq(increment).text();
-    			events.forEach((item,index)=>{
-		    		y = meetingIdFromArray(item,index,dateMeeting)
-		    		meetingStatus = meetStatus(item,index,dateMeeting)
-		    		if(y !== undefined ){
-		    			if(meetingStatus.toLowerCase() == 'created'){
-		    				$('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/attendence/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
-		    			}
-		    			if(meetingStatus.toLowerCase() == 'attendence'){
-		    				$('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/attendence/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
-		    			}
-	    				if(meetingStatus.toLowerCase() == 'mom'){
-	    					$('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/onBoard/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
-	    				}
-    					if(meetingStatus.toLowerCase() == 'summary'){
-    						$('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/summary/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
-    						}
-		    			}
-			    	});
-	    			meetingCount++;
-    			}
-    			increment++; 
-    		}
+          if(($('.fc-event-title').eq(increment).text()).includes('Meeting')){
+          meetingElement[meetingCount] = $('.fc-event-title').eq(increment).closest('td').attr('data-date');
+          var dateMeeting = meetingElement[meetingCount];
+          var titleMeeting = $('.fc-event-title').eq(increment).text();
+          events.forEach((item,index)=>{
+            y = meetingIdFromArray(item,index,dateMeeting)
+            meetingStatus = meetStatus(item,index,dateMeeting)
+            if(y !== undefined ){
+              if(meetingStatus.toLowerCase() == 'created'){
+                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/attendence/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
+              }
+              if(meetingStatus.toLowerCase() == 'attendence'){
+                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/attendence/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
+              }
+              if(meetingStatus.toLowerCase() == 'mom'){
+                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/onBoard/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
+              }
+              if(meetingStatus.toLowerCase() == 'summary'){
+                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/summary/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
+                }
+              }
+            });
+            meetingCount++;
+          }
+          increment++; 
+        }
 
-    		function fun(item,index,date){
-    			if(item['roster'] !== undefined && item['start'] == date){
-	    		return item['roster'];
-	    				}
-	    			}
-	    	function meetingIdFromArray(item,index,date){
-    			if(item['meetingId'] !== undefined && item['start'] == date){
-	    			return item['meetingId'];
-	    			}
-	    	}
-	    	function meetStatus(item,index,date){
-    			if(item['meetingId'] !== undefined 
-	    				&& item['start'] == date 
-	    				&& item['start'] != '0000-00-00'
-	    				&& item['meetingStatus'] != ''
-	    				&& item['meetingStatus'] != null ){
-				    			return item['meetingStatus'];
-	    			}
-	    	}
-    		console.log(events)
+        function fun(item,index,date){
+          if(item['roster'] !== undefined && item['start'] == date){
+          return item['roster'];
+              }
+            }
+        function meetingIdFromArray(item,index,date){
+          if(item['meetingId'] !== undefined && item['start'] == date){
+            return item['meetingId'];
+            }
+        }
+        function meetStatus(item,index,date){
+          if(item['meetingId'] !== undefined 
+              && item['start'] == date 
+              && item['start'] != '0000-00-00'
+              && item['meetingStatus'] != ''
+              && item['meetingStatus'] != null ){
+                  return item['meetingStatus'];
+            }
+        }
+        console.log(events)
 
-	$(document).on('click','.fc-button',function(){
-		var d = new Date();
-		var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-		if($('.fc-header-toolbar .fc-toolbar-chunk .fc-toolbar-title').text() == `${months[d.getMonth()]} ${d.getFullYear()}`){
-    		var events = <?php print_r(json_encode(json_decode($calendar)->event[0])); ?>;
-    		var count = $('.fc-event-title').length; 
-    		var counter = 0;
-    		var increment = 0;
-    		var element = [];
-    		var meetingCount = 0;
-    		var meetingElement = [];
-    		
-    		while(increment < count){
-    			// rosters dates array
-    			if(($('.fc-event-title').eq(increment).text()).includes('Shift')){
-    			element[counter] = $('.fc-event-title').eq(increment).closest('td').attr('data-date');
-    			var date = element[counter];
-    			// var role = $('.fc-event-title').eq(increment).text();
-    			events.forEach((item,index)=>{
-		    		x = fun(item,index,date)
-		    		if(x !== undefined){
-		    		console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/roster/getRosterDetails?rosterId=${x}" title="${role}">${role}</a>`));
-		    			}
-		    	});
-    			counter++;
-    			}
-					if(($('.fc-event-title').eq(increment).text()).includes('Leave')){
-	    			// var status = $('.fc-event-title').eq(increment).text();
-	    				console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/Leave" title="${status}">${status}</a>`));
-			    	}
+  $(document).on('click','.fc-button',function(){
+    var d = new Date();
+    var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    if($('.fc-header-toolbar .fc-toolbar-chunk .fc-toolbar-title').text() == `${months[d.getMonth()]} ${d.getFullYear()}`){
+        var events = <?php print_r(json_encode(json_decode($calendar)->event[0])); ?>;
+        var count = $('.fc-event-title').length; 
+        var counter = 0;
+        var increment = 0;
+        var element = [];
+        var meetingCount = 0;
+        var meetingElement = [];
+        
+        while(increment < count){
+          // rosters dates array
+          if(($('.fc-event-title').eq(increment).text()).includes('Shift')){
+          element[counter] = $('.fc-event-title').eq(increment).closest('td').attr('data-date');
+          var date = element[counter];
+          // var role = $('.fc-event-title').eq(increment).text();
+          events.forEach((item,index)=>{
+            x = fun(item,index,date)
+            if(x !== undefined){
+            console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/roster/getRosterDetails?rosterId=${x}" title="${role}">${role}</a>`));
+              }
+          });
+          counter++;
+          }
+          if(($('.fc-event-title').eq(increment).text()).includes('Leave')){
+            // var status = $('.fc-event-title').eq(increment).text();
+              console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/Leave" title="${status}">${status}</a>`));
+            }
 
-			    if(($('.fc-event-title').eq(increment).text()).includes('Meeting')){
-    			meetingElement[meetingCount] = $('.fc-event-title').eq(increment).closest('td').attr('data-date');
-    			var dateMeeting = meetingElement[meetingCount];
-    			var titleMeeting = $('.fc-event-title').eq(increment).text();
-    			events.forEach((item,index)=>{
-		    		y = meetingIdFromArray(item,index,dateMeeting)
-		    		meetingStatus = meetStatus(item,index,dateMeeting)
-		    		if(y !== undefined ){
-		    			if(meetingStatus.toLowerCase() == 'created'){
-		    				$('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/attendence/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
-		    			}
-		    			if(meetingStatus.toLowerCase() == 'attendence'){
-		    				$('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/attendence/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
-		    			}
-	    				if(meetingStatus.toLowerCase() == 'mom'){
-	    					$('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/onBoard/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
-	    				}
-    					if(meetingStatus.toLowerCase() == 'summary'){
-    						$('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/summary/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
-    						}
-		    			}
-			    	});
-	    			meetingCount++;
-    			}
-    			increment++; 
-    		}
-    		function fun(item,index,date){
-    			if(item['roster'] !== undefined && item['start'] == date){
-	    		return item['roster'];
-	    				}
-	    			}
-    		console.log(events)
-    		}
-    	})
-    	})
+          if(($('.fc-event-title').eq(increment).text()).includes('Meeting')){
+          meetingElement[meetingCount] = $('.fc-event-title').eq(increment).closest('td').attr('data-date');
+          var dateMeeting = meetingElement[meetingCount];
+          var titleMeeting = $('.fc-event-title').eq(increment).text();
+          events.forEach((item,index)=>{
+            y = meetingIdFromArray(item,index,dateMeeting)
+            meetingStatus = meetStatus(item,index,dateMeeting)
+            if(y !== undefined ){
+              if(meetingStatus.toLowerCase() == 'created'){
+                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/attendence/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
+              }
+              if(meetingStatus.toLowerCase() == 'attendence'){
+                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/attendence/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
+              }
+              if(meetingStatus.toLowerCase() == 'mom'){
+                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/onBoard/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
+              }
+              if(meetingStatus.toLowerCase() == 'summary'){
+                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/summary/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
+                }
+              }
+            });
+            meetingCount++;
+          }
+          increment++; 
+        }
+        function fun(item,index,date){
+          if(item['roster'] !== undefined && item['start'] == date){
+          return item['roster'];
+              }
+            }
+        console.log(events)
+        }
+      })
+      })
     </script>
 
   <script type="text/javascript">
@@ -1309,40 +1312,40 @@ color:#FFFFFF;
 <script type="text/javascript" language="javascript" >
 $('#toggle').remove();
      $('#colab').on('change',function(){
-				$('.remove').remove();
-              		 
+        $('.remove').remove();
+                   
          if(this.value === "m"){  
                $('#colab').after("<input type='date' class='remove dashboard_input' id='month'>");
-		 }
+     }
          if(this.value === "y"){
 
-			$('#colab').after("<input type='date' class='remove dashboard_input'  id='year'>");
-			 
-			}
-			if(this.value === "w"){
-				$('#colab').after("<input type='date' class='remove dashboard_input' id='weekly'>");
-			 
-			}
+      $('#colab').after("<input type='date' class='remove dashboard_input'  id='year'>");
+       
+      }
+      if(this.value === "w"){
+        $('#colab').after("<input type='date' class='remove dashboard_input' id='weekly'>");
+       
+      }
 
 
-	 });
+   });
     $('#month').datepicker({
-		defaultDate: new Date(),
-		format:'MM'
-	});
-	$('#year').datepicker({
-		defaultDate: new Date(),
-		format:'DD-MM-YYYY'
-	});
-	$('#weekly').datepicker({
-		defaultDate: new Date(),
-		format:'DD-MM-YYYY'
-	})
-	$('#datetimepicker12').datetimepicker({
+    defaultDate: new Date(),
+    format:'MM'
+  });
+  $('#year').datepicker({
+    defaultDate: new Date(),
+    format:'DD-MM-YYYY'
+  });
+  $('#weekly').datepicker({
+    defaultDate: new Date(),
+    format:'DD-MM-YYYY'
+  })
+  $('#datetimepicker12').datetimepicker({
                 defaultDate: new Date(),
                 format: 'DD-MM-YYYY'
     });
-	$('#datetimepicker121').datetimepicker({
+  $('#datetimepicker121').datetimepicker({
                 defaultDate: new Date(),
                 format: 'DD-MM-YYYY'
     });
@@ -1351,12 +1354,12 @@ $('#toggle').remove();
                 //format: 'YYYY-MM-DD hh:mm:ss A'
                 format: 'DD-MM-YYYY'
     });
-	$('#datetimepicker131').datetimepicker({
+  $('#datetimepicker131').datetimepicker({
                 defaultDate: new Date(),
                 //format: 'YYYY-MM-DD hh:mm:ss A'
                 format: 'DD-MM-YYYY'
     });
-	$('#apply_button').click(function(){
+  $('#apply_button').click(function(){
         
         $('#applyModal').modal('show');
     });
@@ -1415,15 +1418,15 @@ $('#toggle').remove();
 <?php } ?>
 <?php 
 if( isset($error) != null){ ?>
-	<script type="text/javascript">
+  <script type="text/javascript">
    var modal = document.querySelector(".modal-logout");
        function toggleModal() {
-   	     modal.classList.toggle("show-modal");
-    	}
-	$(document).ready(function(){
-  		toggleModal();	
-  		});
-	</script>
-<?php }	?>
+         modal.classList.toggle("show-modal");
+      }
+  $(document).ready(function(){
+      toggleModal();  
+      });
+  </script>
+<?php } ?>
 </body>
 </html>
