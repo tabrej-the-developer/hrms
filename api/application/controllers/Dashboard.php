@@ -26,7 +26,7 @@ class Dashboard extends CI_Controller{
 			if($res != null && $res->userid == $userid){
 						$this->load->model('utilModel');
 						$userDetails = $this->utilModel->getUserDetails($userid);
-						$centers = explode("|",$userDetails[0]->center);
+						$centers = explode("|",$userDetails->center);
 						$this->load->model('dashboardModel');
 						$data = [];
 						$data['rostersCount'] =  0;
