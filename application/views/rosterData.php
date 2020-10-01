@@ -1,3 +1,130 @@
+<?php 
+   $rosterDetails = json_decode($rosterDetails); 
+   $GLOBALS['roDetails'] = $rosterDetails;
+   $entitlement = json_decode($entitlements);
+   $permissions = json_decode($permissions);
+  if(isset($_GET['printMode']) && ($_GET['printMode'] == 'P' || $_GET['printMode'] == 'L')){
+$this->load->library('fpdf');
+
+class PDF extends fpdf
+{
+
+function timex( $x)
+  { 
+      $output;
+      if(($x/100) < 12 ){
+          if(($x%100)==0){
+            if($x/1200 == 0){
+              $output = "12:00 AM";    
+            }
+            else{
+           $output = intval($x/100) . ":00 AM";
+            }
+          }
+        if(($x%100)!=0){
+          if(($x%100) < 10){
+            $output = intval($x/100) .":0". $x%100 . " AM";
+          }
+          if(($x%100) >= 10){
+            $output = intval($x/100) .":". $x%100 . " AM";
+          }
+          }
+      }
+  else if($x/100>12){
+      if(($x%100)==0){
+      $output = intval($x/100)-12 . ":00 PM";
+      }
+      if(($x%100)!=0 && intval($x/100)!=12){
+        if(($x%100) < 10){
+          $output = intval($x/100)-12 .":0". $x%100 . " PM";
+        }
+        if(($x%100) >= 10){
+          $output = intval($x/100)-12 .":". $x%100 . " PM";
+        }
+      }
+      if(($x%100)!=0 && intval($x/100)==12){
+        if(($x%100) < 10){
+          $output = intval($x/100) .":0". $x%100 . " PM";
+        }
+        if(($x%100) >= 10){
+          $output = intval($x/100) .":". $x%100 . " PM";
+        }
+      }
+  }
+  else{
+  if(($x%100)==0){
+       $output = intval($x/100) . ": 00 PM";
+      }
+      if(($x%100)!=0){
+        if(($x%100) < 10){
+          $output = intval($x/100) . ":0". $x%100 . " PM";
+        }
+        if(($x%100) >= 10){
+          $output = intval($x/100) . ":". $x%100 . " PM";
+        }
+      }
+  }
+  return $output;
+}
+  function Table()
+  {
+      $mode = $_GET['printMode'];
+      if($mode == 'L'){
+        $cellSize = 57.1428;
+        $size = 400;
+      }
+      if($mode == 'P'){
+        $cellSize = 39.285;
+        $size = 275;
+      }
+      $this->SetFont('Arial','B',10);
+      $roster = $GLOBALS['roDetails']->roster; 
+            $this->SetFont('Arial','B',25);
+      $this->Image(base_url('assets/images/icons/amigo.jpeg'),10,6,60);
+      $this->Cell($size,20,'Roster from '.$GLOBALS['roDetails']->startDate.' to '.$GLOBALS['roDetails']->endDate,0,0,'C');
+      $this->Image(base_url('assets/images/icons/Todquest_logo.png'),260,10,20);
+                $this->Ln();
+    /* Header*/
+          $this->SetFont('Arial','B',10);
+              $this->Cell($cellSize,10,'Role',1,0,'C');
+              $this->Cell($cellSize,10,'Name',1,0,'C');
+        for($i=0;$i<5;$i++){
+          $date = $GLOBALS['roDetails']->startDate;
+          $this->Cell($cellSize,10,date('D',strtotime($date.'+'.$i. 'days'))." ".'('.date('dS',strtotime($date.'+'.$i. 'days')).')',1,0,'C');
+          }
+          $this->Ln();
+    foreach($roster as $ro){
+      $this->Cell($size,10,$ro->areaName,1,0,'C');
+      $this->Ln();
+      $roles = $ro->roles;
+      foreach($roles as $role){
+        // print_r($role);
+        $this->Cell($cellSize,10,$role->empTitle,1,0,'C');
+        $this->Cell($cellSize,10,$role->empName,1,0,'C');
+        for($i=0;$i<5;$i++){
+        // foreach($role->shifts as $r){
+          if(isset($role->shifts[$i]->startTime)){
+          $this->Cell($cellSize,10,$this->timex($role->shifts[$i]->startTime).'-'.$this->timex($role->shifts[$i]->endTime),1,0,'C');
+          }
+          else{
+          $this->Cell($cellSize,10,"",1,0,'C');
+          }
+        }
+          $this->Ln();
+      }
+    }
+
+    // $this->SetLeftMargin(100);
+
+
+  } 
+}
+$pdf = new PDF($_GET['printMode'],'mm','A3');
+$pdf->AddPage();
+$pdf->Table();
+$pdf->Output();
+ } 
+?>
 <!DOCTYPE html>
 <html>
 <style type="text/css" media="print">
@@ -5,9 +132,10 @@
 </style>
 <head>
 	<title></title>
-
-		<?php $this->load->view('header'); ?>
-
+		<?php 
+      
+      $this->load->view('header');
+     ?>
 <meta content="width=device-width, initial-scale=1" name="viewport" />
 	<title>Roster</title>
 <!--	
@@ -1132,11 +1260,7 @@ td{
 <body>
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/tokenize2.css">
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tokenize2.js"></script>
-	<?php 
-		$rosterDetails = json_decode($rosterDetails); 
-		$entitlement = json_decode($entitlements);
-		$permissions = json_decode($permissions);
-	?>
+
 <div class="loading">
   <div class="loader"></div>
 </div>
@@ -1182,8 +1306,8 @@ td{
 							<img src="<?php echo base_url('assets/images/icons/print.png'); ?>" style="max-height:1rem;margin-right:10px">
 						</i>Print</button>
 					<span class="print-hidden-btn">
-						<button class="print-landscape" onclick="landscape()">Landscape</button>
-						<button class="print-portrait" onclick="portrait()">Portrait</button>
+						<button class="print-landscape" onclick="landscape()"><a href="<?php echo base_url('roster/getRosterDetails?rosterId='.$rosterid.'&showBudgetYN=N&printMode=L'); ?>">Landscape</a></button>
+						<button class="print-portrait" onclick="portrait()"><a href="<?php echo base_url('roster/getRosterDetails?rosterId='.$rosterid.'&showBudgetYN=N&printMode=P'); ?>">Portrait</a>a></button>
 					</span>
 				</span>
 			</span>
@@ -1615,8 +1739,6 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 
 				</tr>
 			<?php }  } }?>
-
-
 
 
 
