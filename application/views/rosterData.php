@@ -3,10 +3,11 @@
    $GLOBALS['roDetails'] = $rosterDetails;
    $entitlement = json_decode($entitlements);
    $permissions = json_decode($permissions);
+   require(APPPATH.'/libraries/fpdf/fpdf.php');
   if(isset($_GET['printMode']) && ($_GET['printMode'] == 'P' || $_GET['printMode'] == 'L')){
-$this->load->library('fpdf');
+// $this->load->library('fpdf');
 
-class PDF extends fpdf
+class PDF extends FPDF
 {
 
 function timex( $x)
