@@ -965,7 +965,7 @@ font-family: 'Open Sans', sans-serif;
 							empCount = JSON.parse(response).employees.length;
 							string = "";
 							console.log(i)
-							$('.roleNameClass').eq(c).append(` (${empCount})`);
+							$('.roleNameClass').eq(c).append(` (${empCount} <i><img src="<?php echo base_url('assets/images/icons/customer.png'); ?>" style="max-height:1rem;margin-right:10px"></i>)`);
 							emps.forEach(function(e){
 								string = string +'\n'+e.name
 							})
