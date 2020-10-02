@@ -688,7 +688,7 @@ class Rosters extends MY_Controller {
 					$employeeEmail = $this->rostersModel->getEmployeeEmail($employeeId)->email;
 					$publisherEmail = $this->rostersModel->getEmployeeDetails($json->userid)->email;
 
-					if($days != 'updateShiftByEmployee'){
+					if(!isset($days['days'])){
 						foreach ($days as $day) {
 							$getShiftId = $this->rostersModel->getShiftId($employeeId,$currentDate)->id;
 								if($day->YN == "true"){
@@ -721,7 +721,7 @@ class Rosters extends MY_Controller {
 							//echo $startTime;
 						}
 					}
-					if($days == 'updateShiftByEmployee'){
+					if(isset($days['days'])){
 						$this->rostersModel->updateShiftByEmployee($shiftid,$status);
 						$currentDate = $this->rostersModel->getShiftDate($shiftid)->rosterDate;
 						if($status == 3){

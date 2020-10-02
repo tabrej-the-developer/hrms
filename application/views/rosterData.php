@@ -1311,8 +1311,8 @@ td{
 							<img src="<?php echo base_url('assets/images/icons/print.png'); ?>" style="max-height:1rem;margin-right:10px">
 						</i>Print</button>
 					<span class="print-hidden-btn">
-						<button class="print-landscape" onclick="landscape()"><a href="<?php echo base_url('roster/getRosterDetails?rosterId='.$rosterid.'&showBudgetYN=N&printMode=L'); ?>" target="_blank">Landscape</a></button>
-						<button class="print-portrait" onclick="portrait()"><a href="<?php echo base_url('roster/getRosterDetails?rosterId='.$rosterid.'&showBudgetYN=N&printMode=P'); ?>" target="_blank">Portrait</a></button>
+						<button class="print-landscape" ><a href="<?php echo base_url('roster/getRosterDetails?rosterId='.$rosterid.'&showBudgetYN=N&printMode=L'); ?>" target="_blank">Landscape</a></button>
+						<button class="print-portrait" ><a href="<?php echo base_url('roster/getRosterDetails?rosterId='.$rosterid.'&showBudgetYN=N&printMode=P'); ?>" target="_blank">Portrait</a></button>
 					</span>
 				</span>
 			</span>
@@ -1929,6 +1929,31 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 		  	</div>
 		</div>
 		   <form  id="user-form">	
+    <div class="row p-2">
+      <label class="col-4 modal_label">Days</label>
+      <span class="col-7">
+        <span class="d-inline-block">
+          <span>Mon</span>
+          <input type="checkbox" name="days" value="1" class="d-block edit_shift_checkbox_space" checked>
+        </span>
+        <span class="d-inline-block">
+          <span>Tue</span>
+          <input type="checkbox" name="days" value="2" class="d-block edit_shift_checkbox_space" checked>
+        </span>
+        <span class="d-inline-block">
+          <span>Wed</span>
+          <input type="checkbox" name="days" value="3" class="d-block edit_shift_checkbox_space" checked>
+        </span>
+        <span class="d-inline-block">
+          <span>Thu</span>
+          <input type="checkbox" name="days" value="4" class="d-block edit_shift_checkbox_space" checked>
+        </span>
+        <span class="d-inline-block">
+          <span>Fri</span>
+          <input type="checkbox" name="days" value="5" class="d-block edit_shift_checkbox_space" checked>
+        </span>
+      </span>
+    </div>
 		   		<input type="text"  name="" id="starts" style="display: none">
 		   		<input type="text"  name="" id="ends" style="display:none">
 		 		<input type="text" name="shiftId"  id="shift-Id" style="display:none">
@@ -1946,6 +1971,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 					<i>
 						<img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:0.8rem;margin-right:10px">
 					</i>Close</button>
+
 		 	</form>
 	  </div>
 </div>
@@ -2227,8 +2253,8 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
     $(document).on('click','.button',function(){
       var startTime = parseInt($('#starts').prop('value')) ;
       var endTime = parseInt($('#ends').prop('value'));
-      
-      var days = "updateShiftByEmployee";
+      var days = [];
+      var days['days'] = [];
       var shiftid = $('#shift-Id').prop('value');
       var status = $(this).prop('value');
       var userid = "<?php echo $userid ?>";
