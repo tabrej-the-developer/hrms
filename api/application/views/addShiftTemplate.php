@@ -10,13 +10,17 @@
 			<th style="border-collapse: collapse;border:1px solid black;">Date</th>
 			<th style="border-collapse: collapse;border:1px solid black;">Start Time</th>
 			<th style="border-collapse: collapse;border:1px solid black;">End Time</th>
+			<th style="border-collapse: collapse;border:1px solid black;">Message</th>
 		</thead>
 		<tbody style="border-collapse: collapse;border:1px solid black;">
+			<?php foreach($arr as $a){?>
 			<tr style="border-collapse: collapse;border:1px solid black;">
-				<td style="border-collapse: collapse;border:1px solid black;padding:0.25rem 0.5rem"><?php echo date('d M, Y',strtotime($date)); ?></td>
-				<td style="border-collapse: collapse;border:1px solid black;padding:0.25rem 0.5rem"><?php echo $startTime; ?></td>
-				<td style="border-collapse: collapse;border:1px solid black;padding:0.25rem 0.5rem"><?php echo $endTime; ?></td>
+				<td style="border-collapse: collapse;border:1px solid black;padding:0.25rem 0.5rem"><?php echo date('d M, Y',strtotime($a['date'])); ?></td>
+				<td style="border-collapse: collapse;border:1px solid black;padding:0.25rem 0.5rem"><?php echo $a['startTime']; ?></td>
+				<td style="border-collapse: collapse;border:1px solid black;padding:0.25rem 0.5rem"><?php echo $a['endTime']; ?></td>
+				<td style="border-collapse: collapse;border:1px solid black;padding:0.25rem 0.5rem"><?php echo $a['message']; ?></td>
 			</tr>
+			<?php } ?>
 		</tbody>
 	</table>
 </body>
