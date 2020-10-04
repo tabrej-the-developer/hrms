@@ -44,6 +44,12 @@ class RostersModel extends CI_Model {
 		return $query->result();
 	}
 
+	public function getRoles(){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM orgchartroles ");
+		return $query->result();
+	}
+
 	public function getRole($roleid){
 		$this->load->database();
 		$query = $this->db->query("SELECT * FROM orgchartroles WHERE roleid = $roleid ");

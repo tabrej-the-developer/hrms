@@ -703,6 +703,19 @@ p.ovrflowtext {
       margin-right:5px !important;
       justify-content: center !important;
 }
+
+#recipient-name{
+        background: #ebebeb !important;
+      border-radius: 5px !important;
+      padding: 5px !important;
+      border: 1px solid #D2D0D0 !important;
+      border-radius: 20px !important;
+      padding-left: 1rem;
+      font-size: 0.85rem !important;
+}
+.tokens-container.form-control{
+  padding-left: 2rem !important;
+}
     @media only screen and (max-width: 600px){
       .left-bar{
         max-width:auto;
@@ -1256,7 +1269,8 @@ p.ovrflowtext {
 						  <div class="row">
 						 
 							 <div class="col-md-4"><label for="recipient-name" class="col-form-label"  style="float:right;">Group Name</label></div>
-							 <div class="col-md-8" style="float:left;"><input type="text" class="form-control" name="recipient-name" id="recipient-name" required style="border-radius:0;background-color:#fff;border:none;">
+							 <div class="col-md-8" style="float:left;">
+                <input type="text" class="form-control" name="recipient-name" id="recipient-name" required style="border-radius:0;background-color:#fff;border:none;">
 							  <div class="col-md-12" style="color: red;" id="groupNameErr"></div>
 							 </div>
 						  </div>

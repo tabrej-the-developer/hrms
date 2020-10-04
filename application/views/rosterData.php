@@ -1,4 +1,7 @@
+
+
 <?php 
+  $GLOBALS['rolesArray'] = json_decode($roles); 
    $rosterDetails = json_decode($rosterDetails); 
    $GLOBALS['roDetails'] = $rosterDetails;
    $entitlement = json_decode($entitlements);
@@ -86,7 +89,7 @@ function timex( $x)
       $roster = $GLOBALS['roDetails']->roster; 
             $this->SetFont('Arial','B',25);
       $this->Image(base_url('assets/images/icons/amigo.jpeg'),$leftSpaceLeftImage,6,60);
-      $this->Cell($size,20,'Roster '.$GLOBALS['roDetails']->startDate.' to '.$GLOBALS['roDetails']->endDate,0,0,'C');
+      $this->Cell($size,20,'Roster '.date('d-M-Y',strtotime($GLOBALS['roDetails']->startDate)).' To '.date('d-M-Y',strtotime($GLOBALS['roDetails']->endDate)),0,0,'C');
       $this->Image(base_url('assets/images/icons/Todquest_logo.png'),$leftSpaceRightImage,10,20);
                 $this->Ln();
     /* Header*/
@@ -98,14 +101,37 @@ function timex( $x)
           $this->Cell($cellSize,8,date('D',strtotime($date.'+'.$i. 'days'))." ".'('.date('dS',strtotime($date.'+'.$i. 'days')).')',1,0,'C');
           }
           $this->Ln();
+
+          $rolesArray = $GLOBALS['rolesArray'];
+
     foreach($roster as $ro){
       $this->Cell($size,8,$ro->areaName,1,0,'C');
       $this->Ln();
       $roles = $ro->roles;
       foreach($roles as $role){
         // print_r($role);
-        $this->Cell($cellSize,8,$role->empTitle,1,0,'C');
-        $this->Cell($cellSize,8,$role->empName,1,0,'C');
+            $empRoleId = $role->empRole;
+            foreach($rolesArray->roles as $oneRole){
+              if($empRoleId == $oneRole->roleid)
+                $this->Cell($cellSize,8,$oneRole->roleName,1,0,'C');
+            }
+            if(strlen($role->empName) >= 22 && strlen($role->empName) <= 25){
+              $this->SetFont('Arial','B',8);
+              $this->Cell($cellSize,8,$role->empName,1,0,'C');
+            }
+            elseif(strlen($role->empName) >= 25 && strlen($role->empName) <= 30){
+              $this->SetFont('Arial','B',7);
+              $this->Cell($cellSize,8,$role->empName,1,0,'C');
+            }
+            elseif(strlen($role->empName) > 30){
+              $this->SetFont('Arial','B',6);
+              $this->Cell($cellSize,8,$role->empName,1,0,'C');
+            }
+              else{
+                $this->SetFont('Arial','B',10);
+                $this->Cell($cellSize,8,$role->empName,1,0,'C');
+              }
+              $this->SetFont('Arial','B',10);
         for($i=0;$i<5;$i++){
         // foreach($role->shifts as $r){
           if(isset($role->shifts[$i]->startTime)){
@@ -130,6 +156,16 @@ $pdf->Table();
 $pdf->Output();
  } 
 ?>
+
+<!-- Print part End -->
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html>
 <style type="text/css" media="print">
@@ -2253,8 +2289,14 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
     $(document).on('click','.button',function(){
       var startTime = parseInt($('#starts').prop('value')) ;
       var endTime = parseInt($('#ends').prop('value'));
-      var days = [];
-      var days['days'] = [];
+      var days = {};
+      var day = [];
+      for(var i=0;i< ($('.edit_shift_checkbox_space').length);i++){
+        obj = {};
+        obj.YN = ($('.edit_shift_checkbox_space').eq(i).is(':checked'));
+        day.push(obj);
+      } 
+      days.day = day;
       var shiftid = $('#shift-Id').prop('value');
       var status = $(this).prop('value');
       var userid = "<?php echo $userid ?>";

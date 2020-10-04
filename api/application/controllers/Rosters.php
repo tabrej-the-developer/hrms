@@ -514,6 +514,7 @@ class Rosters extends MY_Controller {
 								$empDetails = $this->authModel->getUserDetails($employeeid->userid);
 								$rav['empName'] = $empDetails->name;
 								$rav['empTitle'] = $empDetails->title;
+								$rav['empRole'] = $empDetails->roleid;
 								$rav['level'] = $empDetails->level;
 								//$rav['maxHoursPerWeek'] = $empDetails->maxHoursPerWeek;
 									$rav['shifts'] = [];
@@ -688,17 +689,20 @@ class Rosters extends MY_Controller {
 					$employeeEmail = $this->rostersModel->getEmployeeEmail($employeeId)->email;
 					$publisherEmail = $this->rostersModel->getEmployeeDetails($json->userid)->email;
 
-					if(!isset($days['days'])){
+					if(!isset($days->day)){
+						$arr = [];
+						$arr['arr'] = [];
+						$obj = [];
 						foreach ($days as $day) {
 							$getShiftId = $this->rostersModel->getShiftId($employeeId,$currentDate)->id;
 								if($day->YN == "true"){
 									if($getShiftId != null){
 									$this->rostersModel->updateShift($getShiftId,$startTime,$endTime,$roleid,$status,$message);
-											$subject = "Shift has been updated";
+											$obj['message'] = "Shift  updated";
 										}
 										else{
 									$this->rostersModel->createNewShift($rosterid,$currentDate,$employeeId,$startTime,$endTime,$roleid,$message);
-										$subject = "Shift has been added";
+										$obj['message'] = "Shift  added";
 										}
 
 										if($rosterStatus == 'Published'){
@@ -709,37 +713,57 @@ class Rosters extends MY_Controller {
 											$payload['rosterId'] = $rosterid;
 											$this->utilModel->insertNotification($json->userid,$intent,$title,$body,json_encode($payload));
 											// $this->firebase->sendMessage($title,$body,$payload,$employee->userid);
-											$arr['startTime'] = $this->timex($startTime);
-											$arr['endTime'] = $this->timex($endTime);
-											$arr['date'] = $currentDate;
-											$to = $employeeEmail;
-											$template = 'addShiftTemplate';
-											$this->Emails($to,$template,$subject,$arr);
+											$obj['startTime'] = $this->timex($startTime);
+											$obj['endTime'] = $this->timex($endTime);
+											$obj['date'] = $currentDate;
 										}
+								array_push($arr['arr'],$obj);
 								}
 							$currentDate = date('Y-m-d',strtotime($currentDate.'+1 days'));
 							//echo $startTime;
 						}
-					}
-					if(isset($days['days'])){
-						$this->rostersModel->updateShiftByEmployee($shiftid,$status);
-						$currentDate = $this->rostersModel->getShiftDate($shiftid)->rosterDate;
-						if($status == 3){
-							$status = 'Accepted';
-						}
-						if($status == 4){
-							$status = 'Rejected';
-						}
-						$subject = "Shift for   ". $currentDate. " has been ". $status;
-						$arr['startTime'] = $this->timex($startTime);
-						$arr['endTime'] = $this->timex($endTime);
-						$arr['date'] = $currentDate;
-						$arr['message'] = $this->rostersModel->getEmployeeEmail($employeeId)->name;
-						$to = $employeeEmail;//'dheerajreddynannuri1709@gmail.com';
-						$template = 'updateShiftTemplate';
-						$this->Emails($to,$template,$subject,$arr);
+						// print_r($arr);
+											// $to = 'dheerajreddynannuri1709@gmail.com';$employeeEmail;
+											// $template = 'addShiftTemplate';
+											// $subject = 'Shift Updated';
+											// $this->Emails($to,$template,$subject,$arr);
 					}
 
+
+					if(isset($days->day)){
+						$arr = [];
+						$arr['arr'] = [];
+						$arr['message'] = $this->rostersModel->getEmployeeEmail($employeeId)->name;
+						$obj = [];
+						foreach ($days->day as $day) {
+														$obj = [];
+							$getShiftId = $this->rostersModel->getShiftId($employeeId,$currentDate)->id;
+								if($day->YN == "true"){
+									$this->rostersModel->updateShiftByEmployee($getShiftId,$status);
+									if($status == 3){
+										$st = 'Accepted';
+									}
+									if($status == 4){
+										$st == 'Rejected';
+									}
+									$obj['startTime'] = $this->timex($startTime);
+									$obj['endTime'] = $this->timex($endTime);
+									$obj['date'] = $currentDate;
+									array_push($arr['arr'],$obj);
+								}else{
+									$obj['startTime'] = "";
+									$obj['endTime'] = "";
+									$obj['date'] = $currentDate;
+									array_push($arr['arr'],$obj);
+								}
+									$subject = "Shift ". $st;
+							$currentDate = date('Y-m-d',strtotime($currentDate.'+1 days'));
+							}
+							$to = 'dheerajreddynannuri1709@gmail.com';
+							$template = 'updateShiftTemplate';
+							$this->Emails($to,$template,$subject,$arr);
+							// print_r(json_encode($arr));
+					}
 					$data['Status'] = 'SUCCESS';
 					http_response_code(200);
 					echo json_encode($data);
@@ -902,7 +926,7 @@ class Rosters extends MY_Controller {
 					$this->rostersModel->addNewShift($startTime,$endTime,$rosterid,$roleid,$date,$empid,$status);
 						$employeeEmail = $this->rostersModel->getEmployeeEmail($empid)->email;
 					if(($this->rostersModel->getRosterFromId($rosterid)->status) == 'Published'){
-						$subject = "Shift has been added";
+						$subject = "Shift  added";
 						$template = 'addShiftTemplate';
 						$this->Emails($employeeEmail,$template,$subject,$arr);
 					}
@@ -1094,7 +1118,7 @@ class Rosters extends MY_Controller {
 				$currentDate = date('Y-m-d',strtotime($currentDate.'+1 days'));
 					array_push($arr['data'],$data);
 			}
-				$subject = "Roster has been published"; 
+				$subject = "Roster  published"; 
 				$template = 'rosterPublishEmailTemplate';
 				//$employeeEmail = "arpitasaxena555@gmail.com";
 					$this->Emails($employeeEmail,$template,$subject,$arr);
@@ -1261,6 +1285,26 @@ function dateToDay($date){
 				}
 				http_response_code(200);
 				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
+	public function getRoles($userid){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+					$this->load->model('rostersModel');
+					$data['roles'] = $this->rostersModel->getRoles();
+					http_response_code(200);
+					echo json_encode($data);
 			}
 			else{
 				http_response_code(401);

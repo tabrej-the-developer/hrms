@@ -19,10 +19,41 @@ class Messenger extends CI_Controller {
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
+			$this->load->model('utilModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			if($res != null && $res->userid == $userid){
 				$this->load->model('messengerModel');
-				$users = $this->messengerModel->GetUsers($userid,$searchText);
+				$userDetails = ($this->utilModel->getUserDetails($userid));
+				$getSuperAdmins = $this->utilModel->getSuperAdmins();
+				$employees= [];
+				// if($userDetails->role != 1){
+					foreach($getSuperAdmins as $superadmin){
+						$centers = explode('|',$superadmin->center);
+						foreach($centers as $cent){
+							$cs = explode('|',$userDetails->center);
+							foreach($cs as $c){
+								if($c == $cent && $c != "" && $c != null){
+									$admin = $superadmin;
+									break;
+								}
+							}
+						}
+					}
+					$allusers = $this->utilModel->getAllUsers();
+					$adminCenters = explode('|',$admin->center);
+						foreach($allusers as $u){
+							if($u->role != 1 ){
+								$cntrs = explode('|',$u->center);
+								foreach($cntrs as $cntr){
+									foreach($adminCenters as $adminCents){
+										if($cntr == $adminCents){
+											array_push($employees,$u);
+										}
+									}
+								}
+							}
+						}
+				$users = $employees;
 				$data = array();
 				foreach ($users as $u) {
 					$var['userid'] = $u->id;
