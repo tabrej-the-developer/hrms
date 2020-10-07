@@ -238,7 +238,7 @@
 		<span class="nav-button m-i"><span>Medical Info</span></span>
 		</div>	
 	</section>
-<form method="POST" action="updateEmployeeProfile" style="height: 100%">
+<form method="POST" action="updateEmployeeProfile" style="height: 100%" enctype="multipart/form-data">
 	<section class="employee-section">	
 		<!-- <h3>Personal</h3> -->
 		<span class="d-flex">
@@ -294,7 +294,13 @@
 				</select>				
 			</span>
 		</span>
-				
+
+		<span class="span-class" style="width: auto !important">
+			<span style="height:100px;width:100px">
+				<img src="<?php echo base_url().'api/'.$employeeData->users->imageUrl;?>" style="height:100px;width:100px;border-radius:0.5rem">
+			</span>
+			<input id="profileImage"  class="profileImage" type="FILE" name="profileImage">
+		</span>
 <!-- 		<span class="span-class">
 			<label>Job Title</label>
 			<input placeholder="Job Title" id="jobTitle"  class="" type="text" name="jobTitle" value="<?php //echo isset($employeeData->users->title) ? $employeeData->users->title : ''; ?>">

@@ -278,6 +278,7 @@ public function editRooms(){
 		));
 		$server_output = curl_exec($ch);
 		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		// var_dump($server_output);
 		if($httpcode == 200){
 			return $server_output;
 			curl_close ($ch);
@@ -798,24 +799,63 @@ $server_output = curl_exec($ch);
 
 
 	public function viewEntitlements(){
-		if($this->session->has_userdata('LoginId')){
-	//footprint start
-	if($this->session->has_userdata('current_url')){
-		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-		$this->session->set_userdata('current_url',currentUrl());
-	}
-	// footprint end
-			$data['centers'] = $this->getAllCenters();
-		$data['userid'] = $this->session->userdata('LoginId');
-		$data['entitlements'] = $this->getAllEntitlements($data['userid']);
-		$data['permissions'] = $this->fetchPermissions();
-		$this->load->view('entitlementsView',$data);
-	}
-	else{
-		$this->load->view('redirectToLogin');
-	}
+			if($this->session->has_userdata('LoginId')){
+		//footprint start
+		if($this->session->has_userdata('current_url')){
+			footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+			$this->session->set_userdata('current_url',currentUrl());
+		}
+		// footprint end
+				$data['centers'] = $this->getAllCenters();
+			$data['userid'] = $this->session->userdata('LoginId');
+			$data['entitlements'] = $this->getAllEntitlements($data['userid']);
+			$data['permissions'] = $this->fetchPermissions();
+			$this->load->view('entitlementsView',$data);
+		}
+		else{
+			$this->load->view('redirectToLogin');
+		}
 	}
 
+	public function activityLog(){
+		if($this->session->has_userdata('LoginId')){
+		//footprint start
+		if($this->session->has_userdata('current_url')){
+			footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+			$this->session->set_userdata('current_url',currentUrl());
+		}
+		// footprint end
+		$data['footprints'] = $this->getFootprints($this->session->userdata('LoginId'));
+				$data['centers'] = $this->getAllCenters();
+			$data['userid'] = $this->session->userdata('LoginId');
+			$data['entitlements'] = $this->getAllEntitlements($data['userid']);
+			$data['permissions'] = $this->fetchPermissions();
+			$this->load->view('activityLog',$data);
+		}
+		else{
+			$this->load->view('redirectToLogin');
+		}
+	}
+
+		function getFootprints($userid){
+		$url = BASE_API_URL."Dashboard/getFootprints/".$userid;
+				$ch = curl_init($url);
+				curl_setopt($ch, CURLOPT_URL,$url);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'x-device-id: '.$this->session->userdata('x-device-id'),
+					'x-token: '.$this->session->userdata('AuthToken')
+				));
+				$server_output = curl_exec($ch);
+				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				if($httpcode == 200){
+					return $server_output;
+					curl_close ($ch);
+				}
+				else if($httpcode == 401){
+					return 'error';
+				}
+			}
 		function getAllEntitlements($userid){
 			$url = BASE_API_URL."/Payroll/getAllEntitlements/".$userid;
 			$ch = curl_init($url);
@@ -1153,6 +1193,12 @@ $server_output = curl_exec($ch);
 		}else{
 			$data['contract_doc'] = "";
 		}
+		$prof_img = isset($_FILES['profileImage']['name']) ? $_FILES['profileImage']['name'] : "";
+		if($prof_img != ""){
+			$data['profileImage'] = base64_encode(file_get_contents($_FILES['profileImage']['tmp_name']));
+		}else{
+			$data['profileImage'] = "";
+		}			print_r($data['profileImage']);
 		// $data['employement_type'] = isset($_POST['employement_type']) ? $_POST['employement_type']: "";
 		$data['highest_qual_held'] = isset($_POST['highest_qual_held']) ? $_POST['highest_qual_held']: "";
 		$data['highest_qual_date_obtained'] = isset($_POST['highest_qual_date_obtained']) ? $_POST['highest_qual_date_obtained']: "";
@@ -1308,6 +1354,12 @@ $server_output = curl_exec($ch);
 		}else{
 			$data['contract_doc'] = "";
 		}
+		$prof_img = isset($_FILES['profileImage']['name']) ? $_FILES['profileImage']['name'] : "";
+		if($prof_img != ""){
+			$data['profileImage'] = base64_encode(file_get_contents($_FILES['profileImage']['tmp_name']));
+		}else{
+			$data['profileImage'] = "";
+		}		
 		$data['employement_type'] = isset($_POST['employement_type']) ? $_POST['employement_type']: "";
 		$data['highest_qual_held'] = isset($_POST['highest_qual_held']) ? $_POST['highest_qual_held']: "";
 		$data['highest_qual_date_obtained'] = isset($_POST['highest_qual_date_obtained']) ? $_POST['highest_qual_date_obtained']: "";
@@ -1985,4 +2037,7 @@ $server_output = curl_exec($ch);
 		}
 	}
 
+	// public function testRun(){
+	// 	file_put_contents('application/file.png',base64_decode(base64_encode(file_get_contents("https://openthread.google.cn/images/ot-contrib-google.png"))));
+	// 	}
 }

@@ -726,6 +726,9 @@ color:#FFFFFF;
     .tokens-container.form-control{
       padding-left: 2rem !important;
     }
+    #collab{
+      padding-left: 1rem;
+    }
 @media only screen and (max-width: 780px ){
       #calendar{
         width: 100%;

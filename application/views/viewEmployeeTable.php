@@ -43,7 +43,7 @@
       background-color: rgb(0,0,0); 
       background-color: rgba(0,0,0,0.4); 
     }
-    input[type="text"],input[type=time],select,#casualEmp_date{
+    input[type="text"],input[type=time],select,#casualEmp_date,#filter{
       background: #ebebeb;
       border-radius: 5px;
       padding: 5px;
@@ -185,6 +185,13 @@
       display: flex;
       justify-content: center;
     }
+    .viewEmployeeTable_search {
+      margin-right: 2rem;
+      margin-left: 1rem;
+    }
+    #filter{
+      padding-left:1rem;
+    }
     </style>
   </head>
 
@@ -214,11 +221,12 @@
               foreach($centers->centers as $center){ 
                   $centerId = $centerId . $center->centerid . "|";
                } ?>
+               <option value="<?php echo $centerId?>"><?php echo "All Centers";?></option>
             </select>
           </span>
         </span>
         <span class="viewEmployeeTable_search ">
-          <input type="" name="" onkeyup="searchBy()" id="filter">
+          <input type="" name="" onkeyup="searchBy()" id="filter" placeholder="Search">
         </span>
       </span>
       <div id="content-wrappers" class="containers">

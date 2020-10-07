@@ -50,7 +50,7 @@
 		<span class="nav-button m-i"><span>Medical Info</span></span>
 		</div>	
 	</section>
-<form method="POST" action="createEmployeeProfile" style="height: 100%" onsubmit="return onFormSubmit()">
+<form method="POST" action="createEmployeeProfile" style="height: 100%" onsubmit="return onFormSubmit()" enctype="multipart/form-data">
 	<section class="employee-section">	
 		<!-- <h3>Personal</h3> -->
 		<span class="d-flex">
@@ -71,15 +71,15 @@
 		<span class=" row row_addEmployee ml-1 ">
 		<span class="span-class col-4 ">
 			<!-- <label class="labels__">First Name</label> -->
-			<input id="fname"  class="" type="text" name="fname">
+			<input id="fname"  class="" type="text" name="fname" placeholder="First Name">
 		</span>
 		<span class="span-class col-4 ">
 			<!-- <label class="labels__">Middle Name</label> -->
-			<input id="mname"  class="" type="text" name="mname">
+			<input id="mname"  class="" type="text" name="mname" placeholder="Middle Name">
 		</span>
 		<span class="span-class col-4 ">
 			<!-- <label class="labels__">Last Name</label> -->
-			<input id="lname"  class="" type="text" name="lname">
+			<input id="lname"  class="" type="text" name="lname" placeholder="Last Name">
 		</span>
 	</span>
 	</span>
@@ -112,6 +112,11 @@
 				</select>				
 			</span>
 		</span>
+		<span class="span-class">
+			<label class="labels__">Profile Image</label>
+			<input id="profileImage"  class="profileImage" type="FILE" name="profileImage">
+		</span>
+
 				
 		<span class="span-class">
 			<label class="labels__">Job Title<sup>
@@ -944,6 +949,7 @@ $(document).ready(function(){
 		type:'GET',
 		success:function(response){
 			// $('body').html($(response).find('#area'))
+			console.log($(response).find('#area').html())
 			$('#area-select').html($(response).find('#area'))
 			$('#role-select').html($(response).find('#role'))
 			for(x=0;x<$('#role').children().length;x++){

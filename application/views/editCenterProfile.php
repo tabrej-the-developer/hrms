@@ -94,7 +94,7 @@ font-family: 'Open Sans', sans-serif;
   </style>
 </head>
 <body id="page-top">
-  <?php $permissions = json_decode($permissions); 
+  <?php $permissions = json_decode($permissions);
         $centerData = json_decode($centerData);
         $centers = json_decode($centers);
         $states = json_decode($states);
