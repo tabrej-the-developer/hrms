@@ -994,7 +994,7 @@ $(document).ready(function(){
              "border-width":"1px", 
              "border-style":"solid"})
 	    showNotification();
-      addMessageToNotification('Enter First Name');
+      addMessageToNotification('All Name Fields are required');
       setTimeout(closeNotification,5000)
 		return false;
 		}

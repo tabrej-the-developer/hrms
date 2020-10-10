@@ -1412,8 +1412,18 @@ $('#toggle').remove();
                 <img src="<?php echo base_url('assets/images/icons/del.png'); ?>" style="max-height:1rem">
               </i>Delete`)
         $('.add_file').text($('.agendaFile')[0].files[0].name)
+        $('.agendaFile').attr('type','button')
       }
     }
+
+    $(document).on('click','.add_agenda_button',function(){
+      $('.add_file').text('Add File');
+      $('.agendaFile').val('');
+      $('.agendaFile').attr('type','FILE')
+      $('.add_agenda_button').html(`<i style="padding-right:0.5rem;padding-left:0.5rem">
+                <img src="<?php echo base_url('assets/images/icons/plus.png'); ?>" style="max-height:1rem">
+              </i>Add File`)
+    })
   </script>
 <script type="text/javascript">
 

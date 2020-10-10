@@ -628,7 +628,7 @@ button[type=button]{
 	</div>
 <?php  if((isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N") == "Y"){ ?>
 <div class="button-class" style="">
-	<button onclick="savePermission()" class="button">
+	<button onclick="savePermission()" class="button savePermissionButton">
             <i>
               <img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
             </i>Save</button>
@@ -815,6 +815,11 @@ button[type=button]{
 	}
 <?php  } ?>
 	getEmployees();
+
+	$('.savePermissionButton').on('.click',function(){
+		alert('Permissions Saved')
+	})
+
 </script>
 
 <?php  if((isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N") == "N"){ ?>
