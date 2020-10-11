@@ -26,7 +26,15 @@ class Util extends CI_Controller {
 			if($res != null && $res->userid == $userid){
 				$userDetails = $this->authModel->getUserDetails($userid);
 				$this->load->model('utilModel');
-				$centers = $this->utilModel->getAllCenters($userid);
+				$centerIds = ($this->utilModel->getAllCenters($userid))->center;
+				$centerIds = explode('|',$centerIds);
+				$centers = [];
+				foreach($centerIds as $centerid){
+					if($centerid != null && $centerid != ""){
+						if($this->utilModel->getCenterById($centerid) != null)
+							array_push($centers,$this->utilModel->getCenterById($centerid));
+					}
+				}
 				$data = array();
 				foreach($centers as $cen){
 					$var['centerid'] = $cen->centerid;
@@ -59,7 +67,18 @@ class Util extends CI_Controller {
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			if($res != null && $res->userid == $userid){
 				$this->load->model('utilModel');
-				$mdata['employees'] = $this->utilModel->getEmployessByCenter($centerid);
+				$mdata['employees'] = [];
+				if(strpos($centerid,'%7C') == null || strpos($centerid,'%7C') == "" ){
+					$mdata['employees'] = $this->utilModel->getEmployessByCenter($centerid);
+				}
+				else{
+					$arrayElements = explode('%7C',$centerid);
+					foreach($arrayElements as $center){
+						if($center != "" && $center != null){
+							$mdata['employees'] = array_merge($mdata['employees'],$this->utilModel->getEmployessByCenter($center));
+						}
+					}
+				}
 				http_response_code(200);
 				echo json_encode($mdata);
 			}

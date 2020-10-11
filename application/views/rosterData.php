@@ -1995,11 +1995,11 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 		 		<input type="text" name="shiftId"  id="shift-Id" style="display:none">
 		 		<input type="text" name="roleId" id="role-Id" style="display:none">
 		 		<input type="text" name="userId"   id="user-Id" style="display:none">
-		 		<button type="button" name="user-submit" id="user-submit" value="Accept" style="width:5rem;display: inline-block !important;margin:1rem 0 !important" class="button">
+		 		<button type="button" name="user-submit" id="user-submit" value="Accept" style="width:5rem;display: inline-block !important;margin:1rem 0 !important" class="button updateShiftUser">
 					<i>
 						<img src="<?php echo base_url('assets/images/icons/tick.png'); ?>" style="max-height:0.8rem;margin-right:10px">
 					</i>Accept</button>
-		 		<button type="button" name="user-deny" id="user-deny" style="width:5rem;display: inline-block !important;margin:1rem 0 !important" value="Deny" class="button">
+		 		<button type="button" name="user-deny" id="user-deny" style="width:5rem;display: inline-block !important;margin:1rem 0 !important" value="Deny" class="button updateShiftUser">
 					<i>
 						<img src="<?php echo base_url('assets/images/icons/rejected.png'); ?>" style="max-height:1rem;margin-right:10px">
 					</i>Reject</button>
@@ -2286,7 +2286,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 
   $(document).ready(function(){
     
-    $(document).on('click','.button',function(){
+    $(document).on('click','.updateShiftUser',function(){
       var startTime = parseInt($('#starts').prop('value')) ;
       var endTime = parseInt($('#ends').prop('value'));
       var days = {};

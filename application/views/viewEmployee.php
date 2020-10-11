@@ -234,8 +234,8 @@
         </button>
       </a>
     </span>
-    <span class="top_select">
-<!-- 			<span class="select_css">
+<!--     <span class="top_select">
+			<span class="select_css">
 				<select placehdr="Center" id="centerValue" name="centerValue" onchange="getEmployees()">
 					<?php 
 						$employeeData = json_decode($getEmployeeData);
@@ -254,8 +254,8 @@
 				<select placehdr="Employee" id="employeeValue" name="employeeValue" onchange="getEmployeeProfile()">
 
 				</select>
-			</span> -->
-    </span>
+			</span>
+    </span> -->
 	</div>
 	<div class="addEmployee-container">
 	<div class="addEmployee-container-child">
@@ -314,7 +314,12 @@
 			<label>Gender</label>
 				<input disabled  placehdr="Gender" id="gender"  class="" name="gender" value="<?php echo isset($employeeData->employee->gender) ? $employeeData->employee->gender : ''; ?>" type="text">
 		</span>
-				
+		<span class="span-class" style="width:30rem;">
+			<label>Profile Image</label>
+			<span style="height:100px;width:100px;border-radius:0.5rem">
+				<img style="border-radius:0.5rem" src="<?php echo base_url().'api/'.$employeeData->users->imageUrl;?>" height="100px" width="100px">
+			</span>
+		</span>
 <!-- 		<span class="span-class">
 			<label>Job Title</label>
 			<input disabled  placehdr="Job Title" id="jobTitle"  class="" type="text" name="jobTitle" value="<?php //echo isset($employeeData->users->title) ? $employeeData->users->title : ''; ?>">

@@ -566,7 +566,9 @@ input[type="date"],input[type=time]{
 #applyLeaveId{
   width: 79%;
 }
-
+.status__{
+  widows: 1.5rem;
+}
 /*  .status-appr{
     font-size: 0.9rem;
     background: rgba(0,200,0,0.1)
@@ -872,7 +874,7 @@ input[type="date"],input[type=time]{
 												$color = $leave->status == "Approved" ? '#4CAF50' : '#F44336'; 
                         $img = $leave->status == "Approved" ? 'accept' : 'deny'; ?>
 												<span style="color: <?php echo $color;?>;">
-													<span><img src="<?php echo base_url('assets/images/'.$img.'.png'); ?>"></span><?php echo $leave->status;?>
+													<span class="status__"><img src="<?php echo base_url('assets/images/'.$img.'.png'); ?>"></span><?php echo $leave->status;?>
 												</span>
 												<?php
 											}}
@@ -1121,24 +1123,7 @@ input[type="date"],input[type=time]{
 
 </body>
 <script type="text/javascript" language="javascript" >
-	$('#datetimepicker12').datetimepicker({
-                defaultDate: new Date(),
-                format: 'DD-MM-YYYY'
-    });
-	$('#datetimepicker121').datetimepicker({
-                defaultDate: new Date(),
-                format: 'DD-MM-YYYY'
-    });
-    $('#datetimepicker13').datetimepicker({
-                defaultDate: new Date(),
-                //format: 'YYYY-MM-DD hh:mm:ss A'
-                format: 'DD-MM-YYYY'
-    });
-	$('#datetimepicker131').datetimepicker({
-                defaultDate: new Date(),
-                //format: 'YYYY-MM-DD hh:mm:ss A'
-                format: 'DD-MM-YYYY'
-    });
+
 	$('#apply_button').click(function(){
         
         $('#applyModal').modal('show');

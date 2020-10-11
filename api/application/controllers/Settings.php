@@ -464,6 +464,7 @@ class Settings extends CI_Controller {
 				$data['rooms'] = $this->settingsModel->getRooms($centerid);
 				http_response_code(200);
 				echo json_encode($data);
+				// var_dump($data);
 			}
 			else{
 				http_response_code(401);
@@ -879,7 +880,12 @@ class Settings extends CI_Controller {
 					$healthInsuranceNo = $json->healthInsuranceNo;
 					$ambulanceSubscriptionNo = $json->ambulanceSubscriptionNo;
 					$xeroEmployeeId = $json->xeroEmployeeId;
-
+					$profileImage = $json->profileImage;
+					$profileImageName = md5(uniqid()).'.png';
+					$target_dir = 'application/assets/profileImages/';
+					$fileNameLoc = $target_dir.$profileImageName;
+					// var_dump((base64_decode($profileImage)));
+					file_put_contents($target_dir.$profileImageName,(base64_decode($profileImage)));
 // Employee Courses	
 						$course_name = $json->course_name;
 						$course_description = $json->course_description;
@@ -904,7 +910,7 @@ $this->settingsModel->addToEmployeeCourses( $xeroEmployeeId,$course_nme,$course_
 					$password = strtolower($fname)."@123";
 			if($employee_no != null && $employee_no != "" ){
 				if($emails != "" && $emails != null){
-$this->settingsModel->addToUsers($employee_no,md5($password),$emails,$name,$jobTitle,$center,$userid,$role,$level,$alias);
+$this->settingsModel->addToUsers($employee_no,md5($password),$emails,$name,$jobTitle,$center,$userid,$role,$level,$alias,$fileNameLoc);
 						}
 					}
 // Employee bank account	
@@ -1108,6 +1114,10 @@ $this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$f
 					$approvedWitholdingVariationPercentage = $json->approvedWitholdingVariationPercentage;
 					$employee_no = $json->employee_no;
 					$resume_doc = $json->resume_doc;
+					$profileImage = $json->profileImage;
+					$profileImageName = md5(uniqid()).'.png';
+					$target_dir = 'application/assets/profileImages/';
+					file_put_contents($target_dir.$profileImageName,(base64_decode($profileImage)));
 					$classification = $json->classification;
 					$ordinaryEarningRateId = $json->ordinaryEarningRateId;
 					// $payroll_calendar = $json->payroll_calendar;

@@ -748,9 +748,11 @@ p.ovrflowtext {
     measurementId: "G-EB151W6QQ8"
   };
   firebase.initializeApp(firebaseConfig);
+  
   const messaging = firebase.messaging();
       messaging.requestPermission().then(()=>{
-      console.log("permission granted")
+      // console.log("permission granted")
+      getRegToken();
     if(isTokenSentToServer()) {
       console.log('Token already saved.');
     } else {
@@ -760,22 +762,22 @@ p.ovrflowtext {
     .catch((err)=>{
 
     })
-  function setTokenSentToServer(sent) {
-      window.localStorage.setItem('sentToServer', sent ? 1 : 0);
-  }
-    function isTokenSentToServer() {
-      return window.localStorage.getItem('sentToServer') == 1;
-  }
+  // function setTokenSentToServer(sent) {
+  //     window.localStorage.setItem('sentToServer', sent ? 1 : 0);
+  // }
+  //   function isTokenSentToServer() {
+  //     return window.localStorage.getItem('sentToServer') == 1;
+  // }
     function getRegToken(argument) {
     messaging.getToken()
       .then(function(currentToken) {
         if (currentToken) {
-          saveToken(currentToken);
+          // saveToken(currentToken);
           console.log(currentToken);
-          setTokenSentToServer(true);
+          // setTokenSentToServer(true);
         } else {
           console.log('No Instance ID token available. Request permission to generate one.');
-          setTokenSentToServer(false);
+          // setTokenSentToServer(false);
         }
       })
       .catch(function(err) {
@@ -783,6 +785,16 @@ p.ovrflowtext {
         setTokenSentToServer(false);
       });
   }
+  messaging.onMessage(function(payload) {
+    console.log("Message received. ", payload);
+    notificationTitle = payload.data.title;
+    notificationOptions = {
+      body: payload.data.body,
+      icon: payload.data.icon,
+      image:  payload.data.image
+    };
+    var notification = new Notification(notificationTitle,notificationOptions);
+  });
   </script>
 </head>
 
@@ -793,60 +805,68 @@ p.ovrflowtext {
   <div class="row rounded-lg overflow-hidden shadow">
     <!-- Users box-->
     <div class="col-4 col-sm-12 px-0 left-bar" style="background-color:#ccc;">
+      <!-- 
+            This block of code is from the previous messenger
+              This code consists of three blocks 
+                1) Recent chats
+                2) List of users
+                3) List of groups & create group
+       -->
       <div class="bg-white lefbar-sm">
-
         <div class="headind_srch d-flex">
-			<div class="has-search">
-			<i class="feedback" style=""></i>
-				<input type="text" class="search-bar form-control form-control-sm" placeholder="Search Employee" id="searchInput">
-						<script>
-                            $(document).ready(function () {
-                                $("#searchInput").on("keyup", function () {
-                                    var value = $(this).val().toLowerCase();
-                                    $("#get_users .chat_people").filter(function () {
-                                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                                    });
-                                });
-                            });
-                        </script>
-			</div>
-      <div class="circle_plus" ><img src="<?php echo site_url().'assets/images/circle_plus.png'?>"></div>
+          <div class="has-search">
+            <i class="feedback" style=""></i>
+            <input type="text" class="search-bar form-control form-control-sm" placeholder="Search Employee" id="searchInput">
+            <script>
+              $(document).ready(function () {
+                $("#searchInput").on("keyup", function () {
+                  var value = $(this).val().toLowerCase();
+                  $("#get_users .chat_people").filter(function () {
+                  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                  });
+                });
+              });
+            </script>
+          </div>
+          <div class="circle_plus" >
+            <img src="<?php echo site_url().'assets/images/circle_plus.png'?>">
+          </div>
         </div>
-		<div class="bg-gray px-4 py-2 general_heading" style="background-color:#fff;">
-          <p class="h6 left-bar-title mb-0 py-1">General</p>
-        </div>
-
-        <div class="messages-box" id="get_users">
-          <div class="list-group rounded-0 ">
-            <?php
+      <div class="bg-gray px-4 py-2 general_heading" style="background-color:#fff;">
+        <p class="h6 left-bar-title mb-0 py-1">General</p>
+      </div>
+      <div class="messages-box" id="get_users">
+        <div class="list-group rounded-0 ">
+          <?php
             if(isset($recentChats)){
               $recents = json_decode($recentChats);
               foreach($recents->chats as $rc){ 
-            ?>
-            <div onclick="loadNewChat('<?php echo $rc->id;?>','<?php echo $rc->isGroupYN;?>')" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people pointer <?php echo $rc->id == $currentUserId ? 'active_chat' : '';?> ">
-              <div class="media">
-			 <div class="icon-container">
-			 <!-- <?php
-				if($rc->imgUrl == null || $rc->imgUrl == "") {
-					$rc->imgUrl = base_url().'assets/images/defaultUser.png';
-					}
-				?>
-			  <img src="<?php echo $rc->imgUrl;?>" alt="user" width="20" class="rounded-circle"> -->
-          <span class="icon-parent">
-            <span class=" icon" style="
-              <?php echo "background:".$colors_array[rand(0,5)].";"?>">
-              <?php if(isset($rc->name)){
-                echo icon($rc->name);
-              }?>
-            </span>
-          </span>
-			  </div>
-                <div class="media-body ml-0">
-                  <div class="d-flex align-items-center justify-content-between mb-1">
-                    <div class="rounded ">
-					 <h6 class="mb-0 left-bar-heading"><?php echo $rc->name;?></h6>
-                      <p class="text-small mb-0 text-muted ovrflowtext"><?php 
-                      echo $rc->lastText;
+          ?>
+          <div onclick="loadNewChat('<?php echo $rc->id;?>','<?php echo $rc->isGroupYN;?>')" 
+               class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people pointer <?php echo $rc->id == $currentUserId ? 'active_chat' : '';?> ">
+            <div class="media">
+              <div class="icon-container">
+       <!-- <?php
+        if($rc->imgUrl == null || $rc->imgUrl == "") {
+          $rc->imgUrl = base_url().'assets/images/defaultUser.png';
+          }
+        ?>
+        <img src="<?php echo $rc->imgUrl;?>" alt="user" width="20" class="rounded-circle"> -->
+                <span class="icon-parent">
+                  <span class=" icon" style="
+                    <?php echo "background:".$colors_array[rand(0,5)].";"?>">
+                    <?php if(isset($rc->name)){
+                      echo icon($rc->name);
+                    }?>
+                  </span>
+                </span>
+              </div>
+              <div class="media-body ml-0">
+                <div class="d-flex align-items-center justify-content-between mb-1">
+                  <div class="rounded ">
+                    <h6 class="mb-0 left-bar-heading"><?php echo $rc->name;?></h6>
+                    <p class="text-small mb-0 text-muted ovrflowtext"><?php 
+                    echo $rc->lastText;
 //                             try{
 //               if(is_string($rsa->decrypt(base64_decode($rc->lastText))) == 1){
 // $expression = "/(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])?/i";
@@ -866,75 +886,86 @@ p.ovrflowtext {
 //                 catch(Exception $e){
 //                     echo 'Not Known';
 //                 }
-            ?></p>
-					</div>
-                  </div>
-                
+                 ?></p>
                 </div>
               </div>
             </div>
-			  <?php } }?>
-          
-
           </div>
         </div>
-		<div class="bg-gray px-4 py-2 general_heading" style="background-color:#fff; border-top: 1px solid #ccc;">
-		  <a style="text-decoration: none; color:#212529;" href="<?php echo site_url('messenger_api_controller')?>"><p class="h6 left-bar-title mb-0 py-1">Individual</p></a>
-        </div>
-		 <div class="individual-box">
-			<?php
-			$users = json_decode($users);
-			if(isset($users->users)){
+        <?php } }?>
+      </div>
+    </div>
+
+    <div class="bg-gray px-4 py-2 general_heading" 
+         style="background-color:#fff; border-top: 1px solid #ccc;">
+      <a style="text-decoration: none; color:#212529;" 
+         href="<?php echo site_url('messenger_api_controller')?>">
+        <p class="h6 left-bar-title mb-0 py-1">Individual</p>
+      </a>
+    </div>
+    <div class="individual-box">
+      <?php
+      $users = json_decode($users);
+      if(isset($users->users)){
         foreach ($users->users as $chat) { ?>
           <div onclick="loadNewChat('<?php echo $chat->userid;?>','N')" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people pointer">
             <div class="media">
               <div class="icon-container">
-              <!-- <?php
-                if($chat->imageUrl == null || $chat->imageUrl == "") {
-                $chat->imageUrl = base_url().'assets/images/defaultUser.png';
-                }
-              ?>
-              <img src="<?php echo $chat->imageUrl;?>" alt="user" width="20" class="rounded-circle"> -->
-              <span class="icon-parent">
-                <span class=" icon" style="
-                  <?php echo "background:".$colors_array[rand(0,5)].";"?>">
-                  <?php if(isset($chat->username)){
-                    echo icon($chat->username);
-                  }?>
+                <!-- <?php
+                  if($chat->imageUrl == null || $chat->imageUrl == "") {
+                  $chat->imageUrl = base_url().'assets/images/defaultUser.png';
+                  }
+                ?>
+                <img src="<?php echo $chat->imageUrl;?>" alt="user" width="20" class="rounded-circle"> -->
+                <span class="icon-parent">
+                  <span class=" icon" style="
+                    <?php echo "background:".$colors_array[rand(0,5)].";"?>">
+                    <?php if(isset($chat->username)){
+                      echo icon($chat->username);
+                    }?>
+                  </span>
                 </span>
-              </span>
               </div>
-                <div class="media-body ml-0">
-                  <div class="d-flex align-items-center justify-content-between mb-1">
-                    <h6 class="mb-0 left-bar-heading"><?php if(isset($chat->username)){
-                    echo $chat->username;
-                  }?></h6>
-                  </div>
+              <div class="media-body ml-0">
+                <div class="d-flex align-items-center justify-content-between mb-1">
+                  <h6 class="mb-0 left-bar-heading"><?php if(isset($chat->username)){
+                  echo $chat->username;
+                }?></h6>
                 </div>
               </div>
             </div>
-            <?php }}?>
-			
-		 </div>
-		 
-		 <div class="row bg-gray px-4 py-2 general_heading" style="background-color:#fff; border-top: 1px solid #ccc;">
-			<div class="col-md-6">
-			<a style="text-decoration: none; color:#212529;" href="javascript:void(0);">
-			<p class="h6 left-bar-title mb-0 py-1">Groups </p></a>
-			</div>
-			
-			<div class="col-md-6 text-right">
-			<a href="javascript:void(0);" style="text-decoration:none;" data-toggle="modal" data-target="#addtogroup"> 
-			<i class="" style="font-size:15px; margin: 15px 0 0 0;" title="Add New Group">
-        <img src="<?php echo site_url('/assets/images/add.png'); ?>" height="15px">   
-      </i></a>
-			</div>
-        </div>
-		
-		<div class="individual-box">
-		 <?php
-			$groups = json_decode($groups);
-			if(isset($groups->groups)){
+          </div>
+        <?php }
+            } ?>
+    </div>
+     
+    <div class="row bg-gray px-4 py-2 general_heading" 
+         style="background-color:#fff; border-top: 1px solid #ccc;">
+      <div class="col-md-6">
+        <a style="text-decoration: none; color:#212529;" href="javascript:void(0);">
+          <p class="h6 left-bar-title mb-0 py-1">Groups </p>
+        </a>
+      </div>
+      
+      <div class="col-md-6 text-right">
+        <a href="javascript:void(0);" 
+           style="text-decoration:none;" 
+           data-toggle="modal" 
+           data-target="#addtogroup"> 
+          <i class="" 
+             style="font-size:15px; margin: 15px 0 0 0;" 
+             title="Add New Group">
+            <img src="<?php echo site_url('/assets/images/add.png'); ?>" 
+                 height="15px">   
+          </i>
+        </a>
+      </div>
+    </div>
+    
+    <div class="individual-box">
+     <?php
+      $groups = json_decode($groups);
+      if(isset($groups->groups)){
         foreach ($groups->groups as $group) 
              { 
                 ?>
@@ -962,11 +993,17 @@ p.ovrflowtext {
                  </div> -->
                      </div>
                    </div>
-             <?php }} ?>
-			
-            
-		 </div>
-      </div>
+             <?php }} ?>        
+               </div>
+          </div>
+      <!-- 
+            This block of code is from the previous messenger
+              This code consists of three blocks 
+                1) Recent chats
+                2) List of users
+                3) List of groups & create group
+       -->
+
     </div>
 	 <div class="group-box"></div>
     <!-- Chat Box-->
@@ -1327,7 +1364,7 @@ p.ovrflowtext {
   $(document).ready(()=>{
     $('.container').css('paddingLeft',$('.side-nav').width());
     var containerHeight = "100vh" - $('.header-top').height();
-   document.getElementsByClassName("container").style.maxHeight = "50vh"
+   // document.getElementsByClassName("container").style.maxHeight = "50vh"
   })
 </script>
 <script>

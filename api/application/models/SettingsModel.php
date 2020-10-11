@@ -162,9 +162,9 @@ class SettingsModel extends CI_Model {
 			return $query->row();
 		}
 
-		public function addToUsers($employee_no,$password, $emails,$name,$jobTitle,$center,$userid,$role,$level,$alias){
+		public function addToUsers($employee_no,$password, $emails,$name,$jobTitle,$center,$userid,$role,$level,$alias,$fileNameLoc=null){
 			$this->load->database();
-			$query = $this->db->query("INSERT INTO users (id,password, email, name,center,created_at, title,created_by,roleid,level,alias,isVerified) VALUES ('$employee_no','$password','$emails','$name','$center|',NOW(),'$jobTitle','$userid',$role,'$level','$alias','N')");
+			$query = $this->db->query("INSERT INTO users (id,password, email, name,center,created_at, title,created_by,roleid,level,alias,isVerified,imageUrl) VALUES ('$employee_no','$password','$emails','$name','$center|',NOW(),'$jobTitle','$userid',$role,'$level','$alias','N','$fileNameLoc')");
 		}
 
 		public function addToUsersME($employee_no,$password, $emails,$name,$center,$userid,$role,$level,$alias){
