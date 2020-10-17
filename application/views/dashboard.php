@@ -1315,20 +1315,16 @@ color:#FFFFFF;
 <script type="text/javascript" language="javascript" >
 $('#toggle').remove();
      $('#colab').on('change',function(){
-        $('.remove').remove();
-                   
-         if(this.value === "m"){  
-               $('#colab').after("<input type='date' class='remove dashboard_input' id='month'>");
-     }
-         if(this.value === "y"){
-
-      $('#colab').after("<input type='date' class='remove dashboard_input'  id='year'>");
-       
-      }
+      $('.remove').remove();   
+        if(this.value === "m"){  
+          $('#colab').after("<input type='date' class='remove dashboard_input' id='month'>");
+        }
+      if(this.value === "y"){
+        $('#colab').after("<input type='date' class='remove dashboard_input'  id='year'>");
+        }
       if(this.value === "w"){
         $('#colab').after("<input type='date' class='remove dashboard_input' id='weekly'>");
-       
-      }
+        }
 
 
    });

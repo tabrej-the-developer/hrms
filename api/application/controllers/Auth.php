@@ -80,7 +80,7 @@ class Auth extends CI_Controller {
 			$email = $json->email;
 			$user = $this->authModel->getUserFromEmail($email);
 			$userExist = $this->authModel->getUserFromId($email);
-				if($user == null && $userExist == null){
+				if($user == null ){
 					$data['Status'] = "ERROR";
 					$data['Message'] = "Invalid email id or password";
 					if($emailExist == null && $userExist == null){
@@ -94,14 +94,14 @@ class Auth extends CI_Controller {
 				$mData['activationLink'] = base_url().'auth/verifyUser/'.$user->id.'/'.$token;
 				$mData['appName'] = APP_NAME;
 				$this->load->library('email');
-				$config = array(
-				    'protocol'  => 'smtp',
-				    'smtp_host' => 'ssl://smtp.zoho.com',
-				    'smtp_port' => 465,
-				    'smtp_user' => SMTP_EMAIL,
-				    'smtp_pass' => SMTP_PASSWORD,
-				    'mailtype'  => 'html',
-				    'charset'   => 'utf-8'
+				$config = Array(    
+					    'protocol'  => 'smtp',
+					    'smtp_host' => 'ssl://smtp.zoho.com',
+					    'smtp_port' => 465,
+					    'smtp_user' => 'demo@todquest.com',
+					    'smtp_pass' => 'K!ddz1ng',
+					    'mailtype'  => 'html',
+					    'charset'   => 'utf-8'
 				);
 				$this->email->initialize($config);
 				$this->email->set_mailtype("html");

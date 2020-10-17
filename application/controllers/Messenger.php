@@ -54,7 +54,7 @@ class Messenger extends CI_Controller {
 			}
 			$data['currentUserId'] = $currentUserId;
 			$data['isGroupYN'] = $isGroupYN;
-			$data['users'] = $this->getUsers();
+			$data['allUsers'] = $this->getUsers();
 			$data['groups'] = $this->getGroups();
 			//footprint start
 			if($this->session->has_userdata('current_url')){
@@ -109,11 +109,11 @@ class Messenger extends CI_Controller {
 
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			var_dump($httpcode);
+			var_dump($server_output);
 			if($httpcode == 200){
 				$jsonOutput = json_decode($server_output);
 				curl_close ($ch);
-				redirect(base_url().'messenger/chats/'.$data['receiverId'].'/'.$data['isGroupYN']);
+				// redirect(base_url().'messenger/chats/'.$data['receiverId'].'/'.$data['isGroupYN']);
 			}
 			else if($httpcode == 401){
 			}

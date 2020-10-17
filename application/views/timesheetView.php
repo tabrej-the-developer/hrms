@@ -413,6 +413,7 @@ td.shift-edit{
 <body>
 
 <?php 
+	$permission = json_encode($permissions);
 	$timesheetDetails = json_decode($timesheetDetails); 
 		if(isset($entitlements)){
 			$entitlements = json_decode($entitlements);
@@ -1119,8 +1120,11 @@ $( ".modal-content" ).draggable();
 	return output;
 }
 
-</script>
-<script type="text/javascript">
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
+	$(document).on('click','.',function(){
+
+	})
+<?php } ?>
 	$(document).on('click','.time-box',function(){
 		var thisValue = $(this).children('.time-box').html();
 		var parentHTML = $('.time-box').html();
@@ -1215,10 +1219,9 @@ $(document).on('click','.buttonn',function(){
 <script type="text/javascript">
 	
 	let employeeBudget = function(){
-
-				var count = $('.box-time').length;
-				// console.log('count'+count)
-				var thisValue = 0;
+		var count = $('.box-time').length;
+		// console.log('count'+count)
+		var thisValue = 0;
 		for(var i=0;i<count;i++){
 		var children = $('.time-box').eq(i);
 		// console.log($('.clocked_time').eq(i).is(':checked'))
@@ -1253,27 +1256,24 @@ $(document).on('click','.buttonn',function(){
 
 		$(document).on('click','input[type=checkbox]',function(){
 			var count = $('.box-time').length;
-				var thisValue = 0;
-		for(var i=0;i<count;i++){
-		var children = $('.time-box').eq(i);
-		if($('.clocked_time').eq(i).prop('checked') == true){
-			if(children.next().html() == ""){
-				thisValue = thisValue + ( parseInt(children.attr('evalue')) - parseInt(children.attr('svalue')) ) * $('.shift-type-select option:selected').eq(i).attr('factor') * parseInt($('.box-time').eq(i).attr('hourly'))
-			}
-			else{
-				thisValue = thisValue + parseInt(String(children.next().children('eclass').val()).replace(":","")) - parseInt(String(children.next().children('sclass').val()).replace(":",""))
+			var thisValue = 0;
+			for(var i=0;i<count;i++){
+			var children = $('.time-box').eq(i);
+			if($('.clocked_time').eq(i).prop('checked') == true){
+				if(children.next().html() == ""){
+					thisValue = thisValue + ( parseInt(children.attr('evalue')) - parseInt(children.attr('svalue')) ) * $('.shift-type-select option:selected').eq(i).attr('factor') * parseInt($('.box-time').eq(i).attr('hourly'))
+				}
+				else{
+					thisValue = thisValue + parseInt(String(children.next().children('eclass').val()).replace(":","")) - parseInt(String(children.next().children('sclass').val()).replace(":",""))
+					}
 				}
 			}
-		}
 					$('.budget').html('Budget : $'+(thisValue)/100);
 		})
 				$('.budget').html('Budget : $'+(thisValue)/100);
 	};
 
 
-
-</script>
-<script type="text/javascript">
 	$(document).ready(()=>{
     $('.containers').css('paddingLeft',$('.side-nav').width());
    			 // margin_auto();
@@ -1304,8 +1304,7 @@ $(document).on('click','.buttonn',function(){
         startPosition: 'URLHash'
     });
 
-</script>
-<script type="text/javascript">
+
 	$(document).ready(function(){
 		let height = $('.div-box').eq(3).height();
 		let count =	 $('.leave').length;
@@ -1314,9 +1313,7 @@ $(document).on('click','.buttonn',function(){
 			}
 			console.log(height)
 	})
-</script>
 
-<script type="text/javascript">
 	/*----------------------
 		same as roster checkbox
 	-----------------------*/
@@ -1337,9 +1334,7 @@ $(document).on('click','.buttonn',function(){
 	        } 	
 		})
 	})
-</script>
 
-		<script type="text/javascript">
 			$(document).ready(function(){
 				$(document).on('click','#discard-timesheet',function(){
 					var url = window.location.origin+"/PN101/timesheet/discardTimesheet/<?php echo $_GET['timesheetId']; ?>";

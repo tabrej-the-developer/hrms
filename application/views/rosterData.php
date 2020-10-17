@@ -1953,7 +1953,6 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 <?php } ?>
 <!-- Till here -->>
 
-<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N"){ ?> 
 <div id="mxModal" class="modal">
  
 	  <div class="modal-content">
@@ -2010,7 +2009,6 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 		 	</form>
 	  </div>
 </div>
-<?php } ?>
 
 <div class="modal-logout">
     <div class="modal-content-logout">

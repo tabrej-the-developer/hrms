@@ -63,7 +63,6 @@ $nth_child = 0;
       $nth_child = null;
   }
 ?>
-<!DOCTYPE html>
 <html>
 <head>
 

@@ -102,33 +102,31 @@ input.form-control::placeholder{
 </style>
 </head>
 <body>
-<div class="container login-container">
-
-            <div class="row d-flex justify-content-center">
-                
-                <div class="col-md-6 login-form-1 text-center">
-                    <h3>Did you forget your password?</h3>
-					<small>Enter your email address you're using for your account below <br>and we will send you a password reset link.</small>
-                    <form method="post" action="<?php echo base_url().'welcome/forgotPassword';?>"> 
-                        <div class="form-group">
-                            <input type="email" class="form-control" placeholder="Enter You Email" value="" required />
-                        </div>
-						<div class="form-group">
-              <button type="submit" class="btnSubmit" value="Request Reset Link" />
-                <i>
-                  <img src="<?php echo base_url('assets/images/icons/link.png'); ?>" style="max-height:1remrem;margin-right:10px">
-                </i>Request Reset Link</button>
-                        </div>
-                        
-                        <div class="back_to_sign_in">
-                            <a href="<?php echo site_url('welcome/login') ?>" class="ForgetPwd">
-                              <i>
-                                <img src="<?php echo base_url('assets/images/icons/back.png'); ?>" style="max-height:1rem;margin-right:10px">
-                              </i>Back to Sign in</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-		</body>
-		</html>
+  <div class="container login-container">
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-6 login-form-1 text-center">
+        <h3>Did you forget your password?</h3>
+				<small>Enter your email address you're using for your account below <br>and we will send you a password reset link.</small>
+        <form method="POST" action="<?php echo base_url().'Welcome/forgotPasswordRequest';?>"> 
+          <div class="form-group">
+            <input type="email" class="form-control" placeholder="Enter You Email" value="" name="email" required />
+          </div>
+					<div class="form-group">
+            <button type="submit" class="btnSubmit" value="Request Reset Link">
+            <i>
+              <img src="<?php echo base_url('assets/images/icons/link.png'); ?>" style="max-height:1remrem;margin-right:10px">
+            </i>Request Reset Link</button>
+          </div>
+          <div class="back_to_sign_in">
+            <a href="<?php echo site_url('welcome/login') ?>" class="ForgetPwd">
+              <i>
+                <img src="<?php echo base_url('assets/images/icons/back.png'); ?>" style="max-height:1rem;margin-right:10px">
+              </i>Back to Sign in</a>
+          </div>
+        </form>
+          <div style="margin-top:10px;margin-bottom:20px;"><?php print_r(isset($message) ? $message : ""); ?></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

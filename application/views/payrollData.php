@@ -774,6 +774,7 @@ table.dataTable{
 								array : array
 							},
 							success : function(res){
+								alert('Payroll Published')
 								window.location.reload();
 						}
 					})

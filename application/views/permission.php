@@ -812,6 +812,7 @@ button[type=button]{
 	    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 	    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	    xhr.send(params);
+	    alert('Permissions Saved')
 	}
 <?php  } ?>
 	getEmployees();

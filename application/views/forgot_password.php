@@ -85,7 +85,6 @@ body{
                 <span class="alert"></span>
             </form>
           </div>
-          
       </div>
   </div>
   <script type="text/javascript">
