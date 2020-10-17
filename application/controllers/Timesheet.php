@@ -56,6 +56,7 @@ class Timesheet extends CI_Controller {
 	if($this->session->has_userdata('LoginId')){
 		$data['timesheetid'] = $this->input->get('timesheetId');
 		$data['userid'] = $this->session->userdata('LoginId');
+		$data['permissions'] = $this->fetchPermissions();
 		$data['timesheetDetails'] = $this->gettimesheet($data['timesheetid'],$data['userid']);
 		// var_dump($data);
 		if( $this->getAllCenters() != 'error'){

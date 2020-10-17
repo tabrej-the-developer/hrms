@@ -18,11 +18,11 @@ $rsa->loadKey($publickey);
 
 
 ?>
-<!DOCTYPE html>
 <html>
 <head>
 <?php $this->load->view('header'); ?>
-<script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-messaging.js"></script>
 
 <meta charset="UTF-8">	
   <meta name="keywords" content="HTML,CSS,XML,JavaScript">
@@ -78,7 +78,7 @@ body {
   padding-left: 1.5rem 
 }
 .chat-box {
-  height: calc(100vh - 6rem);
+  height: calc(100vh - 7rem);
   overflow-y: scroll;
   background-color:#fff;
 }
@@ -96,8 +96,11 @@ input::placeholder {
   color: #999;
 }
 .headind_srchs{ 
-padding:13px 29px 10px 20px;
- overflow:hidden; 
+  height: 3.5rem;
+  overflow:hidden;
+  display: flex;
+  align-items: center;
+  background: var(--header-color)
  }
  .headind_srch{ 
 	padding:0.75rem 0.5rem 0.75rem 1rem;
@@ -334,10 +337,6 @@ p.ovrflowtext {
 	content:'\f00d';
 }
 
-.left-bar{
-  max-width: 250px;
-  min-width: 250px;
-}
 .left-bar-heading{
   font-size:0.9rem;
   color: black;
@@ -348,11 +347,18 @@ p.ovrflowtext {
 }
 .text-small-chat{
   font-size: 0.9rem;
-  color: #3D3C40;
+  color: rgba(0,0,0,1);
 }
 .text-small-chat-message{
   font-size: 0.8rem;
-  color: #3D3C40;
+  color: rgba(0,0,0,1);
+  padding: 0 0.4rem
+}
+.left-bar{
+  border-right: 1px solid rgba(0,0,0,0.2);
+}
+.right_box{
+  border-left: 1px solid rgba(0,0,0,0.2);
 }
 .left-bar-title{
   color: #084183 !important;
@@ -382,8 +388,11 @@ p.ovrflowtext {
   color: #3D3C40 !important;
 }
 .chat-message-time{
-  color: #BABBBF;
-  font-size: 0.6rem
+  color: rgba(0,0,0,0.6);
+  font-size: 0.6rem;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 0.2rem
 }
 .bg-light{
   background: #f2f2f2 !important;
@@ -656,6 +665,7 @@ p.ovrflowtext {
     }
     #chatForm{
           border-top: 1px solid rgba(0,0,0,.2);
+          height: 3.5rem
     }
 
     /*-------------------*/
@@ -716,6 +726,344 @@ p.ovrflowtext {
 .tokens-container.form-control{
   padding-left: 2rem !important;
 }
+
+
+/* New UI code from here */
+:root{
+  --header-color: #e6e6e6;
+}
+.left_topbar{
+  height: 3.5rem;
+  background: var(--header-color);
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0 0.5rem;
+}
+.left_topbar_wrapper{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.searchbar{
+  height: 3rem;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.searchinput{
+  border-radius: 1rem;
+  height: 2rem;
+  border: 1px solid white;
+  padding-left: 1rem;
+  width: 100%;
+}
+.searchbar_wrapper{
+  width: 85%;
+}
+.searchbar{
+  background: #edeff2
+}
+.recentchat{
+  height: 4rem;
+  width: 100%;
+  background: white;
+  display: block;
+  height: calc(100vh - 6rem);
+  overflow: auto;
+}
+.recentchat_icon{
+  width: 60px;
+  height: 4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.recentchat_text_top{
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0.25rem;
+}
+.recentchat_text_bottom{
+  padding: 0 0.25rem;
+}
+.recentchat_text{
+  display: inline-block;
+  width: 100%;
+}
+.recentchat_tile{
+  width: calc(100% - 65px);
+}
+.recentchat_tile{
+  display: inline-block;
+}
+.recentchat_wrapper{
+  width: 100%;
+  display: block;
+  position: relative;
+}
+.recentchat_wrapper:hover{
+  background: #f7f5f5;
+  cursor: pointer;
+}
+.recentchat_wrapper:after{
+      content: ' ';
+    /* padding: 1px; */
+    border-bottom: 1px solid #f0f0f0;
+    width: 75%;
+    display: block;
+    text-align: right;
+    position: absolute;
+    right: 0;
+}
+.recentchat_message{
+  font-size: 0.8rem;
+}
+.recentchat_date_time{
+  font-size: 0.8rem;
+  color: #cccccc;
+}
+.left_topbar_righticon{
+  cursor: pointer;
+}
+.left_topbar_righticon_click{
+  position: relative;
+}
+.left_topbar_righticon_click:focus > .left_topbar_righticon_dropdown{
+  display: block;
+  position: absolute;
+  right: 0;
+  background: white;
+  border-radius: 5px;
+  padding: 0.5rem;
+  width: auto;
+  text-align: right;
+}
+.left_topbar_righticon_dropdown{
+  display: none;
+}
+#contact_us{
+  padding-left: 1rem;
+}
+.sender-rightalign{
+  display: flex;
+  justify-content: flex-end;
+  /* display: flex; */
+  width: 100%;
+  margin: 0.4rem 0;
+  position: relative;
+}
+.sender-leftalign{
+  position: relative;
+  margin: 0.25rem 0;
+}
+.sender-right,.sender-left{
+  background: white;
+  min-width: 10%;
+  max-width: 40%;
+  border-radius: 5px;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  background: #c7cdff;
+  color: white !important;
+}
+.sender-right::after{
+    content: ' ';
+    border-top: 10px solid #c7cdff;
+    border-right: 10px solid transparent;
+    /* padding: 1rem; */
+    position: absolute;
+    right: -7px;
+    top: 0
+}
+.sender-left::before{
+    content: ' ';
+    border-top: 10px solid #c7cdff;
+    border-left: 10px solid transparent;
+    /* padding: 1rem; */
+    position: absolute;
+    left: -7px;
+}
+.right_top_tab{
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  background: var(--header-color);
+}
+.right_user_icon{
+  height: 40%;
+  width: 100%;
+}
+.user_icon_wrapper{
+    height: 80%;
+    width: 100%;
+}
+.user_icon_view{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.user_icon_view img{
+    height: 10rem;
+    width: 10rem;
+    /*width: auto;*/
+    border-radius: 50%;
+}
+.user_title_view{
+  font-size: 0.8rem;
+  /*padding-left: 0.5rem;*/
+}
+.user_name_wrapper{
+  display: flex;
+  flex-direction: column;
+}
+.right_top_tab_close{
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 1rem;
+    cursor: pointer;
+}
+.right_top_tab_close img{
+  height: 30%
+}
+.right_top_tab_info{
+width: 100%;
+    display: flex;
+    align-items: center;
+    padding-right: 4rem;
+    justify-content: center;
+}
+.text-capitalize,.contact_us{
+    cursor: pointer;
+}
+.text-capitalize{
+  width: 100%;
+}
+.right_box{
+  padding: 0 !important;
+  display: none;
+}
+.input-group{
+  display: flex;
+  align-items: center;
+}
+#chatText{
+  margin-left: 1rem;
+  border-radius: 2rem !important;
+}
+.currentTextDate_center{
+  font-size: 0.85rem;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+.currentTextDate_centerbox{
+  background: #dcf8c6;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  box-shadow: 0 0 3px 1px rgba(0,0,0,0.1);
+}
+.alphabetIcon{
+height: 10rem;
+    width: 10rem;
+    background: #A4D9D6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color:#707070;
+}
+.user_name_view{
+  display: flex;
+  justify-content: center;
+}
+.user_title_view{
+  display: flex;
+  justify-content: center;
+}
+.boxcategoryTitle{
+    height: 3rem;
+    display: flex;
+    background: rgba(0,0,0,0.1);
+    justify-content: center;
+    align-items: center;
+}
+.elementOfCategory{
+  display: block;
+}
+.boxcategory_wrapper{
+  text-align: center;
+}
+/*User modal*/
+.usersModal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+  
+}
+.usersModalContent {
+  color: #414242;
+  margin: 15% auto;
+  padding: 30px 60px;
+  width: 500px;
+  font-size: 16px;
+  line-height: 28px;
+  letter-spacing: 0.5px;
+  -webkit-font-smoothing: antialiased;
+  background: #FFFFFF;
+  border: 1px solid #9B9C9D;
+  box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.20);
+  border-radius: 6px;
+}
+
+.usersModalContent a {
+  color: #636464;
+}
+
+.usersModalContent > h1 {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.user__#accept {
+  margin: 30px auto;
+  display: block;
+  border: 1px solid #fc4c02;
+  border-radius: 3px;
+  background: #fff;
+  color: #fc4c02;
+  font-size: 16px;
+  height: 48px;
+  padding: 0 20px;
+  cursor: pointer;
+}
+/*User modal*/
+.groupOptions{
+  position: absolute;
+  bottom: 0;
+  cursor: pointer;
+  height:4rem;
+  width: 100%;
+  background: var(--header-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* New UI code ends here */
     @media only screen and (max-width: 600px){
       .left-bar{
         max-width:auto;
@@ -736,7 +1084,7 @@ p.ovrflowtext {
 </style>
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/tokenize2.css">
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tokenize2.js"></script>
-  <script type="text/javascript">
+<!--   <script type="text/javascript">
       var firebaseConfig = {
     apiKey: "AIzaSyC_JyXX3uMpFiLXbkbGr4WhBsECY3sCFS4",
     authDomain: "personnal-8f7c9.firebaseapp.com",
@@ -748,281 +1096,155 @@ p.ovrflowtext {
     measurementId: "G-EB151W6QQ8"
   };
   firebase.initializeApp(firebaseConfig);
-  
+
+
   const messaging = firebase.messaging();
       messaging.requestPermission().then(()=>{
-      // console.log("permission granted")
-      getRegToken();
-    if(isTokenSentToServer()) {
-      console.log('Token already saved.');
-    } else {
-      getRegToken();
-    }
+          console.log("Permission granted");
     })
     .catch((err)=>{
 
     })
-  // function setTokenSentToServer(sent) {
-  //     window.localStorage.setItem('sentToServer', sent ? 1 : 0);
-  // }
-  //   function isTokenSentToServer() {
-  //     return window.localStorage.getItem('sentToServer') == 1;
-  // }
-    function getRegToken(argument) {
-    messaging.getToken()
-      .then(function(currentToken) {
-        if (currentToken) {
-          // saveToken(currentToken);
-          console.log(currentToken);
-          // setTokenSentToServer(true);
-        } else {
-          console.log('No Instance ID token available. Request permission to generate one.');
-          // setTokenSentToServer(false);
-        }
-      })
-      .catch(function(err) {
-        console.log('An error occurred while retrieving token. ', err);
-        setTokenSentToServer(false);
-      });
-  }
+
+function subscribeTokenToTopic(token, topic) {
+  var server_key = "AAAA9uOH9D4:APA91bHlYcXEUwBnzORvoU2tLYKWRjmab4LRLXF57nmPrFuqx3am8OHLf9ynqEg1p4aVnEoi0fhwcmuNS_qDGOC9hMrkmXEzlIJQM4BnR9UHSlDz08cNgbz55xXjrZhCYd2jh8eYmQtw"
+  fetch('https://iid.googleapis.com/iid/v1/'+token+'/rel/topics/'+topic, {
+    method: 'POST',
+    headers: new Headers({
+      'Authorization': 'key='+server_key
+    })
+  }).then(response => {
+    if (response.status < 200 || response.status >= 400) {
+      throw 'Error subscribing to topic: '+response.status + ' - ' + response.text();
+    }
+    console.log('Subscribed to "'+topic+'"');
+  }).catch(error => {
+    console.error(error);
+  })
+}
+
+
+
+messaging.usePublicVapidKey("BGJDAe2YiWVWOyIgcPxHLXAnijA00meTyXrkDiouQV7FkrmMrCyx1eqgzI52hpGnYrTDowe13-rDF1pDycgKTAY");
+
+messaging.getToken().then((currentToken) => {
+  console.log(currentToken)
+  var idUser = "<?php echo $this->session->userdata('LoginId'); ?>";
+  var registrationTokens = [currentToken];
+  var topicPrefix = "stage_";
+  subscribeTokenToTopic(registrationTokens, idUser)
+})
+
+
   messaging.onMessage(function(payload) {
     console.log("Message received. ", payload);
-    notificationTitle = payload.data.title;
-    notificationOptions = {
-      body: payload.data.body,
-      icon: payload.data.icon,
-      image:  payload.data.image
-    };
-    var notification = new Notification(notificationTitle,notificationOptions);
   });
-  </script>
+  </script> -->
 </head>
 
 <body>
 <div class="container mr-0 pr-0">
- 
+ <?php 
+    $recentChats = json_decode($recentChats);
+    $allUsers = json_decode($allUsers);
+    $currentChat;
+    $currentUserInfo;
+    $groups;
+  ?>
 
   <div class="row rounded-lg overflow-hidden shadow">
     <!-- Users box-->
-    <div class="col-4 col-sm-12 px-0 left-bar" style="background-color:#ccc;">
-      <!-- 
-            This block of code is from the previous messenger
-              This code consists of three blocks 
-                1) Recent chats
-                2) List of users
-                3) List of groups & create group
-       -->
-      <div class="bg-white lefbar-sm">
-        <div class="headind_srch d-flex">
-          <div class="has-search">
-            <i class="feedback" style=""></i>
-            <input type="text" class="search-bar form-control form-control-sm" placeholder="Search Employee" id="searchInput">
-            <script>
-              $(document).ready(function () {
-                $("#searchInput").on("keyup", function () {
-                  var value = $(this).val().toLowerCase();
-                  $("#get_users .chat_people").filter(function () {
-                  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                  });
-                });
-              });
-            </script>
-          </div>
-          <div class="circle_plus" >
-            <img src="<?php echo site_url().'assets/images/circle_plus.png'?>">
-          </div>
-        </div>
-      <div class="bg-gray px-4 py-2 general_heading" style="background-color:#fff;">
-        <p class="h6 left-bar-title mb-0 py-1">General</p>
-      </div>
-      <div class="messages-box" id="get_users">
-        <div class="list-group rounded-0 ">
-          <?php
-            if(isset($recentChats)){
-              $recents = json_decode($recentChats);
-              foreach($recents->chats as $rc){ 
-          ?>
-          <div onclick="loadNewChat('<?php echo $rc->id;?>','<?php echo $rc->isGroupYN;?>')" 
-               class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people pointer <?php echo $rc->id == $currentUserId ? 'active_chat' : '';?> ">
-            <div class="media">
-              <div class="icon-container">
-       <!-- <?php
-        if($rc->imgUrl == null || $rc->imgUrl == "") {
-          $rc->imgUrl = base_url().'assets/images/defaultUser.png';
-          }
-        ?>
-        <img src="<?php echo $rc->imgUrl;?>" alt="user" width="20" class="rounded-circle"> -->
-                <span class="icon-parent">
-                  <span class=" icon" style="
-                    <?php echo "background:".$colors_array[rand(0,5)].";"?>">
-                    <?php if(isset($rc->name)){
-                      echo icon($rc->name);
-                    }?>
+    <div class="col-md-3 col-sm-12 px-0 left-bar" style="">
+      <div class="left_topbar">
+        <span class="left_topbar_wrapper">
+          <span class="left_topbar_lefticon">
+            <img src="<?php echo base_url('assets/images/icons/profile.png') ?>" alt="user image" style="border-radius: 50%">
+          </span>
+          <span class="left_topbar_righticon_wrapper">
+            <span class="left_topbar_righticon">
+              <a href="javascript:void(0)" class="left_topbar_righticon_click">
+                <img src="<?php echo base_url('assets/images/icons/more.png') ?>" alt="raindrop icon">
+                <div class="left_topbar_righticon_dropdown">
+                  <span id="myBtn" class=".user__"> Users</span>
+                  <span data-toggle="modal" 
+                       data-target="#addtogroup">
+                    New&nbsp;Group  
                   </span>
+                </div>
+              </a>
+            </span>
+<!--             <span class="left_topbar_righticon">
+              <img src="#" alt="">
+            </span> -->
+          </span>
+        </span>
+      </div>
+      <div class="searchbar">
+        <span class="searchbar_wrapper">
+          <span class="searchinput_wrapper">
+            <input type="" name="" class="searchinput">
+          </span>
+        </span>
+      </div>
+      <!-- Recent Chat  -->
+      <div class="recentchat">
+        <?php foreach($recentChats->chats as $chat){ ?>
+        <span class="recentchat_wrapper" group="<?php echo $chat->isGroupYN; ?>" id="<?php echo $chat->id; ?>">
+          <span class="recentchat_icon">
+            <img src="<?php echo base_url('assets/images/icons/profile.png') ?>" alt="chat icon" height="40px">
+          </span>
+          <span class="recentchat_tile">
+            <span class="recentchat_text">
+              <div class="recentchat_text_top">
+                <span class="recentchat_title"><?php echo $chat->name; ?></span>
+                <span class="recentchat_date_time">
+                  <?php
+                  if(date('d-m-Y',strtotime($chat->time)) == date('d-m-Y',strtotime('today')))
+                    echo date('h:i a',strtotime($chat->time));
+                  else
+                    echo date('d/m/Y',strtotime($chat->time));
+                  ?>
                 </span>
               </div>
-              <div class="media-body ml-0">
-                <div class="d-flex align-items-center justify-content-between mb-1">
-                  <div class="rounded ">
-                    <h6 class="mb-0 left-bar-heading"><?php echo $rc->name;?></h6>
-                    <p class="text-small mb-0 text-muted ovrflowtext"><?php 
-                    echo $rc->lastText;
-//                             try{
-//               if(is_string($rsa->decrypt(base64_decode($rc->lastText))) == 1){
-// $expression = "/(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])?/i";
-// $string = $rsa->decrypt(base64_decode($rc->lastText));
-//                 if(preg_match($expression,$string) == 1){
-//                   // echo '<img src="'.$string.'">';
-//                 }elseif(preg_match('/data:image/i',$string) == 1){
-//                   echo 'Media';
-//                 }else{
-//                   echo $string;
-//                 }
-//               } 
-//               else{
-//                 throw new Exception('Invalid Type');
-//               }
-//                 }
-//                 catch(Exception $e){
-//                     echo 'Not Known';
-//                 }
-                 ?></p>
-                </div>
+              <div class="recentchat_text_bottom">
+                <?php // array_slice(explode(" ",$chat->name),0,1)[0].": ". ?>
+                <?php if($chat->isGroupYN == 'N'){ ?>
+                <span class="recentchat_message"><?php echo ((strlen($chat->lastText)) <= 25 ? $chat->lastText : substr($chat->lastText,0,25)."..."); ?></span>
+              <?php }if($chat->isGroupYN == 'Y'){  ?>
+                <span class="recentchat_message"><?php echo array_slice(explode(" ",$chat->senderName),0,1)[0].": ".((strlen($chat->lastText)) <= 15 ? $chat->lastText : substr($chat->lastText,0,15)."..."); ?></span>
+              <?php } ?>
               </div>
-            </div>
-          </div>
-        </div>
-        <?php } }?>
+            </span>
+          </span>
+        </span>
+        <?php } ?>
       </div>
+      <!-- Recent Chat -->
     </div>
 
-    <div class="bg-gray px-4 py-2 general_heading" 
-         style="background-color:#fff; border-top: 1px solid #ccc;">
-      <a style="text-decoration: none; color:#212529;" 
-         href="<?php echo site_url('messenger_api_controller')?>">
-        <p class="h6 left-bar-title mb-0 py-1">Individual</p>
-      </a>
-    </div>
-    <div class="individual-box">
-      <?php
-      $users = json_decode($users);
-      if(isset($users->users)){
-        foreach ($users->users as $chat) { ?>
-          <div onclick="loadNewChat('<?php echo $chat->userid;?>','N')" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people pointer">
-            <div class="media">
-              <div class="icon-container">
-                <!-- <?php
-                  if($chat->imageUrl == null || $chat->imageUrl == "") {
-                  $chat->imageUrl = base_url().'assets/images/defaultUser.png';
-                  }
-                ?>
-                <img src="<?php echo $chat->imageUrl;?>" alt="user" width="20" class="rounded-circle"> -->
-                <span class="icon-parent">
-                  <span class=" icon" style="
-                    <?php echo "background:".$colors_array[rand(0,5)].";"?>">
-                    <?php if(isset($chat->username)){
-                      echo icon($chat->username);
-                    }?>
-                  </span>
-                </span>
-              </div>
-              <div class="media-body ml-0">
-                <div class="d-flex align-items-center justify-content-between mb-1">
-                  <h6 class="mb-0 left-bar-heading"><?php if(isset($chat->username)){
-                  echo $chat->username;
-                }?></h6>
-                </div>
-              </div>
-            </div>
-          </div>
-        <?php }
-            } ?>
-    </div>
-     
-    <div class="row bg-gray px-4 py-2 general_heading" 
-         style="background-color:#fff; border-top: 1px solid #ccc;">
-      <div class="col-md-6">
-        <a style="text-decoration: none; color:#212529;" href="javascript:void(0);">
-          <p class="h6 left-bar-title mb-0 py-1">Groups </p>
-        </a>
-      </div>
-      
-      <div class="col-md-6 text-right">
-        <a href="javascript:void(0);" 
-           style="text-decoration:none;" 
-           data-toggle="modal" 
-           data-target="#addtogroup"> 
-          <i class="" 
-             style="font-size:15px; margin: 15px 0 0 0;" 
-             title="Add New Group">
-            <img src="<?php echo site_url('/assets/images/add.png'); ?>" 
-                 height="15px">   
-          </i>
-        </a>
-      </div>
-    </div>
-    
-    <div class="individual-box">
-     <?php
-      $groups = json_decode($groups);
-      if(isset($groups->groups)){
-        foreach ($groups->groups as $group) 
-             { 
-                ?>
-             <div onclick="loadNewChat('<?php echo $group->groupid;?>','Y')" class="list-group-item list-group-item-action list-group-item-light rounded-0 chat_people pointer">
-                     <div class="media">
-                
-                       <div class="media-body ml-0">
-                         <div class="d-flex align-items-center justify-content-between mb-1">
-                           <h6 class="mb-0 left-bar-heading"><?php echo $group->groupName;?></h6>
-                         </div>
-                       </div>
-             <!--   <div class="col-md-6 avatar-group text-right">
-                               <a href="#" class="avatar avatar-sm" data-toggle="tooltip" data-original-title="Ryan Tompson">
-                                 <img alt="Image placeholder" src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" class="rounded-circle" width="30">
-                               </a>
-                               <a href="#" class="avatar avatar-sm" data-toggle="tooltip" data-original-title="Romina Hadid">
-                                 <img alt="Image placeholder" src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" class="rounded-circle" width="30">
-                               </a>
-                               <a href="#" class="avatar avatar-sm" data-toggle="tooltip" data-original-title="Alexander Smith">
-                                 <img alt="Image placeholder" src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" class="rounded-circle" width="30">
-                               </a>
-                               <a href="#" class="avatar avatar-sm" data-toggle="tooltip" data-original-title="Alexander Smith">
-                                 <img alt="Image placeholder" src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" class="rounded-circle" width="30">
-                               </a>
-                 </div> -->
-                     </div>
-                   </div>
-             <?php }} ?>        
-               </div>
-          </div>
-      <!-- 
-            This block of code is from the previous messenger
-              This code consists of three blocks 
-                1) Recent chats
-                2) List of users
-                3) List of groups & create group
-       -->
-
-    </div>
-	 <div class="group-box"></div>
-    <!-- Chat Box-->
-	
-    <div class="col px-0" style="min-height:100vh;word-break: break-word">
-			
-   <div class="media headind_srchs">
+<!-- 
+  <div class="group-box col-sm-12 col-md-7"></div> -->
+    <!-- Chat Box-->	
+    <div class="px-0 col-sm-12 col-md-9 messenger_center_box" style="min-height:100vh;word-break: break-word">
+<?php   
+    $currentUserInfo = json_decode($currentUserInfo);
+ ?>
+   <div class="media headind_srchs" user_id="<?php echo isset($currentUserInfo->memberid) ?  $currentUserInfo->memberid : (isset($currentUserInfo->groupid) ?  $currentUserInfo->groupid : "" ); ?>" group="<?php echo isset($currentUserInfo->memberid) ?  'N' : (isset($currentUserInfo->groupid) ?  'Y' : "" ); ?>">
     <i class="message-back"></i>
    <a href="javascript:void(0);" id="contact_us">
 		<?php
-            $currentUserInfo = json_decode($currentUserInfo);
             if(isset($currentUserInfo->avatarUrl)){
-              if($currentUserInfo->avatarUrl == null || $currentUserInfo->avatarUrl == ""){
-                $currentUserInfo->avatarUrl = base_url().'assets/images/defaultUser.png';
-              } ?>
-
+              if($currentUserInfo->avatarUrl == null || $currentUserInfo->avatarUrl == ""){ ?>
+                <span class=" icon" style="
+                      <?php echo "background:".$colors_array[rand(0,5)]?>">
+                      <?php echo isset($currentUserInfo->groupName) ? icon($currentUserInfo->groupName) : "";?>
+                    </span>
+            <?php  } 
+            if($currentUserInfo->avatarUrl != "" && $currentUserInfo->avatarUrl != null){
+            ?>
             <img src="<?php if(isset($currentUserInfo->avatarUrl)){
               echo $currentUserInfo->avatarUrl;}?>" alt="user" width="35" class="rounded-circle">
-             <?php }else{ ?>
+             <?php } }else{ ?>
                   <span class="icon-parent">
                     <span class=" icon" style="
                       <?php echo "background:".$colors_array[rand(0,5)]?>">
@@ -1030,24 +1252,25 @@ p.ovrflowtext {
                     </span>
                   </span>
           <?php   }
-          if(isset($currentUserInfo->groupName) ? $currentUserInfo->groupName : null != null){
-            print_r($currentUserInfo->groupName);
-          }
+          // if(isset($currentUserInfo->groupName) ? $currentUserInfo->groupName : null != null){
+          //   print_r($currentUserInfo->groupName);
+          // }
           ?>
 
 	</a>
-	<p class="text-capitalize" style="margin:0; font-size:18px; font-weight:500; padding:3px 0 0 10px; color:#307bd3;">
+	<p class="text-capitalize" style="margin:0; font-size:18px; font-weight:500; padding:3px 0 0 10px; color: #707070;" user_id="<?php echo isset($currentUserInfo->memberid) ?  $currentUserInfo->memberid : (isset($currentUserInfo->groupid) ?  $currentUserInfo->groupid : "" ); ?>" group="<?php echo isset($currentUserInfo->memberid) ?  'N' : (isset($currentUserInfo->groupid) ?  'Y' : "" ); ?>">
 		<?php 
           if($isGroupYN == "N")
-            if(isset($currentUserInfo->memberName))
             {
-              echo $currentUserInfo->memberName;
-            }
-          else
+              if(isset($currentUserInfo->memberName)){
+                 echo $currentUserInfo->memberName;
+              }}
+          else{
             if(isset($currentUserInfo->groupName)){
                echo $currentUserInfo->groupName;
             }
-          ?>
+          } 
+        ?>
 	</p>
     </div>
           
@@ -1055,14 +1278,37 @@ p.ovrflowtext {
         <!-- Sender Message-->
 		<?php
               $currentChat = json_decode($currentChat);
+              $currentTextDate = "00-00-0000";
     if(isset($currentChat->chats)){
-      foreach ($currentChat->chats as $chats) { ?>
-          <div class="media w-50 mb-3">
+      foreach ($currentChat->chats as $chats) { 
+           $date=date_create($chats->sentDateTime);
+           if($currentTextDate == date('Y-m-d',strtotime($chats->sentDateTime))){
+
+           }else{
+             $currentTextDate = date('Y-m-d',strtotime($chats->sentDateTime));
+             $dateNeedeFormat = date('d M Y',strtotime($currentTextDate));
+             echo "<div class='currentTextDate_center'><span class='currentTextDate_centerbox'>$dateNeedeFormat</span></div>";
+              }
+            if($chats->transactiontype == 'TRANSACTIO'){
+                echo "<div class='currentTextDate_center'><span class='currentTextDate_centerbox'>$chats->chatText</span></div>";
+            }
+    if($chats->transactiontype != 'TRANSACTIO'){
+           ?>
+        <div class="media <?php if( $this->session->userdata('LoginId') == $chats->senderId ){
+                       echo "sender-rightalign"; 
+                     }else{
+                      echo "sender-leftalign";
+                     } ?>">
         <!--     <img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="30" class="rounded-circle"> -->
-          <div class="media-body ml-3">
-           <?php $date=date_create($chats->sentDateTime);?>
-             <p class="text-small-chat mb-0 text-muted text-muted font-weight-bold">
-                <a class="name-chat-box">
+          <div class="
+                <?php if( ($this->session->userdata('LoginId') == $chats->senderId) ){
+                       echo "sender-right"; 
+                     }
+                     else{
+                        echo "sender-left";
+                     } ?>">
+             <p class="text-small-chat mb-0 font-weight-bold">
+               <!--  <a class="name-chat-box">
                   <?php 
                   if( $this->session->userdata('LoginId') == $chats->senderId ){
                     echo $this->session->userdata('Name');
@@ -1070,11 +1316,17 @@ p.ovrflowtext {
                     echo ucfirst($chats->senderId);
                   }
                   ?>
-                </a> 
-               <small class="text-muted chat-message-time"><?php echo date_format($date,"d M y | H:i A");?></small>
+                </a>  -->
+               
              </p>
-          <div class="bg-light rounded py-2  pl-0 mb-2">
-              <p class="text-small-chat-message mb-0 text-muted"><?php
+          <div class=" rounded ">
+              <?php if($chats->isGroupYN == 'Y'){ ?>
+                <span><?php 
+                if($chats->senderId != $this->session->userdata('LoginId')){
+                echo $chats->senderName; 
+              } ?></span>
+              <?php } ?>
+              <p class="text-small-chat-message mb-0 "><?php
               echo $chats->chatText;
 //                 try{
 //               if(is_string($rsa->decrypt(base64_decode($chats->chatText))) == 1){
@@ -1101,10 +1353,11 @@ p.ovrflowtext {
 
 
                 ?></p>
+                <small class=" chat-message-time"><?php echo date_format($date,"H:i");?></small>
           </div>
         </div>
       </div>
-      <?php }}?>	
+      <?php }}}?>	
         <!-- Reciever Message-->
         <!--<div class="media w-50 ml-auto mb-3">
           <div class="media-body">
@@ -1120,175 +1373,147 @@ p.ovrflowtext {
       </div>
 
       <!-- Typing area -->
-      <form action="<?php echo base_url().'messenger/postNewMessage';?>" class="d-flex" method="post" id="chatForm" enctype="multipart/form-data">
-        <!-- <span class="attach_file">
-          <img src="<?php echo site_url().'assets/images/attach_file.png'; ?>" id="upload_attachment">
+      <form class="d-flex" id="chatForm" onsubmit="stopSubmit()">
+        <span class="attach_file">
+          <img src="<?php echo site_url().'assets/images/icons/clip.png'; ?>" id="upload_attachment">
           <input type="file" name="upload_image" id="upload_image" onchange="validate()">
-        </span> -->
+        </span>
         <div class="input-group">
-          <input type="text" id="chatText" name="chatText" placeholder="Type message here.."  class="form-control rounded-0 border-0 py-4 bg-white">
-		  <input type="hidden" name="receiverId" id="receiverId" value="<?php echo $currentUserId;?>">
-              <input type="hidden" name="isGroupYN" id="isGroupYN" value="<?php echo $isGroupYN;?>">
-          <div class="input-group-append">
-            <!--<button id="button-addon2" type="submit" class="btn btn-link"> <i class="fa fa-paper-plane"></i></button>-->
-			<button type="button" class="msg_send_btn" onclick="sendMessage()">SEND</button>
+          <input type="text" id="chatText" name="chatText" placeholder="Type message here.."  class="form-control  bg-white">
+          <div class="receiver_details">
+            <input type="hidden" name="receiverId" id="receiverId" value="<?php echo $currentUserId;?>">
+            <input type="hidden" name="isGroupYN" id="isGroupYN" value="<?php echo $isGroupYN;?>">
           </div>
-        </div>
+            <div class="input-group-append">
+              <!--<button id="button-addon2" type="submit" class="btn btn-link"> <i class="fa fa-paper-plane"></i></button>-->
+        			<button type="button" class="msg_send_btn" >
+                <img src="<?php echo base_url('assets/images/icons/send.png') ?>" width="20px">   
+              </button>
+            </div>
+          </div>
       </form>
 
     </div>
+<!-- side nav start-->
+
+  <div class="col-sm-12 col-md-3 right_box">
+    <div class="right_top_tab">
+      <span class="right_top_tab_close">
+        <img src="<?php echo base_url('assets/images/icons/x.png') ?>" alt="Close Icon">
+      </span>
+      <span class="right_top_tab_info">Info</span>
+    </div>
+    <div class="right_user_icon">
+      <div class="user_icon_wrapper">
+        <span class="user_icon_view">
+
+          <?php if($currentUserInfo->avatarUrl != null && $currentUserInfo->avatarUrl != ""){ ?>
+          <img src="<?php echo base_url('assets/images/icons/user.png') ?>">
+        <?php }if($currentUserInfo->avatarUrl == null || $currentUserInfo->avatarUrl == ""){ ?>
+          <span class="alphabetIcon">
+            <?php 
+            if(isset($currentUserInfo->avatarUrl) && ($currentUserInfo->avatarUrl != "")){}
+              else{
+                  if($isGroupYN == "N")
+                    {
+                      if(isset($currentUserInfo->memberName)){
+                         echo icon($currentUserInfo->memberName);
+                      }
+                    }
+                  else{
+                    if(isset($currentUserInfo->groupName)){
+                       echo icon($currentUserInfo->groupName);
+                    }
+                  } 
+                }
+             ?>
+          </span>
+          <?php } ?>
+        </span>
+      </div>
+      <div class="user_name_wrapper">
+        <span class="user_name_view">
+            <?php if($isGroupYN == "N")
+                    {
+                      if(isset($currentUserInfo->memberName)){
+                         echo ($currentUserInfo->memberName);
+                      }
+                    }
+                  else{
+                    if(isset($currentUserInfo->groupName)){
+                       echo ($currentUserInfo->groupName);
+                    }
+                  } ?>
+        </span>
+        <span class="user_title_view">
+            <?php if($isGroupYN == "N")
+                    {
+                      if(isset($currentUserInfo->designation)){
+                         echo ($currentUserInfo->designation);
+                      }
+                    }
+                  else{
+                    if(isset($currentUserInfo->designation)){
+                       echo ($currentUserInfo->designation);
+                    }
+                  } ?>
+        </span>
+      </div>
+    </div>
+    <?php if((isset($currentUserInfo->groups) && count($currentUserInfo->groups) > 0) || (isset($currentUserInfo->members)) && count($currentUserInfo->members) > 0 ) { ?>
+    <div class="boxcategory">
+      <span class="boxcategoryTitle">
+        <?php if((isset($currentUserInfo->groups) && count($currentUserInfo->groups) > 0)){
+              echo "Common Groups";
+        }
+              if(isset($currentUserInfo->members) && count($currentUserInfo->members) > 0 ){
+              echo "Members";
+              }?>
+      </span>
+      <div class="boxcategory_wrapper">
+        <?php 
+      if((isset($currentUserInfo->groups) && count($currentUserInfo->groups) > 0)){
+        foreach($currentUserInfo->groups as $commongroup){ ?>
+        <span class="elementOfCategory">
+          <span class="elementIcon">
+            <span class="elementIconView"><?php echo $commongroup->groupName ?></span>
+          </span>
+          <span class="elementDescription">
+            <span class="elementText"></span>
+          </span>
+        </span>
+      <?php } } ?>
+        <?php 
+      if((isset($currentUserInfo->members) && count($currentUserInfo->members) > 0)){
+        foreach($currentUserInfo->members as $members){ ?>
+        <span class="elementOfCategory">
+          <span class="elementIcon">
+            <span class="elementIconView"><?php echo $members->memberName ?></span>
+          </span>
+          <span class="elementDescription">
+            <span class="elementText"></span>
+          </span>
+        </span>
+      <?php } } ?>
+      </div>
+    </div>
+    <?php } ?>
+    <?php if($isGroupYN == "Y"){ ?>
+    <div class="groupOptions">
+        <?php if(($currentUserInfo->adminId) == ($this->session->userdata('LoginId'))){ ?>
+      <div>
+        <span class="delete_group" groupId="<?php echo $currentUserInfo->groupid ?>">Delete Group</span>
+      </div>
+    <?php } ?>
+    </div>
+  <?php } ?>
+  </div>
+
+<!-- side nav end-->
   </div>
 </div>
 
-<!-- side nav start-->
-<?php 
-    if($isGroupYN == "Y"){ ?>
-			<div class="sidebar">
-			<div class="toggle" id="contact_close"></div>			  
-			<div class="row">
-				<div class="col-md-12">
-					<div class="card">
-					
-						<div class="box">
-							<div class="imgs">
-							   <?php 
-                  if($currentUserInfo->avatarUrl == null || $currentUserInfo->avatarUrl == ""){
-                    $currentUserInfo->avatarUrl = base_url().'assets/images/defaultUser.png';
-                  }
-                  ?>
-							   <input type="image" src="<?php echo $currentUserInfo->avatarUrl;?>" class="rounded-circle" width="100"/>
-								<input type="file" id="my_file" style="display: none;" />
-							</div>
-							<div class="editbox">
-							  <span class="edit"><i class="fas fa-pencil-alt"></i></span>
-							  <span class="save"><i class="fas fa-check-circle"></i></span>
-							  <div class="text"><?php echo $currentUserInfo->groupName;?></div>
-							</div>
-						</div>
-					</div>
-				</div>
-        <div class="col-md-12">
-        	<div class="card">
-        		<div class="card-header">
-        			<p style="color:green; font-weight:500;"><?php echo count($currentUserInfo->members);?> Participants</p>
-        		</div>
-        			<div class="card-body members-box p-0">
-        			<ul class="list-group list-group-flush">
-                
-				<?php foreach ($currentUserInfo->members as $mem) { ?>
-        			<li class="list-group-item">   
-					<div class="chat_list pointer" onclick="loadNewChat('<?php echo $mem->memberid;?>','N')">
-                      <div class="chat_people">
-                        <div class="chat_img">
-        					<div class='icon-container'>
-        					<!--<i class="fas fa-user-circle" style="font-size:25px"></i> -->
-							  <?php 
-								if($mem->avatarUrl == null || $mem->avatarUrl == "") { 
-								  $mem->avatarUrl = base_url().'assets/images/defaultUser.png';
-								}
-							   ?>
-        					<img class="rounded-circle" src="<?php echo $mem->avatarUrl;?>" alt="img_src" width="35">
-        				</div>
-        				</div>
-                        <div class="chat_ib">
-                          <h5><?php echo $mem->memberName;?></h5>
-                        </div>
-                      </div>
-                    </div>
-        			</li>
-				<?php }?>
-        			</ul>
-        		</div>
-        	</div>
-        </div>
-		<div class="col-md-12 col-sm-12 ml-1">
-		 <div class="card2">
-		  <div class="box2">
-			<div class="group-name">
-			<div class="row">
-			<div class="col-md-6">
-				<form method="post" action="<?php echo base_url().'messenger/exitGroup';?>" id="exitGroupForm">
-				<input type="hidden" value="<?php echo $currentUserInfo->groupid;?>" name="groupId">
-				<div onclick="exitGroup()">
-				<a href="#" name="exit" style="text-decoration:none;"><i class="fas fa-sign-out-alt"></i> Exit Group</a></div>
-				</form>
-				</div>
-				
-				<?php if($currentUserInfo->adminId == $this->session->userdata('LoginId')){ ?>
-				<div class="col-md-6">
-				  <form method="post" action="<?php echo base_url().'messenger/deleteGroup';?>" id="deleteGroupForm">
-				  <input type="hidden" value="<?php echo $currentUserInfo->groupid;?>" name="groupId">
-				  <div onclick="deleteGroup()">
-				  <a href="#" name="delete_group" style="text-decoration:none;"><i class="fas fa-trash-alt"></i> Delete Group</button></div></form>
-				<?php }?>
-			
-			</div>
-			</div>
-		  </div>
-		 </div>
-		</div>
-		</div>
-	</div>
-	</div>
-<?php } else{ ?>
-    <div class="sidebar">
-      <div class="toggle" id="contact_close"></div>       
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card">
-          
-            <div class="box">
-              <div class="imgs">
-                <?php
-                  if($currentUserInfo->avatarUrl == null || $currentUserInfo->avatarUrl == ""){
-                    $currentUserInfo->avatarUrl = base_url().'assets/images/defaultUser.png';
-                  }
-                  ?>
-                 <img class="rounded-circle" src="<?php echo $currentUserInfo->avatarUrl;?>" alt="img_src">
-              </div>
-              <h2><?php echo $currentUserInfo->memberName;?> <span><?php echo $currentUserInfo->designation;?></span></h2>
-              
-            </div>
-          </div>
-        </div>
-			 <div class="col-md-12">
-			 <div class="card">
-				<div class="card-header">
-				  <p style="color:green; font-weight:500;">Groups In Comon</p>
-				</div>
-				<div class="card-body members-box p-0">
-				  <ul class="list-group list-group-flush">
-					
-					<?php foreach ($currentUserInfo->groups as $group) { ?>
-						<li class="list-group-item">   
-						<div class="chat_list pointer" onclick="loadNewChat('<?php echo $group->groupid;?>','Y')">
-						  <div class="chat_people">
-							<div class="chat_img">
-							  <div class='icon-container'>
-							  <div class="chat_img">
-								<?php 
-								  if($group->avatarUrl == null || $group->avatarUrl == "")
-									$group->avatarUrl = base_url().'assets/images/defaultUser.png';
-								  ?>
-								<img class="" src="<?php echo $group->avatarUrl;?>" alt="profile_img" width="20">
-							  </div>
-							</div>
-							</div>
-							<div class="chat_ib">
-							  <h6><?php echo $group->groupName;?></h6>
-							</div>
-						  </div>
-						</div>
-						</li>
-						<?php }?>          
-				  </ul>
-				</div>
-			  </div>
-			  </div>
-        </div>
-      </div>
-<?php } ?>
-<!-- side nav end-->
+
 
 
 
@@ -1318,10 +1543,10 @@ p.ovrflowtext {
 			<div class="search-list">
         <select class="tokenize_class" name="tokenize_class[]" multiple>
 					<?php
-                     foreach ($users->users as $chat) {
+                     foreach ($allUsers->users as $chat) {
                       if($chat->imageUrl == null || $chat->imageUrl == ""){
                         $chat->imageUrl = base_url().'assets/images/defaultUser.png';
-                      }
+                      }else{}
                     ?>					
                       <option value="<?php echo $chat->userid; ?>"><?php echo $chat->username;?></option>
                   <?php } ?>
@@ -1355,11 +1580,35 @@ p.ovrflowtext {
       <h4><a href="<?php echo base_url(); ?>">Click here</a> to login</h4>      
     </div>
   </div>
-
+<!-- User Modal -->
+<div id="usersModal" class="usersModal">
+  <div class="usersModalContent">
+    <h1>Users</h1>
+    <div>
+      <?php foreach($allUsers->users as $user_){ ?>
+        <span class="d-block" onclick="loadNewChat('<?php echo $user_->userid ?>','N')"><?php echo $user_->username; ?></span>
+      <?php } ?>
+    </div>
+    <button id="accept" class="user__">
+      Close
+    </button>
+  </div>
+</div>
+<!-- User Modal -->
 
 </body>
 
 <script type="text/javascript">
+var usersModal = document.getElementById('usersModal');
+var btn = document.getElementById("myBtn");
+var accept = document.getElementById("accept");
+btn.onclick = function() {
+  usersModal.style.display = "block";
+}
+accept.onclick = function() {
+  usersModal.style.display = "none";
+}
+
   // height , width of the container
   $(document).ready(()=>{
     $('.container').css('paddingLeft',$('.side-nav').width());
@@ -1430,8 +1679,150 @@ $('.save').click(function(){
   <script type="text/javascript">
     var base_url = "<?php echo base_url();?>";
     function loadNewChat(userid,isGroupYN){
-      window.location.href = base_url + "messenger/chats/" + userid +"/" + isGroupYN;
+        var url = window.location.origin+'/PN101/messenger/chats/'+userid+'/'+isGroupYN;
+        $.ajax({
+          url : url,
+          type : 'GET',
+          success : function(response){
+            // $('.messenger_center_box').htm l($(response).find('.messenger_center_box').html())
+            // $('.right_box').html($(response).find('.right_box').html())
+            // $('.chat-box').scrollTop($('.chat-box')[0].scrollHeight)
+            console.log('changed')
+            $('.media.headind_srchs').html($(response).find('.media.headind_srchs').html())
+            $('.chat-box').html($(response).find('.chat-box').html())
+            $('.recentchat').html($(response).find('.recentchat').html())
+            $('.receiver_details').html($(response).find('.receiver_details').html())
+          }
+        })
     }
+
+    $(document).on('click','.right_top_tab_close',function(){
+      $('.messenger_center_box')[0].classList.remove('col-md-6');
+      $('.right_box').css('display','none');
+      $('.messenger_center_box')[0].classList.add('col-md-9');
+    })
+
+    $(document).on('click','.text-capitalize, .contact_us',function(){
+      $('.messenger_center_box')[0].classList.remove('col-md-9');
+      $('.right_box').css('display','block');
+      $('.messenger_center_box')[0].classList.add('col-md-6');
+    })
+
+
+    $(document).on('click','.recentchat_wrapper',function(){
+      var userId = $(this).attr('id');
+      var isGroupYN = $(this).attr('group');
+      var url = window.location.origin+'/PN101/messenger/chats/'+userId+'/'+isGroupYN;
+      $.ajax({
+        url : url,
+        type : 'GET',
+        success : function(response){
+          $('.messenger_center_box').html($(response).find('.messenger_center_box').html())
+          $('.right_box').html($(response).find('.right_box').html())
+          $('.chat-box').scrollTop($('.chat-box')[0].scrollHeight)
+        }
+      })
+    })
+
+    function searchRecentChats(){
+      var chats = $('.recentchat_title').length;
+      var searchText = $('.searchinput').val();
+      for(var i=0;i<chats;i++ ){
+          if ( ($('.recentchat_title').eq(i).text().search(new RegExp(searchText, "i")) < 0)) {
+              $('.recentchat_wrapper').eq(i).fadeOut();
+           } else {
+              $('.recentchat_title').eq(i).show();
+          }
+      }
+    }
+    $(document).on('keyup','.searchinput',function(){
+      searchRecentChats()
+    })
+
+    $(document).on('click','.msg_send_btn',function(e){
+      e.preventDefault();
+      var url = "<?php echo base_url().'messenger/postNewMessage';?>";
+      var receiverId = $('#receiverId').val();
+      var isGroupYN = $('#isGroupYN').val();
+      var chatText = $('#chatText').val();
+      var image = $('#upload_image')[0].files[0];
+      var form_data = new FormData();
+      form_data.append('upload_image',image);
+            var date = new Date();
+            var code = `<div class="media sender-rightalign">
+                          <div class="sender-right">
+                            <div class=" rounded ">
+                              <p class="text-small-chat-message mb-0 ">${chatText}</p>
+                              <small class=" chat-message-time">${date.getHours()}:${date.getMinutes()}</small>
+                            </div>
+                          </div>
+                        </div>`
+                        $('.chat-box').append(code)
+                   $('#chatText').val('')  
+      // if(image != "" && image != null){
+      //   $.ajax({
+      //     url : url,
+      //     contentType: false,
+      //     processData: false,
+      //     data : form_data,
+      //     type : 'POST',
+      //     success : function(response){
+      //       console.log(response)
+      //       var date = new Date();
+      //       var code = `<div class="media sender-rightalign">
+      //                     <div class="sender-right">
+      //                       <div class=" rounded ">
+      //                         <p class="text-small-chat-message mb-0 ">${image}</p>
+      //                         <small class=" chat-message-time">${date.getHours()}:${date.getMinutes()}</small>
+      //                       </div>
+      //                     </div>
+      //                   </div>`
+      //                   $('.chat-box').append(code)
+      //              $('#chatText').val('')   
+      //     }
+      //   })
+      // }
+      if(chatText != "" && chatText != null){
+        $.ajax({
+          method : 'POST',
+          url : url,
+          data : {
+            receiverId : receiverId,
+            isGroupYN : isGroupYN,
+            chatText : chatText
+          },
+          success : function(response){
+            // console.log(response)
+ 
+          }
+        })
+      }
+    })
+
+    function loadChatElements(){
+      var userId = $('.text-capitalize').attr('user_id')
+      var isGroupYN = $('.text-capitalize').attr('group')
+      var url = window.location.origin+'/PN101/messenger/chats/'+userId+'/'+isGroupYN;
+      $.ajax({
+        url : url,
+        type : 'GET',
+        success : function(response){
+          // $('.messenger_center_box').html($(response).find('.messenger_center_box').html())
+          // $('.right_box').html($(response).find('.right_box').html())
+          // $('.chat-box').scrollTop($('.chat-box')[0].scrollHeight)
+          console.log('changed')
+          $('.media.headind_srchs').html($(response).find('.media.headind_srchs').html())
+          $('.chat-box').html($(response).find('.chat-box').html())
+          $('.recentchat').html($(response).find('.recentchat').html())
+          $('.receiver_details').html($(response).find('.receiver_details').html())
+          searchRecentChats()
+        }
+      })
+    }
+
+    $(document).ready(function(){
+      setInterval(loadChatElements,5000)
+    })
 
     function saveGroup(){
       var groupName = document.getElementById("recipient-name").value;
@@ -1457,11 +1848,28 @@ $('.save').click(function(){
         document.getElementById("chatForm").submit();
       }
     }
-  </script>
-  <script type="text/javascript">
-    // messaging.onMessage(function(payload){
-      // console.log('wow');
-    // })
+
+    $(document).ready(function(){
+      $(document).on('click','.delete_group',function(){
+        var url = '<?php echo base_url('messenger/deleteGroup') ?>';
+        var userid = '<?php echo $this->session->userdata('LoginId'); ?>';
+        var groupId = $(this).attr('groupId');
+        var bool = confirm(' Are you sure you want to delete this group ?')
+        if(bool){
+        $.ajax({
+            url : url,
+            data : {
+              groupId : groupId,
+              userid : userid
+            },
+            type : 'POST',
+            success : function(response){
+              loadChatElements()
+            }
+          })
+        }
+      })
+    })
   </script>
 
 <?php if( isset($error) != null){ ?>

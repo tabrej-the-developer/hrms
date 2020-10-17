@@ -75,7 +75,7 @@
 		</span>
 		<span class="span-class col-4 ">
 			<!-- <label class="labels__">Middle Name</label> -->
-			<input id="mname"  class="" type="text" name="mname" placeholder="Middle Name">
+			<input id="mname"  class="" value="" type="text" name="mname" placeholder="Middle Name">
 		</span>
 		<span class="span-class col-4 ">
 			<!-- <label class="labels__">Last Name</label> -->

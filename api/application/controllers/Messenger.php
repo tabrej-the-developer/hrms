@@ -15,6 +15,7 @@ class Messenger extends CI_Controller {
 	}
 
 	public function GetUsers($userid,$searchText=null){
+
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
@@ -120,6 +121,7 @@ class Messenger extends CI_Controller {
 				$groupId = $this->messengerModel->CreateGroup($groupName,$adminId,$avatarUrl);
 				foreach ($json->members as $groupMember) {
 					$this->messengerModel->AddMember($groupId,$groupMember);
+					$this->messengerModel->addTransaction($json->admin,$groupId,'Y',$groupMember.' is added to the group','TRANSACTION');
 				}
 				$this->messengerModel->AddMember($groupId,$adminId);
 				$data['groupId'] = $groupId;
@@ -333,33 +335,49 @@ class Messenger extends CI_Controller {
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
+			$this->load->model('utilModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			if($res != null && $res->userid == $userid){
 				$this->load->model('messengerModel');
 				$chats = $this->messengerModel->GetRecentChat($userid);
 				$data = array();
 				foreach ($chats as $ch) {
-					if($ch->senderId == $userid){
-						$var['id'] = $ch->receiverId;
-					}
-					else{
-						$var['id'] = $ch->senderId;
-					}
-					$var['isGroupYN'] = $ch->isGroupYN;
+					$recentChatDetails = $this->messengerModel->getRecentChatDetails($ch);
+						$var['id'] = $ch;
+					$var['isGroupYN'] = $recentChatDetails->isGroupYN;
 					if($var['isGroupYN'] == "Y"){
 						$groupInfo = $this->messengerModel->GetGroupInfo($var['id']);
 						$var['name'] = $groupInfo->groupName;
 						$var['imgUrl'] = $groupInfo->imageUrl;
+						$var['time'] = $recentChatDetails->sentDateTime;
+						$var['senderName'] = $this->utilModel->getUserDetails($recentChatDetails->senderId)->name;
+						$var['isGroupYN'] = 'Y';
 					}
 					else{
 						$userInfo = $this->authModel->getUserDetails($var['id']);
 						$var['name'] = $userInfo->name;
 						$var['imgUrl'] = $userInfo->imageUrl;
+						$var['time'] = $recentChatDetails->sentDateTime;
+						$var['isGroupYN'] = 'N';
 					}
-					$var['lastText'] = $ch->chatText;
+					$var['lastText'] = $recentChatDetails->chatText;
 					array_push($data,$var);
 				}
-				$mdata['chats'] = $data;
+
+				 function insertion_Sort($my_array)
+					{
+						for($i=0;$i<count($my_array);$i++){
+							$val = $my_array[$i];
+							$j = $i-1;
+							while($j >= 0 && $my_array[$j]['time'] < $val['time']){
+								$my_array[$j+1] = $my_array[$j];
+								$j--;
+							}
+							$my_array[$j+1] = $val;
+						}
+					return $my_array;
+					}
+				$mdata['chats'] = insertion_Sort($data);
 				$mdata['Status'] = "SUCCESS";
 				http_response_code(200);
 				echo json_encode($mdata);
@@ -390,6 +408,8 @@ class Messenger extends CI_Controller {
 					$var['chatText'] = $ch->chatText;
 					$var['sentDateTime'] = $ch->sentDateTime;
 					$var['mediaContent'] = $ch->mediaContent;
+					$var['isGroupYN'] = 'N';
+					$var['transactiontype'] = $ch->transactiontype;
 					array_push($data,$var);
 				}
 				$mdata['chats'] = $data;
@@ -424,6 +444,8 @@ class Messenger extends CI_Controller {
 						$var['chatText'] = $ch->chatText;
 						$var['sentDateTime'] = $ch->sentDateTime;
 						$var['mediaContent'] = $ch->mediaContent;
+						$var['isGroupYN'] = 'N';
+						$var['transactiontype'] = $ch->transactiontype;
 						array_push($data,$var);
 					}
 					$mdata['chats'] = $data;
@@ -482,6 +504,41 @@ class Messenger extends CI_Controller {
 				// 	$this->firebase->sendMessage('New message from '.$senderDetails->name,'Click to view message',$mdata,$receiverId);
 				// }
 
+				$data['Status'] = 'SUCCESS';
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
+	public function removeUserFromGroup(){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json != null && $res != null && $res->userid == $json->userid){
+				$senderId = $json->userid;
+				$receiverId = $json->receiverId;
+				$isGroupYN = $json->isGroupYN;
+				$chatText = $json->chatText;
+				$mediaContent = $json->mediaContent;
+
+				$this->load->model('messengerModel');
+				$this->messengerModel->PostChat($senderId,$receiverId,$isGroupYN,$chatText,$mediaContent);
+				$senderDetails = $this->authModel->getUserDetails($senderId);
+
+				$mdata['senderName'] = $senderDetails->name;
+				$mdata['senderId'] = $senderId;
+				$mdata['isGroupYN'] = $isGroupYN;
+				$mdata['type'] = "chat";
+				$mdata['message'] = $chatText;
 				$data['Status'] = 'SUCCESS';
 				http_response_code(200);
 				echo json_encode($data);

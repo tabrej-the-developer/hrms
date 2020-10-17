@@ -76,7 +76,12 @@ class Welcome extends CI_Controller {
 
 	public function forgotPassword()
 	{
+		// if(){
 		 $this->load->view("forgot_password_request");  
+		// }else{
+		// 		$data['message'] = json_decode($server_output)->message;
+		// 		$this->load->view("forgot_password_request",$data);
+		// }
 	}
 
 	public function forgotPasswordRequest(){
@@ -94,12 +99,15 @@ class Welcome extends CI_Controller {
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			if($httpcode == 200){
-				return $server_output;
+				$data['message'] = json_decode($server_output)->Message;
+				$this->load->view("forgot_password_request",$data);
 				curl_close ($ch);
 			}
 			else if($httpcode == 401){
-
+					redirect('Welcome/forgotPassword');
 				}
+			}else{
+					redirect('Welcome/forgotPassword');
 			}
 		}
 
