@@ -11,6 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css">
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+<!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/stylesheet.css') ?>" /> -->
 <style type="text/css">
 	*{
 font-family: 'Open Sans', sans-serif;
@@ -367,7 +368,37 @@ table.dataTable{
 		right: 0;
 		justify-content: center;
 	}
+	.
 /* Templates dropdown*/
+
+/*Templates table*/
+.rosterTemplateTable{
+	height: 40vh;
+	max-height: 40vh;
+	width: 100%;
+}
+.template_row{
+	width:100%;
+}
+.template_td{
+	width: 80%;
+}
+.template_table{
+	width: 100%;
+  margin-top: 1rem;
+}
+.template_header_first_child{
+	width: 80%;
+	padding-left: 2rem !important;
+}
+.template_td_name{
+	width: 80%;
+	padding-left: 2rem;
+}
+.template_table > thead > tr > th{
+	padding: 0.5rem 0 0.5rem 0;
+}
+/*Templates table*/
 
 		/* The Modal (background) */
 .templateModal {
@@ -390,7 +421,7 @@ table.dataTable{
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 30%;
+  width: 50%;
   position: relative;
 }
 
@@ -466,6 +497,7 @@ table.dataTable{
 		}
 	?>
 <div class="containers">
+
 	<?php $permissions = json_decode($permissions); ?>
 	<div class="d-flex heading-bar">
 		<span class="m-3" id="roster-heading" style="">Rosters</span>
@@ -553,7 +585,6 @@ table.dataTable{
 	
 </div>
 </div>
-
 <div id="myModal" class="modal">
   <!-- Modal content -->
   <div class="modal-content">
@@ -611,28 +642,52 @@ table.dataTable{
 
  		<input type="text" name="userId" id="templateUserId" style="display:none" value="<?php echo $userId?>">
  			<input type="text" name="centerId" id="template-center-id" value="<?php echo $center__;?>" style="display:none">
- 			 	<?php 
-		 			echo "<div class='templates_block'>";
-		 			print_r('<span class="">Select Roster Template</span>');
-			 			echo "<div class='templates_list '>";
-	 			 		foreach($rosterTemplates->templates as $templates){
-	 			 			print_r('<span class="d-block"><a href="'.base_url('roster/getRosterTemplateDetails/').$templates->id.'/'.$this->session->userdata("LoginId").'">'.$templates->name.'</a><span class="roster_template_style" id='.$templates->id.'>
-	 			 				<i>
-									<img src="'.base_url("assets/images/icons/x.png").'" style="max-height:0.8rem;margin-right:10px">
-								</i></span></span>');
-	 			 		} 
-	 			 		echo "</div>";
-		 			echo "</div>";
- 			 		?>
  		<div class="text-center">
 	 		<input type="submit" name="roster-submit" id="roster-template-submit" class="button" value="Create">
 	 		<input type="reset"  class="button" value="Reset">
 	 		<input type="button" name="cancel" value="Cancel" class="close button">
  		</div>
  	</form>
+ 	<div class="rosterTemplateTable">
+ 		<table class="template_table">
+ 			<thead>
+ 				<tr class="template_header_row">
+ 					<th class="template_header_first_child">Template Name</th>
+ 					<th class="template_header_second_child">Edit</th>
+ 					<th class="template_header_third_child">Delete</th>
+ 				</tr>
+ 			</thead>
+ 			<tbody class="template_tbody">
+ 				<?php foreach($rosterTemplates->templates as $templates){ ?>
+ 					<tr class="template_row">
+		 				<td class="template_td_name"><a href="<?php echo base_url('roster/getRosterTemplateDetails/').$templates->id.'/'.$this->session->userdata("LoginId") ?>"><?php echo $templates->name ?></a></td>
+		 				<td class="template_td_edit">Edit</td>
+						<td class="template_td_delete roster_template_style" id='<?php echo $templates->id ?>'>
+							<i>
+								<img src="<?php echo base_url("assets/images/icons/x.png") ?>" style="max-height:0.8rem;margin-right:10px">
+							</i>
+						</td>
+					</tr>
+ 				<?php 	}  ?>
+ 			</tbody>
+ 		</table>
+ 	</div>
  </div>
  	<p id="alert-data"></p>
   </div>
+</div>
+
+<div class="notify_">
+	<div class="note">
+		  <div class="notify_body">
+    <span class="_notify_message">
+      
+    </span>
+    <span class="_notify_close" onclick="closeNotification()">
+      &times;
+    </span>
+  </div>
+	</div>
 </div>
 
 <div class="modal-logout">
@@ -668,6 +723,26 @@ table.dataTable{
 	// 	});
 	// }
 // }
+
+// Notification //
+    function showNotification(){
+      $('.notify_').css('visibility','visible');
+    }
+    function addMessageToNotification(message){
+      $('._notify_message').append(`<li>${message}</li>`)
+    }
+    function closeNotification(){
+      $('.notify_').css('visibility','hidden');
+      $('._notify_message').empty();
+    }
+
+<?php  if(($this->session->flashdata('errorMessage') != null) && ($this->session->flashdata('errorMessage') != "") ){ ?>
+      showNotification();
+      addMessageToNotification('<?php echo $this->session->flashdata('errorMessage') ?>');
+      setTimeout(closeNotification,5000)
+    <?php  } ?>
+  // Notification //
+
 	$(document).ready(function(){
 		<?php if($this->session->userdata('UserType')==SUPERADMIN){?>
 		$(document).on('change','.center-list',function(){
@@ -693,12 +768,15 @@ table.dataTable{
 					type : 'GET',
 					success : function(response){
 						$('#template-list').empty();
+						$('.template_tbody').empty();
 						var resp = JSON.parse(response);
 						var co = `<option value="not_selected">Select Template</option>`;
 						$('#template-list').append(co)
 						resp.templates.forEach(function(item){
 						var code = `<option href="javascript:void(0)" class="center-class" id="${item.id}" value="${item.id}">${item.name}</option>`;
-						$('#template-list').append(code)
+						var tableCode = `<tr class="template_row"><td class="template_td_name"><a href="<?php echo base_url("roster/getRosterTemplateDetails/"); ?>${item.id}<?php echo '/'.$this->session->userdata("LoginId") ?>">${item.name}</a></td><td class="template_td_edit">Edit</td><td class="template_td_delete roster_template_style" id='${item.id}'><i><img src="<?php echo base_url("assets/images/icons/x.png") ?>" style="max-height:0.8rem;margin-right:10px"> </i></td></tr>`;
+						$('.template_tbody').eq(0).append(tableCode);
+						$('#template-list').append(code);
 						})
 					}
 				})
@@ -793,7 +871,7 @@ $("#roster-date").datepicker();
 
 <script type="text/javascript">
 	  $(document).ready( function () {
-		    $('table').dataTable({
+		    $('.table').dataTable({
 		     pageLength:7,
 		     ordering : false,
 		     select: false,

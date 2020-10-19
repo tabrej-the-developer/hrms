@@ -285,7 +285,7 @@ class Mom extends CI_CONTROLLER{
                 $jsonOutput = json_decode($server_output);
 
                 curl_close($ch);       
-                redirect(base_url().'mom');
+                redirect(base_url().'dashboard');
             }
             else if($httpcode == 401){
                   json_encode(['error'=>'Error']);

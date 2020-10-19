@@ -195,8 +195,7 @@ class Messenger extends CI_Controller {
 		}
 	}
 
-	public function creategroup()
-	{
+	public function creategroup(){
 		$this->load->helper('form');
 		$form_data = $this->input->post();
 		if($form_data != null){

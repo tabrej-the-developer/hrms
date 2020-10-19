@@ -728,7 +728,7 @@ input[type="date"],input[type=time]{
         </span>
 <?php } ?>
           </div>
-<?php if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "N"){ ?>
+<?php // if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "N"){ ?>
        <span class="ml-auto"> 
         <button type="button" name="apply_button" id="apply_button" class="button"        data-toggle="modal" data-target="#exampleModal">
           <i>
@@ -736,7 +736,7 @@ input[type="date"],input[type=time]{
           </i>Apply Leave
         </button>
       </span>
-    <?php } ?>
+    <?php // } ?>
      </div>
 	    	
 	    </div>

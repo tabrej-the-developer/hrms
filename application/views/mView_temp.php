@@ -1731,7 +1731,7 @@ $('.save').click(function(){
           if ( ($('.recentchat_title').eq(i).text().search(new RegExp(searchText, "i")) < 0)) {
               $('.recentchat_wrapper').eq(i).fadeOut();
            } else {
-              $('.recentchat_title').eq(i).show();
+              $('.recentchat_wrapper').eq(i).show();
           }
       }
     }
