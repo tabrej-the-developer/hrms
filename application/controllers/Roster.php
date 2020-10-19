@@ -457,6 +457,9 @@ public function createRoster(){
 			if($httpcode == 200){
 				$jsonOutput = json_decode($server_output);
 				curl_close ($ch);
+				if($jsonOutput->Message == "A roster already exists for the date passed"){
+					$this->session->set_flashdata('errorMessage','A roster already exists for the date passed');
+				}
 				redirect(base_url("roster/roster_dashboard"));
 			}
 			else if($httpcode == 401){

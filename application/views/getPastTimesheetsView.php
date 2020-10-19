@@ -36,7 +36,7 @@ font-family: 'Open Sans', sans-serif;
 			border: none;
 		}
 		.table-div{
-			height:75vh;
+			height: 80vh;
 			overflow-y: auto;
 			padding: 0 20px 0 20px;
 		}	

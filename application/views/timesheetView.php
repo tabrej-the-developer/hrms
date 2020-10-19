@@ -1120,11 +1120,12 @@ $( ".modal-content" ).draggable();
 	return output;
 }
 
-<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
-	$(document).on('click','.',function(){
-
-	})
-<?php } ?>
+// <?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
+// 	$(document).on('click','.',function(){
+// 		var url = ;
+// 		var 
+// 	})
+// <?php } ?>
 	$(document).on('click','.time-box',function(){
 		var thisValue = $(this).children('.time-box').html();
 		var parentHTML = $('.time-box').html();
