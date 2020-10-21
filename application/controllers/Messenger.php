@@ -24,7 +24,7 @@ class Messenger extends CI_Controller {
 
 	public function chats($currentUserId=null,$isGroupYN=null){
 		if($currentUserId != null && $isGroupYN == null) return;
-		if($this->session->has_userdata('LoginId')){
+		// if($this->session->has_userdata('LoginId')){
 			if($this->getRecentChats() != 'error'){
 					$data['recentChats'] = $this->getRecentChats();
 				}
@@ -63,10 +63,10 @@ class Messenger extends CI_Controller {
 			}
 			// footprint end
 			$this->load->view('mView_temp',$data);
-		}
-		else{
-			$this->load->view('redirectToLogin');
-		}
+		// }
+		// else{
+		// 	$this->load->view('redirectToLogin');
+		// }
 	}
 
 	public function postNewMessage(){
@@ -205,7 +205,7 @@ class Messenger extends CI_Controller {
 		$this->session->set_userdata('current_url',currentUrl());
 	}
 	// footprint end
-			$data['groupName'] = addslashes($form_data['recipient-name']);
+			$data['groupName'] = addslashes($form_data['recipient_name']);
 			if($data['groupName'] != ""){
 				$users = json_decode($this->getUsers());
 				$members = array();

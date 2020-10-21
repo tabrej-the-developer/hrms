@@ -765,6 +765,7 @@ p.ovrflowtext {
 .searchbar{
   background: #edeff2
 }
+/* Recent Chats List */
 .recentchat{
   height: 4rem;
   width: 100%;
@@ -837,12 +838,148 @@ p.ovrflowtext {
   background: white;
   border-radius: 5px;
   padding: 0.5rem;
-  width: auto;
-  text-align: right;
 }
 .left_topbar_righticon_dropdown{
   display: none;
+min-width: 10rem;
+    padding: .5rem 0;
+    padding-left: 2rem !important;
+    margin: .125rem 0 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
 }
+.left_topbar_righticon_dropdown > span{
+  display: block;
+}
+/* Recent Chats List */
+
+/* All Users List */
+.allUsersList{
+  height: 4rem;
+  width: 100%;
+  background: white;
+  display: none;
+  height: calc(100vh - 6rem);
+  overflow: auto;
+}
+.createGroupUsersList{
+  height: 4rem;
+  width: 100%;
+  background: white;
+  display: block;
+  height: calc(100vh - 12rem);
+  overflow: auto;
+}
+.createGroupUsersList_wrapper{
+  width: 100%;
+  display: block;
+  position: relative;
+}
+.createGroupUsersList_wrapper:hover{
+  background: #f7f5f5;
+  cursor: pointer;
+}
+.createGroupUsersList_wrapper:after{
+      content: ' ';
+    /* padding: 1px; */
+    border-bottom: 1px solid #f0f0f0;
+    width: 75%;
+    display: block;
+    text-align: right;
+    position: absolute;
+    right: 0;
+}
+.allUsersList_userIcon{
+  width: 60px;
+  height: 4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.recentchat_text_top{
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0.25rem;
+}
+.recentchat_text_bottom{
+  padding: 0 0.25rem;
+}
+.recentchat_text{
+  display: inline-block;
+  width: 100%;
+}
+.recentchat_tile{
+  width: calc(100% - 65px);
+}
+.recentchat_tile{
+  display: inline-block;
+}
+.allUsersList_wrapper{
+  width: 100%;
+  display: block;
+  position: relative;
+}
+.allUsersList_wrapper:hover{
+  background: #f7f5f5;
+  cursor: pointer;
+}
+.allUsersList_wrapper:after{
+      content: ' ';
+    /* padding: 1px; */
+    border-bottom: 1px solid #f0f0f0;
+    width: 75%;
+    display: block;
+    text-align: right;
+    position: absolute;
+    right: 0;
+}
+.recentchat_message{
+  font-size: 0.8rem;
+}
+.recentchat_date_time{
+  font-size: 0.8rem;
+  color: #cccccc;
+}
+.left_topbar_righticon{
+  cursor: pointer;
+}
+.left_topbar_righticon_click{
+  position: relative;
+}
+.left_topbar_righticon_click:focus > .left_topbar_righticon_dropdown{
+  display: block;
+  position: absolute;
+  right: 0;
+  background: white;
+  border-radius: 5px;
+  padding: 0.5rem;
+}
+.left_topbar_righticon_dropdown{
+  display: none;
+min-width: 10rem;
+    padding: .5rem 0;
+    padding-left: 2rem !important;
+    margin: .125rem 0 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+}
+.left_topbar_righticon_dropdown > span{
+  display: block;
+}
+/* All Users List */
+
 #contact_us{
   padding-left: 1rem;
 }
@@ -891,7 +1028,7 @@ p.ovrflowtext {
   background: var(--header-color);
 }
 .right_user_icon{
-  height: 40%;
+  height: 40vh;
   width: 100%;
 }
 .user_icon_wrapper{
@@ -947,6 +1084,7 @@ width: 100%;
 .right_box{
   padding: 0 !important;
   display: none;
+  height: 100vh;
 }
 .input-group{
   display: flex;
@@ -961,12 +1099,13 @@ width: 100%;
   display: flex;
   width: 100%;
   justify-content: center;
+  margin-top: 0.35rem;
 }
 .currentTextDate_centerbox{
   background: #dcf8c6;
   padding: 0.25rem;
   border-radius: 0.25rem;
-  box-shadow: 0 0 3px 1px rgba(0,0,0,0.1);
+  box-shadow: 0 -1px 3px 1px rgba(0,0,0,0.1);
 }
 .alphabetIcon{
 height: 10rem;
@@ -986,6 +1125,10 @@ height: 10rem;
 .user_title_view{
   display: flex;
   justify-content: center;
+}
+.boxcategory{
+  height: 12rem;
+  overflow: auto;
 }
 .boxcategoryTitle{
     height: 3rem;
@@ -1063,6 +1206,38 @@ height: 10rem;
   justify-content: center;
   align-items: center;
 }
+.searchbar_back{
+  cursor: pointer;
+  display: none;
+}
+.createGroupClass_wrapper > img:hover{
+  animation:spin 0.25s linear ;
+  cursor: pointer;
+}
+div.createGroupClass{
+height: 3.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.groupNameClass{
+  width: 100%;
+}
+.groupNameClass span{
+display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    height: 2.5rem;
+}
+.groupNameClass input{
+  border: none;
+  border-radius: 20px;
+  padding-left: 1rem;
+  background: #e3e4e7
+}
+@keyframes spin { 
+  100% { -webkit-transform: rotate(360deg); transform:rotate(360deg) } }
 /* New UI code ends here */
     @media only screen and (max-width: 600px){
       .left-bar{
@@ -1165,9 +1340,8 @@ messaging.getToken().then((currentToken) => {
               <a href="javascript:void(0)" class="left_topbar_righticon_click">
                 <img src="<?php echo base_url('assets/images/icons/more.png') ?>" alt="raindrop icon">
                 <div class="left_topbar_righticon_dropdown">
-                  <span id="myBtn" class=".user__"> Users</span>
-                  <span data-toggle="modal" 
-                       data-target="#addtogroup">
+                  <span id="myBtn" class="user__"> Users</span>
+                  <span class="addgroup" >
                     New&nbsp;Group  
                   </span>
                 </div>
@@ -1180,6 +1354,11 @@ messaging.getToken().then((currentToken) => {
         </span>
       </div>
       <div class="searchbar">
+        <span class="searchbar_back">
+          <i>
+            <img src="<?php echo base_url('assets/images/icons/back.png'); ?>">
+          </i>
+        </span>
         <span class="searchbar_wrapper">
           <span class="searchinput_wrapper">
             <input type="" name="" class="searchinput">
@@ -1188,7 +1367,9 @@ messaging.getToken().then((currentToken) => {
       </div>
       <!-- Recent Chat  -->
       <div class="recentchat">
-        <?php foreach($recentChats->chats as $chat){ ?>
+        <?php 
+        if(isset($recentChats->chats)){
+        foreach($recentChats->chats as $chat){ ?>
         <span class="recentchat_wrapper" group="<?php echo $chat->isGroupYN; ?>" id="<?php echo $chat->id; ?>">
           <span class="recentchat_icon">
             <img src="<?php echo base_url('assets/images/icons/profile.png') ?>" alt="chat icon" height="40px">
@@ -1217,9 +1398,58 @@ messaging.getToken().then((currentToken) => {
             </span>
           </span>
         </span>
-        <?php } ?>
+        <?php } } ?>
       </div>
       <!-- Recent Chat -->
+
+      <!-- All Users List -->
+      <div class="allUsersList"><!-- class="recentchat" -->
+        <?php foreach ($allUsers->users as $user) { ?>
+        <span class="allUsersList_wrapper" group="N" onclick="loadNewChat('<?php echo $user->userid ?>','N')">
+          <span class="allUsersList_userIcon">
+            <img src="<?php echo base_url('assets/images/icons/profile.png') ?>" alt="user icon" height="40px">
+          </span>
+          <span class="recentchat_tile">
+            <span class="recentchat_text">
+              <div class="recentchat_text_top">
+                <span class="recentchat_title"><?php echo $user->username; ?></span>
+              </div>
+            </span>
+          </span>
+        </span>
+        <?php } ?>
+      </div>
+      <!-- All Users List -->
+
+      <!-- Create group user list -->
+      <div class="groupNameClass">
+        <span><input type="text" name="" placeholder="Enter Group Name" class="groupNameInput"></span>
+      </div>
+      <div class="createGroupUsersList"><!-- class="recentchat" -->
+        <?php foreach ($allUsers->users as $user) { ?>
+        <span class="createGroupUsersList_wrapper" userId="<?php echo $user->userid; ?>">
+          <span class="allUsersList_userIcon">
+            <img src="<?php echo base_url('assets/images/icons/profile.png') ?>" alt="user icon" height="40px">
+          </span>
+          <span class="recentchat_tile">
+            <span class="recentchat_text">
+              <div class="recentchat_text_top">
+                <span class="recentchat_title"><?php echo $user->username; ?></span>
+              </div>
+            </span>
+          </span>
+        </span>
+        <?php } ?>
+      </div>
+      <div class="createGroupClass">
+        <span class="createGroupClass">
+          <i class="createGroupClass_wrapper" style="border-radius: 50%;background:rgba(0,200,0,0.2);padding:0.25rem;">
+            <img src="<?php echo base_url('assets/images/icons/right-arrow.png'); ?>" width="25px" height="25px;">
+          </i>
+        </span>
+      </div>
+      <!-- Create group user list -->
+
     </div>
 
 <!-- 
@@ -1407,7 +1637,9 @@ messaging.getToken().then((currentToken) => {
       <div class="user_icon_wrapper">
         <span class="user_icon_view">
 
-          <?php if($currentUserInfo->avatarUrl != null && $currentUserInfo->avatarUrl != ""){ ?>
+          <?php 
+          if(isset($currentUserInfo)){
+          if($currentUserInfo->avatarUrl != null && $currentUserInfo->avatarUrl != ""){ ?>
           <img src="<?php echo base_url('assets/images/icons/user.png') ?>">
         <?php }if($currentUserInfo->avatarUrl == null || $currentUserInfo->avatarUrl == ""){ ?>
           <span class="alphabetIcon">
@@ -1428,7 +1660,7 @@ messaging.getToken().then((currentToken) => {
                 }
              ?>
           </span>
-          <?php } ?>
+          <?php } }?>
         </span>
       </div>
       <div class="user_name_wrapper">
@@ -1599,16 +1831,36 @@ messaging.getToken().then((currentToken) => {
 </body>
 
 <script type="text/javascript">
-var usersModal = document.getElementById('usersModal');
+var usersModal = document.getElementsByClassName('recentchat')[0];
 var btn = document.getElementById("myBtn");
-var accept = document.getElementById("accept");
+var accept = $('.searchbar_back')[0];
+var newGroup = $('.addgroup')[0]
 btn.onclick = function() {
-  usersModal.style.display = "block";
+  usersModal.style.display = "none";
+  $('.searchbar_back').css('display','inline-block')
+  $('.searchbar').css('justify-content','space-around')
+  $('.groupNameClass').css('display','none')
+  $('.createGroupUsersList').css('display','none')
+  $('.createGroupClass').css('display','none')
+  $('.allUsersList').css('display','block')
 }
 accept.onclick = function() {
-  usersModal.style.display = "none";
+  usersModal.style.display = "block";
+  $('.searchbar_back').css('display','none')
+  $('.searchbar').css('justify-content','center');
+  $('.groupNameClass').css('display','none')
+  $('.createGroupUsersList').css('display','none')
+  $('.createGroupClass').css('display','none')
 }
-
+newGroup.onclick = function(){
+  usersModal.style.display = "none";
+  $('.allUsersList').css('display','none')
+  $('.groupNameClass').css('display','inline-block')
+  $('.createGroupUsersList').css('display','inline-block')
+  $('.createGroupClass').css('display','flex')
+  $('.searchbar_back').css('display','inline-block')
+  $('.searchbar').css('justify-content','space-around');
+}
   // height , width of the container
   $(document).ready(()=>{
     $('.container').css('paddingLeft',$('.side-nav').width());
@@ -1695,6 +1947,37 @@ $('.save').click(function(){
           }
         })
     }
+
+    $(document).ready(function(){
+        var arr =[];
+      $(document).on('click','.createGroupUsersList_wrapper',function(){
+        if(arr.includes($(this).attr('userid')) ===  false){
+          arr.push($(this).attr('userid'));
+          console.log(arr)
+          return 0;
+        }
+        if(arr.includes($(this).attr('userid')) ===  true){
+          arr.splice(arr.indexOf($(this).attr('userid')),1);
+          console.log(arr)
+          return 0;
+        }
+      })
+      $(document).on('click','.createGroupClass_wrapper',function(){
+        var url = window.location.origin + '/PN101/messenger/creategroup';
+        var groupName = $('.groupNameInput').val();
+        $.ajax({
+          url : url,
+          data : {
+            recipient_name : groupName,
+            tokenize_class : arr
+          },
+          type : 'POST',
+          success : function(response){
+            window.location.reload();
+          }
+        })
+      })
+    })
 
     $(document).on('click','.right_top_tab_close',function(){
       $('.messenger_center_box')[0].classList.remove('col-md-6');
