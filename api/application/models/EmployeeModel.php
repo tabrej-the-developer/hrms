@@ -40,7 +40,7 @@ class EmployeeModel extends CI_Model {
 
 	public function insertIntoBankAccount($employeeId,$statementText,$accountName,$bsb,$accountNumber,$remainderYN,$amount){
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO employeebankaccount VALUES(0,'$employeeId','$statementText','$accountName','$bsb','$accountNumber','$remainderYN',$amount)");
+		$query = $this->db->query("INSERT INTO employeebankaccount VALUES(0,'$employeeId','$accountName','$bsb','$accountNumber','$remainderYN',$amount)");
 	}
 
 	public function insertIntoSuperMembership($employeeId,$superFundId,$employeeNumber,$superMembershipId){
