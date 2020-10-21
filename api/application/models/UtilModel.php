@@ -60,4 +60,10 @@ class UtilModel extends CI_Model {
 			$query = $this->db->query("SELECT * FROM users ");
 			return $query->result();
 		}
+
+		public function centerTableMigration($centerid,$userid){
+			$this->load->database();
+			$query = $this->db->query("INSERT into usercenters (centerid,userid) values ($centerid,'$userid')");
+
+		}
 }
