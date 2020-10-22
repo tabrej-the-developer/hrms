@@ -146,10 +146,12 @@ class Messenger extends CI_Controller {
 
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			print_r($httpcode);
+			print_r($server_output);
 			if($httpcode == 200){
 				$jsonOutput = json_decode($server_output);
 				curl_close ($ch);
-				redirect(base_url().'messenger/chats/');
+				print_r($jsonOutput);
 			}
 			else if($httpcode == 401){
 

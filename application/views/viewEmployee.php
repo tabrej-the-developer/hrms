@@ -317,7 +317,7 @@
 		<span class="span-class" style="width:30rem;">
 			<label>Profile Image</label>
 			<span style="height:100px;width:100px;border-radius:0.5rem">
-				<img style="border-radius:0.5rem" src="<?php echo base_url().'api/'.isset($employeeData->users->imageUrl) ? $employeeData->users->imageUrl : '';?>" height="100px" width="100px">
+				<img style="border-radius:0.5rem" src="<?php echo base_url('api/').isset($employeeData->users->imageUrl) ? $employeeData->users->imageUrl : '' ?>" height="100px" width="100px">
 			</span>
 		</span>
 <!-- 		<span class="span-class">

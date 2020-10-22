@@ -215,7 +215,7 @@ class Messenger extends CI_Controller {
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			$json = json_decode(file_get_contents('php://input'));
-			if($json != null && $res != null && $res->userid == $userid){
+			if($json != null && $res != null && $res->userid == $json->userid){
 				$groupId = $json->groupId;
 				$userid = $json->userid;
 				$this->load->model('messengerModel');
