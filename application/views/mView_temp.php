@@ -776,7 +776,7 @@ p.ovrflowtext {
 }
 .recentchat_icon{
   width: 60px;
-  height: 4rem;
+  height: 100%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -792,6 +792,7 @@ p.ovrflowtext {
 .recentchat_text{
   display: inline-block;
   width: 100%;
+  vertical-align: middle;
 }
 .recentchat_tile{
   width: calc(100% - 65px);
@@ -803,6 +804,7 @@ p.ovrflowtext {
   width: 100%;
   display: block;
   position: relative;
+  height: 4rem;
 }
 .recentchat_wrapper:hover{
   background: #f7f5f5;
@@ -817,6 +819,7 @@ p.ovrflowtext {
     text-align: right;
     position: absolute;
     right: 0;
+    bottom: 0;
 }
 .recentchat_message{
   font-size: 0.8rem;
@@ -880,6 +883,7 @@ min-width: 10rem;
   width: 100%;
   display: block;
   position: relative;
+  height: 4rem;
 }
 .createGroupUsersList_wrapper:hover{
   background: #f7f5f5;
@@ -894,6 +898,7 @@ min-width: 10rem;
     text-align: right;
     position: absolute;
     right: 0;
+    bottom: 0;
 }
 .allUsersList_userIcon{
   width: 60px;
@@ -919,11 +924,14 @@ min-width: 10rem;
 }
 .recentchat_tile{
   display: inline-block;
+  height: 100%;
+  vertical-align: center;
 }
 .allUsersList_wrapper{
   width: 100%;
   display: block;
   position: relative;
+  height: 4rem;
 }
 .allUsersList_wrapper:hover{
   background: #f7f5f5;
@@ -938,6 +946,7 @@ min-width: 10rem;
     text-align: right;
     position: absolute;
     right: 0;
+    bottom: 0;
 }
 .recentchat_message{
   font-size: 0.8rem;
@@ -1011,7 +1020,8 @@ min-width: 10rem;
     /* padding: 1rem; */
     position: absolute;
     right: -7px;
-    top: 0
+    top: 0;
+
 }
 .sender-left::before{
     content: ' ';
@@ -1233,11 +1243,24 @@ display: flex;
 .groupNameClass input{
   border: none;
   border-radius: 20px;
-  padding-left: 1rem;
-  background: #e3e4e7
+  padding-left: 1rem !important;
+  background: #e3e4e7;
+  padding: 0.25rem;
+  width: 80%;
 }
 @keyframes spin { 
   100% { -webkit-transform: rotate(360deg); transform:rotate(360deg) } }
+.angle_downward{
+  opacity: 0;
+  transition-duration: 0.5s;
+}
+.angle_downward:hover{
+  cursor: pointer;
+  opacity: 1;
+}
+.remove_user_block{
+  display: none;
+}
 /* New UI code ends here */
     @media only screen and (max-width: 600px){
       .left-bar{
@@ -1320,11 +1343,12 @@ messaging.getToken().then((currentToken) => {
 <body>
 <div class="container mr-0 pr-0">
  <?php 
-    $recentChats = json_decode($recentChats);
+      $recentChats = json_decode($recentChats);
     $allUsers = json_decode($allUsers);
     $currentChat;
     $currentUserInfo;
     $groups;
+  
   ?>
 
   <div class="row rounded-lg overflow-hidden shadow">
@@ -1333,7 +1357,7 @@ messaging.getToken().then((currentToken) => {
       <div class="left_topbar">
         <span class="left_topbar_wrapper">
           <span class="left_topbar_lefticon">
-            <img src="<?php echo base_url('assets/images/icons/profile.png') ?>" alt="user image" style="border-radius: 50%">
+            <img src="<?php echo base_url('assets/images/icons/user.png') ?>" alt="user image" style="border-radius: 50%" height="32px" width="32px">
           </span>
           <span class="left_topbar_righticon_wrapper">
             <span class="left_topbar_righticon">
@@ -1372,12 +1396,21 @@ messaging.getToken().then((currentToken) => {
         foreach($recentChats->chats as $chat){ ?>
         <span class="recentchat_wrapper" group="<?php echo $chat->isGroupYN; ?>" id="<?php echo $chat->id; ?>">
           <span class="recentchat_icon">
-            <img src="<?php echo base_url('assets/images/icons/profile.png') ?>" alt="chat icon" height="40px">
+            <span class=" icon" style="
+              <?php echo "background:".$colors_array[rand(0,5)]?>">
+              <?php echo isset($chat->name) ? icon($chat->name) : "";?>
+            </span>
           </span>
           <span class="recentchat_tile">
             <span class="recentchat_text">
               <div class="recentchat_text_top">
-                <span class="recentchat_title"><?php echo $chat->name; ?></span>
+                <span class="recentchat_title"><?php 
+                  if(strlen($chat->name) > 13){
+                      echo  substr($chat->name,0,14)."...";
+                  }else{
+                    echo $chat->name;
+                  }
+                 ?></span>
                 <span class="recentchat_date_time">
                   <?php
                   if(date('d-m-Y',strtotime($chat->time)) == date('d-m-Y',strtotime('today')))
@@ -1404,15 +1437,26 @@ messaging.getToken().then((currentToken) => {
 
       <!-- All Users List -->
       <div class="allUsersList"><!-- class="recentchat" -->
-        <?php foreach ($allUsers->users as $user) { ?>
+        <?php 
+        foreach ($allUsers->users as $user) { ?>
         <span class="allUsersList_wrapper" group="N" onclick="loadNewChat('<?php echo $user->userid ?>','N')">
           <span class="allUsersList_userIcon">
-            <img src="<?php echo base_url('assets/images/icons/profile.png') ?>" alt="user icon" height="40px">
+            <span class=" icon" style="
+              <?php echo "background:".$colors_array[rand(0,5)]?>">
+              <?php echo isset($user->username) ? icon($user->username) : "";?>
+            </span>
           </span>
           <span class="recentchat_tile">
             <span class="recentchat_text">
               <div class="recentchat_text_top">
-                <span class="recentchat_title"><?php echo $user->username; ?></span>
+                <span class="recentchat_title"><?php 
+                  if( strlen($user->username) > 16){
+                    echo substr($user->username,0,17)."..";
+                  }
+                  else{
+                   echo $user->username;
+                  }
+                     ?></span>
               </div>
             </span>
           </span>
@@ -1429,7 +1473,10 @@ messaging.getToken().then((currentToken) => {
         <?php foreach ($allUsers->users as $user) { ?>
         <span class="createGroupUsersList_wrapper" userId="<?php echo $user->userid; ?>">
           <span class="allUsersList_userIcon">
-            <img src="<?php echo base_url('assets/images/icons/profile.png') ?>" alt="user icon" height="40px">
+            <span class=" icon" style="
+              <?php echo "background:".$colors_array[rand(0,5)]?>">
+              <?php echo isset($user->username) ? icon($user->username) : "";?>
+            </span>
           </span>
           <span class="recentchat_tile">
             <span class="recentchat_text">
@@ -1725,6 +1772,16 @@ messaging.getToken().then((currentToken) => {
           <span class="elementDescription">
             <span class="elementText"></span>
           </span>
+          <span class="angle_downward">
+            <span>
+              <i>
+                <img src="<?php echo base_url('assets/images/icons/angle_downward.png');?>" width="15px" height="15px">
+              </i>
+            </span>
+            <span style="" class="remove_user_block">
+              Remove
+            </span>
+          </span>
         </span>
       <?php } } ?>
       </div>
@@ -1737,6 +1794,11 @@ messaging.getToken().then((currentToken) => {
         <span class="delete_group" groupId="<?php echo $currentUserInfo->groupid ?>">Delete Group</span>
       </div>
     <?php } ?>
+      <?php if(($currentUserInfo->adminId) != ($this->session->userdata('LoginId'))){ ?>
+    <div>
+      <span class="leave_group" groupId="<?php echo $currentUserInfo->groupid ?>" userId="<?php echo  $members->memberid ?>">Leave Group</span>
+    </div>
+  <?php } ?>
     </div>
   <?php } ?>
   </div>
@@ -1927,6 +1989,10 @@ $('.save').click(function(){
       $('.leftbar-sm').css('display','none');
     })
   })
+
+  $(document).on('click','.angle_downward',function(){
+    $('.remove_user_block').eq($(this).index()).css('display','block');
+  })
 </script>
   <script type="text/javascript">
     var base_url = "<?php echo base_url();?>";
@@ -1950,7 +2016,16 @@ $('.save').click(function(){
 
     $(document).ready(function(){
         var arr =[];
+        var uiArr = [];
       $(document).on('click','.createGroupUsersList_wrapper',function(){
+        uiArr.push($(this).index());
+        console.log($('.createGroupUsersList_wrapper').eq($(this).index()).css('background'))
+        if($('.createGroupUsersList_wrapper').eq($(this).index()).css('background') == 'rgb(247, 245, 245) none repeat scroll 0% 0% / auto padding-box border-box' || $('.createGroupUsersList_wrapper').eq($(this).index()).css('background') == 'rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box'){
+          $('.createGroupUsersList_wrapper').eq($(this).index()).css('background','#e3e4e7');
+                  
+        }else{
+          $('.createGroupUsersList_wrapper').eq($(this).index()).css('background','rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box')
+        }
         if(arr.includes($(this).attr('userid')) ===  false){
           arr.push($(this).attr('userid'));
           console.log(arr)
@@ -1961,6 +2036,7 @@ $('.save').click(function(){
           console.log(arr)
           return 0;
         }
+
       })
       $(document).on('click','.createGroupClass_wrapper',function(){
         var url = window.location.origin + '/PN101/messenger/creategroup';
@@ -2103,9 +2179,9 @@ $('.save').click(function(){
       })
     }
 
-    $(document).ready(function(){
-      setInterval(loadChatElements,5000)
-    })
+    // $(document).ready(function(){
+    //   setInterval(loadChatElements,5000)
+    // })
 
     function saveGroup(){
       var groupName = document.getElementById("recipient-name").value;

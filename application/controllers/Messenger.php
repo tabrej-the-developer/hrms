@@ -32,7 +32,7 @@ class Messenger extends CI_Controller {
 					$data['error'] = 'error';
 				}
 			if($currentUserId == null){
-				if(isset($data['recentChats'])){
+				if(isset($data['recentChats']) && isset(json_decode($data['recentChats'])->chats)){
 					if(count(json_decode($data['recentChats'])->chats) > 0){
 						$currentUserId = (json_decode($data['recentChats'])->chats)[0];
 					}

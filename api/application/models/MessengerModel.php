@@ -34,7 +34,8 @@ class MessengerModel extends CI_Model {
 		}
 		if(count($groups) ==0 ){
 		$query = $this->db->query("SELECT DISTINCT(u1.id) FROM users as u1 JOIN chat on u1.id = chat.senderId WHERE chat.receiverId = '$userid' UNION SELECT DISTINCT(u2.id) FROM users as u2 JOIN chat on u2.id = chat.receiverId WHERE chat.senderId = '$userid' ");
-		$var = array_merge($var,$query->result());		}
+		$var = array_merge($var,$query->result());
+				}
 			$a = [];
 				foreach($var as $v){
 					array_push($a,$v->id);
@@ -42,14 +43,18 @@ class MessengerModel extends CI_Model {
 				return array_values(array_unique($a));
 	}
 
-	public function getRecentChatDetails($userid){
-		$var = array();
-		// foreach($query->result() as $cu) {
-			// $chatUsers = $cu->id;
-			$q = $this->db->query ("SELECT * FROM chat WHERE chatId = (SELECT MAX(chat.chatId) FROM chat WHERE ( chat.receiverId = '$userid') or (chat.senderId = '$userid'))");
-			// array_push($var,$q->row());
-		// }
-		return $q->row();
+	public function getRecentChatDetails($otherId,$userid){
+		$this->load->database();
+		$arr = [];
+		// case : 1
+		$query = $this->db->query("SELECT * from chat where (senderId = '$userid' or receiverId = '$userid') and (senderId = '$otherId' or receiverId = '$otherId') and isGroupYN = 'N' ORDER BY chatId DESC");
+		if($query->row() != null)
+			array_push($arr,$query->row());
+		// case : 2
+		$query = $this->db->query("SELECT * from chat where ( receiverId = '$otherId') and isGroupYN = 'Y' ORDER BY chatId DESC ");
+		if($query->row() != null)
+			array_push($arr,$query->row());
+		return $arr;
 	}
 
 	public function GetAllUserChats($userid,$memberid){

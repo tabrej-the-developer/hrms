@@ -61,6 +61,12 @@ class UtilModel extends CI_Model {
 			return $query->result();
 		}
 
+		public function getAllUsersFromCenter($centerid){
+			$this->load->database();
+			$query = $this->db->query("SELECT users.id,users.name,users.imageUrl,users.title,users.email FROM users INNER JOIN usercenters on usercenters.userid = users.id where centerid = $centerid ");
+			return $query->result();
+		}
+
 		public function centerTableMigration($centerid,$userid){
 			$this->load->database();
 			$query = $this->db->query("INSERT into usercenters (centerid,userid) values ($centerid,'$userid')");

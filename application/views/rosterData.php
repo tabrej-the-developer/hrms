@@ -338,6 +338,7 @@ table,tr,td{
 	padding: 0 1rem;
 	font-weight: 600;
 	color: #707070;
+  text-align: left;
 }
 .modal-content{
 max-width:30vw;

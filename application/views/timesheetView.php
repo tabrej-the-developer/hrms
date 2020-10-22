@@ -919,13 +919,15 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 
 <?php if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){ ?>
 
-<?php if($timesheetDetails->status == 'Draft'){ ?>
+<?php 
+	if(isset($timesheetDetails->status)){
+if($timesheetDetails->status == 'Draft'){ ?>
 	<div class="buttons d-flex justify-content-end">
 		<button id="discard-timesheet" class="button">
 			<i>
 				<img src="<?php echo base_url('assets/images/icons/delete.png'); ?>" style="max-height:0.8rem;margin-right:10px">
 			</i>Discard</button>
-		<button id="publish-timesheet" class="button">
+		<button id="publish-timesheet" class="button publish_timesheet">
 			<i>
 				<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
 			</i>Save</button>
@@ -943,7 +945,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 				<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
 			</i>Save</button>
 	</div>
-<?php } ?>
+<?php } } ?>
 
 <?php } ?>
 <?php if($this->session->userdata('UserType') == STAFF){?>
@@ -1126,6 +1128,7 @@ $( ".modal-content" ).draggable();
 // 		var 
 // 	})
 // <?php } ?>
+	
 	$(document).on('click','.time-box',function(){
 		var thisValue = $(this).children('.time-box').html();
 		var parentHTML = $('.time-box').html();
@@ -1143,6 +1146,18 @@ $( ".modal-content" ).draggable();
 	})
 </script>
 <script type="text/javascript">
+	$(document).on('click','.publish_timesheet',function(){
+		var timesheetId = "<?php echo $timesheetid; ?>";
+		var url = window.location.origin+'/PN101/timesheet/publishTimesheet/'+timesheetId;
+		$.ajax({
+			url : url,
+			type: 'GET',
+			success : function(response){
+				console.log(response);
+				window.location.reload()
+			}
+		})
+	})
 $(document).on('click','.buttonn',function(){
 		var i = $(".box-time").length;
 		var values = [];

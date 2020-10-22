@@ -128,4 +128,9 @@ class TimesheetModel extends CI_Model {
 		$this->load->database();
 		$query = $this->db->query("DELETE from timesheet where id = '$timesheetid'");
 	}
+
+	public function publishTimesheet($timesheetid){
+		$this->load->database();
+		$query = $this->db->query("UPDATE timesheet SET status = 'Published' where id = '$timesheetid'");
+	}
 }
