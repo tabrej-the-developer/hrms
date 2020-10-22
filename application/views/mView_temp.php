@@ -2179,9 +2179,9 @@ $('.save').click(function(){
       })
     }
 
-    // $(document).ready(function(){
-    //   setInterval(loadChatElements,5000)
-    // })
+    $(document).ready(function(){
+      setInterval(loadChatElements,5000)
+    })
 
     function saveGroup(){
       var groupName = document.getElementById("recipient-name").value;
