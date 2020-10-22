@@ -341,8 +341,8 @@ $("#mytable #checkall").click(function () {
     </div>
   <!-- Tab panes -->
   <div class="tab-content">
-    <div id="home" class="container tab-pane active">
-    <div class="container">
+    <div id="home" class="containers tab-pane active">
+    <div class="containers">
     <div class="content-container clearfix d-md-flex" >
         <div class="col-md-8 col-md-offset-2">
             <?php if($error = $this->session->flashdata('msg')){ ?>

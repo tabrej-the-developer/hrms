@@ -39,29 +39,41 @@ class Messenger extends CI_Controller {
 							}
 						}
 					}
-					$allusers = $this->utilModel->getAllUsers();
 					$adminCenters = explode('|',$admin->center);
-						foreach($allusers as $u){
-							if($u->role != 1 ){
-								$cntrs = explode('|',$u->center);
-								foreach($cntrs as $cntr){
-									foreach($adminCenters as $adminCents){
-										if($cntr == $adminCents){
-											array_push($employees,$u);
-										}
+					foreach($adminCenters as $adminCents){
+						if($adminCents != null && $adminCents != ""){
+							$allUsersFromCenter = $this->utilModel->getAllUsersFromCenter($adminCents);
+								if($allUsersFromCenter != null && $allUsersFromCenter != "" && count($allUsersFromCenter) > 0){
+									array_push($employees,$allUsersFromCenter);
 									}
-								}
 							}
-						}
-				$users = $employees;
+					}
+					// $adminCenters = explode('|',$admin->center);
+					// 	foreach($allUsersFromCenter as $u){
+					// 		if($u->role != 1 ){
+					// 			// $cntrs = explode('|',$u->center);
+					// 			// foreach($cntrs as $cntr){
+					// 				foreach($adminCenters as $adminCents){
+					// 					if($u->centerid == $adminCents){
+					// 						array_push($employees,$u);
+					// 					}
+					// 				}
+					// 			// }
+					// 		}
+					// 	}
+					// print_r(json_encode($employees));
+				$centers = $employees;
 				$data = array();
-				foreach ($users as $u) {
-					$var['userid'] = $u->id;
-					$var['username'] = $u->name;
-					$var['imageUrl'] = $u->imageUrl;
-					$var['designation'] = $u->title;
-					$var['email'] = $u->email;
-					array_push($data,$var);
+				// print_r(json_encode($users[0]));
+				foreach ($centers as $center) {
+					foreach($center as $u){
+						$var['userid'] = $u->id;
+						$var['username'] = $u->name;
+						$var['imageUrl'] = $u->imageUrl;
+						$var['designation'] = $u->title;
+						$var['email'] = $u->email;
+						array_push($data,$var);
+					}
 				}
 				$mdata['users'] = $data;
 				http_response_code(200);
@@ -342,26 +354,28 @@ class Messenger extends CI_Controller {
 				$chats = $this->messengerModel->GetRecentChat($userid);
 				$data = array();
 				foreach ($chats as $ch) {
-					$recentChatDetails = $this->messengerModel->getRecentChatDetails($ch);
+					$recentChatDetails = $this->messengerModel->getRecentChatDetails($ch,$userid);
+					foreach($recentChatDetails as $recentChatDetail){
 						$var['id'] = $ch;
-					$var['isGroupYN'] = $recentChatDetails->isGroupYN;
-					if($var['isGroupYN'] == "Y"){
-						$groupInfo = $this->messengerModel->GetGroupInfo($var['id']);
-						$var['name'] = $groupInfo->groupName;
-						$var['imgUrl'] = $groupInfo->imageUrl;
-						$var['time'] = $recentChatDetails->sentDateTime;
-						$var['senderName'] = $this->utilModel->getUserDetails($recentChatDetails->senderId)->name;
-						$var['isGroupYN'] = 'Y';
+						$var['isGroupYN'] = $recentChatDetail->isGroupYN;
+						if($var['isGroupYN'] == "Y"){
+							$groupInfo = $this->messengerModel->GetGroupInfo($var['id']);
+							$var['name'] = $groupInfo->groupName;
+							$var['imgUrl'] = $groupInfo->imageUrl;
+							$var['time'] = $recentChatDetail->sentDateTime;
+							$var['senderName'] = $this->utilModel->getUserDetails($recentChatDetail->senderId)->name;
+							$var['isGroupYN'] = 'Y';
+						}
+						else{
+							$userInfo = $this->authModel->getUserDetails($var['id']);
+							$var['name'] = $userInfo->name;
+							$var['imgUrl'] = $userInfo->imageUrl;
+							$var['time'] = $recentChatDetail->sentDateTime;
+							$var['isGroupYN'] = 'N';
+						}
+						$var['lastText'] = $recentChatDetail->chatText;
+						array_push($data,$var);
 					}
-					else{
-						$userInfo = $this->authModel->getUserDetails($var['id']);
-						$var['name'] = $userInfo->name;
-						$var['imgUrl'] = $userInfo->imageUrl;
-						$var['time'] = $recentChatDetails->sentDateTime;
-						$var['isGroupYN'] = 'N';
-					}
-					$var['lastText'] = $recentChatDetails->chatText;
-					array_push($data,$var);
 				}
 
 				 function insertion_Sort($my_array)
