@@ -1757,14 +1757,18 @@ $server_output = curl_exec($ch);
 		}
 	}
 
-	public function leaveSettings(){
-		$data['leaveType'] = $this->getLeaveType();
+	public function leaveSettings($centerid = null){
+		$data['centers'] = $this->getAllCenters();
+		if($centerid == null){
+			$centerid = json_decode($data['centers'])->centers[0]->centerid;
+		}
+		$data['leaveType'] = $this->getLeaveType($centerid);
 		$data['permissions'] = $this->fetchPermissions();
 		$this->load->view('leaveSettings',$data);
 	}
 
-		function getLeaveType(){
-		$url = BASE_API_URL."leave/getAllLeaveTypes/".$this->session->userdata('LoginId');
+		function getLeaveType($centerid){
+		$url = BASE_API_URL."leave/getAllLeaveTypes/".$this->session->userdata('LoginId')."/".$centerid;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

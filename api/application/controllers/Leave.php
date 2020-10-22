@@ -50,6 +50,38 @@ class Leave extends CI_Controller{
 		}
 	}
 
+	public function GetLeaveTypesByCenter($userid,$centerid){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+				$userDetails = $this->authModel->getSuperAdminId($userid);
+				$this->load->model('leaveModel');
+				$leaveTypes = $this->leaveModel->getLeaveTypeBySupadmin($userDetails->id,$centerid);
+				$data = array();
+				foreach($leaveTypes as $lt){
+					$var['id'] = $lt->id;
+					$var['name'] = $lt->name;
+					$var['slug'] = $lt->slug;
+					$var['isPaidYN'] = $lt->isPaidYN;
+					$var['showOnPaySlipYN'] = $lt->showOnPaySlipYN;
+					$var['currentRecordYN'] = $lt->currentRecordYN;
+					array_push($data,$var);
+				}
+				$mdata['leaveTypes'] = $data;
+				http_response_code(200);
+				echo json_encode($mdata);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
 	public function CreateLeaveType(){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){

@@ -382,7 +382,10 @@ input[type="text"],input[type=time],select,#casualEmp_date{
  	<title></title>
  </head>
  <body>
- 	<?php $permissions = json_decode($permissions); ?>
+ 	<?php 
+    $permissions = json_decode($permissions);
+    $centers = json_decode($centers); 
+  ?>
 <div class="containers">
   <span class="d-flex heading">
 	  <span>
@@ -395,10 +398,18 @@ input[type="text"],input[type=time],select,#casualEmp_date{
     </span>
     <span class="ml-auto sync_button">
         <?php if(isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N" === "Y"){ ?>
-              <button class="button" id="XeroLeaves">
-                <i>
-                  <img src="<?php echo base_url('assets/images/icons/xero.png'); ?>" style="max-height:2rem;margin-right:10px">
-                </i>Sync Xero Leaves</button>
+          <span class="select_css">
+            <select placehdr="Center" id="centerValue" name="centerValue" >
+              <?php 
+              foreach($centers->centers as $center){ ?> 
+                <option value="<?php echo $center->centerid;?>"><?php echo $center->name;?></option>
+              <?php } ?>
+            </select>
+          </span>
+          <button class="button" id="XeroLeaves">
+            <i>
+              <img src="<?php echo base_url('assets/images/icons/xero.png'); ?>" style="max-height:2rem;margin-right:10px">
+            </i>Sync Xero Leaves</button>
         <?php } ?>
 
     </span>
@@ -592,16 +603,31 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 <script type="text/javascript">
 	$(document).ready(function(){
 	$('#XeroLeaves').click(function(){
-		var url = window.location.origin + "/PN101/settings/syncXeroLeaves" ;
-		$.ajax({
+    var centerid = $('#centerValue').val();
+		var url = window.location.origin + "/PN101/settings/syncXeroLeaves/"+centerid ;
+    console.log(url)
+    $.ajax({
 				url:url,
 				type:'GET',
 				success:function(response){
-          // console.log(response)
-					window.location.reload();
+          console.log(response)
+					// window.location.reload();
 				}
 			})
 		})
+  $(document).on('change','#centerValue',function(){
+      var centerid = $('#centerValue').val();
+      var url = window.location.origin+'/PN101/settings/leaveSettings/'+centerid;
+      $.ajax({
+        url : url,
+        type : 'GET',
+        success : function(response){
+          
+          $('tbody').html($(response).find('tbody').html())
+          console.log($(response).find('tbody').html())
+        }
+      })
+    })
 	})
 </script>
  </body>

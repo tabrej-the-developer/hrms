@@ -225,7 +225,7 @@
             </select>
           </span>
         </span>
-        <span class="viewEmployeeTable_roles">
+        <span class="viewEmployeeTable_roles ml-2">
           <span class="select_css">
             <select placehdr="Center" id="roleValue" name="roleValue" > 
                 <option value="">Role Value</option>
@@ -330,13 +330,46 @@
       Roles Select Box
     ------------------ */
     function populateRoles(){
+      $('#roleValue').empty()
       var distinctRoles = $('.viewEmployeeTable_memberName').length;
       var rolesArray = [];
       for(i=0;i<distinctRoles;i++){
         rolesArray.push($('.viewEmployeeTable_memberName').eq(i).text())
       }
       console.log(rolesArray)
+      const unique = (value, index, self) => {
+          return self.indexOf(value) === index
+        }
+      rolesArray = rolesArray.filter(unique)
+      console.log(rolesArray)
+      var co = '<option value="Select Role">Select Role</option>'
+      $('#roleValue').append(co)
+      for(var i=0;i<rolesArray.length;i++){
+        var code = `<option value="${rolesArray[i]}">${rolesArray[i]}</option>`;
+        $('#roleValue').append(code)
+      }
     }
+
+    $(document).on('change','#roleValue',function(){
+      var i = 0;
+      var filter = $('#roleValue').val()
+      var val = $('.viewEmployeeTable_memberName').length
+      var name = $('.viewEmployeeTable_memberName')
+         $(".viewEmployeeTable_memberName").each(function(){
+            if(filter != 'Select Role'){
+               if ((name.eq(i).text().search(new RegExp(filter, "i")) < 0)) {
+                  $(this).parent().parent().fadeOut();
+               } else {
+                  $(this).parent().parent().show();
+              }
+            }
+            if(filter == 'Select Role'){
+              console.log(filter)
+              $(this).parent().parent().show();
+            }
+            i++;
+        });
+    })
 
     function searchBy(){
         var filter = $('#filter').val();

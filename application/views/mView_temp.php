@@ -746,7 +746,7 @@ p.ovrflowtext {
   justify-content: space-between;
 }
 .searchbar{
-  height: 3rem;
+  height: 3.5rem;
   background: white;
   display: flex;
   justify-content: center;
@@ -763,7 +763,7 @@ p.ovrflowtext {
   width: 85%;
 }
 .searchbar{
-  background: #edeff2
+  background: var(--header-color);
 }
 /* Recent Chats List */
 .recentchat{
@@ -771,7 +771,7 @@ p.ovrflowtext {
   width: 100%;
   background: white;
   display: block;
-  height: calc(100vh - 6rem);
+  height: calc(100vh - 3.5rem);
   overflow: auto;
 }
 .recentchat_icon{
@@ -794,10 +794,25 @@ p.ovrflowtext {
   width: 100%;
   vertical-align: middle;
 }
-.recentchat_tile{
-  width: calc(100% - 65px);
+.commonGroups_text{
+  display: inline-block;
+  width: 100%;
+  vertical-align: middle;
+}
+.commonGroups_text_top{
+    display: flex;
+  justify-content: space-between;
+  padding: 0 0.25rem;
+}
+.commonGroups_text_bottom{
+    padding: 0 0.25rem;
 }
 .recentchat_tile{
+  width: calc(100% - 65px);
+  display: inline-block;
+}
+.commonGroups_tile{
+  width: calc(100% - 65px);
   display: inline-block;
 }
 .recentchat_wrapper{
@@ -868,7 +883,7 @@ min-width: 10rem;
   width: 100%;
   background: white;
   display: none;
-  height: calc(100vh - 6rem);
+  height: calc(100vh - 3.5rem);
   overflow: auto;
 }
 .createGroupUsersList{
@@ -876,7 +891,7 @@ min-width: 10rem;
   width: 100%;
   background: white;
   display: block;
-  height: calc(100vh - 12.5rem);
+  height: calc(100vh - 9.5rem);
   overflow: auto;
 }
 .createGroupUsersList_wrapper{
@@ -948,6 +963,34 @@ min-width: 10rem;
     right: 0;
     bottom: 0;
 }
+.commonGroups_wrapper{
+  width: 100%;
+  display: block;
+  position: relative;
+  height: 4rem;
+}
+.commonGroups_wrapper:hover{
+  background: #f7f5f5;
+  cursor: pointer;
+}
+.commonGroups_wrapper:after{
+      content: ' ';
+    /* padding: 1px; */
+    border-bottom: 1px solid #f0f0f0;
+    width: 75%;
+    display: block;
+    text-align: right;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+.commonGroups_userIcon{
+  width: 60px;
+  height: 4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
 .recentchat_message{
   font-size: 0.8rem;
 }
@@ -983,6 +1026,7 @@ min-width: 10rem;
     background-clip: padding-box;
     border: 1px solid rgba(0,0,0,.15);
     border-radius: .25rem;
+    z-index: 2;
 }
 .left_topbar_righticon_dropdown > span{
   display: block;
@@ -1143,9 +1187,10 @@ height: 10rem;
 .boxcategoryTitle{
     height: 3rem;
     display: flex;
-    background: rgba(0,0,0,0.1);
+    background: #171d4b;
     justify-content: center;
     align-items: center;
+    color: white;
 }
 .elementOfCategory{
   display: block;
@@ -1209,9 +1254,9 @@ height: 10rem;
   position: absolute;
   bottom: 0;
   cursor: pointer;
-  height:4rem;
+  height: 3.5rem;
   width: 100%;
-  background: var(--header-color);
+  background: rgba(226, 90, 83);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1375,7 +1420,7 @@ messaging.getToken().then((currentToken) => {
   <div class="row rounded-lg overflow-hidden shadow">
     <!-- Users box-->
     <div class="col-md-3 col-sm-12 px-0 left-bar" style="">
-      <div class="left_topbar">
+<!--       <div class="left_topbar">
         <span class="left_topbar_wrapper">
           <span class="left_topbar_lefticon">
             <img src="<?php echo base_url('assets/images/icons/user.png') ?>" alt="user image" style="border-radius: 50%" height="32px" width="32px">
@@ -1392,12 +1437,9 @@ messaging.getToken().then((currentToken) => {
                 </div>
               </a>
             </span>
-<!--             <span class="left_topbar_righticon">
-              <img src="#" alt="">
-            </span> -->
           </span>
         </span>
-      </div>
+      </div> -->
       <div class="searchbar">
         <span class="searchbar_back">
           <i>
@@ -1409,6 +1451,19 @@ messaging.getToken().then((currentToken) => {
             <input type="" name="" class="searchinput">
           </span>
         </span>
+          <span class="left_topbar_righticon_wrapper">
+            <span class="left_topbar_righticon">
+              <a href="javascript:void(0)" class="left_topbar_righticon_click">
+                <img src="<?php echo base_url('assets/images/icons/more.png') ?>" alt="raindrop icon">
+                <div class="left_topbar_righticon_dropdown">
+                  <span id="myBtn" class="user__"> Users</span>
+                  <span class="addgroup" >
+                    New&nbsp;Group  
+                  </span>
+                </div>
+              </a>
+            </span>
+          </span>
       </div>
       <!-- Recent Chat  -->
       <div class="recentchat">
@@ -1678,7 +1733,7 @@ messaging.getToken().then((currentToken) => {
       <!-- Typing area -->
       <form class="d-flex" id="chatForm" onsubmit="stopSubmit()">
         <span class="attach_file">
-          <img src="<?php echo site_url().'assets/images/icons/clip.png'; ?>" id="upload_attachment">
+          <!-- <img src="<?php echo site_url().'assets/images/icons/clip.png'; ?>" id="upload_attachment"> -->
           <input type="file" name="upload_image" id="upload_image" onchange="validate()">
         </span>
         <div class="input-group">
@@ -1704,7 +1759,7 @@ messaging.getToken().then((currentToken) => {
       <span class="right_top_tab_close">
         <img src="<?php echo base_url('assets/images/icons/x.png') ?>" alt="Close Icon">
       </span>
-      <span class="right_top_tab_info">Info</span>
+      <span class="right_top_tab_info"></span>
     </div>
     <div class="right_user_icon">
       <div class="user_icon_wrapper">
@@ -1779,14 +1834,37 @@ messaging.getToken().then((currentToken) => {
         <?php 
       if((isset($currentUserInfo->groups) && count($currentUserInfo->groups) > 0)){
         foreach($currentUserInfo->groups as $commongroup){ ?>
-        <span class="elementOfCategory">
+        <span class="commonGroups_wrapper" >
+          <span class="commonGroups_userIcon">
+            <span class=" icon" style="
+              <?php echo "background:".$colors_array[rand(0,5)]?>">
+              <?php echo isset($commongroup->groupName) ? icon($commongroup->groupName) : "";?>
+            </span>
+          </span>
+          <span class="commonGroups_tile">
+            <span class="commonGroups_text">
+              <div class="commonGroups_text_top">
+                <span class="commonGroups_title"><?php 
+                  if( strlen($commongroup->groupName) > 16){
+                    echo substr($commongroup->groupName,0,17)."..";
+                  }
+                  else{
+                   echo $commongroup->groupName;
+                  }
+                     ?></span>
+              </div>
+            </span>
+          </span>
+        </span>
+          <!-- ---------- -->
+<!--         <span class="elementOfCategory">
           <span class="elementIcon">
             <span class="elementIconView"><?php echo $commongroup->groupName ?></span>
           </span>
           <span class="elementDescription">
             <span class="elementText"></span>
           </span>
-        </span>
+        </span> -->
       <?php } } ?>
         <?php 
       if((isset($currentUserInfo->members) && count($currentUserInfo->members) > 0)){

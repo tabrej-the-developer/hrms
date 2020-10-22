@@ -317,7 +317,7 @@ class Xero extends CI_Controller{
 		}
 	}
 
-	public function syncXeroLeaves(){
+	public function syncXeroLeaves($centerid){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');

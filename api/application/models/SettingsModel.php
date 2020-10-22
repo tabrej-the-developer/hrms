@@ -203,7 +203,7 @@ class SettingsModel extends CI_Model {
 
 		public function getUserData($userid){
 			$this->load->database();
-			$query = $this->db->query("SELECT * FROM USERS where id = '$userid'");
+			$query = $this->db->query("SELECT * FROM users where id = '$userid'");
 			return $query->row();
 		} 
 
