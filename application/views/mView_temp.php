@@ -1274,6 +1274,14 @@ display: flex;
 .remove_user_block{
   display: none;
 }
+.no_messages_wrapper{
+height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
 /* New UI code ends here */
     @media only screen and (max-width: 600px){
       .left-bar{
@@ -1406,6 +1414,7 @@ messaging.getToken().then((currentToken) => {
       <div class="recentchat">
         <?php 
         if(isset($recentChats->chats)){
+          if(count($recentChats->chats) > 0){
         foreach($recentChats->chats as $chat){ ?>
         <span class="recentchat_wrapper" group="<?php echo $chat->isGroupYN; ?>" id="<?php echo $chat->id; ?>">
           <span class="recentchat_icon">
@@ -1444,6 +1453,10 @@ messaging.getToken().then((currentToken) => {
             </span>
           </span>
         </span>
+        <?php } }else{ ?>
+          <div class="no_messages_wrapper">
+            <span class="no_messages">No Recent Chats</span>
+          </div>;
         <?php } } ?>
       </div>
       <!-- Recent Chat -->
@@ -1809,7 +1822,7 @@ messaging.getToken().then((currentToken) => {
     <?php } ?>
       <?php if(($currentUserInfo->adminId) != ($this->session->userdata('LoginId'))){ ?>
     <div>
-      <span class="leave_group" groupId="<?php echo $currentUserInfo->groupid ?>" userId="<?php echo  $members->memberid ?>">Leave Group</span>
+      <span class="leave_group" groupId="<?php echo $currentUserInfo->groupid ?>" userId="<?php echo  $members->memberid ?>" onclick="leaveGroup('<?php echo $currentUserInfo->groupid ?>')">Leave Group</span>
     </div>
   <?php } ?>
     </div>
@@ -2186,6 +2199,28 @@ $('.save').click(function(){
         })
       }
     })
+      /*
+      ----------------LEAVE GROUP-------------------
+      */
+    function leaveGroup(groupId){
+      var bool = confirm('Are you sure you want to leave this group?');
+      if(bool == true){
+        var groupId = groupId;
+        var isGroupYN = 'Y';
+        var url = window.location.origin+'/PN101/messenger/exitGroup';
+        $.ajax({
+          url : url,
+          data : {
+            groupId:groupId
+          },
+          type : 'POST',
+          success : function(response){
+            console.log(response)
+            window.location.reload()
+          }
+        })
+      }
+    }
 
     function loadChatElements(){
       var userId = $('.text-capitalize').attr('user_id')
@@ -2208,9 +2243,9 @@ $('.save').click(function(){
       })
     }
 
-    $(document).ready(function(){
-      setInterval(loadChatElements,5000)
-    })
+    // $(document).ready(function(){
+    //   setInterval(loadChatElements,5000)
+    // })
 
     function saveGroup(){
       var groupName = document.getElementById("recipient-name").value;

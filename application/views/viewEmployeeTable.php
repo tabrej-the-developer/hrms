@@ -225,6 +225,13 @@
             </select>
           </span>
         </span>
+        <span class="viewEmployeeTable_roles">
+          <span class="select_css">
+            <select placehdr="Center" id="roleValue" name="roleValue" > 
+                <option value="">Role Value</option>
+            </select>
+          </span>
+        </span>
         <span class="viewEmployeeTable_search ">
           <input type="" name="" onkeyup="searchBy()" id="filter" placeholder="Search">
         </span>
@@ -306,17 +313,30 @@
             $('#filterList').append(code);
             $('.viewEmployeeTable_centerName').eq(counter).text(employee.name);
             $('.viewEmployeeTable_memberId').eq(counter).text(employee.id);
-            $('.viewEmployeeTable_memberName').eq(counter).text(employee.title);
+            $('.viewEmployeeTable_memberName').eq(counter).text(employee.roleName);
             $('.viewEmployeeTable_action').eq(counter).html(`
                 <button class="button"><a href="${window.location.origin+'/PN101/settings/viewEmployee/'+employee.id}">view</a></button>
               `)
             counter++;
           })
-          console.log(employees)
+          console.log(employees);
+          populateRoles()
         }
       })
     }
   })
+
+/*  ------------------
+      Roles Select Box
+    ------------------ */
+    function populateRoles(){
+      var distinctRoles = $('.viewEmployeeTable_memberName').length;
+      var rolesArray = [];
+      for(i=0;i<distinctRoles;i++){
+        rolesArray.push($('.viewEmployeeTable_memberName').eq(i).text())
+      }
+      console.log(rolesArray)
+    }
 
     function searchBy(){
         var filter = $('#filter').val();
