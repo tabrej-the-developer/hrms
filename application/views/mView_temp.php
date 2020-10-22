@@ -756,7 +756,7 @@ p.ovrflowtext {
   border-radius: 1rem;
   height: 2rem;
   border: 1px solid white;
-  padding-left: 1rem;
+  padding-left: 2rem;
   width: 100%;
 }
 .searchbar_wrapper{
@@ -1250,9 +1250,16 @@ display: flex;
   padding: 0.25rem;
   width: 90%;
 }
-.searchinput::befor{
-  content: ' ';
-
+.searchbar_wrapper::before{
+    content: ' ';
+    position: absolute;
+    background-image: url(http://localhost/PN101/assets/images/icons/search.png);
+    height: 25px;
+    width: 25px;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    margin-top: 0.5rem;
+    margin-left: 0.5rem;
 }
 @keyframes spin { 
   100% { -webkit-transform: rotate(360deg); transform:rotate(360deg) } }
