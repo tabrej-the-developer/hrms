@@ -756,7 +756,7 @@ p.ovrflowtext {
   border-radius: 1rem;
   height: 2rem;
   border: 1px solid white;
-  padding-left: 1rem;
+  padding-left: 2rem;
   width: 100%;
 }
 .searchbar_wrapper{
@@ -876,7 +876,7 @@ min-width: 10rem;
   width: 100%;
   background: white;
   display: block;
-  height: calc(100vh - 12rem);
+  height: calc(100vh - 12.5rem);
   overflow: auto;
 }
 .createGroupUsersList_wrapper{
@@ -1225,6 +1225,7 @@ height: 10rem;
   cursor: pointer;
 }
 div.createGroupClass{
+  border-top:1px solid rgba(0,0,0,0.2);
 height: 3.5rem;
     display: flex;
     justify-content: center;
@@ -1232,6 +1233,7 @@ height: 3.5rem;
 }
 .groupNameClass{
   width: 100%;
+  background: #edeff2;
 }
 .groupNameClass span{
 display: flex;
@@ -1244,9 +1246,20 @@ display: flex;
   border: none;
   border-radius: 20px;
   padding-left: 1rem !important;
-  background: #e3e4e7;
+  background: #fff;
   padding: 0.25rem;
-  width: 80%;
+  width: 90%;
+}
+.searchbar_wrapper::before{
+    content: ' ';
+    position: absolute;
+    background-image: url(http://localhost/PN101/assets/images/icons/search.png);
+    height: 25px;
+    width: 25px;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    margin-top: 0.5rem;
+    margin-left: 0.5rem;
 }
 @keyframes spin { 
   100% { -webkit-transform: rotate(360deg); transform:rotate(360deg) } }
@@ -1449,7 +1462,7 @@ messaging.getToken().then((currentToken) => {
           <span class="recentchat_tile">
             <span class="recentchat_text">
               <div class="recentchat_text_top">
-                <span class="recentchat_title"><?php 
+                <span class="recentchat_title allUsersList_title"><?php 
                   if( strlen($user->username) > 16){
                     echo substr($user->username,0,17)."..";
                   }
@@ -1481,7 +1494,7 @@ messaging.getToken().then((currentToken) => {
           <span class="recentchat_tile">
             <span class="recentchat_text">
               <div class="recentchat_text_top">
-                <span class="recentchat_title"><?php echo $user->username; ?></span>
+                <span class="recentchat_title createGroupUsersList_title"><?php echo $user->username; ?></span>
               </div>
             </span>
           </span>
@@ -1490,8 +1503,8 @@ messaging.getToken().then((currentToken) => {
       </div>
       <div class="createGroupClass">
         <span class="createGroupClass">
-          <i class="createGroupClass_wrapper" style="border-radius: 50%;background:rgba(0,200,0,0.2);padding:0.25rem;">
-            <img src="<?php echo base_url('assets/images/icons/right-arrow.png'); ?>" width="25px" height="25px;">
+          <i class="createGroupClass_wrapper" style="border-radius: 50%;background:rgba(0,200,0,0.2);padding:0.35rem;">
+            <img src="<?php echo base_url('assets/images/icons/right-arrow.png'); ?>" width="32px" height="32px">
           </i>
         </span>
       </div>
@@ -2085,12 +2098,28 @@ $('.save').click(function(){
 
     function searchRecentChats(){
       var chats = $('.recentchat_title').length;
+      var allUsers = $('.allUsersList_title').length;
+      var allGroupUsers = $('.createGroupUsersList_title').length;
       var searchText = $('.searchinput').val();
       for(var i=0;i<chats;i++ ){
           if ( ($('.recentchat_title').eq(i).text().search(new RegExp(searchText, "i")) < 0)) {
               $('.recentchat_wrapper').eq(i).fadeOut();
            } else {
               $('.recentchat_wrapper').eq(i).show();
+          }
+      }
+      for(var j=0;j<allUsers;j++ ){
+          if ( ($('.allUsersList_title').eq(j).text().search(new RegExp(searchText, "i")) < 0)) {
+              $('.allUsersList_wrapper').eq(j).fadeOut();
+           } else {
+              $('.allUsersList_wrapper').eq(j).show();
+          }
+      }
+      for(var k=0;k<allGroupUsers;k++ ){
+          if ( ($('.createGroupUsersList_title').eq(k).text().search(new RegExp(searchText, "i")) < 0)) {
+              $('.createGroupUsersList_wrapper').eq(k).fadeOut();
+           } else {
+              $('.createGroupUsersList_wrapper').eq(k).show();
           }
       }
     }
