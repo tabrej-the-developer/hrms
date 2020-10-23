@@ -269,14 +269,14 @@ class Settings extends CI_Controller {
 		}
 	}
 
-	public function getSuperfunds($userid){
+	public function getSuperfunds($userid,$centerid){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			if($res != null && $res->userid == $userid){
 				$this->load->model('settingsModel');
-				$superfunds = $this->settingsModel->getSuperfunds();
+				$superfunds = $this->settingsModel->getSuperfunds($centerid);
 				$data['superfunds'] = [];
 				foreach ($superfunds as $superfund) {
 					$var['id']= $superfund->id;
@@ -306,14 +306,14 @@ class Settings extends CI_Controller {
 	}
 
 
-	public function getAwardSettings($userid){
+	public function getAwardSettings($userid,$centerid){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			if($res != null && $res->userid == $userid){
 				$this->load->model('settingsModel');
-					$awards = $this->settingsModel->getAwards();
+					$awards = $this->settingsModel->getAwards($centerid);
 					$data['awards'] = [];
 					foreach ($awards as $award) {
 						$var['id'] = $award->id;

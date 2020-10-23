@@ -307,6 +307,12 @@ border-bottom-right-radius: 20px;
       justify-content: center !important;
       display: flex;
       align-items: center;
+}input[type="text"],input[type=time],select,#casualEmp_date{
+  background: #ebebeb;
+  border-radius: 5px;
+    padding: 5px;
+    border: 1px solid #D2D0D0 !important;
+    border-radius: 20px;
 }
 @media only screen and (max-width:1024px) {
 .modal-content{
@@ -336,6 +342,14 @@ border-bottom-right-radius: 20px;
         </button>
       </a>
       <span  class="superfund-container-child">Superannuations</span>
+      <span class="select_css">
+        <select placehdr="Center" id="centerValue" name="centerValue" >
+          <?php 
+          foreach($centers->centers as $center){ ?> 
+            <option value="<?php echo $center->centerid;?>"><?php echo $center->name;?></option>
+          <?php } ?>
+        </select>
+      </span>
       <span>
 				<button id="superfunds">
 	            <i>
@@ -441,16 +455,30 @@ border-bottom-right-radius: 20px;
 
 <script type="text/javascript">
 	$(document).ready(function(){
-	$('#superfunds').click(function(){
-		var url = window.location.origin + "/PN101/settings/syncXeroSuperfunds" ;
-		$.ajax({
-				url:url,
-				type:'GET',
-				success:function(response){
-					// console.log(response)
-					window.location.reload();
-				}
+		$('#superfunds').click(function(){
+			var centerid = $('#centerValue').val();
+			var url = window.location.origin + "/PN101/settings/syncXeroSuperfunds/"+centerid ;
+			$.ajax({
+					url:url,
+					type:'GET',
+					success:function(response){
+						// console.log(response)
+						window.location.reload();
+					}
+				})
 			})
+		$(document).on('change','#centerValue',function(){
+		  var centerid = $('#centerValue').val();
+		  var url = window.location.origin+'/PN101/settings/superfundsSettings/'+centerid;
+		  $.ajax({
+		    url : url,
+		    type : 'GET',
+		    success : function(response){
+		      
+		      $('tbody').html($(response).find('tbody').html())
+		      console.log($(response).find('tbody').html())
+		    }
+		  })
 		})
 	})
 </script>

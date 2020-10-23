@@ -1422,27 +1422,6 @@ function dateToDay($date){
 	return date(", M d",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
 }
 
-function icon($str){
-	if (strpos($str, '.') !== false) {
-	$str = explode(".",$str);
-	if(count($str) >1 ){
-	    return strtoupper($str[0][0].$str[1][0]);
-	}else{
-	    return strtoupper($str[0]);
-	}
-}
-	if (strpos($str, ' ') !== false) {
-	$str = explode(" ",$str);
-	if(count($str) >1 ){
-	    return strtoupper($str[0][0]);
-	}else{
-	    return strtoupper($str[0][0]);
-	}
-}
-	if (strpos($str, ' ') == false && strpos($str, '.') == false) {
-		return $str[0];
-	}
-}
 
 //PHP functions //
 ?>
