@@ -498,7 +498,11 @@ select{
             </span>
             <?php } ?>
             </span>
-            <span class="user_data_class"><?php echo $side_bar_name[0]; ?></span>
+            <span class="user_data_class"><?php
+            if(isset($side_bar_name)){
+                 echo $side_bar_name[0]; 
+              }
+           ?></span>
             <span>
 <!--               <i>
                 <img src="<?php echo base_url('assets/images/icons/user_more.png'); ?>" style="max-height:1rem;margin-right:10px">
