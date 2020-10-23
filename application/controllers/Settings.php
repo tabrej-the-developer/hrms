@@ -1116,9 +1116,9 @@ $server_output = curl_exec($ch);
 				$data['userid'] = $this->session->userdata('LoginId');
 				$data['centers'] = $this->getAllCenters();
 				$data['areas'] = $this->getAreas($data['centerid']);
-				$data['ordinaryEarningRate'] = $this->getAwardSettings($data['userid']);
+				$data['ordinaryEarningRate'] = $this->getAwardSettings($data['userid'],$centerid);
 				$data['levels'] = $this->getAllEntitlements($data['userid']);
-				$data['superfunds'] = $this->getSuperfunds($data['userid']);
+				$data['superfunds'] = $this->getSuperfunds($data['userid'],$centerid);
 				$data['permissions'] = $this->fetchPermissions();
 				$data['getEmployeeData'] = $this->getEmployeeData($data['userid']);
 				// var_dump($data);
@@ -1271,9 +1271,9 @@ $server_output = curl_exec($ch);
 				$data['userid'] = $this->session->userdata('LoginId');
 				$data['centers'] = $this->getAllCenters();
 				$data['areas'] = $this->getAreas($data['centerid']);
-				$data['ordinaryEarningRate'] = $this->getAwardSettings($data['userid']);
+				$data['ordinaryEarningRate'] = $this->getAwardSettings($data['userid'],$centerid);
 				$data['levels'] = $this->getAllEntitlements($data['userid']);
-				$data['superfunds'] = $this->getSuperfunds($data['userid']);
+				$data['superfunds'] = $this->getSuperfunds($data['userid'],$centerid);
 				$data['permissions'] = $this->fetchPermissions();
 				// var_dump($data);
 				$this->load->view('addEmployee',$data);
@@ -1541,9 +1541,13 @@ $server_output = curl_exec($ch);
 		$this->load->view('permission',$data);
 	}
 
-	public function awardSettings(){
+	public function awardSettings($centerid = null){
 		$data['userid'] = $this->session->userdata('LoginId');
-		$data['awards'] = $this->getAwardSettings($data['userid']);
+		$data['centers'] = $this->getAllCenters();
+		if($centerid == null){
+			$centerid = json_decode($data['centers'])->centers[0]->centerid;
+		}
+		$data['awards'] = $this->getAwardSettings($data['userid'],$centerid);
 		$data['permissions'] = $this->fetchPermissions();
 	//footprint start
 	if($this->session->has_userdata('current_url')){
@@ -1595,8 +1599,8 @@ $server_output = curl_exec($ch);
 		}
 	}
 
-	function getAwardSettings($userid){
-		$url = BASE_API_URL."/settings/getAwardSettings/".$userid;
+	function getAwardSettings($userid,$centerid){
+		$url = BASE_API_URL."/settings/getAwardSettings/".$userid."/".$centerid;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -1652,9 +1656,12 @@ $server_output = curl_exec($ch);
 
 			// Superfunds settings
 
-	public function superfundsSettings(){
+	public function superfundsSettings($centerid = null){
 		$data['userid'] = $this->session->userdata('LoginId');
-		$data['superfunds'] = $this->getSuperfunds($data['userid']);
+		if($centerid == null){
+			$centerid = json_decode($data['centers'])->centers[0]->centerid;
+		}
+		$data['superfunds'] = $this->getSuperfunds($data['userid'],$centerid);
 		$data['permissions'] = $this->fetchPermissions();
 	//footprint start
 	if($this->session->has_userdata('current_url')){
@@ -1665,8 +1672,8 @@ $server_output = curl_exec($ch);
 		$this->load->view('superfundSettings',$data);
 	}
 
-	function getSuperfunds($userid){
-		$url = BASE_API_URL."settings/getSuperfunds/".$userid;
+	function getSuperfunds($userid,$centerid){
+		$url = BASE_API_URL."settings/getSuperfunds/".$userid."/".$centerid;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -1757,14 +1764,18 @@ $server_output = curl_exec($ch);
 		}
 	}
 
-	public function leaveSettings(){
-		$data['leaveType'] = $this->getLeaveType();
+	public function leaveSettings($centerid = null){
+		$data['centers'] = $this->getAllCenters();
+		if($centerid == null){
+			$centerid = json_decode($data['centers'])->centers[0]->centerid;
+		}
+		$data['leaveType'] = $this->getLeaveType($centerid);
 		$data['permissions'] = $this->fetchPermissions();
 		$this->load->view('leaveSettings',$data);
 	}
 
-		function getLeaveType(){
-		$url = BASE_API_URL."leave/getAllLeaveTypes/".$this->session->userdata('LoginId');
+		function getLeaveType($centerid){
+		$url = BASE_API_URL."leave/GetLeaveTypesByCenter/".$this->session->userdata('LoginId')."/".$centerid;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

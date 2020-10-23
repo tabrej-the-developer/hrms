@@ -18,7 +18,7 @@ class UtilModel extends CI_Model {
 
 	public function getEmployessByCenter($centerid){
 		$this->load->database();
-		$query = $this->db->query("SELECT id,email,name,imageUrl,role,title,manager,level,orgchartroles.roleName FROM users JOIN orgchartroles on orgchartroles.roleid = users.role WHERE users.center LIKE '%$centerid|%'");
+		$query = $this->db->query("SELECT users.id,users.email,users.name,users.imageUrl,users.role,users.title,users.manager,users.level,orgchartroles.roleName FROM usercenters JOIN  users on users.id = usercenters.userid JOIN orgchartroles on orgchartroles.roleid = users.role WHERE usercenters.centerid = $centerid ");
 		return $query->result();
 	}
 

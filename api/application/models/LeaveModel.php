@@ -35,6 +35,11 @@ class LeaveModel extends CI_Model {
 		$query = $this->db->query("SELECT * FROM leaves WHERE created_by = '$userid'");
 		return $query->result();
 	}
+	public function getLeaveTypeBySupadmin($userid,$centerid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM leaves WHERE created_by = '$userid' and centerid = $centerid");
+		return $query->result();
+	}
 
 	public function getAllLeavesByCenter($centerid,$startDate = null,$endDate = null){
 		$this->load->database();

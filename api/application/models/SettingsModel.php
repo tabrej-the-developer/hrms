@@ -123,15 +123,15 @@ class SettingsModel extends CI_Model {
 		$this->db->query("DELETE from orgchartroles where roleid = '$roleid'");
 	}
 
-	public function getSuperfunds(){
+	public function getSuperfunds($centerid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * from superfund ");
+		$query = $this->db->query("SELECT * from superfund where centerid = $centerid");
 		return $query->result();
 	}
 
-	public function getAwards(){
+	public function getAwards($centerid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * from payrollshifttype_v1 ");
+		$query = $this->db->query("SELECT * from payrollshifttype_v1 where centerid = $centerid");
 		return $query->result();
 	}
 

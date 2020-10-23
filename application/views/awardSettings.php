@@ -262,6 +262,13 @@ border-bottom-right-radius: 20px;
 	    border-top: 1px solid #d2d0d0;
 	    border-bottom: 1px solid #d2d0d0;
 		}
+input[type="text"],input[type=time],select,#casualEmp_date{
+  background: #ebebeb;
+  border-radius: 5px;
+    padding: 5px;
+    border: 1px solid #D2D0D0 !important;
+    border-radius: 20px;
+}
 		#awards{
   /*position: absolute;*/
 /*  right: 0;*/
@@ -321,6 +328,7 @@ border-bottom-right-radius: 20px;
 </head>
 <body>
 	<?php
+	 	$centers = json_decode($centers);
 		function dateToDay($date){
 			$date = explode("-",$date);
 			return date("M d",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
@@ -334,6 +342,14 @@ border-bottom-right-radius: 20px;
 		        </button>
 		      </a>
           <span  class="awards-container-child">Awards</span>
+          <span class="select_css">
+            <select placehdr="Center" id="centerValue" name="centerValue" >
+              <?php 
+              foreach($centers->centers as $center){ ?> 
+                <option value="<?php echo $center->centerid;?>"><?php echo $center->name;?></option>
+              <?php } ?>
+            </select>
+          </span>
           <span>
           	<button id="awards">
 	            <i>
@@ -344,7 +360,9 @@ border-bottom-right-radius: 20px;
     </span>
 	<div class="awards-container">
 		<div >
-	<?php $permissions = json_decode($permissions); ?>
+	<?php
+		$permissions = json_decode($permissions);
+	 ?>
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewAwardsYN : "N") == "Y"){ ?>
 
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editAwardsYN : "N") == "Y"){ ?>
@@ -411,16 +429,30 @@ border-bottom-right-radius: 20px;
 
 <script type="text/javascript">
 	$(document).ready(function(){
-	$('#awards').click(function(){
-		var url = window.location.origin + "/PN101/settings/syncXeroAwards" ;
-		$.ajax({
-				url:url,
-				type:'GET',
-				success:function(){
-					window.location.reload();
-				}
+		$('#awards').click(function(){
+			var centerid = $('#centerValue').val();
+			var url = window.location.origin + "/PN101/settings/syncXeroAwards/"+centerid ;
+			$.ajax({
+					url:url,
+					type:'GET',
+					success:function(){
+						window.location.reload();
+					}
+				})
 			})
-		})
+	  $(document).on('change','#centerValue',function(){
+	      var centerid = $('#centerValue').val();
+	      var url = window.location.origin+'/PN101/settings/awardSettings/'+centerid;
+	      $.ajax({
+	        url : url,
+	        type : 'GET',
+	        success : function(response){
+	          
+	          $('tbody').html($(response).find('tbody').html())
+	          console.log($(response).find('tbody').html())
+	        }
+	      })
+	    })
 	})
 </script>
 <script type="text/javascript">

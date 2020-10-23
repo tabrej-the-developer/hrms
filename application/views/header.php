@@ -1,4 +1,5 @@
 <?php
+$colors_array = ['#A4D9D6','#A4D9D6','#A4D9D6','#A4D9D6','#A4D9D6','#A4D9D6'];
 if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') 
     $url_page = "https"; 
 else
@@ -62,6 +63,27 @@ $nth_child = 0;
     default:
       $nth_child = null;
   }
+  function icon($str){
+  if (strpos($str, '.') !== false) {
+  $str = explode(".",$str);
+  if(count($str) >1 ){
+      return strtoupper($str[0][0].$str[1][0]);
+  }else{
+      return strtoupper($str[0]);
+  }
+}
+  if (strpos($str, ' ') !== false) {
+  $str = explode(" ",$str);
+  if(count($str) >1 ){
+      return strtoupper($str[0][0]);
+  }else{
+      return strtoupper($str[0][0]);
+  }
+}
+  if (strpos($str, ' ') == false && strpos($str, '.') == false) {
+    return $str[0];
+  }
+}
 ?>
 <html>
 <head>
@@ -334,8 +356,9 @@ i.mr-4{
     align-items: center;
 }
 .user_data_class{
-  width: 80%;
-    text-align: center;
+    width: 60%;
+    text-align: left;
+    padding-left: 1rem;
 }
 select{
   position: relative;
@@ -402,6 +425,24 @@ select{
       li{
         list-style: none;
       }
+  .icon{
+    font-size:0.75rem;
+    display:flex;
+    justify-content:center;
+    align-self: center;
+    border-radius: 50%;
+    padding:0.25rem 0;
+    color:#707070 !important;
+    font-weight: 700;
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+  .icon-parent{
+    display: flex;
+    align-content: center;
+    justify-content: center
+    padding:0;
+  }
 /*Notification css*/
 @media only screen and (max-width:600px){
   .navbar{
@@ -438,6 +479,18 @@ select{
             <?php $side_bar_name =  $this->session->userdata('Name');
               $side_bar_name = explode(' ',$side_bar_name);
              ?>
+            <span>
+              <?php if(false){ ?>
+              <img src="<?php echo base_url('') ?>" height="32px" width="32px">
+            <?php }else{ ?>
+            <span class="icon-parent">
+              <span class=" icon" style="
+                <?php echo "background:".$colors_array[rand(0,5)]?>">
+                <?php echo isset($side_bar_name[0]) ? icon($side_bar_name[0]) : "";?>
+              </span>
+            </span>
+            <?php } ?>
+            </span>
             <span class="user_data_class"><?php echo $side_bar_name[0]; ?></span>
             <span>
 <!--               <i>
