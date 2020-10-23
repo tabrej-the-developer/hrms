@@ -83,6 +83,12 @@ font-family: 'Open Sans', sans-serif;
 		.filter-icon span{
 			padding: 0 5px;
 		}
+		#createTemplate{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width : 100%;
+		}
 		.create,.createTemplate{
 			border:3px solid rgb(242, 242, 242);
 			border-radius: 20px;
@@ -166,7 +172,29 @@ font-family: 'Open Sans', sans-serif;
         top: 5px;
         right: 30px;
 }*/
-
+#roster-name{
+	background: #ebebeb;
+	border-radius: 5px;
+    padding: 5px;
+    border: 1px solid #D2D0D0 !important;
+    border-radius: 20px;
+    padding-left: 50px !important;
+}
+#down-arrow{
+	    display: flex;
+	    width: 100%;
+	    justify-content: center;
+	    margin: 20px 20px 20px 0px;
+}
+#create-template{
+	    display: flex;
+	    width: 40%;
+	    justify-content: center;
+	    margin: 20px 20px 20px 0px;
+}
+#down-arrow input{
+	width: 100%;
+}
 .ui-datepicker-current-day{
 	background:skyblue;
 	color:white;
@@ -363,11 +391,11 @@ table.dataTable{
 		background: white;
 		border-radius: 0.25rem;
 	}
-	.roster_template_style{
+/*	.roster_template_style{
 		position: absolute;
 		right: 0;
 		justify-content: center;
-	}
+	}*/
 	.
 /* Templates dropdown*/
 
@@ -636,8 +664,8 @@ table.dataTable{
 </div>
 <div style="position: relative;margin-top:40px ">
  	<form id="createTemplate"  method="POST" action=<?php echo base_url("roster/createRosterTemplate") ?>>
- 		<span id="down-arrow" class="row" style="display:flex;justify-content: center;margin:20px">
- 			<input type = "text" placeholder = "Roster Name" class="col-8" name="roster-name" id="roster-name">
+ 		<span id="create-template" class="row" style="display:flex;justify-content: center;margin:20px">
+ 			<input type = "text" placeholder = "Roster Name" class="" name="roster-name" id="roster-name">
  		</span>
 
  		<input type="text" name="userId" id="templateUserId" style="display:none" value="<?php echo $userId?>">
@@ -653,7 +681,7 @@ table.dataTable{
  			<thead>
  				<tr class="template_header_row">
  					<th class="template_header_first_child">Template Name</th>
- 					<th class="template_header_second_child">Edit</th>
+ 					<!-- <th class="template_header_second_child">Edit</th> -->
  					<th class="template_header_third_child">Delete</th>
  				</tr>
  			</thead>
@@ -661,10 +689,10 @@ table.dataTable{
  				<?php foreach($rosterTemplates->templates as $templates){ ?>
  					<tr class="template_row">
 		 				<td class="template_td_name"><a href="<?php echo base_url('roster/getRosterTemplateDetails/').$templates->id.'/'.$this->session->userdata("LoginId") ?>"><?php echo $templates->name ?></a></td>
-		 				<td class="template_td_edit">Edit</td>
+		 				<!-- <td class="template_td_edit">Edit</td> -->
 						<td class="template_td_delete roster_template_style" id='<?php echo $templates->id ?>'>
 							<i>
-								<img src="<?php echo base_url("assets/images/icons/x.png") ?>" style="max-height:0.8rem;margin-right:10px">
+								<img src="<?php echo base_url("assets/images/icons/delete.png") ?>" style="max-height:0.8rem;margin-right:10px"  >
 							</i>
 						</td>
 					</tr>
