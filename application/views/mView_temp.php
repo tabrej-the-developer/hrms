@@ -1775,7 +1775,7 @@ messaging.getToken().then((currentToken) => {
     </div>
 
       <!-- Typing area -->
-    <form class="d-flex" id="chatForm" onsubmit="stopSubmit()">
+    <!-- <form class="d-flex" id="chatForm" onsubmit="stopSubmit()"> -->
       <span class="attach_file">
         <!-- <img src="<?php echo site_url().'assets/images/icons/clip.png'; ?>" id="upload_attachment"> -->
         <input type="file" name="upload_image" id="upload_image" onchange="validate()">
@@ -1797,7 +1797,7 @@ messaging.getToken().then((currentToken) => {
           </button>
         </div>
       </div>
-    </form>
+    <!-- </form> -->
 
     </div>
 <!-- side nav start-->

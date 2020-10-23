@@ -476,8 +476,11 @@ select{
             </a>
           </div>  
           <div userid="<?php echo $this->session->userdata('LoginId') ?>" id="user_data_id">
-            <?php $side_bar_name =  $this->session->userdata('Name');
+            <?php 
+            if($this->session->has_userdata('Name')){
+              $side_bar_name =  $this->session->userdata('Name');
               $side_bar_name = explode(' ',$side_bar_name);
+            }
              ?>
             <span>
               <?php if(false){ ?>
@@ -486,7 +489,11 @@ select{
             <span class="icon-parent">
               <span class=" icon" style="
                 <?php echo "background:".$colors_array[rand(0,5)]?>">
-                <?php echo isset($side_bar_name[0]) ? icon($side_bar_name[0]) : "";?>
+                <?php
+                if(isset($side_bar_name)){ 
+                  echo isset($side_bar_name[0]) ? icon($side_bar_name[0]) : "";
+                }
+                ?>
               </span>
             </span>
             <?php } ?>
