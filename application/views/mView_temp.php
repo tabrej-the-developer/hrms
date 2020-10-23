@@ -2169,7 +2169,7 @@ $('.save').click(function(){
           type : 'GET',
           success : function(response){
             // $('.messenger_center_box').htm l($(response).find('.messenger_center_box').html())
-            // $('.right_box').html($(response).find('.right_box').html())
+            $('.right_box').html($(response).find('.right_box').html())
             // $('.chat-box').scrollTop($('.chat-box')[0].scrollHeight)
             console.log('changed')
             $('.media.headind_srchs').html($(response).find('.media.headind_srchs').html())
