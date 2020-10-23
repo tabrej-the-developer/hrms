@@ -339,6 +339,7 @@ class Xero extends CI_Controller{
 						$val = json_decode($val);
 						if($val->Status == 401){
 							$refresh = $this->refreshXeroToken($refresh_token);
+							var_dump($refresh);
 							$refresh = json_decode($refresh);
 							$access_token = $refresh->access_token;
 							$expires_in = $refresh->expires_in;

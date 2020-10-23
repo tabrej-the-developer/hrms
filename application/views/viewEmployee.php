@@ -297,7 +297,7 @@
 	</span>
 	</span>
 </span>
-		
+		<?php var_dump($employeeData);?>
 		<span class="span-class">
 			<label>Email</label>
 			<input disabled  placehdr="Emails" id="emails"  class="" type="text" name="emails" value="<?php echo isset($employeeData->employee->emails) ? $employeeData->employee->emails : ''; ?>">

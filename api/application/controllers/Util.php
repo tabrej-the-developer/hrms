@@ -155,12 +155,12 @@ class Util extends CI_Controller {
 	}
 
 	public function centerTableMigration($userid){
-		$headers = $this->input->request_headers();
-		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
-			$this->load->model('authModel');
-			$this->load->model('utilModel');
-			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
-			if($res != null && $res->userid == $userid){
+		// $headers = $this->input->request_headers();
+		// if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+		// 	$this->load->model('authModel');
+		 	$this->load->model('utilModel');
+		// 	$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+		// 	if($res != null && $res->userid == $userid){
 					$getAllUsers = $this->utilModel->getAllUsers();
 					foreach($getAllUsers as $user){
 						$centers = explode("|",$user->center);
@@ -170,14 +170,14 @@ class Util extends CI_Controller {
 							}
 						}
 					}
-				}
-			else{
-				http_response_code(401);
-				}
-			}
-		else{
-			http_response_code(401);
-		}
+		// 		}
+		// 	else{
+		// 		http_response_code(401);
+		// 		}
+		// 	}
+		// else{
+		// 	http_response_code(401);
+		// }
 	}
 }
 
