@@ -68,7 +68,7 @@ font-family: 'Open Sans', sans-serif;
 		align-items: center;
 	}
 	.editArea{
-		margin:0 1rem;
+		margin:0 0.5rem;
 		display: flex;
 		justify-content: center;
 		align-items: center;

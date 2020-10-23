@@ -129,7 +129,13 @@ ul.mail-list li span.mail-message-preview{
   }
   .group_name_input{
     width: 100%;
+    padding-left:2rem;
   }
+  .label-floatlabel.float-label{
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+  } 
   .groups_titles{
     display: flex;
     font-size:1rem;
