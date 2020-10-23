@@ -373,7 +373,8 @@
   }
   .tokenize{
     width:100%;
-          height: 2.5rem;
+    min-height: 2.5rem;
+    max-height: auto !important;
   }
   .blocks_modal > span{
     padding-left : 0 !important;
@@ -383,7 +384,8 @@
         background: rgba(231, 231, 231, 1);
         border: 1px solid rgba(231, 231, 231, 1);
         box-shadow: none;
-        height: 2.5rem !important;
+        min-height: 2.5rem !important;
+        max-height: auto !important;
   }
   .title_span_input input{
     width: 79%
@@ -685,6 +687,9 @@ color:#FFFFFF;
  }
   .tokenize > .tokens-container > .token-search{
     border: none !important;
+  }
+  ..tokenize > .tokens-container{
+    height: auto !important;
   }
   .cardItem.col-3{
     max-width: 24% !important;
