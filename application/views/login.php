@@ -170,8 +170,8 @@ input[type="submit"]{
                         <center><span style="color: red;"><?php echo $errorText;?></span></center>
                         
                     <div class="d-flex justify-content-around position-relative remember_parent">
-                        <div class="remember-me position-absolute ml-auto " style="left:0">
-                            <input type="checkbox" name="" class=""> Remember me</div>
+                        <!-- <div class="remember-me position-absolute ml-auto " style="left:0">
+                            <input type="checkbox" name="" class=""> Remember me</div> -->
                         <div class="form-group d-flex justify-content-end position-absolute mr-auto" style="right:0">
                              <a href="<?php echo site_url('welcome/forgotPassword') ?>" class="ForgetPwd">Forgot Password?</a> 
                         </div>
