@@ -551,6 +551,19 @@ font-family: 'Open Sans', sans-serif;
 
 
 <script type="text/javascript">
+	function reloadPageBody(){
+		var centerId = $('.sellect').val();
+		var url = window.location.origin+'/PN101/settings/orgChart';
+		$.ajax({
+			url : url,
+			type : 'GET',
+			success : function(response){
+				$('#areas-roles-list').empty()
+				$('#areas-roles-list').html($(response).find('#areas-roles-list').html())
+			}
+		})
+	}
+
 	function newArea(){
 		var insertForm = document.createElement('form');
 		var formParent = document.getElementById('form-space');
@@ -599,7 +612,7 @@ font-family: 'Open Sans', sans-serif;
 		$(document).on('click','.editRole',function(){
 			var parent = $(this).parent();
 			var parentData = $(parent).html();
-			var nameOfRole = $(parent).children('span.roleNameClass').text();
+			var nameOfRole = $(parent).children('span.roleNameClass')[0].firstChild.nodeValue;
 			var idOfRole = $(parent).children('span.roleIdClass').text();
 
 				$(parent).empty();
@@ -640,7 +653,9 @@ font-family: 'Open Sans', sans-serif;
 					isRoomYN:isRoomYN,
 				},
 				success:function(response){
-					window.location.reload();
+					reloadPageBody()
+					getEmployeesCountByRole()
+					// window.location.reload();
 				}
 			})
 		})
@@ -658,7 +673,9 @@ font-family: 'Open Sans', sans-serif;
 					roleName:roleName,
 				},
 				success:function(response){
-					window.location.reload();
+					// window.location.reload();
+					reloadPageBody()
+					getEmployeesCountByRole()
 					// console.log(response)
 					// alert(areaid + " " + roleName)
 				}
@@ -681,7 +698,9 @@ font-family: 'Open Sans', sans-serif;
 					isRoomYN : isRoomYN
 				},
 				success:function(response){
-					window.location.reload();
+					// window.location.reload();
+					reloadPageBody()
+					getEmployeesCountByRole()
 				}
 			}).fail(function(){
 				alert('fail')
@@ -702,7 +721,9 @@ font-family: 'Open Sans', sans-serif;
 					roleName:roleName,
 				},
 				success:function(response){
-					window.location.reload();
+					// window.location.reload();
+					reloadPageBody()
+					getEmployeesCountByRole()
 					// alert(roleid + " " + roleName )
 				}
 			})
@@ -738,7 +759,9 @@ font-family: 'Open Sans', sans-serif;
 				id : id
 			},
 			success : function(response){
-				window.location.reload();
+				// window.location.reload();
+				reloadPageBody()
+				getEmployeesCountByRole()
 				// console.log(response)
 			}
 		})
@@ -756,7 +779,9 @@ font-family: 'Open Sans', sans-serif;
 			success : function(response){
 				// console.log(response)
 				// console.log(id)
-				 window.location.reload();
+				 // window.location.reload();
+				 reloadPageBody()
+				 getEmployeesCountByRole()
 			}
 		})
 	})
@@ -963,9 +988,10 @@ font-family: 'Open Sans', sans-serif;
 						success : function(response){
 							emps = JSON.parse(response).employees;
 							empCount = JSON.parse(response).employees.length;
+							console.log(empCount)
 							string = "";
 							console.log(i)
-							$('.roleNameClass').eq(c).append(` (${empCount} <i><img src="<?php echo base_url('assets/images/icons/customer.png'); ?>" style="max-height:1rem;margin-right:10px"></i>)`);
+							$('.roleNameClass').eq(c).append(` <span class="usersWithRole">( ${empCount} <img src="<?php echo base_url('assets/images/icons/customer.png'); ?>" style="max-height:1rem;margin-right:10px">)</span>`);
 							emps.forEach(function(e){
 								string = string +'\n'+e.name
 							})

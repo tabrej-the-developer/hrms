@@ -105,7 +105,7 @@ function timex( $x)
           $rolesArray = $GLOBALS['rolesArray'];
 
     foreach($roster as $ro){
-      if(isset($ro->colorcodes)){
+      if($ro->colorcodes != null && $ro->colorcodes != ""){
       $color = explode(",",$ro->colorcodes);
     }else{
       $color = explode(",","255,255,255");

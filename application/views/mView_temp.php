@@ -1876,8 +1876,8 @@ messaging.getToken().then((currentToken) => {
                   } ?>
         </span>
         <span class="user_title_view">
-          <input type="FILE" name="editGroupImage" class="editGroupImage">
-          <span class="editGroupImageSave">save</span>
+<!--           <input type="FILE" name="editGroupImage" class="editGroupImage">
+          <span class="editGroupImageSave">save</span> -->
             <?php if($isGroupYN == "N")
                     {
                       if(isset($currentUserInfo->designation)){
