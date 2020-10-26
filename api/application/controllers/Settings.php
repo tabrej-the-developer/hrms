@@ -1017,8 +1017,9 @@ $this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$f
 		if($res != null && $res->userid == $userid){
 			$this->load->model('settingsModel');
 				$data['users'] = $this->settingsModel->getUserData($employeeId);
+				$data['userCenters'] = $this->settingsModel->getUserCenters($employeeId);
 				$data['employee']	= $this->settingsModel->getEmployeeData($employeeId);
-				$data['employeeBankAccount']	= $this->settingsModel->getEmployeeBankAccount($employeeId);
+				$data['employeeBankAccount'] = $this->settingsModel->getEmployeeBankAccount($employeeId);
 				$data['employeeCourses']	= $this->settingsModel->getEmployeeCourses($employeeId);
 				$data['employeeMedicalInfo']	= $this->settingsModel->getEmployeeMedicalInfo($employeeId);
 				$data['employeeMedicals']	= $this->settingsModel->getEmployeeMedicals($employeeId);

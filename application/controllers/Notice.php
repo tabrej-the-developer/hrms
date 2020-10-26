@@ -223,6 +223,84 @@ class Notice extends CI_Controller {
 			}
 	}
 
+	public function addUsersToGroup(){
+		$this->load->helper('form');
+		$form_data = $this->input->post();
+		if($form_data != null){
+
+		//footprint start
+		if($this->session->has_userdata('current_url')){
+			footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+			$this->session->set_userdata('current_url',currentUrl());
+		}
+		// footprint end
+				$data['members'] = $form_data['members'];
+				$data['groupId'] = $form_data['groupId'];
+				$data['userid'] = $this->session->userdata('LoginId');
+				$url=BASE_API_URL."notice/addUsersToGroup";
+				$ch = curl_init($url);
+
+				curl_setopt($ch, CURLOPT_URL,$url);
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'x-device-id: '.$this->session->userdata('x-device-id'),
+					'x-token: '.$this->session->userdata('AuthToken')
+				));
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				$server_output = curl_exec($ch);
+				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				print_r($httpcode);
+				print_r($server_output);
+				if($httpcode == 200){
+					curl_close ($ch);
+				}
+				else if($httpcode == 401){
+
+				}
+			}
+	}
+
+	public function getGroupUsers($groupId){
+		$url = BASE_API_URL."notice/getGroupUsers/".$this->session->userdata('LoginId')."/".$groupId;
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			print_r($server_output);
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+			return 'error';
+		}
+	}
+
+	public function removeUserFromGroup($groupId,$memberId){
+		$url = BASE_API_URL."notice/removeUserFromGroup/".$this->session->userdata('LoginId')."/".$groupId."/".$memberId;
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			return $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+			return 'error';
+		}
+	}
+
 	function getAllNotices(){
 		$url = BASE_API_URL."notice/getAllNotices/".$this->session->userdata('LoginId');
 		$ch = curl_init($url);

@@ -162,7 +162,6 @@ class Messenger extends CI_Controller {
 	public function deleteGroup(){
 		$this->load->helper('form');
 		$form_data = $this->input->post();
-		var_dump($form_data);
 		if($form_data != null){
 	//footprint start
 	if($this->session->has_userdata('current_url')){
@@ -242,6 +241,88 @@ class Messenger extends CI_Controller {
 				}
 			}
 		}
+	}
+
+	public function updateGroup(){
+		$this->load->helper('form');
+		$form_data = $this->input->post();
+		$data = [];
+		//footprint start
+		if($this->session->has_userdata('current_url')){
+			footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+			$this->session->set_userdata('current_url',currentUrl());
+		}
+		// footprint end
+		if(isset($form_data['groupName']) && $form_data['groupName'] != null){
+			$data['groupName'] = $form_data['groupName'];
+		}
+		if(!isset($form_data['groupName'])){
+			$data['avatarUrl'] = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
+		}
+			$data['groupId'] = $form_data['groupId'];
+			$data['userid'] = $this->session->userdata('LoginId');
+			$url=BASE_API_URL."messenger/UpdateGroup";
+			$ch = curl_init($url);
+
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			print_r($httpcode);
+			print_r($server_output);
+			if($httpcode == 200){
+				$jsonOutput = json_decode($server_output);
+				print_r($jsonOutput);
+			}
+			else if($httpcode == 401){
+
+			}
+	}
+
+	public function removeFromGroup(){
+		$this->load->helper('form');
+		$form_data = $this->input->post();
+		// if($form_data != null){
+			//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+				$this->session->set_userdata('current_url',currentUrl());
+			}
+			// footprint end
+				$data['receiverId'] = $this->input->post('memberId');
+				$data['groupId'] = $this->input->post('groupId');
+				$data['isGroupYN'] = 'Y';
+				$data['chatText'] = $data['receiverId']." has been removed from the group by ".$this->session->userdata('Name');
+				$data['userid'] = $this->session->userdata('LoginId');
+				$data['mediaContent'] = null;
+				$url=BASE_API_URL."messenger/removeUserFromGroup";
+				$ch = curl_init($url);
+				curl_setopt($ch, CURLOPT_URL,$url);
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'x-device-id: '.$this->session->userdata('x-device-id'),
+					'x-token: '.$this->session->userdata('AuthToken')
+				));
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				$server_output = curl_exec($ch);
+				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				print_r($httpcode);
+				print_r($server_output);
+				if($httpcode == 200){
+					$jsonOutput = json_decode($server_output);
+				}
+				else if($httpcode == 401){
+
+				}
+			// }
 	}
 
 

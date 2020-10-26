@@ -85,6 +85,11 @@ class MessengerModel extends CI_Model {
 		$query = $this->db->query("UPDATE chatgroups SET groupName='$groupName', imageUrl='$avatarUrl' WHERE groupId='$groupId'");
 	}
 
+	public function UpdateGroupName($groupName,$groupId){
+		$this->load->database();
+		$query = $this->db->query("UPDATE chatgroups SET groupName='$groupName' WHERE groupId='$groupId'");
+	}
+
 	public function AddMember($groupId,$userid){
 		$this->load->database();
 		$this->db->query("INSERT INTO groupmembers values(0,'$groupId','$userid',CURDATE())");

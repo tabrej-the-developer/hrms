@@ -1342,6 +1342,27 @@ display: flex;
     margin-top: 0.5rem;
     margin-left: 0.5rem;
 }
+.user_group_options_icons{
+    position: absolute;
+    right: 1rem;
+}
+.editGroupName_tick{
+  cursor: pointer;
+  padding: 0.25rem 
+}
+.editGroupName_close{
+  cursor: pointer;
+  padding: 0.25rem 
+}
+.editGroupName_input{
+  background: #ebebeb;
+  border-radius: 5px;
+    padding: 5px;
+    border: 1px solid #D2D0D0 !important;
+    border-radius: 20px;
+    padding-left: 50px !important;
+    width: 70%;
+}
 @keyframes spin { 
   100% { -webkit-transform: rotate(360deg); transform:rotate(360deg) } }
 .angle_downward{
@@ -1661,6 +1682,7 @@ messaging.getToken().then((currentToken) => {
         if($isGroupYN == "N")
           {
           if(isset($currentUserInfo->memberName)){
+
             echo $currentUserInfo->memberName;
           }}
           else{
@@ -1840,7 +1862,7 @@ messaging.getToken().then((currentToken) => {
         </span>
       </div>
       <div class="user_name_wrapper">
-        <span class="user_name_view">
+        <span class="user_name_view" id="user_name_view">
             <?php if($isGroupYN == "N")
                     {
                       if(isset($currentUserInfo->memberName)){
@@ -1849,11 +1871,13 @@ messaging.getToken().then((currentToken) => {
                     }
                   else{
                     if(isset($currentUserInfo->groupName)){
-                       echo ($currentUserInfo->groupName);
+                       echo ($currentUserInfo->groupName."<i onclick='groupName(this)' id='groupIdI' groupId=".$currentUserInfo->groupid.">&nbsp;<img height='15px' width='15px' src=".base_url('assets/images/icons/pencil.png')."></i>");
                     }
                   } ?>
         </span>
         <span class="user_title_view">
+          <input type="FILE" name="editGroupImage" class="editGroupImage">
+          <span class="editGroupImageSave">save</span>
             <?php if($isGroupYN == "N")
                     {
                       if(isset($currentUserInfo->designation)){
@@ -1938,6 +1962,15 @@ messaging.getToken().then((currentToken) => {
                 </div>
               </span>
             </span>
+            <?php if($this->session->has_userdata('LoginId')){
+              if($this->session->userdata('LoginId') == $currentUserInfo->adminId){ ?>
+                <span class="user_group_options_icons" memberid="<?php echo $members->memberid ?>" groupid="<?php echo $currentUserInfo->groupid ?>">
+                  <i class="deleteUserFromGroup">
+                    <img src="<?php echo base_url('assets/images/icons/delete.png') ?>" height="15px" width="15px">
+                  </i>
+                </span>
+            <?php  }
+            } ?>
           </span>
 <!--           <span class="angle_downward">
             <span>
@@ -2059,6 +2092,28 @@ messaging.getToken().then((currentToken) => {
 </body>
 
 <script type="text/javascript">
+
+$(document).on('click','.deleteUserFromGroup',function(){
+  var url = window.location.origin+"/PN101/messenger/removeFromGroup";
+  var memberId = $(this).attr('memberId');
+  var groupId = $(this).attr('groupId');
+  var bool = confirm('Are you sure you want to remove a user from the group?')
+  if(bool == true){
+    $.ajax({
+    url : url,
+    type : 'POST',
+    data : {
+      memberId : memberId,
+      groupId : groupId
+    },
+      success : function(response){
+        console.log(response)
+      }
+    })
+  }
+})
+
+
 var usersModal = document.getElementsByClassName('recentchat')[0];
 var btn = document.getElementById("myBtn");
 var accept = $('.searchbar_back')[0];
@@ -2179,6 +2234,67 @@ $('.save').click(function(){
           }
         })
     }
+
+    function groupName(name){
+      var groupName = name.parentElement.textContent;
+          groupName = groupName.replace(/(\r\n|\n|\r)/gm,"");
+          groupName = groupName.replace(/\s\s+/g, '');
+      var wrapper = document.getElementById('user_name_view');
+      var normal = wrapper.innerHTML;
+      while(wrapper.firstChild){
+        wrapper.removeChild(wrapper.firstChild);
+      }
+          $('#user_name_view').append(`<input type="text" class="editGroupName_input"><i class="editGroupName_tick"><img height="25px" width="22px" src="<?php echo base_url('assets/images/icons/tick.png'); ?>"></i><i class="editGroupName_close"><img height="20px" width="20px" src="<?php echo base_url('assets/images/icons/x.png'); ?>"></i>`)
+          console.log(groupName);
+      $(document).on('click','.editGroupName_tick',function(){
+        var url = window.location.origin+'/PN101/messenger/updateGroup';
+        var newGroupName = $('.editGroupName_input').val();
+        var avatarUrl = null;
+        var groupId = name.getAttribute('groupId');
+        $.ajax({
+          url : url,
+          type : 'POST',
+          data : {
+            groupName : newGroupName,
+            groupId : groupId,
+            avatarUrl : avatarUrl
+          },
+          success :  function(response){
+            console.log(response)
+            $('#user_name_view').empty();
+            $('#user_name_view').append(newGroupName);
+          }
+        })
+      })
+      $(document).on('click','.editGroupName_close',function(){
+        $('#user_name_view').empty();
+        $('#user_name_view').append(normal);
+      })
+    }
+
+      $(document).on('click','.editGroupImageSave',function(){
+        var url = window.location.origin+'/PN101/messenger/updateGroup';
+        var newGroupName = null;
+        var fd = new FormData();
+        var files = $('.editGroupImage')[0].files[0];
+        fd.append('file',files)
+        var groupId = $('#groupIdI').attr('groupId');
+        $.ajax({
+          url : url,
+          type : 'POST',
+          data : {
+            groupName : newGroupName,
+            groupId : groupId,
+            fd
+          },
+          contentType: false,
+          processData: false,
+          success :  function(response){
+            console.log(response)
+          }
+        })
+      })
+
 
     $(document).ready(function(){
         var arr =[];
@@ -2383,9 +2499,11 @@ $('.save').click(function(){
       })
     }
 
-    $(document).ready(function(){
-      setInterval(loadChatElements,5000)
-    })
+
+
+    // $(document).ready(function(){
+    //   setInterval(loadChatElements,5000)
+    // })
 
     function saveGroup(){
       var groupName = document.getElementById("recipient-name").value;

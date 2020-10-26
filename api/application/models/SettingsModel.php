@@ -334,4 +334,10 @@ class SettingsModel extends CI_Model {
 				$query = $this->db->query("INSERT INTO permissions (userid, isQrReaderYN, viewRosterYN, editRosterYN, viewTimesheetYN, editTimesheetYN, viewPayrollYN, editPayrollYN, editLeaveTypeYN, viewLeaveTypeYN, createNoticeYN, viewOrgChartYN, editOrgChartYN, viewCenterProfileYN, editCenterProfileYN, viewRoomSettingsYN, editRoomSettingsYN, viewEntitlementsYN, editEntitlementsYN, editEmployeeYN, xeroYN, viewAwardsYN, editAwardsYN, viewSuperfundsYN, editSuperfundsYN, createMomYN, editPermissionYN, viewPermissionYN	) VALUES ('$userid', '$isQrReaderYN', '$viewRosterYN', '$editRosterYN', '$viewTimesheetYN', '$editTimesheetYN', '$viewPayrollYN', '$editPayrollYN', '$editLeaveTypeYN', '$viewLeaveTypeYN', '$createNoticeYN', '$viewOrgChartYN', '$editOrgChartYN', '$viewCenterProfileYN', '$editCenterProfileYN', '$viewRoomSettingsYN', '$editRoomSettingsYN', '$viewEntitlementsYN', '$editEntitlementsYN', '$editEmployeeYN', '$xeroYN', '$viewAwardsYN', '$editAwardsYN', '$viewSuperfundsYN',' $editSuperfundsYN', '$createMomYN', '$editPermissionYN', '$viewPermissionYN'	)");
 		}
 
+		public function getUserCenters($employeeId){
+			$this->load->database();
+			$query = $this->db->query("SELECT * FROM usercenters where userid = '$employeeId'");
+			return $query->result();
+		}
+
 }

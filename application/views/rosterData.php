@@ -104,7 +104,13 @@ function timex( $x)
           $rolesArray = $GLOBALS['rolesArray'];
 
     foreach($roster as $ro){
-      $this->Cell($size,8,$ro->areaName,1,0,'C');
+      if(isset($ro->colorcodes)){
+      $color = explode(",",$ro->colorcodes);
+    }else{
+      $color = explode(",","255,255,255");
+    }
+      $this->SetFillColor(intval($color[0]),intval($color[1]),intval($color[2]));
+      $this->Cell($size,8,$ro->areaName,1,0,'C',1);
       $this->Ln();
       $roles = $ro->roles;
       foreach($roles as $role){
@@ -540,7 +546,6 @@ td{
 	background: rgba(253, 179, 93, 0.3);
 	color:#707070 !important;
 	content: 'On Leave';
-	display: flex;
 	align-items: center;
 	justify-content: center;
 }

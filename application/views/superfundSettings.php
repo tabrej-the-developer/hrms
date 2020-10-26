@@ -328,6 +328,7 @@ border-bottom-right-radius: 20px;
 </head>
 <body>
 	<?php
+			$centers = json_decode($centers);
 		function dateToDay($date){
 			$date = explode("-",$date);
 			return date("M d",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
