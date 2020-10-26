@@ -27,14 +27,25 @@ class Notice extends CI_Controller {
 			if($res != null && $res->userid == $userid){
 				$this->load->model('noticeModel');
 				$notices = $this->noticeModel->getAllNotices($userid,$startDate,$endDate);
+				$noticeGroups = $this->noticeModel->getAllNoticeGroups($userid);
+				foreach($noticeGroups as $noticeGroup){
+					$groupNotices = $this->noticeModel->getAllNoticesForGroupId($noticeGroup->gid);
+					$notices = array_merge($notices,$groupNotices);
+				}
 				$data = array();
 				foreach($notices as $notice){
 					$var['noticeId'] = $notice->id;
 					$userDetails = $this->authModel->getUserDetails($notice->senderId);
 					$var['senderId'] = $notice->senderId;
 					$var['senderName'] = $userDetails->name;
-					$receiverDetails = $this->authModel->getUserDetails($notice->receiverId);
-					$var['receiverId'] = $receiverDetails->name;
+					if(is_numeric($notice->receiverId) != 1){
+							$receiverDetails = $this->authModel->getUserDetails($notice->receiverId);
+							$var['receiverId'] = $receiverDetails->name;
+						}
+						else{
+							$receiverDetails = $this->noticeModel->getGroupDetails($notice->receiverId);
+							$var['receiverId'] = $receiverDetails->groupName;
+						}
 					$var['subject'] = $notice->subject;
 					$var['text'] = $notice->htmlText;
 					$var['date'] = $notice->sentDate;
@@ -93,14 +104,32 @@ class Notice extends CI_Controller {
 					$this->load->model('noticeModel');
 						if($text != null && $text != "" && $subject != null && $subject != "" && ( count($json->members) > 0) ){
 							foreach ($json->members as $memberid) {
-								if(preg_match('/[a-z]/i',$memberid) == 1){
-									$this->noticeModel->addNotice($userid,$memberid,$subject,$text);
-								}
+								// if(preg_match('/[a-z]/i',$memberid) == 1){
+								// 	$config = Array(    
+								// 	    'protocol'  => 'smtp',
+								// 	    'smtp_host' => 'ssl://smtp.zoho.com',
+								// 	    'smtp_port' => 465,
+								// 	    'smtp_user' => 'demo@todquest.com',
+								// 	    'smtp_pass' => 'K!ddz1ng',
+								// 	    'mailtype'  => 'html',
+								// 	    'charset'   => 'utf-8'
+								// );
+								// 	$this->load->library('email',$config); // Load email template
+								// 	$this->email->set_newline("\r\n");
+								// 	$this->email->from('demo@todquest.com','Todquest');
+								// 	$mailId = $this->noticeModel->getMailId($memberid);
+								// 	$this->email->to($mailId->email); 
+								// 	$this->email->subject($subject); 
+								// 	// $mess = $this->load->view($text,$arr,true);
+								// 	$this->email->message($text); 
+								// 	$this->email->send();
+								// 	$this->noticeModel->addNotice($userid,$memberid,$subject,$text);
+								// }
 								if(preg_match('/[a-z]/i',$memberid) == 0 ){
-									$groupMembers = $this->noticeModel->getMembersOfGroup($memberid);
-									foreach($groupMembers as $member){
-										$this->noticeModel->addNotice($userid,$member->memberid,$subject,$text);
-									}
+									// $groupMembers = $this->noticeModel->getMembersOfGroup($memberid);
+									// foreach($groupMembers as $member){
+										$this->noticeModel->addNotice($userid,$memberid,$subject,$text);
+									// }
 								}
 							}
 						}
@@ -177,6 +206,74 @@ class Notice extends CI_Controller {
 		}
 	}
 
+	public function getGroupUsers($userid,$groupId){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+					$this->load->model('noticeModel');
+					$members = $this->noticeModel->getMembersOfGroup($groupId);
+					http_response_code(200);
+					echo json_encode($members);				
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
 
+	public function removeUserFromGroup($userid,$groupId,$memberId){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+					$this->load->model('noticeModel');
+					$members = $this->noticeModel->removeUserFromGroup($groupId,$memberId);
+					$data['Status'] = "SUCCESS";
+					http_response_code(200);
+					echo json_encode($members);				
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	} 
+
+	public function addUsersToGroup(){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($res != null && $res->userid == $json->userid){
+					$this->load->model('noticeModel');
+					$groupId = $json->groupId;
+					$members = $json->members;
+					foreach($members as $memberId){
+						$userExist = $this->noticeModel->checkUser($memberId,$groupId);
+						if($userExist == null){
+							$members = $this->noticeModel->addGroupMembers($memberId,$groupId);
+						}
+					}
+					$data['Status'] = "SUCCESS";
+					http_response_code(200);
+					echo json_encode($members);				
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
 
 }

@@ -487,6 +487,7 @@ class Rosters extends MY_Controller {
 				$data['roster'] = [];
 				foreach ($allAreas as $area) {
 					$var['areaId'] = $area->areaid;
+					$var['colorcodes'] = $area->colorcodes;
 					$var['areaName'] = $area->areaName;
 					$var['isRoomYN'] = $area->isARoomYN;
 					$var['occupancy'] = [];

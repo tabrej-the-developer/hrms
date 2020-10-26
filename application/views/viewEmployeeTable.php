@@ -174,10 +174,10 @@
     font-size: 1rem !important;
     margin-right:5px !important;
     justify-content: center !important;
-    display: flex;
     align-items: center;
     }
     .button a{
+      text-decoration: none;
       font-size: 1rem;
       color: #171d4b;
     }
@@ -191,6 +191,28 @@
     }
     #filter{
       padding-left:1rem;
+    }
+    .changeCenterModal{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+    }
+    .changeCenterModalBody{
+      position: absolute;
+      left: 40%;
+      top: 20%;
+      z-index: 10;
+      width: 30%;
+      background: red;
+      height: 60%;
+    }
+    .changeCenterModal_header{
+      height: 20%;
+      background: white;
+      width: 100%;
     }
     </style>
   </head>
@@ -225,7 +247,7 @@
             </select>
           </span>
         </span>
-        <span class="viewEmployeeTable_roles ml-2">
+        <span class="viewEmployeeTable_roles ml-3">
           <span class="select_css">
             <select placehdr="Center" id="roleValue" name="roleValue" > 
                 <option value="">Role Value</option>
@@ -250,12 +272,12 @@
               </thead>
               <tbody id="filterList" > 
                 <tr class="viewEmployeeTable_row">
-                  <td >
+                  <td class="viewEmployeeTable_centerName_parent">
                     <span id="viewEmployeeTable_centerName" class="viewEmployeeTable_centerName">
 
                     </span>
                    </td> 
-                  <td class="">
+                  <td class="viewEmployeeTable_memberId_parent">
                     <span id="viewEmployeeTable_memberId" class="viewEmployeeTable_memberId">
                       
                     </span>
@@ -276,7 +298,16 @@
           </div>
         </div>
       </div>
-
+<!--     <div class="changeCenterModal">
+      <div class="changeCenterModalBody">
+        <div class="changeCenterModal_header">
+          <span class="changeCenterModal_name">Name</span>
+          <span class="changeCenterModal_title">Title</span>
+        </div>
+        <div class="changeCenterModal_centers"></div>
+        <div class="changeCenterModal_buttons"></div>
+      </div>
+    </div> -->
 
     </div>
 <?php 
@@ -315,16 +346,37 @@
             $('.viewEmployeeTable_memberId').eq(counter).text(employee.id);
             $('.viewEmployeeTable_memberName').eq(counter).text(employee.roleName);
             $('.viewEmployeeTable_action').eq(counter).html(`
-                <button class="button"><a href="${window.location.origin+'/PN101/settings/viewEmployee/'+employee.id}">view</a></button>
+                <button class="button"><a href="${window.location.origin+'/PN101/settings/viewEmployee/'+employee.id}">View</a></button>
+                
               `)
             counter++;
           })
+          // <button class="button editEmployeeCenter">Center</button>
           console.log(employees);
           populateRoles()
         }
       })
     }
   })
+
+/* -------------------------------
+        GET ALL CENTERS
+   ------------------------------- */
+   $(document).on('click','.editEmployeeCenter',function(){
+    // Display should be block;
+    var userid = $(this).parent().parent().parent().children('.viewEmployeeTable_memberId_parent').children().text();
+    var url = window.location.origin+'/PN101/settings/getEmployeeDetails/'+userid;
+    $.ajax({
+      url : url,
+      type : 'GET',
+      success : function(response){
+        console.log(JSON.parse(response).userCenters)
+      }
+    })
+   })
+/* -------------------------------
+        GET ALL CENTERS
+   ------------------------------- */
 
 /*  ------------------
       Roles Select Box

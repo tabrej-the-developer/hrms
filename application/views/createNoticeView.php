@@ -8,6 +8,7 @@
 <script type="text/javascript" href="https://code.jquery.com/jquery-3.4.1.js"></script>
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/tokenize2.css">
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tokenize2.js"></script>
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style type="text/css">
     *{
@@ -195,10 +196,14 @@ input[type="text"],input[type=time],select,.tokens-container,textarea,.text_area
   max-width:100% !important;
 
 }
-.text_area > div{
-  max-width:100% !important;
-  border-bottom-left-radius : 1rem;
-  border-bottom-right-radius: 1rem;
+.text_area > div {
+    max-width: 100% !important;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+#editor{
+  border-bottom-left-radius: 1rem !important;
+  border-bottom-right-radius: 1rem !important;
 }
 .notice_heading{
   background-color:#F3F4F7;
@@ -230,7 +235,8 @@ input[type="text"],input[type=time],select,.tokens-container,textarea,.text_area
     margin-top: 1rem;
 }
 .group_name_li_tag{
-  list-style: none
+  list-style: none;
+  position: relative;
 }
 .groups_list{
   padding: 1rem;
@@ -265,22 +271,73 @@ label{
     border: none !important;
     width: 100% !important;
   }
+  .noticeGroupView{
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+  }
+  .updateNoticeGroupModal{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: none;
+  }
+  .updateNoticeGroupModal_body{
+    position: absolute;
+    left: 35%;
+    width: 30%;
+    height: 70%;
+    background: white;
+    top:10%;
+  }
+  .updateNoticeGroupModal_head{
+    height: 15%;
+    background: #8D91AA;
+    color: #E7E7E7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .updateNoticeGroupModal_content{
+    height: 70%;
+  }
+  .updateNoticeGroupModal_add{
+    height: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  .updateNoticeGroupModal_remove{
+    height: 70%;
+    overflow: auto;
+  }
+  .updateNoticeGroupModal_buttons{
+    height: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }  
+  .removeUserFromGroup{
+    position: absolute;
+    right: 1rem;
+    cursor: pointer;
+  }
+  .removeUserFromGroup_username{
+    margin-left:1rem;
+  }
+  .updateNoticeGroupModal_add .tokens-container.form-control{
+    max-height: 4rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
 .pagination a:hover:not(.active) {background-color: #ddd;}
 /*pagination end*/
 
 </style>
-
-<!-- text editor-->
-    <script type="text/javascript" src="https://js.nicedit.com/nicEdit-latest.js"></script> <script type="text/javascript">
-    //<![CDATA[
-        bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
-    //]]>
-    </script>
-    <!-- text editor end-->
-
 <script>
-
-!function(a,b){function g(b,c){this.$element=a(b),this.settings=a.extend({},f,c),this.init()}var e="floatlabel",f={slideInput:!0,labelStartTop:"20px",labelEndTop:"10px",paddingOffset:"10px",transitionDuration:.3,transitionEasing:"ease-in-out",labelClass:"",typeMatches:/text|password|email|number|search|url/};g.prototype={init:function(){var a=this,c=this.settings,d=c.transitionDuration,e=c.transitionEasing,f=this.$element,g={"-webkit-transition":"all "+d+"s "+e,"-moz-transition":"all "+d+"s "+e,"-o-transition":"all "+d+"s "+e,"-ms-transition":"all "+d+"s "+e,transition:"all "+d+"s "+e};if("INPUT"===f.prop("tagName").toUpperCase()&&c.typeMatches.test(f.attr("type"))){var h=f.attr("id");h||(h=Math.floor(100*Math.random())+1,f.attr("id",h));var i=f.attr("placeholder"),j=f.data("label"),k=f.data("class");k||(k=""),i&&""!==i||(i="You forgot to add placeholder attribute!"),j&&""!==j||(j=i),this.inputPaddingTop=parseFloat(f.css("padding-top"))+parseFloat(c.paddingOffset),f.wrap('<div class="floatlabel-wrapper" style="position:relative"></div>'),f.before('<label for="'+h+'" class="label-floatlabel '+c.labelClass+" "+k+'">'+j+"</label>"),this.$label=f.prev("label"),this.$label.css({position:"absolute",top:c.labelStartTop,left:f.css("padding-left"),display:"none","-moz-opacity":"0","-khtml-opacity":"0","-webkit-opacity":"0",opacity:"0"}),c.slideInput||f.css({"padding-top":this.inputPaddingTop}),f.on("keyup blur change",function(b){a.checkValue(b)}),b.setTimeout(function(){a.$label.css(g),a.$element.css(g)},100),this.checkValue()}},checkValue:function(a){if(a){var b=a.keyCode||a.which;if(9===b)return}var c=this.$element,d=c.data("flout");""!==c.val()&&c.data("flout","1"),""===c.val()&&c.data("flout","0"),"1"===c.data("flout")&&"1"!==d&&this.showLabel(),"0"===c.data("flout")&&"0"!==d&&this.hideLabel()},showLabel:function(){var a=this;a.$label.css({display:"block"}),b.setTimeout(function(){a.$label.css({top:a.settings.labelEndTop,"-moz-opacity":"1","-khtml-opacity":"1","-webkit-opacity":"1",opacity:"1"}),a.settings.slideInput&&a.$element.css({"padding-top":a.inputPaddingTop}),a.$element.addClass("active-floatlabel")},50)},hideLabel:function(){var a=this;a.$label.css({top:a.settings.labelStartTop,"-moz-opacity":"0","-khtml-opacity":"0","-webkit-opacity":"0",opacity:"0"}),a.settings.slideInput&&a.$element.css({"padding-top":parseFloat(a.inputPaddingTop)-parseFloat(this.settings.paddingOffset)}),a.$element.removeClass("active-floatlabel"),b.setTimeout(function(){a.$label.css({display:"none"})},1e3*a.settings.transitionDuration)}},a.fn[e]=function(b){return this.each(function(){a.data(this,"plugin_"+e)||a.data(this,"plugin_"+e,new g(this,b))})}}(jQuery,window,document);
 
 
 $(document).ready(function(){
@@ -289,7 +346,7 @@ $(document).ready(function(){
         labelEndTop: 5
     });
 });
-<!-- upload js -->
+
 function initializeFileUploads() {
     $('.file-upload').change(function () {
         var file = $(this).val();
@@ -308,7 +365,7 @@ function initializeFileUploads() {
 $(function() {
     initializeFileUploads();
 });
-<!-- upload js end-->
+
 
 
 // checkbox js -->
@@ -398,7 +455,7 @@ $("#mytable #checkall").click(function () {
             <br>
             <label>Message:</label>
             <div class="text_area"> 
-            <textarea name="message"  class="form-control"  required>  </textarea>
+            <textarea name="message"  class="form-control" id="editor" required>  </textarea>
             </div>  
            
             <div class="form-group " style="display: flex;justify-content: flex-end;">
@@ -453,6 +510,11 @@ $("#mytable #checkall").click(function () {
                           <input type="checkbox" name="group" value="<?php echo $group->gid; ?>" class="group_list">
                         </span>
                         <span class="group_name_list"><?php echo $group->groupName; ?></span>
+                        <span class="ml-auto noticeGroupView" groupId="<?php echo $group->gid; ?>">
+                          <i>
+                            <img src="<?php echo base_url('assets/images/icons/pencil.png'); ?>" width="18px" height="18px">
+                          </i>
+                        </span>
                       </li>
                     </span>
                   <?php } } ?>
@@ -466,15 +528,33 @@ $("#mytable #checkall").click(function () {
    </div>
  <?php } ?>
 </div>
-
+<div class="updateNoticeGroupModal">
+  <div class="updateNoticeGroupModal_body">
+    <div class="updateNoticeGroupModal_head">Notice Group</div>
+    <div class="updateNoticeGroupModal_content">
+      <div class="updateNoticeGroupModal_add">
+        <select name="addEmployeesToGroup[]" class="addEmployeesToGroup" multiple>
+          <?php foreach($users->users as $user){ ?>
+            <option value="<?php echo $user->userid ?>"><?php echo $user->username ?></option>
+          <?php } ?>
+        </select>
+      </div>
+      <div class="updateNoticeGroupModal_remove"></div>
+      <input type="text" name="modalGroupId" class="modalGroupId" style="display:none">
+    </div>
+    <div class="updateNoticeGroupModal_buttons">
+      <span><button class="button closeGroupsModal">Close</button></span>
+      <span><button class="button saveGroupsModal">Save</button></span>
+    </div>
+  </div>
+</div>
 
 </body>
 <script type="text/javascript">
     $(document).ready(()=>{
     $('.containers').css('paddingLeft',$('.side-nav').width());
 });
-</script>
-<script type="text/javascript">
+
 //tokenize2
     $(document).ready(function(){
         $('.demo').tokenize2();
@@ -482,9 +562,11 @@ $("#mytable #checkall").click(function () {
     $(document).ready(function(){
         $('.group_select').tokenize2();
     })
+    $(document).ready(function(){
+        $('.addEmployeesToGroup').tokenize2();
+    })
 //tokenize2
-</script>
-<script type="text/javascript">
+
   $(document).ready(function(){
     $(document).on('click','#create_group',function(){
       if(($('.group_name_input').val() != null && $('.group_name_input').val() != "") && $('.group_select').selected != ""){
@@ -505,9 +587,68 @@ $("#mytable #checkall").click(function () {
         })
       }
     })
+
+    $(document).on('click','.closeGroupsModal',function(){
+      $('.updateNoticeGroupModal').css('display','none')
+      $('.modalGroupId').val('');
+    })
+
+    $(document).on('click','.noticeGroupView',function(){
+      var groupId = $(this).attr('groupId');
+      $('.modalGroupId').val(groupId);
+      var groupUrl = window.location.origin+'/PN101/notice/getGroupUsers/'+groupId;
+      var url = window.location.origin+'/PN101/notice/getUsers';
+      $.ajax({
+        url : groupUrl,
+        type : 'GET',
+        success : function(response){
+          $('.updateNoticeGroupModal_remove').empty()
+          $('.updateNoticeGroupModal').css('display','block')
+          response = JSON.parse(response)
+          var arLength = response.length
+            for(var i=0;i<arLength;i++){
+              $('.updateNoticeGroupModal_remove').append(`<li class="removeUserFromGroup_username">${response[i].name}<span class="removeUserFromGroup" memberId="${response[i].memberid}" groupId="${response[i].gid}"><i><img src='<?php echo base_url('assets/images/icons/x.png') ?>' height="15px" width="15px"> </i></span></li>`)
+            }
+        }
+      })
+    })
+
+    $(document).on('click','.removeUserFromGroup',function(){
+      var groupId =  $(this).attr('groupId');
+      var memberId = $(this).attr('memberId');
+      var url = window.location.origin+'/PN101/notice/removeUserFromGroup/'+groupId+'/'+memberId;
+      $.ajax({
+        url : url,
+        type : 'GET',
+        success : function(response){
+          window.location.reload();
+        }
+      })
+    })
   })
-</script>
-<script type="text/javascript">
+
+  $(document).on('click','.saveGroupsModal',function(){
+    var groupId = $('.modalGroupId').val();
+    var members = [];
+    for(var i=0;i<$('.addEmployeesToGroup option').length;i++){
+      if($('.addEmployeesToGroup option').eq(i).attr('selected') == 'selected'){
+        members.push($('.addEmployeesToGroup option').eq(i).val())
+      }
+    }
+    var url = window.location.origin+'/PN101/notice/addUsersToGroup';
+    $.ajax({
+      url : url,
+      type : 'POST',
+      data : {
+        members : members,
+        groupId : groupId
+      },
+      success : function(response){
+        console.log(response)
+      }
+    })
+  })
+
   $(document).ready(function(){
     $(document).on('change','.group_list',function(){
         var value = $(this).val()
@@ -521,5 +662,11 @@ $("#mytable #checkall").click(function () {
     })
   })
 
+</script>
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script>
+  var quill = new Quill('#editor', {
+    theme: 'snow'
+  });
 </script>
 </html>

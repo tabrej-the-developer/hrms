@@ -1286,12 +1286,12 @@ $server_output = curl_exec($ch);
 	public function createEmployeeProfile(){
 		$form_data = $this->input->post();
 		if($form_data != null){
-	//footprint start
-	if($this->session->has_userdata('current_url')){
-		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-		$this->session->set_userdata('current_url',currentUrl());
-	}
-	// footprint end
+		//footprint start
+		if($this->session->has_userdata('current_url')){
+			footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+			$this->session->set_userdata('current_url',currentUrl());
+		}
+		// footprint end
 		$data['title'] = isset($_POST['title']) ? $_POST['title']: "";
 		$data['fname'] = isset($_POST['fname']) ? $_POST['fname']: "";
 		$data['mname'] = isset($_POST['mname']) ? $_POST['mname']: "";
@@ -1410,7 +1410,6 @@ $server_output = curl_exec($ch);
 			if($httpcode == 200){
 				redirect(base_url('settings'));
 				curl_close ($ch);
-
 			}
 			else if($httpcode == 401){
 
@@ -1418,20 +1417,20 @@ $server_output = curl_exec($ch);
 		}
 
 	public function AddMultipleEmployees(){
-			if($this->session->has_userdata('LoginId')){
-					$data['permissions'] = $this->fetchPermissions();
-					//footprint start
-					if($this->session->has_userdata('current_url')){
-						footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-						$this->session->set_userdata('current_url',currentUrl());
-					}
-					// footprint end
-					$data['centers'] = $this->getAllCenters();
-					$this->load->view('addMultipleEmployees',$data);
-				}
-			else{
-				$this->load->view('redirectToLogin');
+		if($this->session->has_userdata('LoginId')){
+			$data['permissions'] = $this->fetchPermissions();
+			//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+				$this->session->set_userdata('current_url',currentUrl());
 			}
+			// footprint end
+			$data['centers'] = $this->getAllCenters();
+			$this->load->view('addMultipleEmployees',$data);
+		}
+		else{
+			$this->load->view('redirectToLogin');
+		}
 	}
 
 	public function AddEmployeesMultiple(){
@@ -1520,6 +1519,35 @@ $server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			if($httpcode == 200){
 				echo $server_output;
+				curl_close ($ch);
+
+			}
+			else if($httpcode == 401){
+
+			}
+		}
+	}
+
+	public function getEmployeeDetails($employeeId){
+		if($employeeId != null && $employeeId != ""){
+			//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+				$this->session->set_userdata('current_url',currentUrl());
+			}
+			// footprint end
+			$url = BASE_API_URL."settings/getEmployeeProfile/".$this->session->userdata('LoginId')."/".$employeeId;
+			$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'x-device-id: '.$this->session->userdata('x-device-id'),
+					'x-token: '.$this->session->userdata('AuthToken')
+				));
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				print_r($server_output);
 				curl_close ($ch);
 
 			}
@@ -1658,7 +1686,8 @@ $server_output = curl_exec($ch);
 
 	public function superfundsSettings($centerid = null){
 		$data['userid'] = $this->session->userdata('LoginId');
-		if($centerid == null){
+		$data['centers'] = $this->getAllCenters();
+		if($centerid == null && $data['centers'] != null){
 			$centerid = json_decode($data['centers'])->centers[0]->centerid;
 		}
 		$data['superfunds'] = $this->getSuperfunds($data['userid'],$centerid);

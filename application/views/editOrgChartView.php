@@ -902,6 +902,7 @@ font-family: 'Open Sans', sans-serif;
 							})
 						})
 					var emp_url = window.location.origin+"/PN101/settings/getEmployeesByCenter/"+centerid;
+					console.log(centerid)
 					$.ajax({
 						url:emp_url,
 						type:'GET',
@@ -931,7 +932,6 @@ font-family: 'Open Sans', sans-serif;
 										success:function(r){
 											r['orgchart'].forEach(function(ind){
 												var da = "<option value="+ind.areaId+">"+ind.areaName+"</option>";
-													console.log(x)
 												$('.select_area[similarity='+x+']').append(da)
 											})
 																			x++;
@@ -1010,7 +1010,7 @@ $(document).ajaxStop(function(){
 				success: function(response){
 					// console.log(response)
 					// console.log(details)
-					window.location.reload();
+					window.location.href = window.location.href;
 				}
 			})
 

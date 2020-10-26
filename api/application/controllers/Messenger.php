@@ -195,7 +195,12 @@ class Messenger extends CI_Controller {
 				$groupName = $json->groupName;
 				$avatarUrl = $json->avatarUrl;
 				$this->load->model('messengerModel');
-				$this->messengerModel->UpdateGroup($groupName,$avatarUrl,$groupId);
+				if($avatarUrl == null){
+					$this->messengerModel->UpdateGroupName($groupName,$groupId);
+				}else{
+				file_put_contents('application/assets/uploads/groupprofiles/'.$groupId."png", base64_decode($avatarUrl));
+				$this->messengerModel->UpdateGroup($groupId.".png",$groupId);
+			}
 				$data['Status'] = 'SUCCESS';
 				http_response_code(200);
 				echo json_encode($data);
@@ -542,11 +547,12 @@ class Messenger extends CI_Controller {
 				$receiverId = $json->receiverId;
 				$isGroupYN = $json->isGroupYN;
 				$chatText = $json->chatText;
-				$mediaContent = $json->mediaContent;
-
+				$mediaContent = null;
+				$groupId = $json->groupId;
 				$this->load->model('messengerModel');
-				$this->messengerModel->PostChat($senderId,$receiverId,$isGroupYN,$chatText,$mediaContent);
+				$this->messengerModel->PostChat($senderId,$receiverId,$isGroupYN,$chatText,$mediaContent,'TRANSACTION');
 				$senderDetails = $this->authModel->getUserDetails($senderId);
+				$this->messengerModel->LeaveGroup($groupId,$receiverId);
 
 				$mdata['senderName'] = $senderDetails->name;
 				$mdata['senderId'] = $senderId;
