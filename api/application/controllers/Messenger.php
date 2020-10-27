@@ -198,8 +198,8 @@ class Messenger extends CI_Controller {
 				if($avatarUrl == null){
 					$this->messengerModel->UpdateGroupName($groupName,$groupId);
 				}else{
-				file_put_contents('application/assets/uploads/groupprofiles/'.$groupId."png", base64_decode($avatarUrl));
-				$this->messengerModel->UpdateGroup($groupId.".png",$groupId);
+				file_put_contents('application/assets/uploads/groupprofiles/'.$groupId.".png", base64_decode($avatarUrl));
+				$this->messengerModel->UpdateGroup($groupName,$groupId.".png",$groupId);
 			}
 				$data['Status'] = 'SUCCESS';
 				http_response_code(200);
