@@ -397,6 +397,16 @@ p.ovrflowtext {
 .bg-light{
   background: #f2f2f2 !important;
 }
+.left_icon{
+  display:flex;
+  justify-content:center;
+  align-self: center;
+  border-radius: 50%;
+  color:#707070;
+  font-weight: 700;
+  height: 1.5rem;
+  width: 1.5rem;
+}
 .icon{
   font-size:0.75rem;
   display:flex;
@@ -1129,12 +1139,14 @@ min-width: 10rem;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
-.user_icon_view img{
+.user_icon_view > img{
     height: 10rem;
     width: 10rem;
     /*width: auto;*/
     border-radius: 50%;
+    position: relative;
 }
 .user_title_view{
   font-size: 0.8rem;
@@ -1384,6 +1396,35 @@ height: 100%;
     justify-content: center;
     font-weight: 700;
 }
+.wrapper_on_hover{
+  display: none;
+}
+
+.user_icon_view:hover .wrapper_on_hover{
+    display: block;
+    position: absolute;
+    background: rgba(0,0,0,0.2);
+    height: 10rem;
+    width: 10rem;
+    z-index: 2;
+    border-radius: 50%;
+}
+.wrapper_on_hover>i>img{
+  position: absolute;
+    left: 40%;
+    top: 40%;
+}
+.wrapper_on_hover img:hover{
+  cursor: pointer;
+}
+.dynamic_icons{
+    position: absolute;
+    top: 40%;
+    left: 25%;
+}
+.dynamic_icons img{
+  margin-left: 0.75rem;
+}
 /* New UI code ends here */
     @media only screen and (max-width: 600px){
       .left-bar{
@@ -1530,10 +1571,28 @@ messaging.getToken().then((currentToken) => {
         foreach($recentChats->chats as $chat){ ?>
         <span class="recentchat_wrapper" group="<?php echo $chat->isGroupYN; ?>" id="<?php echo $chat->id; ?>">
           <span class="recentchat_icon">
-            <span class=" icon" style="
-              <?php echo "background:".$colors_array[rand(0,5)]?>">
-              <?php echo isset($chat->name) ? icon($chat->name) : "";?>
-            </span>
+            <?php if($isGroupYN == 'Y'){ ?>
+              <?php if($chat->imgUrl != null && $chat->imgUrl != "" ){ ?>
+                <img src="<?php echo base_url('api/application/assets/uploads/groupprofiles/').$chat->imgUrl; ?>" height="25px" width="25px" class="left_icon">
+             <?php } ?>
+             <?php if($chat->imgUrl == null || $chat->imgUrl == "" ){ ?>
+              <span class=" icon" style="
+                <?php echo "background:".$colors_array[rand(0,5)]?>">
+                <?php echo isset($chat->name) ? icon($chat->name) : "";?>
+              </span>
+              <?php } ?>
+            <?php } ?>
+            <?php if($isGroupYN == 'N'){ ?>
+              <?php if($chat->imgUrl != null && $chat->imgUrl != "" ){ ?>
+                <img src="<?php echo base_url('api/application/assets/uploads/groupprofiles/').$chat->imgUrl; ?>" height="25px" width="25px" class="left_icon">
+              <?php } ?>
+              <?php if($chat->imgUrl == null || $chat->imgUrl == "" ){ ?>
+              <span class=" icon" style="
+                <?php echo "background:".$colors_array[rand(0,5)]?>">
+                <?php echo isset($chat->name) ? icon($chat->name) : "";?>
+              </span>
+              <?php } ?>
+          <?php  } ?>
           </span>
           <span class="recentchat_tile">
             <span class="recentchat_text">
@@ -1659,8 +1718,8 @@ messaging.getToken().then((currentToken) => {
           <?php  } 
           if($currentUserInfo->avatarUrl != "" && $currentUserInfo->avatarUrl != null){
               ?>
-            <img src="<?php if(isset($currentUserInfo->avatarUrl)){
-               echo $currentUserInfo->avatarUrl;}?>" alt="user" width="35" class="rounded-circle">
+            <img src="<?php if(isset($currentUserInfo->avatarUrl)){ ?>
+               <?php echo base_url('api/application/assets/uploads/groupprofiles/').$currentUserInfo->avatarUrl; } ?>" alt="user" width="25px" height="25px" class="rounded-circle">
                <?php } }else{ ?>
               <span class="icon-parent">
                 <span class=" icon" style="
@@ -1834,11 +1893,15 @@ messaging.getToken().then((currentToken) => {
     <div class="right_user_icon">
       <div class="user_icon_wrapper">
         <span class="user_icon_view">
-
+          <span class="wrapper_on_hover">
+            <i class="wrapper_image_wrapper">
+              <img src="<?php echo base_url('assets/images/icons/camera_white.png') ?>" height="25px" width="25px" class="wrapper_image">
+            </i>
+          </span>
           <?php 
           if(isset($currentUserInfo)){
           if($currentUserInfo->avatarUrl != null && $currentUserInfo->avatarUrl != ""){ ?>
-          <img src="<?php echo base_url('assets/images/icons/user.png') ?>">
+          <img src="<?php echo base_url('api/application/assets/uploads/groupprofiles/').$currentUserInfo->avatarUrl; ?>">
         <?php }if($currentUserInfo->avatarUrl == null || $currentUserInfo->avatarUrl == ""){ ?>
           <span class="alphabetIcon">
             <?php 
@@ -1876,8 +1939,8 @@ messaging.getToken().then((currentToken) => {
                   } ?>
         </span>
         <span class="user_title_view">
-<!--           <input type="FILE" name="editGroupImage" class="editGroupImage">
-          <span class="editGroupImageSave">save</span> -->
+          <input type="file" name="editGroupImage" id="editGroupImage" style="display: none">
+          <!-- <span class="editGroupImageSave">save</span> -->
             <?php if($isGroupYN == "N")
                     {
                       if(isset($currentUserInfo->designation)){
@@ -2093,6 +2156,7 @@ messaging.getToken().then((currentToken) => {
 
 <script type="text/javascript">
 
+    
 $(document).on('click','.deleteUserFromGroup',function(){
   var url = window.location.origin+"/PN101/messenger/removeFromGroup";
   var memberId = $(this).attr('memberId');
@@ -2276,25 +2340,38 @@ $('.save').click(function(){
         var url = window.location.origin+'/PN101/messenger/updateGroup';
         var newGroupName = null;
         var fd = new FormData();
-        var files = $('.editGroupImage')[0].files[0];
+        var files = $('#editGroupImage').prop('files')[0];
+        console.log(files)
         fd.append('file',files)
+        console.log(fd);
         var groupId = $('#groupIdI').attr('groupId');
+        fd.append('groupId',groupId);
         $.ajax({
           url : url,
           type : 'POST',
-          data : {
-            groupName : newGroupName,
-            groupId : groupId,
-            fd
-          },
+          data : fd,
           contentType: false,
           processData: false,
           success :  function(response){
-            console.log(response)
+            console.log(response);
+            window.location.reload()
           }
         })
       })
 
+      $(document).on('click','.wrapper_image',function(){
+        var doc = document.getElementById('editGroupImage');
+          doc.click()
+        var wrapper_image = $('.wrapper_image_wrapper').html();
+        var OkAndCancel = `<div class="dynamic_icons"><img src="<?php echo base_url('assets/images/icons/tick_white.png') ?>" height="32px" width="25px" class="dynamic_icons_save editGroupImageSave"><img src="<?php echo base_url('assets/images/icons/x_white.png'); ?>" height="26px" width="25px" class="dynamic_icons_cancel"></div>`;
+        $('.wrapper_image_wrapper').empty();
+        $('.wrapper_image_wrapper').html(OkAndCancel);
+        
+        $(document).on('click','.dynamic_icons_cancel',function(){
+            $('.wrapper_image_wrapper').empty();
+            $('.wrapper_image_wrapper').html(wrapper_image)
+          })
+      })
 
     $(document).ready(function(){
         var arr =[];

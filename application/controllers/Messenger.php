@@ -255,8 +255,11 @@ class Messenger extends CI_Controller {
 		// footprint end
 		if(isset($form_data['groupName']) && $form_data['groupName'] != null){
 			$data['groupName'] = $form_data['groupName'];
+			$data['avatarUrl'] = null;
 		}
 		if(!isset($form_data['groupName'])){
+			var_dump($_FILES);
+			$data['groupName'] = null;
 			$data['avatarUrl'] = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
 		}
 			$data['groupId'] = $form_data['groupId'];

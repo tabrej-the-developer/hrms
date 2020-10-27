@@ -80,9 +80,14 @@ class MessengerModel extends CI_Model {
 		return $groupId;
 	}
 
-	public function UpdateGroup($groupName,$avatarUrl,$groupId){
+	public function UpdateGroup($groupName=null,$avatarUrl=null,$groupId){
 		$this->load->database();
-		$query = $this->db->query("UPDATE chatgroups SET groupName='$groupName', imageUrl='$avatarUrl' WHERE groupId='$groupId'");
+		if($groupName == null){
+			$query = $this->db->query("UPDATE chatgroups SET imageUrl='$avatarUrl' WHERE groupId='$groupId'");
+		}
+		if($groupName != null){
+			$query = $this->db->query("UPDATE chatgroups SET groupName='$groupName' WHERE groupId='$groupId'");
+		}
 	}
 
 	public function UpdateGroupName($groupName,$groupId){
