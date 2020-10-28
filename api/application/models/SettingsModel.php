@@ -67,7 +67,7 @@ class SettingsModel extends CI_Model {
 
 	public function updateEmployeeRole($employeeId,$roleId){
 		$this->load->database();
-		$this->db->query("UPDATE users SET roleid = $roleId WHERE id = '$employeeId'");
+		$this->db->query("UPDATE users SET roleid = '$roleId' WHERE id = '$employeeId'");
 	}	
 
 	public function updateRolePriority($roleid,$priority){
@@ -170,6 +170,7 @@ class SettingsModel extends CI_Model {
 		public function addToUsersME($employee_no,$password, $emails,$name,$center,$userid,$role,$level,$alias){
 			$this->load->database();
 			$query = $this->db->query("INSERT INTO users (id,password, email, name,center,created_at, created_by,roleid,level,alias,isVerified) VALUES ('$employee_no','$password','$emails','$name','$center|',NOW(),'$userid',$role,'$level','$alias','N')");
+			$this->db->query("INSERT INTO usercenters (userid,centerid) VALUES ('$userid',$centerid)");
 		}
 
 		public function addToEmployeeBankAccount( $xeroEmployeeId,$accountName,$bsb,$accountNumber,$remainderYN,$amount){
@@ -339,5 +340,9 @@ class SettingsModel extends CI_Model {
 			$query = $this->db->query("SELECT * FROM usercenters where userid = '$employeeId'");
 			return $query->result();
 		}
-
+		public function syncedWithXero($centerid){
+			$this->load->database();
+			$query = $this->db->query("SELECT * from xeroaccesstoken where centerid = $centerid");
+			return $query->row();
+		}
 }

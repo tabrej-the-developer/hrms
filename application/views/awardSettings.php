@@ -282,7 +282,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
     min-width:6rem !important;
       border-radius: 20px !important;
       padding: 4px 8px !important;
-      background: rgb(164, 217, 214) !important;
+      background: rgb(164, 217, 214);
       font-size: 1rem !important;
       margin-right:5px !important;
       justify-content: center !important;
@@ -314,6 +314,9 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 		/*
 						scroll bar end
 		*/
+.disabled{
+  background: rgb(235, 235, 228) !important;
+}
 @media only screen and (max-width:1024px) {
 .modal-content{
 	min-width:100vw;
@@ -350,8 +353,21 @@ input[type="text"],input[type=time],select,#casualEmp_date{
               <?php } ?>
             </select>
           </span>
-          <span>
-          	<button id="awards">
+          <?php $syncedWithXero = json_decode($syncedWithXero);  ?>
+          <span class="sync_button">
+          	<button id="awards" class="<?php 
+            if(isset($syncedWithXero->syncedWithXero) && $syncedWithXero->syncedWithXero != null){
+              if($syncedWithXero->syncedWithXero == 'N'){
+                echo 'disabled';
+              }
+            }
+           ?>" <?php 
+            if(isset($syncedWithXero->syncedWithXero) && $syncedWithXero->syncedWithXero != null){
+              if($syncedWithXero->syncedWithXero == 'N'){
+                echo "disabled";
+              }
+            }
+           ?>>
 	            <i>
 	              <img src="<?php echo base_url('assets/images/icons/xero.png'); ?>" style="max-height:02rem;margin-right:10px">
 	            </i>Sync&nbsp;Xero&nbsp;Awards
@@ -447,7 +463,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 	        url : url,
 	        type : 'GET',
 	        success : function(response){
-	          
+	          $('.sync_button button').replaceWith($(response).find('.sync_button button')[0].outerHTML);
 	          $('tbody').html($(response).find('tbody').html())
 	          console.log($(response).find('tbody').html())
 	        }

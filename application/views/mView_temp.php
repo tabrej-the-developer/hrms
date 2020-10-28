@@ -2027,8 +2027,8 @@ messaging.getToken().then((currentToken) => {
             </span>
             <?php if($this->session->has_userdata('LoginId')){
               if($this->session->userdata('LoginId') == $currentUserInfo->adminId){ ?>
-                <span class="user_group_options_icons" memberid="<?php echo $members->memberid ?>" groupid="<?php echo $currentUserInfo->groupid ?>">
-                  <i class="deleteUserFromGroup">
+                <span class="user_group_options_icons" >
+                  <i class="deleteUserFromGroup" memberid="<?php echo $members->memberid ?>" groupid="<?php echo $currentUserInfo->groupid ?>">
                     <img src="<?php echo base_url('assets/images/icons/delete.png') ?>" height="15px" width="15px">
                   </i>
                 </span>
@@ -2170,10 +2170,11 @@ $(document).on('click','.deleteUserFromGroup',function(){
       memberId : memberId,
       groupId : groupId
     },
-      success : function(response){
-        console.log(response)
-      }
+      // success : function(response){
+      //   console.log(response)
+      // }
     })
+    console.log(memberId)
   }
 })
 
@@ -2578,9 +2579,9 @@ $('.save').click(function(){
 
 
 
-    // $(document).ready(function(){
-    //   setInterval(loadChatElements,5000)
-    // })
+    $(document).ready(function(){
+      setInterval(loadChatElements,5000)
+    })
 
     function saveGroup(){
       var groupName = document.getElementById("recipient-name").value;

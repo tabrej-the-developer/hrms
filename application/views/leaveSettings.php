@@ -378,6 +378,9 @@ input[type="text"],input[type=time],select,#casualEmp_date{
     border: 1px solid #D2D0D0 !important;
     border-radius: 20px;
 }
+.disabled{
+  background: rgb(235, 235, 228) !important;
+}
 </style>
  	<title></title>
  </head>
@@ -406,7 +409,20 @@ input[type="text"],input[type=time],select,#casualEmp_date{
               <?php } ?>
             </select>
           </span>
-          <button class="button" id="XeroLeaves">
+          <?php $syncedWithXero = json_decode($syncedWithXero);  ?>
+          <button class="button <?php 
+            if(isset($syncedWithXero->syncedWithXero) && $syncedWithXero->syncedWithXero != null){
+              if($syncedWithXero->syncedWithXero == 'N'){
+                echo 'disabled';
+              }
+            }
+           ?>" id="XeroLeaves" <?php 
+            if(isset($syncedWithXero->syncedWithXero) && $syncedWithXero->syncedWithXero != null){
+              if($syncedWithXero->syncedWithXero == 'N'){
+                echo "disabled";
+              }
+            }
+           ?>>
             <i>
               <img src="<?php echo base_url('assets/images/icons/xero.png'); ?>" style="max-height:2rem;margin-right:10px">
             </i>Sync Xero Leaves</button>
@@ -602,6 +618,18 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 </script>
 <script type="text/javascript">
 	$(document).ready(function(){
+
+    // function syncedWithXero(centerid){
+    //   var url = ;
+    //   $.ajax({
+    //     url : url,
+    //     type : 'GET',
+    //     success : function(response){
+
+    //     }
+    //   })
+    // }
+
 	$('#XeroLeaves').click(function(){
     var centerid = $('#centerValue').val();
 		var url = window.location.origin + "/PN101/settings/syncXeroLeaves/"+centerid ;
@@ -622,9 +650,10 @@ input[type="text"],input[type=time],select,#casualEmp_date{
         url : url,
         type : 'GET',
         success : function(response){
-          
           $('tbody').html($(response).find('tbody').html())
-          console.log($(response).find('tbody').html())
+          $('.sync_button button').replaceWith($(response).find('.sync_button button')[0].outerHTML);
+          // sycedWithXero(centerid);
+          // console.log($(response).find('tbody').html())
         }
       })
     })

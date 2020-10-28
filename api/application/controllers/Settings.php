@@ -652,13 +652,13 @@ class Settings extends CI_Controller {
 		}
 	}
 
-	public function changeEmployeeRole(){
+	public function changeEmployeeRole($userid){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			$json = json_decode(file_get_contents('php://input'));
-			if($json!= null && $res != null && $res->userid == $json->userid){
+			if($json!= null && $res != null && $res->userid == $userid){
 					if($json->details != null){
 						$details = $json->details;
 						$this->load->model('settingsModel');
@@ -1303,6 +1303,31 @@ $this->settingsModel->updateEmployeeTable($employee_no, $xeroEmployeeId,$title,$
 			if($res != null && $res->userid == $userid){
 				$this->load->model('settingsModel');
 				$mdata['permissions'] = $this->settingsModel->getPermissionForEmployee($empId);
+				http_response_code(200);
+				echo json_encode($mdata);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
+	public function SyncedWithXero($centerid,$userid){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+				$this->load->model('settingsModel');
+				$checkSync = $this->settingsModel->syncedWithXero($centerid);
+					if($checkSync == null){
+						$mdata['syncedWithXero'] = "N";
+					}else{
+						$mdata['syncedWithXero'] = "Y";
+					} 
 				http_response_code(200);
 				echo json_encode($mdata);
 			}

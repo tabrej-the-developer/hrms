@@ -197,7 +197,7 @@ public function editRooms(){
 		$data['capacity_'] = $this->input->post('capacity_');
 		$data['minimum_age'] = $this->input->post('minimum_age');
 		$data['maximum_age'] = $this->input->post('maximum_age');
-		var_dump($data);
+		// var_dump($data);
 		$url = BASE_API_URL."settings/addCenter";
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
@@ -212,6 +212,7 @@ public function editRooms(){
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			var_dump($httpcode);
 			if($httpcode == 200){
+				$this->session->set_flashdata('centerCreated','Center Created Successfully');
 				redirect(base_url('settings/createCenter'));
 				curl_close ($ch);
 			}
@@ -377,7 +378,7 @@ public function editRooms(){
 		if($formData != null){
 			$data['details'] = $formData['details'];  
 			$data['userid'] = $this->session->userdata('LoginId'); 
-		$url = BASE_API_URL."/settings/changeEmployeeRole";
+		$url = BASE_API_URL."/settings/changeEmployeeRole/".$this->session->userdata('LoginId');
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -390,6 +391,7 @@ public function editRooms(){
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			print_r($httpcode);
+			print_r($server_output);
 			if($httpcode == 200){
 				print_r($server_output);
 				curl_close ($ch);
@@ -1575,6 +1577,7 @@ $server_output = curl_exec($ch);
 		if($centerid == null){
 			$centerid = json_decode($data['centers'])->centers[0]->centerid;
 		}
+		$data['syncedWithXero'] =$this->SyncedWithXero($centerid);
 		$data['awards'] = $this->getAwardSettings($data['userid'],$centerid);
 		$data['permissions'] = $this->fetchPermissions();
 	//footprint start
@@ -1691,6 +1694,7 @@ $server_output = curl_exec($ch);
 			$centerid = json_decode($data['centers'])->centers[0]->centerid;
 		}
 		$data['superfunds'] = $this->getSuperfunds($data['userid'],$centerid);
+		$data['syncedWithXero'] = $this->SyncedWithXero($centerid);
 		$data['permissions'] = $this->fetchPermissions();
 	//footprint start
 	if($this->session->has_userdata('current_url')){
@@ -1798,12 +1802,33 @@ $server_output = curl_exec($ch);
 		if($centerid == null){
 			$centerid = json_decode($data['centers'])->centers[0]->centerid;
 		}
+		$data['syncedWithXero'] = $this->SyncedWithXero($centerid);
 		$data['leaveType'] = $this->getLeaveType($centerid);
 		$data['permissions'] = $this->fetchPermissions();
 		$this->load->view('leaveSettings',$data);
 	}
 
-		function getLeaveType($centerid){
+	function SyncedWithXero($centerid){
+		$url = BASE_API_URL."settings/SyncedWithXero/".$centerid."/".$this->session->userdata('LoginId');
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			return $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+			return 'failed';
+		}
+	}
+
+	function getLeaveType($centerid){
 		$url = BASE_API_URL."leave/GetLeaveTypesByCenter/".$this->session->userdata('LoginId')."/".$centerid;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);

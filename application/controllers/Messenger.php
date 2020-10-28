@@ -302,7 +302,7 @@ class Messenger extends CI_Controller {
 				$data['receiverId'] = $this->input->post('memberId');
 				$data['groupId'] = $this->input->post('groupId');
 				$data['isGroupYN'] = 'Y';
-				$data['chatText'] = $data['receiverId']." has been removed from the group by ".$this->session->userdata('Name');
+				$data['chatText'] = $this->session->userdata('Name').' removed '.$data['receiverId'];
 				$data['userid'] = $this->session->userdata('LoginId');
 				$data['mediaContent'] = null;
 				$url=BASE_API_URL."messenger/removeUserFromGroup";
