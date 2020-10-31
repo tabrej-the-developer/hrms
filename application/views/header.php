@@ -501,7 +501,7 @@ select{
                 }
                 if(file_exists('api/application/assets/profileImages/'.$userid.'.png')){
                   ?>
-                  <img src="<?php echo 'api/application/assets/profileImages/'.$userid.'.png' ?>">
+                  <img src="<?php echo BASE_API_URL.'/application/assets/profileImages/'.$userid.'.png' ?>">
                   <?php
                 }
                 ?>

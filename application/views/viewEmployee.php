@@ -259,7 +259,7 @@
 	      <button class="button " id="XeroEmployees" >
 	        <i>
 	          <img src="<?php echo base_url('assets/images/icons/xero.png'); ?>" style="max-height:2rem;margin-right:10px">
-	        </i>Sync Xero Leaves</button>
+	        </i>Sync Xero Employee</button>
 	    </span>
     </span>
 	</div>
