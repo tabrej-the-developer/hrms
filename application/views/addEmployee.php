@@ -628,14 +628,6 @@
 			<input id="payroll_calendar" name="payroll_calendar" type="text">
 		</span>
 		<span class="span-class">
-			<label class="labels__">Employee Group</label>
-			<input id="employee_group" name="employee_group" type="text">
-		</span>
-		<span class="span-class">
-			<label class="labels__">Holiday Group</label>
-			<input id="holiday_group" name="holiday_group" type="text">
-		</span>
-		<span class="span-class">
 			<label class="labels__">Visa Holder</label>
 			<label class="yn-label">Yes</label>
 			<input  type="radio" name="visa_holder" class="visa_holder yn-input" value="Y">

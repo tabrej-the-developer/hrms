@@ -446,7 +446,7 @@ select{
   .icon-parent{
     display: flex;
     align-content: center;
-    justify-content: center
+    justify-content: center;
     padding:0;
   }
 /*Notification css*/
@@ -482,6 +482,7 @@ select{
           </div>  
           <div userid="<?php echo $this->session->userdata('LoginId') ?>" id="user_data_id">
             <?php 
+            $side_bar_name = "";
             if($this->session->has_userdata('Name')){
               $side_bar_name =  $this->session->userdata('Name');
               $side_bar_name = explode(' ',$side_bar_name);
