@@ -216,6 +216,9 @@
     .syncXeroEmployees{
       margin-right: 2rem !important;
     }
+    #centerValue{
+      max-width: 12rem;
+    }
     </style>
   </head>
 
