@@ -210,6 +210,27 @@
 		height: 80%;
 		overflow: auto
 	}
+	.profileImage{
+		padding-left: 1rem;
+	}
+	.user_profileImage{
+		font-size: 2rem !important;
+	    height: 100px;
+	    width: 100px;
+	    border-radius: 50%;
+	    background: #e3e4e7;
+	}
+	.user_profileImage .icon{
+		font-size: 3rem;
+		height:4rem;
+		width: 4rem;
+		margin-top: -1rem !important;
+	}
+	.profileImage_parent{
+		width: auto !important;
+	    display: inline-flex;
+	    align-items: center;
+	}
 	</style>
 </head>
 <body>
@@ -295,9 +316,21 @@
 			</span>
 		</span>
 
-		<span class="span-class" style="width: auto !important">
+		<span class="span-class profileImage_parent" style="width: auto !important">
 			<span style="height:100px;width:100px">
-				<img src="<?php echo base_url().'api/'.$employeeData->users->imageUrl;?>" style="height:100px;width:100px;border-radius:0.5rem">
+				<?php if(file_exists('api/application/assets/profileImages/'.$this->session->userdata('LoginId').'.png')){ ?>
+				<img src="<?php echo BASE_API_URL."application/assets/profileImages/".$this->session->userdata('LoginId').".png"?>" style="height:100px;width:100px;border-radius:0.5rem">
+			<?php }else{ 
+					if($this->session->has_userdata('Name')){
+		              $side_bar_name =  $this->session->userdata('Name');
+		              $side_bar_name = explode(' ',$side_bar_name);
+		              $userid = $this->session->userdata('LoginId');
+		            }
+				?>
+				<span class="user_profileImage icon-parent">
+					<span class=" icon"><?php echo isset($side_bar_name[0]) ? icon($side_bar_name[0]) : ""; ?></span>
+				</span>
+			<?php } ?>
 			</span>
 			<input id="profileImage"  class="profileImage" type="FILE" name="profileImage">
 		</span>
@@ -389,7 +422,12 @@
 	</section>
 
 	<section class="employee-bank-account-section">
-		<h3>Bank Account <span class="add-row"> + </span></h3>
+		<h3 class="add_remove_bank_account">Bank Account 
+			<span class="add-remove-row">
+				<span class="add-row"> Add </span>
+				<span class="remove-row"> Remove </span>
+			</span>
+		</h3>
 		<div class="parent-child">
 			<div class="child">
 				<div class="statement"></div>
@@ -691,14 +729,7 @@
 			<label>Payroll Calendar</label>
 			<input placeholder="Payroll Calendar" id="payroll_calendar" name="payroll_calendar" type="text" value="<?php echo isset($employeeData->employee->payrollCalendarId) ? $employeeData->employee->payrollCalendarId : ''; ?>">
 		</span> -->
-		<span class="span-class">
-			<label>Employee Group</label>
-			<input placeholder="Employee Group" id="employee_group" name="employee_group" type="text" value="<?php echo isset($employeeData->employee->employee_group) ? $employeeData->employee->employee_group : ''; ?>">
-		</span>
-		<span class="span-class">
-			<label>Holiday Group</label>
-			<input placeholder="Holiday Group" id="holiday_group" name="holiday_group" type="text" value="<?php echo isset($employeeData->employee->holiday_group) ? $employeeData->employee->holiday_group : ''; ?>">
-		</span>
+
 		<span class="span-class">
 			<label>Visa Holder</label>
 			<label class="yn-label">Yes</label>

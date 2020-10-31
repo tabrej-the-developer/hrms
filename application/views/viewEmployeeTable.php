@@ -216,6 +216,9 @@
     .syncXeroEmployees{
       margin-right: 2rem !important;
     }
+    #centerValue{
+      max-width: 12rem;
+    }
     </style>
   </head>
 
@@ -405,8 +408,10 @@
       var co = '<option value="Select Role">Select Role</option>'
       $('#roleValue').append(co)
       for(var i=0;i<rolesArray.length;i++){
-        var code = `<option value="${rolesArray[i]}">${rolesArray[i]}</option>`;
-        $('#roleValue').append(code)
+        if(rolesArray[i] != "" && rolesArray[i] != null && rolesArray[i] != " " ){
+          var code = `<option value="${rolesArray[i]}">${rolesArray[i]}</option>`;
+          $('#roleValue').append(code)
+        }
       }
     }
 

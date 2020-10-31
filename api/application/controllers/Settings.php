@@ -872,8 +872,6 @@ class Settings extends CI_Controller {
 					$classification = $json->classification;
 					$ordinaryEarningRateId = $json->ordinaryEarningRateId;
 					$payroll_calendar = $json->payroll_calendar;
-					$employee_group = $json->employee_group;
-					$holiday_group = $json->holiday_group;
 					$medicareNo = $json->medicareNo;
 					$medicareRefNo = $json->medicareRefNo;
 					$healthInsuranceFund = $json->healthInsuranceFund;
@@ -977,7 +975,7 @@ $this->settingsModel->addToEmployeeTaxDeclaration($xeroEmployeeId,$employmentBas
 // Employee Table
 						if($xeroEmployeeId != null && $xeroEmployeeId != "" ){
 							if($employee_no != "" && $employee_no != null){
-$this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$fname,$mname,$lname,$emails,$dateOfBirth,$jobTitle,$gender,$homeAddLine1,$homeAddLine2,$homeAddCity,$homeAddRegion,$homeAddPostal,$homeAddCountry,$phone,$mobile,$startDate,$terminationDate,$ordinaryEarningRateId,$payroll_calendar,$userid,$classification,$holiday_group,$employee_group,$emergency_contact,$relationship,$emergency_contact_email);
+$this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$fname,$mname,$lname,$emails,$dateOfBirth,$jobTitle,$gender,$homeAddLine1,$homeAddLine2,$homeAddCity,$homeAddRegion,$homeAddPostal,$homeAddCountry,$phone,$mobile,$startDate,$terminationDate,$ordinaryEarningRateId,$payroll_calendar,$userid,$classification,$emergency_contact,$relationship,$emergency_contact_email);
 											}
 										}
 					$data['status'] = 'SUCCESS';
@@ -1117,14 +1115,12 @@ $this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$f
 					$employee_no = $json->employee_no;
 					$resume_doc = $json->resume_doc;
 					$profileImage = $json->profileImage;
-					$profileImageName = md5(uniqid()).'.png';
+					$profileImageName = $employee_no.'.png';
 					$target_dir = 'application/assets/profileImages/';
 					file_put_contents($target_dir.$profileImageName,(base64_decode($profileImage)));
 					$classification = $json->classification;
 					$ordinaryEarningRateId = $json->ordinaryEarningRateId;
 					// $payroll_calendar = $json->payroll_calendar;
-					$employee_group = $json->employee_group;
-					$holiday_group = $json->holiday_group;
 					$medicareNo = $json->medicareNo;
 					$medicareRefNo = $json->medicareRefNo;
 					$healthInsuranceFund = $json->healthInsuranceFund;
@@ -1133,7 +1129,7 @@ $this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$f
 					$xeroEmployeeId = $json->xeroEmployeeId;
 
 // Employee Courses	
-						$course_name = $json->course_name;
+/*						$course_name = $json->course_name;
 						$course_description = $json->course_description;
 						$date_obtained = $json->date_obtained;
 						$expiry_date = $json->expiry_date;
@@ -1149,7 +1145,7 @@ $this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$f
 						// get employee Id
 $this->settingsModel->updateEmployeeCourses( $id,$xeroEmployeeId,$course_nme,$course_desc,$date_obt,$exp_date);
 					}
-// Users	
+*/// Users	
 					$name = $fname." ".$mname." ".$lname;
 $this->settingsModel->updateUsers($employee_no,$emails,$name,$title,$userid,$alias);
 // Employee bank account	
@@ -1196,7 +1192,7 @@ $superMembershipId);
 $this->settingsModel->updateEmployeeTaxDeclaration($xeroEmployeeId,$tfnExemptionType,$taxFileNumber,$australiantResidentForTaxPurposeYN,$residencyStatue,$taxFreeThresholdClaimedYN,$taxOffsetEstimatedAmount,$hasHELPDebtYN,$hasSFSSDebtYN,$hasTradeSupportLoanDebtYN_,$upwardVariationTaxWitholdingAmount,$eligibleToReceiveLeaveLoadingYN,$approvedWitholdingVariationPercentage);
 // Employee Table
 
-$this->settingsModel->updateEmployeeTable($employee_no, $xeroEmployeeId,$title,$fname,$mname,$lname,$emails,$dateOfBirth,$gender,$homeAddLine1,$homeAddLine2,$homeAddCity,$homeAddRegion,$homeAddPostal,$homeAddCountry,$phone,$mobile,$terminationDate,$ordinaryEarningRateId,$userid,$classification,$holiday_group,$employee_group,$emergency_contact,$relationship,$emergency_contact_email);
+$this->settingsModel->updateEmployeeTable($employee_no, $xeroEmployeeId,$title,$fname,$mname,$lname,$emails,$dateOfBirth,$gender,$homeAddLine1,$homeAddLine2,$homeAddCity,$homeAddRegion,$homeAddPostal,$homeAddCountry,$phone,$mobile,$terminationDate,$ordinaryEarningRateId,$userid,$classification,$emergency_contact,$relationship,$emergency_contact_email);
 
 			$data['status'] = 'SUCCESS';
 			http_response_code(200);
