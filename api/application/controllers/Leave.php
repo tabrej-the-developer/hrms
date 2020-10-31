@@ -601,15 +601,15 @@ class Leave extends CI_Controller{
 				else{
 					$this->leaveModel->updateLeave($leaveApplication,$status,$message);
 					$to = $this->leaveModel->getUserFromLeaveApplication($leaveApplication);
-				$config = array(
-				    'protocol'  => 'smtp',
-				    'smtp_host' => 'ssl://smtp.zoho.com',
-				    'smtp_port' => 465,
-				    'smtp_user' => SMTP_EMAIL,
-				    'smtp_pass' => SMTP_PASSWORD,
-				    'mailtype'  => 'html',
-				    'charset'   => 'utf-8'
-				);
+				$config = Array(    
+			    'protocol'  => 'smtp',
+			    'smtp_host' => 'ssl://smtp.zoho.com',
+			    'smtp_port' => 465,
+			    'smtp_user' => 'demo@todquest.com',
+			    'smtp_pass' => 'K!ddz1ng',
+			    'mailtype'  => 'html',
+			    'charset'   => 'utf-8'
+		);
 				$from = $this->config->item('smtp_user');
 				$this->email->initialize($config);
 				$this->email->set_mailtype("html");

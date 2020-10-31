@@ -252,7 +252,7 @@ class Xero extends CI_Controller{
 					$this->load->model('xeroModel');
 					$this->load->model('payrollModel');
 					//xero 
-					$xeroTokens = $this->xeroModel->getXeroToken();
+					$xeroTokens = $this->xeroModel->getXeroToken($centerid);
 					if($xeroTokens != null){
 						$access_token = $xeroTokens->access_token;
 						$tenant_id = $xeroTokens->tenant_id;
@@ -330,7 +330,7 @@ class Xero extends CI_Controller{
 					$this->load->model('xeroModel');
 					$this->load->model('leaveModel');
 					//xero 
-					$xeroTokens = $this->xeroModel->getXeroToken();
+					$xeroTokens = $this->xeroModel->getXeroToken($centerid);
 					if($xeroTokens != null){
 						$access_token = $xeroTokens->access_token;
 						$tenant_id = $xeroTokens->tenant_id;
@@ -402,7 +402,7 @@ class Xero extends CI_Controller{
 					$this->load->model('xeroModel');
 					$this->load->model('payrollModel');
 					//xero 
-					$xeroTokens = $this->xeroModel->getXeroToken();
+					$xeroTokens = $this->xeroModel->getXeroToken($centerid);
 					if($xeroTokens != null){
 						$access_token = $xeroTokens->access_token;
 						$tenant_id = $xeroTokens->tenant_id;
@@ -463,6 +463,162 @@ class Xero extends CI_Controller{
 		}
 	}
 
+	// I need a employeeId , centerid , 
+	// If I pass a centerid I need its access tokens
+
+	public function syncXeroEmployees($empId = null){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$this->load->model('employeeModel');
+			$this->load->model('xeroModel');
+			$this->load->model('settingsModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+
+			if(!isset($json->centerid)){
+				$employeeCenter = $this->settingsModel->getUserCenters($empId);
+				$centers = $employeeCenter;
+				foreach($centers as $center){
+					$this->xeroToken($center->centerid,$empId);
+				}
+			}
+			if(isset($json->centerid) && ($json->centerid != null && $json->centerid != "")){
+				$centerid = $json->centerid;
+				$this->xeroToken($centerid);
+			}
+		}
+	}
+			function xeroToken($centerid,$empId = null){
+				$xeroTokens = $this->xeroModel->getXeroToken($centerid);
+				if($xeroTokens != null){
+					$access_token = $xeroTokens->access_token;
+					$tenant_id = $xeroTokens->tenant_id;
+					$refresh_token = $xeroTokens->refresh_token;
+					$val = $this->getPayItems($access_token,$tenant_id);
+					$val = json_decode($val);
+					if($val->Status == 401){
+						$refresh = $this->refreshXeroToken($refresh_token);
+						$refresh = json_decode($refresh);
+						$access_token = $refresh->access_token;
+						$expires_in = $refresh->expires_in;
+						$refresh_token = $refresh->refresh_token;
+						$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in);
+						$val = $this->getPayItems($access_token,$tenant_id);
+						$val = json_decode($val);
+					}
+					if($val->Status == "OK"){
+					//employees
+						$employees = $this->getEmployees($access_token,$tenant_id,$empId);
+						$employees = json_decode($employees)->Employees;
+						for($i=0;$i<count($employees);$i++){
+							$employeeId = $employees[$i]->EmployeeID;
+							$empDetails = $this->getCompleteEmployeeInfo($access_token,$tenant_id,$employeeId);
+							$empDetails = json_decode($empDetails)->Employees[0];
+							$Title = isset($empDetails->Title) ? $empDetails->Title : "";
+							$FirstName = $empDetails->FirstName;
+							$MiddleNames = isset($empDetails->MiddleNames) ? $empDetails->MiddleNames : "";
+							$LastName = $empDetails->LastName;
+							$Status = $empDetails->Status;
+							$JobTitle = isset($empDetails->JobTitle) ? $empDetails->JobTitle : "";
+							$Email = $empDetails->Email;
+							preg_match( '/([\d]{9})/', $empDetails->DateOfBirth, $matches );
+							$DateOfBirth = date( 'Y-m-d', $matches[0] );
+							$Gender = $empDetails->Gender;
+							$classification = $empDetails->Classification;
+							$AddressLine1 = $empDetails->HomeAddress->AddressLine1;
+							$AddressLine2 = isset($empDetails->HomeAddress->AddressLine2) ? $empDetails->HomeAddress->AddressLine2: "";
+							$City = $empDetails->HomeAddress->City;
+							$Region = $empDetails->HomeAddress->Region;
+							$PostalCode = $empDetails->HomeAddress->PostalCode;
+							$Country = $empDetails->HomeAddress->Country;
+							$Phone = isset($empDetails->Phone) ? $empDetails->Phone : "";
+							$Mobile = isset($empDetails->Mobile) ? $empDetails->Mobile : "";
+							if(isset($empDetails->TerminationDate)){
+								preg_match( '/([\d]{9})/', $empDetails->TerminationDate, $matches );
+								$TerminationDate = date( 'Y-m-d', $matches[0] );
+							}
+							else{
+								$TerminationDate = null;
+							}
+							if(isset($empDetails->StartDate)){
+								preg_match( '/([\d]{9})/', $empDetails->StartDate, $matches );
+								$StartDate = date( 'Y-m-d', $matches[0] );
+							}
+							else{
+								$StartDate = null;
+							}
+							$OrdinaryEarningsRateID = isset($empDetails->OrdinaryEarningsRateID) ? $empDetails->OrdinaryEarningsRateID : "" ;
+							$PayrollCalendarID = isset($empDetails->PayrollCalendarID) ? $empDetails->PayrollCalendarID : "" ;
+							$myUser = $this->authModel->getUserFromEmail($Email);
+							if($myUser == null){
+								$password = $FirstName.$LastName."@123";
+								$myUserid = $this->authModel->insertUser($Email,$password,$FirstName." ".$LastName,4,$JobTitle,null,null,$userid,0,0,0);
+							}
+							else{
+								$myUserid = $myUser->id;
+							}
+							$myEmployee = $this->employeeModel->getUserFromId($myUserid);
+							if($myEmployee == null){
+								//insert 
+								$this->employeeModel->insertEmployee($myUserid,$employeeId,$Title,$FirstName,$MiddleNames,$LastName,$Status,$Email,$DateOfBirth,$JobTitle,$Gender,$AddressLine1,$AddressLine2,$City,$Region,$PostalCode,$Country,$Phone,$Mobile,$StartDate,$TerminationDate,$OrdinaryEarningsRateID,$PayrollCalendarID,$userid,$classification);
+							}
+							else{
+								//update
+								$this->employeeModel->updateEmployee($employeeId,$Title,$FirstName,$MiddleNames,$LastName,$Status,$Email,$DateOfBirth,$JobTitle,$Gender,$AddressLine1,$AddressLine2,$City,$Region,$PostalCode,$Country,$Phone,$Mobile,$StartDate,$TerminationDate,$OrdinaryEarningsRateID,$PayrollCalendarID,$myUserid);
+								$this->employeeModel->deleteAllDetailsForUser($employeeId);
+							}
+
+
+							//taxes
+
+							$TaxFileNumber = isset($empDetails->TaxDeclaration->TaxFileNumber) ? $empDetails->TaxDeclaration->TaxFileNumber : "";
+							$EmploymentBasis = $empDetails->TaxDeclaration->EmploymentBasis;
+							$TFNExemptionType = isset($empDetails->TaxDeclaration->TFNExemptionType) ? $empDetails->TaxDeclaration->TFNExemptionType : "";
+							$AustralianResidentForTaxPurposes = $empDetails->TaxDeclaration->AustralianResidentForTaxPurposes;
+							$TaxFreeThresholdClaimed = $empDetails->TaxDeclaration->TaxFreeThresholdClaimed ? "Y" : "N";
+							$HasHELPDebt = $empDetails->TaxDeclaration->HasHELPDebt ? "Y" : "N";
+							$HasSFSSDebt = $empDetails->TaxDeclaration->HasSFSSDebt ? "Y" : "N";
+							$EligibleToReceiveLeaveLoading = $empDetails->TaxDeclaration->EligibleToReceiveLeaveLoading ? "Y" : "N";
+							$HasStudentStartupLoan = $empDetails->TaxDeclaration->HasStudentStartupLoan ? "Y" : "N";
+							$ResidencyStatus = $empDetails->TaxDeclaration->ResidencyStatus;
+							$TaxOffsetEstimatedAmount = isset($empDetails->TaxDeclaration->TaxOffsetEstimatedAmount) ? $empDetails->TaxDeclaration->TaxOffsetEstimatedAmount : 0;
+							$UpwardVariationTaxWithholdingAmount = isset($empDetails->TaxDeclaration->UpwardVariationTaxWithholdingAmount) ? $empDetails->TaxDeclaration->UpwardVariationTaxWithholdingAmount : 0;
+							$ApprovedWithholdingVariationPercentage = isset($empDetails->TaxDeclaration->ApprovedWithholdingVariationPercentage) ? $empDetails->TaxDeclaration->ApprovedWithholdingVariationPercentage : 0;
+
+							$this->employeeModel->insertIntoTaxDeclaration($employeeId,$EmploymentBasis,$TFNExemptionType,$TaxFileNumber,$AustralianResidentForTaxPurposes,$ResidencyStatus,$TaxFreeThresholdClaimed,$TaxOffsetEstimatedAmount,$HasHELPDebt,$HasSFSSDebt,$HasStudentStartupLoan,$UpwardVariationTaxWithholdingAmount,$EligibleToReceiveLeaveLoading,$ApprovedWithholdingVariationPercentage);
+
+							//bank accounts
+							foreach ($empDetails->BankAccounts as $bankAccount) {
+								$StatementText = addslashes($bankAccount->StatementText);
+								$AccountName = addslashes($bankAccount->AccountName);
+								$BSB = $bankAccount->BSB;
+								$AccountNumber = $bankAccount->AccountNumber;
+								$Remainder = $bankAccount->Remainder ? "Y" : "N";
+								$Amount = isset($bankAccount->Amount) ? $bankAccount->Amount : 0;
+								$this->employeeModel->insertIntoBankAccount($employeeId,$StatementText,$AccountName,$BSB,$AccountNumber,$Remainder,$Amount);
+							}
+
+							//super fund memberships
+							foreach ($empDetails->SuperMemberships as $superMembership) {
+								$SuperMembershipID = $superMembership->SuperMembershipID;
+								$SuperFundID = $superMembership->SuperFundID;
+								$EmployeeNumber = $superMembership->EmployeeNumber;
+								$this->employeeModel->insertIntoSuperMembership($employeeId,$SuperFundID,$EmployeeNumber,$SuperMembershipID);
+							}
+
+							//leave balance
+							$this->leaveModel->deleteAllUserLeaveBalance($myUserid);
+							foreach ($empDetails->LeaveBalances	 as $leaveBalance) {
+								$LeaveTypeID = $leaveBalance->LeaveTypeID;
+								$NumberOfUnits = $leaveBalance->NumberOfUnits;
+								$this->leaveModel->insertIntoLeaveBalance($myUserid,$LeaveTypeID,$NumberOfUnits);
+								}
+							}
+						}
+					}
+				}
+
 	public function fetchXeroToken($userid){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
@@ -492,6 +648,7 @@ class Xero extends CI_Controller{
 			http_response_code(401);
 			}
 		}
+
 
 	function postToken($postData){
 		$url = "https://identity.xero.com/connect/token";
@@ -550,8 +707,13 @@ class Xero extends CI_Controller{
 		return $server_output;
 	}
 
-	function getEmployees($access_token,$tenant_id){		
+	function getEmployees($access_token,$tenant_id,$employeeId=null){
+	if($employeeId == null || $employeeId == ""){		
 		$url = "https://api.xero.com/payroll.xro/1.0/Employees";
+	}
+	if($employeeId != null && $employeeId != ""){
+		$url = "https://api.xero.com/payroll.xro/1.0/Employees/".$employeeId;
+	}
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

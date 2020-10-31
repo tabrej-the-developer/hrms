@@ -347,7 +347,7 @@ table,tr,td{
   text-align: left;
 }
 .modal-content{
-max-width:30vw;
+    max-width:35vw;
 	}
 	.modal-content .titl{
 	width: 100%;
@@ -1178,7 +1178,9 @@ td{
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
-
+  input[name="days"],.select_all{
+    margin: auto;
+  }
 @media print{
 .occupancy_css{
   display: none !important;
@@ -1894,26 +1896,30 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 	 		<input type="text" name="userId"   id="userId" style="display:none">
     <div class="row p-2">
       <label class="col-4 modal_label">Days</label>
-      <span class="col-7">
+      <span class="col-7 edit_shift_modal">
+        <span class="d-inline-block">
+          <span>Select All</span>
+          <input type="checkbox"  class="d-block select_all_edit_shift">
+        </span>
         <span class="d-inline-block">
           <span>Mon</span>
-          <input type="checkbox" name="days" value="1" class="d-block edit_shift_checkbox_space" checked>
+          <input type="checkbox" name="days" value="1" class="d-block edit_shift_checkbox_space editShiftDays">
         </span>
         <span class="d-inline-block">
           <span>Tue</span>
-          <input type="checkbox" name="days" value="2" class="d-block edit_shift_checkbox_space" checked>
+          <input type="checkbox" name="days" value="2" class="d-block edit_shift_checkbox_space editShiftDays">
         </span>
         <span class="d-inline-block">
           <span>Wed</span>
-          <input type="checkbox" name="days" value="3" class="d-block edit_shift_checkbox_space" checked>
+          <input type="checkbox" name="days" value="3" class="d-block edit_shift_checkbox_space editShiftDays">
         </span>
         <span class="d-inline-block">
           <span>Thu</span>
-          <input type="checkbox" name="days" value="4" class="d-block edit_shift_checkbox_space" checked>
+          <input type="checkbox" name="days" value="4" class="d-block edit_shift_checkbox_space editShiftDays">
         </span>
         <span class="d-inline-block">
           <span>Fri</span>
-          <input type="checkbox" name="days" value="5" class="d-block edit_shift_checkbox_space" checked>
+          <input type="checkbox" name="days" value="5" class="d-block edit_shift_checkbox_space editShiftDays">
         </span>
       </span>
     </div>
@@ -1952,24 +1958,28 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
       <label class="col-4 modal_label">Days</label>
       <span class="col-7">
         <span class="d-inline-block">
+        <span class="d-inline-block">
+          <span>Select All</span>
+          <input type="checkbox"  class="d-block select_all_shift">
+        </span>
           <span>Mon</span>
-          <input type="checkbox" name="days" value="1" class="d-block edit_shift_checkbox_space" checked>
+          <input type="checkbox" name="days" value="1" class="d-block shift_checkbox_space shiftDays" checked>
         </span>
         <span class="d-inline-block">
           <span>Tue</span>
-          <input type="checkbox" name="days" value="2" class="d-block edit_shift_checkbox_space" checked>
+          <input type="checkbox" name="days" value="2" class="d-block shift_checkbox_space shiftDays" checked>
         </span>
         <span class="d-inline-block">
           <span>Wed</span>
-          <input type="checkbox" name="days" value="3" class="d-block edit_shift_checkbox_space" checked>
+          <input type="checkbox" name="days" value="3" class="d-block shift_checkbox_space shiftDays" checked>
         </span>
         <span class="d-inline-block">
           <span>Thu</span>
-          <input type="checkbox" name="days" value="4" class="d-block edit_shift_checkbox_space" checked>
+          <input type="checkbox" name="days" value="4" class="d-block shift_checkbox_space shiftDays" checked>
         </span>
         <span class="d-inline-block">
           <span>Fri</span>
-          <input type="checkbox" name="days" value="5" class="d-block edit_shift_checkbox_space" checked>
+          <input type="checkbox" name="days" value="5" class="d-block shift_checkbox_space shiftDays" checked>
         </span>
       </span>
     </div>
@@ -2353,6 +2363,29 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 	// 		}
 	// 		// calling the function
 	// 		  uiFunction();
+
+  $(document).on('change','.select_all_edit_shift',function(){
+    var daysLength = $('.editShiftDays').length;
+    if($(this).prop('checked') == false)
+      for(i=0;i<daysLength;i++){
+        $('.editShiftDays').eq(i).prop('checked',false);
+      }
+    if($(this).prop('checked') == true)
+      for(i=0;i<daysLength;i++){
+        $('.editShiftDays').eq(i).prop('checked','checked');
+      }
+  })
+  $(document).on('change','.select_all_shift',function(){
+    var daysLength = $('.shiftDays').length;
+    if($(this).prop('checked') == false)
+      for(i=0;i<daysLength;i++){
+        $('.shiftDays').eq(i).prop('checked',false);
+      }
+    if($(this).prop('checked') == true)
+      for(i=0;i<daysLength;i++){
+        $('.shiftDays').eq(i).prop('checked','checked');
+      }
+  })
 
 	$(document).ready(function(){
 		$(document).on('click','#delete_shift',function(){

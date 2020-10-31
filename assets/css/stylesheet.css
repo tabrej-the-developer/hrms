@@ -161,6 +161,7 @@
 	  	display: inline-block;
 	  	font-weight: 700;
 	  	margin: 2px;
+	  	font-weight: 700;
 	  	width:auto;
     	border-radius: 20px;
     	padding: 8px;
@@ -239,6 +240,35 @@
 	}
 	.addEmployee_top_select{
 		padding-right: 3rem;
+	}
+	.add_remove_bank_account{
+		position: relative;
+	}
+	.add-remove-row,.add-remove-superfund{
+		position: absolute;
+		right: 1rem;
+	}
+	.add-row,#superfund-add{
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		background: rgb(164, 217, 214);
+		padding : 0.25rem 0.75rem;
+		border-radius: 20px;
+		font-size: 1rem !important;
+		font-weight: 700;
+		cursor: pointer;
+	}
+	.remove-row,.superfund-remove{
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		background: rgb(164, 217, 214);
+		padding : 0.25rem 0.75rem;
+		border-radius: 20px;
+		font-size: 1rem !important;
+		font-weight: 700;
+		cursor: pointer;
 	}
 /*	------------------------------------------------------------------------------------
 									addEmployee.php																									 END

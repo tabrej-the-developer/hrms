@@ -365,11 +365,13 @@ class Messenger extends CI_Controller {
 						$var['isGroupYN'] = $recentChatDetail->isGroupYN;
 						if($var['isGroupYN'] == "Y"){
 							$groupInfo = $this->messengerModel->GetGroupInfo($var['id']);
-							$var['name'] = $groupInfo->groupName;
-							$var['imgUrl'] = $groupInfo->imageUrl;
-							$var['time'] = $recentChatDetail->sentDateTime;
-							$var['senderName'] = $this->utilModel->getUserDetails($recentChatDetail->senderId)->name;
-							$var['isGroupYN'] = 'Y';
+							if($groupInfo != null){
+								$var['name'] = $groupInfo->groupName;
+								$var['imgUrl'] = $groupInfo->imageUrl;
+								$var['time'] = $recentChatDetail->sentDateTime;
+								$var['senderName'] = $this->utilModel->getUserDetails($recentChatDetail->senderId)->name;
+								$var['isGroupYN'] = 'Y';
+							}
 						}
 						else{
 							$userInfo = $this->authModel->getUserDetails($var['id']);
@@ -550,7 +552,7 @@ class Messenger extends CI_Controller {
 				$mediaContent = null;
 				$groupId = $json->groupId;
 				$this->load->model('messengerModel');
-				$this->messengerModel->PostChat($senderId,$receiverId,$isGroupYN,$chatText,$mediaContent,'TRANSACTION');
+				$this->messengerModel->addTransaction($senderId,$groupId,$isGroupYN,$chatText,$mediaContent,'TRANSACTION');
 				$senderDetails = $this->authModel->getUserDetails($senderId);
 				$this->messengerModel->LeaveGroup($groupId,$receiverId);
 

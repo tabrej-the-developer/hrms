@@ -436,6 +436,12 @@ select{
     font-weight: 700;
     height: 1.5rem;
     width: 1.5rem;
+    overflow: hidden;
+  }
+  .icon img{
+    margin: -0.25rem 0;;
+    width: inherit;
+    height: inherit;
   }
   .icon-parent{
     display: flex;
@@ -460,7 +466,6 @@ select{
 </style>
 </head>
 <body>
-
 <div id="wrapper" class="animate">
     <nav class="navbar header-top fixed-top navbar-expand-lg navbar-dark">
       <!-- <a class="navbar-brand" href="javascript:void(0);">PN101</a> -->
@@ -480,6 +485,7 @@ select{
             if($this->session->has_userdata('Name')){
               $side_bar_name =  $this->session->userdata('Name');
               $side_bar_name = explode(' ',$side_bar_name);
+              $userid = $this->session->userdata('LoginId');
             }
              ?>
             <span>
@@ -490,8 +496,13 @@ select{
               <span class=" icon" style="
                 <?php echo "background:".$colors_array[rand(0,5)]?>">
                 <?php
-                if(isset($side_bar_name)){ 
+                if(isset($side_bar_name) && !file_exists('api/application/assets/profileImages/'.$userid.'.png')){ 
                   echo isset($side_bar_name[0]) ? icon($side_bar_name[0]) : "";
+                }
+                if(file_exists('api/application/assets/profileImages/'.$userid.'.png')){
+                  ?>
+                  <img src="<?php echo BASE_API_URL.'/application/assets/profileImages/'.$userid.'.png' ?>">
+                  <?php
                 }
                 ?>
               </span>

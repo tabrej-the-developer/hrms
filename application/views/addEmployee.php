@@ -207,7 +207,12 @@
 	</section>
 
 	<section class="employee-bank-account-section">
-		<h3>Bank Account <span class="add-row"> + </span></h3>
+		<h3 class="add_remove_bank_account">Bank Account 
+			<span class="add-remove-row">
+				<span class="add-row"> Add </span>
+				<span class="remove-row"> Remove </span>
+			</span>
+		</h3>
 		<div class="parent-child">
 			<div class="child">
 				<div class="statement"></div>
@@ -256,7 +261,12 @@
 
 
 	<section class="employee-superfund-section">
-		<h3> Superannuation <span id="superfund-add"> + </span></h3>
+		<h3 class="add_remove_superannutation"> Superannuation 
+			<span class="add-remove-superfund">
+				<span id="superfund-add"> Add </span>
+				<span class="superfund-remove"> Remove </span>
+			</span>
+		</h3>
 <!-- 		<span class="span-class">
 			<label class="labels__">Employee Id</label>
 			<input id="employeeId" >
@@ -888,11 +898,11 @@
 	})
 
 	var new_child = $('.parent-child ').html();
-
 	$(document).on('click','.add-row',function(){
 		$('.parent-child').append(new_child);
 				accountCount();
 	});
+	$(document)
 	function accountCount(){
 		var count = $('.statement').length;
 			for(x=0 ; x< count ; x++){

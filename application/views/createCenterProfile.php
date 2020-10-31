@@ -9,12 +9,16 @@
 	*{
 font-family: 'Open Sans', sans-serif;
 	}
+	body{
+		height: 100vh;
+		overflow: hidden;
+	}
 	#wrappers{
 		background-color: #F3F4F7;
 	}
 	#content-wrappers-element{
 		height: calc(100vh - 5rem);
-    padding: 0 2rem 0 2rem;
+    padding: 0.5rem 2rem 0 2rem;
 	}
 	.card_future{
 		background: rgba(255,255,255);
@@ -26,6 +30,7 @@ font-family: 'Open Sans', sans-serif;
     align-items: center;
     border: none;
     padding-left: 2rem;
+    background: #F3F4F7;
 	}
 	#addCenter_heading{
 		width: 100%;
@@ -33,7 +38,8 @@ font-family: 'Open Sans', sans-serif;
 		justify-content: center;
 	}
 	.input_box{
-		width: 33%
+		width: 33%;
+		padding-left: 1.5rem;
 	}
     input[type="text"],input[type=time],input[type=date],input[type=email],input[type=number],select,textarea{
       background: #ebebeb !important;
@@ -64,11 +70,16 @@ font-family: 'Open Sans', sans-serif;
     .street_address{
     	width: 67% !important;
     	min-height: 5rem;
+    	padding-left: 1.5rem;
     }
     .street_address textarea{
     	width: 66% !important;
     }
-	
+		.back_button_a{
+			display: flex;
+	    align-items: center;
+	    margin-top:1rem !important;
+		}
 	</style>
 </head>
 <body id="page-top">
@@ -78,12 +89,12 @@ font-family: 'Open Sans', sans-serif;
 	<div id="wrappers">	
 	<div>
 		<span >
-      <a href="<?php echo base_url();?>/settings">
-        <button class="back-button">
+      <button class="back-button">
+      	<a href="<?php echo base_url();?>/settings" class="back_button_a">
           <img src="<?php echo base_url('assets/images/back.svg');?>">
           <span style="font-size:1.75rem;font-weight: bold;color: rgb(23, 29, 75); ">Add Center</span>
-        </button>
-      </a>
+    		</a>
+      </button>
     </span>
 	</div> 
 		<div  id="content-wrappers-element" >
@@ -92,7 +103,7 @@ font-family: 'Open Sans', sans-serif;
 			<form name="userinput" action="createCenterProfile" method="post" enctype="multipart/form-data" onsubmit="return onFormSubmit()">
 				 	<span id="centerDetailsYo">
 				 		<div class="row">
-						<span id="addCenter_heading">Center Details</span>
+						<!-- <span id="addCenter_heading">Center Details</span> -->
 							
 						<!-- <div class="" style="padding: 5px;"></div> -->
 						<div class="input_box">
@@ -160,7 +171,7 @@ font-family: 'Open Sans', sans-serif;
 						<div class="input_box">
 							<label>
 								<i style="color: #aa63ff;" class=""></i> Center Date Opened</label>
-							<input class="" type="date" name="center_date_opened" placeholder="dd-mm-yyyy" id="centre_date_opened" value="">
+							<input class="" type="date" name="center_date_opened" placeholder="dd-mm-yyyy" id="centre_date_opened" value="" placeholder="dd-mm/yyyy">
 						</div>
 						<div class="input_box">
 							<label>
@@ -279,7 +290,13 @@ font-family: 'Open Sans', sans-serif;
     $('#wrappers').css('paddingLeft',$('.side-nav').width());
 });
 
-
+<?php 
+	$flash = $this->session->flashdata('centerCreated');
+	if(isset($flash)){ ?>
+      showNotification();
+      addMessageToNotification('<?php echo $this->session->flashdata('centerCreated') ?>');
+      setTimeout(closeNotification,5000)
+	<?php	} ?>
 	function validate(variable){
 		if(($('#'+variable)[0].files[0].size)/(1024*1024) < 4){
 			

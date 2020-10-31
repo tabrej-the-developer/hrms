@@ -104,27 +104,26 @@ class Notice extends CI_Controller {
 					$this->load->model('noticeModel');
 						if($text != null && $text != "" && $subject != null && $subject != "" && ( count($json->members) > 0) ){
 							foreach ($json->members as $memberid) {
-								// if(preg_match('/[a-z]/i',$memberid) == 1){
-								// 	$config = Array(    
-								// 	    'protocol'  => 'smtp',
-								// 	    'smtp_host' => 'ssl://smtp.zoho.com',
-								// 	    'smtp_port' => 465,
-								// 	    'smtp_user' => 'demo@todquest.com',
-								// 	    'smtp_pass' => 'K!ddz1ng',
-								// 	    'mailtype'  => 'html',
-								// 	    'charset'   => 'utf-8'
-								// );
-								// 	$this->load->library('email',$config); // Load email template
-								// 	$this->email->set_newline("\r\n");
-								// 	$this->email->from('demo@todquest.com','Todquest');
-								// 	$mailId = $this->noticeModel->getMailId($memberid);
-								// 	$this->email->to($mailId->email); 
-								// 	$this->email->subject($subject); 
-								// 	// $mess = $this->load->view($text,$arr,true);
-								// 	$this->email->message($text); 
-								// 	$this->email->send();
-								// 	$this->noticeModel->addNotice($userid,$memberid,$subject,$text);
-								// }
+								if(preg_match('/[a-z]/i',$memberid) == 1){
+									$config = Array(    
+									    'protocol'  => 'smtp',
+									    'smtp_host' => 'ssl://smtp.zoho.com',
+									    'smtp_port' => 465,
+									    'smtp_user' => 'demo@todquest.com',
+									    'smtp_pass' => 'K!ddz1ng',
+									    'mailtype'  => 'html',
+									    'charset'   => 'utf-8'
+								);
+									$this->load->library('email',$config); // Load email template
+									$this->email->set_newline("\r\n");
+									$this->email->from('demo@todquest.com','Todquest');
+									$mailId = $this->noticeModel->getMailId($memberid);
+									$this->email->to($mailId->email); 
+									$this->email->subject($subject); 
+									$this->email->message($text); 
+									$this->email->send();
+									$this->noticeModel->addNotice($userid,$memberid,$subject,$text);
+								}
 								if(preg_match('/[a-z]/i',$memberid) == 0 ){
 									// $groupMembers = $this->noticeModel->getMembersOfGroup($memberid);
 									// foreach($groupMembers as $member){

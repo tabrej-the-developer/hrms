@@ -644,7 +644,7 @@ $("#mytable #checkall").click(function () {
         groupId : groupId
       },
       success : function(response){
-        console.log(response)
+        window.location.reload();
       }
     })
   })
