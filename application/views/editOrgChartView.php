@@ -932,6 +932,7 @@ font-family: 'Open Sans', sans-serif;
 
 		function getEmployeesCountByRole(){
 			var count = $('.roleNameClass').length;
+			console.log(count)
 			var c = 0;
 			for(var i=0;i<count;i++){
 				var role = $('.roleNameClass').eq(i).attr('r_id');
@@ -941,13 +942,13 @@ font-family: 'Open Sans', sans-serif;
 						type : 'GET',
 						success : function(response){
 							emps = JSON.parse(response).employees;
-							empCount = JSON.parse(response).employees.length;
+							empCount = emps.length;
 							string = "";
-							$('.roleNameClass').eq(c).append(` <span class="usersWithRole">( ${empCount} <img src="<?php echo base_url('assets/images/icons/customer.png'); ?>" style="max-height:1rem;margin-right:10px">)</span>`);
+							$('.roleNameClass').eq(i).append(` <span class="usersWithRole">( ${empCount} <img src="<?php echo base_url('assets/images/icons/customer.png'); ?>" style="max-height:1rem;margin-right:10px">)</span>`);
 							emps.forEach(function(e){
 								string = string +'\n'+e.name
 							})
-							$('.roleNameClass').eq(c).attr('title',string)
+							$('.roleNameClass').eq(i).attr('title',string)
 							c++;
 						}
 					})

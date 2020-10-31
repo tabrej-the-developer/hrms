@@ -827,7 +827,7 @@ color:#FFFFFF;
           <span class="col-6" >
             <span>
               <span class="module-balance" style="color:rgba(253, 188, 0)"><?php echo $moduleRowCount->leavesCount; ?></span>
-              <span class="module-name">On leave</span>
+              <span class="module-name">Total Leaves</span>
               </span>
           </span>
         </span>

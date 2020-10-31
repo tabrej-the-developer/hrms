@@ -881,7 +881,7 @@ class Settings extends CI_Controller {
 					$ambulanceSubscriptionNo = $json->ambulanceSubscriptionNo;
 					$xeroEmployeeId = $json->xeroEmployeeId;
 					$profileImage = $json->profileImage;
-					$profileImageName = md5(uniqid()).'.png';
+					$profileImageName = $employee_no.'.png';
 					$target_dir = 'application/assets/profileImages/';
 					$fileNameLoc = $target_dir.$profileImageName;
 					// var_dump((base64_decode($profileImage)));
@@ -991,18 +991,19 @@ $this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$f
 						}
 				}
 			}
- 	function postToXero($access_token,$tenant_id,$data){
- 		$url = "https://api.xero.com/payroll.xro/1.0/Employees/";
+			
+	function postToXero($access_token,$tenant_id,$data){
+		$url = "https://api.xero.com/payroll.xro/1.0/Employees/";
 		$ch =  curl_init($url);
-       	curl_setopt($ch, CURLOPT_URL,$url);
-       	curl_setopt($ch, CURLOPT_POST,1);
-       	curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
-       	curl_setopt($ch, CURLOPT_HTTPHEADER,  array(
-           'Content-Type:application/json',
-           'Authorization:Bearer '.$access_token,
-           'Xero-tenant-id:'.$tenant_id
-       	));
-       	curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_POST,1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+		curl_setopt($ch, CURLOPT_HTTPHEADER,  array(
+		   'Content-Type:application/json',
+		   'Authorization:Bearer '.$access_token,
+		   'Xero-tenant-id:'.$tenant_id
+		));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
 		$server_output = curl_exec($ch);
 		return $server_output;
 	}
@@ -1247,13 +1248,13 @@ $this->settingsModel->updateEmployeeTable($employee_no, $xeroEmployeeId,$title,$
 							$mData['appName'] = APP_NAME;
 							$this->load->library('email');
 							$config = array(
-							    'protocol'  => 'smtp',
-							    'smtp_host' => 'ssl://smtp.zoho.com',
-							    'smtp_port' => 465,
-							    'smtp_user' => SMTP_EMAIL,
-							    'smtp_pass' => SMTP_PASSWORD,
-							    'mailtype'  => 'html',
-							    'charset'   => 'utf-8'
+								'protocol'  => 'smtp',
+								'smtp_host' => 'ssl://smtp.zoho.com',
+								'smtp_port' => 465,
+								'smtp_user' => SMTP_EMAIL,
+								'smtp_pass' => SMTP_PASSWORD,
+								'mailtype'  => 'html',
+								'charset'   => 'utf-8'
 							);
 							$this->email->initialize($config);
 							$this->email->set_mailtype("html");

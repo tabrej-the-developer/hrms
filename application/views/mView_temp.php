@@ -1187,6 +1187,7 @@ width: 100%;
   height: 100vh;
 }
 .input-group{
+  height: 3.5rem;
   display: flex;
   align-items: center;
 }

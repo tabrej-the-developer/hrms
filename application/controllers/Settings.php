@@ -1085,6 +1085,7 @@ $server_output = curl_exec($ch);
 					// $data['employeeid'] = $employeeid;
 					$data['userid'] = $this->session->userdata('LoginId');
 					$data['centers'] = $this->getAllCenters();
+					$data['employeeId'] = $employeeId;
 					if($employeeId != null){
 						$data['getEmployeeData'] = $this->getEmployeeProfile($employeeId);
 					}
@@ -1530,6 +1531,35 @@ $server_output = curl_exec($ch);
 		}
 	}
 
+	public function syncXeroEmployees($employeeId=null){
+			$input = $this->input->post();
+			$data['userid'] = $this->session->userdata('LoginId');
+			if(isset($input['centerid']) && $input['centerid'] != null && $input['centerid'] != "")
+				$data['centerid'] = $input['centerid'];
+			$url = BASE_API_URL."/xero/syncXeroEmployees/".$employeeId;
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'x-device-id: '.$this->session->userdata('x-device-id'),
+					'x-token: '.$this->session->userdata('AuthToken')
+				));
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			// var_dump($server_output);
+			// print_r($httpcode);
+			if($httpcode == 200){
+				echo $server_output;
+				curl_close ($ch);
+
+			}
+			else if($httpcode == 401){
+
+			}
+	}
+
 	public function getEmployeeDetails($employeeId){
 		if($employeeId != null && $employeeId != ""){
 			//footprint start
@@ -1965,6 +1995,7 @@ $server_output = curl_exec($ch);
 		// footprint end
 				$data['centers'] = $this->getAllCenters();
 				$data['permissions'] = $this->fetchPermissions();
+				// $data['syncedWithXero'] =$this->SyncedWithXero($centerid);
 				$this->load->view('viewEmployeeTable',$data);
 					}
 			else{

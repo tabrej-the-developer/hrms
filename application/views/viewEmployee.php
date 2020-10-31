@@ -148,7 +148,7 @@
 	  	display: inline-block;
 	  	font-weight: 700;
 	  	margin: 2px;
-	  	width:8rem;
+	  	width:auto;
     	border-radius: 20px;
     	padding: 8px;
     	background: rgb(164, 217, 214);
@@ -225,17 +225,17 @@
 <body>
 <?php $this->load->view('header'); ?>
 <div class="containers">
-	<div>
-	<span style="padding-left: 2rem;">
-      <a href="<?php echo base_url();?>/settings">
-        <button class="btn back-button">
-          <img src="<?php echo base_url('assets/images/back.svg');?>">
-          <span style="font-size:0.8rem">View Employee</span>
-        </button>
-      </a>
-    </span>
-<!--     <span class="top_select">
-			<span class="select_css">
+	<div style="height:3.5rem;display: flex;align-items: center;">
+		<span style="padding-left: 2rem;">
+	      <a href="<?php echo base_url();?>/settings">
+	        <button class="btn back-button">
+	          <img src="<?php echo base_url('assets/images/back.svg');?>">
+	          <span style="font-size:0.8rem">View Employee</span>
+	        </button>
+	      </a>
+	    </span>
+    <span class="top_select">
+<!-- 			<span class="select_css">
 				<select placehdr="Center" id="centerValue" name="centerValue" onchange="getEmployees()">
 					<?php 
 						$employeeData = json_decode($getEmployeeData);
@@ -254,8 +254,14 @@
 				<select placehdr="Employee" id="employeeValue" name="employeeValue" onchange="getEmployeeProfile()">
 
 				</select>
-			</span>
-    </span> -->
+			</span> -->
+	    <span class="syncXeroEmployees">
+	      <button class="button " id="XeroEmployees" >
+	        <i>
+	          <img src="<?php echo base_url('assets/images/icons/xero.png'); ?>" style="max-height:2rem;margin-right:10px">
+	        </i>Sync Xero Leaves</button>
+	    </span>
+    </span>
 	</div>
 	<div class="addEmployee-container">
 	<div class="addEmployee-container-child">
@@ -1020,7 +1026,15 @@ $(document).ready(function(){
 		}
 	}
 
-
+	$(document).on('click','.syncXeroEmployees',function(){
+		var url = window.location.origin+'/PN101/settings/syncXeroEmployees/'+ "<?php echo $employeeId ?>";
+		$.ajax({
+			url : url,
+			success : function(response){
+				console.log(response)
+			}
+		})
+	})
 
 	$(document).on('change','#area',function(){
 	var areaId = this.value;

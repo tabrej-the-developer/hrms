@@ -186,7 +186,6 @@
       justify-content: center;
     }
     .viewEmployeeTable_search {
-      margin-right: 2rem;
       margin-left: 1rem;
     }
     #filter{
@@ -213,6 +212,9 @@
       height: 20%;
       background: white;
       width: 100%;
+    }
+    .syncXeroEmployees{
+      margin-right: 2rem !important;
     }
     </style>
   </head>
@@ -256,6 +258,12 @@
         </span>
         <span class="viewEmployeeTable_search ">
           <input type="" name="" onkeyup="searchBy()" id="filter" placeholder="Search">
+        </span>
+        <span class="syncXeroEmployees">
+          <button class="button " id="XeroEmployees" >
+            <i>
+              <img src="<?php echo base_url('assets/images/icons/xero.png'); ?>" style="max-height:2rem;margin-right:10px">
+            </i>Sync Xero Leaves</button>
         </span>
       </span>
       <div id="content-wrappers" class="containers">
@@ -439,6 +447,22 @@
         });
 
     }
+
+    $(document).on('click','.syncXeroEmployees',function(){
+      var centerid = $('#centerValue').val(); 
+      var url = window.location.origin+'/PN101/settings/syncXeroEmployees'
+      $.ajax({
+        url : url,
+        type : 'POST',
+        data : {
+          centerid : centerid
+        },
+        success : function(response){
+          console.log(response)
+          // window.location.href = window.location.href;
+        }
+      }) 
+    })
 </script>
 
 </body>

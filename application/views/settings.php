@@ -102,7 +102,9 @@ a[href*="settings"],.xero_settings a{
 	font-style: normal;
 	color: rgba(0,0,0,0.6);
 }
-
+.top-box-bottom {
+	padding-bottom: 2rem;
+}
 	@media only screen and (max-width: 600px) {
 		.title-box{
 			display:block;

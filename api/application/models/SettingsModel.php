@@ -173,6 +173,11 @@ class SettingsModel extends CI_Model {
 			$this->db->query("INSERT INTO usercenters (userid,centerid) VALUES ('$userid',$centerid)");
 		}
 
+		public function addToUserCenters($userid,$centerid){
+			$this->load->database();
+			$this->db->query("INSERT INTO usercenters (userid,centerid) VALUES ('$userid',$centerid)");
+		}
+
 		public function addToEmployeeBankAccount( $xeroEmployeeId,$accountName,$bsb,$accountNumber,$remainderYN,$amount){
 			$this->load->database();
 			$query = $this->db->query("INSERT INTO employeebankaccount (employeeId, accountName, bsb, accountNumber, remainderYN, amount) VALUES ( '$xeroEmployeeId','$accountName','$bsb','$accountNumber','$remainderYN','$amount')");

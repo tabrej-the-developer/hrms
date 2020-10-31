@@ -72,6 +72,9 @@ font-family: 'Open Sans', sans-serif;
     }
   #addCenter_multipleEmployees{
       border: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       color: rgb(23, 29, 75);
       text-align: center;
       text-decoration: none;
@@ -92,6 +95,10 @@ font-family: 'Open Sans', sans-serif;
       .submit_button{
         padding: 1rem;
       }
+      .page_heading{
+        padding-top: 1rem;
+        padding-bottom: 0.5rem;
+      }
 
   </style>
 </head>
@@ -106,7 +113,7 @@ font-family: 'Open Sans', sans-serif;
      <?php require_once('header.php') ?>
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewCenterProfileYN : "N")== "Y"){ ?>
   <div id="wrappers"> 
-  <div class="d-flex justify-content-between">
+  <div class="d-flex justify-content-between page_heading">
     <span class="d-flex align-items-center">
       <a href="<?php echo base_url();?>/settings">
         <button class="back-button">
@@ -140,23 +147,26 @@ font-family: 'Open Sans', sans-serif;
       </span>
     <span class="addEmployee_top_select pr-5">
       <a href="<?php echo base_url('settings/createCenter');?>">
-        <button id="addCenter_multipleEmployees">Add Center</button>
+        <button id="addCenter_multipleEmployees" >
+          <i class="mr-1 ml-1">
+            <img src="<?php echo base_url('assets/images/icons/plus.png'); ?>" height="16px" width="16px">
+          </i>Add Center</button>
       </a>
     </span>
   </div> 
     <div  id="content-wrappers-element" >
     <div class="card_future" style="padding: 20px;">
-  
-      <form name="userinput" action="editCenterProfile" method="post" enctype="multipart/form-data" >
+      <form name="userinput" action="editCenter" method="post" enctype="multipart/form-data" >
           <span id="centerDetailsYo">
             <div class="row">
-            <span id="addCenter_heading">Center Details</span>
+            <!-- <span id="addCenter_heading">Center Details</span> -->
               
             <div class="" style="padding: 5px;"></div>
             <div class="input_box">
               <label>
                 <i style="color: #aa63ff;" class=""></i> Center Name</label>
               <input type="text" class="" name="center_name" id="ceter name" placeholder="Center name" value="<?php echo isset($cD->name) ? $cD->name : ''; ?>" required>
+              <input type="text" name="centerid" value="<?php echo $cD->centerid; ?>" style="display: none">
             </div>
               <div class="input_box">
               <label><i style="color: #aa63ff;" class=""></i> City</label>

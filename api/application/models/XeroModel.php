@@ -9,10 +9,10 @@ class XeroModel extends CI_Model {
 		$this->db->query("DELETE FROM xeroaccesstoken where centerid = $centerid ");
 		$this->db->query("INSERT INTO xeroaccesstoken VALUES(0,'$access_token','$refresh_token','$tenant_id',$expires_in,now(), $centerid)");
 	}
-
-	public function getXeroToken(){
+						// ||\/|| CODE CHANGED ||\/|| //
+	public function getXeroToken($center){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM xeroaccesstoken");
+		$query = $this->db->query("SELECT * FROM xeroaccesstoken where centerid = '$center'");
 		return $query->row();
 	}
 
