@@ -8,8 +8,8 @@
 <script type="text/javascript" href="https://code.jquery.com/jquery-3.4.1.js"></script>
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/tokenize2.css">
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tokenize2.js"></script>
-<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<script type="text/javascript" src="../assets/ckeditor/ckeditor.js"></script>
 <style type="text/css">
     *{
 font-family: 'Open Sans', sans-serif;
@@ -663,10 +663,7 @@ $("#mytable #checkall").click(function () {
   })
 
 </script>
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script>
-  var quill = new Quill('#editor', {
-    theme: 'snow'
-  });
+  CKEDITOR.replace( 'editor' );
 </script>
 </html>

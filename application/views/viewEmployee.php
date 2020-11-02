@@ -220,6 +220,27 @@
 		height: 80%;
 		overflow: auto
 	}
+	.profileImage{
+		padding-left: 1rem;
+	}
+	.user_profileImage{
+		font-size: 2rem !important;
+	    height: 100px;
+	    width: 100px;
+	    border-radius: 50%;
+	    background: #e3e4e7;
+	}
+	.user_profileImage .icon{
+		font-size: 3rem;
+		height:4rem;
+		width: 4rem;
+		margin-top: -1rem !important;
+	}
+	.profileImage_parent{
+		width: auto !important;
+	    display: inline-flex;
+	    align-items: center;
+	}
 	</style>
 </head>
 <body>
@@ -323,7 +344,19 @@
 		<span class="span-class" style="width:30rem;">
 			<label>Profile Image</label>
 			<span style="height:100px;width:100px;border-radius:0.5rem">
-				<img style="border-radius:0.5rem" src="<?php echo base_url('api/').isset($employeeData->users->imageUrl) ? $employeeData->users->imageUrl : '' ?>" height="100px" width="100px">
+				<?php if(file_exists("api/application/assets/profileImages/".$employeeId.".png")){ ?>
+				<img style="border-radius:0.5rem" src="<?php echo BASE_API_URL."application/assets/profileImages/".$employeeId.".png" ?>" height="100px" width="100px">
+			<?php }else{ 
+					if($this->session->has_userdata('Name')){
+		              $side_bar_name =  $this->session->userdata('Name');
+		              $side_bar_name = explode(' ',$side_bar_name);
+		              $userid = $this->session->userdata('LoginId');
+		            }
+				?>
+				<span class="user_profileImage icon-parent">
+					<span class=" icon"><?php echo isset($side_bar_name[0]) ? icon($side_bar_name[0]) : ""; ?></span>
+				</span>
+			<?php } ?>
 			</span>
 		</span>
 <!-- 		<span class="span-class">
