@@ -600,7 +600,9 @@ td.shift-edit{
 					</div>
 			 	</td>
 		<?php	 }} ?>
-		<td><?php echo isset($totalTimeForWeek) ? intval(($totalTimeForWeek)/60).".".intval(($totalTimeForWeek)%60) : ""; ?></td>
+		<td><?php echo isset($totalTimeForWeek) ? intval(($totalTimeForWeek)/60).".".intval(($totalTimeForWeek)%60) : ""; ?>
+			<!-- <img src="<?php?>"> -->
+		</td>
 <!-- 			<td class=" " style="min-width:14vw;font-weight:bolder"><?php //echo "$".$weeklyTotal;?></td>
  -->		</tr>
 
