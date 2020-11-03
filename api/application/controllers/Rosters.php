@@ -384,6 +384,8 @@ class Rosters extends MY_Controller {
 				// 		$data['Message'] = "Rosters start from Monday";
 				// }
 				if($userDetails != null && ($userDetails->role == ADMIN || $userDetails->role == SUPERADMIN)){
+					if($templateName != null && $templateName != ""){
+	
 					$this->load->model('rostersModel');
 					// $existingRoster = $this->rostersModel->getRosterTemplateFromDate($current,$centerid);
 
@@ -450,6 +452,8 @@ class Rosters extends MY_Controller {
 						}
 						// var_dump($data);
 					$data['rosterid'] = $rosterid;
+				
+					}
 				}
 				else{
 

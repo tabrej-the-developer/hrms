@@ -18,6 +18,14 @@ class Util extends CI_Controller {
 
 	}
 
+	public function getQuotes(){
+		$this->load->model('utilModel');
+		$data['quotations'] = $this->utilModel->getQuotations();
+		http_response_code(200);
+		echo json_encode($data);
+
+	}
+
 	public function GetAllCenters($userid){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){

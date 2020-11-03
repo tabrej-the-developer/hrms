@@ -86,7 +86,9 @@ font-family: 'Open Sans', sans-serif;
 .text-class{
     color:white;
     font-size: 4rem;
-    margin:30% 5%;
+    margin: 30% 5% 5% 5%;
+    position: absolute;
+    bottom: 0rem;
 }
 .text-class > span{
     text-align: left;
@@ -123,6 +125,16 @@ input[type="submit"]{
 }
 .remember_parent{
     height: 3rem;
+}
+.quotation{
+    font-size: 1rem;
+    margin-top: 6rem;
+}
+.author_name{
+    font-size: 1rem;
+    font-weight: 100 !important;
+    display: flex !important;
+    justify-content: flex-end;
 }
 @media only screen and (max-width:600px){
     body{
@@ -186,8 +198,15 @@ input[type="submit"]{
                 </div>
                 <div class="col-0 col-md-7 login-form-3" >
                     <div class="text-class">
-                        <span class="">Glad</span>
-                        <span class="">to see You.</span>
+                        <?php 
+                            $quotations = json_decode($quotations);
+                            $quoteLength = count($quotations->quotations);
+                            $rand = rand(0,$quoteLength-1);
+                         ?>
+                         <span>Glad</span>
+                         <span>to see You</span>
+                        <span class="quotation"><?php echo $quotations->quotations[$rand]->quote ?></span>
+                        <span class="author_name"><i> <br>- <?php echo $quotations->quotations[$rand]->author ?></i></span>
                     </div>
                 </div>
             </div>

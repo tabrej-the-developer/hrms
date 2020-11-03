@@ -72,4 +72,10 @@ class UtilModel extends CI_Model {
 			$query = $this->db->query("INSERT into usercenters (centerid,userid) values ($centerid,'$userid')");
 
 		}
+
+		public function getQuotations(){
+			$this->load->database();
+			$query = $this->db->query("SELECT * from quotes");
+			return $query->result();
+		}
 }

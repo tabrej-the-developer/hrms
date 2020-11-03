@@ -206,8 +206,11 @@ foreach($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes 
 		</span>
 
 	</span>
-		<div style="padding-left: 3rem;"><?php echo $visits->message;?></div>
-
+		<div style="padding-left: 3rem;"><?php 
+		if(isset($visits->message) && $visits->message != null && $visits->message != "null" && $visits->message != ""){
+			echo $visits->message;
+		}
+		?></div>
 	</div>
 
 	<?php
@@ -255,7 +258,11 @@ foreach($timesheetDetails->timesheet[$ya]->unrosteredEmployees[$xa]->clockedTime
 			</select>
 		</span>
 	</span>
-		<div><?php echo $visits->message;?></div>
+		<div><?php 
+		if(isset($visits->message) && $visits->message != null && $visits->message != "null" && $visits->message != ""){
+		echo $visits->message;
+			}
+		?></div>
 
 	</div>
 	<?php

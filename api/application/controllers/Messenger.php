@@ -75,7 +75,20 @@ class Messenger extends CI_Controller {
 						array_push($data,$var);
 					}
 				}
-				$mdata['users'] = $data;
+                function sortUsers($my_array)
+					{
+						for($i=0;$i<count($my_array);$i++){
+							$val = $my_array[$i];
+							$j = $i-1;
+							while($j >= 0 && strtolower($my_array[$j]['username']) > strtolower($val['username'])){
+								$my_array[$j+1] = $my_array[$j];
+								$j--;
+							}
+							$my_array[$j+1] = $val;
+						}
+					return $my_array;
+					}
+				$mdata['users'] = sortUsers($data);
 				http_response_code(200);
 				echo json_encode($mdata);
 			}

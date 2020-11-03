@@ -1607,8 +1607,17 @@ messaging.getToken().then((currentToken) => {
                  ?></span>
                 <span class="recentchat_date_time">
                   <?php
-                  if(date('d-m-Y',strtotime($chat->time)) == date('d-m-Y',strtotime('today')))
-                    echo date('h:i a',strtotime($chat->time));
+                  if(date('d-m-Y',strtotime($chat->time)) == date('d-m-Y',strtotime('today'))){
+                    $myDateTime = new DateTime(date('Y-m-d h:i:s',strtotime($chat->time)), new DateTimeZone('GMT'));
+                    // $loc = $_SERVER['REMOTE_ADDR'];
+                    // $ipInfo = file_get_contents('http://ip-api.com/json/' . $loc);
+                    $myDateTime->setTimezone(new DateTimeZone('Asia/Kolkata'));                    
+                    // uncomment this
+                    // $myDateTime->setTimezone(new DateTimeZone($ipInfo->timezone));
+                    echo $myDateTime->format('h:i a');
+                    // echo $ipInfo;
+                    // echo date('h:i a',strtotime($chat->time));
+                  }
                   else
                     echo date('d/m/Y',strtotime($chat->time));
                   ?>
@@ -1837,7 +1846,15 @@ messaging.getToken().then((currentToken) => {
 
                 ?>
             </p>
-            <small class=" chat-message-time"><?php echo date_format($date,"H:i");?></small>
+            <small class=" chat-message-time"><?php 
+            $myDateTime = new DateTime(date('Y-m-d h:i:s',strtotime($chats->sentDateTime)), new DateTimeZone('GMT'));
+                    // $loc = $_SERVER['REMOTE_ADDR'];
+                    // $ipInfo = file_get_contents('http://ip-api.com/json/' . $loc);
+                    $myDateTime->setTimezone(new DateTimeZone('Asia/Kolkata'));                    
+                    // uncomment this
+                    // $myDateTime->setTimezone(new DateTimeZone($ipInfo->timezone));
+                    echo $myDateTime->format('h:i a');
+              ?></small>
           </div>
         </div>
       </div>
@@ -2528,7 +2545,7 @@ $('.save').click(function(){
             chatText : chatText
           },
           success : function(response){
-            // console.log(response)
+            console.log(response)
  
           }
         })
