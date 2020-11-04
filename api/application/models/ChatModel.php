@@ -6,7 +6,7 @@ class ChatModel extends CI_Model {
     public function getChat($idConversation,$idUser,$offset,$count){
         try{
             $this->load->database();
-            $memberDetails = $this->db->query("SELECT * FROM chat_conversationmembers WHERE idUser = $idUser AND idConversation = $idConversation ORDER BY idMember DESC LIMIT 1")->row();
+            $memberDetails = $this->db->query("SELECT * FROM chat_conversationmembers WHERE idUser = '$idUser' AND idConversation = $idConversation ORDER BY idMember DESC LIMIT 1")->row();
             $subQuery = "";
             if($memberDetails->deletedDate != NULL)
             $subQuery = "AND chat.createdAt < '$memberDetails->deletedDate'";
@@ -49,7 +49,7 @@ class ChatModel extends CI_Model {
     public function getOtherMemberInConvo($idUser,$idConversation){
             $this->load->database();
         try{
-            $query = $this->db->query("SELECT * FROM chat_conversationmembers WHERE idUser != $idUser AND idConversation = $idConversation");
+            $query = $this->db->query("SELECT * FROM chat_conversationmembers WHERE idUser != '$idUser' AND idConversation = $idConversation");
             return $query->row();
         }
         catch(Exception $e){
@@ -83,7 +83,7 @@ class ChatModel extends CI_Model {
     public function getConversationOrdered($idUser){
             $this->load->database();
         try{
-        $query = $this->db->query("SELECT * FROM chat_conversation WHERE idConversation IN (SELECT idConversation FROM chat_conversationmembers WHERE idUser = $idUser ORDER BY lastUpdated DESC)");
+        $query = $this->db->query("SELECT * FROM chat_conversation WHERE idConversation IN (SELECT idConversation FROM chat_conversationmembers WHERE idUser = '$idUser' ORDER BY lastUpdated DESC)");
         return $query->result();
         }
         catch(Exception $e){
