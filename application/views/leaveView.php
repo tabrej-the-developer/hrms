@@ -567,7 +567,7 @@ input[type="date"],input[type=time]{
   width: 79%;
 }
 .status__{
-  widows: 1.5rem;
+  width: 1.5rem;
 }
 /*  .status-appr{
     font-size: 0.9rem;

@@ -16,6 +16,9 @@
 	*{
 font-family: 'Open Sans', sans-serif;
 	}
+	input[type="submit"]:disabled{
+		cursor:not-allowed 
+	}
 
 		.containers{
 		background:	rgb(243, 244, 247);
@@ -855,14 +858,15 @@ table.dataTable{
 	})
 
 
-</script>
-<script type="text/javascript">
+
 	 $(function() {
-	 	
+
+	 	// datepicker
 $("#roster-date").datepicker();
 	 });
-</script>
-<script type="text/javascript">
+
+
+
 	$(document).ready(function(){
 		$(document).on('click','#roster-submit',function(e){
 			var a = $('#roster-date').val();
@@ -877,8 +881,18 @@ $("#roster-date").datepicker();
 
 		})
 	})
-</script>
-<script type="text/javascript">
+
+
+// validate
+$('#roster-template-submit').prop('disabled','disabled');
+	$(document).on('keyup','#roster-name',function(){
+		if($('#roster-name').val() == null || $('#roster-name').val() == ""){
+			$('#roster-template-submit').prop('disabled','disabled');
+		}
+		if($('#roster-name').val() != null && $('#roster-name').val() != ""){
+			$('#roster-template-submit').prop('disabled',false);
+		}
+	})
 	$(document).ready(()=>{
 		remove_loader_icon();
     $('.containers').css('paddingLeft',$('.side-nav').width());

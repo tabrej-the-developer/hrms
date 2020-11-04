@@ -154,7 +154,8 @@ class MessengerModel extends CI_Model {
 
 	public function PostChat($senderId,$receiverId,$isGroupYN,$chatText,$mediaContent){
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO chat (senderId,receiverId, isGroupYN,chatText,sentDateTime, mediaContent,transactiontype) VALUES('$senderId','$receiverId','$isGroupYN','$chatText',now(),'$mediaContent','CHAT')");
+		$dateTime = gmdate("Y-m-d h:i:s");
+		$query = $this->db->query("INSERT INTO chat (senderId,receiverId, isGroupYN,chatText,sentDateTime, mediaContent,transactiontype) VALUES('$senderId','$receiverId','$isGroupYN','$chatText','$dateTime','$mediaContent','CHAT')");
 	}
 }
 

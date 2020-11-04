@@ -364,7 +364,7 @@ table.dataTable{
 				<tr id="<?php echo $payroll->timesheets[$i]->id?>">
 					<td><?php echo $i+1 ?></td>
 					<?php if($this->session->userdata('UserType') == ADMIN ){?>
-						<td><?php print_r(json_decode($centers)->centers[0]->name) ?></td>
+						<td><?php echo 'Payroll | '.dateToDay($payroll->timesheets[$i]->startDate).'-'.dateToDay($payroll->timesheets[$i]->endDate) ?></td>
 					<?php } ?>
 					<?php if($this->session->userdata('UserType') ==SUPERADMIN ) { ?>
 					<td><?php echo 'Payroll | '.dateToDay($payroll->timesheets[$i]->startDate).'-'.dateToDay($payroll->timesheets[$i]->endDate) ?></td>
