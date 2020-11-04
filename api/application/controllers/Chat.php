@@ -29,7 +29,7 @@ class Chat extends CI_Controller {
     /*
         This function is used to get `count` number of chats in a conversation.
     */
-    public function getChat(){
+    public function getChat($userid){
 
         $headers = $this->input->request_headers();
         if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
@@ -149,7 +149,7 @@ class Chat extends CI_Controller {
     /*
         This function is used to get all the details of a conversation.
     */
-    public function getConversation(){
+    public function getConversation($userid){
 
 
         $headers = $this->input->request_headers();
@@ -223,7 +223,7 @@ class Chat extends CI_Controller {
     /* 
         This function is used to get all the recent conversations along with unread count.
     */
-    public function getRecentConversations(){
+    public function getRecentConversations($userid){
 
 
         $headers = $this->input->request_headers();
