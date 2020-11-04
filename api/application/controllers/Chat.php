@@ -29,18 +29,18 @@ class Chat extends CI_Controller {
     /*
         This function is used to get `count` number of chats in a conversation.
     */
-    public function getChat($userid){
+    public function getChat($idUser){
 
         $headers = $this->input->request_headers();
         if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
             $this->load->model('authModel');
             $res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
-            if($res != null && $res->userid == $userid){
+            if($res != null && $res->userid == $idUser){
                 if($_SERVER['REQUEST_METHOD'] == "GET") {
                     $idConversation = $_REQUEST['idConversation'] ? $_REQUEST['idConversation'] : 0;
                     $count = isset($_REQUEST['count']) ? $_REQUEST['count'] : 20;
                     $offset = isset($_REQUEST['offset'])  ? $_REQUEST['offset'] : 0;    
-                    $idUser = isset($_REQUEST['idUser']) ? $_REQUEST['idUser'] : 0;
+                    // $idUser = isset($_REQUEST['idUser']) ? $_REQUEST['idUser'] : 0;
                     if($idUser){
                         $data['Status'] = "SUCCESS";
                         $data['chats'] = $this->chatModel->getChat($idConversation,$idUser,$offset,$count);
@@ -149,17 +149,17 @@ class Chat extends CI_Controller {
     /*
         This function is used to get all the details of a conversation.
     */
-    public function getConversation($userid){
+    public function getConversation($idUser){
 
 
         $headers = $this->input->request_headers();
         if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
             $this->load->model('authModel');
             $res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
-            if($res != null && $res->userid == $userid){
+            if($res != null && $res->userid == $idUser){
                 if($_SERVER['REQUEST_METHOD'] == "GET") {
 
-                    $idUser = $_REQUEST['idUser'] ? $_REQUEST['idUser'] : 0;
+                    // $idUser = $_REQUEST['idUser'] ? $_REQUEST['idUser'] : 0;
                     
                     if($idUser){
                         if(isset($_REQUEST['idConversation'])){
@@ -223,17 +223,17 @@ class Chat extends CI_Controller {
     /* 
         This function is used to get all the recent conversations along with unread count.
     */
-    public function getRecentConversations($userid){
+    public function getRecentConversations($idUser){
 
 
         $headers = $this->input->request_headers();
         if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
             $this->load->model('authModel');
             $res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
-            if($res != null && $res->userid == $userid){
+            if($res != null && $res->userid == $idUser){
                 if($_SERVER['REQUEST_METHOD'] == "GET") {
 
-                    $idUser = $_REQUEST['idUser'] ? $_REQUEST['idUser'] : 0;
+                    // $idUser = $_REQUEST['idUser'] ? $_REQUEST['idUser'] : 0;
                     if($idUser){
                         $allConversation = $this->chatModel->getConversationOrdered($idUser);
                         $data['conversation'] = array();
@@ -300,7 +300,7 @@ class Chat extends CI_Controller {
                     $isDeletedYN  = $para->isDeletedYN;
                     $isAdminYN = isset($para->isAdminYN) ? $para->isAdminYN : null;
                     $idMember = isset($para->idMember) ? $para->idMember : 0;
-                    $idUser = isset($para->idUser) ? $para->idUser : 0;
+                    $idUser = isset($para->userid) ? $para->userid : 0;
                     $memberDetails = $this->chatModel->getMemberDetails($idMember); 
                     $userDetails = $this->authModel->getUserDetails($memberDetails->idUser);
                     $idConversation = isset($para->idConversation) ? $para->idConversation : 0;
@@ -364,7 +364,7 @@ class Chat extends CI_Controller {
                     $convoName = isset($postData->convoName) ? $postData->convoName : null;
                     $convoProfilePic = isset($postData->convoProfilePic) ? $postData->convoProfilePic : null;
                     $idConversation = isset($postData->idConversation) ? $postData->idConversation : null;
-                    $idUser = isset($postData->idUser) ? $postData->idUser : 0;
+                    $idUser = isset($postData->userid) ? $postData->userid : 0;
                     $isGroupYN = isset($postData->isGroupYN) ? $postData->isGroupYN : "N";          
                     if($idUser){
                         $userDetails = $this->authModel->getUserById($idUser);
