@@ -1,0 +1,457 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Chat extends CI_Controller {
+
+    // private $BASE_URL = "https://teach.practically.com";
+    private $BASE_URL = "https://stgteach.practically.com";
+    // private $TOPIC_PREFIX = "stage_";
+    private $TOPIC_PREFIX = "prod_";
+
+
+    function __construct() {
+        header('Access-Control-Allow-Origin: *');
+        header("Access-Control-Allow-Headers: X-DEVICE-ID,X-TOKEN, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
+        header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+        $method = $_SERVER['REQUEST_METHOD'];
+        if($method == "OPTIONS") {
+        die();
+        }
+        parent::__construct();
+        $this->load->model('chatModel');
+    }
+    
+    public function index()
+    {
+        $this->load->view('welcome_message');
+    }
+
+    /*
+        This function is used to get `count` number of chats in a conversation.
+    */
+    public function getChat(){
+
+        $headers = $this->input->request_headers();
+        if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+            $this->load->model('authModel');
+            $res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+            if($res != null && $res->userid == $userid){
+                if($_SERVER['REQUEST_METHOD'] == "GET") {
+                    $idConversation = $_REQUEST['idConversation'] ? $_REQUEST['idConversation'] : 0;
+                    $count = isset($_REQUEST['count']) ? $_REQUEST['count'] : 20;
+                    $offset = isset($_REQUEST['offset'])  ? $_REQUEST['offset'] : 0;    
+                    $idUser = isset($_REQUEST['idUser']) ? $_REQUEST['idUser'] : 0;
+                    if($idUser){
+                        $data['Status'] = "SUCCESS";
+                        $data['chats'] = $this->chatModel->getChat($idConversation,$idUser,$offset,$count);
+                    }
+                    else{
+                        $data['Status'] = "ERROR";
+                        $data['Message'] = "Invalid parameters";
+                    }
+                    http_response_code(200);
+                    echo json_encode($data); 
+                }
+                else{
+                    $data['Status'] = "ERROR";
+                    $data['Message'] = "Invalid method";
+                    http_response_code(200);
+                    echo json_encode($data);
+                }
+            }
+            else{
+                http_response_code(401);
+            }
+        }
+        else{
+            http_response_code(401);
+        }
+    }
+
+    /*
+        This function is used to post a new chat. Notifications to all members of the conversation are also sent via this method
+    */
+    public function postChat(){
+
+
+        $headers = $this->input->request_headers();
+        if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+            $this->load->model('authModel');
+            $res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+            $para = json_decode(file_get_contents('php://input'));
+            if($para!= null && $res != null && $res->userid == $para->userid){
+
+                if($_SERVER['REQUEST_METHOD'] == "POST") {
+
+                    $idMember = $para->idMember ? $para->idMember : 0;
+                    $chatText  = isset($para->chatText) ? $para->chatText : null;
+                    $media = isset($para->media) ? $para->media : null;
+                    $senderName = $para->senderName;
+                    if($idMember){
+                        $chat = $this->chatModel->postChat($idMember,$chatText,$media);
+                        $members = $this->chatModel->getAllMembersInConversationByMember($idMember);
+                        $title = "New Message";
+                        if($chatText != null){
+                            $body = $senderName.": ".substr($chatText, 0,80);
+                            if(strlen($chatText) > 80) $body.= "...";
+                        }
+                        else
+                            $body = $senderName.": shared a picture";
+                        $memberDetails = $this->chatModel->getMemberDetails($idMember);
+                        $payload['idConversation'] = $members[0]->idConversation;
+                        $payload['idChat'] = $chat->idChat;
+                        $payload['idMember'] = $chat->idMember;
+                        $payload['idUser'] = $memberDetails->idUser;
+                        $payload['chatText'] = $chatText;
+                        // $payload['media'] = $chat->media;
+                        $payload['chatType'] = $chat->chatType;
+                        $payload['createdAt'] = $chat->createdAt;
+                        $payload['click_action'] = 'FLUTTER_NOTIFICATION_CLICK';
+                        $convoDets = $this->chatModel->getConversationById($payload['idConversation']);
+                        $payload['convoName'] = $convoDets->convoName;
+                        $payload['isGroupYN'] = $convoDets->isGroupYN;
+                        // $payload['convoProfilePic'] = $convoDets->convoProfilePic;
+                        $payload['lastUpdated'] = $convoDets->lastUpdated;
+                        $this->chatModel->updateLastUpdateconversation($members[0]->idConversation);
+                        foreach($members as $mem){
+                            if($mem->idUser != $para->userid && $mem->deletedDate == null){
+                                $this->firebase->sendMessage($title,$body,$payload,$mem->idUser);
+                            }
+                        }
+                        $Status = "SUCCESS";
+                        $data['chat'] = $chat;
+                        $message = "";
+                    }
+                    else {
+                        $data['Status'] = "ERROR";
+                        $data['Message'] = "Invalid parameters";
+                    }
+                    http_response_code(200);
+                    echo json_encode($data);
+                }
+                else{
+                    $data['Status'] = "ERROR";
+                    $data['Message'] = "Invalid method";
+                    http_response_code(200);
+                    echo json_encode($data);
+                }
+
+            }
+            else{
+                http_response_code(401);
+            }
+        }
+        else{
+            http_response_code(401);
+        }
+    }
+
+    /*
+        This function is used to get all the details of a conversation.
+    */
+    public function getConversation(){
+
+
+        $headers = $this->input->request_headers();
+        if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+            $this->load->model('authModel');
+            $res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+            if($res != null && $res->userid == $userid){
+                if($_SERVER['REQUEST_METHOD'] == "GET") {
+
+                    $idUser = $_REQUEST['idUser'] ? $_REQUEST['idUser'] : 0;
+                    
+                    if($idUser){
+                        if(isset($_REQUEST['idConversation'])){
+                            $idConversation = $_REQUEST['idConversation'];
+                            $data['conversation'] = $this->chatModel->getConversationById($idConversation);
+                        }
+                        else if(isset($_REQUEST['idUserOther'])){
+                            $idUserOther = $_REQUEST['idUserOther'];
+                            $data['conversation'] = $this->chatModel->getConversationByUser($idUser,$idUserOther);  
+                            $otherUser = $this->authModel->getUserDetails($_REQUEST['idUserOther']);
+                            $data['conversation']->convoName = $otherUser->name;
+                            $data['conversation']->convoProfilePic = $otherUser->imageUrl;
+                        }
+                        if($data['conversation'] != null){
+                            $members = $this->chatModel->getMemeberDetailsInConversation($data['conversation']->idConversation);
+                            $data['members'] = array();
+                            foreach ($members as $member) {
+                                $var['idMember'] = $member->idMember;
+                                $var['idConversation'] = $member->idConversation;
+                                $var['idUser'] = $member->idUser;
+                                $otherUser = $this->authModel->getUserDetails($member->idUser);
+                                if($otherUser != null){
+                                    $var['DisplayName'] = $otherUser->name;
+                                    $var['ProfilePic'] = $otherUser->imageUrl;
+                                }
+                                $var['addedDate'] = $member->addedDate;
+                                $var['deletedDate'] = $member->deletedDate;
+                                $var['isAdminYN'] = $member->isAdminYN;
+                                $var['lastSeen'] = $member->lastSeen;
+                                array_push($data['members'],$var);
+                            }
+                            $data['Status'] = "SUCCESS";
+                        }
+                        else{
+                            $data['Status'] = "ERROR";
+                        }
+                    }
+                    else{
+                        $data['Status'] = "ERROR";
+                        $data['Message'] = "Invalid parameters.";
+                    }
+                    http_response_code(200);
+                    echo json_encode($data);
+                }
+                else{
+                    $data['Status'] = "ERROR";
+                    $data['Message'] = "Invalid method";
+                    http_response_code(200);
+                    echo json_encode($data);
+                }
+            }
+            else{
+                http_response_code(401);
+            }
+        }
+        else{
+            http_response_code(401);
+        }
+    }
+
+    /* 
+        This function is used to get all the recent conversations along with unread count.
+    */
+    public function getRecentConversations(){
+
+
+        $headers = $this->input->request_headers();
+        if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+            $this->load->model('authModel');
+            $res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+            if($res != null && $res->userid == $userid){
+                if($_SERVER['REQUEST_METHOD'] == "GET") {
+
+                    $idUser = $_REQUEST['idUser'] ? $_REQUEST['idUser'] : 0;
+                    if($idUser){
+                        $allConversation = $this->chatModel->getConversationOrdered($idUser);
+                        $data['conversation'] = array();
+                        foreach($allConversation as $convo){
+                            $var['idConversation'] = $convo->idConversation;
+                            if($convo->isGroupYN == "Y"){
+                                $var['convoName'] = $convo->convoName;
+                                $var['convoProfilePic'] = $convo->convoProfilePic;
+                            }
+                            else{
+                                $other = $this->chatModel->getOtherMemberInConvo($idUser,$convo->idConversation);
+                                $otherUser = $this->authModel->getUserDetails($other->idUser);
+                                $var['convoName'] = $otherUser->name;
+                                $var['convoProfilePic'] = $otherUser->imageUrl;
+                            }
+                            $var['recentChat'] = $this->chatModel->getChat($convo->idConversation,$idUser,0,1);
+                            if($var['recentChat'] != null){
+                                $var['unreadCount'] = $this->chatModel->getUnreadcount($idUser,$convo->idConversation);
+                                array_push($data['conversation'],$var);
+                            }
+                        }
+                        $data['Status'] = "SUCCESS";
+                    }
+                    else{
+                        $data['Status'] = "ERROR";
+                        $data['Message'] = "Invalid parameters.";
+                    }
+                    http_response_code(200);
+                    echo json_encode($data);
+                }
+                else{
+                    $data['Status'] = "ERROR";
+                    $data['Message'] = "Invalid method";
+                    http_response_code(200);
+                    echo json_encode($data);
+                }
+            }
+            else{
+                http_response_code(401);
+            }
+        }
+        else{
+            http_response_code(401);
+        }
+    }
+
+
+    /*
+        This function is used to update member details
+    */
+    public function updateMember(){
+
+
+        $headers = $this->input->request_headers();
+        if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+            $this->load->model('authModel');
+            $res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+            $para = json_decode(file_get_contents('php://input'));
+            if($para!= null && $res != null && $res->userid == $para->userid){
+
+                if($_SERVER['REQUEST_METHOD'] == "POST") {
+
+                    $lastSeen = $para->lastSeen ;
+                    $isDeletedYN  = $para->isDeletedYN;
+                    $isAdminYN = isset($para->isAdminYN) ? $para->isAdminYN : null;
+                    $idMember = isset($para->idMember) ? $para->idMember : 0;
+                    $idUser = isset($para->idUser) ? $para->idUser : 0;
+                    $memberDetails = $this->chatModel->getMemberDetails($idMember); 
+                    $userDetails = $this->authModel->getUserDetails($memberDetails->idUser);
+                    $idConversation = isset($para->idConversation) ? $para->idConversation : 0;
+                    $deletedDate = null;
+                    if($isDeletedYN == "Y"){
+                        $deletedDate = date('Y-m-d H:i:s');
+                        $txt = $userDetails->displayName." left the group";
+                        if($idUser){
+                            $mUserDets = $this->authModel->getUserDetails($idUser);
+                            $txt = $mUserDets->displayName." removed ".$userDetails->name;
+                        }
+                        $this->chatModel->postChat($idMember,$txt,null,'TRANSACTION');
+                        if($idConversation)
+                        $this->chatModel->updateLastUpdateconversation($idConversation);
+                        //todo if admin -> create a new admin
+                    }
+                    if($idMember){
+                        $this->chatModel->updateMember($isAdminYN,$deletedDate,$lastSeen,$idMember);
+                        $data['Status'] = "SUCCESS";
+                    }
+                    else{
+                        $data['Status'] = "ERROR";
+                        $data['Message'] = "Invalid parameters";
+                    }
+                    http_response_code(200);
+                    echo json_encode($data);
+                }
+                else{
+                    $data['Status'] = "ERROR";
+                    $data['Message'] = "Invalid method";
+                    http_response_code(200);
+                    echo json_encode($data);
+                }
+
+            }
+            else{
+                http_response_code(401);
+            }
+        }
+        else{
+            http_response_code(401);
+        }
+    }
+
+    /*
+        This function is used to create a new conversation or update an existing one
+    */
+    public function postConversation(){
+
+
+        $headers = $this->input->request_headers();
+        if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+            $this->load->model('authModel');
+            $res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+            $para = json_decode(file_get_contents('php://input'));
+            if($para!= null && $res != null && $res->userid == $para->userid){
+
+                if($_SERVER['REQUEST_METHOD'] == "POST") {
+
+                    $allUserids = $postData->idUsers;
+                    $convoName = isset($postData->convoName) ? $postData->convoName : null;
+                    $convoProfilePic = isset($postData->convoProfilePic) ? $postData->convoProfilePic : null;
+                    $idConversation = isset($postData->idConversation) ? $postData->idConversation : null;
+                    $idUser = isset($postData->idUser) ? $postData->idUser : 0;
+                    $isGroupYN = isset($postData->isGroupYN) ? $postData->isGroupYN : "N";          
+                    if($idUser){
+                        $userDetails = $this->authModel->getUserById($idUser);
+                        if($idConversation != null){
+                            $idMember = $this->chatModel->getMemberFromIdUser($idConversation,$idUser)->idMember;
+                            //update
+                            if($convoName != null || $convoProfilePic != null){
+                                $this->chatModel->updateConversation($idConversation,$convoName,$convoProfilePic);
+                                    $chatText = $userDetails->displayName." changed profile pic.";
+                                if($convoName != null)
+                                    $chatText = $userDetails->displayName." changed conversation name to $convoName";
+                                $this->chatModel->postChat($idMember,$chatText,null,'TRANSACTION'); 
+                                // $this->chatModel->updateLastUpdateconversation($idConversation); 
+                            }
+                            $data['idConversation'] = $idConversation;
+                        }
+                        else if($convoName != null){
+                            //create
+                            $idConversation = $this->chatModel->createConversation($convoName,$isGroupYN);
+                            $idMember = $this->chatModel->createMember($idUser,$idConversation,'Y');
+                            $txt = $userDetails->displayName." created the group";
+                            if($isGroupYN == "Y"){
+                                $this->chatModel->postChat($idMember,$txt,null,'TRANSACTION');  
+                            }   
+                            $data['idConversation'] = $idConversation;
+                            // $this->chatModel->updateLastUpdateconversation($idConversation);
+                        }
+                        else{
+                            $data['Status'] = "ERROR";
+                            $data['Message'] = "Invalid params";
+                            echo json_encode($data);
+                            return;
+                        }
+
+                        $convoDetails = $this->chatModel->getConversationById($idConversation);
+                        $title = $convoDetails->convoName;
+                        $body = $userDetails->displayName." added you";
+                        $payload['idConversation'] = $idConversation;
+                        $payload['click_action'] = 'FLUTTER_NOTIFICATION_CLICK';
+
+                        foreach($allUserids as $midUser){
+                            if($midUser != $idUser){
+                                $mIdMemeber = $this->chatModel->createMember($midUser,$idConversation,'N');
+                                $mIdUserDets = $this->authModel->getUserById($midUser);
+                                if($isGroupYN == "Y"){
+                                    $txt = $userDetails->displayName." added ".$mIdUserDets->name;
+                                    $chatVal = $this->chatModel->postChat($idMember,$txt,null,'TRANSACTION');   
+                                    $memberDetails = $this->chatModel->getMemberDetails($idMember);
+                                    $payload['idChat'] = $chatVal->idChat;
+                                    $payload['idMember'] = $chatVal->idMember;
+                                    $payload['chatText'] = $chatVal->chatText;
+                                    $payload['media'] = $chatVal->media;
+                                    $payload['chatType'] = $chatVal->chatType;
+                                    $payload['createdAt'] = $chatVal->createdAt;
+                                    $payload['click_action'] = 'FLUTTER_NOTIFICATION_CLICK';
+                                    $payload['convoName'] = $convoDetails->convoName;
+                                    $payload['isGroupYN'] = $convoDetails->isGroupYN;
+                                    $payload['idUser'] = $memberDetails->idUser;
+                                    $this->firebase->sendMessage($title,$body,$payload,$this->TOPIC_PREFIX.$midUser);
+                                }
+                            }
+                        }
+                        $this->chatModel->updateLastUpdateconversation($idConversation);
+                        $data['Status'] = "SUCCESS";
+                    }
+                    else{
+                        $data['Status'] = "ERROR";
+                        $data['Message'] = "Invalid parameters";
+                    }
+                    http_response_code(200);
+                    echo json_encode($data);
+                }
+                else{
+                    $data['Status'] = "ERROR";
+                    $data['Message'] = "Invalid method";
+                    http_response_code(200);
+                    echo json_encode($data);
+                }
+
+            }
+            else{
+                http_response_code(401);
+            }
+        }
+        else{
+            http_response_code(401);
+        }
+    }
+
+}
