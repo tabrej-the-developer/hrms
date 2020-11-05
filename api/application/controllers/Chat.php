@@ -367,7 +367,7 @@ class Chat extends CI_Controller {
                     $idUser = isset($para->userid) ? $para->userid : 0;
                     $isGroupYN = isset($para->isGroupYN) ? $para->isGroupYN : "N";          
                     if($idUser){
-                        $userDetails = $this->authModel->getUserById($idUser);
+                        $userDetails = $this->authModel->getUserDetails($idUser);
                         if($idConversation != null){
                             $idMember = $this->chatModel->getMemberFromIdUser($idConversation,$idUser)->idMember;
                             //update
@@ -408,7 +408,7 @@ class Chat extends CI_Controller {
                         foreach($allUserids as $midUser){
                             if($midUser != $idUser){
                                 $mIdMemeber = $this->chatModel->createMember($midUser,$idConversation,'N');
-                                $mIdUserDets = $this->authModel->getUserById($midUser);
+                                $mIdUserDets = $this->authModel->getUserDetails($midUser);
                                 if($isGroupYN == "Y"){
                                     $txt = $userDetails->displayName." added ".$mIdUserDets->name;
                                     $chatVal = $this->chatModel->postChat($idMember,$txt,null,'TRANSACTION');   
