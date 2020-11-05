@@ -10,7 +10,7 @@ class ChatModel extends CI_Model {
             $subQuery = "";
             if($memberDetails->deletedDate != NULL)
             $subQuery = "AND chat.createdAt < '$memberDetails->deletedDate'";
-            $query = $this->db->query("SELECT chat_chat.*,conversationmembers.idUser FROM chat_chat JOIN chat_conversationmembers ON chat_chat.idMember = chat_conversationmembers.idMember WHERE chat_chat.idMember IN (SELECT c1.idMember FROM chat_conversationmembers as c1 WHERE c1.idConversation = $idConversation) ".$subQuery." AND (chat_chat.createdAt >= '$memberDetails->addedDate') ORDER BY chat_chat.createdAt DESC, chat_chat.idChat DESC LIMIT $count OFFSET $offset");
+            $query = $this->db->query("SELECT chat_chat.*,chat_conversationmembers.idUser FROM chat_chat JOIN chat_conversationmembers ON chat_chat.idMember = chat_conversationmembers.idMember WHERE chat_chat.idMember IN (SELECT c1.idMember FROM chat_conversationmembers as c1 WHERE c1.idConversation = $idConversation) ".$subQuery." AND (chat_chat.createdAt >= '$memberDetails->addedDate') ORDER BY chat_chat.createdAt DESC, chat_chat.idChat DESC LIMIT $count OFFSET $offset");
             return $query->result();
         }
         catch(Exception $e){
@@ -162,13 +162,10 @@ class ChatModel extends CI_Model {
         }
     }
 
-    public function createMember($idUser,$idConversation,$isAdminYN,$addedDate = null){
+    public function createMember($idUser,$idConversation,$isAdminYN){
             $this->load->database();
         try{
-            if($addedDate == null)
-                $query = $this->db->query("INSERT INTO chat_conversationmembers(idConversation,idUser,isAdminYN,lastSeen) VALUES($idConversation,'$idUser','$isAdminYN',now())");
-            else
-                $query = $this->db->query("INSERT INTO chat_conversationmembers(idConversation,idUser,addedDate,isAdminYN,lastSeen) VALUES($idConversation,'$idUser','$addedDate','$isAdminYN',now())");
+                $query = $this->db->query("INSERT INTO chat_conversationmembers(idConversation,idUser,isAdminYN,addedDate,lastSeen) VALUES($idConversation,'$idUser','$isAdminYN',now(),now())");
             return $this->db->insert_id();  
         }
         catch(Exception $e){
