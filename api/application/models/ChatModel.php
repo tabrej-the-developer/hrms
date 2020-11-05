@@ -9,7 +9,7 @@ class ChatModel extends CI_Model {
             $memberDetails = $this->db->query("SELECT * FROM chat_conversationmembers WHERE idUser = '$idUser' AND idConversation = $idConversation ORDER BY idMember DESC LIMIT 1")->row();
             $subQuery = "";
             if($memberDetails->deletedDate != NULL)
-            $subQuery = "AND chat.createdAt < '$memberDetails->deletedDate'";
+            $subQuery = "AND chat_chat.createdAt < '$memberDetails->deletedDate'";
             $query = $this->db->query("SELECT chat_chat.*,chat_conversationmembers.idUser FROM chat_chat JOIN chat_conversationmembers ON chat_chat.idMember = chat_conversationmembers.idMember WHERE chat_chat.idMember IN (SELECT c1.idMember FROM chat_conversationmembers as c1 WHERE c1.idConversation = $idConversation) ".$subQuery." AND (chat_chat.createdAt >= '$memberDetails->addedDate') ORDER BY chat_chat.createdAt DESC, chat_chat.idChat DESC LIMIT $count OFFSET $offset");
             return $query->result();
         }
