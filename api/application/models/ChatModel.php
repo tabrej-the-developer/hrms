@@ -61,7 +61,7 @@ class ChatModel extends CI_Model {
     public function getConversationByUser($idUser,$idUserOther){
             $this->load->database();
         try{
-            $query = $this->db->query("SELECT * FROM chat_conversation WHERE idConversation = (SELECT a.idConversation FROM chat_conversationmembers a, chat_conversationmembers b WHERE a.idUser = $idUser and b.idUser = $idUserOther and a.idConversation = b.idConversation LIMIT 1) AND chat_conversation.isGroupYN = 'N'");
+            $query = $this->db->query("SELECT * FROM chat_conversation WHERE idConversation = (SELECT a.idConversation FROM chat_conversationmembers a, chat_conversationmembers b WHERE a.idUser = '$idUser' and b.idUser = '$idUserOther' and a.idConversation = b.idConversation LIMIT 1) AND chat_conversation.isGroupYN = 'N'");
             return $query->row();
         }
         catch(Exception $e){
@@ -94,7 +94,7 @@ class ChatModel extends CI_Model {
     public function getUnreadcount($idUser,$idConversation){
             $this->load->database();
         try{
-            $query = $this->db->query("SELECT COUNT(idChat) as unreadCount FROM chat_chat WHERE idMember IN (SELECT idMember FROM chat_conversationmembers WHERE idConversation = $idConversation AND idUser != $idUser) AND createdAt > (SELECT lastSeen FROM chat_conversationmembers WHERE idConversation = $idConversation AND idUser = $idUser ORDER BY idMember DESC LIMIT 1)");
+            $query = $this->db->query("SELECT COUNT(idChat) as unreadCount FROM chat_chat WHERE idMember IN (SELECT idMember FROM chat_conversationmembers WHERE idConversation = $idConversation AND idUser != '$idUser') AND createdAt > (SELECT lastSeen FROM chat_conversationmembers WHERE idConversation = $idConversation AND idUser = '$idUser' ORDER BY idMember DESC LIMIT 1)");
             return $query->row();
         }
         catch(Exception $e){
@@ -176,7 +176,7 @@ class ChatModel extends CI_Model {
     public function getMemberFromIdUser($idConversation,$idUser){
         $this->load->database();
         try{
-            $query = $this->db->query("SELECT * FROM chat_conversationmembers WHERE idConversation = $idConversation AND idUser = $idUser");
+            $query = $this->db->query("SELECT * FROM chat_conversationmembers WHERE idConversation = $idConversation AND idUser = '$idUser'");
             return $query->row();
         }
         catch(Exception $e){
