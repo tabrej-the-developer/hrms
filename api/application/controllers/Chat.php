@@ -383,7 +383,7 @@ class Chat extends CI_Controller {
                         }
                         else if($convoName != null){
                             //create
-                            $idConversation = $this->chatModel->createConversation($convoName,$isGroupYN);
+                            $idConversation = $this->chatModel->createConversation($convoName,$isGroupYN,$idUser);
                             $idMember = $this->chatModel->createMember($idUser,$idConversation,'Y');
                             $txt = $userDetails->displayName." created the group";
                             if($isGroupYN == "Y"){

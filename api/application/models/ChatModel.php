@@ -121,10 +121,10 @@ class ChatModel extends CI_Model {
     }
 
 
-    public function createConversation($convoName,$isGroupYN){
+    public function createConversation($convoName,$isGroupYN,$idUser){
             $this->load->database();
         try{
-            $query = "INSERT INTO chat_conversation(convoName,isGroupYN) VALUES('$convoName','$isGroupYN')";
+            $query = "INSERT INTO chat_conversation(convoName,isGroupYN,createdAt,createdBy) VALUES('$convoName','$isGroupYN',now(),'$idUser')";
             $queryStr = $this->db->query($query);
             return $this->db->insert_id();
         }
@@ -166,9 +166,9 @@ class ChatModel extends CI_Model {
             $this->load->database();
         try{
             if($addedDate == null)
-                $query = $this->db->query("INSERT INTO chat_conversationmembers(idConversation,idUser,isAdminYN,lastSeen) VALUES($idConversation,$idUser,'$isAdminYN',now())");
+                $query = $this->db->query("INSERT INTO chat_conversationmembers(idConversation,idUser,isAdminYN,lastSeen) VALUES($idConversation,'$idUser','$isAdminYN',now())");
             else
-                $query = $this->db->query("INSERT INTO chat_conversationmembers(idConversation,idUser,addedDate,isAdminYN,lastSeen) VALUES($idConversation,$idUser,'$addedDate','$isAdminYN',now())");
+                $query = $this->db->query("INSERT INTO chat_conversationmembers(idConversation,idUser,addedDate,isAdminYN,lastSeen) VALUES($idConversation,'$idUser','$addedDate','$isAdminYN',now())");
             return $this->db->insert_id();  
         }
         catch(Exception $e){
