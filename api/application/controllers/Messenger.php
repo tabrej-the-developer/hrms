@@ -5,7 +5,7 @@ class Messenger extends CI_Controller {
 
 	function __construct() {
 		header('Access-Control-Allow-Origin: *');
-		header("Access-Control-Allow-Headers: X-DEVICE-ID,X-TOKEN, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
+		header("Access-Control-Allow-Headers: X-DEVICE-ID,X-TOKEN,X-DEVICE-TYPE, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
 		header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 		$method = $_SERVER['REQUEST_METHOD'];
 		if($method == "OPTIONS") {
@@ -361,7 +361,6 @@ class Messenger extends CI_Controller {
 	}
 
 	public function RecentChats($userid){
-
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');

@@ -387,6 +387,95 @@ max-width:30vw;
     .full_box{
     	background: #e7e7e7;
     }
+   /*		------------------------
+					Weekly Timesheet Modal
+   			------------------------ 	*/
+  .weekTimesheetModalHeader{
+  	height: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #8D91AA;
+    color: #F3F4F7;
+    font-size:1.5rem;
+  }
+  .weekTimesheetModalSubmit{
+  	position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    padding-right: 2rem;
+  }
+    .weekTimesheetBody{
+    	position: absolute;
+    	left: 20%;
+    	width:70%;
+    	top:10%;
+    	height:80%;
+    	background: white;
+    }
+    .weekTimesheetModal{
+    	display: none;
+    	top: 0;
+    	left: 0;
+    	position: fixed;
+    	z-index: 3;
+    	height: 100%;
+    	width: 100%;
+    	background: rgba(0,0,0,0.5);
+    }
+    .weekTimesheetModalVisits{
+    	display: flex;
+	    align-items: center;
+	    justify-content: center;
+    	height: calc(100% - 2.5rem);
+
+    }
+  .weekTimesheetModalData{
+  	height: calc(100% - 8rem);
+  }
+  .weekTimesheetModalTabs{
+  	height: 2.5rem;
+  	display: flex;
+  	width: 100%;
+  }
+  .weekTimesheetModalTabs span{
+  	flex: 1 1 0px;
+		background: #8D91AA;
+    color: #F3F4F7;
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    text-align: center;
+    cursor: pointer;
+  }
+  .week_div_0{
+  	display: block;
+  }
+  .weekTimesheetModalTabsMon,.weekTimesheetModalTabs span:nth-child(1){
+    background: rgb(227, 228, 231);
+    color: rgba(0, 0, 0, 0.8);
+  }
+  .week_div_1{display: none;}
+  .week_div_2{display: none;}
+  .week_div_3{display: none;}
+  .week_div_4{display: none;}
+  .visit__{
+  	display: flex;
+  }
+  .display_flex_visits{
+  	display: flex;
+
+  }
+  	    select{
+      background: #E7E7E7;
+      border: none !important;
+      height: 2.5rem;
+      border-radius: 20px;
+      border: 1px solid #D2D0D0;
+      padding-left:0.5rem;
+    }
 @media only screen and (max-width: 600px) {
 .modal-content{
 	min-width:100vw;
@@ -600,8 +689,9 @@ td.shift-edit{
 					</div>
 			 	</td>
 		<?php	 }} ?>
-		<td><?php echo isset($totalTimeForWeek) ? intval(($totalTimeForWeek)/60).".".intval(($totalTimeForWeek)%60) : ""; ?>
-			<!-- <img src="<?php?>"> -->
+		<td><?php echo isset($totalTimeForWeek) ? intval(($totalTimeForWeek)/60).".".sprintf("%02d",intval(($totalTimeForWeek)%60)) : ""; ?>
+			<img src="<?php echo base_url('assets/images/icons/pencil.png'); ?>" onclick="getEmployeeTimesheet(this)" height="25px" width="25px" style="height:20px;width:20px;cursor: pointer;" class="weekModal"  userid="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empId ; ?>" date="<?php echo $timesheetDetails->startDate; ?>">
+		</td>
 		</td>
 <!-- 			<td class=" " style="min-width:14vw;font-weight:bolder"><?php //echo "$".$weeklyTotal;?></td>
  -->		</tr>
@@ -823,6 +913,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					echo "On Leave";
 				} ?>
 				</td>
+
 			 <?php }
 			 else{ ?>
 			 	<td style="min-width:8vw;padding:7px" class="shift-edit ">
@@ -835,7 +926,9 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 					</div>
 			 	</td>
 		<?php	 }} ?>
-		<td><?php echo isset($totalTimeForWeek) ? intval(($totalTimeForWeek)/60).".".intval(($totalTimeForWeek)%60) : ""; ?></td>
+		<td><?php echo isset($totalTimeForWeek) ? intval(($totalTimeForWeek)/60).".".sprintf("%02d",intval(($totalTimeForWeek)%60)) : ""; ?>
+						<img src="<?php echo base_url('assets/images/icons/pencil.png'); ?>" onclick="getEmployeeTimesheet(this)" height="25px" width="25px" style="height:20px;width:20px;cursor: pointer;" class="weekModal" userid="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empId ; ?>" date="<?php echo date("Y-m-d",strtotime("+7 day",strtotime($timesheetDetails->startDate))); ?>">
+		</td>
 <!-- 			<td class=" " style="min-width:14vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
  -->		</tr>
 
@@ -950,6 +1043,30 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
     </div>
 </div>
 
+<div class="weekTimesheetModal">
+	<div class="weekTimesheetBody">
+		<div class="weekTimesheetModalHeader">NAME</div>
+		<div class="weekTimesheetModalData">
+			<div class="weekTimesheetModalTabs">
+				<span class="weekTimesheetModalTabsMon">MON</span>
+				<span class="weekTimesheetModalTabsTue">TUE</span>
+				<span class="weekTimesheetModalTabsWed">WED</span>
+				<span class="weekTimesheetModalTabsThu">THU</span>
+				<span class="weekTimesheetModalTabsFri">FRI</span>
+			</div>
+			<div class="weekTimesheetModalVisits">SELECT</div>
+		</div>
+		<div class="weekTimesheetModalSubmit">
+			<span>
+				<button class="button cancelWeekModel">Cancel</button>
+			</span>
+			<span>
+				<button class="button submit_weekModal">Submit</button>
+			</span>
+		</div>
+	</div>
+</div>
+
 <?php if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){ ?>
 
 <?php 
@@ -1033,30 +1150,20 @@ $( ".modal-content" ).draggable();
 				$(document).on('click','.shift-edit',function(){
 					 modal.style.display = "block";
 					var arrayType = $(this).attr('array-type');
-					// console.log(arrayType)
 					var v = $(this).attr('name');
-					// console.log(v)
 					var w = $('.day').eq($(this).index()).html();
-					// console.log(w)
 					let date = $('.day').eq($(this).index()).attr('date');
-					//console.log(date)
 					var x = $(this).attr('cal-x');
-					// console.log((x))
 					var y = $(this).attr('cal-p');
-					// console.log(y)
 					var eId = $('#employee-id').val($(this).attr('emp-id'))
 					var empId  = $(this).attr('emp-id');
-					// console.log(eId)
 					var sDate = $('#start-date').val($(this).attr('curr-date'))
-					// console.log(sDate)
 					var tId = $('#timesheet-id').val($(this).attr('timesheet-id'))
-					// console.log(tId)
-	var url = "<?php echo base_url();?>timesheet/getTimesheetDetailsModal?timesheetId="+"<?php echo $timesheetid;?>&x="+x+"&y="+y+"&aT="+arrayType+"&date="+date+"&empId="+empId ;
+					var url = "<?php echo base_url();?>timesheet/getTimesheetDetailsModal?timesheetId="+"<?php echo $timesheetid;?>&x="+x+"&y="+y+"&aT="+arrayType+"&date="+date+"&empId="+empId ;
 					 $.ajax({
 					 	url : url,
 					 	type : 'GET',
 					 	success : function(response){
-					 		console.log('success')
 					 		$('.box-name').html(v)
 					 		$('.box-space').html(w)
 					 		$('#timesheet-form').html(response);
@@ -1093,6 +1200,65 @@ $( ".modal-content" ).draggable();
 			  uiFunction();
 </script> -->
 	<script type="text/javascript">
+function jstimex( x)
+  { 
+      var output;
+      if((x/100) < 12 ){
+          if((x%100)==0){
+            if(x/1200 == 0){
+              output = "12:00 AM";    
+            }
+            else{
+           output = parseInt(x/100) + ":00 AM";
+            }
+          }
+        if((x%100)!=0){
+          if((x%100) < 10){
+            output = parseInt(x/100) +":0"+ x%100 + " AM";
+          }
+          if((x%100) >= 10){
+            output = parseInt(x/100) +":"+ x%100 + " AM";
+          }
+          }
+      }
+  else if(x/100>12){
+      if((x%100)==0){
+      output = parseInt(x/100)-12 + ":00 PM";
+      }
+      if((x%100)!=0 && parseInt(x/100)!=12){
+        if((x%100) < 10){
+          output = parseInt(x/100)-12 +":0"+ x%100 + " PM";
+        }
+        if((x%100) >= 10){
+          output = parseInt(x/100)-12 +":"+ x%100 + " PM";
+        }
+      }
+      if((x%100)!=0 && parseInt(x/100)==12){
+        if((x%100) < 10){
+          output = parseInt(x/100) +":0"+ x%100 + " PM";
+        }
+        if((x%100) >= 10){
+          output = parseInt(x/100) +":"+ x%100 + " PM";
+        }
+      }
+  }
+  else{
+  if((x%100)==0){
+       output = parseInt(x/100) + ": 00 PM";
+      }
+      if((x%100)!=0){
+        if((x%100) < 10){
+          output = parseInt(x/100) + ":0"+ x%100 + " PM";
+        }
+        if((x%100) >= 10){
+          output = parseInt(x/100) + ":"+ x%100 + " PM";
+        }
+      }
+  }
+  return output;
+}
+
+
 	function timer( x)
 	{ 
 	    var output="";
@@ -1186,7 +1352,6 @@ $( ".modal-content" ).draggable();
 			url : url,
 			type: 'GET',
 			success : function(response){
-				console.log(response);
 				window.location.reload()
 			}
 		})
@@ -1228,13 +1393,10 @@ $(document).on('click','.buttonn',function(){
 			}
 		}
 		}
-	console.log(values)
-	console.log()
 		let userid = "<?php echo $this->session->userdata('LoginId'); ?>;"
 		let empId = $('#emply-id').attr('employee');
 		let shiftDate = $('#emply-id').attr('date');
 		let timesheetId = "<?php echo $timesheetid; ?>";
-		console.log(shiftDate);
 		$.ajax({
 			url : url,
 			type : 'POST',
@@ -1246,7 +1408,6 @@ $(document).on('click','.buttonn',function(){
 				visits : values
 			},
 			success : function(response){
-				console.log(response)
 			}
 		}).fail(function(){
 			alert('failed')
@@ -1268,13 +1429,10 @@ $(document).on('click','.buttonn',function(){
 	
 	let employeeBudget = function(){
 		var count = $('.box-time').length;
-		// console.log('count'+count)
 		var thisValue = 0;
 		for(var i=0;i<count;i++){
 		var children = $('.time-box').eq(i);
-		// console.log($('.clocked_time').eq(i).is(':checked'))
 		if($('.clocked_time').eq(i).prop('checked') == true){
-			// console.log(children.next().html())
 			if(children.next().html() == ""){
 				console.log(parseInt($('.box-time').eq(i).attr('hourly')));
 				thisValue = thisValue + ( parseInt(children.attr('evalue')) - parseInt(children.attr('svalue')) ) * $('.shift-type-select option:selected').eq(i).attr('factor') * parseInt($('.box-time').eq(i).attr('hourly'))
@@ -1395,6 +1553,156 @@ $(document).on('click','.buttonn',function(){
 					})
 				})
 			})
+
+			$(document).on('click','.weekModal',function(){
+				$('.weekTimesheetModal').css('display','block');
+				$('.weekTimesheetModalTabs span').each(function(){
+					if($(this).index() != 0){
+						$(this).css('background','#8D91AA');
+						$(this).css('color','#F3F4F7');
+					}else{
+						$(this).css('background','#e3e4e7');
+						$(this).css('color','rgba(0,0,0,0.8)');
+					}
+				})
+			})
+
+			$(document).on('click','.cancelWeekModel',function(){
+				$('.weekTimesheetModal').css('display','none');
+			})
+
+			$(document).on('click','.weekTimesheetModalTabs span',function(){
+				var that = this;
+				$('.weekTimesheetModalTabs span').each(function(){
+					if($(that).index() != $(this).index()){
+						$(this).css('background','#8D91AA');
+						$(this).css('color','#F3F4F7');
+					}else{
+						$(this).css('background','#e3e4e7');
+						$(this).css('color','rgba(0,0,0,0.8)');
+					}
+				})
+				for(i=0;i<5;i++){
+					if($(this).index() == i){
+						$(`.week_div_${i}`).css('display','block')
+					}
+					else{
+						$(`.week_div_${i}`).css('display','none')
+					}
+				}
+			})
+
+			$(document).ready(function(){
+				var getPayrollShiftType_v1 = function(){
+					localStorage.setItem('payrollTypes',`<?php echo $payrollTypes ?>`);
+				}
+				getPayrollShiftType_v1();
+			})
+
+			var getEmployeeTimesheet = function(e){
+				var name = $(e).parent().prev().attr('name');
+					$('.weekTimesheetModalHeader').html(name)
+				var employeeId = $(e).attr('userid');
+				var startDate = $(e).attr('date');
+				var url = "<?php echo base_url('timesheet/getEmployeeTimesheet'); ?>";
+				var select = JSON.parse(localStorage.getItem('payrollTypes'));
+				$.ajax({
+					url : url,
+					type : 'POST',
+					data : {
+						employeeId : employeeId,
+						startdate : startDate
+					},
+					success : function(response){
+						console.log(response)
+						var x = 0;
+						$('.weekTimesheetModalVisits').empty()
+						var view = JSON.parse(response);
+						view.forEach(day => {
+							var i =0;
+							var wrapper = `<div class="week_div_${x}"></div>`;
+							$('.weekTimesheetModalVisits').append(wrapper);
+							day.forEach(visit => {
+							var code = `<span class="display_flex_visits">
+								<span visitid='${visit.id}' startTime='${visit.signInTime}' endTime='${visit.signOutTime}' class="visit__"><span class="time_visits"><input type="checkbox" checked></span><span class="time_visits_child oldtime">${jstimex(visit.signInTime)} -- ${jstimex(visit.signOutTime)}</span></span><span class="select__">
+								<span class="select_css">
+									<select>
+									</select>
+								</span>
+								</span></span>`
+							$('.week_div_'+x).append(code);
+							select.payrollTypes.forEach(type => {
+								if(type.earningType == "ORDINARYTIMEEARNINGS" && type.centerid == 6){
+									var option = `<option value="${type.multiplier_amount}" earningType="${type.earningType}" selected>${type.name}</option>`
+								}
+								if(type.earningType != "ORDINARYTIMEEARNINGS" && type.centerid == 6){
+									var option = `<option value="${type.multiplier_amount}" earningType="${type.earningType}">${type.name}</option>`
+								}
+								$(`.week_div_${x} select`).eq(i).append(option)
+									})
+							i++;
+								} 
+							)
+							x++;
+						})
+					}
+				})
+				// startTime
+				// endTime
+				// payType
+				// clockedInTime
+				// clockedOutTime
+				// empId
+				// userid
+				// shiftDate
+				// timesheetId
+			}
+			$(document).on('click','.time_visits_child.oldtime',function(){
+				$(this).removeClass('oldtime')
+				$(this).html(`<input type="time" value="${timer($(this).parent().attr('starttime'))}" class="sttime">--<input value="${timer($(this).parent().attr('endtime'))}" type="time" class="edtime">`)
+			})
+
+			$(document).on('click','.submit_weekModal',function(){
+				var values = [];
+				var timesheetId = "<?php echo $timesheetid; ?>";
+				var userid = <?php $this->session->userdata('LoginId'); ?>;
+				for(var i=0;i<5;i++){
+					$(`.week_div_${i} .display_flex_visits`).each(function(){
+						var obj = {};
+						if(!$(this).children('.visit__').children('.time_visits_child').hasClass('oldtime'))
+						{
+							obj.startTime = $(this).children('.visit__').attr('starttime');
+							obj.endTime = $(this).children('.visit__').attr('endtime');
+							obj.payType = $(this).children('.select__').children('.select_css').children('select').val();
+							obj.clockedInTime = $(this).children('.visit__').attr('starttime');
+							obj.clockedOutTime = $(this).children('.visit__').attr('endtime');
+						}
+						if($(this).children('.visit__').children('.time_visits_child').hasClass('oldtime'))
+						{
+							obj.startTime = $(this).children('.visit__').children('.time_visits_child').children('.sttime').val();
+							obj.endTime = $(this).children('.visit__').children('.time_visits_child').children('.edtime').val();
+							obj.payType = $(this).children('.select__').children('.select_css').children('select').val();
+							obj.clockedInTime = $(this).children('.visit__').attr('starttime');
+							obj.clockedOutTime = $(this).children('.visit__').attr('endtime');
+						}
+						values.push(obj)
+					})
+				}
+				$.ajax({
+					url : url,
+					type: 'POST',
+					data : {
+						empId : empId,
+						userid : userid,
+						shiftDate : shiftDate,
+						timesheetid : timesheetId, 
+						visits : values
+					},
+					success : function(response){
+
+					}
+				})
+			})
 		</script>
 
 	</body>
@@ -1405,48 +1713,61 @@ $(document).on('click','.buttonn',function(){
 	//PHP functions //
 
 function timex( $x)
-	{ 
-	    $output;
-	    if(($x/100) < 12){
-	        if(($x%100)==0){
-	         $output = intval($x/100) . ":00 AM";
-	        }
-	    if(($x%100)!=0){
-	    	if(($x%100) < 10){
-	    		$output = intval($x/100) .":0". $x%100 . " AM";
-	    	}
-    		if(($x%100) >= 10){
-    			$output = intval($x/100) .":". $x%100 . " AM";
-    		}
-	        }
-	    }
-	else if(($x/100)>12){
-	    if(($x%100)==0){
-	    $output = intval($x/100)-12 . ":00 PM";
-	    }
-	    if(($x%100)!=0){
-	    	if(($x%100) < 10){
-	    		$output = intval($x/100)-12 .":0". $x%100 . " PM";
-	    	}
-    		if(($x%100) >= 10){
-    			$output = intval($x/100)-12 .":". $x%100 . " PM";
-    		}
-	    }
-	}
-	else{
-	if(($x%100)==0){
-	     $output = intval($x/100) . ": 00 PM";
-	    }
-	    if(($x%100)!=0){
-	    	if(($x%100) < 10){
-	    		$output = intval($x/100) . ":0". $x%100 . " PM";
-	    	}
-	    	if(($x%100) >= 10){
-	    		$output = intval($x/100) . ":". $x%100 . " PM";
-	    	}
-	    }
-	}
-	return $output;
+  { 
+      $output;
+      if(($x/100) < 12 ){
+          if(($x%100)==0){
+            if($x/1200 == 0){
+              $output = "12:00 AM";    
+            }
+            else{
+           $output = intval($x/100) . ":00 AM";
+            }
+          }
+        if(($x%100)!=0){
+          if(($x%100) < 10){
+            $output = intval($x/100) .":0". $x%100 . " AM";
+          }
+          if(($x%100) >= 10){
+            $output = intval($x/100) .":". $x%100 . " AM";
+          }
+          }
+      }
+  else if($x/100>12){
+      if(($x%100)==0){
+      $output = intval($x/100)-12 . ":00 PM";
+      }
+      if(($x%100)!=0 && intval($x/100)!=12){
+        if(($x%100) < 10){
+          $output = intval($x/100)-12 .":0". $x%100 . " PM";
+        }
+        if(($x%100) >= 10){
+          $output = intval($x/100)-12 .":". $x%100 . " PM";
+        }
+      }
+      if(($x%100)!=0 && intval($x/100)==12){
+        if(($x%100) < 10){
+          $output = intval($x/100) .":0". $x%100 . " PM";
+        }
+        if(($x%100) >= 10){
+          $output = intval($x/100) .":". $x%100 . " PM";
+        }
+      }
+  }
+  else{
+  if(($x%100)==0){
+       $output = intval($x/100) . ": 00 PM";
+      }
+      if(($x%100)!=0){
+        if(($x%100) < 10){
+          $output = intval($x/100) . ":0". $x%100 . " PM";
+        }
+        if(($x%100) >= 10){
+          $output = intval($x/100) . ":". $x%100 . " PM";
+        }
+      }
+  }
+  return $output;
 }
 
 function dateToDay($date){

@@ -1778,10 +1778,10 @@ messaging.getToken().then((currentToken) => {
             $dateNeedeFormat = date('d M Y',strtotime($currentTextDate));
             echo "<div class='currentTextDate_center'><span class='currentTextDate_centerbox'>$dateNeedeFormat</span></div>";
           }
-        if($chats->transactiontype == 'TRANSACTIO'){
+        if($chats->transactiontype == 'TRANSACTION'){
           echo "<div class='currentTextDate_center'><span class='currentTextDate_centerbox'>$chats->chatText</span></div>";
         }
-        if($chats->transactiontype != 'TRANSACTIO'){
+        if($chats->transactiontype != 'TRANSACTION'){
            ?>
         <div class="media 
                     <?php if( $this->session->userdata('LoginId') == $chats->senderId ){
