@@ -360,12 +360,12 @@ class Chat extends CI_Controller {
 
                 if($_SERVER['REQUEST_METHOD'] == "POST") {
 
-                    $allUserids = $postData->idUsers;
-                    $convoName = isset($postData->convoName) ? $postData->convoName : null;
-                    $convoProfilePic = isset($postData->convoProfilePic) ? $postData->convoProfilePic : null;
-                    $idConversation = isset($postData->idConversation) ? $postData->idConversation : null;
-                    $idUser = isset($postData->userid) ? $postData->userid : 0;
-                    $isGroupYN = isset($postData->isGroupYN) ? $postData->isGroupYN : "N";          
+                    $allUserids = $para->idUsers;
+                    $convoName = isset($para->convoName) ? $para->convoName : null;
+                    $convoProfilePic = isset($para->convoProfilePic) ? $para->convoProfilePic : null;
+                    $idConversation = isset($para->idConversation) ? $para->idConversation : null;
+                    $idUser = isset($para->userid) ? $para->userid : 0;
+                    $isGroupYN = isset($para->isGroupYN) ? $para->isGroupYN : "N";          
                     if($idUser){
                         $userDetails = $this->authModel->getUserById($idUser);
                         if($idConversation != null){
