@@ -159,7 +159,7 @@ class Chat extends CI_Controller {
             if($res != null && $res->userid == $idUser){
                 if($_SERVER['REQUEST_METHOD'] == "GET") {
 
-                    // $idUser = $_REQUEST['idUser'] ? $_REQUEST['idUser'] : 0;
+                    $idUser = $_REQUEST['idUser'] ? $_REQUEST['idUser'] : 0;
                     
                     if($idUser){
                         if(isset($_REQUEST['idConversation'])){
@@ -168,8 +168,11 @@ class Chat extends CI_Controller {
                         }
                         else if(isset($_REQUEST['idUserOther'])){
                             $idUserOther = $_REQUEST['idUserOther'];
-                            $data['conversation'] = $this->chatModel->getConversationByUser($idUser,$idUserOther);  
                             $otherUser = $this->authModel->getUserDetails($_REQUEST['idUserOther']);
+                            $data['conversation'] = $this->chatModel->getConversationByUser($idUser,$idUserOther); 
+                            if($data['conversation'] = null){
+                                $data['conversation']->idConversation = $this->chatModel->createConversation($otherUser->name,'N',$idUser);
+                            }
                             $data['conversation']->convoName = $otherUser->name;
                             $data['conversation']->convoProfilePic = $otherUser->imageUrl;
                         }
