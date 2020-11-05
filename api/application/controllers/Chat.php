@@ -307,10 +307,10 @@ class Chat extends CI_Controller {
                     $deletedDate = null;
                     if($isDeletedYN == "Y"){
                         $deletedDate = date('Y-m-d H:i:s');
-                        $txt = $userDetails->displayName." left the group";
+                        $txt = $userDetails->name." left the group";
                         if($idUser){
                             $mUserDets = $this->authModel->getUserDetails($idUser);
-                            $txt = $mUserDets->displayName." removed ".$userDetails->name;
+                            $txt = $mUserDets->name." removed ".$userDetails->name;
                         }
                         $this->chatModel->postChat($idMember,$txt,null,'TRANSACTION');
                         if($idConversation)
@@ -373,9 +373,9 @@ class Chat extends CI_Controller {
                             //update
                             if($convoName != null || $convoProfilePic != null){
                                 $this->chatModel->updateConversation($idConversation,$convoName,$convoProfilePic);
-                                    $chatText = $userDetails->displayName." changed profile pic.";
+                                    $chatText = $userDetails->name." changed profile pic.";
                                 if($convoName != null)
-                                    $chatText = $userDetails->displayName." changed conversation name to $convoName";
+                                    $chatText = $userDetails->name." changed conversation name to $convoName";
                                 $this->chatModel->postChat($idMember,$chatText,null,'TRANSACTION'); 
                                 // $this->chatModel->updateLastUpdateconversation($idConversation); 
                             }
@@ -385,7 +385,7 @@ class Chat extends CI_Controller {
                             //create
                             $idConversation = $this->chatModel->createConversation($convoName,$isGroupYN,$idUser);
                             $idMember = $this->chatModel->createMember($idUser,$idConversation,'Y');
-                            $txt = $userDetails->displayName." created the group";
+                            $txt = $userDetails->name." created the group";
                             if($isGroupYN == "Y"){
                                 $this->chatModel->postChat($idMember,$txt,null,'TRANSACTION');  
                             }   
@@ -401,7 +401,7 @@ class Chat extends CI_Controller {
 
                         $convoDetails = $this->chatModel->getConversationById($idConversation);
                         $title = $convoDetails->convoName;
-                        $body = $userDetails->displayName." added you";
+                        $body = $userDetails->name." added you";
                         $payload['idConversation'] = $idConversation;
                         $payload['click_action'] = 'FLUTTER_NOTIFICATION_CLICK';
 
@@ -410,7 +410,7 @@ class Chat extends CI_Controller {
                                 $mIdMemeber = $this->chatModel->createMember($midUser,$idConversation,'N');
                                 $mIdUserDets = $this->authModel->getUserDetails($midUser);
                                 if($isGroupYN == "Y"){
-                                    $txt = $userDetails->displayName." added ".$mIdUserDets->name;
+                                    $txt = $userDetails->name." added ".$mIdUserDets->name;
                                     $chatVal = $this->chatModel->postChat($idMember,$txt,null,'TRANSACTION');   
                                     $memberDetails = $this->chatModel->getMemberDetails($idMember);
                                     $payload['idChat'] = $chatVal->idChat;
