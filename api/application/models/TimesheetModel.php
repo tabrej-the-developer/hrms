@@ -53,6 +53,12 @@ class TimesheetModel extends CI_Model {
 		return $query->result();
 	}
 
+	public function getUserVisits($signInDate,$userid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * from visitis where userid = '$userid' AND signInDate = '$signInDate'");
+		return $query->result();
+	} 
+
 	public function getTimesheetForPayrun($startDate,$endDate,$empId){
 		$this->load->database();
 		$query = $this->db->query("SELECT * FROM timesheet WHERE centerid IN (SELECT users.center from  employee  inner join users on employee.userid = users.id where xeroEmployeeId = '$empId' ) and startDate = '$startDate' group by timesheet.id");

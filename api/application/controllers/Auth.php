@@ -6,7 +6,7 @@ class Auth extends CI_Controller {
 	function __construct() {
 
 		header('Access-Control-Allow-Origin: *');
-		header("Access-Control-Allow-Headers: X-DEVICE-ID,X-TOKEN, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
+		header("Access-Control-Allow-Headers: X-DEVICE-ID,X-TOKEN,X-DEVICE-TYPE, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
 		header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 		$method = $_SERVER['REQUEST_METHOD'];
 		if($method == "OPTIONS") {
@@ -17,11 +17,11 @@ class Auth extends CI_Controller {
 
 	public function login(){
 		$json = json_decode(file_get_contents('php://input'));
-		
 		if($json != null){
 			$email = $json->email;
 			$password = $json->password;
 			$deviceid = $json->deviceid;
+			$devicetype = $json->devicetype;
 			if($email != "" && $email != null && $password != "" && $password != null && $deviceid != "" && $deviceid != null){
 				
 				$this->load->model('authModel');
@@ -38,7 +38,7 @@ class Auth extends CI_Controller {
 				}
 				else{
 					$authToken = uniqid();
-					$this->authModel->insertLogin($user->id,$deviceid,$authToken);
+					$this->authModel->insertLogin($user->id,$deviceid,$authToken,$devicetype);
 					$data['Status'] = "SUCCESS";
 					$data['AuthToken'] = $authToken;
 					$data['userid'] = $user->id;

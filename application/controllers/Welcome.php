@@ -35,6 +35,7 @@ class Welcome extends CI_Controller {
 			$data['email'] = $form_data['email'];
 			$data['password'] = md5($form_data['password']);
 			$data['deviceid'] = $this->getIpAddress();
+			$data['devicetype'] = 'WEB';
 			$url = BASE_API_URL.'auth/login';
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);

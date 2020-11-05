@@ -78,10 +78,10 @@ class AuthModel extends CI_Model {
 		return $query->row();
 	}
 
-	public function insertLogin($userid,$deviceid,$token){
+	public function insertLogin($userid,$deviceid,$token,$deviceType){
 		$this->load->database();
-		$query = $this->db->query("DELETE FROM logins WHERE userid = '$userid'");
-		$query = $this->db->query("INSERT INTO logins VALUES(0,'$userid','now()','$deviceid','$token','N')");
+		$query = $this->db->query("DELETE FROM logins WHERE userid = '$userid' AND deviceType = '$deviceType'");
+		$query = $this->db->query("INSERT INTO logins VALUES(0,'$userid','now()','$deviceid','$token','N','$deviceType')");
 	}
 
 	public function getPermissions($userid){

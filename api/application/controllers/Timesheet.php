@@ -5,7 +5,7 @@ class Timesheet extends CI_Controller{
 
 	function __construct() {
 		header('Access-Control-Allow-Origin: *');
-		header("Access-Control-Allow-Headers: X-DEVICE-ID,X-TOKEN, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
+		header("Access-Control-Allow-Headers: X-DEVICE-ID,X-TOKEN,X-DEVICE-TYPE, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
 		header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 		$method = $_SERVER['REQUEST_METHOD'];
 		if($method == "OPTIONS") {
@@ -454,6 +454,34 @@ class Timesheet extends CI_Controller{
 			http_response_code(401);
 		}
 	}
+
+	public function getUserWeekTimesheet($userid,$date,$empId){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$this->load->model('timesheetModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+				$currentDate = $date;
+				$weekData = [];
+				$date = date("Y-m-d",strtotime('+5 days',strtotime($date)));
+				while($currentDate < $date){
+					$data = $this->timesheetModel->getUserVisits($currentDate,$empId);
+					$currentDate = date('Y-m-d',strtotime('+1 days',strtotime($currentDate)));
+					array_push($weekData,$data);
+				}
+				http_response_code(200);
+				echo json_encode($weekData);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
 
 	public function getRosterShifts($userid,$empId){
 		$headers = $this->input->request_headers();
