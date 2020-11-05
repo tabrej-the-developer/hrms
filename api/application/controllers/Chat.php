@@ -159,7 +159,7 @@ class Chat extends CI_Controller {
             if($res != null && $res->userid == $idUser){
                 if($_SERVER['REQUEST_METHOD'] == "GET") {
 
-                    $idUser = $_REQUEST['idUser'] ? $_REQUEST['idUser'] : 0;
+                    // $idUser = $_REQUEST['idUser'] ? $_REQUEST['idUser'] : 0;
                     
                     if($idUser){
                         if(isset($_REQUEST['idConversation'])){
@@ -170,11 +170,10 @@ class Chat extends CI_Controller {
                             $idUserOther = $_REQUEST['idUserOther'];
                             $otherUser = $this->authModel->getUserDetails($_REQUEST['idUserOther']);
                             $data['conversation'] = $this->chatModel->getConversationByUser($idUser,$idUserOther); 
-                            if($data['conversation'] = null){
-                                $data['conversation']->idConversation = $this->chatModel->createConversation($otherUser->name,'N',$idUser);
+                            if($data['conversation'] == null){
+                                $data['conversation']->convoName = $otherUser->name;
+                                $data['conversation']->convoProfilePic = $otherUser->imageUrl;
                             }
-                            $data['conversation']->convoName = $otherUser->name;
-                            $data['conversation']->convoProfilePic = $otherUser->imageUrl;
                         }
                         if($data['conversation'] != null){
                             $members = $this->chatModel->getMemeberDetailsInConversation($data['conversation']->idConversation);
