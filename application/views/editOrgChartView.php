@@ -552,16 +552,19 @@ font-family: 'Open Sans', sans-serif;
 
 <script type="text/javascript">
 	function reloadPageBody(){
-		var centerId = $('.sellect').val();
+		var centerid = $('.sellect').val();
 		var url = window.location.origin+'/PN101/settings/orgChart';
 		$.ajax({
 			url : url,
-			type : 'GET',
-			success : function(response){
-				$('#areas-roles-list').empty()
-				$('#areas-roles-list').html($(response).find('#areas-roles-list').html())
-			}
-		})
+			type : 'POST',
+			data : {
+				centerid:centerid
+			} ,
+			success:function(response){
+				$('.thisOne').html($(response).find('.thisOne').html());
+				getEmployeesCountByRole();
+			} 
+		});
 	}
 
 	function newArea(){
