@@ -1045,7 +1045,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 
 <div class="weekTimesheetModal">
 	<div class="weekTimesheetBody">
-		<div class="weekTimesheetModalHeader">NAME</div>
+		<div class="weekTimesheetModalHeader" >NAME</div>
 		<div class="weekTimesheetModalData">
 			<div class="weekTimesheetModalTabs">
 				<span class="weekTimesheetModalTabsMon">MON</span>
@@ -1603,7 +1603,9 @@ $(document).on('click','.buttonn',function(){
 				var name = $(e).parent().prev().attr('name');
 					$('.weekTimesheetModalHeader').html(name)
 				var employeeId = $(e).attr('userid');
+					$('.weekTimesheetModalHeader').attr('userid',employeeId);
 				var startDate = $(e).attr('date');
+					$('.weekTimesheetModalHeader').attr('date',startDate);
 				var url = "<?php echo base_url('timesheet/getEmployeeTimesheet'); ?>";
 				var select = JSON.parse(localStorage.getItem('payrollTypes'));
 				$.ajax({
@@ -1647,15 +1649,6 @@ $(document).on('click','.buttonn',function(){
 						})
 					}
 				})
-				// startTime
-				// endTime
-				// payType
-				// clockedInTime
-				// clockedOutTime
-				// empId
-				// userid
-				// shiftDate
-				// timesheetId
 			}
 			$(document).on('click','.time_visits_child.oldtime',function(){
 				$(this).removeClass('oldtime')
@@ -1665,41 +1658,50 @@ $(document).on('click','.buttonn',function(){
 			$(document).on('click','.submit_weekModal',function(){
 				var values = [];
 				var timesheetId = "<?php echo $timesheetid; ?>";
-				var userid = <?php $this->session->userdata('LoginId'); ?>;
+				var userid = "<?php echo $this->session->userdata('LoginId'); ?>";
+				var startDate = new Date($('.weekTimesheetModalHeader').attr('date'));
+				var empId = $('.weekTimesheetModalHeader').attr('userid')
+				console.log(empId)
+				var url = window.location.origin+"/PN101/timesheet/createWeekPayroll";
 				for(var i=0;i<5;i++){
 					$(`.week_div_${i} .display_flex_visits`).each(function(){
 						var obj = {};
+						var d = new Date();
 						if(!$(this).children('.visit__').children('.time_visits_child').hasClass('oldtime'))
+						{
+							obj.startTime = (parseInt($(this).children('.visit__').children('.time_visits_child').children('.sttime').val())*100).toString();
+							obj.endTime = (parseInt($(this).children('.visit__').children('.time_visits_child').children('.edtime').val())*100).toString();
+							obj.payType = $(this).children('.select__').children('.select_css').children('select').val();
+							obj.clockedInTime = $(this).children('.visit__').attr('starttime');
+							obj.clockedOutTime = $(this).children('.visit__').attr('endtime');
+							d.setDate(startDate.getDate()+(i));
+							obj.shiftdate = d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate();
+						}
+						if($(this).children('.visit__').children('.time_visits_child').hasClass('oldtime'))
 						{
 							obj.startTime = $(this).children('.visit__').attr('starttime');
 							obj.endTime = $(this).children('.visit__').attr('endtime');
 							obj.payType = $(this).children('.select__').children('.select_css').children('select').val();
 							obj.clockedInTime = $(this).children('.visit__').attr('starttime');
 							obj.clockedOutTime = $(this).children('.visit__').attr('endtime');
-						}
-						if($(this).children('.visit__').children('.time_visits_child').hasClass('oldtime'))
-						{
-							obj.startTime = $(this).children('.visit__').children('.time_visits_child').children('.sttime').val();
-							obj.endTime = $(this).children('.visit__').children('.time_visits_child').children('.edtime').val();
-							obj.payType = $(this).children('.select__').children('.select_css').children('select').val();
-							obj.clockedInTime = $(this).children('.visit__').attr('starttime');
-							obj.clockedOutTime = $(this).children('.visit__').attr('endtime');
+							d.setDate(startDate.getDate()+(i));
+							obj.shiftdate = d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate();
 						}
 						values.push(obj)
 					})
 				}
+				console.log(values)
 				$.ajax({
 					url : url,
 					type: 'POST',
 					data : {
 						empId : empId,
 						userid : userid,
-						shiftDate : shiftDate,
 						timesheetid : timesheetId, 
 						visits : values
 					},
 					success : function(response){
-
+							// send data to api, from there, call api five times !!
 					}
 				})
 			})

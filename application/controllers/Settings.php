@@ -292,22 +292,34 @@ public function editRooms(){
 
 	public function updateCenter(){
 		$input = $this->input->post();
-		if($input != null){
+		// if($input != null){
 	//footprint start
 	if($this->session->has_userdata('current_url')){
 		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
 		$this->session->set_userdata('current_url',currentUrl());
 	}
 	// footprint end
-		$data['addStreet'] = $this->input->post('addStreet');
-		$data['addCity'] = $this->input->post('addCity');
-		$data['addState'] = $this->input->post('addState');
-		$data['addZip'] = $this->input->post('addZip');
-		$data['name'] = $this->input->post('name');
-		$data['logo'] = $this->input->post('logo');
-		$data['centerid'] = $this->input->post('centerid'); 
+		$data['center_name'] = $input['center_name'];
+		$data['centerid'] = $input['centerid'];
+		$data['center_city'] = $input['center_city'];
+		$data['center_street'] = $input['center_street'];
+		$data['center_state'] = $input['center_state'];
+		$data['center_zip'] = $input['center_zip'];
+		$data['center_phone'] = $input['center_phone'];
+		$data['center_mobile'] = $input['center_mobile'];
+		$data['center_email'] = $input['center_email'];
+		$data['center_abn'] = $input['center_abn'];
+		$data['center_acn'] = $input['center_acn'];
+		$data['center_se_no'] = $input['center_se_no'];
+		$data['center_date_opened'] = $input['center_date_opened'];
+		$data['center_capacity'] = $input['center_capacity'];
+		// $data['center_approval_doc'] = $input['center_approval_doc'];
+		// $data['center_ccs_doc'] = $input['center_ccs_doc'];
+		$data['manager_name'] = $input['manager_name'];
+		$data['center_admin_name'] = $input['center_admin_name'];
+		$data['centre_nominated_supervisor'] = $input['centre_nominated_supervisor'];
 		$data['userid'] = $this->session->userdata('LoginId');
-		$url = BASE_API_URL."/settings/updateCenter.";
+		$url = BASE_API_URL."settings/updateCenter";
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -319,15 +331,16 @@ public function editRooms(){
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			// print_r($server_output);
 			if($httpcode == 200){
-				return $server_output;
 				curl_close ($ch);
-
+				redirect('settings');
+				return $server_output;
 			}
 			else if($httpcode == 401){
 
 			}
-		}
+		// }
 	}
 
 	public function orgChart(){
