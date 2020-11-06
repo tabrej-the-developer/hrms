@@ -54,7 +54,7 @@ font-family: 'Open Sans', sans-serif;
     select{
       background: #E7E7E7 !important;
       border: none !important;
-      height: 2.5rem !important;
+      height: 2rem !important;
       border-radius: 20px !important;
       border: 1px solid #D2D0D0 !important;
       padding-left: 1rem !important;
@@ -68,12 +68,12 @@ font-family: 'Open Sans', sans-serif;
     	margin-top: 0.25rem
     }
     .street_address{
-    	width: 67% !important;
+    	width: 90% !important;
     	min-height: 5rem;
     	padding-left: 1.5rem;
     }
     .street_address textarea{
-    	width: 66% !important;
+    	width: 100% !important;
     }
 		.back_button_a{
 			display: flex;
@@ -116,12 +116,6 @@ font-family: 'Open Sans', sans-serif;
 							<label><i style="color: #aa63ff;" class=""></i> City</label>
 						<input type="text" class="" name="center_city" id="center city" value="">
 						</div>
-						<div class="street_address">
-							<label><i style="color: #aa63ff;" class=""></i> Street Address<sup>
-				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
-			</sup></label>
-							<textarea class="street_address" name="center_street" id="center_street" ></textarea>
-						</div>
 					     <div class="input_box">
 							<label><i style="color: #aa63ff;" class=""></i> State</label>
 							<span class="select_css">
@@ -137,8 +131,16 @@ font-family: 'Open Sans', sans-serif;
 								</select>
 							</span>
 						</div>
+						<div class="street_address">
+							<label><i style="color: #aa63ff;" class=""></i> Street Address<sup>
+				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+			</sup></label>
+							<textarea class="street_address" name="center_street" id="center_street" ></textarea>
+						</div>
 					    <div class="input_box">
-							<label><i style="color: #aa63ff;" class=""></i> Postcode</label>
+							<label><i style="color: #aa63ff;" class=""></i> Postcode<sup>
+				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+			</sup></label>
 							<input class="" type="number" name="center_zip" id="center zip" value="" required>
 						</div>	
 					  <div class="input_box">
@@ -178,7 +180,7 @@ font-family: 'Open Sans', sans-serif;
 								<i style="color: #aa63ff;" class=""></i> Centre Capacity</label>
 							<input class="" type="text" name="center_capacity" id="centre_capacity" value="">
 						</div>
-						<div class="input_box">
+<!-- 						<div class="input_box">
 							<label>
 								<i style="color: #aa63ff;" class=""></i> Centre Approval Doc</label>
 							<input class="" type="file" name="center_approval_doc" id="centre_approval_doc"  value="" onchange="validate('centre_approval_doc')">
@@ -187,7 +189,7 @@ font-family: 'Open Sans', sans-serif;
 							<label>
 								<i style="color: #aa63ff;" class=""></i> Center CCS Doc</label>
 							<input class="" type="file" name="center_ccs_doc" id="centre_ccs_doc"  value="" onchange="validate('centre_ccs_doc')">
-						</div>
+						</div> -->
 						<!-- <div class="input_box">
 							<label>
 								<i style="color: #aa63ff;" class=""></i> Manager Name</label>

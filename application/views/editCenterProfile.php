@@ -49,7 +49,7 @@ font-family: 'Open Sans', sans-serif;
     select{
       background: #E7E7E7 !important;
       border: none !important;
-      height: 2.5rem !important;
+      height: 2rem !important;
       border-radius: 20px !important;
       border: 1px solid #D2D0D0 !important;
       padding-left: 1rem !important;
@@ -63,12 +63,12 @@ font-family: 'Open Sans', sans-serif;
       margin-top: 0.25rem
     }
     .street_address{
-      width: 67% !important;
+      width: 90% !important;
       min-height: 5rem;
       padding-left: 1.5rem;
     }
     .street_address textarea{
-      width: 66% !important;
+      width: 100% !important;
     }
   #addCenter_multipleEmployees{
       border: none;
@@ -80,10 +80,9 @@ font-family: 'Open Sans', sans-serif;
       text-decoration: none;
       display: inline-block;
       font-weight: 700;
-      margin: 2px;
       width:auto;
       border-radius: 20px;
-      padding: 8px;
+      padding: 5px;
       background: rgb(164, 217, 214);
       }
       .center-list{
@@ -168,15 +167,11 @@ font-family: 'Open Sans', sans-serif;
               <input type="text" class="" name="center_name" id="ceter name" placeholder="Center name" value="<?php echo isset($cD->name) ? $cD->name : ''; ?>" required>
               <input type="text" name="centerid" value="<?php echo $cD->centerid; ?>" style="display: none">
             </div>
-              <div class="input_box">
+            <div class="input_box">
               <label><i style="color: #aa63ff;" class=""></i> City</label>
             <input type="text" class="" name="center_city" id="center city" placeholder = "City" value="<?php echo isset($cD->addCity) ? $cD->addCity : ''; ?>">
             </div>
-            <div class="street_address">
-              <label><i style="color: #aa63ff;" class=""></i> Street Address</label>
-              <textarea class="street_address" name="center_street" id="center street" placeholder="Street Address"><?php echo isset($cD->addStreet) ? $cD->addStreet : ''; ?></textarea>
-            </div>
-               <div class="input_box">
+           <div class="input_box">
               <label><i style="color: #aa63ff;" class=""></i> State</label>
               <span class="select_css">
                 <select class="" name="center_state" id="center state" value="<?php  echo isset($cD->addState) ? $cD->addState : ''; ?>">
@@ -185,6 +180,10 @@ font-family: 'Open Sans', sans-serif;
                 <?php } ?>
                 </select>
               </span>
+            </div>
+            <div class="street_address">
+              <label><i style="color: #aa63ff;" class=""></i> Street Address</label>
+              <textarea class="street_address" name="center_street" id="center street" placeholder="Street Address"><?php echo isset($cD->addStreet) ? $cD->addStreet : ''; ?></textarea>
             </div>
              
               <div class="input_box">
@@ -228,11 +227,11 @@ font-family: 'Open Sans', sans-serif;
                 <i style="color: #aa63ff;" class=""></i> Centre Capacity</label>
               <input class="" type="text" name="center_capacity" id="centre_capacity" placeholder="Centre capacity" value="<?php echo isset($cR->centreCapacity) ? $cR->centreCapacity : '' ?>">
             </div>
-            <div class="input_box">
+<!--             <div class="input_box">
               <label>
                 <i style="color: #aa63ff;" class=""></i> Centre Approval Doc</label>
                 <?php if(isset($cR->centreApprovalDoc) && $cR->centreApprovalDoc != null && $cR->centreApprovalDoc != ""){ ?>
-                  <a href="<?php echo base_url('api/application/assets/files/').$cR->centreCCSDoc ?>" download><i>
+                  <a href="<?php echo base_url('api/application/assets/files/').$cR->centreApprovalDoc ?>" download><i>
                     <img src="<?php echo base_url('assets/images/icons/download.png')?>">
                   </i>Download</a>
                   <?php } ?>
@@ -247,7 +246,7 @@ font-family: 'Open Sans', sans-serif;
                 </i>Download</a>
               <?php } ?>
               <input class="" type="file" name="center_ccs_doc" id="centre_ccs_doc" placeholder="Center CCS-doc" value="" onchange="validate('centre_ccs_doc')">
-            </div>
+            </div> -->
             <div class="input_box">
               <label>
                 <i style="color: #aa63ff;" class=""></i> Manager Name</label>
