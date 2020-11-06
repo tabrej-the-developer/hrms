@@ -101,17 +101,17 @@
 </span>
 		
 
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Alias<sup>
 				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
 			</sup></label>
 			<input id="alias"  class="" type="text" name="alias">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Date Of Birth</label>
 			<input id="dateOfBirth"  class="" type="date" name="dateOfBirth">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Gender</label>
 			<span class="select_css">
 				<select id="gender"  class="" name="gender">
@@ -127,7 +127,7 @@
 			<input id="profileImage"  class="profileImage" type="FILE" name="profileImage">
 		</span>
 			<hr>	
-<!-- 		<span class="span-class">
+<!-- 		<span class="span-class col-3">
 			<label class="labels__">Job Title<sup>
 				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
 			</sup></label>
@@ -173,26 +173,26 @@
 			</span>
 		</span>
 		<hr>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Phone</label>
 			<input id="phone"  class="" type="text" name="phone">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Mobile</label>
 			<input id="mobile"  class="" type="text" name="mobile">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Email<sup>
 				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
 			</sup></label>
 			<input id="emails"  class="" type="text" name="emails">
 		</span>
 		<hr>
-<!-- 		<span class="span-class">
+<!-- 		<span class="span-class col-3">
 			<label class="labels__">created_at</label>
 			<input placeholder="created_at" id="created_at"  class="" type="text">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">created_by</label>
 			<input placeholder="created_by" id="created_by"  class="" type="text">
 		</span> -->
@@ -268,7 +268,7 @@
 				<span class="superfund-remove"> Remove </span>
 			</span>
 		</h3>
-<!-- 		<span class="span-class">
+<!-- 		<span class="span-class col-3">
 			<label class="labels__">Employee Id</label>
 			<input id="employeeId" >
 		</span> -->
@@ -409,17 +409,17 @@
 
 
 	<section class="employee-details">
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Employee Number<sup>
 				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
 			</sup></label>
 			<input id="employee_no" type="text" name="employee_no">
 		</span>
-<!-- 		<span class="span-class">
+<!-- 		<span class="span-class col-3">
 			<label class="labels__">Xero Employee Id</label>
 			<input id="xeroEmployeeId" type="text" name="xeroEmployeeId">
 		</span> -->
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Center</label>
 			<span class="select_css">
 				<select id="center" name="center">
@@ -438,7 +438,7 @@
 			</span>
 		</span>
 
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Area<sup>
 				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
 			</sup></label>
@@ -458,7 +458,7 @@
 			</span>
 		</span>
 
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Role<sup>
 				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
 			</sup></label>
@@ -476,13 +476,13 @@
 		</span>
 		</span>
 
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Manager</label>
 			<input id="manager" type="text" name="manager">
 		</span>
 
 
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Level<sup>
 				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
 			</sup></label>
@@ -496,28 +496,28 @@
 				</select>
 			</span>
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Bonus Rates</label>
 			<input id="bonusRates" name="bonusRates" type="number" step="0.01" min="0">
 		</span>
 
-<!-- 		<span class="span-class">
+<!-- 		<span class="span-class col-3">
 			<label class="labels__">	Currently-employed</label>
 			<label class="labels__" class="yn-label">Yes</label>
 			<input  type="radio" name="currently_employed " class="currently_employed yn-input" value="Y">
 			<label class="labels__" class="yn-label">No</label>
 			<input type="radio" name="currently_employed " class="currently_employed yn-input" value="N">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">	Commencement-date</label>
 			<input placeholder="Commencement-date" id="commencement_date" type="date">
 		</span> -->
 <!-- 
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Contract-position	</label>
 			<input placeholder="Contract-position	" id=" " type="text">
 		</span> -->
-<!-- 		<span class="span-class">
+<!-- 		<span class="span-class col-3">
 			<label class="labels__">Resume-supplied</label>
 			<label class="labels__" class="yn-label">Yes</label>
 			<input  type="radio" name="resume_supplied" class="resume_supplied yn-input" value="Y">
@@ -525,16 +525,16 @@
 			<input type="radio" name="resume_supplied" class="resume_supplied yn-input" value="N">
 		</span>
  -->
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Resume Document </label>
 			<input  id="resume_doc" name="resume_doc" type="file">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Contract Document </label>
 			<input  id="contract_doc" name="contract_doc" type="file">
 		</span>
 
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Employment-type</label>
 			<span class="select_css">
 				<select id="employement_type" name="employement_type">
@@ -544,77 +544,77 @@
 				</select>
 			</span>
 		</span>
-<!-- 		<span class="span-class">
+<!-- 		<span class="span-class col-3">
 			<label class="labels__">Current-contract-notes</label>
 			<input placeholder="Current-contract-notes" id="current_contract_notes" type="date">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Current-contract-signature-date 	</label>
 			<input placeholder="Current-contract-signature-date" id="current_contract_signature_date" type="date">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Current-contract-commencement-date </label>
 			<input placeholder="Current-contract-commencement-date" id="current_contract_commencement_date" type="date">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Current-contract-end-date	</label>
 			<input placeholder="Current-contract-end-date" id="current_contract_end_date" type="date">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Current-contract-paid-start-date </label>
 			<input placeholder="Current-contract-paid-start-date" id="current_contract_paid_start_date" type="date">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Probation-end-date 	</label>
 			<input id="probation_end_date" type="date">
 		</span> -->
-<!-- 		<span class="span-class">
+<!-- 		<span class="span-class col-3">
 			<label class="labels__">Industry-years-exp-as-nov19	</label>
 			<input placeholder="Industry-years-exp-as-nov19	" id="industry_years_exp_as_nov19" type="text">
 		</span> -->
 
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Highest-qual-held</label>
 		<input id="highest_qual_held" name="highest_qual_held" type="text">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Date Obtained</label>
 		<input id="highest_qual_date_obtained" name="highest_qual_date_obtained" type="text">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Highest Qualification Certificate</label>
 		<input id="highest_qual_cert" name="highest_qual_cert" type="text">
 		</span>
-<!-- 		<span class="span-class">
+<!-- 		<span class="span-class col-3">
 			<label class="labels__">Highest-qual-type	 </label>
 			<input placeholder="Highest-qual-type" id="highest_qual_type" type="text">
 		</span>
- -->		<span class="span-class">
+ -->		<span class="span-class col-3">
 			<label class="labels__">Qualification working Toward</label>
 		<input  id="qual_towards_desc" name="qual_towards_desc" type="text">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Qual-towards-%-comp</label>
 		<input  id="qual_towards_percent_comp" name="qual_towards_percent_comp" type="text">
 		</span>
 
-<!-- 		<span class="span-class">
+<!-- 		<span class="span-class col-3">
 			<label class="labels__">	Workcover</label>
 			<input id="workcover" type="text">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">	PIAWE</label>
 			<input id="piawe" type="text">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">	Annual-leave-in-contract</label>
 			<input placeholder="Annual-leave-in-contract" id="annual_leave_in_contract" type="text">
 		</span> -->
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Classification</label>
 			<input id="classification" name="classification" type="text">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Ordinary Earning Rate Id</label>
 			<span class="select_css">
 				<select id="ordinaryEarningRateId" name="ordinaryEarningRateId"  class="" type="text">
@@ -628,95 +628,95 @@
 			</span>
 		</span>
 
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Payroll Calendar</label>
 			<input id="payroll_calendar" name="payroll_calendar" type="text">
 		</span>
 		<hr>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Visa Holder</label>
 			<label class="yn-label">Yes</label>
 			<input  type="radio" name="visa_holder" class="visa_holder yn-input" value="Y">
 			<label class="yn-label">No</label>
 			<input type="radio" name="visa_holder" class="visa_holder yn-input" value="N">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">	Visa-type		</label>
 			<input id="visa_type" name="visa_type" type="text">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">	Visa-grant-date	</label>
 			<input  id="visa_grant_date" name="visa_grant_date" type="date">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">	Visa-end-date	</label>
 			<input  id="visa_end_date" name="visa_end_date" type="date">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">	Visa-conditions</label>
 			<input  id="visa_conditions" name="visa_conditions" type="text">
 		</span>
 		<hr>
 		<div>
-				<span class="span-class">
+				<span class="span-class col-3">
 					<label class="labels__">Course Name</label>
 					<input class="course_name" name="course_name[]" type="text">
 				</span>
-				<span class="span-class">
+				<span class="span-class col-3">
 					<label class="labels__">course Description</label>
 					<input class="course_description" name="course_description[]" type="text">
 				</span>
-				<span class="span-class">
+				<span class="span-class col-3">
 					<label class="labels__">Date Obtained</label>
 					<input class="date_obtained" name="date_obtained[]" type="date">
 				</span>
-				<span class="span-class">
+				<span class="span-class col-3">
 					<label class="labels__">Expiry Date</label>
 					<input class="expiry_date" name="expiry_date[]" type="date">
 				</span>
-				<span class="span-class">
+				<span class="span-class col-3">
 					<label class="labels__">Certificate </label>
 					<input class="certificate" name="certificate[]" type="FILE">
 				</span>
 		</div>
 		<hr>
-<!-- 		<span class="span-class">
+<!-- 		<span class="span-class col-3">
 			<label class="labels__">CPR-expiry</label>
 			<input placeholder="CPR-expiry" id="cpr_expiry" type="text">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Prohibition-Notice-Declaration</label>
 			<input placeholder="Prohibition-Notice-Declaration" id="prohibition_notice_declaration" type="date">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">VIT-card-no</label>
 			<input placeholder="VIT-card-no" id="vit_card_no" type="text">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">VIT-expiry</label>
 			<input placeholder="VIT-expiry" id="vit_expiry" type="text">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">WWCC-card-no	</label>
 			<input placeholder="WWCC-card-no" id="wwcc_card_no" type="text">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">WWCC-expiry</label>
 			<input placeholder="WWCC-expiry" id="wwcc_expiry" type="text">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Food-handling-safety</label>
 			<input placeholder="Food-handling-safety" id="food_handling_safety" type="date">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Last-police-check</label>
 			<input placeholder="Last-police-check" id="last_police_check" type="date">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Child-protection-check</label>
 			<input placeholder="Child-protection-check" id="child_protection_check" type="date">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Nominated-supervisor</label>
 			<label class="labels__" class="yn-label">Yes</label>
 				<input  type="radio"  name="nominated_supervisor" class="nominated_supervisor yn-input" value="Y">
@@ -739,59 +739,59 @@
 
 	<section class="medical-info">
 		<h3>Medical Information<!-- <span id="Medical Information"> + </span> --></h3>
-<!-- 		<span class="span-class">
+<!-- 		<span class="span-class col-3">
 			<label class="labels__">Employee Id</label>
 			<input id="employeeId" >
 		</span> -->
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Medicare Number</label>
 				<input  type="text"  name="medicareNo" class="medicareNo">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Medicare Reference Number</label>
 				<input  type="text"  name="medicareRefNo" class="medicareRefNo">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Health Insurance Fund</label>
 				<input  type="text"  name="healthInsuranceFund" class="healthInsuranceFund">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Health Insurance Number</label>
 				<input  type="text"  name="healthInsuranceNo" class="healthInsuranceNo">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Ambulance Subscription Number</label>
 				<input  type="text"  name="ambulanceSubscriptionNo" class="ambulanceSubscriptionNo" >
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Medical Conditions</label>
 				<input  type="text"  name="medicalConditions[]" class="medicalConditions">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Medical Allergies</label>
 				<input  type="text"  name="medicalAllergies[]" class="medicalAllergies">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Medication</label>
 				<input  type="text"  name="medication[]" class="medication">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Dietary Preferences</label>
 				<input  type="text"  name="dietaryPreferences[]" class="dietaryPreferences">
 		</span>
-<!-- 		<span class="span-class">
+<!-- 		<span class="span-class col-3">
 			<label class="labels__">Anaphylaxis</label>
 				<input  type="date"  name="anaphylaxis" class="anaphylaxis">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Asthma</label>
 				<input  type="date"  name="asthma" class="asthma">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Maternity Start Date</label>
 				<input  type="date"  name="maternityStartDate" class="maternityStartDate">
 		</span>
-		<span class="span-class">
+		<span class="span-class col-3">
 			<label class="labels__">Maternity End Date</label>
 				<input  type="date"  name="maternityEndDate" class="maternityEndDate">
 		</span> -->
