@@ -345,9 +345,40 @@ $server_output = curl_exec($ch);
 				curl_close ($ch);
 				}
 			else if($httpcode == 401){
+		
 				}	
-			}
 		}
+	}
+
+	public function createWeekPayroll(){
+		$form_data = $this->input->post();
+		if($form_data != null){
+			$data['userid'] = $this->session->userdata('LoginId');
+			$data['empId'] = $this->input->post('empId');
+			$data['timesheetid'] = $this->input->post('timesheetid');
+			$data['visits'] = $this->input->post('visits');
+			$url = BASE_API_URL."timesheet/createWeekPayrollEntry";
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'x-device-id: '.$this->session->userdata('x-device-id'),
+					'x-token: '.$this->session->userdata('AuthToken')
+				));
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			print_r($server_output);
+			if($httpcode == 200){
+			print_r($server_output);
+				curl_close ($ch);
+				}
+			else if($httpcode == 401){
+		
+				}	
+		}
+	}
 
 	function getAllEntitlements($userid){
 		$url = BASE_API_URL."payroll/getAllEntitlements/".$this->session->userdata('LoginId');

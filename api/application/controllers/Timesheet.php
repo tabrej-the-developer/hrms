@@ -573,4 +573,32 @@ class Timesheet extends CI_Controller{
 			http_response_code(401);
 		}
 	}
+
+	public function createWeekPayrollEntry(){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $json->userid){
+				$empId = $json->empId;
+				$userid = $json->userid;
+				$timesheetid = $json->timesheetid;
+				$visits = $json->visits;
+				$this->load->model('timesheetModel');
+				foreach ($visits as $v) {
+					$this->timesheetModel->createPayrollEntry($timesheetid,$empId,$v->shiftdate,$v->clockedInTime,$v->clockedOutTime,$v->startTime,$v->endTime,$userid,$v->payType);
+				}
+				$data['Status'] = "SUCCESS";
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	}
 }

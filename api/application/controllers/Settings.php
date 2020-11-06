@@ -479,28 +479,43 @@ class Settings extends CI_Controller {
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
+			$this->load->model('utilModel');
+			$this->load->model('settingsModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			$json = json_decode(file_get_contents('php://input'));
 			//$newR = $this->UtilModel->getCenterById($json->centerid);
 			if($json!= null && $res != null && $res->userid == $json->userid){
-				$addStreet = $json->addStreet;
-				$addCity = $json->addCity;
-				$addState = $json->addState;
-				$addZip = $json->addZip;
-				$name = $json->name;
-				$logo = $json->logo;
+				$center_name = $json->center_name;
 				$centerid = $json->centerid;
-				if($logo == null){
-					$logo = "http://vizytor.todquest.com/images/logo/amiga.png";
-				}else{
-				$destFile = "assets/images/".$_FILES['file']['name'];
-				move_uploaded_file( $_FILES['file']['tmp_name'], $destFile );
-				}
-				$this->load->model('UtilModel');
-				$center = $this->UtilModel->getCenterById($centerid);
+				$center_city = $json->center_city;
+				$center_street = $json->center_street;
+				$center_state = $json->center_state;
+				$center_zip = $json->center_zip;
+				$center_phone = $json->center_phone;
+				$center_mobile = $json->center_mobile;
+				$center_email = $json->center_email;
+				$center_abn = $json->center_abn;
+				$center_acn = $json->center_acn;
+				$center_se_no = $json->center_se_no;
+				$center_date_opened = $json->center_date_opened;
+				$center_capacity = $json->center_capacity;
+				// $center_approval_doc = $json->center_approval_doc;
+				// $center_ccs_doc = $json->center_ccs_doc;
+				$manager_name = $json->manager_name;
+				$center_admin_name = $json->center_admin_name;
+				$centre_nominated_supervisor = $json->centre_nominated_supervisor;
+				// if($logo == null){
+				// 	$logo = "http://vizytor.todquest.com/images/logo/amiga.png";
+				// }else{
+				// $destFile = "assets/images/".$_FILES['file']['name'];
+				// move_uploaded_file( $_FILES['file']['tmp_name'], $destFile );
+				// }
+				$center = $this->utilModel->getCenterById($centerid);
 				if($center != null){
-				$this->load->model('settingsModel');
-				$center = $this->settingsModel->updateCenterProfile($centerid,$logo,$name,$addStreet,$addCity,$addState,$addZip);
+	
+				$center = $this->settingsModel->updateCenterProfile($centerid,$center_name,$center_street,$center_city,$center_state,$center_zip,$center_phone,$center_mobile,$center_email);
+
+				$centerrecord = $this->settingsModel->updateCenterRecord($centerid,$center_abn,$center_acn,$center_se_no,$center_date_opened,$center_capacity,$manager_name,$center_admin_name,$centre_nominated_supervisor);
 					$data['Status'] = "SUCCESS";
 				}
 				else{
@@ -908,7 +923,7 @@ $this->settingsModel->addToEmployeeCourses( $xeroEmployeeId,$course_nme,$course_
 					$password = strtolower($fname)."@123";
 			if($employee_no != null && $employee_no != "" ){
 				if($emails != "" && $emails != null){
-$this->settingsModel->addToUsers($employee_no,md5($password),$emails,$name,$jobTitle,$center,$userid,$role,$level,$alias,$fileNameLoc);
+$this->settingsModel->addToUsers($employee_no,md5($password),$emails,$name,$jobTitle,$center,$userid,$role,$level,$alias,$profileImageName);
 						}
 					}
 // Employee bank account	
@@ -972,6 +987,8 @@ $superMembershipId);
 $this->settingsModel->addToEmployeeTaxDeclaration($xeroEmployeeId,$employmentBasis,$tfnExemptionType,$taxFileNumber,$australiantResidentForTaxPurposeYN,$residencyStatue,$taxFreeThresholdClaimedYN,$taxOffsetEstimatedAmount,$hasHELPDebtYN,$hasSFSSDebtYN,$hasTradeSupportLoanDebtYN_,$upwardVariationTaxWitholdingAmount,$eligibleToReceiveLeaveLoadingYN,$approvedWitholdingVariationPercentage);
 										}
 									}
+// Add user to usercenters
+		$this->settingsModel->addToUserCenters($employee_no,$center);
 // Employee Table
 						if($xeroEmployeeId != null && $xeroEmployeeId != "" ){
 							if($employee_no != "" && $employee_no != null){

@@ -136,6 +136,16 @@ input[type="submit"]{
     display: flex !important;
     justify-content: flex-end;
 }
+.hide_password{
+    width: 20px;
+    position: absolute;
+    top: 1rem;
+    right: 0.5rem;
+    cursor: pointer;
+}
+.password_group{
+    position: relative;
+}
 @media only screen and (max-width:600px){
     body{
         max-width: 100vw;
@@ -157,59 +167,75 @@ input[type="submit"]{
  </head>  
   
  <div class="login-container">
+  <div class="login-container-child d-flex">
+    <!-- Image div element -->
+    <!-- <div class="col-md-5 login-form-2 text-center ">
+    <img src="<?php echo base_url();?>assets/images/Todquest_logo.png" alt="company_logo" class="img-fluid mt-5" width="200" height="200">
+    </div> -->
 
-            <div class="login-container-child d-flex">
-                <!-- Image div element -->
-                <!-- <div class="col-md-5 login-form-2 text-center ">
-                    <img src="<?php echo base_url();?>assets/images/Todquest_logo.png" alt="company_logo" class="img-fluid mt-5" width="200" height="200">
-                </div> -->
-				
-                <div class="col-12 col-md-5 login-form-1">
-                    <div class="col-md-3 login-form-2 d-flex justify-content-center">
-                        <img src="<?php echo base_url();?>assets/images/icons/Todquest_logo.png" alt="company_logo" class="img-fluid " width="200" height="200">
-                    </div> 
-                    <div><h1 style="font-weight: 900;font-family: Open Sans;color: #9B9B9B">Login</h1></div>
-                     <form method="post" action="<?php echo base_url('welcome/login'); ?>">    
-					  <?php  echo '<label class="text-danger">'.$this->session->flashdata("error").'</label>';  ?>
-                        <div class="form-group">
-                            <input type="text" name="email" class="form-control" placeholder="Email Address" value="<?php echo $email;?>" required />
-                        </div> 
-                        <div class="form-group">
-                            <input type="password" name="password" class="form-control" placeholder="Password" value="" required />
-                        </div>
-
-
-                        <center><span style="color: red;"><?php echo $errorText;?></span></center>
-                        
-                    <div class="d-flex justify-content-around position-relative remember_parent">
-                        <!-- <div class="remember-me position-absolute ml-auto " style="left:0">
-                            <input type="checkbox" name="" class=""> Remember me</div> -->
-                        <div class="form-group d-flex justify-content-end position-absolute mr-auto" style="right:0">
-                             <a href="<?php echo site_url('welcome/forgotPassword') ?>" class="ForgetPwd">Forgot Password?</a> 
-                        </div>
-                    </div>
-						<div style="display: flex;justify-content: center;height: 5rem;align-items: center;">
-                  <div class="form-group submit-block">
-                    <input type="submit" name="insert" class="btnSubmit rounded" value="LOGIN" />
-                  </div>                  
-              </div>
-
-                    </form>
-                </div>
-                <div class="col-0 col-md-7 login-form-3" >
-                    <div class="text-class">
-                        <?php 
-                            $quotations = json_decode($quotations);
-                            $quoteLength = count($quotations->quotations);
-                            $rand = rand(0,$quoteLength-1);
-                         ?>
-                         <span>Glad</span>
-                         <span>to see You</span>
-                        <span class="quotation"><?php echo $quotations->quotations[$rand]->quote ?></span>
-                        <span class="author_name"><i> <br>- <?php echo $quotations->quotations[$rand]->author ?></i></span>
-                    </div>
-                </div>
-            </div>
+    <div class="col-12 col-md-5 login-form-1">
+      <div class="col-md-3 login-form-2 d-flex justify-content-center">
+        <img src="<?php echo base_url();?>assets/images/icons/Todquest_logo.png" alt="company_logo" class="img-fluid " width="200" height="200">
+      </div> 
+      <div>
+        <h1 style="font-weight: 900;font-family: Open Sans;color: #9B9B9B">Login</h1>
+      </div>
+      <form method="post" action="<?php echo base_url('welcome/login'); ?>">    
+        <?php  echo '<label class="text-danger">'.$this->session->flashdata("error").'</label>';  ?>
+        <div class="form-group">
+          <input type="text" name="email" class="form-control" placeholder="Email Address" value="<?php echo $email;?>" required />
+        </div> 
+        <div class="form-group password_group">
+          <input type="password" name="password" id="password" class="form-control" placeholder="Password" value="" required />
+          <img src="<?php echo base_url('assets/images/icons/password.png'); ?>" class="hide_password" onclick="pword()">
         </div>
+        <center><span style="color: red;"><?php echo $errorText;?></span></center>
+
+        <div class="d-flex justify-content-around position-relative remember_parent">
+          <!-- <div class="remember-me position-absolute ml-auto " style="left:0">
+          <input type="checkbox" name="" class=""> Remember me</div> -->
+          <div class="form-group d-flex justify-content-end position-absolute mr-auto" style="right:0">
+            <a href="<?php echo site_url('welcome/forgotPassword') ?>" class="ForgetPwd">Forgot Password?</a> 
+          </div>
+        </div>
+        <div style="display: flex;justify-content: center;height: 5rem;align-items: center;">
+          <div class="form-group submit-block">
+            <input type="submit" name="insert" class="btnSubmit rounded" value="LOGIN" />
+          </div>                  
+        </div>
+      </form>
+    </div>
+    <div class="col-0 col-md-7 login-form-3" >
+      <div class="text-class">
+      <?php 
+      $quotations = json_decode($quotations);
+      $quoteLength = count($quotations->quotations);
+      $rand = rand(0,$quoteLength-1);
+      ?>
+      <span>Glad</span>
+      <span>to see You</span>
+      <span class="quotation"><?php echo $quotations->quotations[$rand]->quote ?></span>
+      <span class="author_name"><i> <br>- <?php echo $quotations->quotations[$rand]->author ?></i></span>
+      </div>
+    </div>
+  </div>
+</div>
+  <script type="text/javascript">
+  // window.onload = function(){
+    var pword = () =>{
+      var passwordClass = document.getElementsByClassName('hide_password');
+      var passWord = document.getElementById('password'); 
+      if(passwordClass[0].classList.contains('showingPassword')){
+        passwordClass[0].setAttribute('src','<?php echo base_url('assets/images/icons/password.png'); ?>');
+         passwordClass[0].classList.remove('showingPassword');
+         passWord.setAttribute('type','password');
+      }else{
+        passwordClass[0].setAttribute('src','<?php echo base_url('assets/images/icons/hide_password.png'); ?>');
+        passwordClass[0].classList.add('showingPassword');
+        passWord.setAttribute('type','text');
+      }
+    }
+  // }
+  </script>
 		</body>
  </html>  

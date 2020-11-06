@@ -2683,9 +2683,4 @@ else{
     $('.tokenize_class').tokenize2();
   })
 </script>
-    </html>
-
-
-
-
-
+</html>

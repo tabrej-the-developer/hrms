@@ -156,7 +156,7 @@ font-family: 'Open Sans', sans-serif;
   </div> 
     <div  id="content-wrappers-element" >
     <div class="card_future" style="padding: 20px;">
-      <form name="userinput" action="editCenter" method="post" enctype="multipart/form-data" >
+      <form name="userinput" action="updateCenter" method="post" enctype="multipart/form-data" >
           <span id="centerDetailsYo">
             <div class="row">
             <!-- <span id="addCenter_heading">Center Details</span> -->
@@ -231,7 +231,7 @@ font-family: 'Open Sans', sans-serif;
             <div class="input_box">
               <label>
                 <i style="color: #aa63ff;" class=""></i> Centre Approval Doc</label>
-                <?php if(isset($cR->centreCCSDoc)){ ?>
+                <?php if(isset($cR->centreApprovalDoc) && $cR->centreApprovalDoc != null && $cR->centreApprovalDoc != ""){ ?>
                   <a href="<?php echo base_url('api/application/assets/files/').$cR->centreCCSDoc ?>" download><i>
                     <img src="<?php echo base_url('assets/images/icons/download.png')?>">
                   </i>Download</a>
@@ -241,7 +241,7 @@ font-family: 'Open Sans', sans-serif;
             <div class="input_box">
               <label>
                 <i style="color: #aa63ff;" class=""></i> Center CCS Doc</label>
-                <?php if(isset($cR->centreCCSDoc)){ ?>
+                <?php if(isset($cR->centreCCSDoc) && $cR->centreCCSDoc != null && $cR->centreCCSDoc != ""){ ?>
                 <a href="<?php echo base_url('api/application/assets/files/').$cR->centreCCSDoc ?>" download><i>
                   <img src="<?php echo base_url('assets/images/icons/download.png')?>">
                 </i>Download</a>

@@ -108,6 +108,16 @@ class SettingsModel extends CI_Model {
 		$this->db->query("UPDATE room SET name='$name', careAgeFrom='$careAgeFrom', careAgeTo='$careAgeTo', capacity='$capacity', studentRatio='$studentRatio' where centerid='$centerid' and roomId = '$roomId'");
 	}
 
+	public function updateCenterProfile($centerid,$center_name,$center_street,$center_city,$center_state,$center_zip,$center_phone,$center_mobile,$center_email){
+		$this->load->database();
+		$this->db->query("UPDATE centers SET name='$center_name',addStreet='$center_street',addCity='$center_city',addState='$center_state',addZip='$center_zip',centre_phone_number='$center_phone',centre_mobile_number='$center_mobile',centre_email = '$center_email' WHERE centerid='$centerid'");
+	}
+
+
+	public function updateCenterRecord($centerid,$center_abn,$center_acn,$center_se_no,$center_date_opened,$center_capacity,$manager_name,$center_admin_name,$centre_nominated_supervisor){
+		$this->db->query("UPDATE centerrecord SET centerId = '$centerid',centreABN = '$center_abn',centreACN = '$center_acn',centreSE_no = '$center_se_no',centreDateOpened = '$center_date_opened',centreCapacity = '$center_capacity',managerId = '$manager_name',centreAdminId = '$center_admin_name',centreNominatedSupervisorId = '$centre_nominated_supervisor' WHERE centerId = $centerid");
+	}
+
 	public function deleteRoom($roomid){
 		$this->load->database();
 		$this->db->query("DELETE from orgchartareas where roomId = '$roomid'");
