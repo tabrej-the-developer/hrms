@@ -168,10 +168,12 @@ class Chat extends CI_Controller {
                         }
                         else if(isset($_REQUEST['idUserOther'])){
                             $idUserOther = $_REQUEST['idUserOther'];
-                            $data['conversation'] = $this->chatModel->getConversationByUser($idUser,$idUserOther);  
                             $otherUser = $this->authModel->getUserDetails($_REQUEST['idUserOther']);
-                            $data['conversation']->convoName = $otherUser->name;
-                            $data['conversation']->convoProfilePic = $otherUser->imageUrl;
+                            $data['conversation'] = $this->chatModel->getConversationByUser($idUser,$idUserOther); 
+                            if($data['conversation'] == null){
+                                $data['conversation']->convoName = $otherUser->name;
+                                $data['conversation']->convoProfilePic = $otherUser->imageUrl;
+                            }
                         }
                         if($data['conversation'] != null){
                             $members = $this->chatModel->getMemeberDetailsInConversation($data['conversation']->idConversation);
