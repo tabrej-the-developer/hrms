@@ -650,15 +650,22 @@ $("#mytable #checkall").click(function () {
   })
 
   $(document).ready(function(){
+    var groupsSelected = [];
     $(document).on('change','.group_list',function(){
         var value = $(this).val()
-        var code = `<option value="${value}" selected="selected">${$(this).closest('.group_name_li_tag').children('.group_name_list').text()}</option>`
+        var code = `<option value="${value}" selected="selected">${$(this).closest('.group_name_li_tag').children('.group_name_list').text()}</option>`;
         var liAppend = `<li class="token" data-value="${value}">
                             <a class="dismiss"></a>
                             <span>${$(this).closest('.group_name_li_tag').children('.group_name_list').text()}</span>
                         </li>`
+      if($(this).prop('checked') == true){
             $('.tokens-container.form-control').eq(0).prepend(liAppend)
             $('.demo').append(code)
+      }
+      if($(this).prop('checked') == false){
+            $(`li[data-value="${value}"]`).remove();
+            $(`option[value="${value}"]`).attr('selected',false)
+      }
     })
   })
 

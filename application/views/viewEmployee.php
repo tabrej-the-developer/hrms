@@ -308,37 +308,37 @@
 		<span class="d-flex">
 		<span class="span-class ">
 			<label class="labels__">Title</label>
-				<input disabled  placehdr="Title" id="title"  class="" type="text" name="title" value="<?php echo isset($employeeData->employee->title) ? $employeeData->employee->title : ''; ?>"> 
+				<input disabled   id="title"  class="" type="text" name="title" value="<?php echo isset($employeeData->employee->title) ? $employeeData->employee->title : ''; ?>"> 
 
 		</span>
 	<!-- <span class="span-class name__"> -->
 		<!-- <label class="labels__">Name</label> -->
 		<span class="span-class col-3 ">
 			<label class="labels__">First Name</label>
-			<input disabled  placehdr="First Name" id="fname"  class="" type="text" name="fname" value="<?php echo isset($employeeData->employee->fname) ? $employeeData->employee->fname : ''; ?>" required>
+			<input disabled   id="fname"  class="" type="text" name="fname" value="<?php echo isset($employeeData->employee->fname) ? $employeeData->employee->fname : ''; ?>" required>
 		</span>
 		<span class="span-class col-3 ">
 			<label class="labels__">Middle Name</label>
-			<input disabled  placehdr="Middle Name" id="mname"  class="" type="text" name="mname" value="<?php echo isset($employeeData->employee->mname) ? $employeeData->employee->mname : ''; ?>">
+			<input disabled   id="mname"  class="" type="text" name="mname" value="<?php echo isset($employeeData->employee->mname) ? $employeeData->employee->mname : ''; ?>">
 		</span>
 		<span class="span-class col-3 ">
 			<label class="labels__">Last Name</label>
-			<input disabled  placehdr="Last Name" id="lname"  class="" type="text" name="lname" value="<?php echo isset($employeeData->employee->lname) ? $employeeData->employee->lname : ''; ?>">
+			<input disabled   id="lname"  class="" type="text" name="lname" value="<?php echo isset($employeeData->employee->lname) ? $employeeData->employee->lname : ''; ?>">
 		</span>
 	<!-- </span> -->
 </span>
 		
 		<span class="span-class col-3">
 			<label class="labels__">Alias</label>
-			<input disabled  placehdr="Alias" id="alias"  class="" type="text" name="alias" value="<?php echo isset($employeeData->users->alias) ? $employeeData->users->alias : ''; ?>">
+			<input disabled   id="alias"  class="" type="text" name="alias" value="<?php echo isset($employeeData->users->alias) ? $employeeData->users->alias : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Date Of Birth</label>
-			<input disabled  placehdr="Date Of Birth" id="dateOfBirth"  class="" type="text" name="dateOfBirth" value="<?php echo isset($employeeData->employee->dateOfBirth) ? $employeeData->employee->dateOfBirth : ''; ?>">
+			<input disabled   id="dateOfBirth"  class="" type="text" name="dateOfBirth" value="<?php echo isset($employeeData->employee->dateOfBirth) ? $employeeData->employee->dateOfBirth : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Gender</label>
-				<input disabled  placehdr="Gender" id="gender"  class="" name="gender" value="<?php echo isset($employeeData->employee->gender) ? $employeeData->employee->gender : ''; ?>" type="text">
+				<input disabled   id="gender"  class="" name="gender" value="<?php echo isset($employeeData->employee->gender) ? $employeeData->employee->gender : ''; ?>" type="text">
 		</span>
 		<span class="span-class col-3" style="width:10rem;">
 			<label class="labels__">Profile Image</label>
@@ -363,41 +363,41 @@
 		<!-- <label class="labels__">Address</label>	 -->
 			<span class="span-class  col-3">
 				<label class="labels__">Home Address Line1</label>
-				<input disabled  placehdr="Home Address Line1" id="homeAddLine1"  class="" type="text" name="homeAddLine1"	value="<?php echo isset($employeeData->employee->homeAddLine1) ? $employeeData->employee->homeAddLine1 : ''; ?>">
+				<input disabled id="homeAddLine1"  class="" type="text" name="homeAddLine1"	value="<?php echo isset($employeeData->employee->homeAddLine1) ? $employeeData->employee->homeAddLine1 : ''; ?>">
 			</span>
 			<span class="span-class col-3">
 				<label class="labels__">Home Address Line2</label>
-				<input disabled  placehdr="Home Address Line2" id="homeAddLine2"  class="" type="text" name="homeAddLine2"	value="<?php echo isset($employeeData->employee->homeAddLine2) ? $employeeData->employee->homeAddLine2 : ''; ?>">
+				<input disabled   id="homeAddLine2"  class="" type="text" name="homeAddLine2"	value="<?php echo isset($employeeData->employee->homeAddLine2) ? $employeeData->employee->homeAddLine2 : ''; ?>">
 			</span>
 			<span class="span-class col-3">
 				<label class="labels__">City</label>
-				<input disabled   type="text" placehdr="City" id="homeAddCity"  class=""  name="homeAddCity" 	value="<?php echo isset($employeeData->employee->homeAddCity) ? $employeeData->employee->homeAddCity : ''; ?>">
+				<input disabled   type="text" id="homeAddCity"  class=""  name="homeAddCity" 	value="<?php echo isset($employeeData->employee->homeAddCity) ? $employeeData->employee->homeAddCity : ''; ?>">
 			</span>				
 			<span class="span-class col-3">
 				<label class="labels__">Region</label>
-				<input disabled  placehdr="Region" id="homeAddRegion"  class="" type="text" name="homeAddRegion" value="<?php echo isset($employeeData->employee->homeAddRegion) ? $employeeData->employee->homeAddRegion : ''; ?>">
+				<input disabled   id="homeAddRegion"  class="" type="text" name="homeAddRegion" value="<?php echo isset($employeeData->employee->homeAddRegion) ? $employeeData->employee->homeAddRegion : ''; ?>">
 			</span>
 			<span class="span-class col-3">
 				<label class="labels__">Postal</label>
-				<input disabled  placehdr="Postal" id="homeAddPostal"  class="" type="text" name="homeAddPostal" value="<?php echo isset($employeeData->employee->homeAddPostal) ? $employeeData->employee->homeAddPostal : ''; ?>">
+				<input disabled  id="homeAddPostal"  class="" type="text" name="homeAddPostal" value="<?php echo isset($employeeData->employee->homeAddPostal) ? $employeeData->employee->homeAddPostal : ''; ?>">
 			</span>
 			<span class="span-class col-3">
 				<label class="labels__">Country</label>
-				<input disabled  placehdr="Country" id="homeAddCountry"  class="" type="text" name="homeAddCountry" value="<?php echo isset($employeeData->employee->homeAddCountry) ? $employeeData->employee->homeAddCountry : ''; ?>">
+				<input disabled   id="homeAddCountry"  class="" type="text" name="homeAddCountry" value="<?php echo isset($employeeData->employee->homeAddCountry) ? $employeeData->employee->homeAddCountry : ''; ?>">
 			</span>
 <hr>
 			
 		<span class="span-class col-3">
 			<label class="labels__">Phone</label>
-			<input disabled  placehdr="Phone" id="phone"  class="" type="text" name="phone" value="<?php echo isset($employeeData->employee->phone) ? $employeeData->employee->phone : ''; ?>">
+			<input disabled   id="phone"  class="" type="text" name="phone" value="<?php echo isset($employeeData->employee->phone) ? $employeeData->employee->phone : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Mobile</label>
-			<input disabled  placehdr="Mobile" id="mobile"  class="" type="text" name="mobile" value="<?php echo isset($employeeData->employee->mobile) ? $employeeData->employee->mobile : ''; ?>">
+			<input disabled   id="mobile"  class="" type="text" name="mobile" value="<?php echo isset($employeeData->employee->mobile) ? $employeeData->employee->mobile : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Email</label>
-			<input disabled  placehdr="Emails" id="emails"  class="" type="text" name="emails" value="<?php echo isset($employeeData->employee->emails) ? $employeeData->employee->emails : ''; ?>">
+			<input disabled   id="emails"  class="" type="text" name="emails" value="<?php echo isset($employeeData->employee->emails) ? $employeeData->employee->emails : ''; ?>">
 		</span>
 		<hr>
 
@@ -411,15 +411,15 @@
 		</span> -->
 		<span class="span-class col-3">
 			<label class="labels__">Emergency Contact</label>
-			<input disabled  placehdr="Emergency Contact" id="emergency_contact"  class="" type="text" name="emergency_contact" value="<?php echo isset($employeeData->employee->emergency_contact) ? $employeeData->employee->emergency_contact : ''; ?>">
+			<input disabled  id="emergency_contact"  class="" type="text" name="emergency_contact" value="<?php echo isset($employeeData->employee->emergency_contact) ? $employeeData->employee->emergency_contact : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Relationship</label>
-			<input disabled  placehdr="Relationship" id="relationship"  class="" type="text" name="relationship" value="<?php echo isset($employeeData->employee->relationship) ? $employeeData->employee->relationship : ''; ?>">
+			<input disabled   id="relationship"  class="" type="text" name="relationship" value="<?php echo isset($employeeData->employee->relationship) ? $employeeData->employee->relationship : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Emergency Contact Email</label>
-			<input disabled  placehdr="Emergency Contact Email" id="emergency_contact_email"  class="" type="email" name="emergency_contact_email" value="<?php echo isset($employeeData->employee->emergency_contact_email) ? $employeeData->employee->emergency_contact_email : ''; ?>">
+			<input disabled   id="emergency_contact_email"  class="" type="email" name="emergency_contact_email" value="<?php echo isset($employeeData->employee->emergency_contact_email) ? $employeeData->employee->emergency_contact_email : ''; ?>">
 		</span>
 	</section>
 
@@ -433,16 +433,16 @@
 		</span> -->
 		<span class="span-class col-3">
 			<label class="labels__">Account Name</label>
-			<input disabled  placehdr="Account Name" type="text" class="accountName" name="accountName" value="<?php echo isset($employeeData->employeeBankAccount->accountName) ? $employeeData->employeeBankAccount->accountName : ''; ?>">
+			<input disabled   type="text" class="accountName" name="accountName" value="<?php echo isset($employeeData->employeeBankAccount->accountName) ? $employeeData->employeeBankAccount->accountName : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">BSB</label>
-			<input disabled  placehdr="BSB" type="text" class="bsb" name="bsb" value="<?php echo isset($employeeData->employeeBankAccount->bsb) ? $employeeData->employeeBankAccount->bsb : ''; ?>">
+			<input disabled   type="text" class="bsb" name="bsb" value="<?php echo isset($employeeData->employeeBankAccount->bsb) ? $employeeData->employeeBankAccount->bsb : ''; ?>">
 		</span>
 		
 		<span class="span-class col-3">
 			<label class="labels__">Account Number</label>
-			<input disabled  placehdr="Account Number" type="text" class="accountNumber" name="accountNumber" value="<?php echo isset($employeeData->employeeBankAccount->accountNumber) ? $employeeData->employeeBankAccount->accountNumber : ''; ?>">
+			<input disabled   type="text" class="accountNumber" name="accountNumber" value="<?php echo isset($employeeData->employeeBankAccount->accountNumber) ? $employeeData->employeeBankAccount->accountNumber : ''; ?>">
 		</span>
 
 		<span class="span-class col-3 remainder_parent">
@@ -459,7 +459,7 @@
 		<span class="span-class amount-class-parent col-3">
 			<div class="amount-class">
 				<label class="labels__">Amount</label>
-				<input disabled  placehdr="Amount" type="text" class="amount" name="amount" value="<?php echo isset($employeeData->employeeBankAccount->amount) ? $employeeData->employeeBankAccount->amount : ''; ?>">
+				<input disabled   type="text" class="amount" name="amount" value="<?php echo isset($employeeData->employeeBankAccount->amount) ? $employeeData->employeeBankAccount->amount : ''; ?>">
 			</div>
 		</span>
 			</div>
@@ -477,11 +477,11 @@
 				<div class="superfund-child row">
 					<span class="span-class col-3">
 						<label class="labels__">Super Fund Id</label>
-							<input disabled  placehdr="Super Fund Id" type="text" class="superFundId" name="superFundId" value="<?php echo isset($employeeData->employeeSuperfunds->superFundId) ? $employeeData->employeeSuperfunds->superFundId : ''; ?>">
+							<input disabled  type="text" class="superFundId" name="superFundId" value="<?php echo isset($employeeData->employeeSuperfunds->superFundId) ? $employeeData->employeeSuperfunds->superFundId : ''; ?>">
 					</span>
 					<span class="span-class col-3">
 						<label class="labels__">Super Membership Id</label>
-						<input disabled  placehdr="Super Membership Id" class="superMembershipId" type="text" name="superMembershipId" value="<?php echo isset($employeeData->employeesuperfund->superMembershipId) ? $employeeData->employeesuperfund->superMembershipId : ''; ?>">
+						<input disabled   class="superMembershipId" type="text" name="superMembershipId" value="<?php echo isset($employeeData->employeesuperfund->superMembershipId) ? $employeeData->employeesuperfund->superMembershipId : ''; ?>">
 					</span>
 					<span class="span-class col-3">
 						<label class="labels__">Employee Number</label>
@@ -502,70 +502,70 @@
 
 		<span class="span-class col-3 pl-4">
 			<label class="labels__">TFN Exemption Type</label>
-				<input disabled  placehdr="tfnExemptionType" id="tfnExemptionType" name="tfnExemptionType" select="<?php echo isset($employeeData->employeeTaxDeclaration->tfnExemptionType) ? $employeeData->employeeTaxDeclaration->tfnExemptionType : ''; ?>" type="text">
+				<input disabled  id="tfnExemptionType" name="tfnExemptionType" select="<?php echo isset($employeeData->employeeTaxDeclaration->tfnExemptionType) ? $employeeData->employeeTaxDeclaration->tfnExemptionType : ''; ?>" type="text">
 		</span> 
 		<div class="tax-declaration-class col-lg-12">
 		<span class="span-class col-3">
 			<label class="labels__">Tax File Number</label>
-			<input disabled  placehdr="Tax File Number" id="taxFileNumber" name="taxFileNumber" type="text" value="<?php echo isset($employeeData->employeeTaxDeclaration->taxFileNumber) ? $employeeData->employeeTaxDeclaration->taxFileNumber : ''; ?>">
+			<input disabled  id="taxFileNumber" name="taxFileNumber" type="text" value="<?php echo isset($employeeData->employeeTaxDeclaration->taxFileNumber) ? $employeeData->employeeTaxDeclaration->taxFileNumber : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Australian Resident For TaxPurpose</label>
 			<label class="yn-label">Yes</label>
-				<input disabled  placehdr="Australian Resident For TaxPurpose" type="radio"  name="australiantResidentForTaxPurposeYN" class="australiantResidentForTaxPurposeYN yn-input" value="Y" <?php echo isset($employeeData->employeeTaxDeclaration->australiantResidentForTaxPurposeYN) ? (($employeeData->employeeTaxDeclaration->australiantResidentForTaxPurposeYN == 'Y') ? 'checked' : '') : ''; ?>>
+				<input disabled  type="radio"  name="australiantResidentForTaxPurposeYN" class="australiantResidentForTaxPurposeYN yn-input" value="Y" <?php echo isset($employeeData->employeeTaxDeclaration->australiantResidentForTaxPurposeYN) ? (($employeeData->employeeTaxDeclaration->australiantResidentForTaxPurposeYN == 'Y') ? 'checked' : '') : ''; ?>>
 			<label class="yn-label">No</label>
 				<input disabled  type="radio" name="australiantResidentForTaxPurposeYN" class="australiantResidentForTaxPurposeYN yn-input" value="N" <?php echo isset($employeeData->employeeTaxDeclaration->australiantResidentForTaxPurposeYN) ? (($employeeData->employeeTaxDeclaration->australiantResidentForTaxPurposeYN == 'N') ? 'checked' : '') : ''; ?>>
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Residency Statue</label>
-				<input disabled   placehdr="residencyStatue" id="residencyStatue" name="residencyStatue" value="<?php echo isset($employeeData->employeeTaxDeclaration->residencyStatue) ? $employeeData->employeeTaxDeclaration->residencyStatue : ''; ?>" type="text">
+				<input disabled   id="residencyStatue" name="residencyStatue" value="<?php echo isset($employeeData->employeeTaxDeclaration->residencyStatue) ? $employeeData->employeeTaxDeclaration->residencyStatue : ''; ?>" type="text">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Tax Free Threshold Claimed</label>
 			<label class="yn-label">Yes</label>
-				<input disabled  placehdr="taxFreeThresholdClaimedYN" type="radio" name="taxFreeThresholdClaimedYN" class="taxFreeThresholdClaimedYN yn-input" value="Y" <?php echo isset($employeeData->employeeTaxDeclaration->taxFreeThresholdClaimedYN) ? (($employeeData->employeeTaxDeclaration->taxFreeThresholdClaimedYN == 'Y') ? 'checked' : '') : ''; ?>>
+				<input disabled  type="radio" name="taxFreeThresholdClaimedYN" class="taxFreeThresholdClaimedYN yn-input" value="Y" <?php echo isset($employeeData->employeeTaxDeclaration->taxFreeThresholdClaimedYN) ? (($employeeData->employeeTaxDeclaration->taxFreeThresholdClaimedYN == 'Y') ? 'checked' : '') : ''; ?>>
 			<label class="yn-label">No</label>
 				<input disabled  type="radio" name="taxFreeThresholdClaimedYN" class="taxFreeThresholdClaimedYN yn-input" value="N" <?php echo isset($employeeData->employeeTaxDeclaration->taxFreeThresholdClaimedYN) ? (($employeeData->employeeTaxDeclaration->taxFreeThresholdClaimedYN == 'N') ? 'checked' : '') : ''; ?>>
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Tax Offset Estimated Amount</label>
-			<input disabled  placehdr="Tax Offset Estimated Amount" id="taxOffsetEstimatedAmount" type="text" name="taxOffsetEstimatedAmount" value="<?php echo isset($employeeData->employeeTaxDeclaration->taxOffsetEstimatedAmount) ? $employeeData->employeeTaxDeclaration->taxOffsetEstimatedAmount : ''; ?>">
+			<input disabled id="taxOffsetEstimatedAmount" type="text" name="taxOffsetEstimatedAmount" value="<?php echo isset($employeeData->employeeTaxDeclaration->taxOffsetEstimatedAmount) ? $employeeData->employeeTaxDeclaration->taxOffsetEstimatedAmount : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Has HELP Debt</label>
 			<label class="yn-label">Yes</label>
-			<input disabled  placehdr="hasHELPDebtYN" name="hasHELPDebtYN" class="hasHELPDebtYN yn-input" value="Y" type="radio" <?php echo isset($employeeData->employeeTaxDeclaration->hasHELPDebtYN) ? (($employeeData->employeeTaxDeclaration->hasHELPDebtYN == 'Y') ? 'checked' : '') : ''; ?>>
+			<input disabled  name="hasHELPDebtYN" class="hasHELPDebtYN yn-input" value="Y" type="radio" <?php echo isset($employeeData->employeeTaxDeclaration->hasHELPDebtYN) ? (($employeeData->employeeTaxDeclaration->hasHELPDebtYN == 'Y') ? 'checked' : '') : ''; ?>>
 			<label class="yn-label">No</label>
 			<input disabled  type="radio" name="hasHELPDebtYN" class="hasHELPDebtYN yn-input" value="N" <?php echo isset($employeeData->employeeTaxDeclaration->hasHELPDebtYN) ? (($employeeData->employeeTaxDeclaration->hasHELPDebtYN == 'N') ? 'checked' : '') : ''; ?>>	
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Has SFSS Debt</label>
 			<label class="yn-label">Yes</label>
-			<input disabled  placehdr="hasSFSSDebtYN" type="radio" name="hasSFSSDebtYN" class="hasSFSSDebtYN yn-input" value="Y" <?php echo isset($employeeData->employeeTaxDeclaration->hasSFSSDebtYN) ? (($employeeData->employeeTaxDeclaration->hasSFSSDebtYN == 'Y') ? 'checked' : '') : ''; ?>>
+			<input disabled  type="radio" name="hasSFSSDebtYN" class="hasSFSSDebtYN yn-input" value="Y" <?php echo isset($employeeData->employeeTaxDeclaration->hasSFSSDebtYN) ? (($employeeData->employeeTaxDeclaration->hasSFSSDebtYN == 'Y') ? 'checked' : '') : ''; ?>>
 			<label class="yn-label">No</label>
 			<input disabled  type="radio" name="hasSFSSDebtYN" class="hasSFSSDebtYN yn-input" value="N" <?php echo isset($employeeData->employeeTaxDeclaration->hasSFSSDebtYN) ? (($employeeData->employeeTaxDeclaration->hasSFSSDebtYN == 'N') ? 'checked' : '') : ''; ?>>
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Has Trade Support Loan Debt</label>
 			<label class="yn-label">Yes</label>
-			<input disabled  placehdr="hasTradeSupportLoanDebtYN" type="radio" name="hasTradeSupportLoanDebtYN " class="hasTradeSupportLoanDebtYN yn-input" value="Y" <?php echo isset($employeeData->employeeTaxDeclaration->hasTradeSupportLoanDebtYN) ? (($employeeData->employeeTaxDeclaration->hasTradeSupportLoanDebtYN == 'Y') ? 'checked' : '') : ''; ?>>
+			<input disabled type="radio" name="hasTradeSupportLoanDebtYN " class="hasTradeSupportLoanDebtYN yn-input" value="Y" <?php echo isset($employeeData->employeeTaxDeclaration->hasTradeSupportLoanDebtYN) ? (($employeeData->employeeTaxDeclaration->hasTradeSupportLoanDebtYN == 'Y') ? 'checked' : '') : ''; ?>>
 			<label class="yn-label">No</label>
 			<input disabled  type="radio" name="hasTradeSupportLoanDebtYN " class="hasTradeSupportLoanDebtYN yn-input" value="N" <?php echo isset($employeeData->employeeTaxDeclaration->hasTradeSupportLoanDebtYN) ? (($employeeData->employeeTaxDeclaration->hasTradeSupportLoanDebtYN == 'N') ? 'checked' : '') : ''; ?>>
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Upward Variation Tax Witholding Amount</label>
-			<input disabled  placehdr="Upward Variation Tax Witholding Amount" id="upwardVariationTaxWitholdingAmount" name="upwardVariationTaxWitholdingAmount" type="text" value="<?php echo isset($employeeData->employeeTaxDeclaration->upwardVariationTaxWitholdingAmount) ? $employeeData->employeeTaxDeclaration->upwardVariationTaxWitholdingAmount : ''; ?>">
+			<input disabled id="upwardVariationTaxWitholdingAmount" name="upwardVariationTaxWitholdingAmount" type="text" value="<?php echo isset($employeeData->employeeTaxDeclaration->upwardVariationTaxWitholdingAmount) ? $employeeData->employeeTaxDeclaration->upwardVariationTaxWitholdingAmount : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Eligible To Receive Leave Loading</label>
 			<label class="yn-label">Yes</label>
-			<input disabled  placehdr="eligibleToReceiveLeaveLoadingYN" type="radio" class="eligibleToReceiveLeaveLoadingYN yn-input" name="eligibleToReceiveLeaveLoadingYN" value="Y" <?php echo isset($employeeData->employeeTaxDeclaration->eligibleToReceiveLeaveLoadingYN) ? (($employeeData->employeeTaxDeclaration->eligibleToReceiveLeaveLoadingYN == 'Y') ? 'checked' : '') : ''; ?>>
+			<input disabled type="radio" class="eligibleToReceiveLeaveLoadingYN yn-input" name="eligibleToReceiveLeaveLoadingYN" value="Y" <?php echo isset($employeeData->employeeTaxDeclaration->eligibleToReceiveLeaveLoadingYN) ? (($employeeData->employeeTaxDeclaration->eligibleToReceiveLeaveLoadingYN == 'Y') ? 'checked' : '') : ''; ?>>
 			<label class="yn-label">No</label>
 			<input disabled  type="radio" name="eligibleToReceiveLeaveLoadingYN" class="eligibleToReceiveLeaveLoadingYN yn-input" value="N" <?php echo isset($employeeData->employeeTaxDeclaration->eligibleToReceiveLeaveLoadingYN) ? (($employeeData->employeeTaxDeclaration->eligibleToReceiveLeaveLoadingYN == 'N') ? 'checked' : '') : ''; ?>>
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Approved Witholding Variation Percentage</label>
-			<input disabled  placehdr="Approved Witholding Variation Percentage" id="approvedWitholdingVariationPercentage" name="approvedWitholdingVariationPercentage" type="text" value="<?php echo isset($employeeData->employeeTaxDeclaration->approvedWitholdingVariationPercentage) ? $employeeData->employeeTaxDeclaration->approvedWitholdingVariationPercentage : ''; ?>">
+			<input disabled  id="approvedWitholdingVariationPercentage" name="approvedWitholdingVariationPercentage" type="text" value="<?php echo isset($employeeData->employeeTaxDeclaration->approvedWitholdingVariationPercentage) ? $employeeData->employeeTaxDeclaration->approvedWitholdingVariationPercentage : ''; ?>">
 		</span>
 		
 	</div>
@@ -575,11 +575,11 @@
 	<section class="employee-details">
 		<span class="span-class col-3" style="display:none">
 			<label class="labels__">Employee Number</label>
-			<input disabled  placehdr="Employee Number" id="employee_no" type="text" name="employee_no" value="<?php echo isset($employeeData->employee->userid) ? $employeeData->employee->userid : ''; ?>">
+			<input disabled id="employee_no" type="text" name="employee_no" value="<?php echo isset($employeeData->employee->userid) ? $employeeData->employee->userid : ''; ?>">
 		</span>
 		<span class="span-class col-3" style="display:none">
 			<label class="labels__">Xero Employee Id</label>
-			<input disabled  placehdr="Xero Employee Id" id="xeroEmployeeId" type="text" name="xeroEmployeeId" value="<?php echo isset($employeeData->employee->xeroEmployeeId) ? $employeeData->employee->xeroEmployeeId : ''; ?>">
+			<input disabled id="xeroEmployeeId" type="text" name="xeroEmployeeId" value="<?php echo isset($employeeData->employee->xeroEmployeeId) ? $employeeData->employee->xeroEmployeeId : ''; ?>">
 		</span>
 
 <!-- 		<span class="span-class col-3">
@@ -666,15 +666,15 @@
 
 		<span class="span-class col-3">
 			<label class="labels__">Highest-qual-held</label>
-		<input disabled  placehdr="Highest-qual-held" id="highest_qual_held" name="highest_qual_held" type="text"  value="<?php echo isset($employeeData->employeeRecord->highestQualHeld) ? $employeeData->employeeRecord->highestQualHeld : ''; ?>">
+		<input disabled  id="highest_qual_held" name="highest_qual_held" type="text"  value="<?php echo isset($employeeData->employeeRecord->highestQualHeld) ? $employeeData->employeeRecord->highestQualHeld : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Date Obtained</label>
-		<input disabled  placehdr="Date Obtained" id="highest_qual_date_obtained" name="highest_qual_date_obtained" type="text"  value="<?php echo isset($employeeData->employeeRecord->highestQualDateObtained) ? $employeeData->employeeRecord->highestQualDateObtained : ''; ?>">
+		<input disabled   id="highest_qual_date_obtained" name="highest_qual_date_obtained" type="text"  value="<?php echo isset($employeeData->employeeRecord->highestQualDateObtained) ? $employeeData->employeeRecord->highestQualDateObtained : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Highest Qualification Certificate</label>
-		<input disabled  placehdr="Date Obtained" id="highest_qual_cert" name="highest_qual_cert" type="text" value=" ">
+		<input disabled  id="highest_qual_cert" name="highest_qual_cert" type="text" value=" ">
 		</span>
 <!-- 		<span class="span-class col-3">
 			<label class="labels__">Highest-qual-type	 </label>
@@ -682,11 +682,11 @@
 		</span>
  -->		<span class="span-class col-3">
 			<label class="labels__">Qualification working Toward</label>
-		<input disabled  placehdr="Qual-towards-desc" id="qual_towards_desc" name="qual_towards_desc" type="text" value="<?php echo isset($employeeData->employeeRecord->qualWorkingTowards) ? $employeeData->employeeRecord->qualWorkingTowards : ''; ?>">
+		<input disabled  id="qual_towards_desc" name="qual_towards_desc" type="text" value="<?php echo isset($employeeData->employeeRecord->qualWorkingTowards) ? $employeeData->employeeRecord->qualWorkingTowards : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Qual-towards-%-comp</label>
-		<input disabled  placehdr="Qual towards % comp" id="qual_towards_percent_comp" name="qual_towards_percent_comp" type="text" value="<?php echo isset($employeeData->employeeRecord->qualTowardsPercentcomp) ? $employeeData->employeeRecord->qualTowardsPercentcomp : ''; ?>">
+		<input disabled  id="qual_towards_percent_comp" name="qual_towards_percent_comp" type="text" value="<?php echo isset($employeeData->employeeRecord->qualTowardsPercentcomp) ? $employeeData->employeeRecord->qualTowardsPercentcomp : ''; ?>">
 		</span>
 
 <!-- 		<span class="span-class col-3">
@@ -703,24 +703,24 @@
 		</span> -->
 		<span class="span-class col-3">
 			<label class="labels__">Classification</label>
-			<input disabled  placehdr="Classification" id="classification" name="classification" type="text" value="<?php echo isset($employeeData->employee->classification) ? $employeeData->employee->classification : ''; ?>">
+			<input disabled   id="classification" name="classification" type="text" value="<?php echo isset($employeeData->employee->classification) ? $employeeData->employee->classification : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Ordinary Earning Rate Id</label>
-				<input disabled  placehdr="Ordinary Earning Rate Id" id="ordinaryEarningRateId" name="ordinaryEarningRateId"  class="" type="text" value="<?php echo isset($employeeData->employee->ordinaryEarningRateId) ? $employeeData->employee->ordinaryEarningRateId : ''; ?>">
+				<input disabled   id="ordinaryEarningRateId" name="ordinaryEarningRateId"  class="" type="text" value="<?php echo isset($employeeData->employee->ordinaryEarningRateId) ? $employeeData->employee->ordinaryEarningRateId : ''; ?>">
 		</span>
 
 		<span class="span-class col-3">
 			<label class="labels__">Payroll Calendar</label>
-			<input disabled  placehdr="Payroll Calendar" id="payroll_calendar" name="payroll_calendar" type="text" value="<?php echo isset($employeeData->employee->payrollCalendarId) ? $employeeData->employee->payrollCalendarId : ''; ?>">
+			<input disabled  id="payroll_calendar" name="payroll_calendar" type="text" value="<?php echo isset($employeeData->employee->payrollCalendarId) ? $employeeData->employee->payrollCalendarId : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Employee Group</label>
-			<input disabled  placehdr="Employee Group" id="employee_group" name="employee_group" type="text" value="<?php echo isset($employeeData->employee->employee_group) ? $employeeData->employee->employee_group : ''; ?>">
+			<input disabled   id="employee_group" name="employee_group" type="text" value="<?php echo isset($employeeData->employee->employee_group) ? $employeeData->employee->employee_group : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Holiday Group</label>
-			<input disabled  placehdr="Holiday Group" id="holiday_group" name="holiday_group" type="text" value="<?php echo isset($employeeData->employee->holiday_group) ? $employeeData->employee->holiday_group : ''; ?>">
+			<input disabled   id="holiday_group" name="holiday_group" type="text" value="<?php echo isset($employeeData->employee->holiday_group) ? $employeeData->employee->holiday_group : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Visa Holder</label>
@@ -731,19 +731,19 @@
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">	Visa-type		</label>
-			<input disabled  placehdr="Visa-type" id="visa_type" name="visa_type" type="text" value="<?php echo isset($employeeData->employeeRecord->visaType) ? $employeeData->employeeRecord->visaType : ''; ?>">
+			<input disabled   id="visa_type" name="visa_type" type="text" value="<?php echo isset($employeeData->employeeRecord->visaType) ? $employeeData->employeeRecord->visaType : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">	Visa-grant-date	</label>
-			<input disabled  placehdr="Visa-grant-date" id="visa_grant_date" name="visa_grant_date" type="text" value="<?php echo isset($employeeData->employeeRecord->visaGrantDate) ? $employeeData->employeeRecord->visaGrantDate : ''; ?>">
+			<input disabled   id="visa_grant_date" name="visa_grant_date" type="text" value="<?php echo isset($employeeData->employeeRecord->visaGrantDate) ? $employeeData->employeeRecord->visaGrantDate : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">	Visa-end-date	</label>
-			<input disabled  placehdr="Visa-end-date" id="visa_end_date" name="visa_end_date" type="text" value="<?php echo isset($employeeData->employeeRecord->visaEndDate) ? $employeeData->employeeRecord->visaEndDate : ''; ?>">
+			<input disabled   id="visa_end_date" name="visa_end_date" type="text" value="<?php echo isset($employeeData->employeeRecord->visaEndDate) ? $employeeData->employeeRecord->visaEndDate : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">	Visa-conditions</label>
-			<input disabled  placehdr="Visa-conditions" id="visa_conditions" name="visa_conditions" type="text" value="<?php echo isset($employeeData->employee->visaConditions) ? $employeeData->employee->visaConditions : ''; ?>">
+			<input disabled   id="visa_conditions" name="visa_conditions" type="text" value="<?php echo isset($employeeData->employee->visaConditions) ? $employeeData->employee->visaConditions : ''; ?>">
 		</span>
 <?php $toCount = isset($employeeData->employeeCourses) ? $employeeData->employeeCourses : ''; ?>
 <?php for($i=0;$i<count($toCount);$i++){ ?>
@@ -751,23 +751,23 @@
 				<input disabled  type="text" name="course_id[]" style="display:none" value="<?php echo isset($employeeData->employeeCourses[$i]->id) ? $employeeData->employeeCourses[$i]->id : ''; ?>">
 				<span class="span-class col-3">
 					<label class="labels__">Course Name</label>
-					<input disabled  placehdr="Course Name" class="course_name" name="course_name[]" type="text" value="<?php echo isset($employeeData->employeeCourses[$i]->courseName) ? $employeeData->employeeCourses[$i]->courseName : ''; ?>">
+					<input disabled   class="course_name" name="course_name[]" type="text" value="<?php echo isset($employeeData->employeeCourses[$i]->courseName) ? $employeeData->employeeCourses[$i]->courseName : ''; ?>">
 				</span>
 				<span class="span-class col-3">
 					<label class="labels__">course Description</label>
-					<input disabled  placehdr="course Description" class="course_description" name="course_description[]" type="text" value="<?php echo isset($employeeData->employeeCourses[$i]->courseDescription) ? $employeeData->employeeCourses[$i]->courseDescription : ''; ?>">
+					<input disabled   class="course_description" name="course_description[]" type="text" value="<?php echo isset($employeeData->employeeCourses[$i]->courseDescription) ? $employeeData->employeeCourses[$i]->courseDescription : ''; ?>">
 				</span>
 				<span class="span-class col-3">
 					<label class="labels__">Date Obtained</label>
-					<input disabled  placehdr="Date Obtained" class="date_obtained" name="date_obtained[]" type="text" value="<?php echo isset($employeeData->employeeCourses[$i]->dateObtained) ? $employeeData->employeeCourses[$i]->dateObtained : ''; ?>">
+					<input disabled  class="date_obtained" name="date_obtained[]" type="text" value="<?php echo isset($employeeData->employeeCourses[$i]->dateObtained) ? $employeeData->employeeCourses[$i]->dateObtained : ''; ?>">
 				</span>
 				<span class="span-class col-3">
 					<label class="labels__">Expiry Date</label>
-					<input disabled  placehdr="Expiry Date" class="expiry_date" name="expiry_date[]" type="text" value="<?php echo isset($employeeData->employeeCourses[$i]->courseExpiryDate) ? $employeeData->employeeCourses[$i]->courseExpiryDate : ''; ?>">
+					<input disabled   class="expiry_date" name="expiry_date[]" type="text" value="<?php echo isset($employeeData->employeeCourses[$i]->courseExpiryDate) ? $employeeData->employeeCourses[$i]->courseExpiryDate : ''; ?>">
 				</span>
 				<span class="span-class col-3">
 					<label class="labels__">Certificate </label>
-					<input disabled  placehdr="Certificate" class="certificate" name="certificate[]" type="FILE">
+					<input disabled   class="certificate" name="certificate[]" type="FILE">
 				</span>
 		</div>
 	<?php } ?>

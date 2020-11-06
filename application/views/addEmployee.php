@@ -80,21 +80,21 @@
 		<label class="labels__">First Name<sup>
 				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
 			</sup></label>
-			<input id="fname"  class="" type="text" name="fname" placeholder="First Name">
+			<input id="fname"  class="" type="text" name="fname" >
 		</span>
 
 		<span class="span-class col-3 ">
 		<label class="labels__">Middle Name<sup>
 				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
 			</sup></label>
-			<input id="mname"  class="" value="" type="text" name="mname" placeholder="Middle Name">
+			<input id="mname"  class="" value="" type="text" name="mname" >
 		</span>
 
 		<span class="span-class col-3 ">
 		<label class="labels__">Last Name<sup>
 				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
 			</sup></label>
-			<input id="lname"  class="" type="text" name="lname" placeholder="Last Name">
+			<input id="lname"  class="" type="text" name="lname" >
 		</span>
 	<!-- </span> -->
 	<!-- </span> -->
@@ -1039,15 +1039,7 @@ $(document).ready(function(){
       setTimeout(closeNotification,5000)
 			return false;
 		}
-		if($('#jobTitle').val() == null || $('#jobTitle').val() == ""){
-			$('#jobTitle').css({"border-color": "red", 
-             "border-width":"1px", 
-             "border-style":"solid"})
-      showNotification();
-      addMessageToNotification('Enter Job Title');
-      setTimeout(closeNotification,5000)
-			return false;
-		}
+
 		if($('#startDate').val() == null || $('#startDate').val() == ""){
 			$('#startDate').css({"border-color": "red", 
              "border-width":"1px", 
