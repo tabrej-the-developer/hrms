@@ -428,7 +428,7 @@ class Settings extends CI_Controller {
 					$minimum_age = $json->minimum_age;
 					$maximum_age = $json->maximum_age;
 					if($center_name != null && $center_name != ""){
-					$centerid = $this->settingsModel->addCenter($center_city,$center_street,$center_state,$center_zip,$center_name,$center_phone,$center_mobile,$center_email,$json->userid);
+					$centerid = $this->settingsModel->addCenter($center_street,$center_city,$center_state,$center_zip,$center_name,$center_phone,$center_mobile,$center_email,$json->userid);
 					$centerRecordUniqueId = uniqid();
 					$this->settingsModel->addCenterRecord($centerid,$centerRecordUniqueId,$center_abn,$center_acn,$center_se_no,$center_date_opened,$center_capacity,$center_approval_doc,$center_ccs_doc,$center_admin_name,$centre_nominated_supervisor);
 					for($i=0;$i<count($room_name);$i++){
