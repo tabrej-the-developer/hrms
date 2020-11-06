@@ -574,7 +574,7 @@ font-family: 'Open Sans', sans-serif;
 		insertForm.method = "POST";
 		insertForm.action = "<?php echo base_url()."/settings/addArea"?>";
 		var getForm = document.getElementById('new-area-form');
-		var code = "<div><span class='area-Name'><label>Area Name</label><input type=\"text\" name=\"areaName\" id=\"areaName\"></span><span><label>Is room Y/N</label><select name=\"isRoomYN\" id=\"isRoomYN\"><option>select</option><option value=\"Y\">Y</option><option value=\"N\">N</option></select><input type=\"text\" name=\"\" class=\"none\"><input type=\"text\" name=\"centerid\" class=\"none\" value=\"<?php echo $centerid;?>\"></span><span><input type=\"submit\" value=\"Save\" id=\"addAreaSubmit\"></span><span><input type=\"button\" value=\"Cancel\" class=\"reset\" onclick=\"deleteAreaForm()\"></span></div>"
+		var code = "<div><span class='area-Name'><label>Area Name</label><input type=\"text\" name=\"areaName\" id=\"areaName\"></span><span><label>Is room Y/N</label><select name=\"isRoomYN\" id=\"isRoomYN\"><option value=\"Y\">Y</option><option value=\"N\">N</option></select><input type=\"text\" name=\"\" class=\"none\"><input type=\"text\" name=\"centerid\" class=\"none\" value=\"<?php echo $centerid;?>\"></span><span><input type=\"submit\" value=\"Save\" id=\"addAreaSubmit\"></span><span><input type=\"button\" value=\"Cancel\" class=\"reset\" onclick=\"deleteAreaForm()\"></span></div>"
 		if($("#form-space").text().length == 0){
 		formParent.insertBefore(insertForm,formParent.firstElementChild);
 		insertForm.insertAdjacentHTML('afterbegin',code)
@@ -596,7 +596,7 @@ font-family: 'Open Sans', sans-serif;
 			var idOfArea = $(parent).attr('id');
 			var isRoomYN = $(parent).attr('YN');
 				$(parent).empty();
-			var code = "<span><input type=\"text\" class=\"editClassArea\"></span><span><input type=\"text\" class=\"editClassYN\"></span><span><input type=\"submit\" class=\"editAreaSubmit\"></span><span><input type=\"button\" class=\"editAreaCancel\" value=\"Cancel\"></span>";
+			var code = "<span><input type=\"text\" class=\"editClassArea\"></span><span><select  class=\"editClassYN\"><option value='Y'>Y</option><option value='N'>N</option></select></span><span><input type=\"submit\" class=\"editAreaSubmit\"></span><span><input type=\"button\" class=\"editAreaCancel\" value=\"Cancel\"></span>";
 			if($(parent).text().length == 0){
 			$(parent).append(code)
 			$(parent).children().children('input.editClassArea').val(nameOfArea)

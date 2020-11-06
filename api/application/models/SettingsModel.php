@@ -206,7 +206,7 @@ class SettingsModel extends CI_Model {
 		}
 		public function addToEmployeeSuperfunds( $xeroEmployeeId, $superFundId, $superMembershipId){
 			$this->load->database();
-			$query = $this->db->query("INSERT INTO employeesuperfund (employeeId, superFundId, superMembershipId) VALUES ('$xeroEmployeeId', '$superFundId', '$superMembershipId')");
+			$query = $this->db->query("INSERT INTO employeesuperfund (employeeId, superFundId, superMembershipId,employeeNumber) VALUES ('$xeroEmployeeId', '$superFundId', '$superMembershipId','$superfundEmployeeNumber')");
 		}
 		public function addToEmployeeTaxDeclaration($xeroEmployeeId,$employmentBasis,$tfnExemptionType,$taxFileNumber,$australiantResidentForTaxPurposeYN,$residencyStatue,$taxFreeThresholdClaimedYN,$taxOffsetEstimatedAmount,$hasHELPDebtYN,$hasSFSSDebtYN,$hasTradeSupportLoanDebtYN_,$upwardVariationTaxWitholdingAmount,$eligibleToReceiveLeaveLoadingYN,$approvedWitholdingVariationPercentage){
 			$this->load->database();
