@@ -23,7 +23,7 @@ class SettingsModel extends CI_Model {
 
 	public function createArea($centerid,$areaName,$isRoomYN){
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO orgchartareas (areaid,centerid, areaName,isARoomYN, rosterPriority,colorcodes) VALUES(0,'$centerid','$areaName','$isRoomYN',0)");
+		$query = $this->db->query("INSERT INTO orgchartareas (areaid,centerid, areaName,isARoomYN, rosterPriority) VALUES(0,'$centerid','$areaName','$isRoomYN',0)");
 	}
 	public function addArea($centerid,$areaName){
 		$this->load->database();

@@ -29,7 +29,7 @@ class Settings extends CI_Controller {
 				$areaName = $json->areaName;
 				$isRoomYN = $json->isRoomYN;
 				$this->load->model('settingsModel');
-				if($areaName != null & $areaName != ""){
+				if($areaName != null && $areaName != ""){
 					$area = $this->settingsModel->getAreaByName($centerid,$areaName);
 					if($area == null){
 						$area = $this->settingsModel->createArea($centerid,$areaName,$isRoomYN);

@@ -191,7 +191,7 @@ a[href*="settings"],.xero_settings a{
 		<?php } ?>
 			<?php if(isset($permissions->permissions) && $permissions->permissions->editEmployeeYN == "Y"){ ?>
 			<div class="tile-box  d-md-flex col-3">
-				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/add-employee.png'); ?>"></div>
+				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/addemployee.png'); ?>"></div>
 				<div class="col-6">
 					<a href="<?php echo base_url()?>settings/addEmployee">Add Employee</a>
 				</div>
@@ -199,7 +199,7 @@ a[href*="settings"],.xero_settings a{
 		<?php } ?>
 <?php //if((isset($permissions->permissions->editEmployeeYN) ? $permissions->permissions->editEmployeeYN : "N") == "N"){ ?>			
 			<div class="tile-box  d-md-flex col-3">
-				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/add-employee.png'); ?>"></div>
+				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/edit-employee.png'); ?>"></div>
 				<div class="col-6">
 					<a href="<?php echo base_url()?>settings/editEmployee">Edit Employee</a>
 				</div>
@@ -207,7 +207,7 @@ a[href*="settings"],.xero_settings a{
 		<?php //} ?>
 			<?php if(isset($permissions->permissions) && $permissions->permissions->editEmployeeYN == "Y"){ ?>			
 			<div class="tile-box  d-md-flex col-3">
-				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/add-employee.png'); ?>"></div>
+				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/view-employee.png'); ?>"></div>
 				<div class="col-6">
 					<a href="<?php echo base_url()?>settings/viewEmployeeTable">View Employee</a>
 				</div>

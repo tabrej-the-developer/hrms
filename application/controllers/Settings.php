@@ -449,7 +449,7 @@ public function editRooms(){
 			$data['userid'] = $this->session->userdata('LoginId');
 			$data['areaName'] = $this->input->post('areaName');
 
- 		$url = BASE_API_URL."/settings/addArea";
+ 		$url = BASE_API_URL."settings/addArea";
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
