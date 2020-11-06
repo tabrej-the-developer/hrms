@@ -85,7 +85,7 @@
 			color: white;
 			padding:5px;
 			border-radius: 3px*/
-			padding: 10px;
+			padding: 10px !important;
 		    width: 100%;
 		    display: flex;
 		    justify-content: center;
@@ -128,7 +128,7 @@
 		.span-class{
 			padding:10px;
 			display: inline-block;
-			width: 33%;
+			width: 25%;
 		}
 		.span-class .col-4{
 			padding-left:0;
@@ -170,6 +170,9 @@
 		.span-class.row_addEmployee{
 			margin:0;
 			width:100%;
+		}
+		.row_addEmployee {
+			padding: 0 !important;
 		}
 		.span-class.row_addEmployee span input{
 			padding:10px;

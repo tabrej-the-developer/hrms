@@ -15,7 +15,15 @@
     margin-top: 10px !important;
     background-size: 0.6rem 0.6rem;
 	}
-
+	.profileImage_input{
+		width: 20%;
+	}
+	.profileImage{
+		width: 20%;
+	}
+	.employee-details .span-class,.medical-info .span-class,.tax-declaration-class .span-class,.employee-bank-account-section_row .span-class{
+		width: 24%;
+	}
 	</style>
 </head>
 <body class="add_employee_body">
@@ -64,33 +72,35 @@
 				</select>
 			</span>
 		</span>
-	<span class="span-class name__">
-		<label class="labels__">Name<sup>
+	<!-- <span class="span-class name__"> -->
+
+		<!-- <span class=" row row_addEmployee ml-1 "> -->
+
+		<span class="span-class col-3 ">
+		<label class="labels__">First Name<sup>
 				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
 			</sup></label>
-		<span class=" row row_addEmployee ml-1 ">
-		<span class="span-class col-4 ">
-			<!-- <label class="labels__">First Name</label> -->
 			<input id="fname"  class="" type="text" name="fname" placeholder="First Name">
 		</span>
-		<span class="span-class col-4 ">
-			<!-- <label class="labels__">Middle Name</label> -->
-			<input id="mname"  class="" value="" type="text" name="mname" placeholder="Middle Name">
-		</span>
-		<span class="span-class col-4 ">
-			<!-- <label class="labels__">Last Name</label> -->
-			<input id="lname"  class="" type="text" name="lname" placeholder="Last Name">
-		</span>
-	</span>
-	</span>
-</span>
-		
-		<span class="span-class">
-			<label class="labels__">Email<sup>
+
+		<span class="span-class col-3 ">
+		<label class="labels__">Middle Name<sup>
 				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
 			</sup></label>
-			<input id="emails"  class="" type="text" name="emails">
+			<input id="mname"  class="" value="" type="text" name="mname" placeholder="Middle Name">
 		</span>
+
+		<span class="span-class col-3 ">
+		<label class="labels__">Last Name<sup>
+				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+			</sup></label>
+			<input id="lname"  class="" type="text" name="lname" placeholder="Last Name">
+		</span>
+	<!-- </span> -->
+	<!-- </span> -->
+</span>
+		
+
 		<span class="span-class">
 			<label class="labels__">Alias<sup>
 				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
@@ -112,37 +122,36 @@
 				</select>				
 			</span>
 		</span>
-		<span class="span-class">
+		<span class="span-class profileImage_input">
 			<label class="labels__">Profile Image</label>
 			<input id="profileImage"  class="profileImage" type="FILE" name="profileImage">
 		</span>
-
-				
-		<span class="span-class">
+			<hr>	
+<!-- 		<span class="span-class">
 			<label class="labels__">Job Title<sup>
 				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
 			</sup></label>
 			<input id="jobTitle"  class="" type="text" name="jobTitle">
-		</span>
+		</span> -->
 	
 		<span class="span-class row row_addEmployee ">
-		<label class="labels__">Address</label>	
-			<span class="span-class  col-4">
-				<!-- <label class="labels__">Home Address Line1</label> -->
-	<input id="homeAddLine1"  class="" type="text" name="homeAddLine1">
+		<!-- <label class="labels__">Address</label>	 -->
+			<span class="span-class  col-3">
+				<label class="labels__">Home Address Line1</label>
+				<input id="homeAddLine1"  class="" type="text" name="homeAddLine1">
 			</span>
-			<span class="span-class col-4">
-				<!-- <label class="labels__">Home Address Line2</label> -->
-	<input id="homeAddLine2"  class="" type="text" name="homeAddLine2">
+			<span class="span-class col-3">
+				<label class="labels__">Home Address Line2</label>
+				<input id="homeAddLine2"  class="" type="text" name="homeAddLine2">
 			</span>
-			<span class="span-class col-4">
-				<!-- <label class="labels__">City</label> -->
-	<input  type="text" id="homeAddCity"  class=""  name="homeAddCity">
+			<span class="span-class col-3">
+				<label class="labels__">City</label>
+				<input  type="text" id="homeAddCity"  class=""  name="homeAddCity">
 			</span>				
-			<span class="span-class col-4">
-				<!-- <label class="labels__">Region</label> -->
+			<span class="span-class col-3">
+				<label class="labels__">Region</label>
 				<span class="select_css">
-		<select id="homeAddRegion"  class="" type="text" name="homeAddRegion">
+					<select id="homeAddRegion"  class="" type="text" name="homeAddRegion">
 						<option value="ACT">Australian Capital Territory</option>
 						<option value="NSW">New South Wales</option>
 						<option value="NT">Northern Territory</option>
@@ -154,36 +163,31 @@
 					</select>
 				</span>
 			</span>
-			<span class="span-class col-4">
-				<!-- <label class="labels__">Postal</label> -->
+			<span class="span-class col-3">
+				<label class="labels__">Postal</label>
 				<input id="homeAddPostal"  class="" type="text" name="homeAddPostal">
 			</span>
-			<span class="span-class col-4">
-				<!-- <label class="labels__">Country</label> -->
+			<span class="span-class col-3">
+				<label class="labels__">Country</label>
 				<input id="homeAddCountry"  class="" type="text" name="homeAddCountry">
 			</span>
 		</span>
-		<span class="span-class contact__">
-			<label class="labels__">Contact</label>
-				<span class="span-class">
-					<input id="phone"  class="" type="text" name="phone">
-				</span>
-				<span class="span-class">
-					<input id="mobile"  class="" type="text" name="mobile">
-				</span>
+		<hr>
+		<span class="span-class">
+			<label class="labels__">Phone</label>
+			<input id="phone"  class="" type="text" name="phone">
 		</span>
-	<span class="d-block">
-		<span class="span-class col-3">
-			<label class="labels__">Start Date<sup>
+		<span class="span-class">
+			<label class="labels__">Mobile</label>
+			<input id="mobile"  class="" type="text" name="mobile">
+		</span>
+		<span class="span-class">
+			<label class="labels__">Email<sup>
 				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
 			</sup></label>
-		<input id="startDate"  class="" type="date" name="startDate">
+			<input id="emails"  class="" type="text" name="emails">
 		</span>
-		<span class="span-class col-3">
-			<label class="labels__">Termination Date</label>
-		<input id="terminationDate"  class="" type="date" name="terminationDate">
-		</span>
-	</span>
+		<hr>
 <!-- 		<span class="span-class">
 			<label class="labels__">created_at</label>
 			<input placeholder="created_at" id="created_at"  class="" type="text">
@@ -192,11 +196,11 @@
 			<label class="labels__">created_by</label>
 			<input placeholder="created_by" id="created_by"  class="" type="text">
 		</span> -->
-		<span class="span-class col-4">
+		<span class="span-class col-3">
 			<label class="labels__">Emergency Contact</label>
 		<input id="emergency_contact"  class="" type="text" name="emergency_contact">
 		</span>
-		<span class="span-class col-4">
+		<span class="span-class col-3">
 			<label class="labels__">Relationship</label>
 		<input id="relationship"  class="" type="text" name="relationship">
 		</span>
@@ -216,44 +220,41 @@
 		<div class="parent-child">
 			<div class="child">
 				<div class="statement"></div>
-					<div class="row employee-bank-account-section_row">
-				<!-- 		<span class="span-class col-4">
+					<span class="employee-bank-account-section_row">
+				<!-- 		<span class="span-class col-3">
 							<label class="labels__">Statement Text</label>
 							<input type="text" class="statementText" >
 						</span> -->
-						<span class="span-class col-4">
+						<span class="span-class col-3">
 							<label class="labels__">Account Name</label>
 							<input type="text" class="accountName" name="accountName">
 						</span>
-						<span class="span-class col-4">
+						<span class="span-class col-3">
 							<label class="labels__">BSB</label>
 							<input type="text" class="bsb" name="bsb">
 						</span>
-					</div>
-		
-	<span class="row employee-bank-account-section_row">
-		<span class="span-class col-4">
-			<label class="labels__">Account Number</label>
-			<input type="text" class="accountNumber" name="accountNumber">
-		</span>
-		<span class="span-class col-4">
-			<label class="labels__">Remainder</label>
-				<span>
-					<label  class="yn-label">Yes</label>
-					<input value="Y" class="remainderYN yn-input" type="radio" name="remainderYN">
-				</span>
-				<span>
-					<label  class="yn-label">No</label>
-					<input value="N" class="remainderYN yn-input" type="radio" name="remainderYN">
-				</span>
-		</span>
-		<span class="span-class amount-class-parent col-4">
-			<div class="amount-class">
-				<label class="labels__">Amount</label>
-				<input type="text" class="amount" name="amount">
-			</div>
-		</span>
-	</span>
+						<span class="span-class col-3 ">
+							<label class="labels__">Account Number</label>
+							<input type="text" class="accountNumber" name="accountNumber">
+						</span>
+						<span class="span-class col-3 remainder_parent">
+							<label class="labels__">Remainder</label>
+								<span>
+									<label  class="yn-label">Yes</label>
+									<input value="Y" class="remainderYN yn-input" type="radio" name="remainderYN">
+								</span>
+								<span>
+									<label  class="yn-label">No</label>
+									<input value="N" class="remainderYN yn-input" type="radio" name="remainderYN">
+								</span>
+						</span>
+						<span class="span-class amount-class-parent col-3">
+							<div class="amount-class">
+								<label class="labels__">Amount</label>
+								<input type="text" class="amount" name="amount">
+							</div>
+						</span>
+					</span>
 			</div>
 		</div>
 	</section>
@@ -273,7 +274,7 @@
 		</span> -->
 			<div class="superfund-parent">
 				<div class="superfund-child row row_addEmployee ">
-					<span class="span-class col-4">
+					<span class="span-class col-3">
 						<label class="labels__">Super Fund Id</label>
 						<?php $superfunds = json_decode($superfunds); ?>
 						<span class="select_css">
@@ -284,9 +285,13 @@
 							</select>
 						</span>
 					</span>
-					<span class="span-class col-4">
+					<span class="span-class col-3">
 						<label class="labels__">Super Membership Id</label>
 						<input class="superMembershipId" type="text" name="superMembershipId">
+					</span>
+					<span class="span-class col-3">
+						<label class="labels__">Employee Number</label>
+						<input class="employeeNumber" type="text" name="superfundEmployeeNumber">
 					</span>
 				</div>
 			</div>
@@ -300,7 +305,7 @@
 	<section class="employee-tax-declaration-section">
 		<!-- <h3>Employee Tax Declaration Section</h3> -->
 
-		<span class="span-class col-4">
+		<span class="span-class col-3">
 			<label class="labels__">Employment Basis</label>
 			<span class="select_css">
 				<select id="employmentBasis" name="employmentBasis">
@@ -312,7 +317,7 @@
 				</select>
 			</span>
 		</span> 
-		<span class="span-class col-4">
+		<span class="span-class col-3">
 			<label class="labels__">TFN Exemption Type</label>
 			<span class="select_css">
 				<select id="tfnExemptionType" name="tfnExemptionType">
@@ -325,11 +330,11 @@
 			</span>
 		</span> 
 		<div class="tax-declaration-class col-lg-12">
-		<span class="span-class col-4">
+		<span class="span-class col-3">
 			<label class="labels__">Tax File Number</label>
 			<input id="taxFileNumber" name="taxFileNumber" type="text">
 		</span>
-		<span class="span-class col-4">
+		<span class="span-class col-3">
 			<label class="labels__">Australian Resident For TaxPurpose</label>
 			<span>
 				<label class="yn-label">Yes</label>
@@ -350,14 +355,14 @@
 				</select>
 			</span>
 		</span>
-		<span class="span-class col-4">
+		<span class="span-class col-3">
 			<label class="labels__">Tax Free Threshold Claimed</label>
 			<label class="yn-label">Yes</label>
 				<input type="radio" name="taxFreeThresholdClaimedYN" class="taxFreeThresholdClaimedYN yn-input" value="Y">
 			<label class="yn-label">No</label>
 				<input type="radio" name="taxFreeThresholdClaimedYN" class="taxFreeThresholdClaimedYN yn-input" value="N">
 		</span>
-		<span class="span-class col-4">
+		<span class="span-class col-3">
 			<label class="labels__">Tax Offset Estimated Amount</label>
 			<input id="taxOffsetEstimatedAmount" type="text" name="taxOffsetEstimatedAmount">
 		</span>
@@ -368,7 +373,7 @@
 			<label class="yn-label">No</label>
 			<input type="radio" name="hasHELPDebtYN" class="hasHELPDebtYN yn-input" value="N">	
 		</span>
-		<span class="span-class col-4">
+		<span class="span-class col-3">
 			<label class="labels__">Has SFSS Debt</label>
 			<label class="yn-label">Yes</label>
 			<input type="radio" name="hasSFSSDebtYN" class="hasSFSSDebtYN yn-input"
@@ -376,7 +381,7 @@
 			<label class="yn-label">No</label>
 			<input type="radio" name="hasSFSSDebtYN" class="hasSFSSDebtYN yn-input" value="N">
 		</span>
-		<span class="span-class col-4">
+		<span class="span-class col-3">
 			<label class="labels__">Has Trade Support Loan Debt</label>
 			<label class="yn-label">Yes</label>
 			<input type="radio" name="hasTradeSupportLoanDebtYN " class="hasTradeSupportLoanDebtYN yn-input" value="Y">
@@ -387,18 +392,18 @@
 			<label class="labels__">Upward Variation Tax Witholding Amount</label>
 			<input id="upwardVariationTaxWitholdingAmount" name="upwardVariationTaxWitholdingAmount" type="text">
 		</span>
-		<span class="span-class col-4">
+		<span class="span-class col-3">
 			<label class="labels__">Eligible To Receive Leave Loading</label>
 			<label class="yn-label">Yes</label>
 			<input type="radio" class="eligibleToReceiveLeaveLoadingYN yn-input" name="eligibleToReceiveLeaveLoadingYN" value="Y">
 			<label class="yn-label">No</label>
 			<input type="radio" name="eligibleToReceiveLeaveLoadingYN" class="eligibleToReceiveLeaveLoadingYN yn-input" value="N">
 		</span>
-		<span class="span-class col-4">
+		<span class="span-class col-3">
 			<label class="labels__">Approved Witholding Variation Percentage</label>
 			<input id="approvedWitholdingVariationPercentage" name="approvedWitholdingVariationPercentage" type="text">
 		</span>
-		
+
 	</div>
 	</section>
 
@@ -410,10 +415,10 @@
 			</sup></label>
 			<input id="employee_no" type="text" name="employee_no">
 		</span>
-		<span class="span-class">
+<!-- 		<span class="span-class">
 			<label class="labels__">Xero Employee Id</label>
 			<input id="xeroEmployeeId" type="text" name="xeroEmployeeId">
-		</span>
+		</span> -->
 		<span class="span-class">
 			<label class="labels__">Center</label>
 			<span class="select_css">
@@ -627,6 +632,7 @@
 			<label class="labels__">Payroll Calendar</label>
 			<input id="payroll_calendar" name="payroll_calendar" type="text">
 		</span>
+		<hr>
 		<span class="span-class">
 			<label class="labels__">Visa Holder</label>
 			<label class="yn-label">Yes</label>
@@ -650,7 +656,7 @@
 			<label class="labels__">	Visa-conditions</label>
 			<input  id="visa_conditions" name="visa_conditions" type="text">
 		</span>
-
+		<hr>
 		<div>
 				<span class="span-class">
 					<label class="labels__">Course Name</label>
@@ -673,6 +679,7 @@
 					<input class="certificate" name="certificate[]" type="FILE">
 				</span>
 		</div>
+		<hr>
 <!-- 		<span class="span-class">
 			<label class="labels__">CPR-expiry</label>
 			<input placeholder="CPR-expiry" id="cpr_expiry" type="text">
@@ -716,6 +723,18 @@
 			<label class="labels__" class="yn-label">No</label>
 				<input type="radio" name="nominated_supervisor" class="nominated_supervisor yn-input" value="N">
 		</span> -->
+	<span class="d-block">
+		<span class="span-class col-3">
+			<label class="labels__">Start Date<sup>
+				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+			</sup></label>
+		<input id="startDate"  class="" type="date" name="startDate">
+		</span>
+		<span class="span-class col-3">
+			<label class="labels__">Termination Date</label>
+		<input id="terminationDate"  class="" type="date" name="terminationDate">
+		</span>
+	</span>
 	</section>
 
 	<section class="medical-info">
@@ -910,11 +929,12 @@
 			var count = $('.statement').length;
 			if(count > 1){
 				$('.amount-class-parent').eq(0).empty();
-				$('.remainderYN[value="N"]').eq(0).prop('checked',true);
+				$('.remainderYN[value="Y"]').eq(0).prop('checked',true);
 				for(i = 1 ; i < count ; i++){
+					$('.remainder_parent').eq(i).css('display','none')
 					$('.remainderYN[value="Y"]').eq(i).attr('name','remaindeYN-'+i);
 					$('.remainderYN[value="N"]').eq(i).attr('name','remaindeYN-'+i);
-					$('.remainderYN[value="Y"]').eq(i).prop('checked',true);
+					$('.remainderYN[value="N"]').eq(i).prop('checked',true);
 					$('.remainderYN[value="Y"]').eq(i).attr('disabled',true);
 					$('.remainderYN[value="N"]').eq(i).attr('disabled',true);
 
@@ -922,7 +942,8 @@
 					
 				}
 			});
-					$('.remainderYN[value="N"]').eq(0).prop('checked',true);
+					$('.amount-class').eq(0).css('display','none')
+					$('.remainderYN[value="Y"]').eq(0).prop('checked',true);
 		});
 
 	

@@ -842,7 +842,7 @@ class Settings extends CI_Controller {
 					$alias = $json->alias;
 					$dateOfBirth = $json->dateOfBirth;
 					$gender = $json->gender;
-					$jobTitle = $json->jobTitle;
+					// $jobTitle = $json->jobTitle;
 					$homeAddLine1 = $json->homeAddLine1;
 					$homeAddLine2 = $json->homeAddLine2;
 					$homeAddCity = $json->homeAddCity;
@@ -863,6 +863,7 @@ class Settings extends CI_Controller {
 					$amount = $json->amount;
 					$superFundId = $json->superFundId;
 					$superMembershipId = $json->superMembershipId;
+					$superfundEmployeeNumber = $json->superfundEmployeeNumber;
 					$employmentBasis = $json->employmentBasis;
 					$tfnExemptionType = $json->tfnExemptionType;
 					$taxFileNumber = $json->taxFileNumber;
@@ -892,7 +893,7 @@ class Settings extends CI_Controller {
 					$healthInsuranceFund = $json->healthInsuranceFund;
 					$healthInsuranceNo = $json->healthInsuranceNo;
 					$ambulanceSubscriptionNo = $json->ambulanceSubscriptionNo;
-					$xeroEmployeeId = $json->xeroEmployeeId;
+					// $xeroEmployeeId = $json->xeroEmployeeId;
 					$profileImage = $json->profileImage;
 					$profileImageName = $employee_no.'.png';
 					$target_dir = 'application/assets/profileImages/';
@@ -923,7 +924,7 @@ $this->settingsModel->addToEmployeeCourses( $xeroEmployeeId,$course_nme,$course_
 					$password = strtolower($fname)."@123";
 			if($employee_no != null && $employee_no != "" ){
 				if($emails != "" && $emails != null){
-$this->settingsModel->addToUsers($employee_no,md5($password),$emails,$name,$jobTitle,$center,$userid,$role,$level,$alias,$profileImageName);
+$this->settingsModel->addToUsers($employee_no,md5($password),$emails,$name,$center,$userid,$role,$level,$alias,$profileImageName);
 						}
 					}
 // Employee bank account	
@@ -978,7 +979,7 @@ $this->settingsModel->addToEmployeeRecord($employee_no, $xeroEmployeeId, $unique
 						if($xeroEmployeeId != null && $xeroEmployeeId != "" ){
 							if($superFundId != "" && $superFundId != null){
 $this->settingsModel->addToEmployeeSuperfunds( $xeroEmployeeId, $superFundId,
-$superMembershipId);
+$superMembershipId,$superfundEmployeeNumber);
 										}
 									}
 // Employee Tax Declaration
