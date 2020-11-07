@@ -24,6 +24,9 @@
 	.employee-details .span-class,.medical-info .span-class,.tax-declaration-class .span-class,.employee-bank-account-section_row .span-class{
 		width: 24%;
 	}
+	.col-3{
+		width: 24% !important;
+	}
 	</style>
 </head>
 <body class="add_employee_body">
@@ -51,11 +54,11 @@
 	<section class="tab-buttons">
 		<div class="tab-buttons-div">
 		<span class="nav-button e-s"><span>Personal</span></span>
-		<span class="nav-button e-b-a-s"><span>Bank Account</span></span>
-		<span class="nav-button e-s-s"><span> Superannuation </span></span>
-		<span class="nav-button e-t-d-s"><span>Tax Declaration </span></span>
-		<span class="nav-button e-u-s"><span>Employment</span></span>	
-		<span class="nav-button m-i"><span>Medical Info</span></span>
+		<!-- <span class="nav-button e-b-a-s"><span>Bank Account</span></span> -->
+		<!-- <span class="nav-button e-s-s"><span> Superannuation </span></span> -->
+		<!-- <span class="nav-button e-t-d-s"><span>Tax Declaration </span></span> -->
+		<!-- <span class="nav-button e-u-s"><span>Employment</span></span>	 -->
+		<!-- <span class="nav-button m-i"><span>Medical Info</span></span> -->
 		</div>	
 	</section>
 <form method="POST" action="createEmployeeProfile" style="height: 100%" onsubmit="return onFormSubmit()" enctype="multipart/form-data">
@@ -107,10 +110,10 @@
 			</sup></label>
 			<input id="alias"  class="" type="text" name="alias">
 		</span>
-		<span class="span-class col-3">
+<!-- 		<span class="span-class col-3">
 			<label class="labels__">Date Of Birth</label>
 			<input id="dateOfBirth"  class="" type="date" name="dateOfBirth">
-		</span>
+		</span> -->
 		<span class="span-class col-3">
 			<label class="labels__">Gender</label>
 			<span class="select_css">
@@ -122,10 +125,10 @@
 				</select>				
 			</span>
 		</span>
-		<span class="span-class profileImage_input">
+<!-- 		<span class="span-class profileImage_input">
 			<label class="labels__">Profile Image</label>
 			<input id="profileImage"  class="profileImage" type="FILE" name="profileImage">
-		</span>
+		</span> -->
 			<hr>	
 <!-- 		<span class="span-class col-3">
 			<label class="labels__">Job Title<sup>
@@ -134,9 +137,9 @@
 			<input id="jobTitle"  class="" type="text" name="jobTitle">
 		</span> -->
 	
-		<span class="span-class row row_addEmployee ">
+		<!-- <span class="span-class row row_addEmployee "> -->
 		<!-- <label class="labels__">Address</label>	 -->
-			<span class="span-class  col-3">
+<!-- 			<span class="span-class  col-3">
 				<label class="labels__">Home Address Line1</label>
 				<input id="homeAddLine1"  class="" type="text" name="homeAddLine1">
 			</span>
@@ -171,23 +174,114 @@
 				<label class="labels__">Country</label>
 				<input id="homeAddCountry"  class="" type="text" name="homeAddCountry">
 			</span>
-		</span>
-		<hr>
-		<span class="span-class col-3">
+		</span> -->
+		<!-- <hr> -->
+<!-- 		<span class="span-class col-3">
 			<label class="labels__">Phone</label>
 			<input id="phone"  class="" type="text" name="phone">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Mobile</label>
 			<input id="mobile"  class="" type="text" name="mobile">
-		</span>
+		</span> -->
 		<span class="span-class col-3">
 			<label class="labels__">Email<sup>
 				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
 			</sup></label>
 			<input id="emails"  class="" type="text" name="emails">
 		</span>
-		<hr>
+
+		<hr> 
+		<span class="span-class col-3">
+			<label class="labels__">Employee Number<sup>
+				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+			</sup></label>
+			<input id="employee_no" type="text" name="employee_no">
+		</span>
+<!-- 		<span class="span-class col-3">
+			<label class="labels__">Xero Employee Id</label>
+			<input id="xeroEmployeeId" type="text" name="xeroEmployeeId">
+		</span> -->
+		<span class="span-class col-3">
+			<label class="labels__">Center<sup>
+				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+			</sup></label>
+			<span class="select_css">
+				<select id="center" name="center">
+					<option>--Center--</option>
+					<?php 
+						$centers = json_decode($centers);
+					foreach($centers->centers as $center){ ?> 
+						<option value="<?php echo $center->centerid;?>"><?php echo $center->name;?></option>
+					<?php } 
+					$centerId = "";
+					foreach($centers->centers as $center){ 
+							$centerId = $centerId . $center->centerid . "|";
+					 } ?>
+					<option value="<?php echo $centerId; ?>">All Centers</option>
+				</select>
+			</span>
+		</span>
+
+		<span class="span-class col-3">
+			<label class="labels__">Area<sup>
+				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+			</sup></label>
+
+				<span class="" id="area-select">
+					<span class="select_css">
+						<select id="area" name="area">
+							<option>--select--</option>
+						<?php 
+						$areas = json_decode($areas);
+						foreach($areas->areas as $area){
+						?>
+						<option value="<?php echo $area->areaId; ?>" ><?php echo $area->areaName; ?></option>
+						<?php } ?>
+					</select>
+				</span>
+			</span>
+		</span>
+
+		<span class="span-class col-3">
+			<label class="labels__">Role<sup>
+				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+			</sup></label>
+			<span id="role-select">
+				<span class="select_css">
+					<select id="role" name="role">
+						<option>--select--</option>
+
+						<?php foreach($areas->areas as $roles){?>
+							<?php foreach($roles->roles as $role){?>
+						<option area-id="<?php print_r($role->areaid); ?>" value="<?php echo $role->roleid ?>"><?php print_r($role->roleName) ?></option>
+						<?php } } ?>
+					</select>
+				</span>
+		</span>
+		</span>
+
+<!-- 		<span class="span-class col-3">
+			<label class="labels__">Manager</label>
+			<input id="manager" type="text" name="manager">
+		</span>
+ -->
+
+		<span class="span-class col-3">
+			<label class="labels__">Level<sup>
+				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+			</sup></label>
+			<span class="select_css">
+				<select id="level" name="level">
+					<?php $levels = json_decode($levels);
+						foreach($levels->entitlements as $level){
+						?>
+					<option><?php echo $level->name; ?></option>
+					<?php } ?>
+				</select>
+			</span>
+		</span>
+	</section>
 <!-- 		<span class="span-class col-3">
 			<label class="labels__">created_at</label>
 			<input placeholder="created_at" id="created_at"  class="" type="text">
@@ -196,7 +290,7 @@
 			<label class="labels__">created_by</label>
 			<input placeholder="created_by" id="created_by"  class="" type="text">
 		</span> -->
-		<span class="span-class col-3">
+<!-- 		<span class="span-class col-3">
 			<label class="labels__">Emergency Contact</label>
 		<input id="emergency_contact"  class="" type="text" name="emergency_contact">
 		</span>
@@ -207,7 +301,7 @@
 		<span class="span-class col-3">
 			<label class="labels__">Emergency Contact Email</label>
 			<input id="emergency_contact_email"  class="" type="email" name="emergency_contact_email">
-		</span>
+		</span> -->
 	</section>
 
 	<section class="employee-bank-account-section">
@@ -420,7 +514,9 @@
 			<input id="xeroEmployeeId" type="text" name="xeroEmployeeId">
 		</span> -->
 		<span class="span-class col-3">
-			<label class="labels__">Center</label>
+			<label class="labels__">Center<sup>
+				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+			</sup></label>
 			<span class="select_css">
 				<select id="center" name="center">
 					<option>--Center--</option>
@@ -476,11 +572,11 @@
 		</span>
 		</span>
 
-		<span class="span-class col-3">
+<!-- 		<span class="span-class col-3">
 			<label class="labels__">Manager</label>
 			<input id="manager" type="text" name="manager">
 		</span>
-
+ -->
 
 		<span class="span-class col-3">
 			<label class="labels__">Level<sup>
@@ -496,10 +592,10 @@
 				</select>
 			</span>
 		</span>
-		<span class="span-class col-3">
+<!-- 		<span class="span-class col-3">
 			<label class="labels__">Bonus Rates</label>
 			<input id="bonusRates" name="bonusRates" type="number" step="0.01" min="0">
-		</span>
+		</span> -->
 
 <!-- 		<span class="span-class col-3">
 			<label class="labels__">	Currently-employed</label>
@@ -525,7 +621,7 @@
 			<input type="radio" name="resume_supplied" class="resume_supplied yn-input" value="N">
 		</span>
  -->
-		<span class="span-class col-3">
+<!-- 		<span class="span-class col-3">
 			<label class="labels__">Resume Document </label>
 			<input  id="resume_doc" name="resume_doc" type="file">
 		</span>
@@ -543,7 +639,7 @@
 					<option value="Casual">Casual</option>
 				</select>
 			</span>
-		</span>
+		</span> -->
 <!-- 		<span class="span-class col-3">
 			<label class="labels__">Current-contract-notes</label>
 			<input placeholder="Current-contract-notes" id="current_contract_notes" type="date">
@@ -573,7 +669,7 @@
 			<input placeholder="Industry-years-exp-as-nov19	" id="industry_years_exp_as_nov19" type="text">
 		</span> -->
 
-		<span class="span-class col-3">
+<!-- 		<span class="span-class col-3">
 			<label class="labels__">Highest-qual-held</label>
 		<input id="highest_qual_held" name="highest_qual_held" type="text">
 		</span>
@@ -584,19 +680,19 @@
 		<span class="span-class col-3">
 			<label class="labels__">Highest Qualification Certificate</label>
 		<input id="highest_qual_cert" name="highest_qual_cert" type="text">
-		</span>
+		</span> -->
 <!-- 		<span class="span-class col-3">
 			<label class="labels__">Highest-qual-type	 </label>
 			<input placeholder="Highest-qual-type" id="highest_qual_type" type="text">
 		</span>
- -->		<span class="span-class col-3">
+ -->	<!-- 	<span class="span-class col-3">
 			<label class="labels__">Qualification working Toward</label>
 		<input  id="qual_towards_desc" name="qual_towards_desc" type="text">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Qual-towards-%-comp</label>
 		<input  id="qual_towards_percent_comp" name="qual_towards_percent_comp" type="text">
-		</span>
+		</span> -->
 
 <!-- 		<span class="span-class col-3">
 			<label class="labels__">	Workcover</label>
@@ -610,7 +706,7 @@
 			<label class="labels__">	Annual-leave-in-contract</label>
 			<input placeholder="Annual-leave-in-contract" id="annual_leave_in_contract" type="text">
 		</span> -->
-		<span class="span-class col-3">
+<!-- 		<span class="span-class col-3">
 			<label class="labels__">Classification</label>
 			<input id="classification" name="classification" type="text">
 		</span>
@@ -626,14 +722,14 @@
 				<?php }?>
 				</select>
 			</span>
-		</span>
+		</span> -->
 
-		<span class="span-class col-3">
+<!-- 		<span class="span-class col-3">
 			<label class="labels__">Payroll Calendar</label>
 			<input id="payroll_calendar" name="payroll_calendar" type="text">
 		</span>
-		<hr>
-		<span class="span-class col-3">
+		<hr> -->
+<!-- 		<span class="span-class col-3">
 			<label class="labels__">Visa Holder</label>
 			<label class="yn-label">Yes</label>
 			<input  type="radio" name="visa_holder" class="visa_holder yn-input" value="Y">
@@ -656,8 +752,8 @@
 			<label class="labels__">	Visa-conditions</label>
 			<input  id="visa_conditions" name="visa_conditions" type="text">
 		</span>
-		<hr>
-		<div>
+		<hr> -->
+<!-- 		<div>
 				<span class="span-class col-3">
 					<label class="labels__">Course Name</label>
 					<input class="course_name" name="course_name[]" type="text">
@@ -679,7 +775,7 @@
 					<input class="certificate" name="certificate[]" type="FILE">
 				</span>
 		</div>
-		<hr>
+		<hr> -->
 <!-- 		<span class="span-class col-3">
 			<label class="labels__">CPR-expiry</label>
 			<input placeholder="CPR-expiry" id="cpr_expiry" type="text">
@@ -730,10 +826,10 @@
 			</sup></label>
 		<input id="startDate"  class="" type="date" name="startDate">
 		</span>
-		<span class="span-class col-3">
+<!-- 		<span class="span-class col-3">
 			<label class="labels__">Termination Date</label>
 		<input id="terminationDate"  class="" type="date" name="terminationDate">
-		</span>
+		</span> -->
 	</span>
 	</section>
 
@@ -743,7 +839,7 @@
 			<label class="labels__">Employee Id</label>
 			<input id="employeeId" >
 		</span> -->
-		<span class="span-class col-3">
+<!-- 		<span class="span-class col-3">
 			<label class="labels__">Medicare Number</label>
 				<input  type="text"  name="medicareNo" class="medicareNo">
 		</span>
@@ -778,7 +874,7 @@
 		<span class="span-class col-3">
 			<label class="labels__">Dietary Preferences</label>
 				<input  type="text"  name="dietaryPreferences[]" class="dietaryPreferences">
-		</span>
+		</span> -->
 <!-- 		<span class="span-class col-3">
 			<label class="labels__">Anaphylaxis</label>
 				<input  type="date"  name="anaphylaxis" class="anaphylaxis">

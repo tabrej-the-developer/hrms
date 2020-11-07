@@ -893,7 +893,7 @@ class Settings extends CI_Controller {
 					$healthInsuranceFund = $json->healthInsuranceFund;
 					$healthInsuranceNo = $json->healthInsuranceNo;
 					$ambulanceSubscriptionNo = $json->ambulanceSubscriptionNo;
-					// $xeroEmployeeId = $json->xeroEmployeeId;
+					$xeroEmployeeId = $json->xeroEmployeeId;
 					$profileImage = $json->profileImage;
 					$profileImageName = $employee_no.'.png';
 					$target_dir = 'application/assets/profileImages/';
@@ -901,6 +901,7 @@ class Settings extends CI_Controller {
 					// var_dump((base64_decode($profileImage)));
 					file_put_contents($target_dir.$profileImageName,(base64_decode($profileImage)));
 // Employee Courses	
+					if(isset($course_name)){
 						$course_name = $json->course_name;
 						$course_description = $json->course_description;
 						$date_obtained = $json->date_obtained;
@@ -919,6 +920,7 @@ $this->settingsModel->addToEmployeeCourses( $xeroEmployeeId,$course_nme,$course_
 						}
 					}
 				}
+			}
 // Users	
 					$name = $fname." ".$mname." ".$lname;
 					$password = strtolower($fname)."@123";
