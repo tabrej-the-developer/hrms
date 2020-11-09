@@ -937,7 +937,7 @@ $this->settingsModel->addToUsers($employee_no,md5($password),$emails,$name,$cent
 // Employee bank account	
 						if($xeroEmployeeId != null && $xeroEmployeeId != "" ){
 							if($accountName != "" && $accountName != null){
-$this->settingsModel->addToEmployeeBankAccount( $xeroEmployeeId,$accountName,$bsb,$accountNumber,$remainderYN,$amount);
+$this->settingsModel->addToEmployeeBankAccount( $xeroEmployeeId,addslashes($accountName),$bsb,$accountNumber,$remainderYN,$amount);
 						}
 					}
 // Employee medical info	

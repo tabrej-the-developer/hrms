@@ -440,7 +440,7 @@ class Xero extends CI_Controller{
 								$EmployerNumber = isset($superFunds[$i]->EmployerNumber) ? $superFunds[$i]->EmployerNumber : "";
 								$Type = $superFunds[$i]->Type;
 								// NOTICE -- need to get the centerid
-								$this->payrollModel->insertSuperfund($ABN,$USI,$Type,$Name,$BSB,$AccountNumber,$AccountName,$ElectronicServiceAddress,$EmployerNumber,$userid,$centerid);
+								$this->payrollModel->insertSuperfund($ABN,$USI,$Type,addslashes($Name),$BSB,$AccountNumber,$AccountName,$ElectronicServiceAddress,$EmployerNumber,$userid,$centerid);
 							}
 							$data['Status'] = 'SUCCESS';
 						}
