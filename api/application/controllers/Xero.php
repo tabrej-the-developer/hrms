@@ -56,7 +56,7 @@ class Xero extends CI_Controller{
 				$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in,$centerid);
 
 				$payItems = $this->getPayItems($access_token,$tenant_id);
-				 var_dump($payItems);
+				 // var_dump($payItems);
 
 				$this->load->model('payrollModel');
 				//earning rates
@@ -344,7 +344,7 @@ class Xero extends CI_Controller{
 						$val = json_decode($val);
 						if($val->Status == 401){
 							$refresh = $this->refreshXeroToken($refresh_token);
-							var_dump($refresh);
+							// var_dump($refresh);
 							$refresh = json_decode($refresh);
 							$access_token = $refresh->access_token;
 							$expires_in = $refresh->expires_in;
