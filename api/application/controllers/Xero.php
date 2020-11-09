@@ -56,7 +56,7 @@ class Xero extends CI_Controller{
 				$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in,$centerid);
 
 				$payItems = $this->getPayItems($access_token,$tenant_id);
-				// var_dump($payItems);
+				 var_dump($payItems);
 
 				$this->load->model('payrollModel');
 				//earning rates
@@ -96,6 +96,7 @@ class Xero extends CI_Controller{
 
 				//superfunds
 				$superFunds = $this->getSuperfunds($access_token,$tenant_id);
+var_dump($superFunds);
 				$superFunds = json_decode($superFunds)->SuperFunds;
 				for($i=0;$i<count($superFunds);$i++){
 					$SuperFundID = $superFunds[$i]->SuperFundID;
@@ -113,6 +114,7 @@ class Xero extends CI_Controller{
 
 				//employees
 				$employees = $this->getEmployees($access_token,$tenant_id);
+var_dump($employees);
 				$employees = json_decode($employees)->Employees;
 				
 				$this->load->model('authModel');

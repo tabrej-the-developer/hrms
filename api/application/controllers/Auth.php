@@ -21,7 +21,7 @@ class Auth extends CI_Controller {
 			$email = $json->email;
 			$password = $json->password;
 			$deviceid = $json->deviceid;
-			$devicetype = $json->devicetype;
+			$devicetype = isset($json->devicetype) ? $json->devicetype : 'MOBILE';
 			if($email != "" && $email != null && $password != "" && $password != null && $deviceid != "" && $deviceid != null){
 				
 				$this->load->model('authModel');

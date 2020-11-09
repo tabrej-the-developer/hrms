@@ -170,7 +170,7 @@ class Chat extends CI_Controller {
                             $idUserOther = $_REQUEST['idUserOther'];
                             $otherUser = $this->authModel->getUserDetails($_REQUEST['idUserOther']);
                             $data['conversation'] = $this->chatModel->getConversationByUser($idUser,$idUserOther); 
-                            if($data['conversation'] == null){
+                            if($data['conversation'] != null){
                                 $data['conversation']->convoName = $otherUser->name;
                                 $data['conversation']->convoProfilePic = $otherUser->imageUrl;
                             }
