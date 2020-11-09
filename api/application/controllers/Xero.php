@@ -136,8 +136,8 @@ class Xero extends CI_Controller{
 					$Email = $empDetails->Email;
 					preg_match( '/([\d]{9})/', $empDetails->DateOfBirth, $matches );
 					$DateOfBirth = date( 'Y-m-d', $matches[0] );
-					$Gender = $empDetails->Gender;
-					$classification = $empDetails->Classification;
+					$Gender = isset($empDetails->Gender) ? $empDetails->Gender : "F";
+					$classification = isset($empDetails->Classification) ? $empDetails->Classification : "";
 					$AddressLine1 = $empDetails->HomeAddress->AddressLine1;
 					$AddressLine2 = isset($empDetails->HomeAddress->AddressLine2) ?  $empDetails->HomeAddress->AddressLine2: "";
 					$City = $empDetails->HomeAddress->City;
