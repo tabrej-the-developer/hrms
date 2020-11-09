@@ -900,6 +900,7 @@ class Settings extends CI_Controller {
 					$fileNameLoc = $target_dir.$profileImageName;
 					// var_dump((base64_decode($profileImage)));
 					file_put_contents($target_dir.$profileImageName,(base64_decode($profileImage)));
+
 // Employee Courses	
 					if(isset($course_name)){
 						$course_name = $json->course_name;
@@ -924,8 +925,10 @@ $this->settingsModel->addToEmployeeCourses( $xeroEmployeeId,$course_nme,$course_
 // Users	
 					$name = $fname." ".$mname." ".$lname;
 					$password = strtolower($fname)."@123";
+					var_dump($json);
 			if($employee_no != null && $employee_no != "" ){
 				if($emails != "" && $emails != null){
+
 $this->settingsModel->addToUsers($employee_no,md5($password),$emails,$name,$center,$userid,$role,$level,$alias,$profileImageName);
 						}
 					}
@@ -942,6 +945,7 @@ $this->settingsModel->addToEmployeeMedicalInfo($xeroEmployeeId,$medicareNo, $med
 						}
 					}
 // Employee medicals	
+					if(isset($json->medicalConditions) && $json->medicalConditions != null && $json->medicalConditions != ""){
 						$medicalConditions = $json->medicalConditions;
 						$medicalAllergies = $json->medicalAllergies;
 						$medication = $json->medication;
@@ -957,6 +961,7 @@ $this->settingsModel->addToEmployeeMedicals( $xeroEmployeeId,$medC,$medA,$medic,
 									}
 								}
 				}
+			}
 // Employee record	
 					$employement_type = $json->employement_type;
 					$highest_qual_held = $json->highest_qual_held;
@@ -974,7 +979,7 @@ $this->settingsModel->addToEmployeeMedicals( $xeroEmployeeId,$medC,$medA,$medic,
 				// Employee No from Users 
 				$uniqueId = uniqid();
 						if(($xeroEmployeeId != null && $xeroEmployeeId != "" ) || ($employee_no != null && $employee_no != "" )){
-							if($medC != "" && $medC != null){
+							if(isset($medC) && $medC != "" && $medC != null){
 $this->settingsModel->addToEmployeeRecord($employee_no, $xeroEmployeeId, $uniqueId,$resume_doc, 
 	$employement_type, $qual_towards_desc, $highest_qual_held, $qual_towards_percent_comp, $visa_type, $visa_grant_date, $visa_end_date, $visa_conditions, $contract_doc, $highest_qual_date_obtained, $highest_qual_cert, $visa_holder);
 // Employee superfunds	
@@ -998,10 +1003,10 @@ $this->settingsModel->addToEmployeeTaxDeclaration($xeroEmployeeId,$employmentBas
 $this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$fname,$mname,$lname,$emails,$dateOfBirth,$jobTitle,$gender,$homeAddLine1,$homeAddLine2,$homeAddCity,$homeAddRegion,$homeAddPostal,$homeAddCountry,$phone,$mobile,$startDate,$terminationDate,$ordinaryEarningRateId,$payroll_calendar,$userid,$classification,$emergency_contact,$relationship,$emergency_contact_email);
 											}
 										}
+									}
 					$data['status'] = 'SUCCESS';
 					http_response_code(200);
 					echo json_encode($data);
-									}
 									}
 					else{
 						http_response_code(401);
