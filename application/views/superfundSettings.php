@@ -486,16 +486,16 @@ border-bottom-right-radius: 20px;
 			})
 		$(document).on('change','#centerValue',function(){
 		  var centerid = $('#centerValue').val();
-		  var url = window.location.origin+'/PN101/settings/superfundsSettings/'+centerid;
-		  $.ajax({
-		    url : url,
-		    type : 'GET',
-		    success : function(response){
-		      $('#superfunds').replaceWith($(response).find('#superfunds')[0].outerHTML)
-		      $('tbody').html($(response).find('tbody').html())
-		      console.log($(response).find('tbody').html())
-		    }
-		  })
+		  window.location.href = window.location.origin+'/PN101/settings/superfundsSettings/'+centerid;
+		  // $.ajax({
+		  //   url : url,
+		  //   type : 'GET',
+		  //   success : function(response){
+		  //     $('#superfunds').replaceWith($(response).find('#superfunds')[0].outerHTML)
+		  //     $('tbody').html($(response).find('tbody').html())
+		  //     console.log($(response).find('tbody').html())
+		  //   }
+		  // })
 		})
 	})
 </script>
