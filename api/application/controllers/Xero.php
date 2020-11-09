@@ -189,7 +189,7 @@ class Xero extends CI_Controller{
 					//taxes
 
 					$TaxFileNumber = isset($empDetails->TaxDeclaration->TaxFileNumber) ? $empDetails->TaxDeclaration->TaxFileNumber : "";
-					$EmploymentBasis = $empDetails->TaxDeclaration->EmploymentBasis;
+					$EmploymentBasis = isset($empDetails->TaxDeclaration->EmploymentBasis) ? $empDetails->TaxDeclaration->EmploymentBasis : "FULLTIME";
 					$TFNExemptionType = isset($empDetails->TaxDeclaration->TFNExemptionType) ? $empDetails->TaxDeclaration->TFNExemptionType : "";
 					$AustralianResidentForTaxPurposes = $empDetails->TaxDeclaration->AustralianResidentForTaxPurposes;
 					$TaxFreeThresholdClaimed = $empDetails->TaxDeclaration->TaxFreeThresholdClaimed ? "Y" : "N";
@@ -353,10 +353,10 @@ class Xero extends CI_Controller{
 							$val = $this->getPayItems($access_token,$tenant_id);
 							$val = json_decode($val);
 						}
-						var_dump($val);
+						// var_dump($val);
 						if($val->Status == "OK"){
 							$leaveTypes = $val->PayItems->LeaveTypes;
-							var_dump($leaveTypes);
+							// var_dump($leaveTypes);
 							// NOTICE -- need to get the centerid
 							$this->leaveModel->deleteAllLeaveTypes($centerid);
 							for($i=0;$i<count($leaveTypes);$i++){
