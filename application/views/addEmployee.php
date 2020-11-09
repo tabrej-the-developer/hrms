@@ -534,7 +534,7 @@
 			</span>
 		</span>
 
-		<span class="span-class col-3">
+		<!-- <span class="span-class col-3">
 			<label class="labels__">Area<sup>
 				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
 			</sup></label>
@@ -552,9 +552,9 @@
 					</select>
 				</span>
 			</span>
-		</span>
+		</span> -->
 
-		<span class="span-class col-3">
+		<!-- <span class="span-class col-3">
 			<label class="labels__">Role<sup>
 				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
 			</sup></label>
@@ -570,7 +570,7 @@
 					</select>
 				</span>
 		</span>
-		</span>
+		</span> -->
 
 <!-- 		<span class="span-class col-3">
 			<label class="labels__">Manager</label>
@@ -1062,7 +1062,7 @@ $(document).ready(function(){
 		$('#center').change(function(){
 	var id = this.value;
 	var url = window.location.origin+"/PN101/settings/addEmployee/"+id;
-	console.log(id)
+	console.log(url)
 	$.ajax({
 		url:url,
 		type:'GET',
