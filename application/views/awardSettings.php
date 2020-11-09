@@ -451,8 +451,9 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 			$.ajax({
 					url:url,
 					type:'GET',
-					success:function(){
-						window.location.reload();
+					success:function(res){
+console.log(res);
+						//window.location.reload();
 					}
 				})
 			})
