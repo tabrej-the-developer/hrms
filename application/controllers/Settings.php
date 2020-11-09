@@ -1694,7 +1694,7 @@ $server_output = curl_exec($ch);
 		}
 	}
 
-	public function syncXeroAwards(){
+	public function syncXeroAwards($centerid){
 	//footprint start
 	if($this->session->has_userdata('current_url')){
 		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
@@ -1702,7 +1702,7 @@ $server_output = curl_exec($ch);
 	}
 	// footprint end
 		$data['userid'] = $this->session->userdata('LoginId');
-		$url = BASE_API_URL."/xero/syncXeroAwards";
+		$url = BASE_API_URL."/xero/syncXeroAwards/".$centerid;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -1770,7 +1770,7 @@ $server_output = curl_exec($ch);
 		}
 	}
 
-	public function  syncXeroSuperfunds(){
+	public function  syncXeroSuperfunds($centerid){
 	//footprint start
 	if($this->session->has_userdata('current_url')){
 		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
@@ -1778,7 +1778,7 @@ $server_output = curl_exec($ch);
 	}
 	// footprint end
 		$data['userid'] = $this->session->userdata('LoginId');
-		$url = BASE_API_URL."/xero/syncXeroSuperfunds";
+		$url = BASE_API_URL."/xero/syncXeroSuperfunds/".$centerid;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -2057,7 +2057,7 @@ $server_output = curl_exec($ch);
 		}
 	}
 
-		public function  syncXeroLeaves(){
+		public function  syncXeroLeaves($centerid){
 	//footprint start
 	if($this->session->has_userdata('current_url')){
 		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
@@ -2065,7 +2065,7 @@ $server_output = curl_exec($ch);
 	}
 	// footprint end
 		$data['userid'] = $this->session->userdata('LoginId');
-		$url = BASE_API_URL."/xero/syncXeroLeaves";
+		$url = BASE_API_URL."/xero/syncXeroLeaves/".$centerid;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
