@@ -175,8 +175,12 @@ font-family: 'Open Sans', sans-serif;
               <label><i style="color: #aa63ff;" class=""></i> State</label>
               <span class="select_css">
                 <select class="" name="center_state" id="center state" value="<?php  echo isset($cD->addState) ? $cD->addState : ''; ?>">
-                  <?php foreach($states->states as $state){ ?>
-                  <option value="<?php echo $state->stateId; ?>"><?php echo $state->stateName; ?></option>
+                  <?php foreach($states->states as $state){ 
+                    if((isset($cD->addState) ? $cD->addState : '') == $state->stateId ){ ?>
+                <option value="<?php echo $state->stateId; ?>" selected><?php echo $state->stateName; ?></option>
+                    <?php }else{ ?>
+                <option value="<?php echo $state->stateId; ?>"><?php echo $state->stateName; ?></option>
+                  <?php  } ?>
                 <?php } ?>
                 </select>
               </span>

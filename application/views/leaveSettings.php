@@ -632,16 +632,16 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 
 	$('#XeroLeaves').click(function(){
     var centerid = $('#centerValue').val();
-		var url = window.location.origin + "/PN101/settings/syncXeroLeaves/"+centerid ;
+		window.location.herf =  window.location.origin + "/PN101/settings/syncXeroLeaves/"+centerid ;
     console.log(url)
-    $.ajax({
-				url:url,
-				type:'GET',
-				success:function(response){
-          console.log(response)
-					// window.location.reload();
-				}
-			})
+   //  $.ajax({
+			// 	url:url,
+			// 	type:'GET',
+			// 	success:function(response){
+   //        console.log(response)
+			// 		// window.location.reload();
+			// 	}
+			// })
 		})
   $(document).on('change','#centerValue',function(){
       var centerid = $('#centerValue').val();
