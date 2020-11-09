@@ -87,9 +87,7 @@
 		</span>
 
 		<span class="span-class col-3 ">
-		<label class="labels__">Middle Name<sup>
-				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
-			</sup></label>
+		<label class="labels__">Middle Name</label>
 			<input id="mname"  class="" value="" type="text" name="mname" >
 		</span>
 
@@ -1136,15 +1134,15 @@ $(document).ready(function(){
 			return false;
 		}
 
-		if($('#startDate').val() == null || $('#startDate').val() == ""){
-			$('#startDate').css({"border-color": "red", 
-             "border-width":"1px", 
-             "border-style":"solid"})
-      showNotification();
-      addMessageToNotification('Enter Start Date');
-      setTimeout(closeNotification,5000)
-			return false;
-		}
+		// if($('#startDate').val() == null || $('#startDate').val() == ""){
+		// 	$('#startDate').css({"border-color": "red", 
+  //            "border-width":"1px", 
+  //            "border-style":"solid"})
+  //     showNotification();
+  //     addMessageToNotification('Enter Start Date');
+  //     setTimeout(closeNotification,5000)
+		// 	return false;
+		// }
 		if( $('#employee_no').val() == null || $('#employee_no').val() == "" ){
 			$('#employee_no').css({"border-color": "red", 
              "border-width":"1px", 
