@@ -930,6 +930,8 @@ $this->settingsModel->addToEmployeeCourses( $xeroEmployeeId,$course_nme,$course_
 				if($emails != "" && $emails != null){
 
 $this->settingsModel->addToUsers($employee_no,md5($password),$emails,$name,$center,$userid,$role,$level,$alias,$profileImageName);
+// Add user to usercenters
+		$this->settingsModel->addToUserCenters($employee_no,$center);
 						}
 					}
 // Employee bank account	
@@ -995,8 +997,7 @@ $superMembershipId,$superfundEmployeeNumber);
 $this->settingsModel->addToEmployeeTaxDeclaration($xeroEmployeeId,$employmentBasis,$tfnExemptionType,$taxFileNumber,$australiantResidentForTaxPurposeYN,$residencyStatue,$taxFreeThresholdClaimedYN,$taxOffsetEstimatedAmount,$hasHELPDebtYN,$hasSFSSDebtYN,$hasTradeSupportLoanDebtYN_,$upwardVariationTaxWitholdingAmount,$eligibleToReceiveLeaveLoadingYN,$approvedWitholdingVariationPercentage);
 										}
 									}
-// Add user to usercenters
-		$this->settingsModel->addToUserCenters($employee_no,$center);
+
 // Employee Table
 						if($xeroEmployeeId != null && $xeroEmployeeId != "" ){
 							if($employee_no != "" && $employee_no != null){
