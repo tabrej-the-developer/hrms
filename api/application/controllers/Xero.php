@@ -253,7 +253,7 @@ class Xero extends CI_Controller{
 			if($json!= null && $res != null && $res->userid == $json->userid){
 				$userid = $json->userid;
 				$userDetails = $this->authModel->getUserDetails($userid);
-				if($userDetails != null && $userDetails->role == SUPERADMIN){
+				if($userDetails != null){
 					$this->load->model('xeroModel');
 					$this->load->model('payrollModel');
 					//xero 
@@ -331,7 +331,7 @@ class Xero extends CI_Controller{
 			if($json!= null && $res != null && $res->userid == $json->userid){
 				$userid = $json->userid;
 				$userDetails = $this->authModel->getUserDetails($userid);
-				if($userDetails != null && $userDetails->role == SUPERADMIN){
+				if($userDetails != null){
 					$this->load->model('xeroModel');
 					$this->load->model('leaveModel');
 					//xero 
@@ -402,7 +402,7 @@ class Xero extends CI_Controller{
 			if($json!= null && $res != null && $res->userid == $json->userid){
 				$userid = $json->userid;
 				$userDetails = $this->authModel->getUserDetails($userid);
-				if($userDetails != null && $userDetails->role == SUPERADMIN){
+				if($userDetails != null){
 					$this->load->model('xeroModel');
 					$this->load->model('payrollModel');
 					//xero 
