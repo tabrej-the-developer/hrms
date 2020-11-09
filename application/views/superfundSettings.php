@@ -473,13 +473,14 @@ border-bottom-right-radius: 20px;
 <script type="text/javascript">
 	$(document).ready(function(){
 		$('#superfunds').click(function(){
+console.log("clicked");
 			var centerid = $('#centerValue').val();
 			var url = window.location.origin + "/PN101/settings/syncXeroSuperfunds/"+centerid ;
 			$.ajax({
 					url:url,
 					type:'GET',
 					success:function(response){
-						// console.log(response)
+						 console.log(response)
 						window.location.reload();
 					}
 				})
