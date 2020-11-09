@@ -60,6 +60,7 @@ class Xero extends CI_Controller{
 
 				$this->load->model('payrollModel');
 				//earning rates
+				if(isset(json_decode($payItems)->PayItems->EarningsRates)){
 				$earningRates = json_decode($payItems)->PayItems->EarningsRates;
 				$this->payrollModel->deleteAllPayrollShiftTypes($centerid);
 				for($i = 0; $i < count($earningRates); $i++){
@@ -79,9 +80,11 @@ class Xero extends CI_Controller{
 						$Multiplier_Amount = 0;
 					$this->payrollModel->insertPayrollShifts($EarningsRateID,$Name,$IsExemptFromTax,$IsExemptFromSuper,$IsReportableAsW1,$EarningsType,$RateType,$Multiplier_Amount,$CurrentRecord,$userid,$centerid);		
 				}
+			}
 
 				$this->load->model('leaveModel');
 				//leave types
+				if(isset(json_decode($payItems)->PayItems->LeaveTypes)){
 				$leaveTypes = json_decode($payItems)->PayItems->LeaveTypes;
 				$this->leaveModel->deleteAllLeaveTypes($centerid);
 				for($i=0;$i<count($leaveTypes);$i++){
@@ -92,11 +95,11 @@ class Xero extends CI_Controller{
 					$CurrentRecord = $leaveTypes[$i]->CurrentRecord ? "Y" : "N";
 					$slug = $Name[0];
 	 				$this->leaveModel->createLeaveType($LeaveTypeID,$Name,$IsPaidLeave,$slug,$ShowOnPayslip,$CurrentRecord,$userid,$centerid);
-				}
+				}}
 
 				//superfunds
 				$superFunds = $this->getSuperfunds($access_token,$tenant_id);
-var_dump($superFunds);
+				if(isset(json_decode($superFunds)->SuperFunds)){
 				$superFunds = json_decode($superFunds)->SuperFunds;
 				for($i=0;$i<count($superFunds);$i++){
 					$SuperFundID = $superFunds[$i]->SuperFundID;
@@ -111,10 +114,10 @@ var_dump($superFunds);
 					$Type = $superFunds[$i]->Type;
 					$this->payrollModel->insertSuperfund($ABN,$USI,$Type,$Name,$BSB,$AccountNumber,$AccountName,$ElectronicServiceAddress,$EmployerNumber,$userid,$centerid);
 				}
-
+			}
 				//employees
 				$employees = $this->getEmployees($access_token,$tenant_id);
-var_dump($employees);
+				if(isset(json_decode($employees)->Employees)){
 				$employees = json_decode($employees)->Employees;
 				
 				$this->load->model('authModel');
@@ -229,7 +232,7 @@ var_dump($employees);
 					}
 
 				}
-
+			}
 			    $data['Status'] = "SUCCESS";
 			}
 			catch (Exception $e) {

@@ -1195,7 +1195,7 @@ $server_output = curl_exec($ch);
 		$data['upwardVariationTaxWitholdingAmount'] = isset($_POST['upwardVariationTaxWitholdingAmount']) ? $_POST['upwardVariationTaxWitholdingAmount']: "";
 		$data['eligibleToReceiveLeaveLoadingYN'] = isset($_POST['eligibleToReceiveLeaveLoadingYN']) ? $_POST['eligibleToReceiveLeaveLoadingYN']: "";
 		$data['approvedWitholdingVariationPercentage'] = isset($_POST['approvedWitholdingVariationPercentage']) ? $_POST['approvedWitholdingVariationPercentage']: "";
-		// $data['xeroEmployeeId'] = isset($_POST['xeroEmployeeId']) ? $_POST['xeroEmployeeId']: "";
+		$data['xeroEmployeeId'] = isset($_POST['xeroEmployeeId']) ? $_POST['xeroEmployeeId']: "";
 		$data['employee_no'] = $this->session->userdata('LoginId');
 		$res_doc = isset($_FILES['resume_doc']['name']) ? $_FILES['resume_doc']['name']: "";
 		if($res_doc != ""){
@@ -1291,7 +1291,7 @@ $server_output = curl_exec($ch);
 				$data['levels'] = $this->getAllEntitlements($data['userid']);
 				$data['superfunds'] = $this->getSuperfunds($data['userid'],$centerid);
 				$data['permissions'] = $this->fetchPermissions();
-				// var_dump($data);
+				// var_dump($data['areas']);
 				$this->load->view('addEmployee',$data);
 			}
 			else{
@@ -1351,7 +1351,7 @@ $server_output = curl_exec($ch);
 		$data['upwardVariationTaxWitholdingAmount'] = isset($_POST['upwardVariationTaxWitholdingAmount']) ? $_POST['upwardVariationTaxWitholdingAmount']: "";
 		$data['eligibleToReceiveLeaveLoadingYN'] = isset($_POST['eligibleToReceiveLeaveLoadingYN']) ? $_POST['eligibleToReceiveLeaveLoadingYN']: "";
 		$data['approvedWitholdingVariationPercentage'] = isset($_POST['approvedWitholdingVariationPercentage']) ? $_POST['approvedWitholdingVariationPercentage']: "";
-		// $data['xeroEmployeeId'] = isset($_POST['xeroEmployeeId']) ? $_POST['xeroEmployeeId']: "";
+		$data['xeroEmployeeId'] = isset($_POST['xeroEmployeeId']) ? $_POST['xeroEmployeeId']: "";
 		$data['employee_no'] = isset($_POST['employee_no']) ? $_POST['employee_no']: "";
 		$data['center'] = isset($_POST['center']) ? $_POST['center']: "";
 		$data['area'] = isset($_POST['area']) ? $_POST['area']: "";
@@ -1391,11 +1391,13 @@ $server_output = curl_exec($ch);
 		$data['visa_grant_date'] = isset($_POST['visa_grant_date']) ? $_POST['visa_grant_date']: "";
 		$data['visa_end_date'] = isset($_POST['visa_end_date']) ? $_POST['visa_end_date']: "";
 		$data['visa_conditions'] = isset($_POST['visa_conditions']) ? $_POST['visa_conditions']: "";
-		$data['course_name'] = $_POST['course_name'];
-		$data['course_description'] = $_POST['course_description'];
-		$data['date_obtained'] = $_POST['date_obtained'];
-		$data['expiry_date'] = $_POST['expiry_date'];
-		$data['certificate'] = $_FILES['certificate'];
+		if(isset($_POST['course_name'])){
+			$data['course_name'] = isset($_POST['course_name']) ? $_POST['course_name'] : "";
+			$data['course_description'] = $_POST['course_description'];
+			$data['date_obtained'] = $_POST['date_obtained'];
+			$data['expiry_date'] = $_POST['expiry_date'];
+			$data['certificate'] = $_FILES['certificate'];
+		}
 		$data['medicareNo'] = isset($_POST['medicareNo']) ? $_POST['medicareNo']: "";
 		$data['medicareRefNo'] = isset($_POST['medicareRefNo']) ? $_POST['medicareRefNo']: "";
 		$data['healthInsuranceFund'] = isset($_POST['healthInsuranceFund']) ? $_POST['healthInsuranceFund']: "";
