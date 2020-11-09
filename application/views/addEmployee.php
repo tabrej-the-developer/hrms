@@ -501,12 +501,12 @@
 
 
 	<section class="employee-details">
-		<span class="span-class col-3">
+<!-- 		<span class="span-class col-3">
 			<label class="labels__">Employee Number<sup>
 				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
 			</sup></label>
 			<input id="employee_no" type="text" name="employee_no">
-		</span>
+		</span> -->
 <!-- 		<span class="span-class col-3">
 			<label class="labels__">Xero Employee Id</label>
 			<input id="xeroEmployeeId" type="text" name="xeroEmployeeId">
@@ -1106,6 +1106,7 @@ $(document).ready(function(){
 
 
 	function onFormSubmit(e){
+		
 		if($('#fname').val() == null || $('#fname').val() == "" || 	$('#lname').val() == null || $('#lname').val() == ""){
 		$('#fname').css({"border-color": "red", 
              "border-width":"1px", 
