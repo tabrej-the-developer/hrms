@@ -447,15 +447,14 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 	$(document).ready(function(){
 		$('#awards').click(function(){
 			var centerid = $('#centerValue').val();
-			var url = window.location.origin + "/PN101/settings/syncXeroAwards/"+centerid ;
-			$.ajax({
-					url:url,
-					type:'GET',
-					success:function(res){
-console.log(res);
-						//window.location.reload();
-					}
-				})
+			window.location.href = window.location.origin + "/PN101/settings/syncXeroAwards/"+centerid ;
+			// $.ajax({
+			// 		url:url,
+			// 		type:'GET',
+			// 		success:function(){
+			// 			window.location.reload();
+			// 		}
+			// 	})
 			})
 	  $(document).on('change','#centerValue',function(){
 	      var centerid = $('#centerValue').val();
