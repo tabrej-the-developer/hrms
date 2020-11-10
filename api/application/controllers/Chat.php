@@ -41,7 +41,7 @@ class Chat extends CI_Controller {
                     $count = isset($_REQUEST['count']) ? $_REQUEST['count'] : 20;
                     $offset = isset($_REQUEST['offset'])  ? $_REQUEST['offset'] : 0;    
                     // $idUser = isset($_REQUEST['idUser']) ? $_REQUEST['idUser'] : 0;
-                    if($idUser){
+                    if($idUser && $idConversation){
                         $data['Status'] = "SUCCESS";
                         $data['chats'] = $this->chatModel->getChat($idConversation,$idUser,$offset,$count);
                     }
@@ -88,6 +88,11 @@ class Chat extends CI_Controller {
                     $media = isset($para->media) ? $para->media : null;
                     $senderName = $para->senderName;
                     if($idMember){
+                        if($media != null){
+                            $_id = uniqid('chat_');
+                            file_put_contents(UPLOAD_IMAGE_PATH.'chat/'.$_id.".png", base64_decode($media));
+                            $media = $_id.'.png';
+                        }
                         $chat = $this->chatModel->postChat($idMember,$chatText,$media);
                         $members = $this->chatModel->getAllMembersInConversationByMember($idMember);
                         $title = "New Message";
@@ -170,7 +175,7 @@ class Chat extends CI_Controller {
                             $idUserOther = $_REQUEST['idUserOther'];
                             $otherUser = $this->authModel->getUserDetails($_REQUEST['idUserOther']);
                             $data['conversation'] = $this->chatModel->getConversationByUser($idUser,$idUserOther); 
-                            if($data['conversation'] == null){
+                            if($data['conversation'] != null){
                                 $data['conversation']->convoName = $otherUser->name;
                                 $data['conversation']->convoProfilePic = $otherUser->imageUrl;
                             }
@@ -178,6 +183,7 @@ class Chat extends CI_Controller {
                         if($data['conversation'] != null){
                             $members = $this->chatModel->getMemeberDetailsInConversation($data['conversation']->idConversation);
                             $data['members'] = array();
+                            $otherUserId = "";
                             foreach ($members as $member) {
                                 $var['idMember'] = $member->idMember;
                                 $var['idConversation'] = $member->idConversation;
@@ -187,12 +193,19 @@ class Chat extends CI_Controller {
                                     $var['DisplayName'] = $otherUser->name;
                                     $var['ProfilePic'] = $otherUser->imageUrl;
                                 }
+                                if($otherUser->id != $idUser && $otherUserId == "") $otherUserId = $otherUser->id;
                                 $var['addedDate'] = $member->addedDate;
                                 $var['deletedDate'] = $member->deletedDate;
                                 $var['isAdminYN'] = $member->isAdminYN;
                                 $var['lastSeen'] = $member->lastSeen;
                                 array_push($data['members'],$var);
                             }
+
+                            if($data['conversation']->isGroupYN == "N"){
+                                //send common groups
+                                $data['commonGroups'] = $this->chatModel->getCommonGroups($idUser,$otherUserId);
+                            }
+
                             $data['Status'] = "SUCCESS";
                         }
                         else{
@@ -374,6 +387,10 @@ class Chat extends CI_Controller {
                             $idMember = $this->chatModel->getMemberFromIdUser($idConversation,$idUser)->idMember;
                             //update
                             if($convoName != null || $convoProfilePic != null){
+                                if($convoProfilePic != null){
+                                    file_put_contents(UPLOAD_IMAGE_PATH.'conversation/'.$idConversation.".png", base64_decode($convoProfilePic));
+                                    $convoProfilePic = $idConversation.'.png';
+                                }
                                 $this->chatModel->updateConversation($idConversation,$convoName,$convoProfilePic);
                                     $chatText = $userDetails->name." changed profile pic.";
                                 if($convoName != null)
