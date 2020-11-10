@@ -330,6 +330,8 @@ label{
   }
   .updateNoticeGroupModal_add .tokens-container.form-control{
     max-height: 4rem;
+    max-width: 20rem;
+    min-width: 20rem;
     overflow-y: auto;
     overflow-x: hidden;
   }
