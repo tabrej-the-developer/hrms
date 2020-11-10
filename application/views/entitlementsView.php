@@ -35,7 +35,7 @@ font-family: 'Open Sans', sans-serif;
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
+  overflow: hidden;
   background-color: rgb(0,0,0); 
   background-color: rgba(0,0,0,0.4); 
 }
@@ -51,7 +51,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
   background-color: #fefefe;
   margin: auto;
   border: 1px solid #888;
-  width: 80%;
+  width: 60%;
 }
 
 /* The Close Button */
@@ -143,6 +143,10 @@ input[type="text"],input[type=time],select,#casualEmp_date{
     margin: auto;
     text-align: center;
    }
+   .modalSpace > div > div{
+    height: 20rem;
+    overflow: auto;
+   }
     thead tr{
       background-color: #8D91AA;
       color: #F3F4F7;
@@ -153,6 +157,16 @@ input[type="text"],input[type=time],select,#casualEmp_date{
     }
     tbody tr{
       background: white !important;
+    }
+    .header__{
+      height: 2.5rem;
+      width: 100%;
+      background: #8D91AA;
+      color: #F3F4F7;
+      font-size: 1.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 .button{
   /*position: absolute;*/
@@ -238,7 +252,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
                         <span style="cursor: pointer;">
                          <div><i class="fas fa-pencil-alt" style="color: #0077ff;" u-v="<?php echo $entitlement->entitlements[$i]->id;?>">
                             <i>
-                              <img src="<?php echo base_url('assets/images/icons/pencil.png'); ?>" style="max-height:02rem;margin-right:10px">
+                              <img src="<?php echo base_url('assets/images/icons/pencil.png'); ?>" style="max-height:01rem;margin-right:10px">
                             </i>
                          </i> </div>
                         </span>
@@ -248,7 +262,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
                     <?php if(isset($permissions->permissions) ? $permissions->permissions->editEntitlementsYN : "N" == "Y"){ ?>
                       <span style="cursor: pointer;"><i class="fas fa-trash-alt" style="color: #ff3b30;" d-v="<?php echo $entitlement->entitlements[$i]->id;?>">
                         <i>
-                          <img src="<?php echo base_url('assets/images/icons/del.png'); ?>" style="max-height:02rem;margin-right:10px">
+                          <img src="<?php echo base_url('assets/images/icons/del.png'); ?>" style="max-height:01rem;margin-right:10px">
                         </i>
                       </i></span>
                     <?php }else{ echo "-";} ?>
@@ -270,18 +284,20 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 
 <div id="myModal" class="modal">
     <!-- Modal content -->
+
     <div class="modal-content">
-      <span class="row titl">
+      <div class="header__">Assigned List</div>
+<!--       <span class="row titl">
         <span style="" class="box-name-space col-10">
           <span class="box-name row"></span>
           <span class="box-space row"></span>
         </span>
-        <span class="close col-2 d-flex align-items-center" >&times;</span>
-      </span>
+      </span> -->
       
       <div class="modalSpace">
     
       </div>
+      <span class="close col-12 d-flex justify-content-center" ><button class="button">Close</button></span>
     </div>
 </div>
 <!-- <script type="text/javascript">

@@ -44,11 +44,11 @@ font-family: 'Open Sans', sans-serif;
 
 <div>
 
-	<div class="d-flex row m-0">
+	<div class="d-flex = m-0">
 		<span class="head head-th col-3">Name</span>
-		<span class="head head-th col-2">Level</span>
+		<span class="head head-th col-3">Level</span>
 		<span class="head head-th col-3">Center</span>
-		<span class="head head-th col-2">Title</span>
+		<span class="head head-th col-3">Title</span>
 	</div>
 	<?php 
 		$users = json_decode($users);
@@ -56,11 +56,11 @@ font-family: 'Open Sans', sans-serif;
 			$count = count($users->users);
 		 ?>
 		<?php for($x=0;$x<$count;$x++){ ?>
-		<div class="d-flex row m-0">
+		<div class="d-flex  m-0">
 			<span class="head col-3"><?php echo $users->users[$x]->name?></span>
-			<span class="head col-2"><?php echo $users->users[$x]->level; ?></span>
+			<span class="head col-3"><?php echo $users->users[$x]->level; ?></span>
 			<span class="head col-3"><?php echo $users->users[$x]->center; ?></span>
-			<span class="head col-2"><?php echo $users->users[$x]->title; ?></span>
+			<span class="head col-3"><?php echo $users->users[$x]->title; ?></span>
 		</div>
 			<?php } }?>
 </div>
