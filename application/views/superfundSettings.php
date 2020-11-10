@@ -350,9 +350,14 @@ border-bottom-right-radius: 20px;
       	<?php $syncedWithXero = json_decode($syncedWithXero);  ?>
         <select placehdr="Center" id="centerValue" name="centerValue" >
           <?php 
-          foreach($centers->centers as $center){ ?> 
-            <option value="<?php echo $center->centerid;?>"><?php echo $center->name;?></option>
-          <?php } ?>
+          foreach($centers->centers as $center){ 
+          	if(isset($centerid) && $centerid == $center->centerid ){
+          	?> 
+            <option value="<?php echo $center->centerid;?>" selected><?php echo $center->name;?></option>
+          <?php }else{ ?>
+			<option value="<?php echo $center->centerid;?>"><?php echo $center->name;?></option>
+        <?php  }
+    		} ?>
         </select>
       </span>
       <span>

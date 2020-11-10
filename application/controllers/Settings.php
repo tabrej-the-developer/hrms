@@ -64,6 +64,7 @@ class Settings extends CI_Controller {
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			print_r($server_output);
 			if($httpcode == 200){
 				return $server_output;
 				curl_close ($ch);
@@ -1624,6 +1625,7 @@ $server_output = curl_exec($ch);
 		$data['syncedWithXero'] =$this->SyncedWithXero($centerid);
 		$data['awards'] = $this->getAwardSettings($data['userid'],$centerid);
 		$data['permissions'] = $this->fetchPermissions();
+		$data['centerid'] = $centerid;
 	//footprint start
 	if($this->session->has_userdata('current_url')){
 		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
@@ -1740,6 +1742,7 @@ $server_output = curl_exec($ch);
 		$data['superfunds'] = $this->getSuperfunds($data['userid'],$centerid);
 		$data['syncedWithXero'] = $this->SyncedWithXero($centerid);
 		$data['permissions'] = $this->fetchPermissions();
+		$data['centerid'] = $centerid;
 	//footprint start
 	if($this->session->has_userdata('current_url')){
 		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
@@ -1849,6 +1852,7 @@ $server_output = curl_exec($ch);
 		$data['syncedWithXero'] = $this->SyncedWithXero($centerid);
 		$data['leaveType'] = $this->getLeaveType($centerid);
 		$data['permissions'] = $this->fetchPermissions();
+		$data['centerid'] = $centerid;
 		$this->load->view('leaveSettings',$data);
 	}
 

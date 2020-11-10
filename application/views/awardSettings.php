@@ -348,9 +348,14 @@ input[type="text"],input[type=time],select,#casualEmp_date{
           <span class="select_css">
             <select placehdr="Center" id="centerValue" name="centerValue" >
               <?php 
-              foreach($centers->centers as $center){ ?> 
-                <option value="<?php echo $center->centerid;?>"><?php echo $center->name;?></option>
-              <?php } ?>
+              foreach($centers->centers as $center){ 
+				if(isset($centerid) && $centerid == $center->centerid ){
+              	?> 
+                <option value="<?php echo $center->centerid;?>" selected><?php echo $center->name;?></option>
+              <?php }else{ ?>
+				<option value="<?php echo $center->centerid;?>"><?php echo $center->name;?></option>
+        <?php  }  
+		    }	?>
             </select>
           </span>
           <?php $syncedWithXero = json_decode($syncedWithXero);  ?>

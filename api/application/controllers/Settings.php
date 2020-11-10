@@ -356,7 +356,7 @@ class Settings extends CI_Controller {
 				$this->load->model('settingsModel');
 				$user = $this->authModel->getUserDetails($userid);
 				if($user != null){
-				$user = $this->settingsModel->changePassword($userid,$password,$passcode);
+				$user = $this->settingsModel->changePassword($userid,md5($password),md5($passcode));
 					$data['Status'] = "SUCCESS";
 				}
 				else{

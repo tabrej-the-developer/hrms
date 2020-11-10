@@ -404,9 +404,14 @@ input[type="text"],input[type=time],select,#casualEmp_date{
           <span class="select_css">
             <select placehdr="Center" id="centerValue" name="centerValue" >
               <?php 
-              foreach($centers->centers as $center){ ?> 
-                <option value="<?php echo $center->centerid;?>"><?php echo $center->name;?></option>
-              <?php } ?>
+              foreach($centers->centers as $center){ 
+        if(isset($centerid) && $centerid == $center->centerid ){
+                ?> 
+                <option value="<?php echo $center->centerid;?>" selected><?php echo $center->name;?></option>
+              <?php }else{ ?>
+        <option value="<?php echo $center->centerid;?>"><?php echo $center->name;?></option>
+        <?php  }  
+        } ?>
             </select>
           </span>
           <?php $syncedWithXero = json_decode($syncedWithXero);  ?>
@@ -632,30 +637,30 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 
 	$('#XeroLeaves').click(function(){
     var centerid = $('#centerValue').val();
-		window.location.herf =  window.location.origin + "/PN101/settings/syncXeroLeaves/"+centerid ;
+		var url =  window.location.origin + "/PN101/settings/syncXeroLeaves/"+centerid ;
     console.log(url)
-   //  $.ajax({
-			// 	url:url,
-			// 	type:'GET',
-			// 	success:function(response){
-   //        console.log(response)
-			// 		// window.location.reload();
-			// 	}
-			// })
+    $.ajax({
+				url:url,
+				type:'GET',
+				success:function(response){
+          console.log(response)
+					 window.location.reload();
+				}
+			})
 		})
   $(document).on('change','#centerValue',function(){
       var centerid = $('#centerValue').val();
-      var url = window.location.origin+'/PN101/settings/leaveSettings/'+centerid;
-      $.ajax({
-        url : url,
-        type : 'GET',
-        success : function(response){
-          $('tbody').html($(response).find('tbody').html())
-          $('.sync_button button').replaceWith($(response).find('.sync_button button')[0].outerHTML);
+      window.location.href = window.location.origin+'/PN101/settings/leaveSettings/'+centerid;
+      // $.ajax({
+      //   url : url,
+      //   type : 'GET',
+      //   success : function(response){
+      //     $('tbody').html($(response).find('tbody').html())
+      //     $('.sync_button button').replaceWith($(response).find('.sync_button button')[0].outerHTML);
           // sycedWithXero(centerid);
           // console.log($(response).find('tbody').html())
-        }
-      })
+      //   }
+      // })
     })
 	})
 </script>

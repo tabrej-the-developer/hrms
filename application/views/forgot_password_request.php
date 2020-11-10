@@ -114,7 +114,7 @@ input.form-control::placeholder{
 					<div class="form-group">
             <button type="submit" class="btnSubmit" value="Request Reset Link">
             <i>
-              <img src="<?php echo base_url('assets/images/icons/link.png'); ?>" style="max-height:1remrem;margin-right:10px">
+              <img src="<?php echo base_url('assets/images/icons/link.png'); ?>" style="max-height:1rem;margin-right:10px">
             </i>Request Reset Link</button>
           </div>
           <div class="back_to_sign_in">

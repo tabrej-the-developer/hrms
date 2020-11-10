@@ -72,7 +72,11 @@ body{
       <div class="row d-flex justify-content-center">
           <div class="col-md-5 login-form-1 text-center">
               <h3>Reset Password</h3>
-              <form method="post" action="<?php echo base_url().'welcome/resetPassword';?>"> 
+              <?php if(!isset($userid)){ ?>
+              <form method="post" action="<?php echo base_url().'welcome/resetPassword' ;?>"> 
+              <?php }else{ ?>
+                <form method="post" action="<?php echo base_url().'welcome/resetPassword/'.$userid.'/'.$token ;?>">
+             <?php } ?>
                 <div class="form-group">
                   <input type="password" class="form-control" placeholder="New Password" value="" required name="new_password"/>
                 </div>
@@ -90,7 +94,7 @@ body{
   <script type="text/javascript">
     $(document).ready(function(){
       $(document).on('click','.btnSubmit',function(e){
-      if($('input[name="new_password"]').val() !== $('input[name="confirm_password"]')){
+      if($('input[name="new_password"]').val() !== $('input[name="confirm_password"]').val()){
            e.preventDefault();
            $('.alert').text('Passwords do not match')
            setTimeout(function(){
