@@ -137,6 +137,35 @@
 			width:100%;
 			margin: 0 !important;
 		}
+	.add_remove_bank_account{
+		position: relative;
+	}
+	.add-remove-row,.add-remove-superfund{
+		position: absolute;
+		right: 1rem;
+	}
+	.add-row,#superfund-add{
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		background: rgb(164, 217, 214);
+		padding : 0.25rem 0.75rem;
+		border-radius: 20px;
+		font-size: 1rem !important;
+		font-weight: 700;
+		cursor: pointer;
+	}
+	.remove-row,.superfund-remove{
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		background: rgb(164, 217, 214);
+		padding : 0.25rem 0.75rem;
+		border-radius: 20px;
+		font-size: 1rem !important;
+		font-weight: 700;
+		cursor: pointer;
+	}
 		#submit{
 	  	border: none;
 	  	color: rgb(23, 29, 75);
@@ -247,6 +276,10 @@
 		width: 100%;
 	    display: block;
 	    margin-top: 10px;
+	}
+	.add_remove_superfund{
+	    position: absolute;
+	    right: 0;
 	}
 	</style>
 </head>
@@ -435,12 +468,12 @@
 	</section>
 
 	<section class="employee-bank-account-section">
-		<h3 class="add_remove_bank_account">Bank Account 
-			<span class="add-remove-row">
-				<span class="add-row"> Add </span>
-				<span class="remove-row"> Remove </span>
-			</span>
-		</h3>
+    <h3 class="add_remove_bank_account">Bank Account 
+      <span class="add-remove-row">
+        <span class="add-row"> Add </span>
+        <span class="remove-row"> Remove </span>
+      </span>
+    </h3>
 		<div class="parent-child">
 			<div class="child">
 				<div class="statement"></div>
@@ -489,7 +522,10 @@
 
 
 	<section class="employee-superfund-section">
-		<h3> Superannuation <span id="superfund-add"> + </span></h3>
+		<h3> Superannuation 
+			<span class="add_remove_superfund">
+				<span id="superfund-add"> add </span>
+				<span class="superfund-remove"> remove </span></span></h3>
 <!-- 		<span class="span-class col-3">
 			<label>Employee Id</label>
 			<input placeholder="Employee Id" id="employeeId" >
@@ -1165,6 +1201,19 @@ $(document).ready(function(){
 					$('.m-i span').addClass('arrow');
         })
     });
+
+    $(document).on('click','.superfund-remove',function(){
+    	var superfundLength = $('.superfund-child').length ;
+    	if(superfundLength > 1){
+    		$('.superfund-child').eq(length-1).remove();
+    	} 
+    })
+    $(document).on('click','.remove-row',function(){
+    	var bankLength = $('.child').length ;
+    	if(bankLength > 1){
+    		$('.child').eq(length-1).remove();
+    	} 
+    })
 </script>
 </body>
 </html>
