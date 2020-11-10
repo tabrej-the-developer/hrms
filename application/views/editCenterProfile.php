@@ -160,7 +160,7 @@ font-family: 'Open Sans', sans-serif;
             <div class="row">
             <!-- <span id="addCenter_heading">Center Details</span> -->
               
-            <div class="" style="padding: 5px;"></div>
+            <!-- <div class="" style="padding: 5px;"></div> -->
             <div class="input_box">
               <label>
                 <i style="color: #aa63ff;" class=""></i> Center Name</label>

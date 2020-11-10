@@ -47,7 +47,7 @@ font-family: 'Open Sans', sans-serif;
 	<div class="d-flex = m-0">
 		<span class="head head-th col-3">Name</span>
 		<span class="head head-th col-3">Level</span>
-		<span class="head head-th col-3">Center</span>
+		<!-- <span class="head head-th col-3">Center</span> -->
 		<span class="head head-th col-3">Title</span>
 	</div>
 	<?php 
@@ -59,7 +59,7 @@ font-family: 'Open Sans', sans-serif;
 		<div class="d-flex  m-0">
 			<span class="head col-3"><?php echo $users->users[$x]->name?></span>
 			<span class="head col-3"><?php echo $users->users[$x]->level; ?></span>
-			<span class="head col-3"><?php echo $users->users[$x]->center; ?></span>
+			<!-- <span class="head col-3"><?php echo $users->users[$x]->center; ?></span> -->
 			<span class="head col-3"><?php echo $users->users[$x]->title; ?></span>
 		</div>
 			<?php } }?>
