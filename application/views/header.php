@@ -449,6 +449,9 @@ select{
     justify-content: center;
     padding:0;
   }
+  a{
+    text-decoration: none !important;
+  }
 /*Notification css*/
 @media only screen and (max-width:600px){
   .navbar{
