@@ -218,4 +218,15 @@ class ChatModel extends CI_Model {
 
     }
 
+    public function getCommonGroups($idUser,$otherIdUser){
+        $this->load->database();
+        try{
+            $query = $this->db->query("SELECT * FROM `chat_conversation` WHERE isGroupYN = 'Y' AND idConversation IN (SELECT DISTINCT(a.idConversation) FROM chat_conversationmembers a WHERE a.idUser = '$idUser' and a.idConversation IN (SELECT idConversation FROM chat_conversationmembers b WHERE b.idUser = '$otherIdUser'))");
+            return $query->result();
+        }
+        catch(Exception $e){
+            $this->handlerex->index($e->getMessage());
+        }
+    }
+
 }

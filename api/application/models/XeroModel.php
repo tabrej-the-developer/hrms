@@ -12,13 +12,13 @@ class XeroModel extends CI_Model {
 						// ||\/|| CODE CHANGED ||\/|| //
 	public function getXeroToken($center){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM xeroaccesstoken where centerid = '$center'");
+		$query = $this->db->query("SELECT * FROM xeroaccesstoken where centerid = $center");
 		return $query->row();
 	}
 
 	public function fetchXeroToken($center){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM xeroaccesstoken where centerid = '$center'");
+		$query = $this->db->query("SELECT * FROM xeroaccesstoken where centerid = $center");
 		return $query->row();
 	}
 }	

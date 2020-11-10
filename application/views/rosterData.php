@@ -2318,7 +2318,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
         },
         success:function(response){
             console.log(response)
-            window.location.reload();
+            //window.location.reload();
 
         }
       }).fail(function(){
