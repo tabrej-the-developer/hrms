@@ -1898,7 +1898,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
       <label class="col-4 modal_label">Days</label>
       <span class="col-7 edit_shift_modal">
         <span class="d-inline-block">
-          <span>Select All</span>
+          <span>All</span>
           <input type="checkbox"  class="d-block select_all_edit_shift">
         </span>
         <span class="d-inline-block">
@@ -1959,7 +1959,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
       <span class="col-7">
         <span class="d-inline-block">
         <span class="d-inline-block">
-          <span>Select All</span>
+          <span>All</span>
           <input type="checkbox"  class="d-block select_all_shift">
         </span>
           <span>Mon</span>
@@ -2283,9 +2283,9 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
       var endTime = parseInt($('#ends').prop('value'));
       var days = {};
       var day = [];
-      for(var i=0;i< ($('.edit_shift_checkbox_space').length);i++){
+      for(var i=0;i< ($('.shift_checkbox_space').length);i++){
         obj = {};
-        obj.YN = ($('.edit_shift_checkbox_space').eq(i).is(':checked'));
+        obj.YN = ($('.shift_checkbox_space').eq(i).is(':checked'));
         day.push(obj);
       } 
       days.day = day;
@@ -2313,7 +2313,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
           roleid:roleid,
           status:status,
           userid:userid,
-          days : days
+          days : day
           
         },
         success:function(response){
@@ -2324,6 +2324,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
       }).fail(function(){
           window.location.reload();
       })
+      console.log(day)
     })
     
   })
