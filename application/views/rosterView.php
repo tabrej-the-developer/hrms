@@ -16,6 +16,10 @@
 	*{
 font-family: 'Open Sans', sans-serif;
 	}
+	.template_name{
+		text-decoration: none !important;
+		color: rgba(0,0,0,1) !important
+	}
 	input[type="submit"]:disabled{
 		cursor:not-allowed 
 	}
@@ -691,7 +695,7 @@ table.dataTable{
  			<tbody class="template_tbody">
  				<?php foreach($rosterTemplates->templates as $templates){ ?>
  					<tr class="template_row">
-		 				<td class="template_td_name"><a href="<?php echo base_url('roster/getRosterTemplateDetails/').$templates->id.'/'.$this->session->userdata("LoginId") ?>"><?php echo $templates->name ?></a></td>
+		 				<td class="template_td_name"><a href="<?php echo base_url('roster/getRosterTemplateDetails/').$templates->id.'/'.$this->session->userdata("LoginId") ?>" class="template_name"><?php echo $templates->name ?></a></td>
 		 				<!-- <td class="template_td_edit">Edit</td> -->
 						<td class="template_td_delete roster_template_style" id='<?php echo $templates->id ?>'>
 							<i>
