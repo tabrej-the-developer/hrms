@@ -133,11 +133,14 @@ class Welcome extends CI_Controller {
 			if($this->input->post('confirm_password') != null){
 					$data['password'] = $this->input->post('confirm_password');
 					$password = md5($data['password']);
+					$data['userid'] = $userid;
 					$this->resetPasswordRequest($userid,$token,$password);
 	
 					redirect("/welcome/login");
 				}
-			$this->load->view("forgot_password");
+				$data['userid'] = $userid;
+				$data['token'] = $token;
+			$this->load->view("forgot_password",$data);
 		}
 
 		function resetPasswordRequest($userid,$token,$password){
@@ -156,6 +159,7 @@ class Welcome extends CI_Controller {
 
 				$server_output = curl_exec($ch);
 				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				// print_r($data);
 				if($httpcode == 200){
 					return $server_output;
 					curl_close ($ch);

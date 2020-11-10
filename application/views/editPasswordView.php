@@ -128,7 +128,7 @@ font-family: 'Open Sans', sans-serif;
                           
                         },
                         success:function(response){
-                          console.log("SUCCESS")
+                            window.location.href = "<?php echo base_url('settings'); ?>"
                           }
                       }).fail(function(res){
                         console.log('fail')
