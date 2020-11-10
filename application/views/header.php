@@ -612,7 +612,7 @@ select{
                 <i class="mr-4 " ><img id = "messenger" src="<?php echo base_url();?>assets/images/navbar-icons/messenger_filled.png" style="max-height: 1rem"></i>
               <?php } 
           ?>
-          <span>Messenger </span>
+          <span>Chat101 </span>
         </a>
       </li>
       <li class="nav-item-header" onmouseover="hover('notices','<?php echo $selected;?>')" onmouseout="hoverOff('notices','<?php echo $selected;?>')">
