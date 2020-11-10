@@ -246,18 +246,22 @@ class Xero extends CI_Controller{
 
 	public function syncXeroAwards($centerid){
 		$headers = $this->input->request_headers();
+		//var_dump($headers);
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			$json = json_decode(file_get_contents('php://input'));
+			//var_dump($json);
 			if($json!= null && $res != null && $res->userid == $json->userid){
 				$userid = $json->userid;
 				$userDetails = $this->authModel->getUserDetails($userid);
+				//var_dump($userDetails);
 				if($userDetails != null){
 					$this->load->model('xeroModel');
 					$this->load->model('payrollModel');
 					//xero 
 					$xeroTokens = $this->xeroModel->getXeroToken($centerid);
+					var_dump($xeroTokens);
 					if($xeroTokens != null){
 						$access_token = $xeroTokens->access_token;
 						$tenant_id = $xeroTokens->tenant_id;
@@ -270,7 +274,7 @@ class Xero extends CI_Controller{
 							$access_token = $refresh->access_token;
 							$expires_in = $refresh->expires_in;
 							$refresh_token = $refresh->refresh_token;
-							$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in);
+							$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in,$centerid);
 							$val = $this->getPayItems($access_token,$tenant_id);
 							$val = json_decode($val);
 						}
@@ -350,7 +354,7 @@ class Xero extends CI_Controller{
 							$access_token = $refresh->access_token;
 							$expires_in = $refresh->expires_in;
 							$refresh_token = $refresh->refresh_token;
-							$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in);
+							$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in,$centerid);
 							$val = $this->getPayItems($access_token,$tenant_id);
 							$val = json_decode($val);
 						}
@@ -421,7 +425,7 @@ class Xero extends CI_Controller{
 							$access_token = $refresh->access_token;
 							$expires_in = $refresh->expires_in;
 							$refresh_token = $refresh->refresh_token;
-							$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in);
+							$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in,$centerid);
 							$val = $this->getSuperfunds($access_token,$tenant_id);
 							$val = json_decode($val);
 						}
@@ -509,7 +513,7 @@ class Xero extends CI_Controller{
 						$access_token = $refresh->access_token;
 						$expires_in = $refresh->expires_in;
 						$refresh_token = $refresh->refresh_token;
-						$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in);
+						$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in,$centerid);
 						$val = $this->getPayItems($access_token,$tenant_id);
 						$val = json_decode($val);
 					}
