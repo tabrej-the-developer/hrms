@@ -96,7 +96,55 @@ class Timesheet extends CI_Controller{
 		}
 	}
 
-	public function postTimesheetToXero($timesheetId,$userid){
+	public function  getPayruns($timesheetId){
+		$this->load->model('xeroModel');
+		$this->load->model('timesheetModel');
+		$centerid = ($this->timesheetModel->getTimesheet($timesheetId))->centerid;
+		$xeroTokens = $this->xeroModel->getXeroToken($centerid);
+		print_r($xeroTokens);
+		if($xeroTokens != null){
+			$access_token = $xeroTokens->access_token;
+			$tenant_id = $xeroTokens->tenant_id;
+			$refresh_token = $xeroTokens->refresh_token;
+			$val = $this->getAllPayruns($access_token,$tenant_id);
+			$val = json_decode($val);
+				if($val != NULL){
+					if($val->Status == 401){
+						$refresh = $this->refreshXeroToken($refresh_token);
+						$refresh = json_decode($refresh);
+						var_dump($refresh);
+						$access_token = $refresh->access_token;
+						$expires_in = $refresh->expires_in;
+						$refresh_token = $refresh->refresh_token;
+						$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in);
+						$val = $this->getAllPayruns($access_token,$tenant_id);
+					}
+					if($val->Status == "OK"){
+						// print_r();
+						$this->postTimesheetToXero($timesheetId,$userid,$centerid);
+					}
+				}
+			}
+	}
+
+	function getAllPayruns($access_token,$tenant_id){
+		$url = "https://api.xero.com/payroll.xro/1.0/PayRuns";
+		$ch =  curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER,  array(
+			'Content-Type:application/json',
+			'Accept:application/json',
+			'Authorization:Bearer '.$access_token,
+			'Xero-tenant-id:'.$tenant_id
+		));
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		$server_output = curl_exec($ch);
+		var_dump($server_output);
+		return $server_output;
+	}
+
+	public function postTimesheetToXero($timesheetId,$userid,$centerid){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
@@ -106,7 +154,6 @@ class Timesheet extends CI_Controller{
 				$this->load->model('settingsModel');
 				$this->load->model('rostersModel');
 				$this->load->model('utilModel');
-
 				$timesheet = $this->timesheetModel->getTimesheet($timesheetId);
 				// var_dump($timesheet);
 				$userDetails = $this->utilModel->getUserDetails($userid);
@@ -117,6 +164,7 @@ class Timesheet extends CI_Controller{
 				$endDate = new DateTime($timesheet->endDate);
 				$startDate = "/Date(".$startDate->format('Uu')."+0000)/";
 				$endDate = "/Date(".$endDate->format('Uu')."+0000)/";
+				$status = 'APPROVED';
 				$Timesheets['Timesheets'] = [];
 				// var_dump($usersList);
 				foreach ($usersList as $user) {
@@ -127,6 +175,7 @@ class Timesheet extends CI_Controller{
 					$sheet = [];
 					$sheet['StartDate'] = $startDate;
 					$sheet['EndDate'] = $endDate;
+					$sheet['Status'] = $status;
 					$sheet['EmployeeID'] = isset($employeeDetails->xeroEmployeeId) ? $employeeDetails->xeroEmployeeId : '';
 					$sheet['TimesheetLines'] = [];
 					// var_dump($sheet);
@@ -161,8 +210,8 @@ class Timesheet extends CI_Controller{
 					// print_r($Timesheets['Timesheets']);
 				$this->load->model('payrollModel');
 				$this->load->model('xeroModel');
-				$xeroTokens = $this->xeroModel->getXeroToken();
-				// var_dump($xeroTokens);
+				$xeroTokens = $this->xeroModel->getXeroToken($centerid);
+				var_dump($xeroTokens);
 					if($xeroTokens != null){
 						$access_token = $xeroTokens->access_token;
 						$tenant_id = $xeroTokens->tenant_id;
@@ -179,10 +228,14 @@ class Timesheet extends CI_Controller{
 	 							$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in);
 	 							$val = $this->postTimesheetDataToXero($Timesheets,$access_token,$tenant_id);
 	 						}
+	 						if($val->Status == "OK"){
+								// print_r();
+								postPayRun($timesheetId,$userid,$centerid);
+							}
 	 					}
 	 						 				var_dump($val);
 	 				}
-
+				// print_r($Timesheets);
 				$data['Status'] = "SUCCESS";
 				http_response_code(200);
 				// echo json_encode($data);
@@ -193,6 +246,141 @@ class Timesheet extends CI_Controller{
 		}
 		else{
 			http_response_code(401);
+		}
+	}
+
+	public function postPayRun($timesheetId,$userid,$centerid){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			// var_dump($res);
+			if($res != null && $res->userid == $userid){
+				$this->load->model('payrollModel');
+				$payrollCalendarId = $this->payrollModel->getAllPayrollCalendarId($timesheetId);
+				// var_dump($payrollCalendarId);
+				$payrollCalendar = array();
+				foreach($payrollCalendarId as $calendarId){
+					$payrollCalendarId['PayrollCalendarID'] = $calendarId->payrollCalendarId;
+					$payrollCalendarId['PayRunStatus'] = 'POSTED';
+					array_push($payrollCalendar,$payrollCalendarId);
+				}
+
+				$this->load->model('xeroModel');
+				$xeroTokens = $this->xeroModel->getXeroToken($centerid);
+				// var_dump($xeroTokens);
+					if($xeroTokens != null){
+						$access_token = $xeroTokens->access_token;
+						$tenant_id = $xeroTokens->tenant_id;
+						$refresh_token = $xeroTokens->refresh_token;
+						// var_dump($payrollCalendar);
+					$createPayrun = $this->createPayrun($payrollCalendar,$access_token,$tenant_id);
+					var_dump($createPayrun);
+					$createPayrun = json_decode($createPayrun);
+	 					if($createPayrun != NULL){
+	 						if($createPayrun->Status == 401){
+	 							$refresh = $this->refreshXeroToken($refresh_token);
+	 							$refresh = json_decode($refresh);
+	 							$access_token = $refresh->access_token;
+	 							$expires_in = $refresh->expires_in;
+	 							$refresh_token = $refresh->refresh_token;
+	 							$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in);
+	 							$createPayrun = $this->createPayrun($payrollCalendar,$access_token,$tenant_id);
+	 						}
+	 						$createPayrun = json_decode($createPayrun);
+	 					}
+	 						var_dump($createPayrun);
+
+	 		if($createPayrun->Status == 'OK'){
+	 			foreach($createPayrun->PayRuns  as $payrun){
+					$xeroTokens = $this->xeroModel->getXeroToken($centerid);
+						// var_dump($xeroTokens);
+							if($xeroTokens != null){
+								$access_token = $xeroTokens->access_token;
+								$tenant_id = $xeroTokens->tenant_id;
+								$refresh_token = $xeroTokens->refresh_token;
+							$val = getPayRun($payrun->payrunID,$access_token,$tenant_id);
+							$getPayruns = json_decode($val);
+		 					if($getPayruns != NULL){
+		 						if($val->Status == 401){
+		 							$refresh = $this->refreshXeroToken($refresh_token);
+		 							$refresh = json_decode($refresh);
+		 							$access_token = $refresh->access_token;
+		 							$expires_in = $refresh->expires_in;
+		 							$refresh_token = $refresh->refresh_token;
+		 							$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in);
+		 							// TODO : store payrun ID, timesheetid
+		 							$getPayruns = $this->getPayRun($payrun->payrunID,$access_token,$tenant_id);
+		 						}
+		 						$getPayruns = json_decode($getPayruns);
+		 					}
+							$pay['Wages'] = $getPayruns->PayRuns->Wages;
+							$pay['Deductions'] = $getPayruns->PayRuns->Deductions;
+							$pay['Tax'] = $getPayruns->PayRuns->Tax;
+							$pay['Super'] = $getPayruns->PayRuns->Super;
+							$pay['Reimbursement'] = $getPayruns->PayRuns->Reimbursement;
+							$pay['NetPay'] = $getPayruns->PayRuns->NetPay;
+							preg_match( '/([\d]{9})/', $getPayruns->PayRuns->PayRunPeriodStartDate, $matches );
+							$pay['StartDate']  = date( 'Y-m-d', $matches[0] );
+							// $pay['StartDate'] = $getPayruns->PayRuns->PayRunPeriodStartDate;
+
+		 					foreach($getPayruns->PayRuns->Payslips as $payslip){
+		 						$this->timesheetModel->insertPayslips($timesheetid,$payslip->EmployeeID,$payslip->PayslipID,$payrun->payrunID,$pay['StartDate']);
+		 					}
+	 						 				// var_dump($getPayruns);
+				 				}	
+	 						}
+	 					}
+	 				}
+
+
+				http_response_code(200);
+				// echo json_encode($);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
+		else{
+			http_response_code(401);
+		}
+	} 
+
+function createPayrun($payrollCalendarId,$access_token,$tenant_id){
+	$url = "https://api.xero.com/payroll.xro/1.0/PayRuns";
+		$ch =  curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_POST,1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($payrollCalendarId));
+		curl_setopt($ch, CURLOPT_HTTPHEADER,  array(
+			'Content-Type:application/json',
+			'Authorization:Bearer '.$access_token,
+			'Xero-tenant-id:'.$tenant_id,
+			'Accept:application/json'
+		));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+		$server_output = curl_exec($ch);
+		return $server_output;
+	}
+
+	function getPayRun($payrunID,$access_token,$tenant_id){
+		$url = "https://api.xero.com/payroll.xro/1.0/PayRuns/".$payrunID;
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER,  array(
+			'Content-Type:application/json',
+			'Authorization:Bearer '.$access_token,
+			'Xero-tenant-id:'.$tenant_id
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			return $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+
 		}
 	}
 
@@ -338,6 +526,7 @@ class Timesheet extends CI_Controller{
 					$data['id'] = $timesheet->id;
 					$data['isEditYN'] = $timesheet->createdBy == $userid ? "Y" : "N";
 					$data['status'] = $timesheet->status;
+					$data['centerid'] = $timesheet->centerid;
 					$data['timesheet'] = array();
 					$rosteredEmployees = $this->timesheetModel->getUniqueVisitorsWithRoster($data['startDate'],$timesheet->centerid);
 					$unrosteredEmployees = $this->timesheetModel->getUniqueVisitorsWithoutRoster($data['startDate'],$timesheet->centerid);				
@@ -382,6 +571,7 @@ class Timesheet extends CI_Controller{
 									$mar['startTime'] = $clocks->signInTime;
 									$mar['endTime'] = $clocks->signOutTime;
 									$mar['message'] = $clocks->message;
+									$mar['status'] = $clocks->status;
 									array_push($var['clockedTimes'],$mar);
 								}
 								foreach ($meetingTimes as $mee) {
@@ -464,11 +654,15 @@ class Timesheet extends CI_Controller{
 			if($res != null && $res->userid == $userid){
 				$currentDate = $date;
 				$weekData = [];
+				$weekData['visitis'] = [];
+				$weekData['shift'] = [];
 				$date = date("Y-m-d",strtotime('+5 days',strtotime($date)));
 				while($currentDate < $date){
 					$data = $this->timesheetModel->getUserVisits($currentDate,$empId);
+					$shiftData = $this->timesheetModel->getUserShift($currentDate,$empId);
 					$currentDate = date('Y-m-d',strtotime('+1 days',strtotime($currentDate)));
-					array_push($weekData,$data);
+					array_push($weekData['shift'],$shiftData);
+					array_push($weekData['visitis'],$data);
 				}
 				http_response_code(200);
 				echo json_encode($weekData);

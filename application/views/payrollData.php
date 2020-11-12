@@ -489,7 +489,6 @@ table.dataTable{
 			<tbody id="tbody">
 
 				<?php 
-				$centerId;
 				if(isset($payrollShifts)){
 					// print_r($payrollTypes);
 					// print_r($payrollShifts);
@@ -750,7 +749,7 @@ table.dataTable{
 			// console.log(length)
 			var array = [];
 			var object = {};
-			var url = window.location.origin;
+			var url = window.location.origin+'/PN101/payroll/getAllPayruns/<?php echo $payrollShifts->centerid ?>/<?php echo $timesheetId ?>';
 			for(var i=0;i<length;i++){
 				object = {};
 				object.pay = $('[pay]').eq(i).attr('pay');
@@ -776,6 +775,7 @@ table.dataTable{
 							success : function(res){
 								alert('Payroll Published')
 								window.location.reload();
+								// console.log(array);
 						}
 					})
 				}
