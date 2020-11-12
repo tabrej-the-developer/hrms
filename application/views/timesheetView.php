@@ -308,7 +308,6 @@ max-width:30vw;
   display: inline-block;
   margin: 2px
 }
-.nanvbar{}
 .Added{
 	background: #9E9E9E
 }
@@ -387,6 +386,9 @@ max-width:30vw;
     .full_box{
     	background: #e7e7e7;
     }
+    .PUBLISHED{
+    	background: rgba(175, 225, 159,0.8);
+    }
    /*		------------------------
 					Weekly Timesheet Modal
    			------------------------ 	*/
@@ -411,7 +413,7 @@ max-width:30vw;
     .weekTimesheetBody{
     	position: absolute;
     	left: 20%;
-    	width:70%;
+    	width:60%;
     	top:10%;
     	height:80%;
     	background: white;
@@ -466,7 +468,12 @@ max-width:30vw;
   }
   .display_flex_visits{
   	display: flex;
-
+	width: 100%;
+    justify-content: space-evenly;
+    padding: 0.5rem;
+  }
+  div[class^="week_div_"]{
+  	width: 100%;
   }
   	    select{
       background: #E7E7E7;
@@ -475,6 +482,12 @@ max-width:30vw;
       border-radius: 20px;
       border: 1px solid #D2D0D0;
       padding-left:0.5rem;
+    }
+    span[class^="sameAsRosterBlock_"]{
+    	width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
     }
 @media only screen and (max-width: 600px) {
 .modal-content{
@@ -651,7 +664,7 @@ td.shift-edit{
 			$totalTime = 0;
 
  ?>
-		<div style="padding:3px;" class="full_box">
+		<div style="padding:3px;" class="full_box <?php echo isset($times[0]->status) ? $times[0]->status : "" ?>">
 		<div  class="<?php if($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{ echo 'div-box';} ?>">
 					<?php 
 			foreach($times as $time){
@@ -679,7 +692,7 @@ td.shift-edit{
 				</td>
 			 <?php }
 			 else{ ?>
-			 	<td style="min-width:8vw;padding:7px" class="shift-edit ">
+			 	<td style="min-width:8vw;" class="shift-edit ">
 			 		<div style="padding:3px">
 						<div  class="div-box">
 							<span>Role : - </span>
@@ -872,7 +885,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 		for($p=7;$p<12;$p++){
 			$totalTime = 0;
 		    if($timesheetDetails->timesheet[$p]->rosteredEmployees != null){?>
-		<td style="min-width:8vw;padding:7px" 
+		<td style="min-width:8vw;" 
 				class="<?php echo count($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes) > 0 ?  'shift-edit' : '' ?> " 
 				name="<?php  echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName ?>"  
 				cal-x="<?php echo $x; ?>" 
@@ -888,7 +901,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 			$times = $timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes;
 
 			?>
-		<div style="padding:3px">
+		<div style="padding:3px" class="full_box <?php echo isset($times[0]->status) ? $times[0]->status : "" ?>">
 		<div  class="<?php if($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->isOnLeave =="Y"){ echo "leave";}else{ echo 'div-box';} ?>">
 					<?php 
 			foreach($times as $time){
@@ -916,7 +929,7 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 
 			 <?php }
 			 else{ ?>
-			 	<td style="min-width:8vw;padding:7px" class="shift-edit ">
+			 	<td style="min-width:8vw" class="shift-edit ">
 			 		<div style="border-radius: 5px;padding:3px">
 						<div  class="div-box">
 							<span>Role : - </span>
@@ -1159,7 +1172,7 @@ $( ".modal-content" ).draggable();
 					var empId  = $(this).attr('emp-id');
 					var sDate = $('#start-date').val($(this).attr('curr-date'))
 					var tId = $('#timesheet-id').val($(this).attr('timesheet-id'))
-					var url = "<?php echo base_url();?>timesheet/getTimesheetDetailsModal?timesheetId="+"<?php echo $timesheetid;?>&x="+x+"&y="+y+"&aT="+arrayType+"&date="+date+"&empId="+empId ;
+					var url = "<?php echo base_url();?>timesheet/getTimesheetDetailsModal?timesheetId="+"<?php echo $timesheetid;?>&x="+x+"&y="+y+"&aT="+arrayType+"&date="+date+"&empId="+empId+"&centerid="+<?php echo $timesheetDetails->centerid; ?>;
 					 $.ajax({
 					 	url : url,
 					 	type : 'GET',
@@ -1362,36 +1375,60 @@ $(document).on('click','.buttonn',function(){
 		var object = {};
 		var url = window.location.origin+"/PN101/timesheet/createPayroll";
 			if($('.same_as_roster').is(':checked')){
-				object = {};
-				object.startTime = $('.as_roster').children('.time_1').attr('time')
-				object.endTime = $('.as_roster').children('.time_2').attr('time')
-				object.payType = $('.as_roster').children('.same_as_roster').attr('factor')
-				object.clockedInTime = object.startTime;
-				object.clockedOutTime = object.endTime;
-				values.push(object)
+				if($('.group-span').length > 1){
+					for(var i=0;i<$('.group-span').length;i++){
+						if(i==0){
+							object = {};
+							object.startTime = $('.as_roster').children('.time_1').attr('time')
+							object.endTime = $('.time-box').eq(i).attr('evalue');
+							object.payType = $('.as_roster').children('.same_as_roster').attr('factor')
+							object.clockedInTime = object.startTime;
+							object.clockedOutTime = object.endTime;
+							values.push(object)
+						}
+						if(i==1){
+							object = {};
+							object.startTime = $('.time-box').eq(i).attr('svalue');
+							object.endTime = $('.as_roster').children('.time_2').attr('time')
+							object.payType = $('.as_roster').children('.same_as_roster').attr('factor')
+							object.clockedInTime = object.startTime;
+							object.clockedOutTime = object.endTime;
+							values.push(object)
+						}
+					}
+				}
+				if($('.group-span').length == 1){
+					object = {};
+					object.startTime = $('.as_roster').children('.time_1').attr('time')
+					object.endTime = $('.as_roster').children('.time_2').attr('time')
+					object.payType = $('.as_roster').children('.same_as_roster').attr('factor')
+					object.clockedInTime = object.startTime;
+					object.clockedOutTime = object.endTime;
+					values.push(object)
+				}
 			}
 			else{
 		for(var a=0;a<i;a++){
 				object = {};
-		if($('.box-time').eq(a).children().children().children().prop('checked') == true){
-			if($('.time-box').eq(a).text() != ""){
-				object.startTime = $('.time-box').eq(a).attr('svalue');
-				object.endTime = $('.time-box').eq(a).attr('evalue');
-				object.payType = $('.new-time-box').eq(a).next().children('.select_css').children('.shift-type-select').val();
-				object.clockedInTime = $('.box-time').eq(a).attr('start-time');
-				object.clockedOutTime = $('.box-time').eq(a).attr('end-time');
-				values.push(object)
-			}
-			else{
-				object.startTime = AmPmTo24($('.new-time-box').eq(a).children('.sclass').val());
-				object.endTime = AmPmTo24($('.new-time-box').eq(a).children('.eclass').val());
-				object.payType = $('.new-time-box').eq(a).next().children('.select_css').children('.shift-type-select').val();
-				object.clockedInTime = $('.box-time').eq(a).attr('start-time');
-				object.clockedOutTime = $('.box-time').eq(a).attr('end-time');
-				values.push(object)
+			if($('.box-time').eq(a).children().children().children().prop('checked') == true){
+				if($('.time-box').eq(a).text() != ""){
+					object.startTime = $('.time-box').eq(a).attr('svalue');
+					object.endTime = $('.time-box').eq(a).attr('evalue');
+					object.payType = $('.new-time-box').eq(a).next().children('.select_css').children('.shift-type-select').val();
+					object.clockedInTime = $('.box-time').eq(a).attr('start-time');
+					object.clockedOutTime = $('.box-time').eq(a).attr('end-time');
+					values.push(object)
+				}
+				else{
+					object.startTime = AmPmTo24($('.new-time-box').eq(a).children('.sclass').val());
+					object.endTime = AmPmTo24($('.new-time-box').eq(a).children('.eclass').val());
+					object.payType = $('.new-time-box').eq(a).next().children('.select_css').children('.shift-type-select').val();
+					object.clockedInTime = $('.box-time').eq(a).attr('start-time');
+					object.clockedOutTime = $('.box-time').eq(a).attr('end-time');
+					values.push(object)
+					}
 				}
 			}
-		}
 		}
 		let userid = "<?php echo $this->session->userdata('LoginId'); ?>;"
 		let empId = $('#emply-id').attr('employee');
@@ -1616,22 +1653,43 @@ $(document).on('click','.buttonn',function(){
 						startdate : startDate
 					},
 					success : function(response){
-						console.log(response)
 						var x = 0;
+						var Time = 0;
 						$('.weekTimesheetModalVisits').empty()
 						var view = JSON.parse(response);
-						view.forEach(day => {
+						view.visitis.forEach(day => {
+							var sameAsRoster = "";
+							var inTime = view.shift[Time].startTime;
+							var outTime = view.shift[Time].endTime;
+							try{
+								if(view.shift[Time].rosterDate == day[0].signInDate){
+									sameAsRoster =  jstimex(view.shift[Time].startTime)+" to "+ jstimex(view.shift[Time].endTime);
+									Time++;
+								}
+							}
+							catch(err){}
 							var i =0;
-							var wrapper = `<div class="week_div_${x}"></div>`;
+							var wrapper = `<div class="week_div_${x}">
+								<span class="sameAsRosterBlock_${x}">
+									<span><input type="checkbox" class="sameAsRoster_${x}_input"> </span>
+									<span startTime="${outTime}" endTime="${inTime}" class="sameAsRoster_${x}_time">&nbsp;&nbsp;&nbsp;Same as Roster ( ${sameAsRoster} )</span>
+								</span>
+							</div>`;
 							$('.weekTimesheetModalVisits').append(wrapper);
 							day.forEach(visit => {
 							var code = `<span class="display_flex_visits">
-								<span visitid='${visit.id}' startTime='${visit.signInTime}' endTime='${visit.signOutTime}' class="visit__"><span class="time_visits"><input type="checkbox" checked></span><span class="time_visits_child oldtime">${jstimex(visit.signInTime)} -- ${jstimex(visit.signOutTime)}</span></span><span class="select__">
-								<span class="select_css">
-									<select>
-									</select>
-								</span>
-								</span></span>`
+														<span visitid='${visit.id}' startTime='${visit.signInTime}' endTime='${visit.signOutTime}' class="visit__">
+															<span class="time_visits"><input type="checkbox" checked></span>
+															<span class="time_visits_child oldtime">${jstimex(visit.signInTime)} -- ${jstimex(visit.signOutTime)}	
+															</span>
+														</span>
+														<span class="select__">
+															<span class="select_css">
+																<select>
+																</select>
+															</span>
+														</span>
+													</span>`
 							$('.week_div_'+x).append(code);
 							select.payrollTypes.forEach(type => {
 								if(type.earningType == "ORDINARYTIMEEARNINGS" && type.centerid == 6){

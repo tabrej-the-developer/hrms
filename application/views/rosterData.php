@@ -1958,10 +1958,10 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
       <label class="col-4 modal_label">Days</label>
       <span class="col-7">
         <span class="d-inline-block">
-        <span class="d-inline-block">
-          <span>Select All</span>
+          <span>All</span>
           <input type="checkbox"  class="d-block select_all_shift">
         </span>
+        <span class="d-inline-block">
           <span>Mon</span>
           <input type="checkbox" name="days" value="1" class="d-block shift_checkbox_space shiftDays" checked>
         </span>

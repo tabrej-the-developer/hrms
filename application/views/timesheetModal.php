@@ -156,7 +156,22 @@ function timex( $x)
 <?php 
 if($aT == 'rosteredEmployees'){
 	$variable = 0;
-		if(count($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes) <=2 || (count($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes) && (isset($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes[2]->message) ? $timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes[2]->message : "") == 'Meeting')){
+
+    $breaks = [];
+    $breaksC = [];
+    $array_iteration = 0;
+    $breaksCount = 1;
+    $clocksArray = $timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes;
+    $TotalClockedTimes = count($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes);
+      while($TotalClockedTimes > $breaksCount){
+    $startTime = intval(($clocksArray[$breaksCount-1]->endTime)/100)*60 + intval(($clocksArray[$breaksCount-1]->endTime)%100);
+    $endTime = intval(($clocksArray[$breaksCount]->startTime)/100)*60 + intval(($clocksArray[$breaksCount]->startTime)%100);
+        $breaks = ($endTime) - ($startTime) ;
+        array_push($breaksC , "<span class='breaks'>Break No: $breaksCount from " .  timex(intval(($startTime)/60). sprintf("%02d",($startTime)%60))." to ".timex(intval(($endTime)/60) . sprintf("%02d",($endTime)%60))."</span><br>");
+        $breaksCount++;
+      }
+
+	if(count($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes) <=2 || (count($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes) && (isset($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes[2]->message) ? $timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes[2]->message : "") == 'Meeting')){
 			if(count($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes) <2){
 				$break = false; 
 			}else{
@@ -165,8 +180,11 @@ if($aT == 'rosteredEmployees'){
 			?>
 			<?php // print_r($rosterShift); ?>
 			<div class="as_roster">
-				<?php foreach($shift->payrollTypes as $shifts){
-					if($shifts->earningRateId == "28669cfb-1f0e-470a-a625-dae99b51449c"){?>
+				<?php 
+				
+				foreach($shift->payrollTypes as $shifts){
+
+					if($shifts->earningRateId == "28669cfb-1f0e-470a-a625-dae99b51449c" && $timesheetDetails->centerid == $shifts->centerid){?>
 						<?php // print_r(isset($rosterShift->startTime) ? $rosterShift->startTime : ""); ?>
 				<input type="checkbox" name="same_as_roster" class="same_as_roster" factor="<?php echo $shifts->multiplier_amount; ?>">
 			<?php } } ?> Same as Roster(
@@ -196,11 +214,11 @@ foreach($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes 
 			<span class="select_css">
 			<select class="shift-type-select" >
 				<?php foreach($shift->payrollTypes as $shifts){
-					if($shifts->earningType == strtolower("ORDINARYTIMEEARNINGS")){?>
+					if((strtolower($shifts->earningType) == strtolower("ORDINARYTIMEEARNINGS")) && ($centerid == $shifts->centerid)){?>
 				<option value="<?php echo $shifts->multiplier_amount; ?>" selected factor="<?php echo $shifts->multiplier_amount; ?>" class="fact"><?php echo $shifts->name ?></option>
 			<?php 
 					}
-					else{ ?>
+					if((strtolower($shifts->earningType) != strtolower("ORDINARYTIMEEARNINGS")) && ($centerid == $shifts->centerid)){ ?>
 				<option value="<?php echo $shifts->multiplier_amount; ?>" factor="<?php echo $shifts->multiplier_amount; ?>"><?php echo $shifts->name ?></option>	
 					<?php 
 					}
@@ -217,6 +235,13 @@ foreach($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes 
 		?></div>
 	</div>
 
+	<?php 
+	if($array_iteration < count($breaksC)){
+			echo $breaksC[$array_iteration];
+			$array_iteration++;
+		}
+	?>
+
 	<?php
 		} ?>
 		<span style="padding-left: 4rem;">
@@ -229,19 +254,7 @@ foreach($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes 
 	}
 
 	?>
-  <?php 
-    $breaks = [];
-    $breaksCount = 1;
-    $clocksArray = $timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes;
-    $TotalClockedTimes = count($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes);
-      while($TotalClockedTimes > $breaksCount){
-    $startTime = intval(($clocksArray[$breaksCount-1]->endTime)/100)*60 + intval(($clocksArray[$breaksCount-1]->endTime)%100);
-    $endTime = intval(($clocksArray[$breaksCount]->startTime)/100)*60 + intval(($clocksArray[$breaksCount]->startTime)%100);
-        $breaks = ($endTime) - ($startTime) ;
-        echo "<span class='breaks'>Break No: $breaksCount from " . timex(intval(($endTime)/60) . sprintf("%02d",($endTime)%60)) ." to ". timex(intval(($startTime)/60). sprintf("%02d",($startTime)%60))."</span><br>";
-        $breaksCount++;
-      }
-     ?>
+
 <?php 
 if($aT == 'unrosteredEmployees'){
 foreach($timesheetDetails->timesheet[$ya]->unrosteredEmployees[$xa]->clockedTimes as $visits){

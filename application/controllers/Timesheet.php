@@ -90,6 +90,7 @@ class Timesheet extends CI_Controller {
 			$data['entitlements'] = $this->getAllEntitlements($data['userid']);
 			$data['timesheetDetails'] = $this->gettimesheet($data['timesheetid'],$data['userid']);
 			$data['shift'] = $this->getShiftType($data['userid']);
+			$data['centerid'] = $this->input->get('centerid');
 			$data['rosterShift'] = $this->getRosterShifts($data['userid'],$data['empId'],$data['date']);
 			// print_r($data['userid']." ".$data['empId']." ".$data['date']);
 				$this->load->view('timesheetModal',$data);

@@ -449,8 +449,7 @@ table.dataTable{
 			window.location.href=url;
 		})
 })
-</script>
-<script type="text/javascript">
+
 	<?php if($this->session->userdata('UserType')==SUPERADMIN){?>
 	$(document).ready(function(){
 			equalElements('sort-by','center-list');
@@ -462,8 +461,7 @@ table.dataTable{
 			toBeModifiedWidth.style.width = originalWidth+"px";
 		}
 	<?php } ?>
-</script>
-<script type="text/javascript">
+
 	var modal = document.getElementById("myModal");
 
 	$(document).on('click','#create-new-timesheet',function(){
@@ -474,14 +472,11 @@ table.dataTable{
 		 modal.style.display = "none";
 	})
 
-</script>
-<script type="text/javascript">
+
 	 $(function() {
-	 	
-$("#timesheet-date").datepicker();
+		$("#timesheet-date").datepicker();
 	 });
-</script>
-<script type="text/javascript">
+
 	$(document).ready(function(){
 		$(document).on('click','#timesheet-submit',function(e){
 			var a = $('#timesheet-date').val();
@@ -496,8 +491,7 @@ $("#timesheet-date").datepicker();
 
 		})
 	})
-</script>
-<script type="text/javascript">
+
 	$(document).ready(()=>{
 		if($(document).width() > 1024){
 		    $('.containers').css('paddingLeft',$('.side-nav').width());
@@ -526,8 +520,7 @@ $("#timesheet-date").datepicker();
 		     searching : false
 		    });
 		} );
-</script>
-<script type="text/javascript">
+
 	$(document).ready(function(){
 			$('.dataTables_length').remove()
 			$('.dataTables_info').remove()
@@ -549,8 +542,6 @@ $("#timesheet-date").datepicker();
 				$('body').html(response);
 				
 			}
-		}).fail(function(){
-			alert('whyys')
 		})
 	})
 		})

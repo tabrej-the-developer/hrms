@@ -104,6 +104,8 @@
     .table thead th {
         vertical-align: bottom;
         border-bottom: 0 !important;
+        text-align: left;
+        padding-left: 4rem !important;
     }
     .submit-edit,.cancel-edit{
 
@@ -218,6 +220,12 @@
     }
     #centerValue{
       max-width: 12rem;
+    }
+    .viewEmployeeTable_row{
+      text-align: left;
+    }
+    .viewEmployeeTable_row td{
+      padding-left: 4rem !important;
     }
     </style>
   </head>

@@ -59,6 +59,12 @@ class TimesheetModel extends CI_Model {
 		return $query->result();
 	} 
 
+	public function getUserShift($currentDate,$empId){
+		$this->load->database();
+		$query = $this->db->query("SELECT * from shift where rosterDate = '$currentDate' AND userid = '$empId'");
+		return $query->row();
+	}
+
 	public function getTimesheetForPayrun($startDate,$endDate,$empId){
 		$this->load->database();
 		$query = $this->db->query("SELECT * FROM timesheet WHERE centerid IN (SELECT users.center from  employee  inner join users on employee.userid = users.id where xeroEmployeeId = '$empId' ) and startDate = '$startDate' group by timesheet.id");
@@ -79,6 +85,7 @@ class TimesheetModel extends CI_Model {
 		$this->load->database();
 		$query =$this->db->query("DELETE FROM payrollshift WHERE timesheetId = '$timesheetid' and userid = '$empid' and shiftDate = '$shiftDate' and clockedInTime = $cStartTime and clockedOutTime = $cEndTime");
 		$query = $this->db->query("INSERT INTO payrollshift (timesheetId , userid , shiftDate , clockedInTime , clockedOutTime , startTime , endTime , payrollType , createdBy , createdAt , status)VALUES('$timesheetid','$empid','$shiftDate',$cStartTime,$cEndTime,$startTime,$endTime,$payTypeId,'$approvedBy',now(),'Added')");
+		$query = $this->db->query("UPDATE visitis SET status='PUBLISHED' where signInDate='$shiftDate' and userid = '$empid' ");
 	}
 
 	public function getUniqueVisitorsWithRoster($startDate,$centerid){
