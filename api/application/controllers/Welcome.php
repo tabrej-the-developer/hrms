@@ -53,7 +53,7 @@ class Welcome extends CI_Controller {
 			$this->email->subject($subject); 
 			$message = $this->load->view('onboardingMailView',$var,true);
 			$this->email->message($message); 
-			$this->email->send();
+			//$this->email->send();
 		}
 	}
 }
