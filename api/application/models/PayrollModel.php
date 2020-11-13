@@ -96,7 +96,7 @@ class PayrollModel extends CI_Model {
 	public function getAllPayrollCalendarId($timesheetId){
 		$this->load->database();
 		$query = $this->db->query("SELECT DISTINCT(payrollCalendarId) from employee where userid IN (SELECT DISTINCT(userid) from payrollshift where timesheetId = '$timesheetId')");
-		echo "SELECT DISTINCT(payrollCalendarId) from employee where userid IN (SELECT DISTINCT(userid) from payrollshift where timesheetId = '$timesheetId')";
+		//echo "SELECT DISTINCT(payrollCalendarId) from employee where userid IN (SELECT DISTINCT(userid) from payrollshift where timesheetId = '$timesheetId')";
 		return $query->result();
 	}
 }

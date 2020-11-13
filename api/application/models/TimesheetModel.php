@@ -73,7 +73,7 @@ class TimesheetModel extends CI_Model {
 
 	public function insertPayslips($timesheetid,$employeeID,$payslipID,$payrunID,$startDate){
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO payslips (timesheetId, employeeId, slipId, payrunId, startDate) values ($timesheetid,$employeeID,$payslipID,$payrunID,$startDate)");
+		$query = $this->db->query("INSERT INTO payslips (timesheetId, employeeId, slipId, payrunId, startDate) values ('$timesheetid','$employeeID','$payslipID','$payrunID','$startDate')");
 	}
 
 	public function updateVisitStatus($visitId,$status,$startTime,$endTime){
@@ -133,7 +133,7 @@ class TimesheetModel extends CI_Model {
 
 	public function getEarningsRateFromId($id){
 		$this->load->database();
-		$query = $this->db->query("SELECT * from payrollshifttype_v1 where payrollshifttype_v1='$id'");
+		$query = $this->db->query("SELECT * from payrollshifttype_v1 where id=$id");
 		return $query->row();
 	}
 
