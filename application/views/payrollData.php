@@ -749,7 +749,7 @@ table.dataTable{
 			// console.log(length)
 			var array = [];
 			var object = {};
-			var url = window.location.origin+'/PN101/payroll/getAllPayruns/<?php echo $payrollShifts->centerid ?>/<?php echo $timesheetId ?>';
+			var url = window.location.origin+'/PN101/payroll/getAllPayruns/<?php echo $timesheetId ?>';
 			for(var i=0;i<length;i++){
 				object = {};
 				object.pay = $('[pay]').eq(i).attr('pay');
