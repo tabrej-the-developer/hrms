@@ -172,7 +172,7 @@ class Timesheet extends CI_Controller{
 				// $startDate = "/Date(".$startDate->format('Uv')."+0000)/";
 				// $endDate = "/Date(".$endDate->format('Uv')."+0000)/";
 				$startDate = "/Date(".$stDate."+0000)/";
-				$enDate = "/Date(".($stDate+1123200000)."+0000)/";
+				$endDate = "/Date(".($stDate+1123200000)."+0000)/";
 				$status = 'APPROVED';
 				$Timesheets['Timesheets'] = [];
 				// var_dump($usersList);
