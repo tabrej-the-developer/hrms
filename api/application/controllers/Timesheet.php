@@ -122,7 +122,7 @@ class Timesheet extends CI_Controller{
 				}
 				if($val->Status == "OK"){
 					// print_r();
-					if(count($val->PayRun) > 0){
+					if(count($val->PayRuns) > 0){
 					$this->postTimesheetToXero($timesheetId,$userid,$centerid,$startDate,$val->PayRuns[0]->PaymentDate);
 					}
 				}
