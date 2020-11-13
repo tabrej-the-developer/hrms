@@ -146,4 +146,9 @@ class TimesheetModel extends CI_Model {
 		$this->load->database();
 		$query = $this->db->query("UPDATE timesheet SET status = 'Published' where id = '$timesheetid'");
 	}
+
+	public function storePayrunDetails($payrunId,$timesheetId,$storedBy){
+		$this->load->database();
+		$query =  $this->db->query("INSERT INTO payruns (	payrunId,timesheetId,storedAt,storedBy) VALUES ('$payrunId','$timesheetId',NOW(),'$storedBy')");
+	}
 }

@@ -122,7 +122,9 @@ class Timesheet extends CI_Controller{
 				}
 				if($val->Status == "OK"){
 					// print_r();
-					$this->postTimesheetToXero($timesheetId,$userid,$centerid);
+					if(count($val->PayRun) > 0){
+					$this->postTimesheetToXero($timesheetId,$userid,$centerid,$startDate,$val->PayRuns[0]->PaymentDate);
+					}
 				}
 			}
 		}
@@ -145,7 +147,7 @@ class Timesheet extends CI_Controller{
 		return $server_output;
 	}
 
-	function postTimesheetToXero($timesheetId,$userid,$centerid){
+	function postTimesheetToXero($timesheetId,$userid,$centerid,$stDate){
 		// $headers = $this->input->request_headers();
 		// if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
@@ -161,13 +163,15 @@ class Timesheet extends CI_Controller{
 				// var_dump($userDetails);
 				$usersList = $this->timesheetModel->getUsersByTimesheetId($timesheetId);
 				// var_dump($usersList);
-				$startDate = new DateTime($timesheet->startDate);
-				$endDate = new DateTime($timesheet->endDate);
+				// $startDate = new DateTime($timesheet->startDate);
+				// $endDate = new DateTime($timesheet->endDate);
 				// $startDate = "/Date(1606521600000+0000)/";
 				// $endDate = "/Date(1605398400000+0000)/";
 
-				$startDate = "/Date(".$startDate->format('Uv')."+0000)/";
-				$endDate = "/Date(".$endDate->format('Uv')."+0000)/";
+				// $startDate = "/Date(".$startDate->format('Uv')."+0000)/";
+				// $endDate = "/Date(".$endDate->format('Uv')."+0000)/";
+				$startDate = "/Date(".$stDate."+0000)/";
+				$enDate = "/Date(".($stDate+1123200000)."+0000)/";
 				$status = 'APPROVED';
 				$Timesheets['Timesheets'] = [];
 				// var_dump($usersList);
@@ -187,7 +191,7 @@ class Timesheet extends CI_Controller{
 						$currentDay = 0;
 						$lines = [];
 						// var_dump($payrollType);
-					$lines['EarningsRateID'] = "0fc1b165-938a-4992-8145-5f2e2e698235";
+					$lines['EarningsRateID'] = isset($employeeDetails->ordinaryEarningEarningRateId) ? $employeeDetails->ordinaryEarningEarningRateId : null;
 					$lines['NumberOfUnits'] = [];
 						while ($currentDay < 14) {
 							$unit = 0;
@@ -261,6 +265,7 @@ class Timesheet extends CI_Controller{
 			// var_dump($res);
 			if($res != null && $res->userid == $userid){
 				$this->load->model('payrollModel');
+				$this->load->model('timesheetModel');
 				$payrollCalendarId = $this->payrollModel->getAllPayrollCalendarId($timesheetId);
 				// var_dump($payrollCalendarId);
 				$payrollCalendar = array();
@@ -315,6 +320,9 @@ class Timesheet extends CI_Controller{
 		 							$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in);
 		 							// TODO : store payrun ID, timesheetid
 		 							$getPayruns = $this->getPayRun($payrun->payrunID,$access_token,$tenant_id);
+		 							if($payrun->payrunID != null && $payrun->payrunID != ""){
+			 							$this->timesheetModel->storePayrunDetails($payrun->payrunID,$timesheetId,$userid);
+			 						}
 		 						}
 		 						$getPayruns = json_decode($getPayruns);
 		 					}
@@ -330,14 +338,11 @@ class Timesheet extends CI_Controller{
 
 		 					foreach($getPayruns->PayRuns->Payslips as $payslip){
 		 						$this->timesheetModel->insertPayslips($timesheetid,$payslip->EmployeeID,$payslip->PayslipID,$payrun->payrunID,$pay['StartDate']);
-		 					}
-	 						 				// var_dump($getPayruns);
+				 					}
 				 				}	
 	 						}
 	 					}
 	 				}
-
-
 				http_response_code(200);
 				// echo json_encode($);
 			}
