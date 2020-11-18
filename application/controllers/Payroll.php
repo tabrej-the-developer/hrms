@@ -203,6 +203,28 @@ class Payroll extends CI_Controller {
 			}
 		}
 
+		public function getPayslip($payslipId,$timesheetId){
+			$userid = $this->session->userdata('LoginId');
+			$url = BASE_API_URL."payroll/getPayslipData/$payslipId/$timesheetId/$userid";
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+			$server_output = curl_exec($ch);
+			$data['PaySlip'] = $server_output;
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				$this->load->view('printPayslip',$data);
+				curl_close ($ch);
+			}
+			else if($httpcode == 401){
+
+			}
+		}
+
 		 function getAllPayrollShifts($timesheetid,$userid){
 			$url = BASE_API_URL."payroll/getAllPayrollShifts/".$timesheetid."/".$userid;
 			$ch = curl_init($url);

@@ -22,36 +22,36 @@ function timex( $x)
               $output = "12:00 AM";    
             }
             else{
-           $output = intval($x/100) . ":00 AM";
+           $output = sprintf("%02d",intval($x/100)) . ":00 AM";
             }
           }
         if(($x%100)!=0){
           if(($x%100) < 10){
-            $output = intval($x/100) .":0". $x%100 . " AM";
+            $output = sprintf("%02d",intval($x/100)) .":0". $x%100 . " AM";
           }
           if(($x%100) >= 10){
-            $output = intval($x/100) .":". $x%100 . " AM";
+            $output = sprintf("%02d",intval($x/100)) .":". $x%100 . " AM";
           }
           }
       }
   else if($x/100>12){
       if(($x%100)==0){
-      $output = intval($x/100)-12 . ":00 PM";
+      $output = sprintf("%02d",intval($x/100)-12) . ":00 PM";
       }
       if(($x%100)!=0 && intval($x/100)!=12){
         if(($x%100) < 10){
-          $output = intval($x/100)-12 .":0". $x%100 . " PM";
+          $output = sprintf("%02d",intval($x/100)-12) .":0". $x%100 . " PM";
         }
         if(($x%100) >= 10){
-          $output = intval($x/100)-12 .":". $x%100 . " PM";
+          $output = sprintf("%02d",intval($x/100)-12) .":". $x%100 . " PM";
         }
       }
       if(($x%100)!=0 && intval($x/100)==12){
         if(($x%100) < 10){
-          $output = intval($x/100) .":0". $x%100 . " PM";
+          $output = sprintf("%02d",intval($x/100)) .":0". $x%100 . " PM";
         }
         if(($x%100) >= 10){
-          $output = intval($x/100) .":". $x%100 . " PM";
+          $output = sprintf("%02d",intval($x/100)) .":". $x%100 . " PM";
         }
       }
   }
@@ -61,10 +61,10 @@ function timex( $x)
       }
       if(($x%100)!=0){
         if(($x%100) < 10){
-          $output = intval($x/100) . ":0". $x%100 . " PM";
+          $output = sprintf("%02d",intval($x/100)) . ":0". $x%100 . " PM";
         }
         if(($x%100) >= 10){
-          $output = intval($x/100) . ":". $x%100 . " PM";
+          $output = sprintf("%02d",intval($x/100)) . ":". $x%100 . " PM";
         }
       }
   }
@@ -1600,7 +1600,9 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 					<?php echo isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->message) ? $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->message : "";?></span>
 					 	<?php
 		 if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status != "Rejected"){ 
-					  $weeklyTotal = $weeklyTotal + $variable * ($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime - $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime)/100; ?>
+      $eT = $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime;
+      $sT = $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime;
+					  $weeklyTotal = $weeklyTotal + ($variable)/60 * ( (intval($eT/100*60) + intval($eT%100)) - (intval($sT/100*60) + intval($sT%100))); ?>
 					  				
           <?php } } else{ ?>
             <span class="">

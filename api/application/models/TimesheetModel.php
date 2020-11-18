@@ -84,7 +84,7 @@ class TimesheetModel extends CI_Model {
 	public function createPayrollEntry($timesheetid,$empid,$shiftDate,$cStartTime,$cEndTime,$startTime,$endTime,$approvedBy,$payTypeId){
 		$this->load->database();
 		$query =$this->db->query("DELETE FROM payrollshift WHERE timesheetId = '$timesheetid' and userid = '$empid' and shiftDate = '$shiftDate' and clockedInTime = $cStartTime and clockedOutTime = $cEndTime");
-		$query = $this->db->query("INSERT INTO payrollshift (timesheetId , userid , shiftDate , clockedInTime , clockedOutTime , startTime , endTime , payrollType , createdBy , createdAt , status)VALUES('$timesheetid','$empid','$shiftDate',$cStartTime,$cEndTime,$startTime,$endTime,$payTypeId,'$approvedBy',now(),'Added')");
+		$query = $this->db->query("INSERT INTO payrollshift (timesheetId , userid , shiftDate , clockedInTime , clockedOutTime , startTime , endTime , payrollType , createdBy , createdAt , status)VALUES('$timesheetid','$empid','$shiftDate',$cStartTime,$cEndTime,$startTime,$endTime,'$payTypeId','$approvedBy',now(),'Added')");
 		$query = $this->db->query("UPDATE visitis SET status='PUBLISHED' where signInDate='$shiftDate' and userid = '$empid' ");
 	}
 
@@ -133,7 +133,7 @@ class TimesheetModel extends CI_Model {
 
 	public function getEarningsRateFromId($id){
 		$this->load->database();
-		$query = $this->db->query("SELECT * from payrollshifttype_v1 where id=$id");
+		$query = $this->db->query("SELECT * from payrollshifttype_v1 where earningRateId = '$id'");
 		return $query->row();
 	}
 

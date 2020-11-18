@@ -152,6 +152,13 @@ function timex( $x)
   }
   return $output;
 }
+
+	function addColon($str){
+		$toInsert = ":";
+		$str = sprintf("%04d",$str);
+		$pos = strlen(($str))-2;
+		echo substr_replace($str,$toInsert,$pos,0);
+	}
 ?>
 <?php 
 if($aT == 'rosteredEmployees'){
@@ -207,7 +214,10 @@ foreach($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes 
 	  <div start-time="<?php echo $visits->startTime; ?>" end-time="<?php echo $visits->endTime; ?>" class="box-time" style="padding:20px 0px 20px 1rem" hourly="<?php echo $variable;?>">
 	  	<span class="group-span">
 		<span><input type="checkbox" class="clocked_time" checked></span>
-		<span svalue="<?php echo $visits->startTime; ?>" evalue="<?php echo $visits->endTime; ?>" class="time-box"><?php echo timex($visits->startTime) ."-". timex($visits->endTime) ?></span>
+		<span svalue="<?php echo $visits->startTime; ?>" evalue="<?php echo $visits->endTime; ?>" class="time-box">
+			<input type="time" name="startTime_modal" class="startTime_modal" value="<?php  addColon($visits->startTime); ?>">
+			<input type="time" name="endTime_modal" class="endTime_modal" value="<?php  addColon($visits->endTime); ?>">
+			</span>
 
 		<span class="new-time-box"></span>
 		<span>
@@ -215,11 +225,11 @@ foreach($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes 
 			<select class="shift-type-select" >
 				<?php foreach($shift->payrollTypes as $shifts){
 					if((strtolower($shifts->earningType) == strtolower("ORDINARYTIMEEARNINGS")) && ($centerid == $shifts->centerid)){?>
-				<option value="<?php echo $shifts->multiplier_amount; ?>" selected factor="<?php echo $shifts->multiplier_amount; ?>" class="fact"><?php echo $shifts->name ?></option>
+				<option value="<?php echo $shifts->earningRateId; ?>" selected factor="<?php echo $shifts->multiplier_amount; ?>" class="fact"><?php echo $shifts->name ?></option>
 			<?php 
 					}
 					if((strtolower($shifts->earningType) != strtolower("ORDINARYTIMEEARNINGS")) && ($centerid == $shifts->centerid)){ ?>
-				<option value="<?php echo $shifts->multiplier_amount; ?>" factor="<?php echo $shifts->multiplier_amount; ?>"><?php echo $shifts->name ?></option>	
+				<option value="<?php echo $shifts->id; ?>" factor="<?php echo $shifts->multiplier_amount; ?>"><?php echo $shifts->name ?></option>	
 					<?php 
 					}
 				} ?>
@@ -271,17 +281,18 @@ foreach($timesheetDetails->timesheet[$ya]->unrosteredEmployees[$xa]->clockedTime
 	  <div start-time="<?php echo $visits->startTime; ?>" end-time="<?php echo $visits->endTime; ?>" class="box-time" style="padding:20px" hourly="<?php echo $variable;?>">
 	  	<span class="group-span">
 		<span><input type="checkbox" class="clocked_time" checked></span>
-		<span svalue="<?php echo $visits->startTime; ?>" evalue="<?php echo $visits->endTime; ?>" class="time-box"><?php echo timex($visits->startTime) ."-". timex($visits->endTime) ?></span>
+		<span svalue="<?php echo $visits->startTime; ?>" evalue="<?php echo $visits->endTime; ?>" class="time-box">
+			<input type="time" name="startTimeModal" value="<?php addColon($visits->startTime) ?>"><input type="time" name="endTimeModal" value="<?php  addColon($visits->endTime) ?>"></span>
 		<span class="new-time-box"></span>
 		<span>
 			<select class="shift-type-select" >
 				<?php foreach($shift->payrollTypes as $shift){
 					if($shift->id == "3"){?>
-				<option value="<?php echo $shift->multiplier_amount; ?>" selected factor="<?php echo $shift->multiplier_amount; ?>"><?php echo $shift->type ?></option>
+				<option value="<?php echo $shift->id; ?>" selected factor="<?php echo $shift->multiplier_amount; ?>"><?php echo $shift->type ?></option>
 			<?php 
 					}
 					else{ ?>
-				<option value="<?php echo $shift->multiplier_amount; ?>" factor="<?php echo $shift->multiplier_amount; ?>"><?php echo $shift->name ?></option>	
+				<option value="<?php echo $shift->id; ?>" factor="<?php echo $shift->multiplier_amount; ?>"><?php echo $shift->name ?></option>	
 					<?php 
 					}
 				} ?>

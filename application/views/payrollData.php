@@ -457,7 +457,7 @@ table.dataTable{
 	<div class="d-flex heading-bar">
 		<span class="m-3" id="roster-heading" style="">Payroll Shifts</span>
 		<span class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
-<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?> 
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN : "N") == "Y"){ ?> 
 <!-- 			<div class="filter-icon d-flex">
 				<span class="">Sort&nbsp;by</span>
 				<span class=""><img src="../assets/images/filter-icon.png" height="20px"></span>
@@ -466,17 +466,29 @@ table.dataTable{
 						<?php } ?>
 		</span>
 
-		<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
+		<?php 
+					if(isset($payrollShifts)){
+						$payrollShifts = json_decode($payrollShifts); 
+					}
+		if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN : "N") == "Y"){ 
+			if($payrollShifts->payrun == null){
+			?>
 		<span class="btn ml-auto d-flex align-self-center create">
 			<a href="javascript:void(0)" id="create-new-roster" class="d-flex" id="publish">
 			<i>
 				<img src="<?php echo base_url('assets/images/icons/publish.png'); ?>" style="margin-right:10px">
 			</i>Publish</a>
 		</span>
-		<?php } ?>
+		<?php } 
+			}
+		?>
 	</div>
 	<div class="table-div">
 		<table class="table">
+		<?php 
+		if(isset($payrollShifts) && $payrollShifts->payrun == null){
+
+		 ?>
 			<thead>
 				<th>Name</th>
 				<th>Role</th>
@@ -492,10 +504,10 @@ table.dataTable{
 				if(isset($payrollShifts)){
 					// print_r($payrollTypes);
 					// print_r($payrollShifts);
-				$payrollShifts = json_decode($payrollShifts); 
+				$centerid = $payrollShifts->centerid;
 				for($i=0;$i<count($payrollShifts->employees);$i++){
 				?>
-				<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
+				<?php if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN : "N") == "Y"){ ?>
 				<tr id="<?php echo $this->input->get('timesheetId') ?>" >
 					<td class="shift-edit" 
 							cal-x="<?php echo $i; ?>">
@@ -534,14 +546,16 @@ table.dataTable{
 					$payrollType = 0;
 					foreach($payrollShifts->employees[$i]->payrollShifts as $payrollShift ){
 						foreach($payrollTypes->payrollTypes as $payrollType){
-							if($payrollType->id == $payrollShift->payrollType){
-								$totalTime = $totalTime + $payrollType->multiplier_amount*($payrollShift->endTime - $payrollShift->startTime);
+							if($payrollType->earningRateId == $payrollShift->payrollType && $centerid == $payrollType->centerid) {
+								$startMins = intval(($payrollShift->startTime)/100)*60 + ($payrollShift->startTime)%100;
+								$endMins = intval(($payrollShift->endTime)/100)*60 + ($payrollShift->endTime)%100;
+								$totalTime = $totalTime + (intval(($endMins - $startMins)/60)*$rate + ($rate*((($endMins - $startMins)%60)*(10/6)))/100)*$payrollType->multiplier_amount; 
 							}
 						}
 					}
 
 				 ?>
-					<td pay="<?php echo $totalTime; ?>" userid="<?php  echo $payrollShifts->employees[$i]->payrollShifts[0]->userid ?>" timesheetid="<?php  echo $payrollShifts->timesheetid ?>"><?php echo '$ '.$totalTime; ?></td>
+					<td pay="<?php echo $totalTime; ?>" userid="<?php  echo $payrollShifts->employees[$i]->payrollShifts[0]->userid ?>" timesheetid="<?php  echo $payrollShifts->timesheetid ?>"><?php echo '$ '.sprintf("%.02f",$totalTime); ?></td>
 					<?php if($payrollShifts->employees[$i]->payrollShifts[0]->status != 'FLAGGED'){ ?>
 					<td >
 						<button class="button flag_button flagged" userid="<?php  echo $payrollShifts->employees[$i]->payrollShifts[0]->userid ?>"  timesheetid="<?php  echo $payrollShifts->timesheetid ?>" onclick="flag('<?php  echo $payrollShifts->timesheetid ?>','<?php  echo $payrollShifts->employees[$i]->payrollShifts[0]->userid ?>')">
@@ -554,13 +568,62 @@ table.dataTable{
 							<span>FLAGGED</span>
 						</td>
 					<?php } ?>
-				</tr>
+					</tr>
 				<?php }?>
 		<?php } } ?>
 			</tbody>
-		
+	<?php } 
+		if(isset($payrollShifts) && $payrollShifts->payslips != null){ 
+			?>
+			<thead>
+				<th>Name</th>
+				<th>Wages</th>
+				<th>Deductions</th>
+				<th>Tax</th>
+				<th>Super</th>
+				<th>Reimbursement</th>
+				<th>NetPay</th>
+				<th>Print</th>
+			</thead>
+			
+			<tbody id="tbody">
+
+				<?php 
+				$centerid = $payrollShifts->centerid;
+				for($i=0;$i<count($payrollShifts->payslips);$i++){
+				?>
+				<?php if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN : "N") == "Y"){ ?>
+				<tr id="<?php echo $this->input->get('timesheetId') ?>" >
+					<td class="shift-edit" >
+							<?php echo $payrollShifts->payslips[$i]->FirstName." ".$payrollShifts->payslips[$i]->FirstName ?>
+					</td>
+					<td class="shift-edit" ><?php echo '$'.sprintf("%.02f",$payrollShifts->payslips[$i]->Wages) ?></td>
+					<td class="shift-edit" ><?php echo '$'.sprintf("%.02f",$payrollShifts->payslips[$i]->Deductions) ?></td>
+					<td class="shift-edit" ><?php echo '$'.sprintf("%.02f",$payrollShifts->payslips[$i]->Tax) ?></td>
+					<td class="shift-edit"><?php echo '$'.sprintf("%.02f",$payrollShifts->payslips[$i]->Super) ?></td>
+					<td  class="shift-edit"><?php echo '$'.sprintf("%.02f",$payrollShifts->payslips[$i]->Reimbursements) ?></td>
+					<td  class="shift-edit"><?php echo '$'.sprintf("%.02f",$payrollShifts->payslips[$i]->NetPay) ?></td>
+					<td><i><img  payslipId="<?php echo $payrollShifts->payslips[$i]->PayslipID ?>" class="print_image" src="<?php echo base_url('assets/images/icons/print.png'); ?>" height="18px" width="18px"></i></td>
+				</tr>
+				<?php }?>
+				<?php if(((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN : "N") == "N") && ($payrollShifts->payslips[$i]->EmployeeUserid == $this->session->userdata('LoginId'))){ ?>
+				<tr id="<?php echo $this->input->get('timesheetId') ?>" >
+					<td class="shift-edit" >
+							<?php echo $payrollShifts->payslips[$i]->FirstName." ".$payrollShifts->payslips[$i]->FirstName ?>
+					</td>
+					<td class="shift-edit" ><?php echo '$'.sprintf("%.02f",$payrollShifts->payslips[$i]->Wages) ?></td>
+					<td class="shift-edit" ><?php echo '$'.sprintf("%.02f",$payrollShifts->payslips[$i]->Deductions) ?></td>
+					<td class="shift-edit" ><?php echo '$'.sprintf("%.02f",$payrollShifts->payslips[$i]->Tax) ?></td>
+					<td class="shift-edit"><?php echo '$'.sprintf("%.02f",$payrollShifts->payslips[$i]->Super) ?></td>
+					<td  class="shift-edit"><?php echo '$'.sprintf("%.02f",$payrollShifts->payslips[$i]->Reimbursements) ?></td>
+					<td  class="shift-edit"><?php echo '$'.sprintf("%.02f",$payrollShifts->payslips[$i]->NetPay) ?></td>
+					<td><i><img  payslipId="<?php echo $payrollShifts->payslips[$i]->PayslipID ?>" class="print_image" src="<?php echo base_url('assets/images/icons/print.png'); ?>" height="18px" width="18px"></i></td>
+				</tr>
+				<?php }?>
+			<?php } ?>
+			</tbody>
+	<?php	}	?>
 		</table>
-		
 	</div>
 	<div>
 	
@@ -802,6 +865,12 @@ table.dataTable{
 		 })
 	})
 
+	$(document).on('click','.print_image',function(){
+		var timesheetid = '<?php echo $this->input->get('timesheetId') ?>';
+		var payslipId = $(this).attr('payslipid');
+			window.location.href = "<?php echo base_url();?>"+`payroll/getPayslip/${payslipId}/${timesheetid}`;
+	})
+
 	$(document).ready(function(){
 		 $(document).on('click','#flag_modal_save',function(){
 		 	var timesheetid = $(this).attr('timesheetid');
@@ -840,3 +909,10 @@ table.dataTable{
 </script>
 </body>
 </html>
+
+
+
+
+
+
+

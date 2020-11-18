@@ -141,10 +141,13 @@ class Payroll extends CI_Controller{
 				$this->load->model('timesheetModel');			
 				$timesheet = $this->timesheetModel->getTimesheet($timesheetid);
 				$users = $this->payrollModel->getUniqueUsersForTimesheet($timesheetid);
+				$getPayrun = $this->payrollModel->getPayrun($timesheetid);
 				$data['timesheetid'] = $timesheetid;
 				$data['startDate'] = $timesheet->startDate;
 				$data['endDate'] = $timesheet->endDate;
 				$data['centerid'] = $timesheet->centerid;
+				$data['payrun'] = $getPayrun;
+				$data['payslips'] = $this->getPaySlips($timesheetid,$userid);
 				$data['employees'] = array();
 				foreach ($users as $u) {
 					$var['payrollShifts'] = $this->payrollModel->getAllPayrollShifts($timesheetid,$u->userid);
@@ -161,6 +164,154 @@ class Payroll extends CI_Controller{
 		else{
 			http_response_code(401);
 		}
+	}
+
+public function getPaySlips($timesheetid,$userid){
+	$this->load->model('payrollModel');
+	$this->load->model('xeroModel');
+		if($timesheetid != null ){
+		$centerid = ($this->payrollModel->getCenteridFromTimesheet($timesheetid))->centerid;
+		$xeroTokens = $this->xeroModel->getXeroToken($centerid);
+		$PayRunID = $this->payrollModel->getPayrun($timesheetid);
+		if(isset($PayRunID)){
+			$PayRunID = $PayRunID->payrunId;
+			if($xeroTokens != null){
+				$access_token = $xeroTokens->access_token;
+				$tenant_id = $xeroTokens->tenant_id;
+				$refresh_token = $xeroTokens->refresh_token;
+				$getPayruns = $this->getPayRun($PayRunID,$access_token,$tenant_id);
+				$getPayruns = json_decode($getPayruns);
+					if($getPayruns != NULL){
+						if($getPayruns->Status == 401){
+							$refresh = $this->refreshXeroToken($refresh_token);
+							$refresh = json_decode($refresh);
+							$access_token = $refresh->access_token;
+							$expires_in = $refresh->expires_in;
+							$refresh_token = $refresh->refresh_token;
+							$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in,$centerid);
+							$getPayruns = $this->getPayRun($PayRunID,$access_token,$tenant_id);
+							$getPayruns = json_decode($getPayruns);
+						}
+						$arr = [];
+						$data = [];
+						if($getPayruns->Status == "OK"){
+						foreach($getPayruns->PayRuns as $payrun){
+							if(isset($payrun->Payslips)){
+								foreach($payrun->Payslips as $PaySlip){
+									$data['EmployeeID'] = $PaySlip->EmployeeID;
+								  $data['PayslipID'] = $PaySlip->PayslipID;
+								  $data['FirstName'] = $PaySlip->FirstName;
+								  $data['LastName'] = $PaySlip->LastName;
+								  $data['Wages'] = $PaySlip->Wages;
+								  $data['Deductions'] = $PaySlip->Deductions;
+								  $data['Tax'] = $PaySlip->Tax;
+								  $data['Super'] = $PaySlip->Super;
+								  $data['Reimbursements'] = $PaySlip->Reimbursements;
+								  $data['NetPay'] = $PaySlip->NetPay;
+								  $eu = $this->payrollModel->getUserId($PaySlip->EmployeeID);
+								  $data['EmployeeUserid'] = ($eu != null ? $eu->userid : ""); 
+								  $data['status'] = 'SUCCESS';
+								  array_push($arr,$data);
+										}
+									}
+								}
+	  						return $arr;
+	 						}
+	 					}
+	 				}
+	 			}
+			}
+		}
+
+	public function getPayslipData($payslipId,$timesheetid,$userid){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+				$this->load->model('payrollModel');	
+				$this->load->model('timesheetModel');	
+				$this->load->model('xeroModel');	
+				$centerid = ($this->payrollModel->getCenteridFromTimesheet($timesheetid))->centerid;
+				$xeroTokens = $this->xeroModel->getXeroToken($centerid);
+					if($xeroTokens != null){
+						$access_token = $xeroTokens->access_token;
+						$tenant_id = $xeroTokens->tenant_id;
+						$refresh_token = $xeroTokens->refresh_token;
+						$getPayslip = $this->getPaySlip($payslipId,$access_token,$tenant_id);
+						$getPayslip = json_decode($getPayslip);
+							if($getPayslip != NULL){
+								if($getPayslip->Status == 401){
+									$refresh = $this->refreshXeroToken($refresh_token);
+									$refresh = json_decode($refresh);
+									$access_token = $refresh->access_token;
+									$expires_in = $refresh->expires_in;
+									$refresh_token = $refresh->refresh_token;
+									$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in,$centerid);
+									$getPayslip = $this->getPaySlip($payslipId,$access_token,$tenant_id);
+									$getPayslip = json_decode($getPayslip);
+								}
+								if($getPayslip->Status == "OK"){
+									$data['PaySlip'] = $getPayslip;
+									$data['EarningRates'] = $this->payrollModel->getAllEarningRates();
+									$data['LeaveType'] = $this->payrollModel->getAllLeaveTypes();
+											}
+										}
+									}
+						http_response_code(200);
+						echo json_encode($data);
+					}
+					else{
+						http_response_code(401);
+					}
+				}
+				else{
+					http_response_code(401);
+				}
+			}
+
+		function getPaySlip($payslipId,$access_token,$token_id){
+			$url = "https://api.xero.com/payroll.xro/1.0/Payslip/$payslipId";
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER,  array(
+				'Content-Type:application/json',
+				'Authorization:Bearer '.$access_token,
+				'Xero-tenant-id:'.$token_id,
+				'Accept:application/json'
+			));
+			$server_output = curl_exec($ch);
+			// var_dump($server_output);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			// var_dump($httpcode);
+			// if($httpcode == 200){
+				return $server_output;
+				curl_close ($ch);
+		}
+
+		function getPayRun($payrunID,$access_token,$tenant_id){
+		$url = "https://api.xero.com/payroll.xro/1.0/PayRuns/".$payrunID;
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER,  array(
+			'Content-Type:application/json',
+			'Authorization:Bearer '.$access_token,
+			'Xero-tenant-id:'.$tenant_id,
+			'Accept:application/json'
+		));
+		$server_output = curl_exec($ch);
+		// var_dump($server_output);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		// var_dump($httpcode);
+		// if($httpcode == 200){
+			return $server_output;
+			curl_close ($ch);
+		// }
+		// else if($httpcode == 401){
+
+		// }
 	}
 
 	public function updateShiftStatus($timesheetid,$memberid,$userid){

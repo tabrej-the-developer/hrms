@@ -6,7 +6,7 @@ class PayrollModel extends CI_Model {
 
 	public function getPayrollType($id){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM payrollshifttype_v1 WHERE id = $id");
+		$query = $this->db->query("SELECT * FROM payrollshifttype_v1 WHERE earningRateId = '$id'");
 		return $query->row();
 	}
 
@@ -97,6 +97,34 @@ class PayrollModel extends CI_Model {
 		$this->load->database();
 		$query = $this->db->query("SELECT DISTINCT(payrollCalendarId) from employee where userid IN (SELECT DISTINCT(userid) from payrollshift where timesheetId = '$timesheetId')");
 		//echo "SELECT DISTINCT(payrollCalendarId) from employee where userid IN (SELECT DISTINCT(userid) from payrollshift where timesheetId = '$timesheetId')";
+		return $query->result();
+	}
+
+	public function getPayrun($timesheetid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * from payruns where timesheetId = '$timesheetid'");
+		return $query->row();
+	}
+
+	public function getCenteridFromTimesheet($timesheetid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * from timesheet where id = '$timesheetid'");
+		return $query->row();
+	}
+
+	public function getUserId($employeeId){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM employee where xeroEmployeeId = '$employeeId' ");
+		return $query->row();
+	}
+	public function getAllEarningRates(){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM payrollshifttype_v1");
+		return $query->result();
+	}
+	public function getAllLeaveTypes(){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM leaves");
 		return $query->result();
 	}
 }

@@ -375,11 +375,11 @@ table.dataTable{
 					</tr>
 				<?php }?>
 			<?php if($this->session->userdata('UserType') == STAFF ) { ?>
-					<tr id="<?php echo $timesheet->timesheets[$i]->id?>">
-					<td><?php echo $i+1 ?></td>
-					<td><?php echo $timesheet->timesheets[$i]->startDate ?></td>
-					<td><?php echo $timesheet->timesheets[$i]->endDate ?></td>
-					<td><?php echo $timesheet->timesheets[$i]->status ?></td>
+				<tr id="<?php echo $payroll->timesheets[$i]->id?>">
+						<td><?php echo $i+1 ?></td>
+						<td><?php echo $payroll->timesheets[$i]->startDate ?></td>
+						<td><?php echo $payroll->timesheets[$i]->endDate ?></td>
+						<td><?php echo $payroll->timesheets[$i]->status ?></td>
 					</tr>
 				<?php } ?>
 <?php } } ?>
