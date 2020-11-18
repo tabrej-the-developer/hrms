@@ -1151,7 +1151,10 @@ if($timesheetDetails->status == 'Draft'){ ?>
     </div>
 <!-- Logout Modal -->
 
-<?php if($this->session->userdata('UserType') == ADMIN || $this->session->userdata('UserType') == SUPERADMIN){?>
+<?php 
+
+//var_dump($timesheetDetails);
+if($this->session->userdata('UserType') == ADMIN || $this->session->userdata('UserType') == SUPERADMIN){?>
 	<script>
 $( ".modal-content" ).draggable();
 
