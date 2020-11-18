@@ -112,7 +112,7 @@ class Xero extends CI_Controller{
 					$ElectronicServiceAddress = isset($superFunds[$i]->ElectronicServiceAddress) ? $superFunds[$i]->ElectronicServiceAddress : "";
 					$EmployerNumber = $superFunds[$i]->EmployerNumber;
 					$Type = $superFunds[$i]->Type;
-					$this->payrollModel->insertSuperfund($ABN,$USI,$Type,$Name,$BSB,$AccountNumber,$AccountName,$ElectronicServiceAddress,$EmployerNumber,$userid,$centerid);
+					$this->payrollModel->insertSuperfund($SuperFundID,$ABN,$USI,$Type,$Name,$BSB,$AccountNumber,$AccountName,$ElectronicServiceAddress,$EmployerNumber,$userid,$centerid);
 				}
 			}
 				//employees
@@ -175,6 +175,9 @@ class Xero extends CI_Controller{
 					}
 
 					$myEmployee = $this->employeeModel->getUserFromId($myUserid);
+					// echo "MyEmployeeId: ".$myUserid;
+					// var_dump($myEmployee);
+					// echo "\n\n";
 					if($myEmployee == null){
 						//insert 
 						$this->employeeModel->insertEmployee($myUserid,$employeeId,$Title,$FirstName,$MiddleNames,$LastName,$Status,$Email,$DateOfBirth,$JobTitle,$Gender,$AddressLine1,$AddressLine2,$City,$Region,$PostalCode,$Country,$Phone,$Mobile,$StartDate,$TerminationDate,$OrdinaryEarningsRateID,$PayrollCalendarID,$userid,$classification);
@@ -182,9 +185,9 @@ class Xero extends CI_Controller{
 					else{
 						//update
 						$this->employeeModel->updateEmployee($employeeId,$Title,$FirstName,$MiddleNames,$LastName,$Status,$Email,$DateOfBirth,$JobTitle,$Gender,$AddressLine1,$AddressLine2,$City,$Region,$PostalCode,$Country,$Phone,$Mobile,$StartDate,$TerminationDate,$OrdinaryEarningsRateID,$PayrollCalendarID,$myUserid);
-						$this->employeeModel->deleteAllDetailsForUser($employeeId);
 					}
 
+						$this->employeeModel->deleteAllDetailsForUser($employeeId);
 
 					//taxes
 
@@ -446,7 +449,7 @@ class Xero extends CI_Controller{
 								$EmployerNumber = isset($superFunds[$i]->EmployerNumber) ? $superFunds[$i]->EmployerNumber : "";
 								$Type = $superFunds[$i]->Type;
 								// NOTICE -- need to get the centerid
-								$this->payrollModel->insertSuperfund($ABN,$USI,$Type,addslashes($Name),$BSB,$AccountNumber,$AccountName,$ElectronicServiceAddress,$EmployerNumber,$userid,$centerid);
+								$this->payrollModel->insertSuperfund($SuperFundID,$ABN,$USI,$Type,addslashes($Name),$BSB,$AccountNumber,$AccountName,$ElectronicServiceAddress,$EmployerNumber,$userid,$centerid);
 							}
 							$data['Status'] = 'SUCCESS';
 						}

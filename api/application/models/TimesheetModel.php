@@ -97,7 +97,8 @@ class TimesheetModel extends CI_Model {
 
 	public function getUniqueVisitorsWithoutRoster($startDate,$centerid){
 		$this->load->database();
-		$query = $this->db->query("SELECT DISTINCT(userid) as users from visitis WHERE userid not in (SELECT userid FROM shift WHERE shift.roasterId = (SELECT ros.id FROM rosters as ros WHERE '$startDate' BETWEEN ros.startDate and ros.endDate and ros.centerid = '$startDate'))");
+//echo "SELECT DISTINCT(userid) as users from visitis WHERE userid not in (SELECT userid FROM shift WHERE shift.roasterId = (SELECT ros.id FROM rosters as ros WHERE '$startDate' BETWEEN ros.startDate and ros.endDate and ros.centerid = $centerid))";
+		$query = $this->db->query("SELECT DISTINCT(userid) as users from visitis WHERE userid not in (SELECT userid FROM shift WHERE shift.roasterId = (SELECT ros.id FROM rosters as ros WHERE '$startDate' BETWEEN ros.startDate and ros.endDate and ros.centerid = $centerid))");
 		return $query->result();
 	}
 

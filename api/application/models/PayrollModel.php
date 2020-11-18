@@ -60,9 +60,9 @@ class PayrollModel extends CI_Model {
 		$this->db->query("INSERT INTO payrollshifttype_v1 VALUES(0,'$earningRateId','$name','$isExemptFromTax','$isExemptFromSuper','$isReportableAsW1','$earningType','$rateType',$multiplier,'$currentRecord','$userid',now(),$centerid)");
 	}
 
-	public function insertSuperfund($abn,$usi,$type,$name,$bsb,$accountNumber,$accountName,$eServiceAdd,$employeeNo,$userid,$centerid){
+	public function insertSuperfund($superfundId,$abn,$usi,$type,$name,$bsb,$accountNumber,$accountName,$eServiceAdd,$employeeNo,$userid,$centerid){
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO superfund VALUES(0,'$abn','$usi','$type','$name','$bsb','$accountNumber','$accountName','$eServiceAdd','$employeeNo',now(),'$userid',$centerid)");
+		$query = $this->db->query("INSERT INTO superfund VALUES(0,'$superfundId','$abn','$usi','$type','$name','$bsb','$accountNumber','$accountName','$eServiceAdd','$employeeNo',now(),'$userid',$centerid)");
 		// var_dump($query);
 	}
 

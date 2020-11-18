@@ -626,32 +626,32 @@ function createPayrun($payrollCalendarId,$access_token,$tenant_id){
 						}
 
 						foreach ($unrosteredEmployees as $empId) {
-							$userDetails = $this->authModel->getUserDetails($empId->users);
-							$var['empId'] = $userDetails->id;
-							$var['empName'] = $userDetails->name;
-							$var['level'] = $userDetails->level;
-							$var['rosterShift'] = [];
-							$clockedTimes = $this->timesheetModel->getAllVisits($empId->users,$currentDate,$timesheet->centerid);
-							$var['clockedTimes'] = array();
-							foreach ($clockedTimes as $clocks) {
-								$mar['startTime'] = $clocks->signInTime;
-								$mar['endTime'] = $clocks->signOutTime;
-								$mar['message'] = $clocks->message;
-								array_push($var['clockedTimes'],$mar);
-							}
-							$payedShifts = $this->timesheetModel->getPayrollShifts($currentDate,$timesheetid,$empId->users);
-							$var['payrollShifts'] = array();
-							foreach ($payedShifts as $paySh) {
-								$mar['startTime'] = $paySh->startTime;
-								$mar['endTime'] = $paySh->endTime;
-								$mar['status'] = $paySh->status;
-								$mar['payrollTypeId'] = $paySh->payrollType;
-								$mar['payrollType'] = $this->payrollModel->getPayrollType($paySh->payrollType);
-								array_push($var['payrollShifts'],$mar);
-							}
-							$var['isOnLeave'] = "N";
-							if($clockedTimes != null || $payedShifts != null)
-								array_push($mData['unrosteredEmployees'],$var);
+							// $userDetails = $this->authModel->getUserDetails($empId->users);
+							// $var['empId'] = $userDetails->id;
+							// $var['empName'] = $userDetails->name;
+							// $var['level'] = $userDetails->level;
+							// $var['rosterShift'] = [];
+							// $clockedTimes = $this->timesheetModel->getAllVisits($empId->users,$currentDate,$timesheet->centerid);
+							// $var['clockedTimes'] = array();
+							// foreach ($clockedTimes as $clocks) {
+							// 	$mar['startTime'] = $clocks->signInTime;
+							// 	$mar['endTime'] = $clocks->signOutTime;
+							// 	$mar['message'] = $clocks->message;
+							// 	array_push($var['clockedTimes'],$mar);
+							// }
+							// $payedShifts = $this->timesheetModel->getPayrollShifts($currentDate,$timesheetid,$empId->users);
+							// $var['payrollShifts'] = array();
+							// foreach ($payedShifts as $paySh) {
+							// 	$mar['startTime'] = $paySh->startTime;
+							// 	$mar['endTime'] = $paySh->endTime;
+							// 	$mar['status'] = $paySh->status;
+							// 	$mar['payrollTypeId'] = $paySh->payrollType;
+							// 	$mar['payrollType'] = $this->payrollModel->getPayrollType($paySh->payrollType);
+							// 	array_push($var['payrollShifts'],$mar);
+							// }
+							// $var['isOnLeave'] = "N";
+							// if($clockedTimes != null || $payedShifts != null)
+							// 	array_push($mData['unrosteredEmployees'],$var);
 						}
 
 						$mData['currentDate'] = $currentDate;

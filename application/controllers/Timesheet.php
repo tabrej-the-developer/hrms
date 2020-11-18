@@ -58,6 +58,7 @@ class Timesheet extends CI_Controller {
 		$data['userid'] = $this->session->userdata('LoginId');
 		$data['permissions'] = $this->fetchPermissions();
 		$data['timesheetDetails'] = $this->gettimesheet($data['timesheetid'],$data['userid']);
+		//var_dump($data);
 		$data['payrollTypes'] = $this->getShiftType($data['userid']);
 		// var_dump($data);
 		if( $this->getAllCenters() != 'error'){
@@ -183,6 +184,7 @@ class Timesheet extends CI_Controller {
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		if($httpcode == 200){
+			//var_dump($server_output);
 			return $server_output;
 			curl_close ($ch);
 		}
@@ -342,7 +344,7 @@ $server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			print_r($server_output);
 			if($httpcode == 200){
-			print_r($server_output);
+			//print_r($server_output);
 				curl_close ($ch);
 				}
 			else if($httpcode == 401){
@@ -372,7 +374,7 @@ $server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			print_r($server_output);
 			if($httpcode == 200){
-			print_r($server_output);
+			//print_r($server_output);
 				curl_close ($ch);
 				}
 			else if($httpcode == 401){

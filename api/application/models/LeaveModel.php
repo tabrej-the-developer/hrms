@@ -5,13 +5,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class LeaveModel extends CI_Model {
 	public function createLeaveType($leaveTypeId,$name,$isPaidYN,$slug,$showOnPaySlip,$currentRecord,$superadminId,$centerid){
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO leaves VALUES('$leaveTypeId','$name','$isPaidYN','$slug','$showOnPaySlip','$currentRecord'
+		$query = $this->db->query("INSERT INTO leaves VALUES(0,'$leaveTypeId','$name','$isPaidYN','$slug','$showOnPaySlip','$currentRecord'
 			,now(),'$superadminId',$centerid)");
 	}
 
 	public function editLeaveType($leaveId,$name,$isPaidYN,$slug,$showOnPaySlip){
 		$this->load->database();
-		$query = $this->db->query("UPDATE leaves SET name='$name',isPaidYN='$isPaidYN',slug='$slug',showOnPaySlipYN='$showOnPaySlip' WHERE id='$leaveId'");
+		$query = $this->db->query("UPDATE leaves SET name='$name',isPaidYN='$isPaidYN',slug='$slug',showOnPaySlipYN='$showOnPaySlip' WHERE id=$leaveId");
 	}
 
 	public function deleteAllLeaveTypes($centerid){
@@ -21,12 +21,12 @@ class LeaveModel extends CI_Model {
 
 	public function deleteLeaveType($leaveId){
 		$this->load->database();
-		$query = $this->db->query("DELETE FROM leaves WHERE id='$leaveId'");
+		$query = $this->db->query("DELETE FROM leaves WHERE id=$leaveId");
 	}
 
 	public function getLeaveType($leaveId){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM leaves WHERE id='$leaveId'");
+		$query = $this->db->query("SELECT * FROM leaves WHERE id=$leaveId");
 		return $query->row();
 	}
 

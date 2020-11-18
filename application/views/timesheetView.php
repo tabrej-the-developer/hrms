@@ -1151,10 +1151,7 @@ if($timesheetDetails->status == 'Draft'){ ?>
     </div>
 <!-- Logout Modal -->
 
-<?php 
-
-//var_dump($timesheetDetails);
-if($this->session->userdata('UserType') == ADMIN || $this->session->userdata('UserType') == SUPERADMIN){?>
+<?php if($this->session->userdata('UserType') == ADMIN || $this->session->userdata('UserType') == SUPERADMIN){?>
 	<script>
 $( ".modal-content" ).draggable();
 
@@ -1439,19 +1436,19 @@ $(document).on('click','.buttonn',function(){
 		let shiftDate = $('#emply-id').attr('date');
 		let timesheetId = "<?php echo $timesheetid; ?>";
 		console.log(values)
-		// $.ajax({
-		// 	url : url,
-		// 	type : 'POST',
-		// 	data : {
-		// 		empId : empId,
-		// 		userid : userid,
-		// 		shiftDate : shiftDate,
-		// 		timesheetid : timesheetId, 
-		// 		visits : values
-		// 	},
-		// 	success : function(response){
-		// 	}
-		// })
+		$.ajax({
+			url : url,
+			type : 'POST',
+			data : {
+				empId : empId,
+				userid : userid,
+				shiftDate : shiftDate,
+				timesheetid : timesheetId, 
+				visits : values
+			},
+			success : function(response){
+			}
+		})
 	})
 
 	function AmPmTo24(time){
