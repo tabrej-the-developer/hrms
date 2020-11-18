@@ -189,7 +189,7 @@ class PDF extends FPDF
     	// TODO : earning name
         $price = $price + $LL->NumberOfUnits;
         foreach($leaves as $LT){
-            if($LT->id == $LL->LeaveTypeID){
+            if($LT->leaveid== $LL->LeaveTypeID){
 		    $this->Cell($cellSize*5.5,10,$LT->name,0,0,'L',0);
                 }
             }

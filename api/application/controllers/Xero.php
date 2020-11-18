@@ -86,7 +86,7 @@ class Xero extends CI_Controller{
 				//leave types
 				if(isset(json_decode($payItems)->PayItems->LeaveTypes)){
 				$leaveTypes = json_decode($payItems)->PayItems->LeaveTypes;
-				$this->leaveModel->deleteAllLeaveTypes($centerid);
+				// $this->leaveModel->deleteAllLeaveTypes($centerid);
 				for($i=0;$i<count($leaveTypes);$i++){
 					$LeaveTypeID = $leaveTypes[$i]->LeaveTypeID;
 					$Name = addslashes($leaveTypes[$i]->Name);
@@ -230,8 +230,9 @@ class Xero extends CI_Controller{
 					$this->leaveModel->deleteAllUserLeaveBalance($myUserid);
 					foreach ($empDetails->LeaveBalances	 as $leaveBalance) {
 						$LeaveTypeID = $leaveBalance->LeaveTypeID;
+						$leaveDets = $this->leaveModel->getLeaveTypeById($LeaveTypeID);
 						$NumberOfUnits = $leaveBalance->NumberOfUnits;
-						$this->leaveModel->insertIntoLeaveBalance($myUserid,$LeaveTypeID,$NumberOfUnits);
+						$this->leaveModel->insertIntoLeaveBalance($myUserid,$leaveDets->id,$NumberOfUnits);
 					}
 
 				}
@@ -366,7 +367,7 @@ class Xero extends CI_Controller{
 							$leaveTypes = $val->PayItems->LeaveTypes;
 							// var_dump($leaveTypes);
 							// NOTICE -- need to get the centerid
-							$this->leaveModel->deleteAllLeaveTypes($centerid);
+							// $this->leaveModel->deleteAllLeaveTypes($centerid);
 							for($i=0;$i<count($leaveTypes);$i++){
 								$LeaveTypeID = $leaveTypes[$i]->LeaveTypeID;
 								$Name = addslashes($leaveTypes[$i]->Name);

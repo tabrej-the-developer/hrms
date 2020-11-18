@@ -1413,8 +1413,8 @@ $(document).on('click','.buttonn',function(){
 				object = {};
 			if($('.box-time').eq(a).children().children().children().prop('checked') == true){
 				if($('.time-box').eq(a).text() != ""){
-					object.startTime = $('.time-box').eq(a).children('.startTime_modal').val();
-					object.endTime = $('.time-box').eq(a).children('.endTime_modal').val();
+					object.startTime = ($('.time-box').eq(a).children('.startTime_modal').val()).replace(":","");
+					object.endTime = ($('.time-box').eq(a).children('.endTime_modal').val()).replace(":","");
 					object.payType = $('.new-time-box').eq(a).next().children('.select_css').children('.shift-type-select').val();
 					object.clockedInTime = $('.box-time').eq(a).attr('start-time');
 					object.clockedOutTime = $('.box-time').eq(a).attr('end-time');
@@ -1447,6 +1447,7 @@ $(document).on('click','.buttonn',function(){
 				visits : values
 			},
 			success : function(response){
+				window.location.reload();
 			}
 		})
 	})
@@ -1870,7 +1871,7 @@ $(document).on('click','.buttonn',function(){
 							obj.clockedInTime = $(this).children('.visit__').attr('starttime');
 							obj.clockedOutTime = $(this).children('.visit__').attr('endtime');
 							d.setDate(startDate.getDate()+(i));
-							obj.shiftdate = d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate();
+							obj.shiftdate = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
 								}
 						}
 						// if($(this).children('.visit__').children('.time_visits_child').hasClass('oldtime'))

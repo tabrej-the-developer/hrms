@@ -418,15 +418,16 @@ class Leave extends CI_Controller{
 				$notes = $json->notes;
 				$noOfHours = $json->hours;
 				// $title = $json->leaveTitle;
-		print_r($json);
+		// print_r($json);
 				$this->load->model('employeeModel');
 				$this->load->model('xeroModel');
 				$this->load->model('leaveModel');
-				// $employeeDets = $this->employeeModel->getUserFromId($userid);
+				$leaveDets = $this->leaveModel->getLeaveType($leaveTypeId);
+				$employeeDets = $this->employeeModel->getUserFromId($userid);
 				$this->leaveModel->applyLeave($userid,$leaveTypeId,$noOfHours,$startDate,$endDate,$notes);
 				$this->leaveModel->updateLeaveBalance($userid,$leaveTypeId,-1*$noOfHours);
-		/*		if($employeeDets != null){
-					$xeroTokens = $this->xeroModel->getXeroToken();	
+				if($employeeDets != null){
+					$xeroTokens = $this->xeroModel->getXeroToken($leaveDets->centerid);	
 					$access_token = $xeroTokens->access_token;
 					$tenant_id = $xeroTokens->tenant_id;
 					$refresh_token = $xeroTokens->refresh_token;
@@ -440,35 +441,53 @@ class Leave extends CI_Controller{
 							$access_token = $refresh->access_token;
 							$expires_in = $refresh->expires_in;
 							$refresh_token = $refresh->refresh_token;
-							$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in);
+							$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in,$leaveDets->centerid);
 							$payRuns = $this->getPayRuns($access_token,$tenant_id);					
 							$payRuns = json_decode($payRuns);
 						}
+						// var_dump($payRuns);
 						if(isset($payRuns->Status) && $payRuns->Status == "OK"){
 							$found = false;
 
 							for($i=0;$i<count($payRuns->PayRuns);$i++){
-								preg_match( '/([\d]{9})/', $payRuns->PayRuns[$i]->PayRunPeriodEndDate, $matches );
+								preg_match( '/([\d]{10})/', $payRuns->PayRuns[$i]->PayRunPeriodEndDate, $matches );
 								$payPeriodEndDate = date( 'Y-m-d', $matches[0] );
-								if($payPeriodEndDate >= $endDate){
+								preg_match( '/([\d]{10})/', $payRuns->PayRuns[$i]->PayRunPeriodStartDate, $matches );
+								$payPeriodStartDate = date( 'Y-m-d', $matches[0] );
+
+								// echo $payPeriodStartDate." ".$payPeriodEndDate." ".$endDate;
+								if($payPeriodEndDate >= $endDate && $endDate >= $payPeriodStartDate){
 									$found = true;
 									$startDateTime  = new DateTime($startDate);
 									$endDateTime  = new DateTime($endDate);
-									$postData = '
-									[{
-										"EmployeeID": "'.$employeeDets->xeroEmployeeId.'",
-										"LeaveTypeID": "'.$leaveTypeId.'",
-										"StartDate": "/Date('.$startDateTime->format('Uu').'+0000)/",
-										"EndDate": "/Date('.$endDateTime->format('Uu').'+0000)/",
-										"Description": "'.$notes.'",
-										"Title": "'.$title.'",
-										"LeavePeriods": 
-											{
-												"PayPeriodEndDate" : "'.$payPeriodEndDate.'",
-												"NumberOfUnits" : "'.$noOfHours.'"
-											}
+									// $payPeriodStartDate = new DateTime($payPeriodStartDate);
+									// $payPeriodEndDate = new DateTime($payPeriodEndDate);
+									$postData =	array();
+									$var['EmployeeID'] = $employeeDets->xeroEmployeeId;
+									$var['LeaveTypeID'] = $leaveDets->leaveid;
+									$var['StartDate'] = '/Date('.$startDateTime->format('Uv').'+0000)/';
+									$var['EndDate'] = '/Date('.$endDateTime->format('Uv').'+0000)/';
+									$var['Description'] = $notes;
+									$var['Title'] = $leaveDets->name;
+									// $var['LeavePeriods']['NumberOfUnits'] = $noOfHours;
+									// $var['LeavePeriods']['PayPeriodStartDate'] = $payPeriodStartDate;
+									// $var['LeavePeriods']['PayPeriodEndDate'] = $payPeriodEndDate;
+									// $var['LeavePeriods']['PayPeriodStartDate'] = '/Date('.$payPeriodStartDate->format('Uv').'+0000)/';
+									// $var['LeavePeriods']['PayPeriodEndDate'] = '/Date('.$payPeriodEndDate->format('Uv').'+0000)/';
+									array_push($postData,$var);
+									// {
+									// 	"EmployeeID": "'.$employeeDets->xeroEmployeeId.'",
+									// 	"LeaveTypeID": "'.$leaveDets->leaveid.'",
+									// 	"StartDate": "/Date('.$startDateTime->format('Uv').'+0000)/",
+									// 	"EndDate": "/Date('.$endDateTime->format('Uv').'+0000)/",
+									// 	"Description": "'.$notes.'",
+									// 	"Title": "'.$leaveDets->name.'",
+									// 	"LeavePeriods": 
+									// 		{
+									// 			"NumberOfUnits" : "'.$noOfHours.'"
+									// 		}
 
-									}]';
+									// };
 
 									$this->createLeaveApp($access_token,$tenant_id,$postData);
 									$this->leaveModel->updateLeaveBalance($userid,$leaveTypeId,-1*$noOfHours);
@@ -495,7 +514,7 @@ class Leave extends CI_Controller{
 						$data['Status'] = "ERROR";
 						$data['Message'] = "User's payroll calendar needs to be set up before applying for leave";
 					}
-				}			*/
+				}			
 
 				http_response_code(200);
 				echo json_encode($data);
@@ -698,18 +717,24 @@ class Leave extends CI_Controller{
 	}
 
 	function createLeaveApp($access_token,$tenant_id,$postData){
+									var_dump($postData);
 		$url = "https://api.xero.com/payroll.xro/1.0/LeaveApplications";
 		$ch =  curl_init($url);
        	curl_setopt($ch, CURLOPT_URL,$url);
        	curl_setopt($ch, CURLOPT_POST,1);
-       	curl_setopt($ch, CURLOPT_POSTFIELDS,$postData);
+       	curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($postData));
        	curl_setopt($ch, CURLOPT_HTTPHEADER,  array(
            'Content-Type:application/json',
+           'Accept:application/json',
            'Authorization:Bearer '.$access_token,
            'Xero-tenant-id:'.$tenant_id
        	));
+       	echo $access_token;
+       	echo "\n\n";
+       	echo $tenant_id;
        	curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
 		$server_output = curl_exec($ch);
+		var_dump($server_output);
 		return $server_output;
 	}
 

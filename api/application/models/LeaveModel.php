@@ -5,8 +5,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class LeaveModel extends CI_Model {
 	public function createLeaveType($leaveTypeId,$name,$isPaidYN,$slug,$showOnPaySlip,$currentRecord,$superadminId,$centerid){
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO leaves VALUES(0,'$leaveTypeId','$name','$isPaidYN','$slug','$showOnPaySlip','$currentRecord'
+		$query = $this->db->query("SELECT * FROM leaves WHERE leaveid = '$leaveTypeId' AND centerid = $centerid");
+		if($query->row() != null){
+			//update
+			$leaveid = $query->row()->id;
+			$this->db->query("UPDATE leaves SET name = '$name',isPaidYN = '$isPaidYN',slug = '$slug',showOnPaySlipYN = '$showOnPaySlip',currentRecordYN = '$currentRecordYN' WHERE id = $leaveid");
+		}
+		else{
+			//insert
+			$query = $this->db->query("INSERT INTO leaves VALUES(0,'$leaveTypeId','$name','$isPaidYN','$slug','$showOnPaySlip','$currentRecord'
 			,now(),'$superadminId',$centerid)");
+		}
 	}
 
 	public function editLeaveType($leaveId,$name,$isPaidYN,$slug,$showOnPaySlip){
@@ -27,6 +36,12 @@ class LeaveModel extends CI_Model {
 	public function getLeaveType($leaveId){
 		$this->load->database();
 		$query = $this->db->query("SELECT * FROM leaves WHERE id=$leaveId");
+		return $query->row();
+	}
+
+	public function getLeaveTypeById($leaveId){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM leaves WHERE leaveid='$leaveId'");
 		return $query->row();
 	}
 
@@ -65,7 +80,7 @@ class LeaveModel extends CI_Model {
 
 	public function applyLeave($userid,$leaveId,$noOfHours,$startDate,$endDate,$notes){
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO leaveapplication (userid,appliedDate, leaveId, noOfHours, startDate,endDate,status,notes) VALUES('$userid',CURDATE(),'$leaveId',$noOfHours,'$startDate','$endDate',1,'$notes')");
+		$query = $this->db->query("INSERT INTO leaveapplication (userid,appliedDate, leaveId, noOfHours, startDate,endDate,status,notes) VALUES('$userid',CURDATE(),$leaveId,$noOfHours,'$startDate','$endDate',1,'$notes')");
 	}
 
 	public function getLeaveBalance($userid){
@@ -76,7 +91,7 @@ class LeaveModel extends CI_Model {
 
 	public function insertIntoLeaveBalance($userid,$leaveTypeId,$leaveBalance){
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO leavebalance VALUES(0,'$userid','$leaveTypeId',$leaveBalance)");
+		$query = $this->db->query("INSERT INTO leavebalance VALUES(0,'$userid',$leaveTypeId,$leaveBalance)");
 	}
 
 	// public function getGetLeaveBalanceByLeaveId($userid,$leaveId){
@@ -116,7 +131,7 @@ class LeaveModel extends CI_Model {
 
 	public function updateLeaveBalance($userid,$leaveId,$toUpdate){
 		$this->load->database();
-		$this->db->query("UPDATE leaveBalance SET leaveBalance = leaveBalance + $toUpdate WHERE userid = '$userid' AND leaveId = '$leaveId'");
+		$this->db->query("UPDATE leavebalance SET leavebalance = leaveBalance + $toUpdate WHERE userid = '$userid' AND leaveId = $leaveId");
 	}
 
 	public function getLeaveApplicationForUser($userid,$currentDate){

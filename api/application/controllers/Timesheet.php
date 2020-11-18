@@ -234,6 +234,7 @@ class Timesheet extends CI_Controller{
 					$val = $this->postTimesheetDataToXero($Timesheets,$access_token,$tenant_id);
 					$val = json_decode($val);
 	 					if($val != NULL){
+	 						//var_dump($val);
 	 						if($val->Status == 401){
 	 							$refresh = $this->refreshXeroToken($refresh_token);
 	 							$refresh = json_decode($refresh);
