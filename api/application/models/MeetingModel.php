@@ -3,10 +3,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MeetingModel extends CI_MODEL{
 
- public function addMeeting($id,$meetingTitle,$date,$time,$endTime,$location,$period,$mPrevid,$userId,$status,$agendaFile){
+ public function addMeeting($id,$meetingTitle,$date,$edate,$time,$endTime,$location,$period,$mPrevid,$userId,$status,$agendaFile){
     $this->load->database();
     
-     $query = $this->db->query("INSERT into meeting(id,title,date, time,eTime,location,period, loginid,m_previd,status,agendaFile) values('$id','$meetingTitle','$date','$time','$endTime','$location','$period','$userId','$mPrevid','$status','$agendaFile')");
+     $query = $this->db->query("INSERT into meeting(id,title,date,edate, time,eTime,location,period, loginid,m_previd,status,agendaFile) values('$id','$meetingTitle','$date','$edate','$time','$endTime','$location','$period','$userId','$mPrevid','$status','$agendaFile')");
  }
 
   public function addAgenda($id,$agenda){

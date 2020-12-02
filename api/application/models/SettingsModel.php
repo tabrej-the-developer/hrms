@@ -225,45 +225,55 @@ class SettingsModel extends CI_Model {
 
 		public function getEmployeeData($userid){
 			$this->load->database();
-			$query = $this->db->query("SELECT * FROM employee where userid = '$userid'");
+			$query = $this->db->query("SELECT * FROM employee as e LEFT JOIN payrollshifttype_v1 as ps on e.ordinaryEarningRateId = ps.earningRateId  where e.userid = '$userid'");
 			return $query->row();
 		}
 		public function getEmployeeBankAccount($userid){
 			$this->load->database();
-			$query = $this->db->query("SELECT * FROM employeebankaccount where employeeId IN (SELECT xeroEmployeeId FROM employee where userid = '$userid')");
+			$query = $this->db->query("SELECT * FROM employeebankaccount where employeeId = '$userid'");
 			return $query->row();
 		}
 		public function getEmployeeCourses($userid){
 			$this->load->database();
-			$query = $this->db->query("SELECT * FROM employeecourses where employeeId IN (SELECT xeroEmployeeId FROM employee where userid = '$userid')");
+			$query = $this->db->query("SELECT * FROM employeecourses where employeeId  = '$userid'");
 			return $query->result();
 		}
 		public function getEmployeeMedicalInfo($userid){
 			$this->load->database();
-			$query = $this->db->query("SELECT * FROM employeemedicalinfo where employeeNo IN (SELECT xeroEmployeeId FROM employee where userid = '$userid')");
+			$query = $this->db->query("SELECT * FROM employeemedicalinfo where employeeNo  = '$userid'");
 			return $query->row();
 		}
 		public function getEmployeeMedicals($userid){
 			$this->load->database();
-			$query = $this->db->query("SELECT * FROM employeemedicals where employeeId IN (SELECT xeroEmployeeId FROM employee where userid = '$userid')");
+			$query = $this->db->query("SELECT * FROM employeemedicals where employeeId  = '$userid'");
 			return $query->result();
 		}
 		public function getEmployeeRecord($userid){
 			$this->load->database();
-			$query = $this->db->query("SELECT * FROM employeerecord where employeeId IN (SELECT xeroEmployeeId FROM employee where userid = '$userid')");
+			$query = $this->db->query("SELECT * FROM employeerecord where employeeId = '$userid'");
 			return $query->row();
 		}
 		public function getEmployeeSuperfunds($userid){
 			$this->load->database();
-			$query = $this->db->query("SELECT * FROM employeesuperfund where employeeId IN (SELECT xeroEmployeeId FROM employee where userid = '$userid')");
+			$query = $this->db->query("SELECT * FROM employeesuperfund as es INNER JOIN superfund as s on s.superfundid = es.superfundid  where employeeId IN (SELECT userid FROM employee where userid = '$userid')");
 			return $query->row();
 		}
 		public function getEmployeeTaxDec($userid){
 			$this->load->database();
-			$query = $this->db->query("SELECT * FROM employeetaxdeclaration where employeeId IN (SELECT xeroEmployeeId FROM employee where userid = '$userid')");
+			$query = $this->db->query("SELECT * FROM employeetaxdeclaration where employeeId  = '$userid'");
 			return $query->row();
 		}
 
+		public function getEmployeeDocuments($userid){
+			$this->load->database();
+			$query = $this->db->query("SELECT * from employeedocuments where userid = '$userid'");
+			return $query->result();
+		}
+
+		public function editEmployeeEntitlement($level,$empId){
+			$this->load->database();
+			$query = $this->db->query("UPDATE users SET level = $level where id='$empId'");
+		}
 
 		public function updateEmployeeCourses($id, $xeroEmployeeId,$course_nme,$course_desc,$date_obt,$exp_date){
 			$this->load->database();
@@ -273,23 +283,30 @@ class SettingsModel extends CI_Model {
 			$this->load->database();
 			$query = $this->db->query("UPDATE  users SET 	email = '$emails', name = '$name', created_at = NOW(), created_by = '$userid', alias = '$alias' where id = '$employee_no'");
 		}
-		public function updateEmployeeBankAccount( $xeroEmployeeId,$accountName,$bsb,$accountNumber,$remainderYN,$amount){
+		public function updateEmployeeBankAccount( $employeeNo,$accountName,$bsb,$accountNumber,$remainderYN,$amount){
 			$this->load->database();
-			$query = $this->db->query("UPDATE  employeebankaccount SET  accountName = '$accountName', bsb = '$bsb', accountNumber = '$accountNumber', remainderYN = '$remainderYN', amount = '$amount' where employeeId  = '$xeroEmployeeId'");
+			$check = $this->db->query("SELECT * from employeebankaccount where employeeId = '$employeeNo'");
+			$check = $check->row();
+			if($check != null && $check != ""){
+				$query = $this->db->query("UPDATE  employeebankaccount SET  accountName = '$accountName', bsb = '$bsb', accountNumber = '$accountNumber', remainderYN = '$remainderYN', amount = '$amount' where employeeId  = '$employeeNo'");
+			}
+			else{
+				$query = $this->db->query("INSERT INTO employeebankaccount (employeeId, accountName, bsb, accountNumber, remainderYN, amount) VALUES ( '$employeeNo','$accountName','$bsb','$accountNumber','$remainderYN','$amount')");
+			}
 		}
-		public function updateEmployeeMedicalInfo($xeroEmployeeId,$medicareNo, $medicareRefNo,$healthInsuranceFund,$healthInsuranceNo, $ambulanceSubscriptionNo){
+		public function updateEmployeeMedicalInfo($employee_no,$medicareNo, $medicareRefNo,$healthInsuranceFund,$healthInsuranceNo, $ambulanceSubscriptionNo){
 			$this->load->database();
 			$query = $this->db->query("UPDATE employeemedicalinfo  SET medicareNo = '$medicareNo', medicareRefNo = '$medicareRefNo', healthInsuranceFund = '$healthInsuranceFund', healthInsuranceNo = '$healthInsuranceNo' , ambulanceSubscriptionNo = '$ambulanceSubscriptionNo'
- 					where employeeNo = '$xeroEmployeeId'");
+ 					where employeeNo = '$employee_no'");
 		}
-		public function updateEmployeeMedicals( $id,$xeroEmployeeId,$medC,$medA,$medic,$dietary){
+		public function updateEmployeeMedicals( $id,$employee_no,$medC,$medA,$medic,$dietary){
 			$this->load->database();
 			$query = $this->db->query("UPDATE employeemedicals SET 
-			employeeId = '$xeroEmployeeId',medicalConditions = '$medC',medicalAllergies = '$medA', medication = '$medic', dietaryPreferences = '$dietary' where id = '$id'");
+			employeeId = '$employee_no',medicalConditions = '$medC',medicalAllergies = '$medA', medication = '$medic', dietaryPreferences = '$dietary' where id = '$id'");
 		}
-		public function updateEmployeeRecord($employee_no, $xeroEmployeeId,  $qual_towards_desc, $highest_qual_held, $qual_towards_percent_comp, $visa_type, $visa_grant_date, $visa_end_date, $visa_conditions, $highest_qual_date_obtained,  $visa_holder){
+		public function updateEmployeeRecord($employee_no, $xeroEmployeeId,  $qual_towards_desc, $highest_qual_held, $qual_towards_percent_comp, $visa_type, $visa_grant_date, $visa_end_date, $visa_conditions, $highest_qual_date_obtained,  $visa_holder,$resume_doc,$contract_doc){
 			$this->load->database();
-			$query = $this->db->query("UPDATE employeerecord SET   EmployeeId = '$xeroEmployeeId',  otherQualDesc = '$qual_towards_desc', highestQualHeld = '$highest_qual_held', qualTowardsPercentcomp = '$qual_towards_percent_comp', visaType = '$visa_type', visaGrantDate = '$visa_grant_date', visaEndDate = '$visa_end_date', visaConditions = '$visa_conditions', highestQualDateObtained = '$highest_qual_date_obtained',  visaHolderYN = '$visa_holder' where employeeNo = '$employee_no'");
+			$query = $this->db->query("UPDATE employeerecord SET   EmployeeId = '$xeroEmployeeId',  otherQualDesc = '$qual_towards_desc', highestQualHeld = '$highest_qual_held', qualTowardsPercentcomp = '$qual_towards_percent_comp', visaType = '$visa_type', visaGrantDate = '$visa_grant_date', visaEndDate = '$visa_end_date', visaConditions = '$visa_conditions', highestQualDateObtained = '$highest_qual_date_obtained',  visaHolderYN = '$visa_holder' , resumeDoc = '$resume_doc' , contractDocument = '$contract_doc' where employeeNo = '$employee_no'");
 		}
 
 		public function getStates(){
@@ -297,20 +314,27 @@ class SettingsModel extends CI_Model {
 			$query = $this->db->query("SELECT * FROM states");
 			return $query->result();
 		}
-		public function updateEmployeeSuperfunds( $xeroEmployeeId, $superFundId,$superMembershipId){
+		public function updateEmployeeSuperfunds( $employee_no, $superFundId,$superMembershipId){
 			$this->load->database();
 			$query = $this->db->query("UPDATE employeesuperfund SET superFundId = '$superFundId', 
-				superMembershipId = '$superMembershipId' where employeeId = '$xeroEmployeeId'");
+				superMembershipId = '$superMembershipId' where employeeId = '$employee_no'");
 		}
-		public function updateEmployeeTaxDeclaration($xeroEmployeeId,$tfnExemptionType,$taxFileNumber,$australiantResidentForTaxPurposeYN,$residencyStatue,$taxFreeThresholdClaimedYN,$taxOffsetEstimatedAmount,$hasHELPDebtYN,$hasSFSSDebtYN,$hasTradeSupportLoanDebtYN_,$upwardVariationTaxWitholdingAmount,$eligibleToReceiveLeaveLoadingYN,$approvedWitholdingVariationPercentage){
+		public function updateEmployeeTaxDeclaration($employee_no,$tfnExemptionType,$taxFileNumber,$australiantResidentForTaxPurposeYN,$residencyStatue,$taxFreeThresholdClaimedYN,$taxOffsetEstimatedAmount,$hasHELPDebtYN,$hasSFSSDebtYN,$hasTradeSupportLoanDebtYN_,$upwardVariationTaxWitholdingAmount,$eligibleToReceiveLeaveLoadingYN,$approvedWitholdingVariationPercentage){
 			$this->load->database();
 			$query = $this->db->query("UPDATE employeetaxdeclaration SET 
-				tfnExemptionType = '$tfnExemptionType', taxFileNumber = '$taxFileNumber', australiantResidentForTaxPurposeYN = '$australiantResidentForTaxPurposeYN', residencyStatue = '$residencyStatue', taxFreeThresholdClaimedYN = '$taxFreeThresholdClaimedYN', taxOffsetEstimatedAmount = '$taxOffsetEstimatedAmount', hasHELPDebtYN = '$hasHELPDebtYN', hasSFSSDebtYN = '$hasSFSSDebtYN', hasTradeSupportLoanDebtYN = '$hasTradeSupportLoanDebtYN_', upwardVariationTaxWitholdingAmount = '$upwardVariationTaxWitholdingAmount', eligibleToReceiveLeaveLoadingYN = '$eligibleToReceiveLeaveLoadingYN', approvedWitholdingVariationPercentage = '$approvedWitholdingVariationPercentage' where employeeId  = '$xeroEmployeeId'");
+				tfnExemptionType = '$tfnExemptionType', taxFileNumber = '$taxFileNumber', australiantResidentForTaxPurposeYN = '$australiantResidentForTaxPurposeYN', residencyStatue = '$residencyStatue', taxFreeThresholdClaimedYN = '$taxFreeThresholdClaimedYN', taxOffsetEstimatedAmount = '$taxOffsetEstimatedAmount', hasHELPDebtYN = '$hasHELPDebtYN', hasSFSSDebtYN = '$hasSFSSDebtYN', hasTradeSupportLoanDebtYN = '$hasTradeSupportLoanDebtYN_', upwardVariationTaxWitholdingAmount = '$upwardVariationTaxWitholdingAmount', eligibleToReceiveLeaveLoadingYN = '$eligibleToReceiveLeaveLoadingYN', approvedWitholdingVariationPercentage = '$approvedWitholdingVariationPercentage' where employeeId  = '$employee_no'");
 		}
-		public function updateEmployeeTable($title,$fname,$mname,$lname,$emails,$dateOfBirth,$gender,$homeAddLine1,$homeAddLine2,$homeAddCity,$homeAddRegion,$homeAddPostal,$homeAddCountry,$phone,$mobile,$terminationDate,$ordinaryEarningRateId,$userid,$classification,$emergency_contact,$relationship,$emergency_contact_email){
+		public function updateEmployeeTable($employee_no, $title,$fname,$mname,$lname,$emails,$dateOfBirth,$gender,$homeAddLine1,$homeAddLine2,$homeAddCity,$homeAddRegion,$homeAddPostal,$homeAddCountry,$phone,$mobile,$terminationDate,$ordinaryEarningRateId,$userid,$classification,$emergency_contact,$relationship,$emergency_contact_email){
 			$this->load->database();
-			$query = $this->db->query("UPDATE employee SET 	title = '$title', fname = '$fname', mname = '$mname', lname = '$lname', emails = '$emails', dateOfBirth = '$dateOfBirth', gender = '$gender', homeAddLine1 = '$homeAddLine1', homeAddLine2 = '$homeAddLine2', homeAddCity = '$homeAddCity', homeAddRegion = '$homeAddRegion', homeAddPostal = '$homeAddPostal', homeAddCountry = '$homeAddCountry', phone = '$phone', mobile = '$mobile', terminationDate = '$terminationDate', ordinaryEarningRateId = '$ordinaryEarningRateId', classification = '$classification',  emergency_contact = '$emergency_contact', relationship = '$relationship', emergency_contact_email = '$emergency_contact_email' where xeroEmployeeId = '$xeroEmployeeId'");
-		}
+			$check = $this->db->query("SELECT * from employee where userid = '$employee_no'");
+			$check = $check->row();
+			if($check != null && $check != ""){
+			$query = $this->db->query("UPDATE employee SET 	title = '$title', fname = '$fname', mname = '$mname', lname = '$lname', emails = '$emails', dateOfBirth = '$dateOfBirth', gender = '$gender', homeAddLine1 = '$homeAddLine1', homeAddLine2 = '$homeAddLine2', homeAddCity = '$homeAddCity', homeAddRegion = '$homeAddRegion', homeAddPostal = '$homeAddPostal', homeAddCountry = '$homeAddCountry', phone = '$phone', mobile = '$mobile', terminationDate = '$terminationDate', ordinaryEarningRateId = '$ordinaryEarningRateId', classification = '$classification',  emergency_contact = '$emergency_contact', relationship = '$relationship', emergency_contact_email = '$emergency_contact_email' where userid = '$employee_no'");
+				}
+				else{
+			$query = $this->db->query("INSERT INTO employee (userid,  title, fname, mname, lname, emails, dateOfBirth,  gender, homeAddLine1, homeAddLine2, homeAddCity, homeAddRegion, homeAddPostal, homeAddCountry, phone, mobile,  terminationDate, ordinaryEarningRateId,  created_at, created_by, classification,  emergency_contact, relationship, emergency_contact_email) VALUES ('$employee_no', '$title','$fname','$mname','$lname','emails','$dateOfBirth','$gender','$homeAddLine1','$homeAddLine2','$homeAddCity','$homeAddRegion','$homeAddPostal','$homeAddCountry','$phone','$mobile','$terminationDate','$ordinaryEarningRateId',NOW(),'$userid','$classification','$emergency_contact','$relationship','$emergency_contact_email')");
+				}
+			}
 // 		// add center 
 
 	public function addCenter($addStreet,$addCity,$addState,$addZip,$name,$centre_phone_number,$centre_mobile_number,$Centre_email,$userid){
@@ -336,7 +360,7 @@ class SettingsModel extends CI_Model {
 
 		public function getCenterDetails($centerid){
 			$this->load->database();
-			$query = $this->db->query("SELECT * FROM centers inner join centerrecord on centerrecord.centerid = centers.centerid where centers.centerid='$centerid'");
+			$query = $this->db->query("SELECT * FROM centers LEFT join centerrecord on centerrecord.centerid = centers.centerid where centers.centerid='$centerid'");
 			return $query->row();
 		}
 		public function roomsForCenter($centerid){
@@ -360,4 +384,83 @@ class SettingsModel extends CI_Model {
 			$query = $this->db->query("SELECT * from xeroaccesstoken where centerid = $centerid");
 			return $query->row();
 		}
+
+		public function insertToDocuments($fileName,$documentName,$userid){
+			$this->load->database();
+			$query = $this->db->query("INSERT INTO employeedocuments (name,userid,document) VALUES ('$fileName','$userid','$documentName')");
+		}
+
+		public function deleteEmployeeCenters($empId){
+			$this->load->database();
+			$query = $this->db->query("DELETE from usercenters where userid = '$empId'");
+		}
+
+		public function editEmployeeCenter($center,$empId){
+			$this->load->database();
+			$query = $this->db->query("INSERT INTO usercenters (userid,centerid) VALUES ('$empId',$center)");
+		}
+
+		public function updateEmployeeCenter($center,$empId){
+			$this->load->database();
+			$query =  $this->db->query("UPDATE users SET center = '$center' where id='$empId'");
+		}
+
+	public function deleteDocument($documentId){
+		$this->load->database();
+		$query = $this->db->query("DELETE from employeedocuments where id = '$documentId'");
+	}
+
+	public function deletecourse($courseId){
+		$this->load->database();
+		$query = $this->db->query("DELETE from employeecourses where id = '$courseId'");
+	}
+
+
+	// Migrations
+	public function employeeSuperfundsMigration(){
+		$this->load->database();
+		$query = $this->db->query("SELECT * from employeesuperfund");
+		return $query->result();
+	}
+	public function employeeSuperfundsMigrations($xeroEmpId,$id){
+		$this->load->database();
+		$query = $this->db->query("SELECT * from employee where xeroEmployeeId = '$xeroEmpId'");
+		$uid = ($query->row());
+		if($uid != null && $uid != ""){
+			$uid = $uid->userid;
+			$this->db->query("UPDATE employeesuperfund SET employeeId = '$uid' where id=$id");
+		}
+	}
+
+	public function employeeTaxDeclarationMigration(){
+		$this->load->database();
+		$query = $this->db->query("SELECT * from employeetaxdeclaration");
+		return $query->result();
+	}
+
+	public function employeeTaxDeclarationMigrations($xeroEmpId){
+		$this->load->database();
+		$query = $this->db->query("SELECT * from employee where xeroEmployeeId = '$xeroEmpId'");
+		$uid = ($query->row());
+		if($uid != null && $uid != ""){
+			$uid = $uid->userid;
+			$this->db->query("UPDATE employeetaxdeclaration SET employeeId = '$uid' where employeeId = '$xeroEmpId'");
+		}
+	}
+
+	// public function employeeRecordMigration(){
+	// 	$this->load->database();
+	// 	$query = $this->db->query("SELECT * from employeetaxdeclaration");
+	// 	return $query->result();
+	// }
+
+	// public function employeeRecordMigrations($xeroEmpId){
+	// 	$this->load->database();
+	// 	$query = $this->db->query("SELECT * from employee where xeroEmployeeId = '$xeroEmpId'");
+	// 	$uid = ($query->row());
+	// 	if($uid != null && $uid != ""){
+	// 		$uid = $uid->userid;
+	// 		$this->db->query("UPDATE employeetaxdeclaration SET employeeId = '$uid' where employeeId = '$xeroEmpId'");
+	// 	}
+	// }
 }

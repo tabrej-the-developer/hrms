@@ -174,7 +174,7 @@ if($aT == 'rosteredEmployees'){
     $startTime = intval(($clocksArray[$breaksCount-1]->endTime)/100)*60 + intval(($clocksArray[$breaksCount-1]->endTime)%100);
     $endTime = intval(($clocksArray[$breaksCount]->startTime)/100)*60 + intval(($clocksArray[$breaksCount]->startTime)%100);
         $breaks = ($endTime) - ($startTime) ;
-        array_push($breaksC , "<span class='breaks'>Break No: $breaksCount from " .  timex(intval(($startTime)/60). sprintf("%02d",($startTime)%60))." to ".timex(intval(($endTime)/60) . sprintf("%02d",($endTime)%60))."</span><br>");
+        array_push($breaksC , "<span class='breaks'>Break No: $breaksCount from " .  $clocksArray[$breaksCount-1]->endTime."</span><br>");
         $breaksCount++;
       }
 

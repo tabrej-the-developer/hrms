@@ -47,6 +47,12 @@
 			padding-left: 10px;
 			flex-wrap: wrap
 		}
+		.documents-tab{
+			display: none;
+			padding-left: 10px;
+			padding-right: 10px;
+			flex-wrap: wrap
+		}
 		.tab-buttons{
 			margin-bottom:10px;
 			display: flex;
@@ -122,7 +128,7 @@
 		.span-class{
 			padding: 10px 0 10px 0;
 			display: inline-block;
-			width: 33%;
+			/*width: 33%;*/
 		}
 		.span-class .col-3{
 			padding-left:0;
@@ -144,7 +150,7 @@
 		position: absolute;
 		right: 1rem;
 	}
-	.add-row,#superfund-add{
+	.add-row,#superfund-add,.add_course,.remove_course,.course_delete{
 		display: inline-flex;
 		justify-content: center;
 		align-items: center;
@@ -166,7 +172,11 @@
 		font-weight: 700;
 		cursor: pointer;
 	}
-		#submit{
+		#submit,
+		.addRemoveDocumentAdd,
+		.removeDocumentButton,
+		.singleDocDownload,
+		.deleteDocument{
 	  	border: none;
 	  	color: rgb(23, 29, 75);
 	  	text-align: center;
@@ -179,6 +189,10 @@
     	padding: 8px;
     	background: rgb(164, 217, 214);
 			}
+			.addRemoveDocumentAdd{
+				cursor: pointer;
+			}
+			.removeDocumentButton
 		.span-class.row{
 			margin:0;
 			width:100%;
@@ -223,7 +237,10 @@
 		    padding:3px;
 		    border-radius:;
 		}
-
+		table{
+			width: 100%;
+			text-align: center;
+		}
 	.addEmployee-container{
 		height:100vh;
 		padding:4rem 3rem 2rem 2rem;
@@ -253,7 +270,6 @@
 		font-size: 3rem;
 		height:4rem;
 		width: 4rem;
-		margin-top: 1rem !important;
 	}
 	.profileImage_parent{
 		width: auto !important;
@@ -273,27 +289,67 @@
 		width: 24% !important
 	}
 	input[type="FILE"]{
-		width: 100%;
-	    display: block;
 	    margin-top: 10px;
+	    width: 10rem;
 	}
 	.add_remove_superfund{
 	    position: absolute;
 	    right: 0;
 	}
+	.icon{
+		margin-top: 0 !important;
+		vertical-align: middle !important;
+		padding: 0 !important
+	}
+	.addDocumentsDiv{
+		position: relative;
+	}
+	.addRemoveDocument{
+		display: flex;
+    justify-content: flex-end;
+   }
+   .singleDocBlock{
+   	line-height: 1.5rem;
+   }
+	.files__{
+		width: 70%;
+		display: flex;
+		justify-content: space-evenly;
+	}
+	.addFile{
+		margin-top: 0 !important;
+	}
+	.addSingleDocument{
+		background: rgba(0,0,0,0.1);
+		border-radius: 5px;
+		padding: 0.2rem;
+		align-items: center;
+	}
+	.course_delete{
+		margin-top: 2rem;
+    float: right;
+    margin-right: 8rem;
+	}
+	table td {
+		text-align: center;
+	}
+	th{
+		font-size: 0.95rem;
+	}
 	</style>
 </head>
 <body>
 <?php $this->load->view('header'); ?>
-<?php $employeeData = json_decode($getEmployeeData); ?>
+<?php $employeeData = json_decode($getEmployeeData); 
+?>
 <div class="containers">
-	<span style="position: absolute;top:20px;padding-left: 2rem">
+	<span style="position: absolute;top:20px;padding-left: 2rem" class="d-inline-flex align-items-center">
       <a href="<?php echo base_url();?>/settings">
         <button class="btn back-button">
           <img src="<?php echo base_url('assets/images/back.svg');?>">
-          <span style="font-size:0.8rem">Edit Employee</span>
         </button>
       </a>
+	<span class="employeeNameView">Edit Employee</span>
     </span>
 	<div class="addEmployee-container">
 	<div class="addEmployee-container-child">
@@ -307,6 +363,7 @@
 		<span class="nav-button e-t-d-s"><span>Tax Declaration </span></span>
 		<span class="nav-button e-u-s"><span>Employment</span></span>	
 		<span class="nav-button m-i"><span>Medical Info</span></span>
+		<span class="nav-button d-c"><span>Documents</span></span>
 		</div>	
 	</section>
 <form method="POST" action="updateEmployeeProfile" style="height: 100%" enctype="multipart/form-data">
@@ -359,9 +416,11 @@
 
 		<span class="span-class profileImage_parent col-3" style="width: auto !important">
 			<span style="height:100px;width:100px">
-				<?php if(file_exists('api/application/assets/profileImages/'.$this->session->userdata('LoginId').'.png')){ ?>
-				<img src="<?php echo BASE_API_URL."application/assets/profileImages/".$this->session->userdata('LoginId').".png"?>" style="height:100px;width:100px;border-radius:0.5rem">
-			<?php }else{ 
+				<?php if(file_exists('api/application/assets/profileImages/'.$this->session->userdata('LoginId').'.png') && filesize("api/application/assets/profileImages/".$this->session->userdata('LoginId').".png") > 0){ 
+					?>
+				<img src="<?php echo BASE_API_URL."application/assets/profileImages/".$this->session->userdata("LoginId").".png"?>" style="height:100px;width:100px;border-radius:0.5rem">
+			<?php 
+					}else{ 
 					if($this->session->has_userdata('Name')){
 		              $side_bar_name =  $this->session->userdata('Name');
 		              $side_bar_name = explode(' ',$side_bar_name);
@@ -524,8 +583,8 @@
 	<section class="employee-superfund-section">
 		<h3> Superannuation 
 			<span class="add_remove_superfund">
-				<span id="superfund-add"> add </span>
-				<span class="superfund-remove"> remove </span></span></h3>
+				<span id="superfund-add"> Add </span>
+				<span class="superfund-remove"> Remove </span></span></h3>
 <!-- 		<span class="span-class col-3">
 			<label>Employee Id</label>
 			<input placeholder="Employee Id" id="employeeId" >
@@ -680,14 +739,7 @@
 			<input type="radio" name="resume_supplied" class="resume_supplied yn-input" value="N">
 		</span>
  -->
-		<span class="span-class col-3">
-			<label>Resume Document </label>
-			<input  id="resume_doc" name="resume_doc" type="file" value=" ">
-		</span>
-		<span class="span-class col-3">
-			<label>Contract Document </label>
-			<input  id="contract_doc" name="contract_doc" type="file" value=" ">
-		</span>
+
 
 <!-- 		<span class="span-class col-3">
 			<label>Employment-type</label>
@@ -811,8 +863,14 @@
 		<input placeholder="Termination Date" id="terminationDate"  class="" type="date" name="terminationDate" value="<?php echo isset($employeeData->employee->terminationDate) ? $employeeData->employee->terminationDate : ''; ?>">
 		</span>
 <?php $toCount = isset($employeeData->employeeCourses) ? $employeeData->employeeCourses : ''; ?>
-<?php for($i=0;$i<count($toCount);$i++){ ?>
-		<div>
+<div class="courses_buttons">
+	<span><span class="add_course">Add</span></span>
+	<span><span class="remove_course">Remove</span></span>
+</div>
+<?php 
+	// count($toCount)
+for($i=0;$i<count($toCount);$i++){ ?>
+		<div class="courses_div">
 				<input type="text" name="course_id[]" style="display:none" value="<?php echo isset($employeeData->employeeCourses[$i]->id) ? $employeeData->employeeCourses[$i]->id : ''; ?>">
 				<span class="span-class col-3">
 					<label>Course Name</label>
@@ -834,6 +892,9 @@
 					<label>Certificate </label>
 					<input placeholder="Certificate" class="certificate" name="certificate[]" type="FILE">
 				</span>
+				<?php if( isset($employeeData->employeeCourses[$i]->id) ){ ?>
+				<span class="course_delete" courseId="<?php echo isset($employeeData->employeeCourses[$i]->id) ? $employeeData->employeeCourses[$i]->id : ''; ?>">Delete</span>
+			<?php } ?>
 		</div>
 	<?php } ?>
 <!-- 		<span class="span-class col-3">
@@ -944,6 +1005,54 @@
 				<input  type="date"  name="maternityEndDate" class="maternityEndDate">
 		</span> -->
 	</section>
+	<section class="documents-tab">
+		<div class="addRemoveDocument">
+			<span class="addRemoveDocumentSpan">
+				<span class="addRemoveDocumentAdd">Add</span>
+			</span>
+		</div>
+		<div class="addDocumentsDiv">
+<!-- 			<span class="span-class col-3">
+				<label>Resume Document </label>
+				<input  id="resume_doc" name="resume_doc" type="file" value=" ">
+			</span>
+			<span class="span-class col-3">
+				<label>Contract Document </label>
+				<input  id="contract_doc" name="contract_doc" type="file" value=" ">
+			</span> -->
+			<table class="documentsTable">
+				<tr style="text-align:center">
+					<th>Document Name</th>
+					<th>Download</th>
+					<th>Delete</th>
+				</tr>
+				<tr>
+					<td>Resume Document </td>
+					<td class="singleDocDownload">Download</td>
+					<td><input  id="resume_doc" name="resume_doc" type="file" value=" "></td>
+				</tr>
+				<tr>
+					<td>Contract Document</td>
+					<td class="singleDocDownload">Download</td>
+					<td><input  id="contract_doc" name="contract_doc" type="file" value=" "></td>
+				</tr>
+				<?php foreach($employeeData->employeeDocuments as $docs){ ?>
+					<tr class="singleDocBlock">
+						<td class="singleDocName"><?php echo $docs->name ?></td>
+						<td class="singleDocDownload">
+							<a href="<?php echo DOCUMENTS_PATH.($docs->document) ?>" download>Download</a>
+						</td>
+						<td><button class="deleteDocument" docId="<?php echo $docs->id ?>">Delete</button></td>
+					</tr>
+				<?php } ?>
+				<tr class="addSingleDocument">
+					<td><input type="text" name="addFileName[]"></td>
+					<td><input type="FILE" name="addFile[]" class="addFile"></td>
+					<td><span class="removeDocumentButton">Remove</span></td>
+				</tr>
+			</table>
+		</div>
+	</section>
 	<div class="submit-div">
 		<button id="submit">
 			<i>
@@ -985,6 +1094,7 @@
 			$('.employee-tax-declaration-section').css('display','none');
 			$('.employee-details').css('display','none');
 			$('.medical-info').css('display','none');
+			$('.documents-tab').css('display','none');
 		})
 		$(document).on('click','.e-s',function(){
 			$('.employee-bank-account-section').css('display','none')
@@ -993,6 +1103,7 @@
 			$('.employee-tax-declaration-section').css('display','none');
 			$('.employee-details').css('display','none');
 			$('.medical-info').css('display','none');
+			$('.documents-tab').css('display','none');
 		})
 		$(document).on('click','.e-s-s',function(){
 			$('.employee-bank-account-section').css('display','none')
@@ -1001,6 +1112,7 @@
 			$('.employee-tax-declaration-section').css('display','none');
 			$('.employee-details').css('display','none');
 			$('.medical-info').css('display','none');
+			$('.documents-tab').css('display','none');
 		})
 		$(document).on('click','.e-t-d-s',function(){
 			$('.employee-bank-account-section').css('display','none')
@@ -1009,6 +1121,7 @@
 			$('.employee-tax-declaration-section').css('display','block');
 			$('.employee-details').css('display','none');
 			$('.medical-info').css('display','none');
+			$('.documents-tab').css('display','none');
 		})
 		$(document).on('click','.e-u-s',function(){
 			$('.employee-bank-account-section').css('display','none')
@@ -1017,6 +1130,7 @@
 			$('.employee-tax-declaration-section').css('display','none');
 			$('.employee-details').css('display','block');
 			$('.medical-info').css('display','none');
+			$('.documents-tab').css('display','none');
 		})
 		$(document).on('click','.m-i',function(){
 			$('.employee-bank-account-section').css('display','none')
@@ -1025,6 +1139,16 @@
 			$('.employee-tax-declaration-section').css('display','none');
 			$('.employee-details').css('display','none');
 			$('.medical-info').css('display','block');
+			$('.documents-tab').css('display','none');
+		})
+		$(document).on('click','.d-c',function(){
+			$('.employee-bank-account-section').css('display','none')
+			$('.employee-section').css('display','none');
+			$('.employee-superfund-section').css('display','none');
+			$('.employee-tax-declaration-section').css('display','none');
+			$('.employee-details').css('display','none');
+			$('.medical-info').css('display','none');
+			$('.documents-tab').css('display','block');
 		})
 	})
 
@@ -1159,6 +1283,7 @@ $(document).ready(function(){
 					$('.e-t-d-s span').removeClass('arrow');
 					$('.e-u-s span').removeClass('arrow');
 					$('.m-i span').removeClass('arrow');
+					$('.d-c span').removeClass('arrow');
         })
         $('.e-b-a-s').click(function(){
         	$('.e-s span').removeClass('arrow');
@@ -1167,6 +1292,7 @@ $(document).ready(function(){
 					$('.e-t-d-s span').removeClass('arrow');
 					$('.e-u-s span').removeClass('arrow');
 					$('.m-i span').removeClass('arrow');
+					$('.d-c span').removeClass('arrow');
         })
         $('.e-s-s').click(function(){
         	$('.e-s span').removeClass('arrow');
@@ -1175,6 +1301,7 @@ $(document).ready(function(){
 					$('.e-t-d-s span').removeClass('arrow');
 					$('.e-u-s span').removeClass('arrow');
 					$('.m-i span').removeClass('arrow');
+					$('.d-c span').removeClass('arrow');
         })
         $('.e-t-d-s').click(function(){
         	$('.e-s span').removeClass('arrow');
@@ -1183,6 +1310,7 @@ $(document).ready(function(){
 					$('.e-t-d-s span').addClass('arrow');
 					$('.e-u-s span').removeClass('arrow');
 					$('.m-i span').removeClass('arrow');
+					$('.d-c span').removeClass('arrow');
         })
         $('.e-u-s').click(function(){
         	$('.e-s span').removeClass('arrow');
@@ -1191,6 +1319,7 @@ $(document).ready(function(){
 					$('.e-t-d-s span').removeClass('arrow');
 					$('.e-u-s span').addClass('arrow');
 					$('.m-i span').removeClass('arrow');
+					$('.d-c span').removeClass('arrow');
         })
         $('.m-i').click(function(){
         	$('.e-s span').removeClass('arrow');
@@ -1199,6 +1328,16 @@ $(document).ready(function(){
 					$('.e-t-d-s span').removeClass('arrow');
 					$('.e-u-s span').removeClass('arrow');
 					$('.m-i span').addClass('arrow');
+					$('.d-c span').removeClass('arrow');
+        })
+        $('.d-c').click(function(){
+        	$('.e-s span').removeClass('arrow');
+					$('.e-b-a-s span').removeClass('arrow');
+					$('.e-s-s span').removeClass('arrow');
+					$('.e-t-d-s span').removeClass('arrow');
+					$('.e-u-s span').removeClass('arrow');
+					$('.m-i span').removeClass('arrow');
+					$('.d-c span').addClass('arrow');
         })
     });
 
@@ -1213,6 +1352,55 @@ $(document).ready(function(){
     	if(bankLength > 1){
     		$('.child').eq(length-1).remove();
     	} 
+    })
+
+    $(document).ready(function(){
+    	var block = $('.addSingleDocument')[0].outerHTML;
+    	var parent = $('.singleDocBlock').eq(0).parent();
+    	$(document).on('click','.addRemoveDocumentSpan',function(){
+    		$('.documentsTable').append(block);
+    	})
+
+    	$(document).on('click','.removeDocumentButton',function(){
+    		$(this).closest('.addSingleDocument').remove();
+    	})
+
+	    $(document).on('click','.deleteDocument',function(){
+	    	var docId = $(this).attr('docId')
+	    	var url = window.location.origin+'/PN101/settings/deleteDocument/'+docId;
+	    	$.ajax({
+	    		url : url,
+	    		type : 'GET',
+	    		success : function(response){
+	    			console.log(response)
+	    		}
+	    	})
+	    })
+
+	    var course = $('.courses_div')[0].outerHTML;
+	    $(document).on('click','.add_course',function(){
+	    	var len = ($('.courses_div').length)-1;
+	    	if(len < 0)
+	    		$('.courses_buttons').after().append(course)
+	    	else
+					$('.courses_div').eq(len).after().append(course);
+	    })
+	    $(document).on('click','.remove_course',function(){
+	    	var len = ($('.courses_div').length)-1;
+		    	$('.courses_div').eq(len).remove();
+	    })
+
+	    $(document).on('click','.course_delete',function(){
+	    	var courseId = $(this).attr('courseId');
+	    	var url = window.location.origin+'/PN101/settings/DeleteCourse/'+courseId;
+	    	$.ajax({
+	    		url : url,
+	    		type : 'GET',
+	    		success: function(response){
+
+	    		}
+	    	})
+	    })
     })
 </script>
 </body>

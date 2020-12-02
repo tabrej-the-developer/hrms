@@ -583,9 +583,9 @@ function createPayrun($payrollCalendarId,$access_token,$tenant_id){
 								$var['leaveDetails']['leaveNotes'] = $leaveApp->notes;
 								$var['leaveDetails']['leaveNoOfHours'] = $leaveApp->noOfHours;
 								$var['leaveDetails']['leaveStatus'] = $leaveApp->status;
-								$var['leaveDetails']['leaveName'] = $leaveDetails->name;
-								$var['leaveDetails']['leavePaidYN'] = $leaveDetails->isPaidYN;
-								$var['leaveDetails']['leaveShowOnPaySlip'] = $leaveDetails->showOnPaySlipYN;
+								$var['leaveDetails']['leaveName'] = isset($leaveDetails->name) ? $leaveDetails->name : "" ;
+								$var['leaveDetails']['leavePaidYN'] = isset($leaveDetails->isPaidYN) ? $leaveDetails->isPaidYN : "" ;
+								$var['leaveDetails']['leaveShowOnPaySlip'] = isset($leaveDetails->showOnPaySlipYN) ? $leaveDetails->showOnPaySlipYN : "" ;
 							}
 							else{
 								$var['isOnLeave'] = 'N';

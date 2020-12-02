@@ -63,11 +63,11 @@ class Mom extends CI_CONTROLLER{
     public function startMeeting($mId){
       if($this->session->has_userdata('LoginId')){
     //footprint start
-  if($this->session->has_userdata('current_url')){
-    footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-    $this->session->set_userdata('current_url',currentUrl());
-  }
-  // footprint end
+      if($this->session->has_userdata('current_url')){
+        footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+        $this->session->set_userdata('current_url',currentUrl());
+      }
+      // footprint end
         $data['partcipants'] = $this->getParticipant($mId); 
         $data['mId'] = $mId;
         $this->load->view('startmeeting',$data);
@@ -106,17 +106,17 @@ class Mom extends CI_CONTROLLER{
 
     public function createMeeting(){
       if($this->session->has_userdata('LoginId')){
-  //footprint start
-  if($this->session->has_userdata('current_url')){
-    footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-    $this->session->set_userdata('current_url',currentUrl());
-  }
-  // footprint end
+        //footprint start
+        if($this->session->has_userdata('current_url')){
+          footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+          $this->session->set_userdata('current_url',currentUrl());
+        }
+        // footprint end
         $this->load->view('createMeeting');
                 }
-    else{
-      $this->load->view('redirectToLogin');
-    }
+      else{
+        $this->load->view('redirectToLogin');
+      }
     }
 
 
@@ -257,6 +257,7 @@ class Mom extends CI_CONTROLLER{
            $data['title']         =      $form_data['meetingTitle'];
            $data['location']      =      $form_data['meetingLocation'];
            $data['date']          =      $form_data['meetingDate'];
+           $data['edate']         =      $form_data['meetingEndDate'];
            $data['time']          =      $form_data['meetingTime'];
            $data['etime']         =      $form_data['meetingEndTime'];
            $data['agenda']        =      $form_data['meetingAgenda'];
@@ -264,7 +265,6 @@ class Mom extends CI_CONTROLLER{
            $data['invites']       =      $form_data['invites'];
            $data['status']        =      'CREATED';//$form_data['status'];
            $data['agendaFile']    =       $form_data['agendaFile'];
-           var_dump($data);
            $url = BASE_API_URL."mom/AddMeeting";
            $ch = curl_init($url);
            curl_setopt($ch, CURLOPT_URL, $url);
@@ -279,19 +279,16 @@ class Mom extends CI_CONTROLLER{
            $httpcode = curl_getinfo($ch,CURLINFO_HTTP_CODE);
            // json_encode($data);
            // print_r($server_output);
-                           var_dump($server_output);
-           print_r($httpcode);
             if($httpcode == 200){
-                $jsonOutput = json_decode($server_output);
-
-                curl_close($ch);       
-                redirect(base_url().'dashboard');
+              $jsonOutput = json_decode($server_output);
+              curl_close($ch);       
+              redirect(base_url().'dashboard');
             }
             else if($httpcode == 401){
-                  json_encode(['error'=>'Error']);
-                }
-              }
+              json_encode(['error'=>'Error']);
             }
+          }
+        }
 
    public function meetingAttendence($mId){
        $form_data = $this->input->post(); 

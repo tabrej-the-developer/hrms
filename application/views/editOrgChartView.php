@@ -257,7 +257,8 @@ font-family: 'Open Sans', sans-serif;
 	padding: 20px 0 0 0;
 }
 .priority_areas {
-	display: flex;
+	padding-top: 2rem;
+	display: block;
     text-align: center;
     justify-content: center;
     width: 100%;

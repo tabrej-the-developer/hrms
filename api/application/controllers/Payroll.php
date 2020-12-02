@@ -255,6 +255,7 @@ public function getPaySlips($timesheetid,$userid){
 									$data['PaySlip'] = $getPayslip;
 									$data['EarningRates'] = $this->payrollModel->getAllEarningRates();
 									$data['LeaveType'] = $this->payrollModel->getAllLeaveTypes();
+									$data['Centerid'] = isset(($this->payrollModel->getCenteridFromTimesheet($timesheetid))->centerid) ? (($this->payrollModel->getCenteridFromTimesheet($timesheetid))->centerid) : "" ; 
 											}
 										}
 									}
@@ -384,14 +385,14 @@ public function getPaySlips($timesheetid,$userid){
 			}
 	}
 
-	public function getUserLevels($x,$userid ){
+	public function getUserLevels($level,$userid ){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			if($res != null && $res->userid == $userid){
 				$this->load->model('payrollModel');
-				$mdata['users'] = $this->payrollModel->getUserLevels($x);
+				$mdata['users'] = $this->payrollModel->getUserLevels($level);
 				http_response_code(200);
 				echo json_encode($mdata);
 			}

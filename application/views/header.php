@@ -118,6 +118,9 @@ $nth_child = 0;
 font-family: 'Open Sans', sans-serif;
 outline: none !important;
   }
+  :root{
+    --table-header: #8D91AA;
+  }
   input:focus{
     outline: none !important;
   }
@@ -452,6 +455,13 @@ select{
   a{
     text-decoration: none !important;
   }
+  .view_employee_title,.back_button,.employeeNameView{
+    text-align: left !important;
+    font-weight: bold !important;
+    font-size: 1.5rem !important;
+    display: flex !important;
+    color: #171D4B !important;
+  }
 /*Notification css*/
 @media only screen and (max-width:600px){
   .navbar{
@@ -500,10 +510,10 @@ select{
               <span class=" icon" style="
                 <?php echo "background:".$colors_array[rand(0,5)]?>">
                 <?php
-                if(isset($side_bar_name) && !file_exists('api/application/assets/profileImages/'.$userid.'.png')){ 
+                if(isset($side_bar_name) && isset($userid) &&  !file_exists('api/application/assets/profileImages/'.$userid.'.png')){ 
                   echo isset($side_bar_name[0]) ? icon($side_bar_name[0]) : "";
                 }
-                if(file_exists('api/application/assets/profileImages/'.$userid.'.png')){
+                if(isset($userid) &&  file_exists('api/application/assets/profileImages/'.$userid.'.png') ){
                   ?>
                   <img src="<?php echo BASE_API_URL.'/application/assets/profileImages/'.$userid.'.png' ?>">
                   <?php
@@ -514,7 +524,7 @@ select{
             <?php } ?>
             </span>
             <span class="user_data_class"><?php
-            if(isset($side_bar_name)){
+            if(isset($side_bar_name[0])){
                  echo $side_bar_name[0]; 
               }
            ?></span>

@@ -1259,7 +1259,6 @@ height: 10rem;
   overflow: auto;
   background-color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.4);
-  
 }
 .usersModalContent {
   color: #414242;
@@ -1284,6 +1283,34 @@ height: 10rem;
   display: block;
   width: 100%;
   text-align: center;
+}
+
+.addUsersModal{
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.addUsersModalContent{
+  color: #414242;
+  margin: 15% auto;
+  width: 500px;
+  font-size: 16px;
+  line-height: 28px;
+  letter-spacing: 0.5px;
+  -webkit-font-smoothing: antialiased;
+  background: #FFFFFF;
+  border: 1px solid #9B9C9D;
+  box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.20);
+  border-radius: 6px;
+
 }
 
 .user__#accept {
@@ -1426,6 +1453,61 @@ height: 100%;
 .dynamic_icons img{
   margin-left: 0.75rem;
 }
+.members_title{
+      width: 80%;
+    display: flex;
+    justify-content: center;
+}
+.members_add{
+  width: 20%;
+  cursor: pointer;
+}
+.members_add img{
+  display: flex;
+  justify-content: center;
+}
+.addUsersModalContent_addMember{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #8D91AA;
+  color: #F3F4F7;
+  padding: 1rem
+}
+.addUsersModule_div{
+  width: 60%;
+  margin: auto;
+}
+.addUsersModule_div .tokenize .tokens-container{
+  margin-top: 2rem !important;
+}
+.addUsersModal_buttons{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+}
+#accept,#reject{
+    border: none !important;
+    color: rgb(23, 29, 75) !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    display: inline-block;
+    font-weight: 700 !important;
+    margin: 2px !important;
+    min-width:6rem !important;
+    border-radius: 20px !important;
+    padding: 4px 8px !important;
+    background: rgb(164, 217, 214) !important;
+    font-size: 1rem !important;
+    margin-right:5px !important;
+    justify-content: center !important;
+}
+.rounded span{
+  color: rgba(0,0,0,0.8);
+  font-size: 0.75rem;
+  padding-left: 0.4rem;
+}
 /* New UI code ends here */
     @media only screen and (max-width: 600px){
       .left-bar{
@@ -1508,11 +1590,25 @@ messaging.getToken().then((currentToken) => {
 <body>
 <div class="container mr-0 pr-0">
  <?php 
-      $recentChats = json_decode($recentChats);
+      // $recentChats = json_decode($recentChats);
     $allUsers = json_decode($allUsers);
-    $currentChat;
-    $currentUserInfo;
-    $groups;
+    // $currentChat;
+    // $currentUserInfo;
+    // $groups                
+    function sortChat($my_array)
+             {
+              $c = $my_array->chats;
+            for($i=0;$i<count($c);$i++){
+              $val = $c[$i];
+              $j = $i-1;
+              while($j >= 0 && ($c[$j]->createdAt > $val->createdAt)){
+                $c[$j+1] = $c[$j];
+                $j--;
+              }
+              $c[$j+1] = $val;
+            }
+            return $c;
+          }
   
   ?>
 
@@ -1567,48 +1663,40 @@ messaging.getToken().then((currentToken) => {
       <!-- Recent Chat  -->
       <div class="recentchat">
         <?php 
-        if(isset($recentChats->chats)){
-          if(count($recentChats->chats) > 0){
-        foreach($recentChats->chats as $chat){ ?>
-        <span class="recentchat_wrapper" group="<?php echo $chat->isGroupYN; ?>" id="<?php echo $chat->id; ?>">
+        if($recentConversations != null && $recentConversations != "" ){
+          if(count($recentConversations) > 0){
+        foreach($recentConversations as $chat){ ?>
+        <span class="recentchat_wrapper"  chatid="<?php echo $chat->idConversation; ?>" memberid="<?php echo $chat->recentChat[0]->idMember ?>">
           <span class="recentchat_icon">
-            <?php if($isGroupYN == 'Y'){ ?>
-              <?php if($chat->imgUrl != null && $chat->imgUrl != "" ){ ?>
-                <img src="<?php echo base_url('api/application/assets/uploads/groupprofiles/').$chat->imgUrl; ?>" height="25px" width="25px" class="left_icon">
+            <?php // if($isGroupYN == 'Y'){ ?>
+              <?php if($chat->convoProfilePic != null && $chat->convoProfilePic != "" ){ ?>
+                <img src="<?php echo base_url('api/uploads/images/conversation/').$chat->convoProfilePic; ?>" height="25px" width="25px" class="left_icon">
              <?php } ?>
-             <?php if($chat->imgUrl == null || $chat->imgUrl == "" ){ ?>
+             <?php if($chat->convoProfilePic == null || $chat->convoProfilePic == "" ){ ?>
               <span class=" icon" style="
                 <?php echo "background:".$colors_array[rand(0,5)]?>">
-                <?php echo isset($chat->name) ? icon($chat->name) : "";?>
+                <?php echo isset($chat->convoName) ? icon($chat->convoName) : "";?>
               </span>
               <?php } ?>
-            <?php } ?>
-            <?php if($isGroupYN == 'N'){ ?>
-              <?php if($chat->imgUrl != null && $chat->imgUrl != "" ){ ?>
-                <img src="<?php echo base_url('api/application/assets/uploads/groupprofiles/').$chat->imgUrl; ?>" height="25px" width="25px" class="left_icon">
-              <?php } ?>
-              <?php if($chat->imgUrl == null || $chat->imgUrl == "" ){ ?>
-              <span class=" icon" style="
-                <?php echo "background:".$colors_array[rand(0,5)]?>">
-                <?php echo isset($chat->name) ? icon($chat->name) : "";?>
-              </span>
-              <?php } ?>
-          <?php  } ?>
+            <?php // } ?>
+
           </span>
           <span class="recentchat_tile">
             <span class="recentchat_text">
               <div class="recentchat_text_top">
                 <span class="recentchat_title"><?php 
-                  if(strlen($chat->name) > 13){
-                      echo  substr($chat->name,0,14)."...";
+                  if(strlen($chat->convoName) > 13){
+                      echo  substr($chat->convoName,0,14)."...";
                   }else{
-                    echo $chat->name;
+                    echo $chat->convoName;
                   }
                  ?></span>
+                 <?php foreach($chat->recentChat as $rChat){ ?>
                 <span class="recentchat_date_time">
                   <?php
-                  if(date('d-m-Y',strtotime($chat->time)) == date('d-m-Y',strtotime('today'))){
-                    $myDateTime = new DateTime(date('Y-m-d h:i:s',strtotime($chat->time)), new DateTimeZone('GMT'));
+                  if(date('d-m-Y',strtotime($rChat->createdAt)) == date('d-m-Y',strtotime('today'))){
+                    $myDateTime = new DateTime(date('Y-m-d h:i:s a',strtotime($rChat->createdAt)), new DateTimeZone('GMT'));
+                    // print_r($myDateTime);
                     // $loc = $_SERVER['REMOTE_ADDR'];
                     // $ipInfo = file_get_contents('http://ip-api.com/json/' . $loc);
                     $myDateTime->setTimezone(new DateTimeZone('Asia/Kolkata'));                    
@@ -1619,17 +1707,19 @@ messaging.getToken().then((currentToken) => {
                     // echo date('h:i a',strtotime($chat->time));
                   }
                   else
-                    echo date('d/m/Y',strtotime($chat->time));
+                    echo date('d/m/Y',strtotime($rChat->createdAt));
+                }
                   ?>
                 </span>
               </div>
               <div class="recentchat_text_bottom">
-                <?php // array_slice(explode(" ",$chat->name),0,1)[0].": ". ?>
-                <?php if($chat->isGroupYN == 'N'){ ?>
-                <span class="recentchat_message"><?php echo ((strlen($chat->lastText)) <= 25 ? $chat->lastText : substr($chat->lastText,0,25)."..."); ?></span>
-              <?php }if($chat->isGroupYN == 'Y'){  ?>
-                <span class="recentchat_message"><?php echo array_slice(explode(" ",$chat->senderName),0,1)[0].": ".((strlen($chat->lastText)) <= 15 ? $chat->lastText : substr($chat->lastText,0,15)."..."); ?></span>
-              <?php } ?>
+                <?php   ?>
+                <?php  // if($chat->isGroupYN == 'N'){ ?>
+                <span class="recentchat_message"><?php echo ((strlen($rChat->chatText)) <= 25 ? $rChat->chatText : substr($rChat->chatText,0,25)."..."); ?></span>
+              <?php  // }
+              // if($chat->isGroupYN == 'Y'){  ?>
+                <!-- <span class="recentchat_message"><?php //echo array_slice(explode(" ",$chat->senderName),0,1)[0].": ".((strlen($chat->chatText)) <= 15 ? $chat->chatText : substr($chat->chatText,0,15)."..."); ?></span> -->
+              <?php // } ?>
               </div>
             </span>
           </span>
@@ -1646,7 +1736,8 @@ messaging.getToken().then((currentToken) => {
       <div class="allUsersList"><!-- class="recentchat" -->
         <?php 
         foreach ($allUsers->users as $user) { ?>
-        <span class="allUsersList_wrapper" group="N" onclick="loadNewChat('<?php echo $user->userid ?>','N')">
+          <!-- onclick="createNewChat('<?php echo $user->userid ?>','<?php echo $user->username ?>')" -->
+        <span class="allUsersList_wrapper" repeat-check="<?php echo $user->userid ?>" group="N" onclick="getConversation('<?php echo $user->userid ?>','<?php echo $user->username ?>')">
           <span class="allUsersList_userIcon">
             <span class=" icon" style="
               <?php echo "background:".$colors_array[rand(0,5)]?>">
@@ -1708,33 +1799,43 @@ messaging.getToken().then((currentToken) => {
 
 <!-- 
   <div class="group-box col-sm-12 col-md-7"></div> -->
-    <!-- Chat Box-->	
+    <!--  -------------------------
+                Chat Box
+          ---------------------------   -->	
     <div class="px-0 col-sm-12 col-md-9 messenger_center_box" style="min-height:100vh;word-break: break-word">
 <?php   
-    $currentUserInfo = json_decode($currentUserInfo);
+      $getChat = isset($getChat) ? json_decode($getChat) : "";
+      $getConversation = isset($getConversation) ? json_decode($getConversation) : ""; 
  ?>
   <div  class="media headind_srchs" 
-        user_id="<?php echo isset($currentUserInfo->memberid) ?  $currentUserInfo->memberid : (isset($currentUserInfo->groupid) ?  $currentUserInfo->groupid : "" ); ?>" 
-        group="<?php echo isset($currentUserInfo->memberid) ?  'N' : (isset($currentUserInfo->groupid) ?  'Y' : "" ); ?>">
+        user_id="<?php echo isset($getConversation->conversation->idConversation) ? $getConversation->conversation->idConversation : "" ; ?>" 
+        group="<?php echo isset($getConversation->conversation->isGroupYN) ? $getConversation->conversation->isGroupYN : "" ; ?>" idMember="<?php 
+        if(isset($getConversation->members) && $getConversation->members != null){
+          foreach($getConversation->members as $gC){
+            if($gC->idUser == $this->session->userdata('LoginId')){
+              echo $gC->idMember;
+            }
+          }
+        } ?>">
     <i class="message-back"></i>
     <a href="javascript:void(0);" id="contact_us">
   	<?php
-      if(isset($currentUserInfo->avatarUrl)){
-        if($currentUserInfo->avatarUrl == null || $currentUserInfo->avatarUrl == ""){ ?>
+      if(isset($getConversation->conversation->convoProfilePic)){
+        if($getConversation->conversation->convoProfilePic == null || $getConversation->conversation->convoProfilePic == ""){ ?>
           <span class=" icon" style="
                 <?php echo "background:".$colors_array[rand(0,5)]?>">
-            <?php echo isset($currentUserInfo->groupName) ? icon($currentUserInfo->groupName) : "";?>
+            <?php echo isset($getConversation->conversation->convoName) ? icon($getConversation->conversation->convoName) : "";?>
           </span>
           <?php  } 
-          if($currentUserInfo->avatarUrl != "" && $currentUserInfo->avatarUrl != null){
+          if($getConversation->conversation->convoProfilePic != "" && $getConversation->conversation->convoProfilePic != null){
               ?>
-            <img src="<?php if(isset($currentUserInfo->avatarUrl)){ ?>
-               <?php echo base_url('api/application/assets/uploads/groupprofiles/').$currentUserInfo->avatarUrl; } ?>" alt="user" width="25px" height="25px" class="rounded-circle">
+            <img src="<?php if(isset($getConversation->conversation->convoProfilePic)){ ?>
+               <?php echo base_url('api/uploads/images/conversation/').$getConversation->conversation->convoProfilePic; } ?>" alt="user" width="25px" height="25px" class="rounded-circle">
                <?php } }else{ ?>
               <span class="icon-parent">
                 <span class=" icon" style="
                   <?php echo "background:".$colors_array[rand(0,5)]?>">
-                  <?php echo isset($currentUserInfo->memberName) ? icon($currentUserInfo->memberName) : "";?>
+                  <?php echo isset($getConversation->conversation->convoName) ? icon($getConversation->conversation->convoName) : "";?>
                 </span>
               </span>
         <?php   }
@@ -1745,53 +1846,55 @@ messaging.getToken().then((currentToken) => {
     	</a>
   	  <p class="text-capitalize"
          style="margin:0; font-size:18px; font-weight:500; padding:3px 0 0 10px; color: #707070;"
-         user_id="<?php echo isset($currentUserInfo->memberid) ?  $currentUserInfo->memberid : (isset($currentUserInfo->groupid) ?  $currentUserInfo->groupid : "" ); ?>" 
-         group="<?php echo isset($currentUserInfo->memberid) ?  'N' : (isset($currentUserInfo->groupid) ?  'Y' : "" ); ?>">
+         user_id="<?php echo isset($getConversation->conversation->idConversation) ? $getConversation->conversation->idConversation : "" ; ?>" 
+         group="<?php echo isset($getConversation->conversation->isGroupYN) ? $getConversation->conversation->isGroupYN : "" ; ?>">
   		<?php 
-        if($isGroupYN == "N")
+        if(isset($getConversation->conversation->isGroupYN) ? $getConversation->conversation->isGroupYN : ""  == "N")
           {
-          if(isset($currentUserInfo->memberName)){
+          if(isset($getConversation->conversation->convoName)){
 
-            echo $currentUserInfo->memberName;
+            echo $getConversation->conversation->convoName;
           }}
           else{
-            if(isset($currentUserInfo->groupName)){
-              echo $currentUserInfo->groupName;
+            if(isset($getConversation->conversation->convoName)){
+              echo $getConversation->conversation->convoName;
             }
           } 
         ?>
     	</p>
+    <i style="padding-right:1rem;cursor: pointer;" class="info_icon"><img src="<?php echo base_url('assets/images/icons/info.png'); ?>" height="25px" width="25px"></i>
     </div>
-          
+
     <div class="px-4 py-5 chat-box bg-light">
         <!-- Sender Message-->
 		<?php
-    $currentChat = json_decode($currentChat);
+    
     $currentTextDate = "00-00-0000";
-    if(isset($currentChat->chats)){
-      foreach ($currentChat->chats as $chats) { 
-        $date=date_create($chats->sentDateTime);
-        if($currentTextDate == date('Y-m-d',strtotime($chats->sentDateTime))){
+    if(isset($getChat->chats)){
+        $getChat = sortChat($getChat);
+      foreach ($getChat as $chats) { 
+        $date=date_create($chats->createdAt);
+        if($currentTextDate == date('Y-m-d',strtotime($chats->createdAt))){
 
           }else{
-            $currentTextDate = date('Y-m-d',strtotime($chats->sentDateTime));
+            $currentTextDate = date('Y-m-d',strtotime($chats->createdAt));
             $dateNeedeFormat = date('d M Y',strtotime($currentTextDate));
             echo "<div class='currentTextDate_center'><span class='currentTextDate_centerbox'>$dateNeedeFormat</span></div>";
           }
-        if($chats->transactiontype == 'TRANSACTION'){
+        if($chats->chatType == 'TRANSACTION'){
           echo "<div class='currentTextDate_center'><span class='currentTextDate_centerbox'>$chats->chatText</span></div>";
         }
-        if($chats->transactiontype != 'TRANSACTION'){
+        if($chats->chatType != 'TRANSACTION'){
            ?>
         <div class="media 
-                    <?php if( $this->session->userdata('LoginId') == $chats->senderId ){
+                    <?php if( $this->session->userdata('LoginId') == $chats->idUser ){
                        echo "sender-rightalign"; 
                      }else{
                       echo "sender-leftalign";
         } ?>">
         <!--     <img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="30" class="rounded-circle"> -->
           <div class="
-                <?php if( ($this->session->userdata('LoginId') == $chats->senderId) ){
+                <?php if( ($this->session->userdata('LoginId') == $chats->idUser) ){
                        echo "sender-right"; 
                      }
                      else{
@@ -1810,10 +1913,14 @@ messaging.getToken().then((currentToken) => {
                
             </p>
           <div class=" rounded ">
-            <?php if($chats->isGroupYN == 'Y'){ ?>
+            <?php if((isset($getConversation->conversation->isGroupYN) ? $getConversation->conversation->isGroupYN : "")  == 'Y'){ ?>
               <span><?php 
-                if($chats->senderId != $this->session->userdata('LoginId')){
-                  echo $chats->senderName; 
+                if($chats->idUser != $this->session->userdata('LoginId')){
+                  foreach($getConversation->members as $member){
+                    if($member->deletedDate == null && ($member->idUser == $chats->idUser)){
+                      echo $member->DisplayName; 
+                    }
+                  }
                 } ?>
               </span>
             <?php } ?>
@@ -1847,7 +1954,7 @@ messaging.getToken().then((currentToken) => {
                 ?>
             </p>
             <small class=" chat-message-time"><?php 
-            $myDateTime = new DateTime(date('Y-m-d h:i:s',strtotime($chats->sentDateTime)), new DateTimeZone('GMT'));
+            $myDateTime = new DateTime(date('Y-m-d h:i:s a',strtotime($chats->createdAt)), new DateTimeZone('GMT'));
                     // $loc = $_SERVER['REMOTE_ADDR'];
                     // $ipInfo = file_get_contents('http://ip-api.com/json/' . $loc);
                     $myDateTime->setTimezone(new DateTimeZone('Asia/Kolkata'));                    
@@ -1859,6 +1966,8 @@ messaging.getToken().then((currentToken) => {
         </div>
       </div>
       <?php }}}?>	
+
+
         <!-- Reciever Message-->
         <!--<div class="media w-50 ml-auto mb-3">
           <div class="media-body">
@@ -1886,12 +1995,19 @@ messaging.getToken().then((currentToken) => {
                placeholder="Type message here.."  
                class="form-control  bg-white">
         <div class="receiver_details">
-          <input type="hidden" name="receiverId" id="receiverId" value="<?php echo $currentUserId;?>">
-          <input type="hidden" name="isGroupYN" id="isGroupYN" value="<?php echo $isGroupYN;?>">
+          <input type="hidden" name="receiverId" id="receiverId" value="<?php ?>">
+          <input type="hidden" name="isGroupYN" id="isGroupYN" value="<?php ?>">
         </div>
         <div class="input-group-append">
             <!--<button id="button-addon2" type="submit" class="btn btn-link"> <i class="fa fa-paper-plane"></i></button>-->
-      		<button type="button" class="msg_send_btn" >
+      		<button type="button" class="msg_send_btn" idMember="<?php 
+          if(isset($getConversation->members)){
+          foreach($getConversation->members as $mem ){
+            if($mem->idUser == $this->session->userdata('LoginId')){
+              echo $mem->idMember;
+                }
+              } 
+            }?>">
             <img src="<?php echo base_url('assets/images/icons/send.png') ?>" width="20px">   
           </button>
         </div>
@@ -1911,77 +2027,89 @@ messaging.getToken().then((currentToken) => {
     <div class="right_user_icon">
       <div class="user_icon_wrapper">
         <span class="user_icon_view">
+        <?php if(isset($getConversation->conversation->isGroupYN) && ($getConversation->conversation->isGroupYN == 'Y')){ ?>
           <span class="wrapper_on_hover">
+          <?php } ?>
             <i class="wrapper_image_wrapper">
               <img src="<?php echo base_url('assets/images/icons/camera_white.png') ?>" height="25px" width="25px" class="wrapper_image">
             </i>
+            <?php if(isset($getConversation->conversation->isGroupYN) && ($getConversation->conversation->isGroupYN == 'Y')){ ?>
           </span>
-          <?php 
-          if(isset($currentUserInfo)){
-          if($currentUserInfo->avatarUrl != null && $currentUserInfo->avatarUrl != ""){ ?>
-          <img src="<?php echo base_url('api/application/assets/uploads/groupprofiles/').$currentUserInfo->avatarUrl; ?>">
-        <?php }if($currentUserInfo->avatarUrl == null || $currentUserInfo->avatarUrl == ""){ ?>
+          <?php }
+          if(isset($getConversation->conversation)){
+          if($getConversation->conversation->convoProfilePic != null && $getConversation->conversation->convoProfilePic != ""){ ?>
+          <img src="<?php echo base_url('api/uploads/images/conversation/').$getConversation->conversation->convoProfilePic; ?>" id="imagePreview">
+        <?php }if($getConversation->conversation->convoProfilePic == null || $getConversation->conversation->convoProfilePic == ""){ ?>
           <span class="alphabetIcon">
             <?php 
-            if(isset($currentUserInfo->avatarUrl) && ($currentUserInfo->avatarUrl != "")){}
-              else{
-                  if($isGroupYN == "N")
+                  if($getConversation->conversation->isGroupYN == "N")
                     {
-                      if(isset($currentUserInfo->memberName)){
-                         echo icon($currentUserInfo->memberName);
+                      if(isset($getConversation->conversation->convoName)){
+                         echo icon($getConversation->conversation->convoName);
                       }
                     }
                   else{
-                    if(isset($currentUserInfo->groupName)){
-                       echo icon($currentUserInfo->groupName);
+                    if(isset($getConversation->conversation->convoName)){
+                       echo icon($getConversation->conversation->convoName);
                     }
                   } 
-                }
              ?>
           </span>
           <?php } }?>
         </span>
       </div>
       <div class="user_name_wrapper">
-        <span class="user_name_view" id="user_name_view">
-            <?php if($isGroupYN == "N")
+        <span class="user_name_view" id="user_name_view" conversationid="<?php echo isset($getConversation->conversation->idConversation) ? $getConversation->conversation->idConversation : '' ?>">
+            <?php if((isset($getConversation->conversation->isGroupYN) ? $getConversation->conversation->isGroupYN : "") == "N")
                     {
-                      if(isset($currentUserInfo->memberName)){
-                         echo ($currentUserInfo->memberName);
-                      }
+                        echo $getConversation->conversation->convoName;
                     }
                   else{
-                    if(isset($currentUserInfo->groupName)){
-                       echo ($currentUserInfo->groupName."<i onclick='groupName(this)' id='groupIdI' groupId=".$currentUserInfo->groupid.">&nbsp;<img height='15px' width='15px' src=".base_url('assets/images/icons/pencil.png')."></i>");
+                    if(isset($getConversation->conversation->convoName)){
+                       echo ($getConversation->conversation->convoName."<i onclick='groupName(this)' id='groupIdI' groupId=".$getConversation->conversation->convoName.">&nbsp;<img height='15px' width='15px' src=".base_url('assets/images/icons/pencil.png')."></i>");
                     }
                   } ?>
         </span>
         <span class="user_title_view">
           <input type="file" name="editGroupImage" id="editGroupImage" style="display: none">
           <!-- <span class="editGroupImageSave">save</span> -->
-            <?php if($isGroupYN == "N")
-                    {
-                      if(isset($currentUserInfo->designation)){
-                         echo ($currentUserInfo->designation);
-                      }
-                    }
-                  else{
-                    if(isset($currentUserInfo->designation)){
-                       echo ($currentUserInfo->designation);
-                    }
-                  } ?>
+             <?php //if((isset($getConversation->conversation->isGroupYN) ? $getConversation->conversation->isGroupYN : "") == "N")
+            //         {
+            //           if(isset($currentUserInfo->designation)){
+            //              echo ($currentUserInfo->designation);
+            //           }
+            //         }
+            //       else{
+            //         if(isset($currentUserInfo->designation)){
+            //            echo ($currentUserInfo->designation);
+            //         }
+            //       } ?>
         </span>
       </div>
     </div>
-    <?php if((isset($currentUserInfo->groups) && count($currentUserInfo->groups) > 0) || (isset($currentUserInfo->members)) && count($currentUserInfo->members) > 0 ) { ?>
+    <?php if((isset($currentUserInfo->groups) && count($currentUserInfo->groups) > 0) || (isset($getConversation->members)) && count($getConversation->members) > 0 ) { ?>
     <div class="boxcategory">
       <span class="boxcategoryTitle">
-        <?php if((isset($currentUserInfo->groups) && count($currentUserInfo->groups) > 0)){
+        <?php 
+
+        if((isset($currentUserInfo->groups) && count($currentUserInfo->groups) > 0)){
               echo "Common Groups";
+            }
+            if(isset($getConversation->members) && (count($getConversation->members) > 0 ) && $getConversation->conversation->isGroupYN == 'Y'){
+            echo "<span class='members_title'>Members</span>"; 
+        $AdminId = "";
+        foreach($getConversation->members as $members){
+          if($this->session->userdata('LoginId') == $members->idUser && $members->isAdminYN == 'Y'){
+            $AdminId = $this->session->userdata('LoginId');
+          }
         }
-              if(isset($currentUserInfo->members) && count($currentUserInfo->members) > 0 ){
-              echo "Members";
-              }?>
+        if($AdminId == $this->session->userdata('LoginId')){
+            ?>
+            <span class="members_add"><img src="<?php echo base_url('assets/images/icons/plus_white.png') ?>" height="25px" idConvo="<?php echo $getConversation->conversation->idConversation; ?>"></span>
+        <?php }
+            }
+          }        
+        ?>
       </span>
       <div class="boxcategory_wrapper">
         <?php 
@@ -2020,38 +2148,43 @@ messaging.getToken().then((currentToken) => {
         </span> -->
       <?php } } ?>
         <?php 
-      if((isset($currentUserInfo->members) && count($currentUserInfo->members) > 0)){
-        foreach($currentUserInfo->members as $members){ ?>
-          <span class="groupMembers_wrapper" >
+      if((isset($getConversation->members) && count($getConversation->members) > 0) && $getConversation->conversation->isGroupYN == 'Y'){
+        foreach($getConversation->members as $members){
+          if($members->deletedDate == null){
+         ?>
+          <span class="groupMembers_wrapper" userid="<?php echo $members->idUser ?>">
             <span class="groupMembers_userIcon">
               <span class=" icon" style="
                 <?php echo "background:".$colors_array[rand(0,5)]?>">
-                <?php echo isset($members->memberName) ? icon($members->memberName) : "";?>
+                <?php echo isset($members->DisplayName) ? icon($members->DisplayName) : "";?>
               </span>
             </span>
             <span class="groupMembers_tile">
               <span class="groupMembers_text">
                 <div class="groupMembers_text_top">
                   <span class="groupMembers_title"><?php 
-                    if( strlen($members->memberName) > 16){
-                      echo substr($members->memberName,0,17)."..";
+                    if( strlen($members->DisplayName) > 16){
+                      echo substr($members->DisplayName,0,17)."..";
                     }
                     else{
-                     echo $members->memberName;
+                     echo $members->DisplayName;
                     }
                        ?></span>
                 </div>
               </span>
             </span>
             <?php if($this->session->has_userdata('LoginId')){
-              if($this->session->userdata('LoginId') == $currentUserInfo->adminId){ ?>
+
+           if($AdminId == $this->session->userdata('LoginId')){
+              if($this->session->userdata('LoginId') == $AdminId && $this->session->userdata('LoginId') != $members->idUser && $members->isAdminYN == 'N'){ 
+                ?>
                 <span class="user_group_options_icons" >
-                  <i class="deleteUserFromGroup" memberid="<?php echo $members->memberid ?>" groupid="<?php echo $currentUserInfo->groupid ?>">
+                  <i class="deleteUserFromGroup" memberid="<?php echo $members->idUser ?>" idMember="<?php echo $members->idMember ?>" groupid="<?php echo $getConversation->conversation->idConversation ?>" >
                     <img src="<?php echo base_url('assets/images/icons/delete.png') ?>" height="15px" width="15px">
                   </i>
                 </span>
             <?php  }
-            } ?>
+             } ?>
           </span>
 <!--           <span class="angle_downward">
             <span>
@@ -2063,22 +2196,24 @@ messaging.getToken().then((currentToken) => {
               Remove
             </span>
           </span> -->
-      <?php } } ?>
+      <?php } }  } ?>
       </div>
     </div>
     <?php } ?>
-    <?php if($isGroupYN == "Y"){ ?>
+    <?php if(isset($getConversation->conversation->isGroupYN) && $getConversation->conversation->isGroupYN== "Y"){ ?>
     <div class="groupOptions">
-        <?php if(($currentUserInfo->adminId) == ($this->session->userdata('LoginId'))){ ?>
+        <?php 
+        foreach($getConversation->members as $mems){
+        if((($mems->idUser) == ($this->session->userdata('LoginId'))) && ($mems->isAdminYN == 'Y') ){ ?>
       <div>
-        <span class="delete_group" groupId="<?php echo $currentUserInfo->groupid ?>">Delete Group</span>
+        <span class="delete_group" groupId="<?php echo $getConversation->conversation->idConversation; ?>">Delete Group</span>
       </div>
-    <?php } ?>
-      <?php if(($currentUserInfo->adminId) != ($this->session->userdata('LoginId'))){ ?>
+    <?php }  ?>
+      <?php if((($mems->idUser) == ($this->session->userdata('LoginId'))) && ($mems->isAdminYN == 'N') ){ ?>
     <div>
-      <span class="leave_group" groupId="<?php echo $currentUserInfo->groupid ?>" userId="<?php echo  $members->memberid ?>" onclick="leaveGroup('<?php echo $currentUserInfo->groupid ?>')">Leave Group</span>
+      <span class="leave_group" groupId="<?php echo $getConversation->conversation->idConversation; ?>" userId="<?php echo  $mems->idUser ?>" >Leave Group</span>
     </div>
-  <?php } ?>
+  <?php } } ?>
     </div>
   <?php } ?>
   </div>
@@ -2160,7 +2295,7 @@ messaging.getToken().then((currentToken) => {
     <h1>Users</h1>
     <div>
       <?php foreach($allUsers->users as $user_){ ?>
-        <span class="d-block" onclick="loadNewChat('<?php echo $user_->userid ?>','N')"><?php echo $user_->username; ?></span>
+        <span class="d-block" ><?php echo $user_->username; ?></span>
       <?php } ?>
     </div>
     <button id="accept" class="user__">
@@ -2170,32 +2305,30 @@ messaging.getToken().then((currentToken) => {
 </div>
 <!-- User Modal -->
 
+<!-- Add User Modal -->
+<div id="addUsersModal" class="addUsersModal">
+  <div class="addUsersModalContent">
+    <div class="addUsersModalContent_addMember">Add Member</div>
+    <div class="">
+      <div class="addUsersModule_div">
+        <select  class="addMember" name="addMember[]" multiple>
+        <?php foreach($allUsers->users as $user__){ ?>
+          <option class="d-block" value="<?php echo $user__->userid ?>"><?php echo $user__->username; ?></option>
+        <?php } ?>
+        </select>
+      </div>
+      <div class="addUsersModal_buttons">
+        <button id="reject" class="addUser__close">Close</button>
+        <button id="accept" class="addUser__save">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Add User Modal -->
+
 </body>
 
 <script type="text/javascript">
-
-    
-$(document).on('click','.deleteUserFromGroup',function(){
-  var url = window.location.origin+"/PN101/messenger/removeFromGroup";
-  var memberId = $(this).attr('memberId');
-  var groupId = $(this).attr('groupId');
-  var bool = confirm('Are you sure you want to remove a user from the group?')
-  if(bool == true){
-    $.ajax({
-    url : url,
-    type : 'POST',
-    data : {
-      memberId : memberId,
-      groupId : groupId
-    },
-      // success : function(response){
-      //   console.log(response)
-      // }
-    })
-    console.log(memberId)
-  }
-})
-
 
 var usersModal = document.getElementsByClassName('recentchat')[0];
 var btn = document.getElementById("myBtn");
@@ -2233,8 +2366,7 @@ newGroup.onclick = function(){
     var containerHeight = "100vh" - $('.header-top').height();
    // document.getElementsByClassName("container").style.maxHeight = "50vh"
   })
-</script>
-<script>
+
 	
 	// dropdowns
 		
@@ -2285,9 +2417,7 @@ $('.save').click(function(){
   $('.edit').show();
 });
 	
-	</script>
 
-<script type="text/javascript">
   $(document).ready(function(){
     $(document).on('click','.list-group-item',function(){
       $('.leftbar-sm').css('display','none');
@@ -2297,11 +2427,10 @@ $('.save').click(function(){
   $(document).on('click','.angle_downward',function(){
     $('.remove_user_block').eq($(this).index()).css('display','block');
   })
-</script>
-  <script type="text/javascript">
+
     var base_url = "<?php echo base_url();?>";
     function loadNewChat(userid,isGroupYN){
-        var url = window.location.origin+'/PN101/messenger/chats/'+userid+'/'+isGroupYN;
+        var url = window.location.origin+'/PN101/messenger/chat/'+userid+'/'+isGroupYN;
         $.ajax({
           url : url,
           type : 'GET',
@@ -2318,53 +2447,26 @@ $('.save').click(function(){
         })
     }
 
-    function groupName(name){
-      var groupName = name.parentElement.textContent;
-          groupName = groupName.replace(/(\r\n|\n|\r)/gm,"");
-          groupName = groupName.replace(/\s\s+/g, '');
-      var wrapper = document.getElementById('user_name_view');
-      var normal = wrapper.innerHTML;
-      while(wrapper.firstChild){
-        wrapper.removeChild(wrapper.firstChild);
-      }
-          $('#user_name_view').append(`<input type="text" class="editGroupName_input"><i class="editGroupName_tick"><img height="25px" width="22px" src="<?php echo base_url('assets/images/icons/tick.png'); ?>"></i><i class="editGroupName_close"><img height="20px" width="20px" src="<?php echo base_url('assets/images/icons/x.png'); ?>"></i>`)
-          console.log(groupName);
-      $(document).on('click','.editGroupName_tick',function(){
-        var url = window.location.origin+'/PN101/messenger/updateGroup';
-        var newGroupName = $('.editGroupName_input').val();
-        var avatarUrl = null;
-        var groupId = name.getAttribute('groupId');
-        $.ajax({
-          url : url,
-          type : 'POST',
-          data : {
-            groupName : newGroupName,
-            groupId : groupId,
-            avatarUrl : avatarUrl
-          },
-          success :  function(response){
-            console.log(response)
-            $('#user_name_view').empty();
-            $('#user_name_view').append(newGroupName);
-          }
-        })
-      })
-      $(document).on('click','.editGroupName_close',function(){
-        $('#user_name_view').empty();
-        $('#user_name_view').append(normal);
-      })
-    }
+        $(document).on('change','#editGroupImage',function () {
+          readURL(this);
+          console.log($(this).val())
+        });
 
       $(document).on('click','.editGroupImageSave',function(){
-        var url = window.location.origin+'/PN101/messenger/updateGroup';
-        var newGroupName = null;
+        var url = window.location.origin+'/PN101/messenger/postConversation';
+        var allUserids = [];
+          $('.groupMembers_wrapper').each(function(){
+            if($(this).attr('userid') != null && $(this).attr('userid') != ""){
+              allUserids.push($(this).attr('userid'))
+            }
+          })
+        var isGroupYN = 'Y';
+        var idConversation = $('#user_name_view').attr('conversationid');
         var fd = new FormData();
         var files = $('#editGroupImage').prop('files')[0];
-        console.log(files)
-        fd.append('file',files)
-        console.log(fd);
-        var groupId = $('#groupIdI').attr('groupId');
-        fd.append('groupId',groupId);
+        fd.append('convoProfilePic',files);
+        fd.append('isGroupYN',isGroupYN);
+        fd.append('idConversation',idConversation);
         $.ajax({
           url : url,
           type : 'POST',
@@ -2392,74 +2494,18 @@ $('.save').click(function(){
           })
       })
 
-    $(document).ready(function(){
-        var arr =[];
-        var uiArr = [];
-      $(document).on('click','.createGroupUsersList_wrapper',function(){
-        uiArr.push($(this).index());
-        console.log($('.createGroupUsersList_wrapper').eq($(this).index()).css('background'))
-        if($('.createGroupUsersList_wrapper').eq($(this).index()).css('background') == 'rgb(247, 245, 245) none repeat scroll 0% 0% / auto padding-box border-box' || $('.createGroupUsersList_wrapper').eq($(this).index()).css('background') == 'rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box'){
-          $('.createGroupUsersList_wrapper').eq($(this).index()).css('background','#e3e4e7');
-                  
-        }else{
-          $('.createGroupUsersList_wrapper').eq($(this).index()).css('background','rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box')
-        }
-        if(arr.includes($(this).attr('userid')) ===  false){
-          arr.push($(this).attr('userid'));
-          console.log(arr)
-          return 0;
-        }
-        if(arr.includes($(this).attr('userid')) ===  true){
-          arr.splice(arr.indexOf($(this).attr('userid')),1);
-          console.log(arr)
-          return 0;
-        }
-
-      })
-      $(document).on('click','.createGroupClass_wrapper',function(){
-        var url = window.location.origin + '/PN101/messenger/creategroup';
-        var groupName = $('.groupNameInput').val();
-        $.ajax({
-          url : url,
-          data : {
-            recipient_name : groupName,
-            tokenize_class : arr
-          },
-          type : 'POST',
-          success : function(response){
-            window.location.reload();
-          }
-        })
-      })
-    })
-
     $(document).on('click','.right_top_tab_close',function(){
       $('.messenger_center_box')[0].classList.remove('col-md-6');
       $('.right_box').css('display','none');
       $('.messenger_center_box')[0].classList.add('col-md-9');
     })
 
-    $(document).on('click','.text-capitalize, .contact_us',function(){
+    $(document).on('click','.text-capitalize, .contact_us, .info_icon',function(){
       $('.messenger_center_box')[0].classList.remove('col-md-9');
       $('.right_box').css('display','block');
       $('.messenger_center_box')[0].classList.add('col-md-6');
     })
 
-
-    $(document).on('click','.recentchat_wrapper',function(){
-      var userId = $(this).attr('id');
-      var isGroupYN = $(this).attr('group');
-      var url = window.location.origin+'/PN101/messenger/chats/'+userId+'/'+isGroupYN;
-      $.ajax({
-        url : url,
-        type : 'GET',
-        success : function(response){
-          $('.messenger_center_box').html($(response).find('.messenger_center_box').html())
-          $('.right_box').html($(response).find('.right_box').html())
-          $('.chat-box').scrollTop($('.chat-box')[0].scrollHeight)
-        }
-      })
-    })
 
     function searchRecentChats(){
       var chats = $('.recentchat_title').length;
@@ -2494,12 +2540,15 @@ $('.save').click(function(){
 
     $(document).on('click','.msg_send_btn',function(e){
       e.preventDefault();
-      var url = "<?php echo base_url().'messenger/postNewMessage';?>";
-      var receiverId = $('#receiverId').val();
-      var isGroupYN = $('#isGroupYN').val();
+      var url = "<?php echo base_url('messenger/postMessage');?>";
+      // var receiverId = $('#receiverId').val();
+      var idMember = $('button[class="msg_send_btn"]').attr('idMember');
+      // var isGroupYN = $('#isGroupYN').val();
       var chatText = $('#chatText').val();
+      var senderName = "<?php echo $this->session->userdata('Name') ?>";
       var image = $('#upload_image')[0].files[0];
       var form_data = new FormData();
+      var media = null;
       form_data.append('upload_image',image);
             var date = new Date();
             var code = `<div class="media sender-rightalign">
@@ -2540,9 +2589,10 @@ $('.save').click(function(){
           method : 'POST',
           url : url,
           data : {
-            receiverId : receiverId,
-            isGroupYN : isGroupYN,
-            chatText : chatText
+            idMember : idMember,
+            media : media,
+            chatText : chatText,
+            senderName : senderName
           },
           success : function(response){
             console.log(response)
@@ -2597,9 +2647,9 @@ $('.save').click(function(){
 
 
 
-    $(document).ready(function(){
-      setInterval(loadChatElements,5000)
-    })
+    // $(document).ready(function(){
+    //   setInterval(loadChatElements,5000)
+    // })
 
     function saveGroup(){
       var groupName = document.getElementById("recipient-name").value;
@@ -2677,10 +2727,265 @@ else{
       return false;
     }
   }
-</script>
-<script type="text/javascript">
+
   $(document).ready(function(){
     $('.tokenize_class').tokenize2();
+    $('.addMember').tokenize2();
   })
+
+  /* ---------------------------------------
+              UPDATED MESSENGER JS
+     --------------------------------------- */
+
+    function loadNewChat(chatId){
+      var url = window.location.origin+'/PN101/messenger/chat/'+chatId;
+      $.ajax({
+        url : url,
+        type : 'GET',
+        success : function(response){
+          $('.messenger_center_box').html($(response).find('.messenger_center_box').html())
+          $('.right_box').html($(response).find('.right_box').html())
+          $('.chat-box').scrollTop($('.chat-box')[0].scrollHeight)
+        }
+      })
+    }
+
+    function lastSeen(isDeletedYN,idMember,idConversation,idOtherUser=null){
+      var url = window.location.origin+'/PN101/messenger/updateMember';
+      var isDeletedYN = isDeletedYN;
+      var isAdminYN = null;
+      var idMember = idMember;
+      var idConversation = idConversation;
+      $.ajax({
+        url : url,
+        type : 'POST',
+        data : {
+          isDeletedYN : isDeletedYN,
+          isAdminYN : isAdminYN,
+          idMember : idMember,
+          idConversation : idConversation,
+          idOtherUser : idOtherUser
+        },
+        success : function(response){
+          // window.location.reload();
+          console.log(response)
+        }
+      })
+    }
+
+    function postConversation(idUsers,convoName,convoProfilePic,idConversation,isGroupYN,reload=null){
+      var url = window.location.origin+'/PN101/messenger/postConversation' 
+      $.ajax({
+        url : url,
+        type : 'POST',
+        data : {
+          allUserids : idUsers,
+          convoName : convoName,
+          convoProfilePic : convoProfilePic,
+          idConversation : idConversation,
+          isGroupYN : isGroupYN
+        },
+        success : function(response){
+          console.log(response)
+          if(reload == 'NO'){
+            response = JSON.parse(response);
+            loadNewChat(response.idConversation)
+            console.log(response)
+          }
+          else{
+            window.location.reload();
+          }
+        }
+      })
+    }
+
+    function getConversation(otherIdUser,name){
+      var url = window.location.origin+"/PN101/messenger/getConv/"+otherIdUser;
+      $.ajax({
+        url : url,
+        type : 'GET',
+        success : function(response){
+          response = JSON.parse(response);
+          if(response.conversation == null){
+            createNewChat(otherIdUser,name);
+            console.log(response.conversation)
+          }
+          if(response.conversation != null){
+            loadNewChat(response.conversation.idConversation)
+            console.log(response.conversation)
+          }
+        }
+      })
+    }
+
+    function createNewChat(idUser,convoName){
+      var idUsers = [];
+      idUsers.push(idUser,"<?php echo $this->session->userdata('LoginId') ?>");
+      postConversation(idUsers,convoName,null,null,'N','NO');
+      loadNewChat(idUser,'N');
+    }
+
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+          reader.onload = function (e) {
+            $('#imagePreview').attr('src', e.target.result);
+          }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    function groupName(name){
+      var groupName = name.parentElement.textContent;
+          groupName = groupName.replace(/(\r\n|\n|\r)/gm,"");
+          groupName = groupName.replace(/\s\s+/g, '');
+      var wrapper = document.getElementById('user_name_view');
+      var normal = wrapper.innerHTML;
+      while(wrapper.firstChild){
+        wrapper.removeChild(wrapper.firstChild);
+      }
+        $('#user_name_view').append(`<input type="text" class="editGroupName_input"><i class="editGroupName_tick"><img height="25px" width="22px" src="<?php echo base_url('assets/images/icons/tick.png'); ?>"></i><i class="editGroupName_close"><img height="20px" width="20px" src="<?php echo base_url('assets/images/icons/x.png'); ?>"></i>`)
+          console.log(groupName);
+        $('.editGroupName_input').val(groupName)
+        $(document).on('click','.editGroupName_tick',function(){
+            var idUsers = [];
+            $('.groupMembers_wrapper').each(function(){
+              if($(this).attr('userid') != null && $(this).attr('userid') != ""){
+                idUsers.push($(this).attr('userid'))
+              }
+            })
+            var convoName = $('.editGroupName_input').val();
+            var convoProfilePic = null
+            var idConversation = $('#user_name_view').attr('conversationid');
+            var isGroupYN = 'Y';
+            postConversation(idUsers,convoName,convoProfilePic,idConversation,isGroupYN);
+              $('#user_name_view').empty();
+              $('#user_name_view').append(convoName);
+        })
+
+      $(document).on('click','.editGroupName_close',function(){
+        $('#user_name_view').empty();
+        $('#user_name_view').append(normal);
+      })
+    }
+
+    $(document).on('click','.recentchat_wrapper',function(){
+      var userId = $(this).attr('chatid');
+      try{
+          var isDeletedYN = 'N';
+          var idMember = $('.headind_srchs').attr('idMember');
+          var idConversation = $('.headind_srchs').attr('user_id');
+        }
+        catch{}
+      // var isGroupYN = $(this).attr('group');
+      var url = window.location.origin+'/PN101/messenger/chat/'+userId;
+      $.ajax({
+        url : url,
+        type : 'GET',
+        success : function(response){
+          // console.log(response)
+          try{
+            if(idMember != null && idMember != ""){
+              lastSeen(isDeletedYN,idMember,idConversation);
+              }
+            } 
+          catch{}
+          $('.messenger_center_box').html($(response).find('.messenger_center_box').html())
+          $('.right_box').html($(response).find('.right_box').html())
+          $('.chat-box').scrollTop($('.chat-box')[0].scrollHeight)
+        }
+      })
+    })
+
+    $(document).on('click','.deleteUserFromGroup',function(){
+      var url = window.location.origin+"/PN101/messenger/removeFromGroup";
+      var memberId = $(this).attr('idMember');
+      var groupId = $(this).attr('groupId');
+      var bool = confirm('Are you sure you want to remove a user from the group?')
+      if(bool == true){
+          lastSeen('Y',memberId,groupId)
+        console.log(memberId)
+      }
+    })
+
+
+
+    $(document).ready(function(){
+
+        var arr =[];
+        var uiArr = [];
+      $(document).on('click','.createGroupUsersList_wrapper',function(){
+        uiArr.push($(this).index());
+        console.log($('.createGroupUsersList_wrapper').eq($(this).index()).css('background'))
+        if($('.createGroupUsersList_wrapper').eq($(this).index()).css('background') == 'rgb(247, 245, 245) none repeat scroll 0% 0% / auto padding-box border-box' || $('.createGroupUsersList_wrapper').eq($(this).index()).css('background') == 'rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box'){
+          $('.createGroupUsersList_wrapper').eq($(this).index()).css('background','#e3e4e7');
+                  
+        }else{
+          $('.createGroupUsersList_wrapper').eq($(this).index()).css('background','rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box')
+        }
+        if(arr.includes($(this).attr('userid')) ===  false){
+          arr.push($(this).attr('userid'));
+          console.log(arr)
+          return 0;
+        }
+        if(arr.includes($(this).attr('userid')) ===  true){
+          arr.splice(arr.indexOf($(this).attr('userid')),1);
+          console.log(arr)
+          return 0;
+        }
+
+      })
+      $(document).on('click','.createGroupClass_wrapper',function(){
+        var groupName = $('.groupNameInput').val();
+        postConversation(arr,groupName,null,null,'Y');
+      })
+
+      $(document).on('click','.addUser__save',function(){
+        var arr = [];
+        var idConversation = $(this).attr('idConversation')
+        $('.addMember option:selected').each(function(){
+          arr.push($(this).val());
+        })
+        postConversation(arr,null,null,idConversation,'Y',null)
+      })
+
+      $(document).on('click','.addUser__close',function(){
+        $('.addUsersModal').css('display','none');
+        $('.addMember option:selected').each(function(){
+          $(this).attr('selected',false);
+        })
+      })
+    })
+
+    $(document).on('click','.members_add',function(){
+      var id = $(this).children('img').attr('idConvo')
+      $('.addUser__save').attr('idConversation',id)
+      $('.addUsersModal').css('display','block')
+    })
+
+    $(document).ready(function(){
+      var usersArray = [];
+      $('.allUsersList_wrapper').each(function(){
+        var id = $(this).attr('repeat-check');
+        if(usersArray.includes(id)){
+          $(this).remove();
+        }else{
+          usersArray.push($(this).attr('repeat-check'));
+        }
+      })
+
+      $(document).on('click','.leave_group',function(){
+        var idOtherUser = "<?php echo $this->session->userdata('LoginId'); ?>";
+        var idMember = $('.headind_srchs').attr('idMember');
+        var idConversation = $('.headind_srchs').attr('user_id');
+        var bool = confirm('Are you sure you want to leave the group?');
+        if(bool == true){
+          lastSeen('Y',idMember,idConversation,idOtherUser)
+        }
+      })
+    })
+  /* ---------------------------------------
+              UPDATED MESSENGER JS
+     --------------------------------------- */
 </script>
 </html>

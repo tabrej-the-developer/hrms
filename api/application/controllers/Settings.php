@@ -825,6 +825,30 @@ class Settings extends CI_Controller {
 			}
 		}
 
+	public function editEmployeeEntitlements(){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$this->load->model('settingsModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json!= null && $res != null && $res->userid == $json->userid){
+					$empid = $json->empid;
+					$level = $json->level;
+					$this->settingsModel->editEmployeeEntitlement($level,$empid);
+					$data['Status'] = 'SUCCESS';
+					$data['Message'] = 'Entitlement updated';
+				}else{
+					$data['Status'] = 'FAILED';
+					$data['Message'] = 'Invalid data';
+				}
+				echo json_encode($data);
+				http_response_code(200);
+			}else{
+				http_response_code(401);
+			}
+	}
+
 	public function createEmployeeProfile(){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
@@ -856,11 +880,11 @@ class Settings extends CI_Controller {
 					$emergency_contact = $json->emergency_contact;
 					$relationship = $json->relationship;
 					$emergency_contact_email = $json->emergency_contact_email;
-					$accountName = $json->accountName;
-					$bsb = $json->bsb;
-					$accountNumber = $json->accountNumber;
-					$remainderYN = $json->remainderYN;
-					$amount = $json->amount;
+				$accountName = $json->accountName;
+				$bsb = $json->bsb;
+				$accountNumber = $json->accountNumber;
+				$remainderYN = $json->remainderYN;
+				$amount = $json->amount;
 					$superFundId = $json->superFundId;
 					$superMembershipId = $json->superMembershipId;
 					$superfundEmployeeNumber = $json->superfundEmployeeNumber;
@@ -899,8 +923,9 @@ class Settings extends CI_Controller {
 					$target_dir = 'application/assets/profileImages/';
 					$fileNameLoc = $target_dir.$profileImageName;
 					// var_dump((base64_decode($profileImage)));
-					file_put_contents($target_dir.$profileImageName,(base64_decode($profileImage)));
-
+					if($profileImage != null && $profileImage != ""){
+							file_put_contents($target_dir.$profileImageName,(base64_decode($profileImage)));
+						}
 // Employee Courses	
 					if(isset($course_name)){
 						$course_name = $json->course_name;
@@ -915,7 +940,7 @@ class Settings extends CI_Controller {
 						$exp_date = $expiry_date[$i];
 						// $cert = $certificate[$i];
 						// get employee Id
-						if($xeroEmployeeId != null && $xeroEmployeeId != "" ){
+						if($employee_no != null && $employee_no != "" ){
 							if($course_nme != "" && $course_nme != null){
 $this->settingsModel->addToEmployeeCourses( $xeroEmployeeId,$course_nme,$course_desc,$date_obt,$exp_date);
 						}
@@ -935,13 +960,13 @@ $this->settingsModel->addToUsers($employee_no,md5($password),$emails,$name,$cent
 						}
 					}
 // Employee bank account	
-						if($xeroEmployeeId != null && $xeroEmployeeId != "" ){
+						if($employee_no != null && $employee_no != "" ){
 							if($accountName != "" && $accountName != null){
 $this->settingsModel->addToEmployeeBankAccount( $xeroEmployeeId,addslashes($accountName),$bsb,$accountNumber,$remainderYN,$amount);
 						}
 					}
 // Employee medical info	
-						if($xeroEmployeeId != null && $xeroEmployeeId != "" ){
+						if($employee_no != null && $employee_no != "" ){
 							if($medicareNo != "" && $medicareNo != null){
 $this->settingsModel->addToEmployeeMedicalInfo($xeroEmployeeId,$medicareNo, $medicareRefNo,$healthInsuranceFund,$healthInsuranceNo, $ambulanceSubscriptionNo);
 						}
@@ -957,7 +982,7 @@ $this->settingsModel->addToEmployeeMedicalInfo($xeroEmployeeId,$medicareNo, $med
 						$medA = $medicalAllergies[$i];
 						$medic = $medication[$i];
 						$dietary = $dietaryPreferences[$i];
-						if($xeroEmployeeId != null && $xeroEmployeeId != "" ){
+						if($employee_no != null && $employee_no != "" ){
 							if($medC != "" && $medC != null){
 $this->settingsModel->addToEmployeeMedicals( $xeroEmployeeId,$medC,$medA,$medic,$dietary);
 									}
@@ -980,31 +1005,27 @@ $this->settingsModel->addToEmployeeMedicals( $xeroEmployeeId,$medC,$medA,$medic,
 
 				// Employee No from Users 
 				$uniqueId = uniqid();
-						if(($xeroEmployeeId != null && $xeroEmployeeId != "" ) || ($employee_no != null && $employee_no != "" )){
-							if(isset($medC) && $medC != "" && $medC != null){
+						if( ($employee_no != null && $employee_no != "" )){
 $this->settingsModel->addToEmployeeRecord($employee_no, $xeroEmployeeId, $uniqueId,$resume_doc, 
 	$employement_type, $qual_towards_desc, $highest_qual_held, $qual_towards_percent_comp, $visa_type, $visa_grant_date, $visa_end_date, $visa_conditions, $contract_doc, $highest_qual_date_obtained, $highest_qual_cert, $visa_holder);
 // Employee superfunds	
-						if($xeroEmployeeId != null && $xeroEmployeeId != "" ){
+						if($employee_no != null && $employee_no != "" ){
 							if($superFundId != "" && $superFundId != null){
 $this->settingsModel->addToEmployeeSuperfunds( $xeroEmployeeId, $superFundId,
 $superMembershipId,$superfundEmployeeNumber);
 										}
 									}
 // Employee Tax Declaration
-						if($xeroEmployeeId != null && $xeroEmployeeId != "" ){
+						if($employee_no != null && $employee_no != "" ){
 							if($employmentBasis != "" && $employmentBasis != null){
 $this->settingsModel->addToEmployeeTaxDeclaration($xeroEmployeeId,$employmentBasis,$tfnExemptionType,$taxFileNumber,$australiantResidentForTaxPurposeYN,$residencyStatue,$taxFreeThresholdClaimedYN,$taxOffsetEstimatedAmount,$hasHELPDebtYN,$hasSFSSDebtYN,$hasTradeSupportLoanDebtYN_,$upwardVariationTaxWitholdingAmount,$eligibleToReceiveLeaveLoadingYN,$approvedWitholdingVariationPercentage);
 										}
 									}
 
 // Employee Table
-						if($xeroEmployeeId != null && $xeroEmployeeId != "" ){
-							if($employee_no != "" && $employee_no != null){
+						if($employee_no != null && $employee_no != "" ){
 $this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$fname,$mname,$lname,$emails,$dateOfBirth,$jobTitle,$gender,$homeAddLine1,$homeAddLine2,$homeAddCity,$homeAddRegion,$homeAddPostal,$homeAddCountry,$phone,$mobile,$startDate,$terminationDate,$ordinaryEarningRateId,$payroll_calendar,$userid,$classification,$emergency_contact,$relationship,$emergency_contact_email);
-											}
 										}
-									}
 					$data['status'] = 'SUCCESS';
 					http_response_code(200);
 					echo json_encode($data);
@@ -1045,6 +1066,7 @@ $this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$f
 				$data['userCenters'] = $this->settingsModel->getUserCenters($employeeId);
 				$data['employee']	= $this->settingsModel->getEmployeeData($employeeId);
 				$data['employeeBankAccount'] = $this->settingsModel->getEmployeeBankAccount($employeeId);
+				$data['employeeDocuments'] = $this->settingsModel->getEmployeeDocuments($employeeId);
 				$data['employeeCourses']	= $this->settingsModel->getEmployeeCourses($employeeId);
 				$data['employeeMedicalInfo']	= $this->settingsModel->getEmployeeMedicalInfo($employeeId);
 				$data['employeeMedicals']	= $this->settingsModel->getEmployeeMedicals($employeeId);
@@ -1073,6 +1095,7 @@ $this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$f
 				$data['users'] = $this->settingsModel->getUserData($userid);
 				$data['employee']	= $this->settingsModel->getEmployeeData($userid);
 				$data['employeeBankAccount']	= $this->settingsModel->getEmployeeBankAccount($userid);
+				$data['employeeDocuments'] = $this->settingsModel->getEmployeeDocuments($userid);
 				$data['employeeCourses']	= $this->settingsModel->getEmployeeCourses($userid);
 				$data['employeeMedicalInfo']	= $this->settingsModel->getEmployeeMedicalInfo($userid);
 				$data['employeeMedicals']	= $this->settingsModel->getEmployeeMedicals($userid);
@@ -1115,15 +1138,15 @@ $this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$f
 					$homeAddCountry = $json->homeAddCountry;
 					$phone = $json->phone;
 					$mobile = $json->mobile;
+									$accountName = $json->accountName;
+				$bsb = $json->bsb;
+				$accountNumber = $json->accountNumber;
+				$remainderYN = $json->remainderYN;
+				$amount = $json->amount;
 					$terminationDate = $json->terminationDate;
 					$emergency_contact = $json->emergency_contact;
 					$relationship = $json->relationship;
 					$emergency_contact_email = $json->emergency_contact_email;
-					$accountName = $json->accountName;
-					$bsb = $json->bsb;
-					$accountNumber = $json->accountNumber;
-					$remainderYN = $json->remainderYN;
-					$amount = $json->amount;
 					$superFundId = $json->superFundId;
 					$superMembershipId = $json->superMembershipId;
 					$tfnExemptionType = $json->tfnExemptionType;
@@ -1140,10 +1163,16 @@ $this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$f
 					$approvedWitholdingVariationPercentage = $json->approvedWitholdingVariationPercentage;
 					$employee_no = $json->employee_no;
 					$resume_doc = $json->resume_doc;
+					if($resume_doc != null){
+						file_put_contents('application/assets/uploads/documents/'.$employee_no.'_resume.pdf', base64_decode($resume_doc));
+						$resume_doc = $employee_no.'_resume.pdf';
+					}
 					$profileImage = $json->profileImage;
 					$profileImageName = $employee_no.'.png';
-					$target_dir = 'application/assets/profileImages/';
-					file_put_contents($target_dir.$profileImageName,(base64_decode($profileImage)));
+					if($profileImage != null){
+						$target_dir = 'application/assets/profileImages/';
+						file_put_contents($target_dir.$profileImageName,(base64_decode($profileImage)));
+						}
 					$classification = $json->classification;
 					$ordinaryEarningRateId = $json->ordinaryEarningRateId;
 					// $payroll_calendar = $json->payroll_calendar;
@@ -1153,9 +1182,23 @@ $this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$f
 					$healthInsuranceNo = $json->healthInsuranceNo;
 					$ambulanceSubscriptionNo = $json->ambulanceSubscriptionNo;
 					$xeroEmployeeId = $json->xeroEmployeeId;
+					$documentName = $json->documentNames;
+					$documents = $json->documents;
+					$docNames = $json->docNames;
+
+					/*Employee Documents*/
+					$docCount = 0;
+				foreach($documents as $doc){
+					if(isset($docNames[$docCount]) && $docNames[$docCount] != "" && $docNames[$docCount] != null){
+					file_put_contents(DOCUMENTS_PATH.$docNames[$docCount],base64_decode($documents[$docCount]));
+					$this->settingsModel->insertToDocuments($documentName[$docCount],$docNames[$docCount],$employee_no);
+					$docCount++;
+					}	
+				}
+					/*Employee Documents*/
 
 // Employee Courses	
-/*						$course_name = $json->course_name;
+						$course_name = $json->course_name;
 						$course_description = $json->course_description;
 						$date_obtained = $json->date_obtained;
 						$expiry_date = $json->expiry_date;
@@ -1169,29 +1212,35 @@ $this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$f
 						$id = $course_id[$i];
 						// $cert = $certificate[$i];
 						// get employee Id
-$this->settingsModel->updateEmployeeCourses( $id,$xeroEmployeeId,$course_nme,$course_desc,$date_obt,$exp_date);
+						if($id != "" && $id != null){
+							$this->settingsModel->updateEmployeeCourses( $id,$employee_no,$course_nme,$course_desc,$date_obt,$exp_date);
+					}if($id == "" || $id == null){
+							$this->settingsModel->addToEmployeeCourses( $employee_no,$course_nme,$course_desc,$date_obt,$exp_date);
+						}
 					}
-*/// Users	
+// Users	
 					$name = $fname." ".$mname." ".$lname;
 $this->settingsModel->updateUsers($employee_no,$emails,$name,$title,$userid,$alias);
 // Employee bank account	
-$this->settingsModel->updateEmployeeBankAccount( $xeroEmployeeId,$accountName,$bsb,$accountNumber,$remainderYN,$amount);
+$this->settingsModel->updateEmployeeBankAccount( $employee_no,$accountName,$bsb,$accountNumber,$remainderYN,$amount);
 // Employee medical info	
-$this->settingsModel->updateEmployeeMedicalInfo($xeroEmployeeId,$medicareNo, $medicareRefNo,$healthInsuranceFund,$healthInsuranceNo, $ambulanceSubscriptionNo);
+$this->settingsModel->updateEmployeeMedicalInfo($employee_no,$medicareNo, $medicareRefNo,$healthInsuranceFund,$healthInsuranceNo, $ambulanceSubscriptionNo);
 // Employee medicals	
-						$medicalConditions = $json->medicalConditions;
-						$medicalAllergies = $json->medicalAllergies;
-						$medication = $json->medication;
-						$dietaryPreferences = $json->dietaryPreferences;
-						$medicals_id = $json->medicals_id;
-				for($i=0;$i<count($medicalConditions);$i++){
-						$medC = $medicalConditions[$i];
-						$medA = $medicalAllergies[$i];
-						$medic = $medication[$i];
-						$dietary = $dietaryPreferences[$i];
-						$id = $medicals_id[$i];
-$this->settingsModel->updateEmployeeMedicals( $id,$xeroEmployeeId,$medC,$medA,$medic,$dietary);
-				}
+			if(isset($json->medicals_id)){
+				$medicalConditions = $json->medicalConditions;
+									$medicalAllergies = $json->medicalAllergies;
+									$medication = $json->medication;
+									$dietaryPreferences = $json->dietaryPreferences;
+									$medicals_id = $json->medicals_id;
+							for($i=0;$i<count($medicalConditions);$i++){
+									$medC = $medicalConditions[$i];
+									$medA = $medicalAllergies[$i];
+									$medic = $medication[$i];
+									$dietary = $dietaryPreferences[$i];
+									$id = $medicals_id[$i];
+			$this->settingsModel->updateEmployeeMedicals( $id,$employee_no,$medC,$medA,$medic,$dietary);
+							}
+						}
 // Employee record	
 					// $employement_type = $json->employement_type;
 					$highest_qual_held = $json->highest_qual_held;
@@ -1205,20 +1254,23 @@ $this->settingsModel->updateEmployeeMedicals( $id,$xeroEmployeeId,$medC,$medA,$m
 					$visa_end_date = $json->visa_end_date;
 					$visa_conditions = $json->visa_conditions;
 					$contract_doc = $json->contract_doc;
-
+					if($contract_doc != null){
+						file_put_contents('application/assets/uploads/documents/'.$employee_no.'_contract.pdf', base64_decode($contract_doc));
+						$contract_doc = $employee_no.'_contract.pdf';
+					}
 				// Employee No from Users 
 				$uniqueId = uniqid();
-$this->settingsModel->updateEmployeeRecord($employee_no, $xeroEmployeeId, $qual_towards_desc, $highest_qual_held, $qual_towards_percent_comp, $visa_type, $visa_grant_date, $visa_end_date, $visa_conditions, $highest_qual_date_obtained,  $visa_holder);
+$this->settingsModel->updateEmployeeRecord($employee_no, $xeroEmployeeId, $qual_towards_desc, $highest_qual_held, $qual_towards_percent_comp, $visa_type, $visa_grant_date, $visa_end_date, $visa_conditions, $highest_qual_date_obtained,  $visa_holder,$resume_doc,$contract_doc);
 // Employee superfunds	
 
-$this->settingsModel->updateEmployeeSuperfunds( $xeroEmployeeId, $superFundId,
+$this->settingsModel->updateEmployeeSuperfunds( $employee_no, $superFundId,
 $superMembershipId);
 // Employee Tax Declaration
 
-$this->settingsModel->updateEmployeeTaxDeclaration($xeroEmployeeId,$tfnExemptionType,$taxFileNumber,$australiantResidentForTaxPurposeYN,$residencyStatue,$taxFreeThresholdClaimedYN,$taxOffsetEstimatedAmount,$hasHELPDebtYN,$hasSFSSDebtYN,$hasTradeSupportLoanDebtYN_,$upwardVariationTaxWitholdingAmount,$eligibleToReceiveLeaveLoadingYN,$approvedWitholdingVariationPercentage);
+$this->settingsModel->updateEmployeeTaxDeclaration($employee_no,$tfnExemptionType,$taxFileNumber,$australiantResidentForTaxPurposeYN,$residencyStatue,$taxFreeThresholdClaimedYN,$taxOffsetEstimatedAmount,$hasHELPDebtYN,$hasSFSSDebtYN,$hasTradeSupportLoanDebtYN_,$upwardVariationTaxWitholdingAmount,$eligibleToReceiveLeaveLoadingYN,$approvedWitholdingVariationPercentage);
 // Employee Table
 
-$this->settingsModel->updateEmployeeTable($employee_no, $xeroEmployeeId,$title,$fname,$mname,$lname,$emails,$dateOfBirth,$gender,$homeAddLine1,$homeAddLine2,$homeAddCity,$homeAddRegion,$homeAddPostal,$homeAddCountry,$phone,$mobile,$terminationDate,$ordinaryEarningRateId,$userid,$classification,$emergency_contact,$relationship,$emergency_contact_email);
+$this->settingsModel->updateEmployeeTable($employee_no,$title,$fname,$mname,$lname,$emails,$dateOfBirth,$gender,$homeAddLine1,$homeAddLine2,$homeAddCity,$homeAddRegion,$homeAddPostal,$homeAddCountry,$phone,$mobile,$terminationDate,$ordinaryEarningRateId,$userid,$classification,$emergency_contact,$relationship,$emergency_contact_email);
 
 			$data['status'] = 'SUCCESS';
 			http_response_code(200);
@@ -1338,6 +1390,132 @@ $this->settingsModel->updateEmployeeTable($employee_no, $xeroEmployeeId,$title,$
 		}
 	}
 
+	public function deleteDocument($documentId,$userid){
+		$headers = $this->input->request_headers();
+	   if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+		$this->load->model('authModel');
+		$this->load->model('settingsModel');
+		$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+		if($res != null && $res->userid == $userid){
+			$this->load->model('settingsModel');
+				$this->settingsModel->deleteDocument($documentId);
+				$data['status'] = 'SUCCESS';
+			}
+			http_response_code(200);
+			echo json_encode($data);
+		}
+		else{
+			http_response_code(401);
+		}
+	}
+
+	//		get centers by super admin 
+
+	public function centersBySuperAdmin(){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$this->load->model('settingsModel');
+			$this->load->model('utilModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json != null && $res != null && $res->userid == $json->userid){
+				$type = $json->type;
+				$id = $json->id;
+				$admin = "";
+				$centerDetails = [];
+				if($type == 'CENTER'){
+					$getSuperAdmins = $this->utilModel->getSuperAdmins();
+						foreach($getSuperAdmins as $superadmin){
+							$centers = explode('|',$superadmin->center);
+							foreach($centers as $cent){
+								if($id == $cent && $id != "" && $id != null){
+									$admin = $superadmin;
+									break;
+								}
+							}
+						}
+						$adminCenters = explode('|',$admin->center);
+						$centerDetails = [];
+						foreach($adminCenters as $center){
+							if($center != null && $center != ""){
+								array_push($centerDetails,$this->settingsModel->getCenterDetails($center));
+							}
+						}
+						$data['CenterDetails'] = $centerDetails;
+					}
+				if($type == 'EMPLOYEEID'){
+					$userDetails = ($this->utilModel->getUserDetails($id));
+					$getSuperAdmins = $this->utilModel->getSuperAdmins();
+						foreach($getSuperAdmins as $superadmin){
+							$centers = explode('|',$superadmin->center);
+							foreach($centers as $cent){
+								$cs = explode('|',$userDetails->center);
+								foreach($cs as $c){
+									if($c == $cent && $c != "" && $c != null){
+										$admin = $superadmin;
+										break;
+									}
+								}
+							}
+						}
+						$adminCenters = explode('|',$admin->center);
+						foreach($adminCenters as $center){
+							if($center != null && $center != ""){
+								array_push($centerDetails,$this->settingsModel->getCenterDetails($center));
+							}
+						}
+						// $data['CenterDetails'] = $centerDetails;
+					}
+				$data['Message'] = 'SUCCESS';
+				http_response_code(200);
+				echo json_encode($data);
+			}else{
+				http_response_code(401);
+			}
+		}else{
+			http_response_code(401);
+		}
+	}
+
+	public function changeEmployeeCenter(){
+		$headers = $this->input->request_headers();
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$this->load->model('settingsModel');
+			$this->load->model('utilModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if($json != null && $res != null && $res->userid == $json->userid){
+				$userid = $json->userid;
+				$empId = $json->empId;
+				$centers = $json->centers;
+				if(count($centers) > 0){
+					$this->settingsModel->deleteEmployeeCenters($empId);
+					$cent = "";
+					foreach($centers as $center){
+						// TODO
+						$cent = $cent.$center.'|';
+						$this->settingsModel->editEmployeeCenter($center,$empId);				
+					}
+					$this->settingsModel->updateEmployeeCenter($cent,$empId);
+					$data['Status'] = 'SUCCESS';
+					$data['Message'] = 'Employee centers updated';
+				}else{
+					$data['Status'] = 'FAILED';
+					$data['Message'] = 'Employee centers not updated';
+				}
+				http_response_code(200);
+				echo json_encode($data);
+			}else{
+				http_response_code(401);
+			}
+		}else{
+			http_response_code(401);
+		}
+	}
+
+
 	public function SyncedWithXero($centerid,$userid){
 		$headers = $this->input->request_headers();
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
@@ -1414,5 +1592,44 @@ $this->settingsModel->updateEmployeeTable($employee_no, $xeroEmployeeId,$title,$
 		}
 	}
 
+		public function tablesMigration(){
+			$this->load->model('settingsModel');
+			$employeeSuperfunds = $this->settingsModel->employeeSuperfundsMigration();
+			foreach($employeeSuperfunds as $es){
+				$this->settingsModel->employeeSuperfundsMigrations($es->employeeId,$es->id);
+			}
+			$employeeTaxDeclarations = $this->settingsModel->employeeTaxDeclarationMigration();
+			foreach($employeeTaxDeclarations as $eT){
+				$this->settingsModel->employeeTaxDeclarationMigrations($eT->employeeId);
+			}
+			// employeesuperfund
+			// employeetaxdeclaration
+			// employeerecord
+			// employeemedicals
+			// employeemedicalinfo
+			// employeedocuments
+			// employeecourses
+			// employeebankaccount
+			// employee
+		} 
+
+		public function deleteCourse($courseId,$userid){
+			$headers = $this->input->request_headers();
+		   if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$this->load->model('settingsModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			if($res != null && $res->userid == $userid){
+				$this->load->model('settingsModel');
+					$this->settingsModel->deletecourse($courseId);
+					$data['status'] = 'SUCCESS';
+				}
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
 }
 

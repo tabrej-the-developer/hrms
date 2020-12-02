@@ -1,4 +1,4 @@
-<?php
+ <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Settings extends CI_Controller {
@@ -224,6 +224,39 @@ public function editRooms(){
 	}
 
 
+	public function centersBySuperAdmin(){
+		$input = $this->input->post();
+		if($input != null){
+			//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+				$this->session->set_userdata('current_url',currentUrl());
+			}
+			// footprint end
+			$data['userid'] = $this->session->userdata('LoginId');
+			$data['type'] = $input['type'];
+			$data['id'] = $input['id'];
+			$url = BASE_API_URL."settings/centersBySuperAdmin";
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'x-device-id: '.$this->session->userdata('x-device-id'),
+					'x-token: '.$this->session->userdata('AuthToken')
+				));
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				$server_output = curl_exec($ch);
+				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				if($httpcode == 200){
+					print_r($server_output);
+					curl_close ($ch);
+				}
+				else if($httpcode == 401){
+
+				}
+		}
+	}
 
 	public function centerProfile($centerid = null){
 		if($this->session->has_userdata('LoginId')){
@@ -996,19 +1029,53 @@ $server_output = curl_exec($ch);
 		}
 	}
 
-		public function entitlementsMod($x){
+		public function entitlementsMod($level){
 			if($this->session->has_userdata('LoginId')){
-				$data['users'] = $this->userLevel($x);
+				$userid = $this->session->userdata('LoginId');
+				$data['users'] = $this->userLevel($level);
+				$data['entitlements'] = $this->getAllEntitlements($userid); 
 			$this->load->view('entitlementsModal',$data);
 		}
-	else{
-		$this->load->view('redirectToLogin');
-	}
+			else{
+				$this->load->view('redirectToLogin');
+			}
 		}
 
-		function userLevel($x){
+		public function editEmployeeEntitlements(){
+			$form_data = $this->input->post();
+			if($form_data != null){
+				$id = $this->session->userdata('LoginId');
+				$url = BASE_API_URL."/settings/editEmployeeEntitlements";
+				$data['userid'] = $this->session->userdata('LoginId');
+				$data['empid'] = $form_data['empid'];
+				$data['level'] = $form_data['level'];
+				$ch = curl_init($url);
+				curl_setopt($ch, CURLOPT_URL,$url);
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+						'x-device-id:'.$this->session->userdata('x-device-id'),
+						'x-token:'.$this->session->userdata('AuthToken')
+					));
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				$server_output = curl_exec($ch);
+				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				print_r($server_output);
+				if($httpcode == 200){
+					// print_r($server_output);
+					// return $server_output;
+					curl_close ($ch);
+
+				}
+				else if($httpcode == 401){
+
+				}
+			}
+		}
+
+		function userLevel($level){
 			$id = $this->session->userdata('LoginId');
-			$url = BASE_API_URL."/Payroll/getUserLevels/".$x."/".$id;
+			$url = BASE_API_URL."/Payroll/getUserLevels/".$level."/".$id;
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -1202,20 +1269,20 @@ $server_output = curl_exec($ch);
 		if($res_doc != ""){
 			$data['resume_doc'] = base64_encode(file_get_contents($_FILES['resume_doc']['tmp_name']));
 		}else{
-			$data['resume_doc'] = "";
+			$data['resume_doc'] = null;
 		}
 		$cont_doc = isset($_FILES['contract_doc']['name']) ? $_FILES['contract_doc']['name']: "";
 		if($cont_doc != ""){
 			$data['contract_doc'] = base64_encode(file_get_contents($_FILES['contract_doc']['tmp_name']));
 		}else{
-			$data['contract_doc'] = "";
+			$data['contract_doc'] = null;
 		}
 		$prof_img = isset($_FILES['profileImage']['name']) ? $_FILES['profileImage']['name'] : "";
 		if($prof_img != ""){
 			$data['profileImage'] = base64_encode(file_get_contents($_FILES['profileImage']['tmp_name']));
 		}else{
 			$data['profileImage'] = "";
-		}			print_r($data['profileImage']);
+		}			
 		// $data['employement_type'] = isset($_POST['employement_type']) ? $_POST['employement_type']: "";
 		$data['highest_qual_held'] = isset($_POST['highest_qual_held']) ? $_POST['highest_qual_held']: "";
 		$data['highest_qual_date_obtained'] = isset($_POST['highest_qual_date_obtained']) ? $_POST['highest_qual_date_obtained']: "";
@@ -1232,12 +1299,12 @@ $server_output = curl_exec($ch);
 		$data['visa_grant_date'] = isset($_POST['visa_grant_date']) ? $_POST['visa_grant_date']: "";
 		$data['visa_end_date'] = isset($_POST['visa_end_date']) ? $_POST['visa_end_date']: "";
 		$data['visa_conditions'] = isset($_POST['visa_conditions']) ? $_POST['visa_conditions']: "";
-		// $data['course_name'] = isset($_POST['course_name']) ? $_POST['course_name']: "";
-		// $data['course_description'] = isset($_POST['course_description']) ? $_POST['course_description']: "";
-		// $data['course_id'] = isset($_POST['course_id']) ? $_POST['course_id']: "";
-		// $data['date_obtained'] = isset($_POST['date_obtained']) ? $_POST['date_obtained']: "";
-		// $data['expiry_date'] = isset($_POST['expiry_date']) ? $_POST['expiry_date']: "";
-		// $data['certificate'] = isset($_FILES['certificate']) ? $_FILES['certificate']: "";
+		$data['course_name'] = isset($_POST['course_name']) ? $_POST['course_name']: "";
+		$data['course_description'] = isset($_POST['course_description']) ? $_POST['course_description']: "";
+		$data['course_id'] = isset($_POST['course_id']) ? $_POST['course_id']: "";
+		$data['date_obtained'] = isset($_POST['date_obtained']) ? $_POST['date_obtained']: "";
+		$data['expiry_date'] = isset($_POST['expiry_date']) ? $_POST['expiry_date']: "";
+		$data['certificate'] = isset($_FILES['certificate']['tmp_name']) ? $_FILES['certificate']['tmp_name']: "";
 		$data['medicareNo'] = isset($_POST['medicareNo']) ? $_POST['medicareNo']: "";
 		$data['medicareRefNo'] = isset($_POST['medicareRefNo']) ? $_POST['medicareRefNo']: "";
 		$data['healthInsuranceFund'] = isset($_POST['healthInsuranceFund']) ? $_POST['healthInsuranceFund']: "";
@@ -1246,7 +1313,19 @@ $server_output = curl_exec($ch);
 		$data['medicalConditions'] = isset($_POST['medicalConditions']) ? $_POST['medicalConditions']: "";
 		$data['medicalAllergies'] = isset($_POST['medicalAllergies']) ? $_POST['medicalAllergies']: "";
 		$data['medication'] = isset($_POST['medication']) ? $_POST['medication']: "";
-	$data['dietaryPreferences'] = isset($_POST['dietaryPreferences']) ? $_POST['dietaryPreferences']: "";
+		$data['dietaryPreferences'] = isset($_POST['dietaryPreferences']) ? $_POST['dietaryPreferences']: "";
+		$documents = isset($_POST['addFileName']) ? $_POST['addFileName'] : null;
+
+		if($documents != null && $documents != ""){
+				$data['documentNames'] = $_POST['addFileName'];
+				$data['docNames'] = $_FILES['addFile']['name'];
+				$data['documents'] = []; 
+			for($i=0;$i<count($_FILES['addFile']['name']);$i++){
+				if(isset($_FILES['addFile']['tmp_name'][$i]) && $_FILES['addFile']['tmp_name'][$i] != "" && $_FILES['addFile']['tmp_name'][$i] != null){
+				array_push($data['documents'],base64_encode(file_get_contents($_FILES['addFile']['tmp_name'][$i]))); 
+				}
+			}	
+		}
 			$data['userid'] = $this->session->userdata('LoginId');
 			$url = BASE_API_URL."settings/updateEmployeeProfile";
 			$ch = curl_init($url);
@@ -1260,7 +1339,7 @@ $server_output = curl_exec($ch);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			print_r($server_output);
+			// var_dump($server_output);
 			if($httpcode == 200){
 				redirect(base_url('settings'));
 				curl_close ($ch);
@@ -1451,6 +1530,29 @@ $server_output = curl_exec($ch);
 		}
 	}
 
+	public function deleteDocument($docId){
+		$input = $this->input->post();
+		$userid = $this->session->userdata('LoginId');
+		$url = BASE_API_URL."settings/deleteDocument/".$docId."/".$userid;
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		var_dump($server_output);
+		// print_r($httpcode);
+		if($httpcode == 200){
+			echo $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+
+		}
+	}
+
 	public function AddEmployeesMultiple(){
 		if($this->session->has_userdata('LoginId')){
 //var_dump($_FILES);
@@ -1547,32 +1649,32 @@ $server_output = curl_exec($ch);
 	}
 
 	public function syncXeroEmployees($employeeId=null){
-			$input = $this->input->post();
-			$data['userid'] = $this->session->userdata('LoginId');
-			if(isset($input['centerid']) && $input['centerid'] != null && $input['centerid'] != "")
-				$data['centerid'] = $input['centerid'];
-			$url = BASE_API_URL."/xero/syncXeroEmployees/".$employeeId;
-			$ch = curl_init($url);
-			curl_setopt($ch, CURLOPT_URL,$url);
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-					'x-device-id: '.$this->session->userdata('x-device-id'),
-					'x-token: '.$this->session->userdata('AuthToken')
-				));
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			$server_output = curl_exec($ch);
-			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			// var_dump($server_output);
-			// print_r($httpcode);
-			if($httpcode == 200){
-				echo $server_output;
-				curl_close ($ch);
+		$input = $this->input->post();
+		$data['userid'] = $this->session->userdata('LoginId');
+		if(isset($input['centerid']) && $input['centerid'] != null && $input['centerid'] != "")
+			$data['centerid'] = $input['centerid'];
+		$url = BASE_API_URL."/xero/syncXeroEmployees/".$employeeId;
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		// var_dump($server_output);
+		// print_r($httpcode);
+		if($httpcode == 200){
+			echo $server_output;
+			curl_close ($ch);
 
-			}
-			else if($httpcode == 401){
+		}
+		else if($httpcode == 401){
 
-			}
+		}
 	}
 
 	public function getEmployeeDetails($employeeId){
@@ -1585,8 +1687,8 @@ $server_output = curl_exec($ch);
 			// footprint end
 			$url = BASE_API_URL."settings/getEmployeeProfile/".$this->session->userdata('LoginId')."/".$employeeId;
 			$ch = curl_init($url);
-		curl_setopt($ch, CURLOPT_URL,$url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
 					'x-device-id: '.$this->session->userdata('x-device-id'),
 					'x-token: '.$this->session->userdata('AuthToken')
@@ -1601,6 +1703,41 @@ $server_output = curl_exec($ch);
 			else if($httpcode == 401){
 
 			}
+		}
+	}
+
+	public function changeEmployeeCenter(){
+		$input = $this->input->post();
+		if($input != null){
+			//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+				$this->session->set_userdata('current_url',currentUrl());
+			}
+			// footprint end
+			$data['userid'] = $this->session->userdata('LoginId');
+			$data['empId'] = $input['empId'];
+			$data['centers'] = $input['centers'];
+			$url = BASE_API_URL."settings/changeEmployeeCenter";
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'x-device-id: '.$this->session->userdata('x-device-id'),
+					'x-token: '.$this->session->userdata('AuthToken')
+				));
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				$server_output = curl_exec($ch);
+				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				print_r($server_output);
+				if($httpcode == 200){
+					print_r($server_output);
+					curl_close ($ch);
+				}
+				else if($httpcode == 401){
+
+				}
 		}
 	}
 
@@ -2062,6 +2199,28 @@ $server_output = curl_exec($ch);
 			}
 		}
 	}
+
+	public function deleteCourse($courseId){
+			$userid = $this->session->userdata('LoginId');
+			$url = BASE_API_URL."settings/deleteCourse/$courseId/".$userid;
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$server_output = curl_exec($ch);
+			//var_dump($server_output);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				$jsonOutput = json_decode($server_output);
+				curl_close ($ch);
+			}
+			else if($httpcode == 401){
+
+			}
+		}
 
 		public function  syncXeroLeaves($centerid){
 	//footprint start

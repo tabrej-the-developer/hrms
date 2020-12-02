@@ -316,6 +316,7 @@ class Chat extends CI_Controller {
                     $isAdminYN = isset($para->isAdminYN) ? $para->isAdminYN : null;
                     $idMember = isset($para->idMember) ? $para->idMember : 0;
                     $idUser = isset($para->userid) ? $para->userid : 0;
+                    $idOtherUser = isset($para->idOtherUser) ? $para->idOtherUser : null; 
                     $memberDetails = $this->chatModel->getMemberDetails($idMember); 
                     $userDetails = $this->authModel->getUserDetails($memberDetails->idUser);
                     $idConversation = isset($para->idConversation) ? $para->idConversation : 0;
@@ -323,7 +324,7 @@ class Chat extends CI_Controller {
                     if($isDeletedYN == "Y"){
                         $deletedDate = date('Y-m-d H:i:s');
                         $txt = $userDetails->name." left the group";
-                        if($idUser){
+                        if($idUser && $idOtherUser == null){
                             $mUserDets = $this->authModel->getUserDetails($idUser);
                             $txt = $mUserDets->name." removed ".$userDetails->name;
                         }

@@ -54,11 +54,24 @@ font-family: 'Open Sans', sans-serif;
 		$users = json_decode($users);
 		if(isset($users->users)){
 			$count = count($users->users);
+			$entitlements = json_decode($entitlements);
 		 ?>
 		<?php for($x=0;$x<$count;$x++){ ?>
 		<div class="d-flex  m-0">
 			<span class="head col-3"><?php echo $users->users[$x]->name?></span>
-			<span class="head col-3"><?php echo $users->users[$x]->level; ?></span>
+			<span class="head col-3">
+				<span class="select_css">
+					<select class="level_select" userid="<?php echo $users->users[$x]->id; ?>">
+					<?php foreach($entitlements->entitlements as $e ){ 
+						if($e->id == $users->users[$x]->level){ ?>
+							<option value="<?php echo $e->id ?>"  selected><?php echo $e->name; ?></option>
+					<?php	}else{ ?>
+							<option value="<?php echo $e->id ?>" ><?php echo $e->name; ?></option>
+					<?php } 
+							} ?>
+					</select>
+				</span>
+			</span>
 			<!-- <span class="head col-3"><?php echo $users->users[$x]->center; ?></span> -->
 			<span class="head col-3"><?php echo $users->users[$x]->title; ?></span>
 		</div>

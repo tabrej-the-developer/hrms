@@ -50,6 +50,11 @@
 			padding-left: 10px;
 			flex-wrap: wrap
 		}
+		.documents-tab{
+			display: none;
+			padding-left: 10px;
+			flex-wrap: wrap
+		}
 		.tab-buttons{
 			margin-bottom:10px;
 			display: flex;
@@ -151,6 +156,8 @@
 	  	width:auto;
     	border-radius: 20px;
     	padding: 8px;
+    	min-width: 8rem;
+    	margin-right: 0 !important;
     	background: rgb(164, 217, 214);
 			}
 		.span-class.row{
@@ -234,8 +241,8 @@
 		font-size: 3rem;
 		height:4rem;
 		width: 4rem;
-		margin-top: -1rem !important;
 	}
+
 	.profileImage_parent{
 		width: auto !important;
 	    display: inline-flex;
@@ -246,27 +253,69 @@
 	}body{
 		font-size: 0.8rem !important;
 	}
+	.addDocumentsDiv{
+		position: relative;
+	}
+	.addRemoveDocument{
+		display: flex;
+    justify-content: flex-end;
+   }
+   .singleDocDownload{
+   	padding: 0 !important;
+   }
+	.files__{
+		width: 70%;
+		display: flex;
+		justify-content: space-evenly;
+	}
+		.addRemoveDocumentAdd,
+		.removeDocumentButton,
+		.singleDocDownload{
+	  	border: none;
+	  	color: rgb(23, 29, 75);
+	  	text-align: center;
+	  	text-decoration: none;
+	  	display: inline-block;
+	  	font-weight: 700;
+	  	margin: 2px;
+	  	width:8rem;
+    	border-radius: 20px;
+    	padding: 8px;
+    	background: rgb(164, 217, 214);
+			}
+	table{
+		width: 100%;
+		text-align: center;
+	}
+	.button:disabled{
+		background: gainsboro !important;
+	}
 	</style>
 </head>
 <body>
 <?php $this->load->view('header'); ?>
 <div class="containers">
 	<div style="height:3.5rem;display: flex;align-items: center;">
-		<span style="padding-left: 2rem;">
-	      <a href="<?php echo base_url();?>/settings">
+		<span style="padding-left: 2rem;" class="d-inline-flex align-items-center back_button">
+	      <a href="<?php echo base_url('settings/viewEmployeeTable');?>">
 	        <button class="btn back-button">
 	          <img src="<?php echo base_url('assets/images/back.svg');?>">
-	          <span style="font-size:0.8rem">View Employee</span>
 	        </button>
 	      </a>
+	      <span class="d-flex">View &nbsp;&nbsp;
+	      	<span class="employeeNameView"></span>
+	      </span>
 	    </span>
     <span class="top_select">
-<!-- 			<span class="select_css">
-				<select placehdr="Center" id="centerValue" name="centerValue" onchange="getEmployees()">
-					<?php 
+    	<?php 
 						$employeeData = json_decode($getEmployeeData);
 						$permissions = json_decode($permissions);
 						$centers = json_decode($centers);
+    	 ?>
+<!-- 			<span class="select_css">
+				<select placehdr="Center" id="centerValue" name="centerValue" onchange="getEmployees()">
+					<?php 
+
 					foreach($centers->centers as $center){ ?> 
 						<option value="<?php echo $center->centerid;?>"><?php echo $center->name;?></option>
 					<?php } 
@@ -300,6 +349,7 @@
 		<span class="nav-button e-t-d-s"><span>Tax Declaration </span></span>
 		<span class="nav-button e-u-s"><span>Employment</span></span>	
 		<span class="nav-button m-i"><span>Medical Info</span></span>
+		<span class="nav-button d-c"><span>Documents</span></span>
 		</div>	
 	</section>
 <form  style="height: 100%" id="employeeProfileId" onsubmit="return false">
@@ -476,16 +526,16 @@
 			<div class="superfund-parent">
 				<div class="superfund-child row">
 					<span class="span-class col-3">
-						<label class="labels__">Super Fund Id</label>
-							<input disabled  type="text" class="superFundId" name="superFundId" value="<?php echo isset($employeeData->employeeSuperfunds->superFundId) ? $employeeData->employeeSuperfunds->superFundId : ''; ?>">
+						<label class="labels__">Super Fund name</label>
+							<input disabled  type="text" class="superFundId" name="superFundId" value="<?php echo isset($employeeData->employeeSuperfunds->name) ? $employeeData->employeeSuperfunds->name : ''; ?>">
 					</span>
 					<span class="span-class col-3">
 						<label class="labels__">Super Membership Id</label>
-						<input disabled   class="superMembershipId" type="text" name="superMembershipId" value="<?php echo isset($employeeData->employeesuperfund->superMembershipId) ? $employeeData->employeesuperfund->superMembershipId : ''; ?>">
+						<input disabled   class="superMembershipId" type="text" name="superMembershipId" value="<?php echo isset($employeeData->employeeSuperfunds->superMembershipId) ? $employeeData->employeeSuperfunds->superMembershipId : ''; ?>">
 					</span>
 					<span class="span-class col-3">
 						<label class="labels__">Employee Number</label>
-						<input class="employeeNumber" type="text" name="superfundEmployeeNumber">
+						<input class="employeeNumber" type="text" name="superfundEmployeeNumber" value="<?php echo isset($employeeData->employeeSuperfunds->employeeNumber) ? $employeeData->employeeSuperfunds->employeeNumber : null ?>">
 					</span>
 				</div>
 			</div>
@@ -502,7 +552,7 @@
 
 		<span class="span-class col-3 pl-4">
 			<label class="labels__">TFN Exemption Type</label>
-				<input disabled  id="tfnExemptionType" name="tfnExemptionType" select="<?php echo isset($employeeData->employeeTaxDeclaration->tfnExemptionType) ? $employeeData->employeeTaxDeclaration->tfnExemptionType : ''; ?>" type="text">
+				<input disabled  id="tfnExemptionType" name="tfnExemptionType" value="<?php echo isset($employeeData->employeeTaxDeclaration->tfnExemptionType) ? $employeeData->employeeTaxDeclaration->tfnExemptionType : ''; ?>" type="text">
 		</span> 
 		<div class="tax-declaration-class col-lg-12">
 		<span class="span-class col-3">
@@ -606,24 +656,7 @@
 			<input disabled  type="radio" name="resume_supplied" class="resume_supplied yn-input" value="N">
 		</span>
  -->
-		<span class="span-class col-3">
-			<label class="labels__">Resume Document </label>
-			<a href="" id="resume_doc" name="resume_doc"  download>
-				<button class="button">
-			<i>
-				<img src="<?php echo base_url('assets/images/icons/download.png'); ?>" style="max-height:1rem;margin-right:10px">
-			</i>Download</button>
-			</a>
-		</span>
-		<span class="span-class col-3">
-			<label class="labels__">Contract Document </label>
-			<a href="" id="contract_doc" name="contract_doc"  download>
-				<button class="button">
-			<i>
-				<img src="<?php echo base_url('assets/images/icons/download.png'); ?>" style="max-height:1rem;margin-right:10px">
-			</i>Download</button>
-			</a>
-		</span>
+
 
 <!-- 		<span class="span-class col-3">
 			<label class="labels__">Employment-type</label>
@@ -707,7 +740,7 @@
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Ordinary Earning Rate Id</label>
-				<input disabled   id="ordinaryEarningRateId" name="ordinaryEarningRateId"  class="" type="text" value="<?php echo isset($employeeData->employee->ordinaryEarningRateId) ? $employeeData->employee->ordinaryEarningRateId : ''; ?>">
+				<input disabled   id="ordinaryEarningRateId" name="ordinaryEarningRateId"  class="" type="text" value="<?php echo isset($employeeData->employee->name) ? $employeeData->employee->name : ''; ?>">
 		</span>
 
 		<span class="span-class col-3">
@@ -879,6 +912,50 @@
 				<input disabled   type="text"  name="maternityEndDate" class="maternityEndDate">
 		</span> -->
 	</section>
+	<section class="documents-tab">
+		<div class="addDocumentsDiv">
+
+			<table>
+				<tr style="text-align:center">
+					<th>Document Name</th>
+					<th>Download</th>
+				</tr>
+				<tr>
+					<td>Contract Document</td>
+					<td>
+						<a href="" id="contract_doc" name="contract_doc"  download>
+							<button class="button" <?php if(!isset($employeeData->employeeRecord->contractDocument)){ echo 'disabled'; } ?>>
+								<i>
+									<img src="<?php echo base_url('assets/images/icons/download.png'); ?>" style="max-height:1rem;margin-right:10px">
+								</i>Download</button>
+						</a>
+					</td>
+				</tr>
+				<tr>
+					<td>Resume Document</td>
+					<td>
+						<a href="" id="resume_doc" name="resume_doc"  download>
+							<button class="button" <?php if(!isset($employeeData->employeeRecord->resumeDoc)){ echo 'disabled'; } ?> >
+								<i>
+									<img src="<?php echo base_url('assets/images/icons/download.png'); ?>" style="max-height:1rem;margin-right:10px">
+								</i>Download</button>
+						</a>
+					</td>
+				</tr>
+				<?php foreach($employeeData->employeeDocuments as $docs){ ?>
+					<tr class="singleDocBlock">
+						<td class="singleDocName"><?php echo $docs->name ?></td>
+						<td class="singleDocDownload">
+							<a href="<?php echo DOCUMENTS_PATH.($docs->document) ?>" download class="button"><i>
+									<img src="<?php echo base_url('assets/images/icons/download.png'); ?>" style="max-height:1rem;margin-right:10px">
+								</i>Download</a>
+						</td>
+					</tr>
+				<?php } ?>
+			</table>
+
+		</div>
+	</section>
 </form>
 <?php // } ?>
 		</div>
@@ -916,6 +993,7 @@
 			$('.employee-tax-declaration-section').css('display','none');
 			$('.employee-details').css('display','none');
 			$('.medical-info').css('display','none');
+			$('.documents-tab').css('display','none');
 		})
 		$(document).on('click','.e-s',function(){
 			$('.employee-bank-account-section').css('display','none')
@@ -924,6 +1002,7 @@
 			$('.employee-tax-declaration-section').css('display','none');
 			$('.employee-details').css('display','none');
 			$('.medical-info').css('display','none');
+			$('.documents-tab').css('display','none');
 		})
 		$(document).on('click','.e-s-s',function(){
 			$('.employee-bank-account-section').css('display','none')
@@ -932,6 +1011,7 @@
 			$('.employee-tax-declaration-section').css('display','none');
 			$('.employee-details').css('display','none');
 			$('.medical-info').css('display','none');
+			$('.documents-tab').css('display','none');
 		})
 		$(document).on('click','.e-t-d-s',function(){
 			$('.employee-bank-account-section').css('display','none')
@@ -940,6 +1020,7 @@
 			$('.employee-tax-declaration-section').css('display','block');
 			$('.employee-details').css('display','none');
 			$('.medical-info').css('display','none');
+			$('.documents-tab').css('display','none');
 		})
 		$(document).on('click','.e-u-s',function(){
 			$('.employee-bank-account-section').css('display','none')
@@ -948,6 +1029,7 @@
 			$('.employee-tax-declaration-section').css('display','none');
 			$('.employee-details').css('display','block');
 			$('.medical-info').css('display','none');
+			$('.documents-tab').css('display','none');
 		})
 		$(document).on('click','.m-i',function(){
 			$('.employee-bank-account-section').css('display','none')
@@ -956,6 +1038,16 @@
 			$('.employee-tax-declaration-section').css('display','none');
 			$('.employee-details').css('display','none');
 			$('.medical-info').css('display','block');
+			$('.documents-tab').css('display','none');
+		})
+		$(document).on('click','.d-c',function(){
+			$('.employee-bank-account-section').css('display','none')
+			$('.employee-section').css('display','none');
+			$('.employee-superfund-section').css('display','none');
+			$('.employee-tax-declaration-section').css('display','none');
+			$('.employee-details').css('display','none');
+			$('.medical-info').css('display','none');
+			$('.documents-tab').css('display','block');
 		})
 	})
 
@@ -1098,6 +1190,7 @@ $(document).ready(function(){
 					$('.e-t-d-s span').removeClass('arrow');
 					$('.e-u-s span').removeClass('arrow');
 					$('.m-i span').removeClass('arrow');
+					$('.d-c span').removeClass('arrow');
         })
         $('.e-b-a-s').click(function(){
         	$('.e-s span').removeClass('arrow');
@@ -1106,6 +1199,7 @@ $(document).ready(function(){
 					$('.e-t-d-s span').removeClass('arrow');
 					$('.e-u-s span').removeClass('arrow');
 					$('.m-i span').removeClass('arrow');
+					$('.d-c span').removeClass('arrow');
         })
         $('.e-s-s').click(function(){
         	$('.e-s span').removeClass('arrow');
@@ -1114,6 +1208,7 @@ $(document).ready(function(){
 					$('.e-t-d-s span').removeClass('arrow');
 					$('.e-u-s span').removeClass('arrow');
 					$('.m-i span').removeClass('arrow');
+					$('.d-c span').removeClass('arrow');
         })
         $('.e-t-d-s').click(function(){
         	$('.e-s span').removeClass('arrow');
@@ -1122,6 +1217,7 @@ $(document).ready(function(){
 					$('.e-t-d-s span').addClass('arrow');
 					$('.e-u-s span').removeClass('arrow');
 					$('.m-i span').removeClass('arrow');
+					$('.d-c span').removeClass('arrow');
         })
         $('.e-u-s').click(function(){
         	$('.e-s span').removeClass('arrow');
@@ -1130,6 +1226,7 @@ $(document).ready(function(){
 					$('.e-t-d-s span').removeClass('arrow');
 					$('.e-u-s span').addClass('arrow');
 					$('.m-i span').removeClass('arrow');
+					$('.d-c span').removeClass('arrow');
         })
         $('.m-i').click(function(){
         	$('.e-s span').removeClass('arrow');
@@ -1138,8 +1235,36 @@ $(document).ready(function(){
 					$('.e-t-d-s span').removeClass('arrow');
 					$('.e-u-s span').removeClass('arrow');
 					$('.m-i span').addClass('arrow');
+					$('.d-c span').removeClass('arrow');
+        })
+        $('.d-c').click(function(){
+        	$('.e-s span').removeClass('arrow');
+					$('.e-b-a-s span').removeClass('arrow');
+					$('.e-s-s span').removeClass('arrow');
+					$('.e-t-d-s span').removeClass('arrow');
+					$('.e-u-s span').removeClass('arrow');
+					$('.m-i span').removeClass('arrow');
+					$('.d-c span').addClass('arrow');
         })
     });
+
+    $(document).ready(function(){
+    	var firstName = $('#fname').val();
+    	var middleName = $('#mname').val();
+    	var lastName = $('#lname').val();
+    	$('.employeeNameView').html(`${firstName} ${lastName}`)
+    })
+
+    $(document).ready(function(){
+    	var block = $('.addSingleDocument')[0].outerHTML;
+    	var parent = $('.singleDocBlock').eq(0).parent();
+    	$(document).on('click','.addRemoveDocumentSpan',function(){
+    		$('.addDocumentsDiv').append(block);
+    	})
+    	$(document).on('click','.removeDocumentButton',function(){
+    		$(this).closest('.addSingleDocument').remove();
+    	})
+    })
 </script>
 <?php // } ?>
 <!-- <script type="text/javascript">

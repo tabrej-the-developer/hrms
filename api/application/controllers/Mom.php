@@ -122,17 +122,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           $this->load->model('meetingModel');
           $id = uniqid();
           $meetingTitle = $json->title;
-          $date    = $json->date;
-          $time    = $json->time;
-          $agenda  = $json->agenda;
-          $invites = $json->invites;
-          $location = $json->location;
-          $userid  = $json->userid;
-          $period = $json->period;
-          $status = $json->status;
-          $agendaFile = $json->agendaFile;
-
-
+          $date         = $json->date;
+          if(isset($edate)){
+            $edate        = date('Y-m-d',strtotime($json->edate));
+            }
+          if(!isset($edate)){
+            $edate        = date('Y-m-d',strtotime($date));
+          }
+          $time         = sprintf('%02d',intval(str_replace(":","",$json->time)));
+          $endTime      = sprintf('%02d',intval(str_replace(":","",$json->etime)));
+          $agenda       = $json->agenda;
+          $invites      = $json->invites;
+          $location     = $json->location;
+          $userid       = $json->userid;
+          $period       = $json->period;
+          $status       = $json->status;
+          $agendaFile   = $json->agendaFile;
+          $currentDate       = date("Y-m-d", strtotime($date));
+          $dateDifference = strtotime($edate) - strtotime($date);
           //           if($json->agendaFile != null){
           //   $file = base64_decode($json->agendaFile);
           //   $agendaFile = uniqid()."-".uniqid()."pdf";
@@ -142,7 +149,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           //$offset = $json->offset;
           // var_dump($meetingTitle,$date,$time,$agenda,$invites,$location,$userid,$period);
         if($period == 'O'){
-          $this->meetingModel->addMeeting($id,$meetingTitle,$date,$time,$location,$period,null,$userid,$status,$agendaFile);
+          $this->meetingModel->addMeeting($id,$meetingTitle,$date,$edate,$time,$endTime,$location,$period,null,$userid,$status,$agendaFile);
           $this->meetingModel->addParticipant($id,$userid);
           foreach($agenda as $a):
             $this->meetingModel->addAgenda($id,$a);
@@ -150,25 +157,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           foreach($invites as $i):    
             $this->meetingModel->addParticipant($id,$i);
           endforeach;
-          //$currentDate = date("Y-m-d", strtotime($date));
-          $currentDate = date_create($date);
+          // $currentDate = date_create($date);
           $currentMeetingId = $id;
         }
-          if($period == 'A'){
-            //annual meeting
-            $id = uniqid();
-            //echo $currentDate;
-            $dateOfMeeting = date_add($currentDate, date_interval_create_from_date_string('+1 year'));
-            $this->meetingModel->addMeeting($id,$meetingTitle,date_format($dateOfMeeting,'Y-m-d'),$time,$location,$period,$currentMeetingId,$userid);
+        if($period == 'A'){
+          //annual meeting
+          $id = uniqid();
+          //echo $currentDate;
+          $dateOfMeeting = date_add($currentDate, date_interval_create_from_date_string('+1 year'));
+          $this->meetingModel->addMeeting($id,$meetingTitle,date_format($dateOfMeeting,'Y-m-d'),date('Y-m-d',strtotime($dateOfMeeting.'+$dateDifference seconds')),$time,$endTime,$location,$period,null,$userid,$status,$agendaFile);
 
-            foreach($agenda as $a):
-              $this->meetingModel->addAgenda($id,$a);
-            endforeach;
-            foreach($invites as $i):    
-              $this->meetingModel->addParticipant($id,$i);
-            endforeach;
-            //$afterOneYear = date("Y-m-d",$currentDate . " +1 year");
-          }
+          foreach($agenda as $a):
+            $this->meetingModel->addAgenda($id,$a);
+          endforeach;
+          foreach($invites as $i):    
+            $this->meetingModel->addParticipant($id,$i);
+          endforeach;
+          //$afterOneYear = date("Y-m-d",$currentDate . " +1 year");
+        }
           else if($period == 'W'){
             //weekly meeting
             $index = 0;
@@ -177,7 +183,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               $id = uniqid();
               $dateOfMeeting = date_add($currentDate, date_interval_create_from_date_string('+7 day'));
               //$dateOfMeeting = date("Y-m-d",$dateOfMeeting . " +7 day");
-              $this->meetingModel->addMeeting($id,$meetingTitle,date_format($dateOfMeeting,'Y-m-d'),$time,$location,$period,$currentMeetingId,$userid);
+              $this->meetingModel->addMeeting($id,$meetingTitle,date_format($dateOfMeeting,'Y-m-d'),date('Y-m-d',strtotime($dateOfMeeting.'+$dateDifference seconds')),$time,$endTime,$location,$period,$currentMeetingId,$userid,$status,$agendaFile);
 
               foreach($agenda as $a):
                 $this->meetingModel->addAgenda($id,$a);
@@ -192,13 +198,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           else if($period == 'M'){
             //monthly meeting
             $index = 0;
-            $dateOfMeeting = $currentDate;
+            $dateOfMeeting = $date;
             while($index < 12){
               $id = uniqid();
-              $dateOfMeeting = date_add($currentDate, date_interval_create_from_date_string('+1 month'));
               //$dateOfMeeting = date("Y-m-d",$dateOfMeeting . " +1 month");
-              $this->meetingModel->addMeeting($id,$meetingTitle,date_format($dateOfMeeting,'Y-m-d'),$time,$location,$period,$currentMeetingId,$userid);
-
+              $endMeeting = date('Y-m-d',strtotime($dateOfMeeting.'+'.$dateDifference.'seconds'));
+              $this->meetingModel->addMeeting($id,$meetingTitle,$dateOfMeeting,$endMeeting,$time,$endTime,$location,$period,null,$userid,$status,$agendaFile,$status,$agendaFile);
+              $dateOfMeeting = date('Y-m-d',strtotime($dateOfMeeting.'+1 month'));
               foreach($agenda as $a):
                 $this->meetingModel->addAgenda($id,$a);
               endforeach;

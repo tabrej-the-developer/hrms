@@ -986,7 +986,7 @@ color:#FFFFFF;
                             <label class="label_text">End&nbsp;Date</label>
                           </span>
                           <span class=" date_span_input">
-                            <input type="date" id="date" name="meetingDate" class="input_box__ dashboard_input" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                            <input type="date" id="enddate" name="meetingEndDate" class="input_box__ dashboard_input" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
                           </span>
                         </span>
                       </div>

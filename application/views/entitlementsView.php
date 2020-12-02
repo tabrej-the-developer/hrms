@@ -499,6 +499,23 @@ input[type="text"],input[type=time],select,#casualEmp_date{
           // $('timesheet-form').html(htmlVal);
           // $('#timesheet-form').trigger('reset');
         })
+
+    $(document).on('change','.level_select',function(){
+      url = window.location.origin + '/PN101/settings/editEmployeeEntitlements';
+        var empid = $(this).attr('userid');
+        var level = $(this).val()
+        $.ajax({
+          url : url,
+          type : 'POST',
+          data : {
+            empid : empid,
+            level : level
+          },
+          success : function(response){
+            console.log(response)
+          }
+        })
+    })
 </script>
 
 

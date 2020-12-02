@@ -646,7 +646,7 @@ td.shift-edit{
 		for($p=0;$p<5;$p++){
 		    if($timesheetDetails->timesheet[$p]->rosteredEmployees != null){?>
 		<td style="" 
-				class="<?php echo count($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes) > 0 ? 'shift-edit' : '' ?> " 
+				class="<?php echo count($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes) > 0 ? 'shift-edit' : null ?> "
 				name="<?php  echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName ?>"  
 				cal-x="<?php echo $x; ?>" 
 				cal-p="<?php echo $p; ?>" 
@@ -1760,15 +1760,15 @@ $(document).on('click','.buttonn',function(){
 						var view = JSON.parse(response);
 						view.visitis.forEach(day => {
 							var sameAsRoster = "";
-							var inTime = view.shift[Time].startTime;
-							var outTime = view.shift[Time].endTime;
 							try{
 								if(view.shift[Time].rosterDate == day[0].signInDate){
 									sameAsRoster =  jstimex(view.shift[Time].startTime)+" to "+ jstimex(view.shift[Time].endTime);
-									Time++;
 								}
 							}
 							catch(err){}
+							try{
+							var inTime = view.shift[Time].startTime;
+							var outTime = view.shift[Time].endTime;
 							var i =0;
 							var wrapper = `<div class="week_div_${x}">
 								<span class="sameAsRosterBlock_${x}">
@@ -1776,6 +1776,9 @@ $(document).on('click','.buttonn',function(){
 									<span startTime="${inTime}" endTime="${outTime}" class="sameAsRoster_${x}_time">&nbsp;&nbsp;&nbsp;Same as Roster ( ${sameAsRoster} )</span>
 								</span>
 							</div>`;
+								}
+								catch{}
+							Time++;
 							$('.weekTimesheetModalVisits').append(wrapper);
 							day.forEach(visit => {
 							var code = `<span class="display_flex_visits">
@@ -1901,6 +1904,7 @@ $(document).on('click','.buttonn',function(){
 					},
 					success : function(response){
 						console.log(response)
+							window.location.reload();
 							// send data to api, from there, call api five times !!
 					}
 				})

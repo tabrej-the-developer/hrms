@@ -200,6 +200,19 @@
       width: 100%;
       height: 100%;
       background: transparent;
+      display: none;
+    }
+    .changeCenterModal_title{
+      display: block;
+      width: 100%;
+      text-align: center;
+      font-size: 1rem;
+    }
+    .changeCenterModal_name{
+      display: block;
+      width: 100%;
+      text-align: center;
+      font-size: 1.5rem;
     }
     .changeCenterModalBody{
       position: absolute;
@@ -207,18 +220,31 @@
       top: 20%;
       z-index: 10;
       width: 30%;
-      background: red;
+      background: white;
       height: 60%;
+      box-shadow: 0 0 0.1rem 0.1rem rgba(0,0,0,0.1);
     }
     .changeCenterModal_header{
       height: 20%;
-      background: white;
       width: 100%;
+      background-color: #8D91AA;
+      color: #F3F4F7;
+    }
+    .changeCenterModal_centers{
+      padding-left: 3rem;
+    }
+    .changeCenterModal_buttons{
+      height: 20%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: white;
     }
     .syncXeroEmployees{
       margin-right: 2rem !important;
     }
     #centerValue{
+      background: rgb(164, 217, 214) !important;
       max-width: 12rem;
     }
     .viewEmployeeTable_row{
@@ -317,16 +343,20 @@
           </div>
         </div>
       </div>
-<!--     <div class="changeCenterModal">
+
+    <div class="changeCenterModal">
       <div class="changeCenterModalBody">
         <div class="changeCenterModal_header">
           <span class="changeCenterModal_name">Name</span>
           <span class="changeCenterModal_title">Title</span>
         </div>
         <div class="changeCenterModal_centers"></div>
-        <div class="changeCenterModal_buttons"></div>
+        <div class="changeCenterModal_buttons">
+          <button class="changeCenterModal_close button">Close</button>
+          <button class="changeCenterModal_save button">Save</button>
+        </div>
       </div>
-    </div> -->
+    </div>
 
     </div>
 <?php 
@@ -340,6 +370,26 @@
   $(document).ready(()=>{
     $('#wrappers').css('paddingLeft',$('.side-nav').width());
 });
+
+  $(document).ready(function(){
+    var url = window.location.origin+'/PN101/settings/centersBySuperAdmin';
+    var type = 'CENTER';
+    var id = "1";
+    $.ajax({
+      url : url,
+      type : 'POST',
+      data : {
+        type : type,
+        id : id
+      },
+      success : function(response){
+        try{
+          localStorage.setItem('centers',response);
+        }
+        catch{}
+      }
+    })
+  })
 
   // get employees list
   $(document).ready(function(){
@@ -361,20 +411,101 @@
           var employees = JSON.parse(response);
           employees.employees.forEach(function(employee){
             $('#filterList').append(code);
+            //  viewEmployeeTable_centerName -- emp name
+            //  viewEmployeeTable_memberName -- role name
             $('.viewEmployeeTable_centerName').eq(counter).text(employee.name);
+            $('.viewEmployeeTable_centerName').eq(counter).attr('empid',employee.id);
             $('.viewEmployeeTable_memberId').eq(counter).text(employee.id);
             $('.viewEmployeeTable_memberName').eq(counter).text(employee.roleName);
             $('.viewEmployeeTable_action').eq(counter).html(`
                 <button class="button"><a href="${window.location.origin+'/PN101/settings/viewEmployee/'+employee.id}">View</a></button>
+
                 
               `)
             counter++;
           })
           // <button class="button editEmployeeCenter">Center</button>
-          console.log(employees);
+          // console.log(employees);
           populateRoles()
         }
       })
+    }
+  })
+
+  function getEmployeeCenters(empid){
+    var url = window.location.origin+'/PN101/settings/getEmployeeDetails/'+empid;
+    $.ajax({
+      url : url,
+      type : 'GET',
+      success : function(response){
+        try{
+          var centers = (JSON.parse(response)).userCenters;
+          centers.forEach(center => {
+            $('.centerIdCheckbox_parent').each(function(c){
+              if(center.centerid == $(this).attr('centerid')){
+                $(this).children('.centerIdCheckbox').prop('checked',true)
+              }
+            })
+          })
+        }
+        catch{}
+      }
+    })
+  }
+
+  // GET CENTERS //
+
+  $(document).on('click','.viewEmployeeTable_centerName',function(){
+    var empid = $(this).attr('empid');
+    var empName = $(this).html();
+    $('.changeCenterModal').css('display','block');
+    $('.changeCenterModal_name').html(empName);
+    $('.changeCenterModalBody').attr('empId',empid)
+    $('.changeCenterModal_title').html($(this).parent().parent().children('td').eq(2).children('.viewEmployeeTable_memberName').text())
+    try{
+      $('.changeCenterModal_centers').empty();
+      var centers = JSON.parse(localStorage.getItem('centers'));
+      centers.CenterDetails.forEach(center => {
+        var code = `<div class="centerIdCheckbox_parent" centerid="${center.centerid}">
+                      <input class="centerIdCheckbox" type="checkbox"> 
+                      <span>${center.name}</span>
+                    </div>`;
+            $('.changeCenterModal_centers').append(code)
+      })
+      getEmployeeCenters(empid);
+    }
+    catch{}
+  })
+
+  $(document).on('click','.changeCenterModal_close',function(){
+    $('.changeCenterModal_centers').empty();
+    $('.changeCenterModalBody').removeAttr('empId');
+    $('.changeCenterModal').css('display','none');
+  })
+
+  $(document).on('click','.changeCenterModal_save',function(){
+    var url = window.location.origin+'/PN101/settings/changeEmployeeCenter';
+    var empId = $('.changeCenterModalBody').attr('empId');
+    var centers = [];
+    $('.centerIdCheckbox_parent').each(function(){
+      if($(this).children('.centerIdCheckbox').prop('checked') == true){
+        centers.push($(this).attr('centerid'));
+      }  
+    })
+    if(centers.length > 0){
+      $.ajax({
+        url : url,
+        type : 'POST',
+        data : {
+          empId : empId,
+          centers : centers
+        },
+        success :function(response){
+            console.log(response)
+        }
+      })
+    }else{
+      alert('Total assigned centers cannot be 0');
     }
   })
 
@@ -389,7 +520,7 @@
       url : url,
       type : 'GET',
       success : function(response){
-        console.log(JSON.parse(response).userCenters)
+        // console.log(JSON.parse(response).userCenters)
       }
     })
    })
@@ -407,12 +538,12 @@
       for(i=0;i<distinctRoles;i++){
         rolesArray.push($('.viewEmployeeTable_memberName').eq(i).text())
       }
-      console.log(rolesArray)
+      // console.log(rolesArray)
       const unique = (value, index, self) => {
           return self.indexOf(value) === index
         }
       rolesArray = rolesArray.filter(unique)
-      console.log(rolesArray)
+      // console.log(rolesArray)
       var co = '<option value="Select Role">Select Role</option>'
       $('#roleValue').append(co)
       for(var i=0;i<rolesArray.length;i++){
@@ -437,7 +568,7 @@
               }
             }
             if(filter == 'Select Role'){
-              console.log(filter)
+              // console.log(filter)
               $(this).parent().parent().show();
             }
             i++;
@@ -471,7 +602,7 @@
           centerid : centerid
         },
         success : function(response){
-          console.log(response)
+          // console.log(response)
           // window.location.href = window.location.href;
         }
       }) 
