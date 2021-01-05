@@ -12,7 +12,7 @@
 <script type="text/javascript" src="../assets/ckeditor/ckeditor.js"></script>
 <style type="text/css">
     *{
-font-family: 'Open Sans', sans-serif;
+      font-family: 'Open Sans', sans-serif;
     }
 
 body{

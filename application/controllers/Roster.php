@@ -772,15 +772,24 @@ public function updateRoster(){
 			'x-device-id: '.$this->session->userdata('x-device-id'),
 			'x-token: '.$this->session->userdata('AuthToken')
 			));
+	    curl_setopt($ch, CURLOPT_USERAGENT, 'api');
+	    curl_setopt($ch, CURLOPT_TIMEOUT, 1); 
+	    curl_setopt($ch, CURLOPT_HEADER, 0);
+	    curl_setopt($ch,  CURLOPT_RETURNTRANSFER, false);
+	    curl_setopt($ch, CURLOPT_FORBID_REUSE, true);
+	    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
+	    curl_setopt($ch, CURLOPT_DNS_CACHE_TIMEOUT, 10); 
+	    curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
 		$server_output = curl_exec($ch);
-		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		if($httpcode == 200){
-		$jsonOutput = json_decode($server_output);
-		curl_close ($ch);
-		}
-		else if($httpcode == 401){
+		// $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		// if($httpcode == 200){
+		// 	// $jsonOutput = json_decode($server_output);
+		// 	return 'SUCCESS';
+		// 	curl_close ($ch);
+		// }
+		// else if($httpcode == 401){
 	
-		}
+		// }
 	}
 		else{
 			$this->load->view('redirectToLogin');

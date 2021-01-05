@@ -294,12 +294,12 @@
    .click-add{
     position: absolute;
     right:100px;
-
+    width:4rem;
    }
    .click-remove{
     position: absolute;
     right:70px;
-
+    margin-top: -3rem;
    }
    .modal_table{
     margin-bottom: 0;
@@ -1085,19 +1085,19 @@ color:#FFFFFF;
             </div>
             <span class="click-add">
               <i class="icon_i">
-                <img src="<?php echo base_url('assets/images/circle_plus.png');?>" height="25px">
+                <img src="<?php echo base_url('assets/images/plus.png');?>" height="25px">
               </i>
+          </span>
+            <span>
+              <div class="form-group agenda-class">
+                  <textarea name="meetingAgenda[]" id="agenda" class="form-control agenda" style="background-color:#eee" placeholder="Add Agenda"></textarea>
+                <span class="click-remove">
+                  <i>
+                    <img src="<?php echo base_url('assets/images/minus.png');?>" height="25px">
+                  </i>
+                </span>
+              </div>  
             </span>
-            <span class="click-remove">
-              <i>
-                <img src="<?php echo base_url('assets/images/minus.png');?>" height="25px">
-              </i>
-            </span>
-              <span>
-                <div class="form-group agenda-class">
-                    <textarea name="meetingAgenda[]" id="agenda" class="form-control agenda" style="background-color:#eee" placeholder="Add Agenda"></textarea>
-                </div>  
-              </span>
           </div>
  </table>
               
@@ -1333,54 +1333,23 @@ $('#toggle').remove();
 
 
    });
-    $('#month').datepicker({
-    defaultDate: new Date(),
-    format:'MM'
-  });
-  $('#year').datepicker({
-    defaultDate: new Date(),
-    format:'DD-MM-YYYY'
-  });
-  $('#weekly').datepicker({
-    defaultDate: new Date(),
-    format:'DD-MM-YYYY'
-  })
-  $('#datetimepicker12').datetimepicker({
-                defaultDate: new Date(),
-                format: 'DD-MM-YYYY'
-    });
-  $('#datetimepicker121').datetimepicker({
-                defaultDate: new Date(),
-                format: 'DD-MM-YYYY'
-    });
-    $('#datetimepicker13').datetimepicker({
-                defaultDate: new Date(),
-                //format: 'YYYY-MM-DD hh:mm:ss A'
-                format: 'DD-MM-YYYY'
-    });
-  $('#datetimepicker131').datetimepicker({
-                defaultDate: new Date(),
-                //format: 'YYYY-MM-DD hh:mm:ss A'
-                format: 'DD-MM-YYYY'
-    });
   $('#apply_button').click(function(){
         
         $('#applyModal').modal('show');
     });
-</script>
-  <script type="text/javascript">
+
     var newElement = $('.agenda-class ').html();
     $('.click-add').click(function(){
         $('.agenda-class').append(newElement)
     })
-    $('.click-remove').click(function(){
+    $(document).on('click','.click-remove',function(){
       if(($('.agenda').length) > 1){
-        $('.agenda').last().remove();
+        $(this).prev().remove();
+        $(this).remove();
         // alert( $('.agenda').length )
       }
     })
-  </script>
-  <script type="text/javascript">
+
     $(document).ready(function(){
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewTimesheetYN : "N") == "Y"){ ?>
       $(document).on('click','.timesheets',function(){
@@ -1403,8 +1372,7 @@ $('#toggle').remove();
       })
 <?php } ?>
     })
-  </script>
-  <script type="text/javascript">
+
     function add_file(){
       if($('.agendaFile').val() == "" || $('.agendaFile').val() ==  null){
         $('.add_file').text('Add File')
@@ -1426,9 +1394,7 @@ $('#toggle').remove();
               </i>Add File`)
     })
   </script>
-<script type="text/javascript">
 
-</script>
 <?php } ?>
 <?php 
 if( isset($error) != null){ ?>

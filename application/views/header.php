@@ -261,7 +261,7 @@ select::after{
   font-size: 1rem;
 }
 .nav-item-header-div a{
-  font-weight: 500;
+  font-weight: 500 !important;
   color: #F3F4F7 !important; ;
   font-size: 1rem;
 }
@@ -562,7 +562,7 @@ select{
           <?php // }  ?>
           <?php // if((isset(json_decode($permissions)->permissions) ? json_decode($permissions)->permissions->viewTimesheetYN : "N") == "Y"){ ?>
           <li class="nav-item-header" onmouseover="hover('timesheet','<?php echo $selected;?>')" onmouseout="hoverOff('timesheet','<?php echo $selected;?>')">
-            <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('timesheet/timesheetDashboard'); ?>" title="Leaves">
+            <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('timesheet/timesheetDashboard'); ?>" title="Timesheet">
             <?php
               if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Timesheet")){ ?>
               <i class="mr-4 " ><img id="timesheet" src="<?php echo base_url();?>assets/images/navbar-icons/timesheet.png" style="max-height: 1rem"></i>
@@ -590,7 +590,7 @@ select{
         <?php // } ?>
       <?php // if((isset(json_decode($permissions)->permissions) ? json_decode($permissions)->permissions->viewLeaveTypeYN : "N") == "Y"){ ?>
 		      <li class="nav-item-header" onmouseover="hover('leaves','<?php echo $selected;?>')" onmouseout="hoverOff('leaves','<?php echo $selected;?>')">
-            <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('leave') ?>" title="Leaves"> 
+            <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('leave') ?>" title="Leave"> 
             <?php
               if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Leave")){ ?>
               <i class="mr-4 " ><img id = "leaves" src="<?php echo base_url();?>assets/images/navbar-icons/leaves.png" style="max-height: 1rem"></i>
@@ -598,7 +598,7 @@ select{
               else{ ?>
                 <i class="mr-4 " ><img id = "leaves" src="<?php echo base_url();?>assets/images/navbar-icons/leaves_filled.png" style="max-height: 1rem"></i>
               <?php } ?>
-              <span>Leaves </span>
+              <span>Leave</span>
              </a>
           </li>
 		  <?php // } ?>
@@ -718,6 +718,19 @@ select{
         document.getElementById(str).src = base_url+str+"_filled.png";
       }
     }
+
+    function dateFormatToDDMMYYYY(){
+        var dates = document.querySelectorAll('input[type="date"]');
+          var dates = document.querySelectorAll('input')
+           dates.forEach(function(date){
+             var x = date.setAttribute('placeholder','dd-mm-yyyy');
+            })
+    }
+    dateFormatToDDMMYYYY();
+    function goBack() {
+      window.history.back();
+    }
+    
   </script>
 
 </body>

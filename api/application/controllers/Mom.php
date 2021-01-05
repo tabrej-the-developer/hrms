@@ -164,9 +164,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           //annual meeting
           $id = uniqid();
           //echo $currentDate;
-          $dateOfMeeting = date_add($currentDate, date_interval_create_from_date_string('+1 year'));
-          $this->meetingModel->addMeeting($id,$meetingTitle,date_format($dateOfMeeting,'Y-m-d'),date('Y-m-d',strtotime($dateOfMeeting.'+$dateDifference seconds')),$time,$endTime,$location,$period,null,$userid,$status,$agendaFile);
-
+          $dateOfMeeting = date('Y-m-d',strtotime($currentDate.'+1 year'));
+          $this->meetingModel->addMeeting($id,$meetingTitle,$dateOfMeeting,date('Y-m-d',strtotime($dateOfMeeting.'+$dateDifference seconds')),$time,$endTime,$location,$period,null,$userid,$status,$agendaFile);
+          $this->meetingModel->addParticipant($id,$userid);
           foreach($agenda as $a):
             $this->meetingModel->addAgenda($id,$a);
           endforeach;
@@ -181,10 +181,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $dateOfMeeting = $currentDate;
             while($index < 53){
               $id = uniqid();
-              $dateOfMeeting = date_add($currentDate, date_interval_create_from_date_string('+7 day'));
+              $dateOfMeeting = date('Y-m-d',strtotime($currentDate.'+7days'));
               //$dateOfMeeting = date("Y-m-d",$dateOfMeeting . " +7 day");
-              $this->meetingModel->addMeeting($id,$meetingTitle,date_format($dateOfMeeting,'Y-m-d'),date('Y-m-d',strtotime($dateOfMeeting.'+$dateDifference seconds')),$time,$endTime,$location,$period,$currentMeetingId,$userid,$status,$agendaFile);
-
+              $this->meetingModel->addMeeting($id,$meetingTitle,date_format($dateOfMeeting,'Y-m-d'),date('Y-m-d',strtotime($dateOfMeeting.'+$dateDifference')),$time,$endTime,$location,$period,$currentMeetingId,$userid,$status,$agendaFile);
+              $this->meetingModel->addParticipant($id,$userid);
               foreach($agenda as $a):
                 $this->meetingModel->addAgenda($id,$a);
               endforeach;
@@ -205,6 +205,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               $endMeeting = date('Y-m-d',strtotime($dateOfMeeting.'+'.$dateDifference.'seconds'));
               $this->meetingModel->addMeeting($id,$meetingTitle,$dateOfMeeting,$endMeeting,$time,$endTime,$location,$period,null,$userid,$status,$agendaFile,$status,$agendaFile);
               $dateOfMeeting = date('Y-m-d',strtotime($dateOfMeeting.'+1 month'));
+              $this->meetingModel->addParticipant($id,$userid);
               foreach($agenda as $a):
                 $this->meetingModel->addAgenda($id,$a);
               endforeach;

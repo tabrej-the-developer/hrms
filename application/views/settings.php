@@ -44,8 +44,11 @@ font-family: 'Open Sans', sans-serif;
 		border-radius: 5px;
     background: white;
     padding: 2rem 3rem;
-    margin-left: 3rem;
+    margin-left: 1.5rem;
     box-shadow: 0px 3px 5px -3px #979797;
+	}
+	.tile-box:hover{
+		    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.3);
 	}
 	.cp-rs-view{
 		background:transparent;
@@ -105,6 +108,16 @@ a[href*="settings"],.xero_settings a{
 .top-box-bottom {
 	padding-bottom: 2rem;
 }
+.col-3{
+    flex: 0 0 22% !important;
+    max-width: 22% !important;
+}
+.col-6{
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+	display: flex;
+  align-items: center;
+}
 	@media only screen and (max-width: 600px) {
 		.title-box{
 			display:block;
@@ -125,8 +138,8 @@ a[href*="settings"],.xero_settings a{
 		<div style="font-size: 1rem;font-weight: 700;margin: 1.5rem 3rem">Organizational Settings</div>
 		<div class="top-box d-flex">
 			<div class="tile-box col-3 d-md-flex">
-				<div class=" col-6">
-				<a href="<?php echo base_url()?>settings/editPassword">
+				<div class=" col-5">
+				<a href="<?php echo base_url('settings/editPassword')?>">
 					<img src="<?php echo site_url()?>/assets/images/settings-icons/password.png">
 				</a>
 				</div>
@@ -137,7 +150,7 @@ a[href*="settings"],.xero_settings a{
 			
 			<?php if(isset($permissions->permissions) && $permissions->permissions->viewOrgChartYN == "Y"){ ?>
 			<div class="tile-box col-3 d-md-flex">
-				<div class=" col-6">
+				<div class=" col-5">
 					<a href="<?php echo base_url()?>settings/orgChart">
 						<img src="<?php echo site_url()?>/assets/images/settings-icons/organization-chart.png">
 					</a>
@@ -157,19 +170,19 @@ a[href*="settings"],.xero_settings a{
 		<div class="top-box top-box-bottom justify-content-right">
 			<?php if(isset($permissions->permissions) && $permissions->permissions->viewCenterProfileYN == "Y"){ ?>
 			<div class="tile-box d-md-flex col-3">
-				<div class="col-6">
-					<a href="<?php echo base_url()?>settings/centerProfile">
+				<div class="col-5">
+					<a href="<?php echo base_url('settings/centerProfile')?>">
 						<img src="<?php echo site_url('assets/images/settings-icons/center-profile.png') ?>">
 					</a>
 				</div>
 					<div class="col-6">
-						<a href="<?php echo base_url()?>settings/centerProfile">Center Profile</a>
+						<a href="<?php echo base_url('settings/centerProfile')?>">Center Profile</a>
 					</div>
 			</div>
 		<?php } ?>
 			<?php if(isset($permissions->permissions) && $permissions->permissions->viewRoomSettingsYN == "Y"){ ?>
 			<!-- <div class="tile-box d-md-flex col-3">
-				<div class="col-6">
+				<div class="col-5">
 					<a href="<?php echo base_url()?>settings/editRooms">
 						<img src="<?php echo site_url('assets/images/settings-icons/room-settings.png') ?>">
 					</a>
@@ -181,8 +194,10 @@ a[href*="settings"],.xero_settings a{
 		<?php } ?>
 			<?php if(isset($permissions->permissions) && $permissions->permissions->viewEntitlementsYN == "Y"){ ?>
 			<div class="tile-box d-md-flex col-3">
-				<div class="col-6">
-					<img src="<?php echo site_url('assets/images/settings-icons/entitlement-settings.png') ?>">
+				<div class="col-5">
+					<a href="<?php echo base_url('settings/viewEntitlements')?>">
+						<img src="<?php echo site_url('assets/images/settings-icons/entitlement-settings.png') ?>">
+					</a>
 				</div>
 				<div class="col-6">
 					<a href="<?php echo base_url()?>settings/viewEntitlements">Entitlement Settings</a>
@@ -191,7 +206,10 @@ a[href*="settings"],.xero_settings a{
 		<?php } ?>
 			<?php if(isset($permissions->permissions) && $permissions->permissions->editEmployeeYN == "Y"){ ?>
 			<div class="tile-box  d-md-flex col-3">
-				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/addemployee.png'); ?>"></div>
+				<div class="col-5">
+					<a href="<?php echo base_url('settings/addEmployee')?>">
+						<img src="<?php echo site_url('assets/images/settings-icons/addemployee.png'); ?>"></div>
+					</a>
 				<div class="col-6">
 					<a href="<?php echo base_url()?>settings/addEmployee">Add Employee</a>
 				</div>
@@ -199,7 +217,11 @@ a[href*="settings"],.xero_settings a{
 		<?php } ?>
 <?php //if((isset($permissions->permissions->editEmployeeYN) ? $permissions->permissions->editEmployeeYN : "N") == "N"){ ?>			
 			<div class="tile-box  d-md-flex col-3">
-				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/edit-employee.png'); ?>"></div>
+				<div class="col-5">
+					<a href="<?php echo base_url('settings/editEmployee')?>">
+						<img src="<?php echo site_url('assets/images/settings-icons/edit-employee.png'); ?>">
+					</a>	
+				</div>
 				<div class="col-6">
 					<a href="<?php echo base_url()?>settings/editEmployee">Edit Employee</a>
 				</div>
@@ -207,7 +229,10 @@ a[href*="settings"],.xero_settings a{
 		<?php //} ?>
 			<?php if(isset($permissions->permissions) && $permissions->permissions->editEmployeeYN == "Y"){ ?>			
 			<div class="tile-box  d-md-flex col-3">
-				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/view-employee.png'); ?>"></div>
+				<div class="col-5">
+					<a href="<?php echo base_url('settings/viewEmployeeTable')?>">
+						<img src="<?php echo site_url('assets/images/settings-icons/view-employee.png'); ?>"></div>
+					</a>
 				<div class="col-6">
 					<a href="<?php echo base_url()?>settings/viewEmployeeTable">View Employee</a>
 				</div>
@@ -216,7 +241,11 @@ a[href*="settings"],.xero_settings a{
 			<!-- <button class="add-employee">Add Employee</button></div> -->
 			<?php if(isset($permissions->permissions) && $permissions->permissions->xeroYN == "Y"){ ?>
 			<div class="tile-box d-md-flex col-3">
-				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/xero.png'); ?>"></div>
+				<div class="col-5">
+					<a href="<?php echo base_url('settings/xeroSettings')?>">
+						<img src="<?php echo site_url('assets/images/settings-icons/xero.png'); ?>">
+					</a>
+				</div>
 				<div class="col-6 xero_settings">
 					<a href="<?php echo base_url().'settings/xeroSettings';?>" >Xero settings</a>
 				</div>
@@ -224,7 +253,11 @@ a[href*="settings"],.xero_settings a{
 		<?php } ?>
 			<?php if(isset($permissions->permissions) && $permissions->permissions->viewAwardsYN == "Y"){ ?>
 			<div class="tile-box d-md-flex col-3">
-				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/award-settings.png'); ?>"></div>
+				<div class="col-5">
+					<a href="<?php echo base_url('settings/awardSettings')?>">
+						<img src="<?php echo site_url('assets/images/settings-icons/award-settings.png'); ?>">
+					</a>
+				</div>
 				<div class="col-6">
 					<a href="<?php echo base_url()?>settings/awardSettings">Awards settings</a>
 				</div>
@@ -232,7 +265,11 @@ a[href*="settings"],.xero_settings a{
 		<?php } ?>
 			<?php if(isset($permissions->permissions) && $permissions->permissions->viewSuperfundsYN == "Y"){ ?>
 			<div class="tile-box d-md-flex col-3">
-				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/superfund-settings.png'); ?>"></div>
+				<div class="col-5">
+					<a href="<?php echo base_url('settings/superfundsSettings')?>">
+						<img src="<?php echo site_url('assets/images/settings-icons/superfund-settings.png'); ?>">
+					</a>
+				</div>
 				<div class="col-6">
 					<a href="<?php echo base_url()?>settings/superfundsSettings">Superannuation settings</a>
 				</div>
@@ -240,7 +277,11 @@ a[href*="settings"],.xero_settings a{
 		<?php } ?>
 			<?php if(isset($permissions->permissions) && $permissions->permissions->viewPermissionYN == "Y"){ ?>
 			<div class="tile-box d-md-flex col-3">
-				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/permission-settings.png'); ?>"></div>
+				<div class="col-5">
+					<a href="<?php echo base_url('settings/permissionSettings')?>">
+						<img src="<?php echo site_url('assets/images/settings-icons/permission-settings.png'); ?>">
+					</a>
+				</div>
 				<div class="col-6">
 					<a href="<?php echo base_url()?>settings/permissionSettings">Permission settings</a>
 				</div>
@@ -248,14 +289,22 @@ a[href*="settings"],.xero_settings a{
 		<?php } ?>
 			<?php if(isset($permissions->permissions) && $permissions->permissions->viewLeaveTypeYN == "Y"){ ?>
 			<div class="tile-box d-md-flex col-3">
-				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/leave-settings.png'); ?>"></div>
+				<div class="col-5">
+					<a href="<?php echo base_url('settings/leaveSettings')?>">
+						<img src="<?php echo site_url('assets/images/settings-icons/leave-settings.png'); ?>">
+					</a>
+				</div>
 				<div class="col-6">
 					<a href="<?php echo base_url()?>settings/leaveSettings">Leave settings</a>
 				</div>
 			</div>
 		<?php } ?>
 			<div class="tile-box d-md-flex col-3">
-				<div class="col-6"><img src="<?php echo site_url('assets/images/settings-icons/leave-settings.png'); ?>"></div>
+				<div class="col-5">
+					<a href="<?php echo base_url('settings/activityLog')?>">
+						<img src="<?php echo site_url('assets/images/settings-icons/leave-settings.png'); ?>">
+					</a>
+				</div>
 				<div class="col-6">
 					<a href="<?php echo base_url()?>settings/activityLog">Activity Log</a>
 				</div>
@@ -303,3 +352,7 @@ $(document).on('mouseleave','.navbar-nav',function(){
 
 </body>
 </html>
+
+
+<input type="checkbox" filtertype="me" name="">
+<input type="checkbox" filtertype="staff" name="">

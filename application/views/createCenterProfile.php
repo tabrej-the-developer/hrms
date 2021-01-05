@@ -90,7 +90,7 @@ font-family: 'Open Sans', sans-serif;
 	<div>
 		<span >
       <button class="back-button">
-      	<a href="<?php echo base_url();?>/settings" class="back_button_a">
+      	<a onclick="goBack()" class="back_button_a">
           <img src="<?php echo base_url('assets/images/back.svg');?>">
           <span style="font-size:1.75rem;font-weight: bold;color: rgb(23, 29, 75); ">Add Center</span>
     		</a>

@@ -1213,8 +1213,10 @@ $this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$f
 						// $cert = $certificate[$i];
 						// get employee Id
 						if($id != "" && $id != null){
+							if($course_nme != null && $course_nme != "")
 							$this->settingsModel->updateEmployeeCourses( $id,$employee_no,$course_nme,$course_desc,$date_obt,$exp_date);
 					}if($id == "" || $id == null){
+						if($course_nme != null && $course_nme != "")
 							$this->settingsModel->addToEmployeeCourses( $employee_no,$course_nme,$course_desc,$date_obt,$exp_date);
 						}
 					}

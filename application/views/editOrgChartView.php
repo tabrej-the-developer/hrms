@@ -387,6 +387,15 @@ font-family: 'Open Sans', sans-serif;
     font-size: 1.5rem;
     color: #E7E7E7 !important;
 }
+.changeRole_head{
+	height: 20vh;
+}
+.priority_areas{
+	height: 65vh;
+}
+.priority_buttons{
+	height: 10vh;
+}
 .box-space {
     display: flex;
     justify-content: center;
@@ -903,20 +912,20 @@ font-family: 'Open Sans', sans-serif;
                     <span class="changeRole__" employeeId="${em.id}" role_id="${em.roleid}"  style="width:30%">${em.name}</span>
                   <span class="select_css" style="width:35%;">
                     <select class="select_area" similarity="${x}" style="min-width:80% !important;max-width:80%">
-                        <option value="-1" disabled selected>--Select Area--</option>
+                        <option value="0" disabled selected>--Select Area--</option>
                     </select>
                     </span>
                   <span class="select_css" style="width:35%;">
                     <select class="select_role" similarity="${x}" style="min-width:80% !important;max-width:80%">
-                       <option value="-1" disabled selected>--Select Role--</option> 
+                       <option value="0" selected>--Select Role--</option> 
                     </select>
                   </span>
                   </div>`;
                   $('.priority_areas').append(code);
-                  if(em.areaid != null && em.areaid != "")
-										addAreaToSelect(em.areaid,em.roleid,centerid,x)
-									else
-										addAreaToSelect(em.areaid,em.roleid,centerid,x)
+                    if(em.areaid != null && em.areaid != "")
+						addAreaToSelect(em.areaid,em.roleid,centerid,x)
+					else
+						addAreaToSelect(em.areaid,em.roleid,centerid,x)
                   x++;
 	              })
 	            }

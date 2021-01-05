@@ -114,7 +114,7 @@ font-family: 'Open Sans', sans-serif;
   <div id="wrappers"> 
   <div class="d-flex justify-content-between page_heading">
     <span class="d-flex align-items-center">
-      <a href="<?php echo base_url();?>/settings">
+      <a onclick="goBack()">
         <button class="back-button">
           <img src="<?php echo base_url('assets/images/back.svg');?>">
         </button>

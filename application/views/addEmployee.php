@@ -34,7 +34,7 @@
 <div class="containers">
 <span class="d-flex justify-content-between pt-2">
 	<span style="top:20px;padding-left: 2rem">
-      <a href="<?php echo base_url();?>/settings">
+      <a onclick="goBack()">
         <button class="btn back-button">
           <img src="<?php echo base_url('assets/images/back.svg');?>">
           <span style="font-size:0.8rem">Add Employee</span>
@@ -65,7 +65,7 @@
 	<section class="employee-section">	
 		<!-- <h3>Personal</h3> -->
 		<span class="d-flex">
-		<span class="span-class ">
+		<span class="span-class col-3">
 			<label class="labels__">Title</label>
 			<span class="select_css">
 				<select  id="title"  class="" type="text" name="title"> 
@@ -274,7 +274,7 @@
 					<?php $levels = json_decode($levels);
 						foreach($levels->entitlements as $level){
 						?>
-					<option><?php echo $level->name; ?></option>
+					<option value="<?php echo $level->id; ?>"><?php echo $level->name; ?></option>
 					<?php } ?>
 				</select>
 			</span>

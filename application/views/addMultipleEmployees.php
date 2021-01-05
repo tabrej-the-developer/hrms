@@ -32,7 +32,7 @@
 <div class="containers">
 <span class="d-flex justify-content-between pt-2">
 	<span style="top:20px;padding-left: 2rem">
-      <a href="<?php echo base_url();?>/settings">
+      <a onclick="goBack()">
         <button class="btn back-button">
           <img src="<?php echo base_url('assets/images/back.svg');?>">
           <span style="font-size:0.8rem">Add Multiple Employee</span>

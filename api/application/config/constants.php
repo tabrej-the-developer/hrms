@@ -104,3 +104,4 @@ define('XERO_ACCOUNT_CODE','477');
 
 define('XERO_PAY_ITEMS_URL','https://api.xero.com/payroll.xro/1.0/PayItems');
 define('UPLOAD_IMAGE_PATH', './uploads/images/');
+define('DOCUMENTS_PATH','application/assets/uploads/documents/');

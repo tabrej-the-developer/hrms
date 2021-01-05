@@ -339,7 +339,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 	?>
 <div class="containers">
 	<span class="awards_header_container">
-		      <a href="<?php echo base_url();?>/settings">
+		      <a onclick="goBack()">
 		        <button class="btn back-button">
 			          <img src="<?php echo base_url('assets/images/back.svg');?>">
 		        </button>

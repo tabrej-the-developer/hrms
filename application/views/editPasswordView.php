@@ -72,7 +72,7 @@ font-family: 'Open Sans', sans-serif;
     <div id="wrapper-element">
     <div class="containers" style="">
       <span style="position: absolute">
-        <a href="<?php echo base_url();?>/settings">
+        <a onclick="goBack()">
           <button class="btn back-button">
             <img src="<?php echo base_url('assets/images/back.svg');?>"> <span style="font-size:0.8rem">Password Settings</span>
           </button>

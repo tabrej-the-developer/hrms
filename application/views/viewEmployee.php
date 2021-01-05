@@ -55,6 +55,12 @@
 			padding-left: 10px;
 			flex-wrap: wrap
 		}
+		.courses-tab{
+			display: none;
+			padding-left: 10px;
+			padding-right: 10px;
+			flex-wrap: wrap
+		}
 		.tab-buttons{
 			margin-bottom:10px;
 			display: flex;
@@ -222,7 +228,7 @@
 		position: relative;
 	}
 	.employee-section,.employee-bank-account-section,.employee-superfund-section, 
-	.employee-tax-declaration-section,.employee-details,.medical-info{
+	.employee-tax-declaration-section,.employee-details,.medical-info,.courses-tab{
 		max-height: 80%;
 		height: 80%;
 		overflow: auto
@@ -348,6 +354,7 @@
 		<span class="nav-button e-s-s"><span> Superannuation </span></span>
 		<span class="nav-button e-t-d-s"><span>Tax Declaration </span></span>
 		<span class="nav-button e-u-s"><span>Employment</span></span>	
+		<span class="nav-button c-t"><span>Courses</span></span>
 		<span class="nav-button m-i"><span>Medical Info</span></span>
 		<span class="nav-button d-c"><span>Documents</span></span>
 		</div>	
@@ -778,32 +785,7 @@
 			<label class="labels__">	Visa-conditions</label>
 			<input disabled   id="visa_conditions" name="visa_conditions" type="text" value="<?php echo isset($employeeData->employee->visaConditions) ? $employeeData->employee->visaConditions : ''; ?>">
 		</span>
-<?php $toCount = isset($employeeData->employeeCourses) ? $employeeData->employeeCourses : ''; ?>
-<?php for($i=0;$i<count($toCount);$i++){ ?>
-		<div>
-				<input disabled  type="text" name="course_id[]" style="display:none" value="<?php echo isset($employeeData->employeeCourses[$i]->id) ? $employeeData->employeeCourses[$i]->id : ''; ?>">
-				<span class="span-class col-3">
-					<label class="labels__">Course Name</label>
-					<input disabled   class="course_name" name="course_name[]" type="text" value="<?php echo isset($employeeData->employeeCourses[$i]->courseName) ? $employeeData->employeeCourses[$i]->courseName : ''; ?>">
-				</span>
-				<span class="span-class col-3">
-					<label class="labels__">course Description</label>
-					<input disabled   class="course_description" name="course_description[]" type="text" value="<?php echo isset($employeeData->employeeCourses[$i]->courseDescription) ? $employeeData->employeeCourses[$i]->courseDescription : ''; ?>">
-				</span>
-				<span class="span-class col-3">
-					<label class="labels__">Date Obtained</label>
-					<input disabled  class="date_obtained" name="date_obtained[]" type="text" value="<?php echo isset($employeeData->employeeCourses[$i]->dateObtained) ? $employeeData->employeeCourses[$i]->dateObtained : ''; ?>">
-				</span>
-				<span class="span-class col-3">
-					<label class="labels__">Expiry Date</label>
-					<input disabled   class="expiry_date" name="expiry_date[]" type="text" value="<?php echo isset($employeeData->employeeCourses[$i]->courseExpiryDate) ? $employeeData->employeeCourses[$i]->courseExpiryDate : ''; ?>">
-				</span>
-				<span class="span-class col-3">
-					<label class="labels__">Certificate </label>
-					<input disabled   class="certificate" name="certificate[]" type="FILE">
-				</span>
-		</div>
-	<?php } ?>
+
 <!-- 		<span class="span-class col-3">
 			<label class="labels__">CPR-expiry</label>
 			<input disabled  placehdr="CPR-expiry" id="cpr_expiry" type="text">
@@ -848,7 +830,34 @@
 				<input disabled  type="radio" name="nominated_supervisor" class="nominated_supervisor yn-input" value="N">
 		</span> -->
 	</section>
-
+	<section class="courses-tab">
+<?php $toCount = isset($employeeData->employeeCourses) ? $employeeData->employeeCourses : ''; ?>
+<?php for($i=0;$i<count($toCount);$i++){ ?>
+		<div>
+				<input disabled  type="text" name="course_id[]" style="display:none" value="<?php echo isset($employeeData->employeeCourses[$i]->id) ? $employeeData->employeeCourses[$i]->id : ''; ?>">
+				<span class="span-class col-3">
+					<label class="labels__">Course Name</label>
+					<input disabled   class="course_name" name="course_name[]" type="text" value="<?php echo isset($employeeData->employeeCourses[$i]->courseName) ? $employeeData->employeeCourses[$i]->courseName : ''; ?>">
+				</span>
+				<span class="span-class col-3">
+					<label class="labels__">course Description</label>
+					<input disabled   class="course_description" name="course_description[]" type="text" value="<?php echo isset($employeeData->employeeCourses[$i]->courseDescription) ? $employeeData->employeeCourses[$i]->courseDescription : ''; ?>">
+				</span>
+				<span class="span-class col-3">
+					<label class="labels__">Date Obtained</label>
+					<input disabled  class="date_obtained" name="date_obtained[]" type="text" value="<?php echo isset($employeeData->employeeCourses[$i]->dateObtained) ? $employeeData->employeeCourses[$i]->dateObtained : ''; ?>">
+				</span>
+				<span class="span-class col-3">
+					<label class="labels__">Expiry Date</label>
+					<input disabled   class="expiry_date" name="expiry_date[]" type="text" value="<?php echo isset($employeeData->employeeCourses[$i]->courseExpiryDate) ? $employeeData->employeeCourses[$i]->courseExpiryDate : ''; ?>">
+				</span>
+				<span class="span-class col-3">
+					<label class="labels__">Certificate </label>
+					<input disabled   class="certificate" name="certificate[]" type="FILE">
+				</span>
+		</div>
+	<?php } ?>
+	</section>
 	<section class="medical-info">
 		<h3>Medical Information<!-- <span id="Medical Information"> + </span> --></h3>
 <!-- 		<span class="span-class col-3">
@@ -994,6 +1003,7 @@
 			$('.employee-details').css('display','none');
 			$('.medical-info').css('display','none');
 			$('.documents-tab').css('display','none');
+			$('.courses-tab').css('display','none');
 		})
 		$(document).on('click','.e-s',function(){
 			$('.employee-bank-account-section').css('display','none')
@@ -1003,6 +1013,7 @@
 			$('.employee-details').css('display','none');
 			$('.medical-info').css('display','none');
 			$('.documents-tab').css('display','none');
+			$('.courses-tab').css('display','none');
 		})
 		$(document).on('click','.e-s-s',function(){
 			$('.employee-bank-account-section').css('display','none')
@@ -1012,6 +1023,7 @@
 			$('.employee-details').css('display','none');
 			$('.medical-info').css('display','none');
 			$('.documents-tab').css('display','none');
+			$('.courses-tab').css('display','none');
 		})
 		$(document).on('click','.e-t-d-s',function(){
 			$('.employee-bank-account-section').css('display','none')
@@ -1021,6 +1033,7 @@
 			$('.employee-details').css('display','none');
 			$('.medical-info').css('display','none');
 			$('.documents-tab').css('display','none');
+			$('.courses-tab').css('display','none');
 		})
 		$(document).on('click','.e-u-s',function(){
 			$('.employee-bank-account-section').css('display','none')
@@ -1030,6 +1043,7 @@
 			$('.employee-details').css('display','block');
 			$('.medical-info').css('display','none');
 			$('.documents-tab').css('display','none');
+			$('.courses-tab').css('display','none');
 		})
 		$(document).on('click','.m-i',function(){
 			$('.employee-bank-account-section').css('display','none')
@@ -1039,6 +1053,7 @@
 			$('.employee-details').css('display','none');
 			$('.medical-info').css('display','block');
 			$('.documents-tab').css('display','none');
+			$('.courses-tab').css('display','none');
 		})
 		$(document).on('click','.d-c',function(){
 			$('.employee-bank-account-section').css('display','none')
@@ -1048,6 +1063,17 @@
 			$('.employee-details').css('display','none');
 			$('.medical-info').css('display','none');
 			$('.documents-tab').css('display','block');
+			$('.courses-tab').css('display','none');
+		})
+		$(document).on('click','.c-t',function(){
+			$('.employee-bank-account-section').css('display','none')
+			$('.employee-section').css('display','none');
+			$('.employee-superfund-section').css('display','none');
+			$('.employee-tax-declaration-section').css('display','none');
+			$('.employee-details').css('display','none');
+			$('.medical-info').css('display','none');
+			$('.documents-tab').css('display','none');
+			$('.courses-tab').css('display',' block');
 		})
 	})
 
@@ -1182,71 +1208,88 @@ $(document).ready(function(){
 
 <script type="text/javascript">
 	$(document).ready(()=>{
-			$('.e-s span').addClass('arrow');
-        $('.e-s').click(function(){
-        	$('.e-s span').addClass('arrow');
-					$('.e-b-a-s span').removeClass('arrow');
-					$('.e-s-s span').removeClass('arrow');
-					$('.e-t-d-s span').removeClass('arrow');
-					$('.e-u-s span').removeClass('arrow');
-					$('.m-i span').removeClass('arrow');
-					$('.d-c span').removeClass('arrow');
-        })
-        $('.e-b-a-s').click(function(){
-        	$('.e-s span').removeClass('arrow');
-					$('.e-b-a-s span').addClass('arrow');
-					$('.e-s-s span').removeClass('arrow');
-					$('.e-t-d-s span').removeClass('arrow');
-					$('.e-u-s span').removeClass('arrow');
-					$('.m-i span').removeClass('arrow');
-					$('.d-c span').removeClass('arrow');
-        })
-        $('.e-s-s').click(function(){
-        	$('.e-s span').removeClass('arrow');
-					$('.e-b-a-s span').removeClass('arrow');
-					$('.e-s-s span').addClass('arrow');
-					$('.e-t-d-s span').removeClass('arrow');
-					$('.e-u-s span').removeClass('arrow');
-					$('.m-i span').removeClass('arrow');
-					$('.d-c span').removeClass('arrow');
-        })
-        $('.e-t-d-s').click(function(){
-        	$('.e-s span').removeClass('arrow');
-					$('.e-b-a-s span').removeClass('arrow');
-					$('.e-s-s span').removeClass('arrow');
-					$('.e-t-d-s span').addClass('arrow');
-					$('.e-u-s span').removeClass('arrow');
-					$('.m-i span').removeClass('arrow');
-					$('.d-c span').removeClass('arrow');
-        })
-        $('.e-u-s').click(function(){
-        	$('.e-s span').removeClass('arrow');
-					$('.e-b-a-s span').removeClass('arrow');
-					$('.e-s-s span').removeClass('arrow');
-					$('.e-t-d-s span').removeClass('arrow');
-					$('.e-u-s span').addClass('arrow');
-					$('.m-i span').removeClass('arrow');
-					$('.d-c span').removeClass('arrow');
-        })
-        $('.m-i').click(function(){
-        	$('.e-s span').removeClass('arrow');
-					$('.e-b-a-s span').removeClass('arrow');
-					$('.e-s-s span').removeClass('arrow');
-					$('.e-t-d-s span').removeClass('arrow');
-					$('.e-u-s span').removeClass('arrow');
-					$('.m-i span').addClass('arrow');
-					$('.d-c span').removeClass('arrow');
-        })
-        $('.d-c').click(function(){
-        	$('.e-s span').removeClass('arrow');
-					$('.e-b-a-s span').removeClass('arrow');
-					$('.e-s-s span').removeClass('arrow');
-					$('.e-t-d-s span').removeClass('arrow');
-					$('.e-u-s span').removeClass('arrow');
-					$('.m-i span').removeClass('arrow');
-					$('.d-c span').addClass('arrow');
-        })
-    });
+		$('.e-s span').addClass('arrow');
+		$('.e-s').click(function(){
+		$('.e-s span').addClass('arrow');
+			$('.e-b-a-s span').removeClass('arrow');
+			$('.e-s-s span').removeClass('arrow');
+			$('.e-t-d-s span').removeClass('arrow');
+			$('.e-u-s span').removeClass('arrow');
+			$('.m-i span').removeClass('arrow');
+			$('.d-c span').removeClass('arrow');
+			$('.c-t span').removeClass('arrow');
+		})
+		$('.e-b-a-s').click(function(){
+		$('.e-s span').removeClass('arrow');
+			$('.e-b-a-s span').addClass('arrow');
+			$('.e-s-s span').removeClass('arrow');
+			$('.e-t-d-s span').removeClass('arrow');
+			$('.e-u-s span').removeClass('arrow');
+			$('.m-i span').removeClass('arrow');
+			$('.d-c span').removeClass('arrow');
+			$('.c-t span').removeClass('arrow');
+		})
+		$('.e-s-s').click(function(){
+		$('.e-s span').removeClass('arrow');
+			$('.e-b-a-s span').removeClass('arrow');
+			$('.e-s-s span').addClass('arrow');
+			$('.e-t-d-s span').removeClass('arrow');
+			$('.e-u-s span').removeClass('arrow');
+			$('.m-i span').removeClass('arrow');
+			$('.d-c span').removeClass('arrow');
+			$('.c-t span').removeClass('arrow');
+		})
+		$('.e-t-d-s').click(function(){
+		$('.e-s span').removeClass('arrow');
+			$('.e-b-a-s span').removeClass('arrow');
+			$('.e-s-s span').removeClass('arrow');
+			$('.e-t-d-s span').addClass('arrow');
+			$('.e-u-s span').removeClass('arrow');
+			$('.m-i span').removeClass('arrow');
+			$('.d-c span').removeClass('arrow');
+			$('.c-t span').removeClass('arrow');
+		})
+		$('.e-u-s').click(function(){
+		$('.e-s span').removeClass('arrow');
+			$('.e-b-a-s span').removeClass('arrow');
+			$('.e-s-s span').removeClass('arrow');
+			$('.e-t-d-s span').removeClass('arrow');
+			$('.e-u-s span').addClass('arrow');
+			$('.m-i span').removeClass('arrow');
+			$('.d-c span').removeClass('arrow');
+			$('.c-t span').removeClass('arrow');
+		})
+		$('.m-i').click(function(){
+		$('.e-s span').removeClass('arrow');
+			$('.e-b-a-s span').removeClass('arrow');
+			$('.e-s-s span').removeClass('arrow');
+			$('.e-t-d-s span').removeClass('arrow');
+			$('.e-u-s span').removeClass('arrow');
+			$('.m-i span').addClass('arrow');
+			$('.d-c span').removeClass('arrow');
+			$('.c-t span').removeClass('arrow');
+		})
+		$('.d-c').click(function(){
+		$('.e-s span').removeClass('arrow');
+			$('.e-b-a-s span').removeClass('arrow');
+			$('.e-s-s span').removeClass('arrow');
+			$('.e-t-d-s span').removeClass('arrow');
+			$('.e-u-s span').removeClass('arrow');
+			$('.m-i span').removeClass('arrow');
+			$('.d-c span').addClass('arrow');
+			$('.c-t span').removeClass('arrow');
+		})
+		$('.c-t').click(function(){
+		$('.e-s span').removeClass('arrow');
+			$('.e-b-a-s span').removeClass('arrow');
+			$('.e-s-s span').removeClass('arrow');
+			$('.e-t-d-s span').removeClass('arrow');
+			$('.e-u-s span').removeClass('arrow');
+			$('.m-i span').removeClass('arrow');
+			$('.d-c span').removeClass('arrow');
+			$('.c-t span').addClass('arrow');
+		})
+		});
 
     $(document).ready(function(){
     	var firstName = $('#fname').val();

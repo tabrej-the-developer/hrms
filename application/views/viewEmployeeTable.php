@@ -253,6 +253,9 @@
     .viewEmployeeTable_row td{
       padding-left: 4rem !important;
     }
+    .viewEmployeeTable_centerName_parent{
+      cursor: pointer;
+    }
     </style>
   </head>
 
@@ -275,9 +278,14 @@
           <span class="select_css">
             <select placehdr="Center" id="centerValue" name="centerValue" >
               <?php 
-              foreach($centers->centers as $center){ ?> 
+              foreach($centers->centers as $center){ 
+                if($_SESSION['centerr'] == $center->centerid){
+                ?> 
+                <option value="<?php echo $center->centerid;?>" selected><?php echo $center->name;?></option>
+              <?php }else{ ?>
                 <option value="<?php echo $center->centerid;?>"><?php echo $center->name;?></option>
-              <?php } 
+            <?php  }
+            } 
               $centerId = "";
               foreach($centers->centers as $center){ 
                   $centerId = $centerId . $center->centerid . "|";
@@ -401,8 +409,7 @@
     function viewEmployeeTable(){
       var centerid = $('#centerValue').val();
       var counter = 0;
-
-      var url = window.location.origin+"/PN101/settings/getEmployeesByCenter/"+centerid; 
+        var url = window.location.origin+"/PN101/settings/getEmployeesByCenter/"+centerid; 
       $.ajax({
         url: url,
         method: 'GET',
@@ -419,8 +426,6 @@
             $('.viewEmployeeTable_memberName').eq(counter).text(employee.roleName);
             $('.viewEmployeeTable_action').eq(counter).html(`
                 <button class="button"><a href="${window.location.origin+'/PN101/settings/viewEmployee/'+employee.id}">View</a></button>
-
-                
               `)
             counter++;
           })

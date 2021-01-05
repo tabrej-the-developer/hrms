@@ -1944,6 +1944,7 @@ $server_output = curl_exec($ch);
 
 
 	public function getEmployeesByCenter($centerid){
+		$_SESSION['centerr'] = $centerid;
 		$url = BASE_API_URL."util/GetAllEmployeesByCenter/".$centerid.'/'.$this->session->userdata('LoginId');
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);

@@ -53,6 +53,12 @@
 			padding-right: 10px;
 			flex-wrap: wrap
 		}
+		.courses-tab{
+			display: none;
+			padding-left: 10px;
+			padding-right: 10px;
+			flex-wrap: wrap
+		}
 		.tab-buttons{
 			margin-bottom:10px;
 			display: flex;
@@ -251,7 +257,7 @@
 		position: relative;
 	}
 	.employee-section,.employee-bank-account-section,.employee-superfund-section, 
-	.employee-tax-declaration-section,.employee-details,.medical-info{
+	.employee-tax-declaration-section,.employee-details,.medical-info,.courses-tab{
 		max-height: 80%;
 		height: 80%;
 		overflow: auto
@@ -336,6 +342,17 @@
 	th{
 		font-size: 0.95rem;
 	}
+	.col-9{
+		padding-left: 0 !important;
+	}
+	textarea[inputType="textarea"]{
+		min-width: 100% !important; 
+		max-width: 100% !important;
+		border-radius: 10px !important;
+	}
+	.courses_buttons{
+		text-align: right;
+	}
 	</style>
 </head>
 <body>
@@ -344,7 +361,7 @@
 ?>
 <div class="containers">
 	<span style="position: absolute;top:20px;padding-left: 2rem" class="d-inline-flex align-items-center">
-      <a href="<?php echo base_url();?>/settings">
+      <a onclick="goBack()">
         <button class="btn back-button">
           <img src="<?php echo base_url('assets/images/back.svg');?>">
         </button>
@@ -362,6 +379,7 @@
 		<span class="nav-button e-s-s"><span> Superannuation </span></span>
 		<span class="nav-button e-t-d-s"><span>Tax Declaration </span></span>
 		<span class="nav-button e-u-s"><span>Employment</span></span>	
+		<span class="nav-button c-t"><span>Courses</span></span>
 		<span class="nav-button m-i"><span>Medical Info</span></span>
 		<span class="nav-button d-c"><span>Documents</span></span>
 		</div>	
@@ -370,7 +388,7 @@
 	<section class="employee-section">	
 		<!-- <h3>Personal</h3> -->
 		<span class="d-flex">
-		<span class="span-class ">
+		<span class="span-class col-3">
 			<label class="labels__">Title</label>
 			<span class="select_css">
 				<select placeholder="Title" id="title"  class="" type="text" name="title" value="<?php echo isset($employeeData->employee->title) ? $employeeData->employee->title : ''; ?>"> 
@@ -862,41 +880,7 @@
 			<label>Termination Date</label>
 		<input placeholder="Termination Date" id="terminationDate"  class="" type="date" name="terminationDate" value="<?php echo isset($employeeData->employee->terminationDate) ? $employeeData->employee->terminationDate : ''; ?>">
 		</span>
-<?php $toCount = isset($employeeData->employeeCourses) ? $employeeData->employeeCourses : ''; ?>
-<div class="courses_buttons">
-	<span><span class="add_course">Add</span></span>
-	<span><span class="remove_course">Remove</span></span>
-</div>
-<?php 
-	// count($toCount)
-for($i=0;$i<count($toCount);$i++){ ?>
-		<div class="courses_div">
-				<input type="text" name="course_id[]" style="display:none" value="<?php echo isset($employeeData->employeeCourses[$i]->id) ? $employeeData->employeeCourses[$i]->id : ''; ?>">
-				<span class="span-class col-3">
-					<label>Course Name</label>
-					<input placeholder="Course Name" class="course_name" name="course_name[]" type="text" value="<?php echo isset($employeeData->employeeCourses[$i]->courseName) ? $employeeData->employeeCourses[$i]->courseName : ''; ?>">
-				</span>
-				<span class="span-class col-3">
-					<label>course Description</label>
-					<input placeholder="course Description" class="course_description" name="course_description[]" type="text" value="<?php echo isset($employeeData->employeeCourses[$i]->courseDescription) ? $employeeData->employeeCourses[$i]->courseDescription : ''; ?>">
-				</span>
-				<span class="span-class col-3">
-					<label>Date Obtained</label>
-					<input placeholder="Date Obtained" class="date_obtained" name="date_obtained[]" type="date" value="<?php echo isset($employeeData->employeeCourses[$i]->dateObtained) ? $employeeData->employeeCourses[$i]->dateObtained : ''; ?>">
-				</span>
-				<span class="span-class col-3">
-					<label>Expiry Date</label>
-					<input placeholder="Expiry Date" class="expiry_date" name="expiry_date[]" type="date" value="<?php echo isset($employeeData->employeeCourses[$i]->courseExpiryDate) ? $employeeData->employeeCourses[$i]->courseExpiryDate : ''; ?>">
-				</span>
-				<span class="span-class col-3">
-					<label>Certificate </label>
-					<input placeholder="Certificate" class="certificate" name="certificate[]" type="FILE">
-				</span>
-				<?php if( isset($employeeData->employeeCourses[$i]->id) ){ ?>
-				<span class="course_delete" courseId="<?php echo isset($employeeData->employeeCourses[$i]->id) ? $employeeData->employeeCourses[$i]->id : ''; ?>">Delete</span>
-			<?php } ?>
-		</div>
-	<?php } ?>
+
 <!-- 		<span class="span-class col-3">
 			<label>CPR-expiry</label>
 			<input placeholder="CPR-expiry" id="cpr_expiry" type="text">
@@ -941,7 +925,65 @@ for($i=0;$i<count($toCount);$i++){ ?>
 				<input type="radio" name="nominated_supervisor" class="nominated_supervisor yn-input" value="N">
 		</span> -->
 	</section>
-
+	<section class="courses-tab">
+	<?php $toCount = isset($employeeData->employeeCourses) ? $employeeData->employeeCourses : ''; 
+		// count($toCount)
+	for($i=0;$i<count($toCount);$i++){ ?>
+			<div class="courses_div">
+					<input type="text" name="course_id[]" style="display:none" value="<?php echo isset($employeeData->employeeCourses[$i]->id) ? $employeeData->employeeCourses[$i]->id : ''; ?>">
+					<span class="span-class col-3">
+						<label>Course Name</label>
+						<input placeholder="Course Name" class="course_name" name="course_name[]" type="text" value="<?php echo isset($employeeData->employeeCourses[$i]->courseName) ? $employeeData->employeeCourses[$i]->courseName : ''; ?>">
+					</span>
+					<span class="span-class col-3">
+						<label>Date Obtained</label>
+						<input placeholder="Date Obtained" class="date_obtained" name="date_obtained[]" type="date" value="<?php echo isset($employeeData->employeeCourses[$i]->dateObtained) ? $employeeData->employeeCourses[$i]->dateObtained : ''; ?>">
+					</span>
+					<span class="span-class col-3">
+						<label>Certificate </label>
+						<input placeholder="Certificate" class="certificate" name="certificate[]" type="FILE">
+					</span>
+					<span class="span-class col-3">
+						<label>Expiry Date</label>
+						<input placeholder="Expiry Date" class="expiry_date" name="expiry_date[]" type="date" value="<?php echo isset($employeeData->employeeCourses[$i]->courseExpiryDate) ? date('Y-m-d',strtotime($employeeData->employeeCourses[$i]->courseExpiryDate)) : ''; ?>">
+					</span>
+					<span class="span-class col-9">
+						<label>Course Description</label>
+						<textarea placeholder="Course Description" class="course_description" name="course_description[]" type="text" value="" inputType="textarea"><?php echo isset($employeeData->employeeCourses[$i]->courseDescription) ? $employeeData->employeeCourses[$i]->courseDescription : ''; ?></textarea>
+					</span>
+					<?php if( isset($employeeData->employeeCourses[$i]->id) ){ ?>
+					<span class="course_delete" courseId="<?php echo isset($employeeData->employeeCourses[$i]->id) ? $employeeData->employeeCourses[$i]->id : ''; ?>">Delete</span>
+				<?php } ?>
+			</div>
+		<?php } ?>
+	<div class="courses_buttons">
+		<span><span class="add_course">Add</span></span>
+		<span><span class="remove_course">Remove</span></span>
+	</div>
+				<div class="courses_div_new">
+					<input type="text" name="course_id[]" style="display:none" value="">
+					<span class="span-class col-3">
+						<label>Course Name</label>
+						<input placeholder="Course Name" class="course_name" name="course_name[]" type="text" value="">
+					</span>
+					<span class="span-class col-3">
+						<label>Date Obtained</label>
+						<input placeholder="Date Obtained" class="date_obtained" name="date_obtained[]" type="date" value="">
+					</span>
+					<span class="span-class col-3">
+						<label>Certificate </label>
+						<input placeholder="Certificate" class="certificate" name="certificate[]" type="FILE">
+					</span>
+					<span class="span-class col-3">
+						<label>Expiry Date</label>
+						<input placeholder="Expiry Date" class="expiry_date" name="expiry_date[]" type="date" value="">
+					</span>
+					<span class="span-class col-9">
+						<label>Course Description</label>
+						<textarea placeholder="Course Description" class="course_description" name="course_description[]" type="text" value="" inputType="textarea"></textarea>
+					</span>
+				</div>
+	</section>
 	<section class="medical-info">
 		<h3>Medical Information<!-- <span id="Medical Information"> + </span> --></h3>
 <!-- 		<span class="span-class col-3">
@@ -1095,6 +1137,7 @@ for($i=0;$i<count($toCount);$i++){ ?>
 			$('.employee-details').css('display','none');
 			$('.medical-info').css('display','none');
 			$('.documents-tab').css('display','none');
+			$('.courses-tab').css('display','none');
 		})
 		$(document).on('click','.e-s',function(){
 			$('.employee-bank-account-section').css('display','none')
@@ -1104,6 +1147,7 @@ for($i=0;$i<count($toCount);$i++){ ?>
 			$('.employee-details').css('display','none');
 			$('.medical-info').css('display','none');
 			$('.documents-tab').css('display','none');
+			$('.courses-tab').css('display','none');
 		})
 		$(document).on('click','.e-s-s',function(){
 			$('.employee-bank-account-section').css('display','none')
@@ -1113,6 +1157,7 @@ for($i=0;$i<count($toCount);$i++){ ?>
 			$('.employee-details').css('display','none');
 			$('.medical-info').css('display','none');
 			$('.documents-tab').css('display','none');
+			$('.courses-tab').css('display','none');
 		})
 		$(document).on('click','.e-t-d-s',function(){
 			$('.employee-bank-account-section').css('display','none')
@@ -1122,6 +1167,7 @@ for($i=0;$i<count($toCount);$i++){ ?>
 			$('.employee-details').css('display','none');
 			$('.medical-info').css('display','none');
 			$('.documents-tab').css('display','none');
+			$('.courses-tab').css('display','none');
 		})
 		$(document).on('click','.e-u-s',function(){
 			$('.employee-bank-account-section').css('display','none')
@@ -1131,6 +1177,7 @@ for($i=0;$i<count($toCount);$i++){ ?>
 			$('.employee-details').css('display','block');
 			$('.medical-info').css('display','none');
 			$('.documents-tab').css('display','none');
+			$('.courses-tab').css('display','none');
 		})
 		$(document).on('click','.m-i',function(){
 			$('.employee-bank-account-section').css('display','none')
@@ -1140,6 +1187,7 @@ for($i=0;$i<count($toCount);$i++){ ?>
 			$('.employee-details').css('display','none');
 			$('.medical-info').css('display','block');
 			$('.documents-tab').css('display','none');
+			$('.courses-tab').css('display','none');
 		})
 		$(document).on('click','.d-c',function(){
 			$('.employee-bank-account-section').css('display','none')
@@ -1149,6 +1197,17 @@ for($i=0;$i<count($toCount);$i++){ ?>
 			$('.employee-details').css('display','none');
 			$('.medical-info').css('display','none');
 			$('.documents-tab').css('display','block');
+			$('.courses-tab').css('display','none');
+		})
+		$(document).on('click','.c-t',function(){
+			$('.employee-bank-account-section').css('display','none')
+			$('.employee-section').css('display','none');
+			$('.employee-superfund-section').css('display','none');
+			$('.employee-tax-declaration-section').css('display','none');
+			$('.employee-details').css('display','none');
+			$('.medical-info').css('display','none');
+			$('.documents-tab').css('display','none');
+			$('.courses-tab').css('display',' block');
 		})
 	})
 
@@ -1284,6 +1343,7 @@ $(document).ready(function(){
 					$('.e-u-s span').removeClass('arrow');
 					$('.m-i span').removeClass('arrow');
 					$('.d-c span').removeClass('arrow');
+					$('.c-t span').removeClass('arrow');
         })
         $('.e-b-a-s').click(function(){
         	$('.e-s span').removeClass('arrow');
@@ -1293,6 +1353,7 @@ $(document).ready(function(){
 					$('.e-u-s span').removeClass('arrow');
 					$('.m-i span').removeClass('arrow');
 					$('.d-c span').removeClass('arrow');
+					$('.c-t span').removeClass('arrow');
         })
         $('.e-s-s').click(function(){
         	$('.e-s span').removeClass('arrow');
@@ -1302,6 +1363,7 @@ $(document).ready(function(){
 					$('.e-u-s span').removeClass('arrow');
 					$('.m-i span').removeClass('arrow');
 					$('.d-c span').removeClass('arrow');
+					$('.c-t span').removeClass('arrow');
         })
         $('.e-t-d-s').click(function(){
         	$('.e-s span').removeClass('arrow');
@@ -1311,6 +1373,7 @@ $(document).ready(function(){
 					$('.e-u-s span').removeClass('arrow');
 					$('.m-i span').removeClass('arrow');
 					$('.d-c span').removeClass('arrow');
+					$('.c-t span').removeClass('arrow');
         })
         $('.e-u-s').click(function(){
         	$('.e-s span').removeClass('arrow');
@@ -1320,6 +1383,7 @@ $(document).ready(function(){
 					$('.e-u-s span').addClass('arrow');
 					$('.m-i span').removeClass('arrow');
 					$('.d-c span').removeClass('arrow');
+					$('.c-t span').removeClass('arrow');
         })
         $('.m-i').click(function(){
         	$('.e-s span').removeClass('arrow');
@@ -1329,6 +1393,7 @@ $(document).ready(function(){
 					$('.e-u-s span').removeClass('arrow');
 					$('.m-i span').addClass('arrow');
 					$('.d-c span').removeClass('arrow');
+					$('.c-t span').removeClass('arrow');
         })
         $('.d-c').click(function(){
         	$('.e-s span').removeClass('arrow');
@@ -1338,6 +1403,17 @@ $(document).ready(function(){
 					$('.e-u-s span').removeClass('arrow');
 					$('.m-i span').removeClass('arrow');
 					$('.d-c span').addClass('arrow');
+					$('.c-t span').removeClass('arrow');
+        })
+        $('.c-t').click(function(){
+        	$('.e-s span').removeClass('arrow');
+					$('.e-b-a-s span').removeClass('arrow');
+					$('.e-s-s span').removeClass('arrow');
+					$('.e-t-d-s span').removeClass('arrow');
+					$('.e-u-s span').removeClass('arrow');
+					$('.m-i span').removeClass('arrow');
+					$('.d-c span').removeClass('arrow');
+					$('.c-t span').addClass('arrow');
         })
     });
 
@@ -1377,17 +1453,17 @@ $(document).ready(function(){
 	    	})
 	    })
 
-	    var course = $('.courses_div')[0].outerHTML;
+	    var course = $('.courses_div_new')[0].outerHTML;
 	    $(document).on('click','.add_course',function(){
-	    	var len = ($('.courses_div').length)-1;
+	    	var len = ($('.courses_div_new').length)-1;
 	    	if(len < 0)
-	    		$('.courses_buttons').after().append(course)
+	    		$('.courses_buttons').after(course)
 	    	else
-					$('.courses_div').eq(len).after().append(course);
+					$('.courses_div_new').eq(len).after(course);
 	    })
 	    $(document).on('click','.remove_course',function(){
-	    	var len = ($('.courses_div').length)-1;
-		    	$('.courses_div').eq(len).remove();
+	    	var len = ($('.courses_div_new').length)-1;
+		    	$('.courses_div_new').eq(len).remove();
 	    })
 
 	    $(document).on('click','.course_delete',function(){

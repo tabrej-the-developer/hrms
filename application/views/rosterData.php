@@ -2640,32 +2640,25 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 						userid: userid,
 						rosterid: rosterid,
 						status: 'Draft'
-					},
-					success:function(response){
-window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";					}
-
+					}
 				}).fail(function(){
         window.location.reload();
       })
+        window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";
 			}
 			if($(this).prop('id') == "publish-roster"){
         loader_icon();
 				$.ajax({
 					url:url,
 					type:'POST',
+          async:true,
 					data:{
 						userid: userid,
 						rosterid: rosterid,
 						status: 'Published'
-					},
-					success:function(response){
-						console.log(response);
-						window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";
 					}
-
-				}).fail(function(){
-        window.location.reload();
-      })
+				})
+        window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";
 			}
 		})
 	})
