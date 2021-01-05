@@ -800,6 +800,31 @@ class Settings extends CI_Controller {
 
 						if(($data['employee_no'] != null && $data['employee_no'] != "") && ($data['emails'] != null && $data['emails'] != "") && ($data['center'] != null && $data['center'] != "") && ($data['area'] != null && $data['area'] != "") && ($data['role'] != null && $data['role'] != "") ){
 								$this->settingsModel->addToUsersME($data['employee_no'],$data['password'],$data['emails'],$data['name'],$data['center'],$userid,intval($roleId),$data['level'],$data['alias']);
+									$config = Array(    
+										    'protocol'  => 'smtp',
+										    'smtp_host' => 'ssl://smtp.zoho.com',
+										    'smtp_port' => 465,
+										    'smtp_user' => 'demo@todquest.com',
+										    'smtp_pass' => 'K!ddz1ng',
+										    'mailtype'  => 'html',
+										    'charset'   => 'utf-8'
+									);
+									$to = $emails;
+									$subject = 'Welcome to HRMS101';
+									$template = 'onboardingMailView';
+									$arr['name'] = $data['name'];
+									$arr['empCode'] = $data['employee_no'];
+									$arr['Password'] = $data['password'];
+									if(!is_array($to)){
+										$this->load->library('email',$config); // Load email template
+										$this->email->set_newline("\r\n");
+										$this->email->from('demo@todquest.com','Todquest');
+										$this->email->to($to); 
+										$this->email->subject($subject); 
+										$mess = $this->load->view($template,$arr,true);
+										$this->email->message($mess); 
+										$this->email->send();
+									}
 									//var_dump($this->settingsModel->getPermissionForEmployee($data['employee_no']));
 									if($this->settingsModel->getPermissionForEmployee($data['employee_no']) == null ){
 										$this->settingsModel->addPermissions($data['employee_no'], $isQrReaderYN = 'N', $viewRosterYN = 'Y', $editRosterYN = 'N', $viewTimesheetYN = 'Y', $editTimesheetYN = 'N', $viewPayrollYN = 'Y', $editPayrollYN = 'N', $editLeaveTypeYN = 'N', $viewLeaveTypeYN = 'Y', $createNoticeYN = 'Y', $viewOrgChartYN = 'Y', $editOrgChartYN = 'N', $viewCenterProfileYN = 'Y', $editCenterProfileYN = 'Y', $viewRoomSettingsYN = 'Y', $editRoomSettingsYN = 'N', $viewEntitlementsYN = 'Y', $editEntitlementsYN = 'N', $editEmployeeYN = 'N', $xeroYN = 'N', $viewAwardsYN = 'Y', $editAwardsYN = 'N', $viewSuperfundsYN = 'Y', $editSuperfundsYN = 'N', $createMomYN = 'Y', $editPermissionYN = 'Y', $viewPermissionYN = 'Y');
@@ -957,6 +982,31 @@ $this->settingsModel->addToEmployeeCourses( $xeroEmployeeId,$course_nme,$course_
 $this->settingsModel->addToUsers($employee_no,md5($password),$emails,$name,$center,$userid,$role,$level,$alias,$profileImageName);
 // Add user to usercenters
 		$this->settingsModel->addToUserCenters($employee_no,$center);
+		$config = Array(    
+			    'protocol'  => 'smtp',
+			    'smtp_host' => 'ssl://smtp.zoho.com',
+			    'smtp_port' => 465,
+			    'smtp_user' => 'demo@todquest.com',
+			    'smtp_pass' => 'K!ddz1ng',
+			    'mailtype'  => 'html',
+			    'charset'   => 'utf-8'
+		);
+		$to = $emails;
+		$subject = 'Welcome to HRMS101';
+		$template = 'onboardingMailView';
+		$arr['name'] = $fname;
+		$arr['empCode'] = $employee_no;
+		$arr['Password'] = $password;
+		if(!is_array($to)){
+			$this->load->library('email',$config); // Load email template
+			$this->email->set_newline("\r\n");
+			$this->email->from('demo@todquest.com','Todquest');
+			$this->email->to($to); 
+			$this->email->subject($subject); 
+			$mess = $this->load->view($template,$arr,true);
+			$this->email->message($mess); 
+			$this->email->send();
+		}
 						}
 					}
 // Employee bank account	
