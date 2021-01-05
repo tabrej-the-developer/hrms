@@ -96,6 +96,7 @@ function timex( $x)
           $this->SetFont('Arial','B',10);
               $this->Cell($cellSize,8,'Role',1,0,'C');
               $this->Cell($cellSize,8,'Name',1,0,'C');
+              $rosterStartDate =  $GLOBALS['roDetails']->startDate;
         for($i=0;$i<5;$i++){
           $date = $GLOBALS['roDetails']->startDate;
           $this->Cell($cellSize,8,date('D',strtotime($date.'+'.$i. 'days'))." ".'('.date('dS',strtotime($date.'+'.$i. 'days')).')',1,0,'C');
@@ -138,10 +139,18 @@ function timex( $x)
                 $this->Cell($cellSize,8,$role->empName,1,0,'C');
               }
               $this->SetFont('Arial','B',10);
+              $j = 0;
         for($i=0;$i<5;$i++){
         // foreach($role->shifts as $r){
-          if(isset($role->shifts[$i]->startTime)){
-          $this->Cell($cellSize,8,$this->timex($role->shifts[$i]->startTime).'-'.$this->timex($role->shifts[$i]->endTime),1,0,'C');
+          $currentDateOfRoster = date('Y-m-d',strtotime($rosterStartDate.'+'.$i.' days'));
+          if(isset($role->shifts[$j]->startTime)){
+            if($currentDateOfRoster == $role->shifts[$j]->currentDate){
+              $this->Cell($cellSize,8,$this->timex($role->shifts[$j]->startTime).'-'.$this->timex($role->shifts[$j]->endTime),1,0,'C');
+              $j++;
+            }
+          else{
+             $this->Cell($cellSize,8,"",1,0,'C');
+           }
           }
           else{
           $this->Cell($cellSize,8,"",1,0,'C');
