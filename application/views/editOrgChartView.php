@@ -249,8 +249,6 @@ font-family: 'Open Sans', sans-serif;
 	cursor: move;
 }
 .priority_buttons{
-	position:absolute;
-	bottom: 1rem;
 	width:100%;
 	justify-content: center;
 	display: flex;
@@ -352,6 +350,7 @@ font-family: 'Open Sans', sans-serif;
 	  font-weight: 700;
 	  margin: 2px;
 	  width:6rem;
+	  height: 2rem;
       border-radius: 20px;
       padding: 4px 8px;
       background: rgb(164, 217, 214);
