@@ -882,6 +882,9 @@ class Settings extends CI_Controller {
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			$json = json_decode(file_get_contents('php://input'));
 			if($json!= null && $res != null && $res->userid == $json->userid){
+					$employee_no = isset($json->employee_no) ? $json->employee_no : null;
+					$employeeEnrolled = $this->settingsModel->getEmployeeData($employee_no);
+					if($employee_no != null && $employeeEnrolled == null){
 					$userid = $json->userid;
 					$title = $json->title;
 					$fname = $json->fname;
@@ -926,7 +929,6 @@ class Settings extends CI_Controller {
 					$upwardVariationTaxWitholdingAmount = $json->upwardVariationTaxWitholdingAmount;
 					$eligibleToReceiveLeaveLoadingYN = $json->eligibleToReceiveLeaveLoadingYN;
 					$approvedWitholdingVariationPercentage = $json->approvedWitholdingVariationPercentage;
-					$employee_no = $json->employee_no;
 					$center = $json->center;
 					$area = $json->area;
 					$role = $json->role;
@@ -1084,6 +1086,7 @@ $this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$f
 						http_response_code(401);
 							}
 						}
+					}
 				}
 			}
 			
@@ -1664,6 +1667,29 @@ $this->settingsModel->updateEmployeeTable($employee_no,$title,$fname,$mname,$lna
 			// employeebankaccount
 			// employee
 		} 
+
+		public function checkUserid($userid){
+		   $headers = $this->input->request_headers();
+		   if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
+			$this->load->model('authModel');
+			$this->load->model('settingsModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
+			$data = [];
+			if($res != null ){
+					$employeeEnrolled = $this->settingsModel->getEmployeeData($userid);
+					if($employeeEnrolled == null){
+						$data['Status'] = 'DOESNT';
+					}else{
+						$data['Status'] = 'EXISTS';
+					}
+				}
+				http_response_code(200);
+				echo json_encode($data);
+			}
+			else{
+				http_response_code(401);
+			}
+		}
 
 		public function deleteCourse($courseId,$userid){
 			$headers = $this->input->request_headers();

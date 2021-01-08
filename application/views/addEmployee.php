@@ -61,7 +61,7 @@
 		<!-- <span class="nav-button m-i"><span>Medical Info</span></span> -->
 		</div>	
 	</section>
-<form method="POST" action="createEmployeeProfile" style="height: 100%" onsubmit="return onFormSubmit()" enctype="multipart/form-data">
+<form method="POST" action="createEmployeeProfile" style="height: 100%" onsubmit="return onFormSubmit(this)" enctype="multipart/form-data">
 	<section class="employee-section">	
 		<!-- <h3>Personal</h3> -->
 		<span class="d-flex">
@@ -528,7 +528,6 @@ $(document).ready(function(){
 
 
 	function onFormSubmit(e){
-
 		if($('#fname').val() == null || $('#fname').val() == "" || 	$('#lname').val() == null || $('#lname').val() == ""){
 		$('#fname').css({"border-color": "red", 
              "border-width":"1px", 
@@ -602,6 +601,29 @@ $(document).ready(function(){
       setTimeout(closeNotification,5000)
 			return false;
 		}
+			var employeeId = $('#employee_no').val();
+			var checkEnrolled = false;
+			var url = "<?php echo base_url('settings/checkUserid/'); ?>"+employeeId;
+			$.ajax({
+				url : url,
+				type : 'GET',
+				success : function(response){
+					var response = JSON.parse(response);
+					if(response.Status == 'EXISTS'){
+						localStorage.setItem('checkEnrolled','true');
+				      showNotification();
+				      addMessageToNotification('Employee Id Already Exists');
+				      setTimeout(closeNotification,5000)
+					}
+				}
+			})
+			if(localStorage.getItem('checkEnrolled') == 'true'){
+				localStorage.removeItem('checkEnrolled')
+				return false;
+			}else{
+				// return true;
+			}
+
 	}
 
 	$(document).ready(function(){
