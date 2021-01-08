@@ -1085,7 +1085,11 @@ $this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$f
 					else{
 						http_response_code(401);
 							}
-						}
+						}else{
+						http_response_code(401);
+							}
+					}else{
+						http_response_code(401);
 					}
 				}
 			}
