@@ -882,9 +882,9 @@ class Settings extends CI_Controller {
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			$json = json_decode(file_get_contents('php://input'));
 			if($json!= null && $res != null && $res->userid == $json->userid){
-					$employee_no = isset($json->employee_no) ? $json->employee_no : null;
-					$employeeEnrolled = $this->settingsModel->getEmployeeData($employee_no);
-					if($employee_no != null && $employeeEnrolled == null){
+				$employee_no = isset($json->employee_no) ? $json->employee_no : null;
+				$employeeEnrolled = $this->settingsModel->getUserData($employee_no);
+				if($employee_no != null && $employeeEnrolled == null){
 					$userid = $json->userid;
 					$title = $json->title;
 					$fname = $json->fname;
@@ -908,11 +908,11 @@ class Settings extends CI_Controller {
 					$emergency_contact = $json->emergency_contact;
 					$relationship = $json->relationship;
 					$emergency_contact_email = $json->emergency_contact_email;
-				$accountName = $json->accountName;
-				$bsb = $json->bsb;
-				$accountNumber = $json->accountNumber;
-				$remainderYN = $json->remainderYN;
-				$amount = $json->amount;
+					$accountName = $json->accountName;
+					$bsb = $json->bsb;
+					$accountNumber = $json->accountNumber;
+					$remainderYN = $json->remainderYN;
+					$amount = $json->amount;
 					$superFundId = $json->superFundId;
 					$superMembershipId = $json->superMembershipId;
 					$superfundEmployeeNumber = $json->superfundEmployeeNumber;
@@ -1082,17 +1082,17 @@ $this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$f
 					http_response_code(200);
 					echo json_encode($data);
 									}
-					else{
-						http_response_code(401);
-							}
-						}else{
-						http_response_code(401);
-							}
+						else{
+							http_response_code(401);
+						}
 					}else{
 						http_response_code(401);
 					}
-				}
+				}else{
+					http_response_code(401);
 			}
+		}
+	}
 			
 	function postToXero($access_token,$tenant_id,$data){
 		$url = "https://api.xero.com/payroll.xro/1.0/Employees/";
@@ -1680,7 +1680,7 @@ $this->settingsModel->updateEmployeeTable($employee_no,$title,$fname,$mname,$lna
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			$data = [];
 			if($res != null ){
-					$employeeEnrolled = $this->settingsModel->getEmployeeData($userid);
+					$employeeEnrolled = $this->settingsModel->getUserData($userid);
 					if($employeeEnrolled == null){
 						$data['Status'] = 'DOESNT';
 					}else{
