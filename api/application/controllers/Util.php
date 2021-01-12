@@ -34,13 +34,13 @@ class Util extends CI_Controller {
 			if($res != null && $res->userid == $userid){
 				$userDetails = $this->authModel->getUserDetails($userid);
 				$this->load->model('utilModel');
-				$centerIds = ($this->utilModel->getAllCenters($userid))->center;
-				$centerIds = explode('|',$centerIds);
+				$centerIds = ($this->utilModel->getAllCenters($userid));
+				// $centerIds = explode('|',$centerIds);
 				$centers = [];
 				foreach($centerIds as $centerid){
 					if($centerid != null && $centerid != ""){
-						if($this->utilModel->getCenterById($centerid) != null)
-							array_push($centers,$this->utilModel->getCenterById($centerid));
+						if($this->utilModel->getCenterById($centerid->centerid) != null)
+							array_push($centers,$this->utilModel->getCenterById($centerid->centerid));
 					}
 				}
 				$data = array();

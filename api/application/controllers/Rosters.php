@@ -216,6 +216,7 @@ class Rosters extends MY_Controller {
 								$allEmployess = $this->rostersModel->getAllEmployees($role->roleid);
 								// var_dump($allEmployess);
 								foreach ($allEmployess as $employee) {
+									if($employee->terminationDate < '1970-01-01' OR $employee->terminationDate > date('Y-m-d')){
 									$rav['empId'] = $employee->id;
 									$empDetails = $this->authModel->getUserDetails($employee->id);
 									$rav['empName'] = $empDetails->name;
@@ -238,6 +239,7 @@ class Rosters extends MY_Controller {
 									// var_dump($rav);
 									array_push($var['roles'],$rav);
 								}
+							}
 								// var_dump($var);
 							}
 							array_push($data['roster'],$var);
@@ -1050,13 +1052,13 @@ class Rosters extends MY_Controller {
 						$this->rostersModel->deleteRosterTemplate($rosterid);
 					else if($status == "Published"){
 						$this->rostersModel->publishRoster($rosterid);
-						$this->notificationOnRosterPublish($rosterid,$userid);
 					}
 					else
 						$this->rostersModel->updateRoster($rosterid,$status);
 					$data['Status'] = 'SUCCESS';
 					http_response_code(200);
 					echo json_encode($data);
+					$this->notificationOnRosterPublish($rosterid,$userid);
 				}
 				else{
 					$data['Status'] = 'ERROR';
@@ -1125,7 +1127,7 @@ class Rosters extends MY_Controller {
 			}
 				$subject = "Roster  published"; 
 				$template = 'rosterPublishEmailTemplate';
-				//$employeeEmail = "arpitasaxena555@gmail.com";
+				// $employeeEmail = "";
 					$this->Emails($employeeEmail,$template,$subject,$arr);
 				// $this->load->view('rosterPublishEmailTemplate',$arr);
 					echo 'SUCCESS';

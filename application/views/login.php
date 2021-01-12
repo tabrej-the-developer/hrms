@@ -204,7 +204,9 @@ input[type="submit"]{
           </div>                  
         </div>
       </form>
+      <div><span style="color:rgba(0,0,0,0.5)"><small>Powered by Todquest EdTech</small></span></div>
     </div>
+
     <div class="col-0 col-md-7 login-form-3" >
       <div class="text-class">
       <?php 

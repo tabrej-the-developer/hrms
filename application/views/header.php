@@ -404,7 +404,7 @@ select{
       }
       ._notify_message{
         width:90%;
-        height: 100%;
+        height: 3rem;
         display: flex;
         flex-direction: column;
         align-items: center;

@@ -1147,7 +1147,7 @@ $this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$f
 	   if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 		$this->load->model('authModel');
 		$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
-		if($res != null && $res->userid == $userid){
+		if($res != null ){
 			$this->load->model('settingsModel');
 				$data['users'] = $this->settingsModel->getUserData($userid);
 				$data['employee']	= $this->settingsModel->getEmployeeData($userid);
@@ -1195,11 +1195,11 @@ $this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$f
 					$homeAddCountry = $json->homeAddCountry;
 					$phone = $json->phone;
 					$mobile = $json->mobile;
-									$accountName = $json->accountName;
-				$bsb = $json->bsb;
-				$accountNumber = $json->accountNumber;
-				$remainderYN = $json->remainderYN;
-				$amount = $json->amount;
+					$accountName = $json->accountName;
+					$bsb = $json->bsb;
+					$accountNumber = $json->accountNumber;
+					$remainderYN = $json->remainderYN;
+					$amount = $json->amount;
 					$terminationDate = $json->terminationDate;
 					$emergency_contact = $json->emergency_contact;
 					$relationship = $json->relationship;
@@ -1486,19 +1486,21 @@ $this->settingsModel->updateEmployeeTable($employee_no,$title,$fname,$mname,$lna
 				if($type == 'CENTER'){
 					$getSuperAdmins = $this->utilModel->getSuperAdmins();
 						foreach($getSuperAdmins as $superadmin){
-							$centers = explode('|',$superadmin->center);
+							// $centers = explode('|',$superadmin->center);
+							$centers = $this->utilModel->getAllCenters($superadmin->id);
 							foreach($centers as $cent){
-								if($id == $cent && $id != "" && $id != null){
+								if($id == $cent->centerid && $id != "" && $id != null){
 									$admin = $superadmin;
 									break;
 								}
 							}
 						}
-						$adminCenters = explode('|',$admin->center);
+						// $adminCenters = explode('|',$admin->center);
+						$adminCenters = $this->utilModel->getAllCenters($admin->id);
 						$centerDetails = [];
 						foreach($adminCenters as $center){
 							if($center != null && $center != ""){
-								array_push($centerDetails,$this->settingsModel->getCenterDetails($center));
+								array_push($centerDetails,$this->settingsModel->getCenterDetails($center->centerid));
 							}
 						}
 						$data['CenterDetails'] = $centerDetails;
@@ -1507,24 +1509,27 @@ $this->settingsModel->updateEmployeeTable($employee_no,$title,$fname,$mname,$lna
 					$userDetails = ($this->utilModel->getUserDetails($id));
 					$getSuperAdmins = $this->utilModel->getSuperAdmins();
 						foreach($getSuperAdmins as $superadmin){
-							$centers = explode('|',$superadmin->center);
+							// $centers = explode('|',$superadmin->center);
+							$centers = $this->utilModel->getAllCenters($superadmin->id);
 							foreach($centers as $cent){
-								$cs = explode('|',$userDetails->center);
+								// $cs = explode('|',$userDetails->center);
+								$cs = $this->utilModel->getAllCenters($userDetails->id);
 								foreach($cs as $c){
-									if($c == $cent && $c != "" && $c != null){
+									if($c->centerid == $cent->centerid && $c != "" && $c != null){
 										$admin = $superadmin;
 										break;
 									}
 								}
 							}
 						}
-						$adminCenters = explode('|',$admin->center);
+						// $adminCenters = explode('|',$admin->center);
+						$adminCenters = $this->utilModel->getAllCenters($admin->id);
 						foreach($adminCenters as $center){
 							if($center != null && $center != ""){
-								array_push($centerDetails,$this->settingsModel->getCenterDetails($center));
+								array_push($centerDetails,$this->settingsModel->getCenterDetails($center->centerid));
 							}
 						}
-						// $data['CenterDetails'] = $centerDetails;
+						$data['CenterDetails'] = $centerDetails;
 					}
 				$data['Message'] = 'SUCCESS';
 				http_response_code(200);

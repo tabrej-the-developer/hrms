@@ -6,8 +6,8 @@ class UtilModel extends CI_Model {
 
 	public function getAllCenters($userid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM `users` WHERE id='$userid'");
-		return $query->row();
+		$query = $this->db->query("SELECT * FROM `usercenters` WHERE userid='$userid'");
+		return $query->result();
 	}
 
 	public function getCenterById($centerid){
@@ -18,7 +18,11 @@ class UtilModel extends CI_Model {
 
 	public function getEmployessByCenter($centerid){
 		$this->load->database();
-		$query = $this->db->query("SELECT users.id,users.email,users.name,users.imageUrl,users.roleid,users.title,users.manager,users.level,orgchartroles.roleName,orgchartroles.areaid FROM usercenters JOIN  users on users.id = usercenters.userid LEFT JOIN orgchartroles on orgchartroles.roleid = users.roleid WHERE usercenters.centerid = $centerid ");
+		$query = $this->db->query("SELECT users.id,users.email,users.name,users.imageUrl,users.roleid,users.title,users.manager,users.level,orgchartroles.roleName,orgchartroles.areaid FROM usercenters 
+			JOIN  users on users.id = usercenters.userid 
+			LEFT JOIN orgchartroles on orgchartroles.roleid = users.roleid 
+			LEFT JOIN employee on employee.userid = users.id 
+			WHERE usercenters.centerid = $centerid and (employee.terminationDate <= '1970-01-01' OR  employee.terminationDate > 'CURDATE()' ) ");
 		return $query->result();
 	}
 
@@ -63,7 +67,7 @@ class UtilModel extends CI_Model {
 
 		public function getAllUsersFromCenter($centerid){
 			$this->load->database();
-			$query = $this->db->query("SELECT users.id,users.name,users.imageUrl,users.title,users.email FROM users INNER JOIN usercenters on usercenters.userid = users.id where centerid = $centerid ");
+			$query = $this->db->query("SELECT users.id,users.name,users.imageUrl,users.title,users.email FROM users INNER JOIN usercenters on usercenters.userid = users.id LEFT JOIN employee on employee.userid = users.id where centerid = $centerid and (employee.terminationDate > 'CURDATE()' OR employee.terminationDate < '1970-01-01' )");
 			return $query->result();
 		}
 

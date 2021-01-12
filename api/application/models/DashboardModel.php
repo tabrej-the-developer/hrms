@@ -19,7 +19,7 @@ class DashboardModel extends CI_Model {
 	}
 	public function leavesCount($centerid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM leaveapplication where userid IN (SELECT id from users where center LIKE '%".$centerid."_' )");
+		$query = $this->db->query("SELECT * FROM leaveapplication where userid IN (SELECT id from usercenters where centerid = '$centerid' )");
 		return $query->result(); 
 	}
 	public function rosterCount($centerid,$status,$userid){

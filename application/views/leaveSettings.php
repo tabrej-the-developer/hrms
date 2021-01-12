@@ -410,8 +410,8 @@ input[type="text"],input[type=time],select,#casualEmp_date{
                 <option value="<?php echo $center->centerid;?>" selected><?php echo $center->name;?></option>
               <?php }else{ ?>
         <option value="<?php echo $center->centerid;?>"><?php echo $center->name;?></option>
-        <?php  }  
-        } ?>
+          <?php  }  
+          } ?>
             </select>
           </span>
           <?php $syncedWithXero = json_decode($syncedWithXero);  ?>

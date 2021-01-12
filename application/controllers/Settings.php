@@ -1184,6 +1184,38 @@ $server_output = curl_exec($ch);
 			// }
 		}
 
+	// Edit Employee Profile
+
+	public function editEmployeeProfile($employeeId,$centerid=null){
+			if($this->session->has_userdata('LoginId')){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
+	if($centerid == null){
+		$centerid = (json_decode($this->getAllCenters())->centers[0])->centerid;
+	}
+				$data['centerid'] = $centerid;
+				$data['employeeId'] = $employeeId;
+				$data['userid'] = $this->session->userdata('LoginId');
+				$data['centers'] = $this->getAllCenters();
+				$data['areas'] = $this->getAreas($data['centerid']);
+				$data['ordinaryEarningRate'] = $this->getAwardSettings($employeeId,$centerid);
+				$data['levels'] = $this->getAllEntitlements($employeeId);
+				$data['superfunds'] = $this->getSuperfunds($employeeId,$centerid);
+				$data['permissions'] = $this->fetchPermissions();
+				$data['getEmployeeData'] = $this->getEmployeeData($employeeId);
+				// var_dump($data);
+				$this->load->view('editEmployeeProfile',$data);
+			}
+			else{
+				$this->load->view('redirectToLogin');
+			}
+		}
+
+
 	// Edit employee
 	public function editEmployee($centerid=null){
 			if($this->session->has_userdata('LoginId')){
@@ -1213,8 +1245,8 @@ $server_output = curl_exec($ch);
 			}
 		}
 
-
-	public function updateEmployeeProfile(){
+// Update employee profile
+	public function updateEmployeeProfile($employeeNo = null){
 		$form_data = $this->input->post();
 		if($form_data != null){
 	//footprint start
@@ -1264,7 +1296,12 @@ $server_output = curl_exec($ch);
 		$data['eligibleToReceiveLeaveLoadingYN'] = isset($_POST['eligibleToReceiveLeaveLoadingYN']) ? $_POST['eligibleToReceiveLeaveLoadingYN']: "";
 		$data['approvedWitholdingVariationPercentage'] = isset($_POST['approvedWitholdingVariationPercentage']) ? $_POST['approvedWitholdingVariationPercentage']: "";
 		$data['xeroEmployeeId'] = isset($_POST['xeroEmployeeId']) ? $_POST['xeroEmployeeId']: "";
-		$data['employee_no'] = $this->session->userdata('LoginId');
+		if($employeeNo != null){
+			$data['employee_no'] = $employeeNo;
+		}
+		if($employeeNo == null){
+			$data['employee_no'] = $this->session->userdata('LoginId');
+		}
 		$res_doc = isset($_FILES['resume_doc']['name']) ? $_FILES['resume_doc']['name']: "";
 		if($res_doc != ""){
 			$data['resume_doc'] = base64_encode(file_get_contents($_FILES['resume_doc']['tmp_name']));

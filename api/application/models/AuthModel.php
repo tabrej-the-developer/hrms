@@ -12,15 +12,15 @@ class AuthModel extends CI_Model {
 
 	public function getUserDetails($userid){
 		$this->load->database();
-		$query = $this->db->query("SELECT id, email, name, imageUrl, role, title, center,manager, isVerified, created_at, created_by, roleid, level FROM users WHERE id='$userid'");
+		$query = $this->db->query("SELECT id, email, name, imageUrl, role, title,manager, isVerified, created_at, created_by, roleid, level FROM users WHERE id='$userid'");
 		return $query->row();
 	}
 
 	public function getSuperAdminId($userid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM `users` where role = 1 and instr(center,(SELECT u.center FROM users as u WHERE u.id='$userid'))");
+		$query = $this->db->query("SELECT u1.id as id,email,password,name,imageUrl,role,title,manager,created_at,created_by,roleid,level,bonusRate,alias FROM `users` u1 INNER JOIN usercenters u2 on u2.userid = u1.id where  u2.centerid IN (SELECT centerid from usercenters where userid = '$userid') and role = 1 ");
 		return $query->row();
-	}
+	} // INNER JOIN usercenters u2 on u1.id = u2.userid where u1.role = 1 
 
 	public function getUserFromEmail($email){
 		$this->load->database();

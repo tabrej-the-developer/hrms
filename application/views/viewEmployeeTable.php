@@ -305,10 +305,10 @@
           <input type="" name="" onkeyup="searchBy()" id="filter" placeholder="Search">
         </span>
         <span class="syncXeroEmployees">
-          <button class="button " id="XeroEmployees" >
+          <button class="button d-inline-flex" id="XeroEmployees" >
             <i>
               <img src="<?php echo base_url('assets/images/icons/xero.png'); ?>" style="max-height:2rem;margin-right:10px">
-            </i>Sync Xero Employees</button>
+            </i>Sync&nbsp;Xero&nbsp;Employees</button>
         </span>
       </span>
       <div id="content-wrappers" class="containers">
@@ -426,6 +426,7 @@
             $('.viewEmployeeTable_memberName').eq(counter).text(employee.roleName);
             $('.viewEmployeeTable_action').eq(counter).html(`
                 <button class="button"><a href="${window.location.origin+'/PN101/settings/viewEmployee/'+employee.id}">View</a></button>
+                <button class="button"><a href="${window.location.origin+'/PN101/settings/editEmployeeProfile/'+employee.id}">Edit</a></button>
               `)
             counter++;
           })
@@ -479,7 +480,9 @@
       })
       getEmployeeCenters(empid);
     }
-    catch{}
+    catch{
+      console.log(localStorage.getItem('centers'))
+     }
   })
 
   $(document).on('click','.changeCenterModal_close',function(){

@@ -28,26 +28,31 @@ class Messenger extends CI_Controller {
 				$employees= [];
 				// if($userDetails->role != 1){
 					foreach($getSuperAdmins as $superadmin){
-						$centers = explode('|',$superadmin->center);
+						// $centers = explode('|',$superadmin->center);
+						$centers = $this->utilModel->getAllCenters($superadmin->id);
 						foreach($centers as $cent){
-							$cs = explode('|',$userDetails->center);
+							// $cs = explode('|',$userDetails->center);
+							$cs = $this->utilModel->getAllCenters($userid);
 							foreach($cs as $c){
-								if($c == $cent && $c != "" && $c != null){
+								if($c->centerid == $cent->centerid && $c->centerid != "" && $c->centerid != null){
 									$admin = $superadmin;
 									break;
 								}
 							}
 						}
 					}
-					$adminCenters = explode('|',$admin->center);
+
+					// $adminCenters = explode('|',$admin->center);
+					$adminCenters = $this->utilModel->getAllCenters($admin->id);
 					foreach($adminCenters as $adminCents){
 						if($adminCents != null && $adminCents != ""){
-							$allUsersFromCenter = $this->utilModel->getAllUsersFromCenter($adminCents);
+							$allUsersFromCenter = $this->utilModel->getAllUsersFromCenter($adminCents->centerid);
 								if($allUsersFromCenter != null && $allUsersFromCenter != "" && count($allUsersFromCenter) > 0){
 									array_push($employees,$allUsersFromCenter);
 									}
 							}
 					}
+
 					// $adminCenters = explode('|',$admin->center);
 					// 	foreach($allUsersFromCenter as $u){
 					// 		if($u->role != 1 ){
