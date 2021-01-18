@@ -93,7 +93,7 @@ class SettingsModel extends CI_Model {
 	}
 	public function centerRecord($centerid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM centerrecord where centerId = 14");
+		$query = $this->db->query("SELECT * FROM centerrecord where centerId = $centerid");
 		return $query->row();
 	}
 

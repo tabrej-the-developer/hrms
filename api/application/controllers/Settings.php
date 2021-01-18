@@ -1735,7 +1735,7 @@ $this->settingsModel->updateEmployeeTable($employee_no,$title,$fname,$mname,$lna
 						}
 					}
 						if(count($name) == 2){
-							$this->settingsModel->addToEmployeeTable($userFromUsersTable->id, null,null,$name[0],null,$name[1],'ACTIVE',$userFromUsersTable->email,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null);s
+							$this->settingsModel->addToEmployeeTable($userFromUsersTable->id, null,null,$name[0],null,$name[1],'ACTIVE',$userFromUsersTable->email,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null);
 						}
 						if(count($name) == 3){
 							$this->settingsModel->addToEmployeeTable($userFromUsersTable->id, null,null,$name[0],$name[1],$name[2],'ACTIVE',$userFromUsersTable->email,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null);

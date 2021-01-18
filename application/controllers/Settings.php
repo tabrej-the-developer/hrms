@@ -269,6 +269,7 @@ public function editRooms(){
 			$data['centers'] = $this->getAllCenters();
 			$data['permissions'] = $this->fetchPermissions();
 			$data['states'] = $this->getStates();
+			$data['centerData'] = "";
 		  	if($centerid == null){
 		  		if(!isset($_SESSION['centerr'])){
 							$centerid = json_decode($data['centers'])->centers[0]->centerid;
@@ -280,11 +281,11 @@ public function editRooms(){
 			  			$data['centerid'] = $centerid;
 			  			$data['centerData'] = $this->editCenterProfile($centerid);
 		  		}
-				}else{
-					$_SESSION['centerr'] = $centerid;
-					$data['centerid'] = $centerid;
-	  			$data['centerData'] = $this->editCenterProfile($centerid);
-				}
+			}else{
+				$_SESSION['centerr'] = $centerid;
+				$data['centerid'] = $centerid;
+  			$data['centerData'] = $this->editCenterProfile($centerid);
+			}
 
 			// if($centerid == null){
 			// 	$data['centerid'] = $centerid;
