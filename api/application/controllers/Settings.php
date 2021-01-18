@@ -1718,5 +1718,33 @@ $this->settingsModel->updateEmployeeTable($employee_no,$title,$fname,$mname,$lna
 				http_response_code(401);
 			}
 		}
-}
 
+		public function employeeMigrationFromUserTable(){
+			$this->load->model('authModel');
+			$this->load->model('settingsModel');
+
+			$usersFromUsersTable = $this->settingsModel->getAllUsers();
+			foreach($usersFromUsersTable as $userFromUsersTable){
+				$userData = $this->settingsModel->getEmployeeData($userFromUsersTable->id); 
+				if($userData == null){
+					print_r($userData);
+					$name = preg_split('/[\s]+/',$userFromUsersTable->name);
+					foreach($name as $key=>$n){
+						if($n == null || $n == ''){
+							unset($name[$key]);
+						}
+					}
+						if(count($name) == 2){
+							$this->settingsModel->addToEmployeeTable($userFromUsersTable->id, null,null,$name[0],null,$name[1],'ACTIVE',$userFromUsersTable->email,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null);s
+						}
+						if(count($name) == 3){
+							$this->settingsModel->addToEmployeeTable($userFromUsersTable->id, null,null,$name[0],$name[1],$name[2],'ACTIVE',$userFromUsersTable->email,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null);
+						}
+						if(count($name) == 1){
+							$this->settingsModel->addToEmployeeTable($userFromUsersTable->id, null,null,$name[0],null,null,'ACTIVE',$userFromUsersTable->email,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null);
+						}
+				}
+			}
+
+		}
+}

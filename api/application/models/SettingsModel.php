@@ -449,6 +449,12 @@ class SettingsModel extends CI_Model {
 		}
 	}
 
+	public function getAllUsers(){
+		$this->load->database();
+		$query = $this->db->query('SELECT * from users');
+		return $query->result();
+	}
+
 	// public function employeeRecordMigration(){
 	// 	$this->load->database();
 	// 	$query = $this->db->query("SELECT * from employeetaxdeclaration");
