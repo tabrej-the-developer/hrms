@@ -13,11 +13,11 @@
         <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
 
-        <link rel="stylesheet" href="css/normalize.min.css">
-        <link href="css/aos.css" rel="stylesheet">
-        <link rel="stylesheet" href="css/owl.carousel.min.css">
-        <link rel="stylesheet" href="css/owl.theme.default.min.css">
-        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/normalize.min.css">
+        <link href="<?php echo base_url(); ?>assets/css/aos.css" rel="stylesheet">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/owl.carousel.min.css">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/owl.theme.default.min.css">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/main.css">
 
         <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     </head>
@@ -30,7 +30,7 @@
             <div class="container">
                 <div class="logo">
                     <a href="index.html">
-                        <img src="img/logo.png">
+                        <img src="<?php echo base_url(); ?>assets/images/landing/logo.png">
                     </a>
                 </div>
                 <ul>
@@ -51,7 +51,7 @@
             <h1 data-aos="fade-up">Easy Web Management</h1>
             <h6 data-aos="fade-up">We believe everyone should be able to access to the apps and information by the smartphone. Technology is the medium to achievemore daily needs.</h6>
             <a class="button" data-aos="fade-up" href="#">Get Started Now</a>
-            <img class="laptop" data-aos="zoom-in" src="img/laptop.png">
+            <img class="laptop" data-aos="zoom-in" src="<?php echo base_url(); ?>assets/images/landing/laptop.png">
         </div>
         </div>
 
@@ -73,21 +73,21 @@
                 </div>
                 <div class="featurePoint ">
                     <div class="featurePointDiv rightDiv firstArrow" data-aos="fade-right">
-                        <img src="img/mic.png">
+                        <img src="<?php echo base_url(); ?>assets/images/landing/mic.png">
                         <span>
                             <h5>Market research</h5>
                             <p>loremipsumdolor sit amet</p>
                         </span>
                     </div>
                     <div class="featurePointDiv" data-aos="fade-left">
-                        <img src="img/chess.png">
+                        <img src="<?php echo base_url(); ?>assets/images/landing/chess.png">
                         <span>
                             <h5>Stategy & Direction</h5>
                             <p>loremipsumdolor sit amet</p>
                         </span>
                     </div>
                     <div class="featurePointDiv rightDiv lastArrow" data-aos="fade-right">
-                        <img src="img/one.png">
+                        <img src="<?php echo base_url(); ?>assets/images/landing/one.png">
                         <span>
                             <h5>Brand Marketing</h5>
                             <p>loremipsumdolor sit amet</p>
@@ -99,7 +99,7 @@
 
         <div class="seeHowWeWork clearfix">
             <video autoplay muted loop id="myVideo">
-                <source src="img/video.mp4" type="video/mp4">
+                <source src="<?php echo base_url(); ?>assets/images/landing/video.mp4" type="video/mp4">
             </video>
             <div class="container">
                 <h2>See How We Work</h2>
@@ -111,7 +111,7 @@
         <div class="popUp" style="display: none;">
             <span class="cross"></span>
             <video autoplay muted loop id="myVideo" controls>
-                <source src="img/video.mp4" type="video/mp4">
+                <source src="<?php echo base_url(); ?>assets/images/landing/video.mp4" type="video/mp4">
             </video>
         </div>
 
@@ -121,19 +121,19 @@
 
                 <div class="owl-carousel">
                     <div data-aos="flip-left">
-                        <img src="img/slider1.png">
+                        <img src="<?php echo base_url(); ?>assets/images/landing/slider1.png">
                     </div>
                     <div data-aos="flip-left">
-                        <img src="img/slider2.png">
+                        <img src="<?php echo base_url(); ?>assets/images/landing/slider2.png">
                     </div>
                     <div data-aos="flip-left">
-                        <img src="img/slider3.png">
+                        <img src="<?php echo base_url(); ?>assets/images/landing/slider3.png">
                     </div>
                     <div data-aos="flip-left">
-                        <img src="img/slider4.png">
+                        <img src="<?php echo base_url(); ?>assets/images/landing/slider4.png">
                     </div>
                     <div data-aos="flip-left">
-                        <img src="img/slider5.png">
+                        <img src="<?php echo base_url(); ?>assets/images/landing/slider5.png">
                     </div>
                 </div>
             </div>
@@ -155,10 +155,10 @@
 
         
         
-        <script src="js/vendor/jquery-1.11.2.min.js"></script>
-        <script src="js/owl.carousel.min.js"></script>
-        <script src="js/aos.js"></script>
-        <script src="js/main.js"></script>
+        <script src="<?php echo base_url(); ?>assets/js/vendor/jquery-1.11.2.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/js/owl.carousel.min.js"></script>
+        <script src="<?php echo base_url(); ?>assets/js/aos.js"></script>
+        <script src="<?php echo base_url(); ?>assets/js/main.js"></script>
         
         <script>
             AOS.init({
