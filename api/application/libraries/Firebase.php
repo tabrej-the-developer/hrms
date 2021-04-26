@@ -13,7 +13,7 @@ class Firebase{
     {
         // Assign the CodeIgniter super-object
         $this->CI =& get_instance();
-        $this->serviceAccount = ServiceAccount::fromJsonFile($this->CI->config->item('firebase_app_key'));
+        $this->serviceAccount = ServiceAccount::fromValue($this->CI->config->item('firebase_app_key'));
     }
     
     public function init()
