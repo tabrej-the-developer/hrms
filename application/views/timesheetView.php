@@ -192,8 +192,8 @@ a[href="#week1"] button,a[href="#week2"] button{
 	padding: 0 1rem;
 	font-weight: 600;
 }
-.modal-content{
-max-width:30vw;
+	.modal-content{
+		max-width:45vw;
 	}
 	.modal-content .titl{
 	width: 100%;
@@ -202,7 +202,7 @@ max-width:30vw;
     left: 0;
     margin: 0;
     padding: 0;
-    background:#8D91AA;
+    background: linear-gradient(270deg, #297DB6 0%, #1B2E4B 100%);
     color: #E7E7E7;
 	}
 	.ui-timepicker-container{
@@ -392,14 +392,26 @@ max-width:30vw;
    /*		------------------------
 					Weekly Timesheet Modal
    			------------------------ 	*/
-  .weekTimesheetModalHeader{
-  	height: 4rem;
+/*  .weekTimesheetModalHeader{
+  	height: 3rem;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    background: #8D91AA;
-    color: #F3F4F7;
-    font-size:1.5rem;
+    background: linear-gradient(270deg, #297DB6 0%, #1B2E4B 100%);
+    color: #000000, 100%;
+    font-size:1rem;
+    padding-left: 1rem;
+  }*/
+  .modalHeaderTimesheet{
+  	height: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /*background: linear-gradient(270deg, #297DB6 0%, #1B2E4B 100%);*/
+    color: #000000, 100%;
+    font-size:1rem;
+    padding-left: 1rem;
+    padding-right: 2rem;
   }
   .weekTimesheetModalSubmit{
   	position: absolute;
@@ -412,8 +424,8 @@ max-width:30vw;
   }
     .weekTimesheetBody{
     	position: absolute;
-    	left: 20%;
-    	width:60%;
+    	left: 15%;
+    	width:70%;
     	top:10%;
     	height:80%;
     	background: white;
@@ -429,14 +441,15 @@ max-width:30vw;
     	background: rgba(0,0,0,0.5);
     }
     .weekTimesheetModalVisits{
-    	display: flex;
-	    align-items: center;
-	    justify-content: center;
-    	height: calc(100% - 2.5rem);
-
+    	/*display: flex;*/
+/*	    align-items: center;
+	    justify-content: center;*/
+    	height: 100%;
+    	overflow-y: scroll;
     }
   .weekTimesheetModalData{
   	height: calc(100% - 8rem);
+  	padding: 0 1rem;
   }
   .weekTimesheetModalTabs{
   	height: 2.5rem;
@@ -445,12 +458,14 @@ max-width:30vw;
   }
   .weekTimesheetModalTabs span{
   	flex: 1 1 0px;
-		background: #8D91AA;
-    color: #F3F4F7;
-    border-bottom-left-radius: 1rem;
-    border-bottom-right-radius: 1rem;
+		background: white;
+    color: #136DF6;
     text-align: center;
     cursor: pointer;
+    border: 1px solid #D8D8D8;
+	display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
   .week_div_0{
   	display: block;
@@ -459,21 +474,52 @@ max-width:30vw;
     background: rgb(227, 228, 231);
     color: rgba(0, 0, 0, 0.8);
   }
-  .week_div_1{display: none;}
+/*  .week_div_1{display: none;}
   .week_div_2{display: none;}
   .week_div_3{display: none;}
-  .week_div_4{display: none;}
+  .week_div_4{display: none;}*/
   .visit__{
   	display: flex;
   }
+  .visit__ span{
+  	padding-left: 0.5rem;
+  	padding-right: 0.5rem;
+  }
   .display_flex_visits{
   	display: flex;
-	width: 100%;
+		width: 100%;
     justify-content: space-evenly;
-    padding: 0.5rem;
+    border-bottom: 1px solid #D8D8D8;
+  }
+  .display_flex_visits td{
+  	border: none !important;
+  	display: flex;
+  	justify-content: center;
+  	align-items: center;
+  	padding:0.1rem 0;
+  }
+  .display_flex_visits td.select__{
+  	display: block !important;
+  }
+  .weekTable{
+  	background: #F5F5F5;
+  	width: 100%; 
+  }
+  .weekTableHead{
+  	width: 100%;
+  }
+  .weekTable th{
+  	text-align: center;
+  	padding: 0.5rem;
+  	background: #8D91AA;
+  	color: #F3F4F7;
+  }
+  .addVisit{
+  	cursor: pointer;
   }
   div[class^="week_div_"]{
   	width: 100%;
+  	background: #F5F5F5;
   }
   	    select{
       background: #E7E7E7;
@@ -1058,16 +1104,36 @@ if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata(
 
 <div class="weekTimesheetModal">
 	<div class="weekTimesheetBody">
-		<div class="weekTimesheetModalHeader" >NAME</div>
+		<div class="modalHeaderTimesheet">
+			<div class="weekTimesheetModalHeader" >NAME</div>
+			<div class="weekTimesheetModalEdit d-inline-flex align-items-center">
+				<div>
+					<input type="checkbox" class="weekSameAsRoster" name="">Same as roster &nbsp;
+				</div>
+					<img class="addVisit" src="<?php echo base_url('assets/images/icons/plus.png'); ?>" height="20px" width="20px">
+			</div>
+		</div> 
 		<div class="weekTimesheetModalData">
-			<div class="weekTimesheetModalTabs">
+<!-- 			<div class="weekTimesheetModalTabs">
 				<span class="weekTimesheetModalTabsMon">MON</span>
 				<span class="weekTimesheetModalTabsTue">TUE</span>
 				<span class="weekTimesheetModalTabsWed">WED</span>
 				<span class="weekTimesheetModalTabsThu">THU</span>
 				<span class="weekTimesheetModalTabsFri">FRI</span>
+			</div> -->
+			<div class="weekTimesheetModalVisits">
+				<table class="weekTable">
+					<thead style="display: table" class="weekTableHead">
+						<th style="min-width:5vw !important;max-width:5vw !important">Input</th>
+						<th style="">Date</th>
+						<th style="">In Time</th>
+						<th style="">Out Time</th>
+						<th style="">Type</th>
+						<th style="">Hours</th>
+					</thead>
+						<tbody class="weekTableBody"></tbody>
+				</table>
 			</div>
-			<div class="weekTimesheetModalVisits">SELECT</div>
 		</div>
 		<div class="weekTimesheetModalSubmit">
 			<span>
@@ -1126,9 +1192,14 @@ if($timesheetDetails->status == 'Draft'){ ?>
 	  <!-- Modal content -->
 	  <div class="modal-content">
 	  	<span class="row titl">
-	  		<span style="" class="box-name-space col-12">
-	  			<span class="box-name row"></span>
-	  			<span class="box-space row"></span>
+	  		<span style="" class="box-name-space row ml-0 mt-2 mb-2">
+	  			<span class="box-name col-8 d-inline-flex justify-content-start"></span>
+	  			<span class="col-4 d-inline-flex">
+						<div class="box-space col-10  d-inline-flex align-items-center"></div>
+	  				<div class="col-2">
+	  					<img class="addDayVisit" src="<?php echo base_url('assets/images/icons/plus.png'); ?>" height="20px" width="20px">
+	  				</div>
+	  			</span>
 	  		</span>
 	  		
 	  	</span>
@@ -1435,7 +1506,6 @@ $(document).on('click','.buttonn',function(){
 		let empId = $('#emply-id').attr('employee');
 		let shiftDate = $('#emply-id').attr('date');
 		let timesheetId = "<?php echo $timesheetid; ?>";
-		console.log(values)
 		$.ajax({
 			url : url,
 			type : 'POST',
@@ -1480,7 +1550,6 @@ $(document).on('click','.buttonn',function(){
 							endTime = parseInt(endTime/100)*60 + parseInt(endTime%100)
 						var perMinute = hourly/60;
 						thisValue = thisValue + ( endTime - startTime ) * factor * perMinute
-						console.log(thisValue)
 						}
 					}
 		}
@@ -1500,7 +1569,6 @@ $(document).on('click','.buttonn',function(){
 							endTime = parseInt(endTime/100)*60 + parseInt(endTime%100)
 						var perMinute = hourly/60;
 						thisValue = thisValue + ( endTime - startTime ) * factor * perMinute
-						console.log(thisValue)
 						}
 					}
 				}
@@ -1522,7 +1590,6 @@ $(document).on('click','.buttonn',function(){
 							endTime = parseInt(endTime/100)*60 + parseInt(endTime%100)
 						var perMinute = hourly/60;
 						thisValue = thisValue + ( endTime - startTime ) * factor * perMinute
-						console.log(thisValue)
 						}
 					}
 			}
@@ -1544,7 +1611,6 @@ $(document).on('click','.buttonn',function(){
 							endTime = parseInt(endTime/100)*60 + parseInt(endTime%100)
 						var perMinute = hourly/60;
 						thisValue = thisValue + ( endTime - startTime ) * factor * perMinute
-						console.log(thisValue)
 						}
 					}
 			}
@@ -1565,7 +1631,6 @@ $(document).on('click','.buttonn',function(){
 							endTime = parseInt(endTime/100)*60 + parseInt(endTime%100)
 						var perMinute = hourly/60;
 						thisValue = thisValue + ( endTime - startTime ) * factor * perMinute
-						console.log(thisValue)
 						}
 					}
 			}
@@ -1612,7 +1677,6 @@ $(document).on('click','.buttonn',function(){
 		for(let i=0;i<count;i++){
 		$('.leave').eq(i).height(height);
 			}
-			console.log(height)
 	})
 
 	/*----------------------
@@ -1658,7 +1722,6 @@ $(document).on('click','.buttonn',function(){
 							endTime = parseInt(endTime/100)*60 + parseInt(endTime%100)
 						var perMinute = hourly/60;
 						thisValue = thisValue + ( endTime - startTime ) * factor * perMinute
-						console.log(thisValue)
 						}
 					}
 			}
@@ -1694,11 +1757,11 @@ $(document).on('click','.buttonn',function(){
 				$('.weekTimesheetModal').css('display','block');
 				$('.weekTimesheetModalTabs span').each(function(){
 					if($(this).index() != 0){
-						$(this).css('background','#8D91AA');
-						$(this).css('color','#F3F4F7');
+						$(this).css('background','#fff');
+						$(this).css('color','#136DF6');
 					}else{
-						$(this).css('background','#e3e4e7');
-						$(this).css('color','rgba(0,0,0,0.8)');
+						$(this).css('background','#297DB6');
+						$(this).css('color','#fff');
 					}
 				})
 			})
@@ -1711,11 +1774,11 @@ $(document).on('click','.buttonn',function(){
 				var that = this;
 				$('.weekTimesheetModalTabs span').each(function(){
 					if($(that).index() != $(this).index()){
-						$(this).css('background','#8D91AA');
-						$(this).css('color','#F3F4F7');
+						$(this).css('background','#fff');
+						$(this).css('color','#136DF6');
 					}else{
-						$(this).css('background','#e3e4e7');
-						$(this).css('color','rgba(0,0,0,0.8)');
+						$(this).css('background','#297DB6');
+						$(this).css('color','#fff');
 					}
 				})
 				for(i=0;i<5;i++){
@@ -1735,6 +1798,8 @@ $(document).on('click','.buttonn',function(){
 				getPayrollShiftType_v1();
 			})
 
+			var selectOptions = "";
+			// Global scope select Options, written outside the function
 			var getEmployeeTimesheet = function(e){
 				var name = $(e).parent().prev().attr('name');
 					$('.weekTimesheetModalHeader').html(name)
@@ -1756,7 +1821,7 @@ $(document).on('click','.buttonn',function(){
 					success : function(response){
 						var x = 0;
 						var Time = 0;
-						$('.weekTimesheetModalVisits').empty()
+						$('.weekTableBody').empty();
 						var view = JSON.parse(response);
 						view.visitis.forEach(day => {
 							var sameAsRoster = "";
@@ -1770,40 +1835,59 @@ $(document).on('click','.buttonn',function(){
 							var inTime = view.shift[Time].startTime;
 							var outTime = view.shift[Time].endTime;
 							var i =0;
-							var wrapper = `<div class="week_div_${x}">
-								<span class="sameAsRosterBlock_${x}">
-									<span><input type="checkbox" class="sameAsRoster_${x}_input"> </span>
-									<span startTime="${inTime}" endTime="${outTime}" class="sameAsRoster_${x}_time">&nbsp;&nbsp;&nbsp;Same as Roster ( ${sameAsRoster} )</span>
-								</span>
-							</div>`;
+							// var wrapper = `<div class="week_div_${x}">
+							// </div>`;
 								}
 								catch{}
 							Time++;
-							$('.weekTimesheetModalVisits').append(wrapper);
+							var dayLoopCounter = 0;
+								function checkShiftLength(inTime,outTime,dayLength,dayLoopCounter){
+									var code = "";
+									if(1 == dayLength){
+										code = `actStartTime="${inTime}" actEndTime="${outTime}"`
+									}
+									else if(dayLoopCounter == dayLength){
+										code = `actEndTime="${outTime}"`
+									}else if(dayLength > 1 && dayLoopCounter == 1){
+										code = `actStartTime="${inTime}"`
+									}
+									return code;
+								}
+							// $('.weekTimesheetModalVisits').append(wrapper);
 							day.forEach(visit => {
-							var code = `<span class="display_flex_visits">
-														<span visitid='${visit.id}' startTime='${visit.signInTime}' endTime='${visit.signOutTime}' class="visit__">
-															<span class="time_visits"><input type="checkbox" checked></span>
-															<span class="time_visits_child oldtime">
-																<input type="time" value="${timer(visit.signInTime)}"> -- <input type="time" value="${timer(visit.signOutTime)}""	
-															</span>
-														</span>
-														<span class="select__">
-															<span class="select_css">
-																<select>
+								dayLoopCounter++;
+							var dateWithHiphen = (visit.signInDate).split("-");
+							var month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct", "Nov", "Dec"];
+							var code = `<tr class="display_flex_visits">
+														<td class="time_visits"  style="min-width:5vw !important;max-width:5vw !important"><input type="checkbox" checked></td>
+														<td visitid='${visit.id}' ${checkShiftLength(inTime,outTime,day.length,dayLoopCounter)} startTime='${visit.signInTime}' endTime='${visit.signOutTime}' class="visit__" style="" dateAttr = "${visit.signInDate}">
+														${dateWithHiphen[2]} ${month[dateWithHiphen[1]-1]} ${dateWithHiphen[0]}
+													</td>
+														<td class="time_visits_child oldtime newStartTime" style="">
+																<input type="time" value="${timer(visit.signInTime)}"> 
+															</td>
+															<td class="time_visits_child oldtime newEndTime" style="">
+																<input type="time" value="${timer(visit.signOutTime)}">
+															</td>
+														<td class="select__" style="">
+															<span class="select_css" style="display:flex">
+																<select class="modalSelectType" >
 																</select>
 															</span>
-														</span>
-													</span>`
-							$('.week_div_'+x).append(code);
+														</td>
+														<td class="totalHoursCount">${((((visit.signOutTime)/100)*60 - ((visit.signInTime)/100)*60)/60).toFixed(2)}</td>
+													</tr>`
+							$('.weekTableBody').append(code);
+							selectOptions = "";
 							select.payrollTypes.forEach(type => {
 								if(type.earningType == "ORDINARYTIMEEARNINGS" && type.centerid == 6){
-									var option = `<option value="${type.earningRateId}" factor="${type.multiplier_amount}" earningType="${type.earningType}" selected>${type.name}</option>`
+									var option = `<option value="${type.earningRateId}" factor="${type.multiplier_amount}" earningType="${type.earningType}" selected>${type.name}</option>`;
 								}
 								if(type.earningType != "ORDINARYTIMEEARNINGS" && type.centerid == 6){
 									var option = `<option value="${type.earningRateId}" factor="${type.multiplier_amount}" earningType="${type.earningType}">${type.name}</option>`
 								}
-								$(`.week_div_${x} select`).eq(i).append(option)
+									selectOptions += option;
+								$(`.modalSelectType`).eq($('.modalSelectType').length - 1).append(option);
 									})
 							i++;
 								} 
@@ -1815,6 +1899,50 @@ $(document).on('click','.buttonn',function(){
 				})
 			}
 
+			/* Add new visit in timesheets */
+				// Adding new visits field
+			$(document).on('click','.addVisit',function(){
+				var code = `<tr class="display_flex_visits">
+											<td class="time_visits"  style="min-width:5vw !important;max-width:5vw !important"><input type="checkbox" checked></td>
+											<td visitid='' startTime='' endTime='' class="visit__" style="">
+												<input type="date">
+											</td>
+												<td class="time_visits_child oldtime newStartTime" index style="">
+													<input type="time" value=""> 
+												</td>
+												<td class="time_visits_child oldtime newEndTime" index style="">
+													<input type="time" value="">
+												</td>
+											<td class="select__" style="">
+												<span class="select_css" style="display:flex">
+													<select class="modalSelectType" >
+													</select>
+												</span>
+											</td>
+											<td class="totalHoursCount"></td>
+										</tr>`
+										$('.weekTableBody').append(code);
+										$(`.modalSelectType`).eq($('.modalSelectType').length - 1).append(selectOptions);
+			})
+
+			// Changing time, must reflect hours in hours field
+			$(document).on('change','.newStartTime,.newEndTime',function(){
+				var parent = $(this).parent();
+				var startTime = parent.children('.newStartTime').children().val();
+				var endTime = parent.children('.newEndTime').children().val();
+					if(startTime != null && endTime != null){
+						startTimeValue = startTime.substr(0,2).concat(startTime.substr(3,5));
+						endTimeValue = endTime.substr(0,2).concat(endTime.substr(3,5));
+						var totalHours = (((endTimeValue)/100)*60 - ((startTimeValue)/100)*60)/60;
+						if(totalHours < 0 ){
+							parent.children('.totalHoursCount').html("<span style='font-size:0.8rem'>End time must be greater than start time.</span>")
+						}
+						else
+							parent.children('.totalHoursCount').text(totalHours.toFixed(2))
+					}
+			})
+			/* Add new visit in timesheets */
+			
 			function getBudget(){
 				var hourly = $('.weekTimesheetModalHeader').attr('pay');
 				for(var i=0;i<5;i++){
@@ -1833,9 +1961,7 @@ $(document).on('click','.buttonn',function(){
 							var type = parent.next().children('.select_css').children('select').children('option:selected').attr('factor');
 							weeklyPay = weeklyPay + (endT - startT)*(hourly/60)*type;
 						}
-						// console.log(endT+'\t'+startT+'\t'+weeklyPay);
 					}
-						console.log(weeklyPay)
 				}
 			}
 
@@ -1859,24 +1985,19 @@ $(document).on('click','.buttonn',function(){
 				var userid = "<?php echo $this->session->userdata('LoginId'); ?>";
 				var startDate = new Date($('.weekTimesheetModalHeader').attr('date'));
 				var empId = $('.weekTimesheetModalHeader').attr('userid')
-				console.log(empId)
 				var url = window.location.origin+"/PN101/timesheet/createWeekPayroll";
-				for(var i=0;i<5;i++){
-					$(`.week_div_${i} .display_flex_visits`).each(function(){
+					$(`.display_flex_visits`).each(function(){
 						var obj = {};
 						var d = new Date();
-						if($(this).children('.visit__').children('.time_visits_child').hasClass('oldtime'))
-						{
-							if($(this).children('.visit__').children().children('input').prop('checked') == true){
-							obj.startTime = ($(this).children('.visit__').children('.time_visits_child').children('input').eq(0).val()).replace(":","").toString();
-							obj.endTime = ($(this).children('.visit__').children('.time_visits_child').children('input').eq(1).val()).replace(":","").toString();
-							obj.payType = $(this).children('.visit__').children('.select__').children('.select_css').children('select').val();
-							obj.clockedInTime = $(this).children('.visit__').attr('starttime');
-							obj.clockedOutTime = $(this).children('.visit__').attr('endtime');
-							d.setDate(startDate.getDate()+(i));
-							obj.shiftdate = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
-								}
-						}
+						if($(this).children('.time_visits').children('input').prop('checked') == true){
+						obj.startTime = ($(this).children('.time_visits_child').eq(0).children('input').val()).replace(":","").toString();
+						obj.endTime = ($(this).children('.time_visits_child').eq(1).children('input').val()).replace(":","").toString();
+						obj.payType = $(this).children('.select__').children('.select_css').children('select').val();
+						obj.clockedInTime = $(this).children('.visit__').attr('starttime');
+						obj.clockedOutTime = $(this).children('.visit__').attr('endtime');
+						obj.shiftdate = $(this).children('.visit__').attr('dateAttr');
+								values.push(obj)
+							}
 						// if($(this).children('.visit__').children('.time_visits_child').hasClass('oldtime'))
 						// {
 						// 	if($(this).children('.visit__').children().children('input').prop('checked') == true){
@@ -1889,55 +2010,66 @@ $(document).on('click','.buttonn',function(){
 						// 	obj.shiftdate = d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate();
 						// 	}
 						// }
-						values.push(obj)
 					})
-				}
 				console.log(values)
-				$.ajax({
-					url : url,
-					type: 'POST',
-					data : {
-						empId : empId,
-						userid : userid,
-						timesheetid : timesheetId, 
-						visits : values
-					},
-					success : function(response){
-						console.log(response)
-							window.location.reload();
-							// send data to api, from there, call api five times !!
-					}
-				})
+				// $.ajax({
+				// 	url : url,
+				// 	type: 'POST',
+				// 	data : {
+				// 		empId : empId,
+				// 		userid : userid,
+				// 		timesheetid : timesheetId, 
+				// 		visits : values
+				// 	},
+				// 	success : function(response){
+				// 		console.log(response)
+				// 			window.location.reload();
+				// 	}
+				// })
 			})
 
-	$(document).on('click','input[class^="sameAsRoster_"]',function(){
-		var startTime = $(this).parent().next().attr('starttime');
-		var endTime = $(this).parent().next().attr('endtime');
-
+	$(document).on('click','.weekSameAsRoster',function(){
 		if($(this).prop('checked') == true) {
-			$(this).parent().parent().parent().children('.display_flex_visits').children('.visit__').children('.time_visits').children('input').prop('disabled',true)
-			$(this).parent().parent().parent().children('.display_flex_visits').eq(1).children('.visit__').children('.time_visits').children('input').prop('disabled',true)
-			if($(this).parent().parent().parent().children('.display_flex_visits').length > 1){
-				var len = $(this).parent().parent().parent().children('.display_flex_visits').length; 
-				$(this).parent().parent().parent().children('.display_flex_visits').eq(0).children('.visit__').children('.time_visits_child').children('input').eq(0).val(timer(startTime));
-				$(this).parent().parent().parent().children('.display_flex_visits').eq(len-1).children('.visit__').children('.time_visits_child').children('input').eq(1).val(timer(endTime));
-			}
-			if($(this).parent().parent().parent().children('.display_flex_visits').length == 1){
-				$(this).parent().parent().parent().children('.display_flex_visits').eq(0).children('.visit__').children('.time_visits_child').children('input').eq(0).val(times(startTime));
-				$(this).parent().parent().parent().children('.display_flex_visits').eq(0).children('.visit__').children('.time_visits_child').children('input').eq(1).val(times(endTime));
-			}
+			$('.display_flex_visits').each(function(){
+				var val1 = $(this).children('.visit__').attr('actEndTime')
+				var val2 = $(this).children('.visit__').attr('actStartTime')
+				if(val1 != undefined && val2 != undefined){
+					$(this).children('.newStartTime').children().val(timer(val2));
+					$(this).children('.newEndTime').children().val(timer(val1));
+				}
+				else if(val1 != undefined){
+					$(this).children('.newEndTime').children().val(timer(val1));
+				}
+				else if(val2 != undefined){
+					$(this).children('.newStartTime').children().val(timer(val2));
+				}
+			})
 		}
 		if($(this).prop('checked') == false) {
-			$(this).parent().parent().parent().children('.display_flex_visits').children('.visit__').children('.time_visits').children('input').prop('disabled',false)
-			$(this).parent().parent().parent().children('.display_flex_visits').eq(1).children('.visit__').children('.time_visits').children('input').prop('disabled',false)
-			if($(this).parent().parent().parent().children('.display_flex_visits').length == 1){
 
-			}
-				if($(this).parent().parent().parent().children('.display_flex_visits').length > 1){
-
-				}
 		}
 	})
+
+	$(document).on('click','.addDayVisit',function(){
+			var code = `<div start-time="EMPTY" end-time="EMPTY" class="box-time" style="padding:20px 0px 20px 1rem" hourly="FROM PREVIOUS">
+				<span class="group-span">
+					<span>
+						<input type="checkbox" class="clocked_time" checked>
+					</span>
+					<span svalue="EMPTY" evalue="EMPTY" class="time-box">
+						<input type="time" name="startTime_modal" class="startTime_modal" value="Can Get Time">
+						<input type="time" name="endTime_modal" class="endTime_modal" value="Can Get  Time">
+					</span>
+					<span>
+						<span class="select_css">
+							<select class="shift-type-select" >${$('.box-time').eq($('.box-time').length - 1).find('.shift-type-select').html()}</select>
+						</span>
+					</span>
+				</span>
+			</div>`
+			$(code).insertBefore('.budget');
+	})
+
 		</script>
 
 	</body>
@@ -1947,8 +2079,7 @@ $(document).on('click','.buttonn',function(){
 <?php
 	//PHP functions //
 
-function timex( $x)
-  { 
+function timex( $x){ 
       $output;
       if(($x/100) < 12 ){
           if(($x%100)==0){
