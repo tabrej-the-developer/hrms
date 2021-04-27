@@ -22,7 +22,14 @@ class Welcome extends CI_Controller {
 
 	public function index()
 	{
-		redirect(base_url().'welcome/login');
+		redirect(base_url().'welcome/landing');
+	}
+
+	public function landing(){
+		if($this->session->userdata('LoginId') == null)
+			$this->load->view('landing');
+		else
+			redirect(base_url().'welcome/login');
 	}
 
 	public function login(){
