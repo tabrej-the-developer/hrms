@@ -19,6 +19,7 @@ font-family: 'Open Sans', sans-serif;
 			display:flex;
 			justify-content: space-around;
 			min-width:100%;
+			align-items: center;
 		}
 		.box-time{
 			
@@ -159,6 +160,12 @@ function timex( $x)
 		$pos = strlen(($str))-2;
 		echo substr_replace($str,$toInsert,$pos,0);
 	}
+	function addCol($str){
+		$toInsert = ":";
+		$str = sprintf("%04d",$str);
+		$pos = strlen(($str))-2;
+		return substr_replace($str,$toInsert,$pos,0);
+	}
 ?>
 <?php 
 if($aT == 'rosteredEmployees'){
@@ -174,7 +181,8 @@ if($aT == 'rosteredEmployees'){
     $startTime = intval(($clocksArray[$breaksCount-1]->endTime)/100)*60 + intval(($clocksArray[$breaksCount-1]->endTime)%100);
     $endTime = intval(($clocksArray[$breaksCount]->startTime)/100)*60 + intval(($clocksArray[$breaksCount]->startTime)%100);
         $breaks = ($endTime) - ($startTime) ;
-        array_push($breaksC , "<span class='breaks'>Break No: $breaksCount from " .  $clocksArray[$breaksCount-1]->endTime."</span><br>");
+        $br = "<span class='breaks'>Break No: $breaksCount from " .  addCol($clocksArray[$breaksCount-1]->endTime) ."</span><br>";
+        array_push($breaksC , $br);
         $breaksCount++;
       }
 
@@ -194,8 +202,10 @@ if($aT == 'rosteredEmployees'){
 					if($shifts->earningRateId == "28669cfb-1f0e-470a-a625-dae99b51449c" && $timesheetDetails->centerid == $shifts->centerid){?>
 						<?php // print_r(isset($rosterShift->startTime) ? $rosterShift->startTime : ""); ?>
 				<input type="checkbox" name="same_as_roster" class="same_as_roster" factor="<?php echo $shifts->multiplier_amount; ?>">
-			<?php } } ?> Same as Roster(
+			<?php } } ?> <span>Same as Roster(
 				<span time="<?php echo isset($rosterShift->startTime) ? $rosterShift->startTime : ""; ?>" class="time_1"><?php echo isset($rosterShift->startTime) ? timex($rosterShift->startTime) : ""; ?></span>-<span time="<?php echo isset($rosterShift->startTime) ? $rosterShift->endTime : ""; ?>" class="time_2"><?php echo isset($rosterShift->startTime) ? timex($rosterShift->endTime) : ""; ?></span> )
+			</span>
+				<span></span>
 			</div>
 	<?php	
 }
@@ -326,7 +336,15 @@ foreach($timesheetDetails->timesheet[$ya]->unrosteredEmployees[$xa]->clockedTime
 			</div>
 		</div>
 </div>
-
+<script type="text/javascript">
+		function addColonJS(string){
+		let toInsert = ":";
+		let str = pad(string,4);
+		let pos = str.length-2;
+		let strn = [str.slice(0, pos), toInsert, str.slice(pos)].join('');;
+		return strn;
+	}
+</script>
 
 <!--
 <input type="time" name="stime" id="stime">

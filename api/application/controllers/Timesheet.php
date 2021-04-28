@@ -20,6 +20,7 @@ class Timesheet extends CI_Controller{
 
 	public function getPastTimesheet($centerid,$userid){
 		$headers = $this->input->request_headers();
+$headers = array_change_key_case($headers);
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
@@ -51,6 +52,7 @@ class Timesheet extends CI_Controller{
 
 	public function createTimesheet(){
 		$headers = $this->input->request_headers();
+$headers = array_change_key_case($headers);
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
@@ -150,6 +152,7 @@ class Timesheet extends CI_Controller{
 
 	function postTimesheetToXero($timesheetId,$userid,$centerid,$stDate){
 		// $headers = $this->input->request_headers();
+// $headers = array_change_key_case($headers);
 		// if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			// $res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
@@ -268,6 +271,7 @@ class Timesheet extends CI_Controller{
 
 	public function postPayRun($timesheetId,$userid,$centerid){
 		// $headers = $this->input->request_headers();
+// $headers = array_change_key_case($headers);
 		// if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 		// 	$this->load->model('authModel');
 		// 	$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
@@ -456,6 +460,7 @@ function createPayrun($payrollCalendarId,$access_token,$tenant_id){
 
 	// public function getTimesheet($timesheetid,$userid){
 	// 	$headers = $this->input->request_headers();
+// $headers = array_change_key_case($headers);
 	// 	if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 	// 		$this->load->model('authModel');
 	// 		$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
@@ -541,6 +546,7 @@ function createPayrun($payrollCalendarId,$access_token,$tenant_id){
 
 	public function getTimesheet($timesheetid,$userid){
 		$headers = $this->input->request_headers();
+$headers = array_change_key_case($headers);
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
@@ -678,6 +684,7 @@ function createPayrun($payrollCalendarId,$access_token,$tenant_id){
 
 	public function getUserWeekTimesheet($userid,$date,$empId){
 		$headers = $this->input->request_headers();
+$headers = array_change_key_case($headers);
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$this->load->model('timesheetModel');
@@ -710,6 +717,7 @@ function createPayrun($payrollCalendarId,$access_token,$tenant_id){
 
 	public function getRosterShifts($userid,$empId){
 		$headers = $this->input->request_headers();
+$headers = array_change_key_case($headers);
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
@@ -731,6 +739,7 @@ function createPayrun($payrollCalendarId,$access_token,$tenant_id){
 
 	public function publishTimesheet($timesheetid,$userid){
 		$headers = $this->input->request_headers();
+$headers = array_change_key_case($headers);
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
@@ -751,6 +760,7 @@ function createPayrun($payrollCalendarId,$access_token,$tenant_id){
 
 	public function discardTimesheet($timesheetid,$userid){
 		$headers = $this->input->request_headers();
+$headers = array_change_key_case($headers);
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
@@ -772,6 +782,7 @@ function createPayrun($payrollCalendarId,$access_token,$tenant_id){
 
 	public function createPayrollEntry(){
 		$headers = $this->input->request_headers();
+$headers = array_change_key_case($headers);
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
@@ -801,6 +812,7 @@ function createPayrun($payrollCalendarId,$access_token,$tenant_id){
 
 	public function createWeekPayrollEntry(){
 		$headers = $this->input->request_headers();
+$headers = array_change_key_case($headers);
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
