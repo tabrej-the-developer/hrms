@@ -239,9 +239,8 @@ class Chat extends CI_Controller {
         This function is used to get all the recent conversations along with unread count.
     */
     public function getRecentConversations($idUser){
-
-
         $headers = $this->input->request_headers();
+	$headers = array_change_key_case($headers);
         if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
             $this->load->model('authModel');
             $res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);

@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 //	$config['base_url'] = 'http://localhost/PN101/api/';
-  $config['base_url'] = "https://todquest.com/PN101/api/";
+  $config['base_url'] = "http://stage.todquest.com/HRMS101/api/";
 /*
 |--------------------------------------------------------------------------
 | Index File
