@@ -1519,7 +1519,13 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 		else{
 			$value=1;
 		}
-				for($counter=0;$counter<$value;$counter++){ ?>
+              $totalHours = 0;
+              $_endTime_100 = 0;
+              $_startTime_100 = 0;
+				for($counter=0;$counter<$value;$counter++){   
+              $_endTime_100 = 0;
+              $_startTime_100 = 0;       
+              $totalHours = 0;?>
 				<tr  class="table-row">
 					<td   style="width:16vw" class=" cell-boxes left-most">
 						<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
@@ -1583,8 +1589,13 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 
 			if($currentSequenceDate  == $currentDate){
 
-		 ?>
-
+        $_endTime_100 = $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime;
+          $_endTime_100 = explode(".",sprintf("%.2f",$_endTime_100/100));
+          $_endTime_100 = ($_endTime_100[0])*60 + $_endTime_100[1];
+        $_startTime_100 = $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime;
+          $_startTime_100 = explode(".",sprintf("%.2f",$_startTime_100/100));
+          $_startTime_100 = ($_startTime_100[0])*60 + $_startTime_100[1];
+     ?>
 					<td class="shift-edit cell-boxes count-<?php echo $index+1;?> <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "leave" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"  style="width:12vw" 
 					 name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->shiftid ?>"  
 
@@ -1599,6 +1610,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 					 status="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>" 
 					 area-id="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->areaId;?>"
 					 emp-id="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->empId;?>"
+           <?php $totalHours = $totalHours + ($_endTime_100 - $_startTime_100 ) ?>
 					 >
 					 <div class="cell-back-1" >
 					 	<?php if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave != "Y"){ 	?>
@@ -1632,7 +1644,13 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 					if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){
 					 echo "$".number_format((float)$weeklyTotal, 2, '.', '');;
 					}
-					 ?></td>
+					 ?>
+           <?php if($totalHours/60 < $rosterDetails->roster[$x]->roles[$counter]->maxHoursPerWeek){ ?>
+          <div style="font-size:0.75rem;color:#228659"><?php echo sprintf("%.2f",($totalHours/60))."/".(isset($rosterDetails->roster[$x]->roles[$counter]->maxHoursPerWeek) ? $rosterDetails->roster[$x]->roles[$counter]->maxHoursPerWeek : 0) ?> hours</div>   
+          <?php }else{ ?>
+          <div style="font-size:0.75rem;color:#cf6f57"><?php echo sprintf("%.2f",($totalHours/60))."/".(isset($rosterDetails->roster[$x]->roles[$counter]->maxHoursPerWeek) ? $rosterDetails->roster[$x]->roles[$counter]->maxHoursPerWeek : 0) ?> hours</div> 
+         <?php } ?>  
+           </td>
 
 				</tr>
 			</tr>
@@ -1671,8 +1689,15 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 				<?php 
 			}
 				$value = count($rosterDetails->roster[$x]->roles);
-
-				for($counter=0;$counter<$value;$counter++){ ?>
+              
+              $totalHours = 0;
+              $_endTime_100 = 0;
+              $_startTime_100 = 0;
+				for($counter=0;$counter<$value;$counter++){ 
+              $_endTime_100 = 0;
+              $_startTime_100 = 0;       
+              $totalHours = 0;
+          ?>
 				<tr  class="table-row">
 					<td   style="width:16vw" class=" cell-boxes left-most 
       <?php if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$counter]->empId){
@@ -1737,6 +1762,12 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 			// if(isset($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave) == true){
 
 			if($currentSequenceDate  == $currentDate){
+        $_endTime_100 = $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime;
+          $_endTime_100 = explode(".",sprintf("%.2f",$_endTime_100/100));
+          $_endTime_100 = ($_endTime_100[0])*60 + $_endTime_100[1];
+        $_startTime_100 = $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime;
+          $_startTime_100 = explode(".",sprintf("%.2f",$_startTime_100/100));
+          $_startTime_100 = ($_startTime_100[0])*60 + $_startTime_100[1];
 				?>
 
 					<td class="<?php if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$counter]->empId && $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status == 'Published'){ ?> shift-edit <?php } ?> cell-boxes count-<?php echo $index+1;?>  <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "leave" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"  style="width:12vw" 
@@ -1748,7 +1779,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 					 stime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->startTime?>" etime="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->endTime?>" 
 					 name="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->empName?>"
 					 status="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>">
-
+              <?php $totalHours = $totalHours + ($_endTime_100 - $_startTime_100 ) ?>
 					 <div class="cell-back-1 ">
 				<?php if($rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave != "Y"){ ?>
 					 	<span class="row m-0 d-flex justify-content-center"><?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleName;?></span>
@@ -1773,7 +1804,14 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 										  	<?php
 										  
 					  }  } ?>
-					<td class=" " style="width:12vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?></td>
+					<td class=" " style="width:12vw;font-weight:bolder"><?php echo "$".$weeklyTotal;?>
+       
+           <?php if($totalHours/60 < $rosterDetails->roster[$x]->roles[$counter]->maxHoursPerWeek){ ?>
+          <div style="font-size:0.75rem;color:#228659"><?php echo sprintf("%.2f",($totalHours/60))."/".(isset($rosterDetails->roster[$x]->roles[$counter]->maxHoursPerWeek) ? $rosterDetails->roster[$x]->roles[$counter]->maxHoursPerWeek : 0) ?> hours</div>   
+          <?php }else{ ?>
+          <div style="font-size:0.75rem;color:#cf6f57"><?php echo sprintf("%.2f",($totalHours/60))."/".(isset($rosterDetails->roster[$x]->roles[$counter]->maxHoursPerWeek) ? $rosterDetails->roster[$x]->roles[$counter]->maxHoursPerWeek : 0) ?> hours</div> 
+         <?php } ?>      
+          </td>
 
 				</tr>
 			<?php }  } }?>
@@ -2507,6 +2545,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 		$(document).on('click','.cell-boxes',function(){
 			document.getElementsByClassName('box-name')[0].innerHTML = $(this).attr('name');
 			var indexVal = $(this).index();
+      var that = $(this)
 			document.getElementsByClassName('box-space')[0].innerHTML = $('th').eq(indexVal).html()
 			var xvalue = $(this).attr('stime');
 			var yvalue = $(this).attr('etime');
@@ -2548,7 +2587,16 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 								$('#role').append(data)
 										}
 									})
-					})
+          })
+            for(var i=1;i<=5;i++){
+              if(that.parent().children(`.count-${i}`).attr('status') != null){
+                $('.editShiftDays').eq(i-1).attr('disabled',false)
+                $('.editShiftDays').eq(i-1).attr('checked',true)
+              }else{
+                $('.editShiftDays').eq(i-1).attr('disabled',true)
+                $('.editShiftDays').eq(i-1).attr('checked',false)
+              }
+            }
 				}
 			})
 						$('#message').val(response.shiftDetails.message);

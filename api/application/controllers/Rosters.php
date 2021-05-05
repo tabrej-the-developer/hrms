@@ -209,7 +209,7 @@ class Rosters extends MY_Controller
 									while ($currentDayNow < 5) {
 										$currentDateNow = date("Y-m-d", strtotime("$startDate +$currentDayNow day"));
 										$occupancyObj['date'] = $currentDateNow;
-										$occupancyObj['occupancy'] = 11;
+										$occupancyObj['occupancy'] = $this->getOccupancy($currentDateNow,$var['areaName'],$centerid);
 										array_push($var['occupancy'], $occupancyObj);
 										$currentDayNow++;
 									}
@@ -363,6 +363,48 @@ class Rosters extends MY_Controller
 		}
 	}
 
+	public function getOccupancy($date,$areaName,$centerid){
+		$this->load->model('rostersModel');
+		$occupancy = $this->rostersModel->getOccupancy($date,strtolower($areaName));
+		$getServiceKey = $this->rostersModel->getServiceKey($centerid);
+		$check = $this->rostersModel->checkOccupancyForPeriod($date,$centerid);
+		if($occupancy == null){
+			if($getServiceKey != null && $check == null){
+				$url = "https://app.kidsoft.com.au/api/v1/Kidsoft/Bookings/getAttendanceSummaryForDate?ServiceKey=".$getServiceKey->kidsoftkey."&BookingDate=$date";
+				$ch = curl_init($url);
+				curl_setopt($ch, CURLOPT_URL,$url);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				$server_output = curl_exec($ch);
+				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				curl_close ($ch);
+				if($httpcode == 200){
+					$server_output = json_decode($server_output);
+					if($server_output->Attendance != null){
+						$key = key($server_output->Attendance);
+						foreach($server_output->Attendance->{$key} as $areaOcc){
+							$this->rostersModel->addToKidsoftCenterAreas($centerid,strtolower($areaOcc->Room),$areaOcc->Date,$areaOcc->TotalBookings);
+						}
+						$occupancy = $this->rostersModel->getOccupancy($date,$areaName);
+						if(isset($occupancy->childcount)){
+							return $occupancy->childcount;
+						}else{
+							return 11;
+						}
+					}else{
+						return 11;
+					}
+				}
+				else if($httpcode == 401){
+					return 11;
+				}
+			}else{
+				return 11;
+			}
+		}else{
+			return $occupancy->childcount;
+		}
+	}
+
 	public function createRosterTemplate()
 	{
 		$headers = $this->input->request_headers();
@@ -472,6 +514,7 @@ class Rosters extends MY_Controller
 		$headers = $this->input->request_headers();
 		$headers = array_change_key_case($headers);
 		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			set_time_limit(0);
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
 			if ($res != null && $res->userid == $userid) {
@@ -498,7 +541,7 @@ class Rosters extends MY_Controller
 						while ($currentDayNow < 5) {
 							$currentDateNow = date("Y-m-d", strtotime("$roster->startDate +$currentDayNow day"));
 							$occupancyObj['date'] = $currentDateNow;
-							$occupancyObj['occupancy'] = 11;
+							$occupancyObj['occupancy'] = $this->getOccupancy($currentDateNow,$var['areaName'],$data['centerid']);
 							array_push($var['occupancy'], $occupancyObj);
 							$currentDayNow++;
 						}
@@ -518,7 +561,8 @@ class Rosters extends MY_Controller
 								$rav['empTitle'] = $empDetails->title;
 								$rav['empRole'] = $empDetails->roleid;
 								$rav['level'] = $empDetails->level;
-								//$rav['maxHoursPerWeek'] = $empDetails->maxHoursPerWeek;
+								$empMaxHours = $this->authModel->getMaxHours($employeeid->userid);
+								$rav['maxHoursPerWeek'] = isset($empMaxHours->maxhours) ? $empMaxHours->maxhours : NULL;
 								$rav['shifts'] = [];
 								$allShifts = $this->rostersModel->getAllShiftsFromEmployee($rosterid, $employeeid->userid, $area->areaid);
 								foreach ($allShifts as $shiftOb) {
@@ -763,7 +807,7 @@ class Rosters extends MY_Controller
 						}
 						$to = 'dheerajreddynannuri1709@gmail.com';
 						$template = 'updateShiftTemplate';
-						$this->Emails($to, $template, $subject, $arr);
+						// $this->Emails($to, $template, $subject, $arr);
 						// print_r(json_encode($arr));
 					}
 					$data['Status'] = 'SUCCESS';
@@ -928,7 +972,7 @@ class Rosters extends MY_Controller
 					if (($this->rostersModel->getRosterFromId($rosterid)->status) == 'Published') {
 						$subject = "Shift  added";
 						$template = 'addShiftTemplate';
-						$this->Emails($employeeEmail, $template, $subject, $arr);
+						// $this->Emails($employeeEmail, $template, $subject, $arr);
 					}
 					$data['Status'] = 'SUCCESS';
 					http_response_code(200);
@@ -1117,7 +1161,7 @@ class Rosters extends MY_Controller
 			$subject = "Roster  published";
 			$template = 'rosterPublishEmailTemplate';
 			// $employeeEmail = "";
-			$this->Emails($employeeEmail, $template, $subject, $arr);
+			// $this->Emails($employeeEmail, $template, $subject, $arr);
 			// $this->load->view('rosterPublishEmailTemplate',$arr);
 			echo 'SUCCESS';
 		}

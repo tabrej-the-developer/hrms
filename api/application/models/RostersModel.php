@@ -327,6 +327,26 @@ class RostersModel extends CI_Model {
 		$query = $this->db->query("SELECT * from templateshift INNER JOIN orgchartroles on orgchartroles.roleid = templateshift.roleid where templateshift.id='$shiftId'");
 		return $query->row();
 	}
+	public function addToKidsoftCenterAreas($centerid,$areaName,$date,$totalBookings){
+		$this->load->database();
+		$query = $this->db->query("INSERT INTO kidsoftcenterareas (center,area,date,childcount) VALUES ($centerid,'$areaName','$date',$totalBookings) ");
+	}
+	public function getOccupancy($date,$areaName){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM kidsoftcenterareas where date = '$date' and area = '$areaName'");
+		return $query->row();
+	}
+	public function getServiceKey($centerid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM kidsoft where center = $centerid");
+		return $query->row();
+	}
+
+	public function checkOccupancyForPeriod($date,$centerid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM kidsoftcenterareas where date = '$date' and center = $centerid");
+		return $query->row();
+	}
 
 }
 
