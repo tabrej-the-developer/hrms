@@ -175,7 +175,6 @@ class Rosters extends MY_Controller
 			$json = json_decode(file_get_contents('php://input'));
 			if ($json != null && $res != null && $res->userid == $json->userid) {
 				if ($rosterTemplateId == null) {
-
 					$startDate = $json->startDate;
 					$userid = $json->userid;
 					$centerid = $json->centerid;
@@ -238,9 +237,17 @@ class Rosters extends MY_Controller
 												$shiftObj['startTime'] = "0900";
 												$shiftObj['endTime'] = "1700";
 												$shiftObj['status'] = "Added";
-												$shiftObj['shiftid'] = $this->rostersModel->createNewShift($currentRoster, $shiftObj['currentDate'], $employee->id, $shiftObj['startTime'], $shiftObj['endTime'], $role->roleid);
-												array_push($rav['shifts'], $shiftObj);
-												$day++;
+												if(isset($employee->employmentType) && $employee->employmentType == 'CT'){
+													if($employee->days[$day] == 1){
+														$shiftObj['shiftid'] = $this->rostersModel->createNewShift($currentRoster, $shiftObj['currentDate'], $employee->id, $shiftObj['startTime'], $shiftObj['endTime'], $role->roleid);
+														array_push($rav['shifts'], $shiftObj);
+													}
+													$day++;
+												}else{
+													$shiftObj['shiftid'] = $this->rostersModel->createNewShift($currentRoster, $shiftObj['currentDate'], $employee->id, $shiftObj['startTime'], $shiftObj['endTime'], $role->roleid);
+													array_push($rav['shifts'], $shiftObj);
+													$day++;
+												}
 											}
 											// var_dump($rav);
 											array_push($var['roles'], $rav);
@@ -480,9 +487,16 @@ class Rosters extends MY_Controller
 										$shiftObj['startTime'] = "0900";
 										$shiftObj['endTime'] = "1700";
 										$shiftObj['status'] = "Added";
-										$shiftObj['shiftid'] = $this->rostersModel->createNewTemplateShift($currentRoster, $shiftObj['currentDay'], $employee->id, $shiftObj['startTime'], $shiftObj['endTime'], $role->roleid);
-										array_push($rav['shifts'], $shiftObj); //----------------remove
-										$day++;
+										if(isset($employee->employmentType) && $employee->employmentType == 'CT'){
+											if($employee->days[$day] == 1){
+												$shiftObj['shiftid'] = $this->rostersModel->createNewTemplateShift($currentRoster, $shiftObj['currentDay'], $employee->id, $shiftObj['startTime'], $shiftObj['endTime'], $role->roleid);
+												array_push($rav['shifts'], $shiftObj); //----------------remove
+											}
+											$day++;
+										}else{
+												$shiftObj['shiftid'] = $this->rostersModel->createNewTemplateShift($currentRoster, $shiftObj['currentDay'], $employee->id, $shiftObj['startTime'], $shiftObj['endTime'], $role->roleid);
+												$day++;
+										}
 									}
 									// var_dump($rav);
 									array_push($var['roles'], $rav);
@@ -561,7 +575,7 @@ class Rosters extends MY_Controller
 								$rav['empTitle'] = $empDetails->title;
 								$rav['empRole'] = $empDetails->roleid;
 								$rav['level'] = $empDetails->level;
-								$empMaxHours = $this->authModel->getMaxHours($employeeid->userid);
+								$empMaxHours = $this->rostersModel->getMaxHours($employeeid->userid);
 								$rav['maxHoursPerWeek'] = isset($empMaxHours->maxhours) ? $empMaxHours->maxhours : NULL;
 								$rav['shifts'] = [];
 								$allShifts = $this->rostersModel->getAllShiftsFromEmployee($rosterid, $employeeid->userid, $area->areaid);

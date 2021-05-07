@@ -185,7 +185,7 @@ class Util extends CI_Controller
 					if($this->utilModel->getKidsoftCenterAreas($center->centerid) != null)
 						$object->rooms = $this->utilModel->getKidsoftCenterAreas($center->centerid);
 					else{
-						$object->centerName = "Name";
+						$object->centerName = $center->name;
 						$object->center = $center->centerid;
 					}
 					$data[] = $object;

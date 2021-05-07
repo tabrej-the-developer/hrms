@@ -286,7 +286,7 @@
 				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
 			</sup></label>
 			<span class="select_css">
-				<select id="employement_type" name="employement_type" value="<?php echo isset($employeeData->employeeRecord->employmentType) ? $employeeData->employeeRecord->employmentType : ''; ?>">
+				<select id="employement_type" name="employement_type" >
 					<option value="FT">Full Time</option>
 					<option value="PT">Part Time</option>
 					<option value="CT">Casual</option>
@@ -299,7 +299,7 @@
 					<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
 				</sup></label>
 				<span>
-					<input id="employee_no" type="text" name="employee_no">
+					<input id="totalHours" type="number" name="totalHours">
 				</span>
 			</span>
 
@@ -310,23 +310,23 @@
 				<span class="d-flex">
 					<span>
 						<label class="labels__">Mon</label>
-						<input id="CT_1" type="checkbox" name="employee_no">
+						<input id="CT_1" type="checkbox" name="CT_1">
 					</span>
 					<span>
 						<label class="labels__">Tue</label>
-						<input id="CT_2" type="checkbox" name="employee_no">
+						<input id="CT_2" type="checkbox" name="CT_2">
 					</span>
 					<span>
 						<label class="labels__">Wed</label>
-						<input id="CT_3" type="checkbox" name="employee_no">
+						<input id="CT_3" type="checkbox" name="CT_3">
 					</span>
 					<span>
 						<label class="labels__">Thu</label>
-						<input id="CT_4" type="checkbox" name="employee_no">
+						<input id="CT_4" type="checkbox" name="CT_4">
 					</span>
 					<span>
 						<label class="labels__">Fri</label>
-						<input id="CT_5" type="checkbox" name="employee_no">
+						<input id="CT_5" type="checkbox" name="CT_5">
 					</span>
 				</span>
 			</span>
@@ -365,7 +365,7 @@
 
 
 	<div class="submit_addEmployee">
-		<button id="submit">
+		<button type="submit" id="subm">
 			<i>
 				<img src="<?php echo base_url('assets/images/icons/send.png'); ?>" style="max-height:1rem;margin-right:10px">
 			</i>Submit</button>
@@ -581,7 +581,7 @@ $(document).ready(function(){
 
 	function onFormSubmit(e){
 		e.preventDefault();
-		var falseOrTrue = false;
+		var falseOrTrue = true;
 			var employeeId = $('#employee_no').val();
 			var checkEnrolled = false;
 			var url = "<?php echo base_url('settings/checkUserid/'); ?>"+employeeId;
@@ -595,8 +595,7 @@ $(document).ready(function(){
 				      showNotification();
 				      addMessageToNotification('Employee Id Already Exists');
 				      setTimeout(closeNotification,5000)
-					}else{
-						falseOrTrue = true;
+				      falseOrTrue = false;
 					}
 				}
 			}).then(function(){
@@ -644,7 +643,7 @@ $(document).ready(function(){
 		      showNotification();
 		      addMessageToNotification('Enter Employee Number');
 		      setTimeout(closeNotification,5000)
-					falseOrTrue = true;
+					falseOrTrue = false;
 				}
 				if( $('#area').val() == null || $('#area').val() == "" ){
 					$('#area').css({"border-color": "red", 
@@ -691,6 +690,16 @@ $(document).ready(function(){
 				      falseOrTrue = false;
 			      }
 				}
+				if( $('#totalHours').val() == null || $('#totalHours').val() <= 1 ){
+					$('#level').css({"border-color": "red", 
+		             "border-width":"1px", 
+		             "border-style":"solid"})
+		      showNotification();
+		      addMessageToNotification('Enter total hours');
+		      setTimeout(closeNotification,5000)
+					falseOrTrue = false;
+				}
+
 				if(falseOrTrue == true){
 					console.log(falseOrTrue)
 					document.getElementById("myForm").submit();
@@ -714,11 +723,25 @@ $(document).ready(function(){
 		}
 	}
 
+	function employmentHours(){
+		if($('#employement_type').val() == 'CT'){
+			$('#totalHours').val("22");
+		}
+		if($('#employement_type').val() == 'FT'){
+			$('#totalHours').val("38");
+		}
+		if($('#employement_type').val() == 'PT'){
+			$('#totalHours').val("38");
+		}
+	}
+
 	$(document).ready(function(){
 		casualTime();
+		employmentHours();
 	})
 		$('#employement_type').on('change',function(){
 			casualTime();
+			employmentHours();
 		})
 
 	$(document).ready(function(){

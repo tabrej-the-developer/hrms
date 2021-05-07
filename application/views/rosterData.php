@@ -1058,6 +1058,32 @@ td{
     flex-direction: column;
 
 }
+
+   .modal-notice {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        visibility: hidden;
+        transform: scale(1.1);
+        transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+        text-align: center;
+    }
+    .modal-content-notice {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 1rem 1.5rem;
+        width: 50%;
+        border-radius: 0.5rem;
+    }
+
+
 /*  ------------------------------
 			CHANGE ROLE PRIORITY	MODAL
 		------------------------------ */
@@ -1280,6 +1306,7 @@ td{
 			display: none;
 		}
 }
+
 @media only screen and (max-width: 1050px) {
 
 			.header-top{
@@ -1648,7 +1675,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
            <?php if($totalHours/60 < $rosterDetails->roster[$x]->roles[$counter]->maxHoursPerWeek){ ?>
           <div style="font-size:0.75rem;color:#228659"><?php echo sprintf("%.2f",($totalHours/60))."/".(isset($rosterDetails->roster[$x]->roles[$counter]->maxHoursPerWeek) ? $rosterDetails->roster[$x]->roles[$counter]->maxHoursPerWeek : 0) ?> hours</div>   
           <?php }else{ ?>
-          <div style="font-size:0.75rem;color:#cf6f57"><?php echo sprintf("%.2f",($totalHours/60))."/".(isset($rosterDetails->roster[$x]->roles[$counter]->maxHoursPerWeek) ? $rosterDetails->roster[$x]->roles[$counter]->maxHoursPerWeek : 0) ?> hours</div> 
+          <div class="orangeNoticeClass" style="font-size:0.75rem;color:#cf6f57"><?php echo sprintf("%.2f",($totalHours/60))."/".(isset($rosterDetails->roster[$x]->roles[$counter]->maxHoursPerWeek) ? $rosterDetails->roster[$x]->roles[$counter]->maxHoursPerWeek : 0) ?> hours</div> 
          <?php } ?>  
            </td>
 
@@ -2282,6 +2309,28 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 			CHANGE ROLE PRIORITY	MODAL
 		------------------------------ */ -->
 
+<!-- /*  ------------------------------
+      NOTICE MODAL
+    ------------------------------ */ -->
+
+<div class="modal-notice">
+    <div class="modal-content-notice">
+      <div>
+          <h5>There are people with total hours more than max hours</h5>
+          <h5>Do you want to contine ?</h5>
+      </div>
+      <div>
+        <button class="notice-close buttonn">Close</button>
+        <button class="notice-submit buttonn">Submit</button>
+      </div>
+    </div>
+</div>
+
+<!-- /*  ------------------------------
+      NOTICE  MODAL
+    ------------------------------ */ -->
+
+
 <?php } ?>
 <script type="text/javascript">
   remove_loader_icon();
@@ -2306,7 +2355,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 	})
 	
 	$(document).on('click','.buttons',function(){
-		window.location.href = window.location.origin+"/PN101/roster/roster_dashboard"
+		window.location.href = "<?php echo base_url() ?>roster/roster_dashboard"
 	})
 
 	$(document).on('click','.shift-edit',function(){
@@ -2350,7 +2399,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
         if(status == "Deny"){
           status = "4";
         }
-      url = window.location.origin+"/PN101/roster/updateShift";
+      url = "<?php echo base_url() ?>roster/updateShift";
         loader_icon();
       $.ajax({
         url:url,
@@ -2393,7 +2442,17 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 					 modal.style.display = "none";
 					 $('#roster-form').trigger('reset');
 				})
+        
+        $(document).on('click','.notice-close',function(){
+          $('.modal-notice').css('visibility','hidden');
+          $('.modal-notice').css('opacity',0)
+        })  
 
+        $(document).on('click','.notice-submit',function(){
+          $('#publish-roster').click();
+          $('.modal-notice').css('visibility','hidden');
+          $('.modal-notice').css('opacity',0)
+        })  
 
 <?php }?>
 	// function uiFunction(){
@@ -2448,7 +2507,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
       }
 			let bool = confirm("confirm delete shift?");
       if(bool == true){
-              var url = window.location.origin+"/PN101/roster/deleteShift/"+shiftId;
+              var url = "<?php echo base_url() ?>roster/deleteShift/"+shiftId;
               loader_icon()
               $.ajax({
               url : url,
@@ -2558,7 +2617,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 			let role = $(this).attr('name2');
 			var areaId = $(this).attr('area-id');
 			$('#areaId').val(areaId);
-			var url = window.location.origin+'/PN101/roster/getShiftDetails/'+shiftid+'/'+role
+			var url = '<?php echo base_url() ?>roster/getShiftDetails/'+shiftid+'/'+role
 				$.ajax({
 					url: url,
 					type: 'GET',
@@ -2567,7 +2626,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 		// var userid = $('#user-id-select').text();
 		var response = JSON.parse(response);
 		var data = "";
-		var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
+		var url = "<?php echo base_url() ?>settings/getOrgCharts/"+centerid;
 		$.ajax({
 			method:'GET',
 			url:url,
@@ -2638,7 +2697,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 						var areaid = $(this).attr('area-id');
 					}
 
-			url = window.location.origin+"/PN101/roster/updateShift";
+			url = "<?php echo base_url() ?>roster/updateShift";
 			console.log(startTime + " "+ endTime +" "+ shiftid+" "+roleid+" "+status +" "+userid+" "+areaid+ "" + message)
       loader_icon();
 			$.ajax({
@@ -2669,7 +2728,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 
 	$(document).ready(function(){
 		$(document).on('click','.roster__',function(){
-			var url = window.location.origin+"/PN101/roster/updateRoster";
+			var url = "<?php echo base_url() ?>roster/updateRoster";
 			var rosterid = "<?php echo $rosterid; ?>";
 			var userid = "<?php echo $userid; ?>";
 			if($(this).prop('id') == "discard-roster"){
@@ -2682,7 +2741,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 						status: 'Discarded'
 					},
 					success:function(response){
-						window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";
+						window.location.href= "<?php echo base_url() ?>roster/roster_dashboard";
 					}
 
 				}).fail(function(){
@@ -2701,26 +2760,32 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 				}).fail(function(){
         window.location.reload();
       })
-        window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";
+        window.location.href= "<?php echo base_url() ?>roster/roster_dashboard";
 			}
 			if($(this).prop('id') == "publish-roster"){
-        loader_icon();
-				$.ajax({
-					url:url,
-					type:'POST',
-          async:true,
-					data:{
-						userid: userid,
-						rosterid: rosterid,
-						status: 'Published'
-					}
-				})
-        window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";
+        if(($('.modal-notice').css('visibility') == 'hidden') && ($('.orangeNoticeClass').length > 0)){
+          $('.modal-notice').css('visibility','visible');
+          $('.modal-notice').css('opacity',1)
+        }
+        else{
+          loader_icon();
+          $.ajax({
+            url:url,
+            type:'POST',
+            async:true,
+            data:{
+              userid: userid,
+              rosterid: rosterid,
+              status: 'Published'
+            }
+          })
+          window.location.href= "<?php echo base_url() ?>roster/roster_dashboard";
+        }
 			}
 		})
 	})
 
-<?php }?>
+<?php } ?>
 
 
     $('.containers').css('paddingLeft',$('.side-nav').width());
@@ -2790,7 +2855,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 	$(document).ready(function(){
 		var centerid = $('#center-id').attr('c_id');
 		// var userid = $('#user-id-select').text();
-		var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
+		var url = "<?php echo base_url() ?>settings/getOrgCharts/"+centerid;
 		$.ajax({
 			method:'GET',
 			url:url,
@@ -2812,7 +2877,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 		 var centerid = $('#center-id').attr('c_id');
 		// var userid = $('#user-id-select').text();
 		var areaId = $(this).val();
-		var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
+		var url = "<?php echo base_url() ?>settings/getOrgCharts/"+centerid;
 		$.ajax({
 			method:'GET',
 			url:url,
@@ -2888,7 +2953,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 				priority = j;
 				console.log( areaid);
 		  $.ajax({
-		  		url: window.location.origin+'/PN101/roster/changePriority',
+		  		url: '<?php echo base_url() ?>roster/changePriority',
 		  		data: {
 		  			areaid : areaid,
 		  			priority : priority
@@ -2956,7 +3021,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 				var add_role_id = $('#add_role_id').val();
 				// console.log(date+ "---"+roster_id+ "---"+emp_id+ "---"+add_start_time+ "---"+add_end_time+ "---"+add_role_id+)
 				console.log(dates)
-				var url = window.location.origin+"/PN101/roster/addNewshift";
+				var url = "<?php echo base_url() ?>roster/addNewshift";
         loader_icon();
 				$.ajax({
 					url:url,
@@ -3010,7 +3075,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 	$(document).ready(function(){
 		var centerid = $('#center-id').attr('c_id');
 		// var userid = $('#user-id-select').text();
-		var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
+		var url = "<?php echo base_url() ?>settings/getOrgCharts/"+centerid;
 		$.ajax({
 			method:'GET',
 			url:url,
@@ -3032,7 +3097,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 		 var centerid = $('#center-id').attr('c_id');
 		// var userid = $('#user-id-select').text();
 		var areaId = $(this).val();
-		var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
+		var url = "<?php echo base_url() ?>settings/getOrgCharts/"+centerid;
 		$.ajax({
 			method:'GET',
 			url:url,
@@ -3080,7 +3145,7 @@ $('.modal_body').draggable();
 	$(document).ready(function(){
 		var centerid = $('#center-id').attr('c_id');
 		// var userid = $('#user-id-select').text();
-		var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
+		var url = "<?php echo base_url() ?>settings/getOrgCharts/"+centerid;
 		$.ajax({
 			method:'GET',
 			url:url,
@@ -3102,7 +3167,7 @@ $('.modal_body').draggable();
 		 var centerid = $('#center-id').attr('c_id');
 		// var userid = $('#user-id-select').text();
 		var areaId = $(this).val();
-		var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
+		var url = "<?php echo base_url() ?>settings/getOrgCharts/"+centerid;
 		$.ajax({
 			method:'GET',
 			url:url,
@@ -3136,7 +3201,7 @@ $('.modal_body').draggable();
 		var casualEmp_role_id = $('#casualEmp_role_id').val();
 		console.log(date+ "---"+roster_id+ "---"+emp_id+ "---"+casualEmp_start_time+ "---"+casualEmp_end_time+ "---"+casualEmp_role_id)
 		if(date != null && date != "" && roster_id != null && roster_id != "" && emp_id != null && emp_id != "" && casualEmp_start_time != null && casualEmp_start_time != "" && casualEmp_end_time != null && casualEmp_end_time != "" && casualEmp_role_id != null && casualEmp_role_id != ""){
-		var url = window.location.origin+"/PN101/roster/addCasualEmployee";
+		var url = "<?php echo base_url() ?>roster/addCasualEmployee";
 		$.ajax({
 			url:url,
 			method:'POST',
@@ -3263,7 +3328,7 @@ $('.modal_body').draggable();
 			let employeeId = $('#employeeValue').val();
 			let editRoster = ($('#edit_roster').is(':checked') == true) ? 'Y' : 'N' ;
 			let rosterId = "<?php echo $rosterid; ?>";
-			let url = window.location.origin+'/PN101/roster/saveRosterPermissions';
+			let url = '<?php echo base_url() ?>roster/saveRosterPermissions';
 			$.ajax({
 				url : url,
 				method : 'POST',
@@ -3285,7 +3350,7 @@ $('.modal_body').draggable();
 	function getPermissions(){
 		let rosterId = "<?php echo $rosterid; ?>";
 		let employeeId = $('#employeeValue').val();
-		let url = window.location.origin+'/PN101/Roster/getRosterPermissions/'+employeeId+'/'+rosterId;
+		let url = '<?php echo base_url() ?>Roster/getRosterPermissions/'+employeeId+'/'+rosterId;
 	 	$.ajax({
 	 		url : url,
 	 		method : 'GET',
@@ -3332,7 +3397,7 @@ $('.modal_body').draggable();
 			$('.changeRolePriority_mask').addClass("active");
 			var areaId = $(this).attr('area_id');
 			var centerid = $('#center-id').attr('c_id');
-			let url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
+			let url = "<?php echo base_url() ?>settings/getOrgCharts/"+centerid;
 			$.ajax({
 				url : url,
 				method : 'GET',
@@ -3360,7 +3425,7 @@ $('.modal_body').draggable();
 			$(".changeRolePriority_body").disableSelection();
 
 		$(document).on('click','.changeRolePriority_save',function(){
-			var url = window.location.origin+"/PN101/settings/changeRolePriority"
+			var url = "<?php echo base_url() ?>settings/changeRolePriority"
 			var order = [];
 			var obj = {};
 			for(let i=0;i<($('.change_role_priority').length);i++){

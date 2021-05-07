@@ -58,13 +58,19 @@ class RostersModel extends CI_Model {
 
 	public function getAllEmployees($roleid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM users LEFT JOIN employee on employee.userid = users.id WHERE roleid=$roleid");
+		$query = $this->db->query("SELECT users.*,employee.*,employeerecord.employmentType FROM users LEFT JOIN employee on employee.userid = users.id LEFT JOIN employeerecord on employeerecord.employeeNo = users.id WHERE roleid=$roleid");
 		return $query->result();
 	}
 
 	public function getRosterFromDate($startDate,$centerid){
 		$this->load->database();
 		$query = $this->db->query("SELECT * FROM rosters WHERE startDate = '$startDate' and centerid = '$centerid'");
+		return $query->row();
+	}
+
+	public function getMaxHours($userid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM employee where userid = '$userid' ");
 		return $query->row();
 	}
 

@@ -270,7 +270,7 @@ font-family: 'Open Sans', sans-serif;
         width: 50%;
         border-radius: 0.5rem;
     }
-    .show-modal {
+   .show-modal {
         opacity: 1;
         visibility: visible;
         transform: scale(1.0);
@@ -732,6 +732,8 @@ table.dataTable{
         
     </div>
 </div>
+
+
 <div class="loading">
 	<div class="loader"></div>
 </div>
@@ -944,7 +946,7 @@ $('#roster-template-submit').prop('disabled','disabled');
 
 $(document).ready(function(){
 	$(document).on('click','.roster_template_style',function(){
-			var url = window.location.origin+"/PN101/roster/updateRosterTemplate";
+			var url = window.location.origin+"/HRMS101/roster/updateRosterTemplate";
 			var rosterTemplateId = $(this).attr('id');
 			var userid = "<?php echo $this->session->userdata('LoginId'); ?>";
 				$.ajax({
@@ -956,7 +958,7 @@ $(document).ready(function(){
 						status: 'Discarded'
 					},
 					success:function(response){
-						window.location.href= window.location.origin+"/PN101/roster/roster_dashboard";
+						window.location.href= window.location.origin+"/HRMS101/roster/roster_dashboard";
 					}
 
 				})
@@ -972,7 +974,7 @@ $(document).ready(function(){
 	$(document).ready(function(){
 		$(document).on('click','.center-class',function(){
 			var id = $(this).prop('id');
-		var url = "http://localhost/PN101/roster/roster_dashboard/"+id;
+		var url = "http://localhost/HRMS101/roster/roster_dashboard/"+id;
 		$.ajax({
 			url:url,
 			type:'GET',

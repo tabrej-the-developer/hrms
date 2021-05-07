@@ -16,11 +16,6 @@ class AuthModel extends CI_Model {
 		return $query->row();
 	}
 
-	public function getMaxHours($userid){
-		$this->load->database();
-		$query = $this->db->query("SELECT * FROM employee where userid = '$userid' ");
-		return $query->row();
-	}
 
 	public function getSuperAdminId($userid){
 		$this->load->database();

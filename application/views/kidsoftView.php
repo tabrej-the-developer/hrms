@@ -227,7 +227,7 @@
                   foreach($kidsoft as $details){ ?>
                 <tr>
                   <td><?php echo $details->centerName ?></td>
-                  <td class="kidsoftKey"><?php echo isset($details->kidsoftkey) ? $details->kidsoftkey : "- -" ?></td>
+                  <td class="kidsoftKey" cent-val="<?php echo isset($details->center) ? $details->center : "" ?>"><?php echo isset($details->kidsoftkey) ? $details->kidsoftkey : "- -" ?></td>
                   <td><?php echo $details->createdate ?></td>
                   <td class="action">
                     <?php if(!isset($details->createdate)){ ?>
@@ -241,7 +241,7 @@
                       <span class="editKey" >
                         <img height="15" weight="15" src="<?php echo base_url('assets/images/icons/pencil.png') ?>">
                       </span>
-                      <span class="deleteKey">
+                      <span updateVal="del" class="deleteKey">
                         <img height="15" weight="15" src="<?php echo base_url('assets/images/icons/del.png') ?>">
                       </span>
                     </div>
@@ -270,8 +270,8 @@
     $(document).on('click','.addKey',function(){
       let code = `<input class="kidsoftKeyValue">`;
       let buttonscode = `<div>
-                    <span class="yesClass">
-                      <img height="22" width="22" src="<?php echo base_url('assets/images/icons/tick.png') ?>">
+                    <span updateVal="add" class="yesClass">
+                      <img updateVal="add" height="22" width="22" src="<?php echo base_url('assets/images/icons/tick.png') ?>">
                     </span>
                     <span class="noClass">
                       <img height="20" width="20" src="<?php echo base_url('assets/images/icons/x.png') ?>">
@@ -292,7 +292,7 @@
 
     $(document).on('click','.editKey',function(){
       let buttonscode = `<div>
-                    <span class="yesClass">
+                    <span updateVal="upd" class="yesClass">
                       <img height="22" width="22" src="<?php echo base_url('assets/images/icons/tick.png') ?>">
                     </span>
                     <span class="noClassFilled">
@@ -302,12 +302,39 @@
       let key = $(this).parent().parent().parent().children('.kidsoftKey').text();
       let code = `<input class="kidsoftKeyValue" value="${key}">`;
                 $(this).parent().parent().parent().children('.kidsoftKey').html(code);
-      $(this).parent().html(buttonscode);
+      $(this).parent().parent().html(buttonscode);
     })
 
     $(document).on('click','.noClassFilled',function(){
       window.location.reload();
     })
+
+    $(document).on('click','.deleteKey , .yesClass ',function(){
+      let url = "<?php echo base_url('settings/updateKidsoftKey'); ?>"
+      var key;
+      if($(this).attr('updateVal') == 'del'){
+        key = null;
+      }
+      else{
+        key = $('.kidsoftKeyValue').val();
+      }
+      let centerid = $(this).parent().parent().parent().children('.kidsoftKey').attr('cent-val');
+      let updateVal = $(this).attr('updateVal');
+      console.log(key + " " +centerid + " " +updateVal)
+      $.ajax({
+        url : url,
+        method : 'POST',
+        data : {
+          key : key,
+          centerid : centerid,
+          updateVal : updateVal
+        },
+        success : function(response){
+          window.location.reload();
+        }
+      })
+    })
+
 });
 </script>
 

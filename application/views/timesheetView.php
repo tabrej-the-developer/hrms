@@ -1432,7 +1432,7 @@ function jstimex( x)
 <script type="text/javascript">
 	$(document).on('click','.publish_timesheet',function(){
 		var timesheetId = "<?php echo $timesheetid; ?>";
-		var url = window.location.origin+'/PN101/timesheet/publishTimesheet/'+timesheetId;
+		var url = '<?php echo base_url('timesheet/publishTimesheet/') ?>'+timesheetId;
 		$.ajax({
 			url : url,
 			type: 'GET',
@@ -1445,7 +1445,7 @@ $(document).on('click','.buttonn',function(){
 		var i = $(".box-time").length;
 		var values = [];
 		var object = {};
-		var url = window.location.origin+"/PN101/timesheet/createPayroll";
+		var url = "<?php echo base_url("timesheet/createPayroll"); ?>";
 			if($('.same_as_roster').is(':checked')){
 				if($('.group-span').length > 1){
 					for(var i=0;i<$('.group-span').length;i++){
@@ -1742,12 +1742,12 @@ $(document).on('click','.buttonn',function(){
 
 			$(document).ready(function(){
 				$(document).on('click','#discard-timesheet',function(){
-					var url = window.location.origin+"/PN101/timesheet/discardTimesheet/<?php echo $_GET['timesheetId']; ?>";
+					var url = "<?php echo base_url('timesheet/discardTimesheet/').$_GET['timesheetId']; ?>";
 					$.ajax({
 						url : url,
 						type : 'GET',
 						success : function(){
-							window.location.href = window.location.origin+'/PN101/timesheet/timesheetDashboard'
+							window.location.href = "<?php echo base_url('timesheet/timesheetDashboard') ?>"
 						}
 					})
 				})
@@ -1985,7 +1985,7 @@ $(document).on('click','.buttonn',function(){
 				var userid = "<?php echo $this->session->userdata('LoginId'); ?>";
 				var startDate = new Date($('.weekTimesheetModalHeader').attr('date'));
 				var empId = $('.weekTimesheetModalHeader').attr('userid')
-				var url = window.location.origin+"/PN101/timesheet/createWeekPayroll";
+				var url = "<?php echo base_url('timesheet/createWeekPayroll') ?>";
 					$(`.display_flex_visits`).each(function(){
 						var obj = {};
 						var d = new Date();

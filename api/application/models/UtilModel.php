@@ -76,7 +76,7 @@ class UtilModel extends CI_Model {
 		}
 
 		public function getKidsoftDetails($center){
-			$query = $this->db->query("SELECT kidsoft.*,centers.name as centerName FROM kidsoft INNER JOIN centers on centers.centerid = kidsoft.center where center = $center ");
+			$query = $this->db->query("SELECT kidsoft.*,centers.name as centerName FROM centers LEFT JOIN kidsoft on centers.centerid = kidsoft.center where centers.centerid = $center ");
 			return $query->row();
 		}
 
