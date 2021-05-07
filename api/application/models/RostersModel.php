@@ -58,13 +58,19 @@ class RostersModel extends CI_Model {
 
 	public function getAllEmployees($roleid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM users LEFT JOIN employee on employee.userid = users.id WHERE roleid=$roleid");
+		$query = $this->db->query("SELECT users.*,employee.*,employeerecord.employmentType FROM users LEFT JOIN employee on employee.userid = users.id LEFT JOIN employeerecord on employeerecord.employeeNo = users.id WHERE roleid=$roleid");
 		return $query->result();
 	}
 
 	public function getRosterFromDate($startDate,$centerid){
 		$this->load->database();
 		$query = $this->db->query("SELECT * FROM rosters WHERE startDate = '$startDate' and centerid = '$centerid'");
+		return $query->row();
+	}
+
+	public function getMaxHours($userid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM employee where userid = '$userid' ");
 		return $query->row();
 	}
 
@@ -325,6 +331,26 @@ class RostersModel extends CI_Model {
 	public function getTemplateShiftAndRoleDetails($shiftId,$role){
 		$this->load->database();
 		$query = $this->db->query("SELECT * from templateshift INNER JOIN orgchartroles on orgchartroles.roleid = templateshift.roleid where templateshift.id='$shiftId'");
+		return $query->row();
+	}
+	public function addToKidsoftCenterAreas($centerid,$areaName,$date,$totalBookings){
+		$this->load->database();
+		$query = $this->db->query("INSERT INTO kidsoftcenterareas (center,area,date,childcount) VALUES ($centerid,'$areaName','$date',$totalBookings) ");
+	}
+	public function getOccupancy($date,$areaName){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM kidsoftcenterareas where date = '$date' and area = '$areaName'");
+		return $query->row();
+	}
+	public function getServiceKey($centerid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM kidsoft where center = $centerid");
+		return $query->row();
+	}
+
+	public function checkOccupancyForPeriod($date,$centerid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM kidsoftcenterareas where date = '$date' and center = $centerid");
 		return $query->row();
 	}
 

@@ -881,59 +881,72 @@ color:#FFFFFF;
       <div id="calendar" class="col-md-9"></div>
       <div class="col-md-3 upcoming_events">
         <div class="upcoming_events_title text-center">Upcoming Events</div>
-        <div> <?php 
-        $array = [];
-        if(isset($calendarAnniversaries) || isset($calendarBirthdays)){
-        $date = date('Y-m-d');
-        $monthAndDate = date('m-d'); 
-        $calendarBirthdays = isset($calendar) ? 
-                             ( isset(json_decode($calendar)->birthdays) ?
-                                     json_decode($calendar)->birthdays : "") : "";
-
-        $calendarAnniversaries = isset($calendar) ?
-                            (isset(json_decode($calendar)->anniversary) ? 
-                                      json_decode($calendar)->anniversary : "") : "" ; 
-
-          if((count($calendarAnniversaries) != 0) || (count($calendarBirthdays) != 0 )){
-            if((count($calendarAnniversaries) != 0) && (count($calendarBirthdays) != 0 )){
-                $array = array_merge($calendarBirthdays[0]->birthday,$calendarAnniversaries[0]->anniversary);
-                    }
-          if((count($calendarAnniversaries) != 0) && (count($calendarBirthdays) == 0 )){
-                $array = $calendarAnniversaries[0]->anniversary;
-                    }
-          if((count($calendarAnniversaries) == 0) && (count($calendarBirthdays) != 0 )){
-                $array = $calendarBirthdays[0]->birthday;
-                    } 
-
-          }
+        <div class="upcomingEvents_birthday">
+          <div>Birthdays</div>
+          <?php 
+          $calendarBirthdays = isset($calendar) ? 
+                               ( isset(json_decode($calendar)->birthdays) ?
+                                       json_decode($calendar)->birthdays : "") : "";
+          if(isset($calendarBirthdays)){
               
 
-                    ?>
-                    <?php if(count($array) > 0){ ?>
-              <div >
-              <?php  foreach($array as $arr){ ?>
-                    <?php if(date('m') == date('m',strtotime($arr->dateOfBirth))){
-                      $eventType = 'Birthday';
-                      $eventDate = date('M,d',strtotime($arr->dateOfBirth));
-                    }if(date('m') == date('m',strtotime($arr->startDate))){
-                      $eventType = 'Anniversary';
-                      $eventDate = date('M,d',strtotime($arr->startDate));
-                    }
-                    if((date('m') == date('m',strtotime($arr->startDate))) && (date('m') == date('m',strtotime($arr->dateOfBirth)))){
-                        $eventType = 'Anniversary & Birthday';
-                    }
-                     ?>
-                <span class="col-12 event_date" style="font-size:1rem;padding-top:0.5rem;padding-bottom:0.5rem"><?php echo $eventDate; ?></span>
-                <div class="d-flex event_box" style="font-size:0.75rem;font-weight:700;padding-top:0.5rem;padding-bottom:0.5rem">
-                  <span class="col-4 event_title"><?php echo $eventType; ?></span>
-                  <span class="col-8 event_details">
-                    <?php echo $arr->fname.'  '.$arr->lname ?>
-                  </span>
-                </div>
-              <?php } ?>
-              </div>        
-        <?php } }
-        ?></div>
+                      ?>
+                      <?php // if(count($array) > 0){ ?>
+                <div style="height: 10%;overflow-y: auto;">
+                <?php  foreach($calendarBirthdays as $ars){ 
+                        foreach($ars->birthday as $ar){
+                  ?>
+                      <?php if(date('m') == date('m',strtotime($ar->dateOfBirth))){
+                        $eventType = 'Birthday';
+                        $eventDate = date('M,d',strtotime($ar->dateOfBirth));
+                      }
+                       ?>
+                  <span class="col-12 event_date" style="font-size:1rem;padding-top:0.5rem;padding-bottom:0.5rem"><?php echo $eventDate; ?></span>
+                  <div class="d-flex event_box" style="font-size:0.75rem;font-weight:700;padding-top:0.5rem;padding-bottom:0.5rem">
+                    <span class="col-4 event_title"><?php echo $eventType; ?></span>
+                    <span class="col-8 event_details">
+                      <?php echo $ar->fname.'  '.$ar->lname ?>
+                    </span>
+                  </div>
+                <?php } } ?>
+                </div>        
+          <?php // } 
+              }
+          ?>
+        </div>
+        <div class="upcomingEvents_anniversary">
+          <div>Anniversaries</div>
+          <?php 
+          $calendarAnniversaries = isset($calendar) ?
+                              (isset(json_decode($calendar)->anniversary) ? 
+                                        json_decode($calendar)->anniversary : "") : "" ; 
+          if(isset($calendarAnniversaries)){
+              
+
+                      ?>
+                      <?php // if(count($array) > 0){ ?>
+                <div style="height: 10%;overflow-y: auto;">
+                <?php  foreach($calendarAnniversaries as $ars){ 
+                        foreach($ars->anniversary as $ar){
+                  ?>
+                      <?php if(date('m') == date('m',strtotime($ar->startDate))){
+                        $eventType = 'Anniversary';
+                        $eventDate = date('M,d',strtotime($ar->startDate));
+                      }
+                       ?>
+                  <span class="col-12 event_date" style="font-size:1rem;padding-top:0.5rem;padding-bottom:0.5rem"><?php echo $eventDate; ?></span>
+                  <div class="d-flex event_box" style="font-size:0.75rem;font-weight:700;padding-top:0.5rem;padding-bottom:0.5rem">
+                    <span class="col-4 event_title"><?php echo $eventType; ?></span>
+                    <span class="col-8 event_details">
+                      <?php echo $ar->fname.'  '.$ar->lname ?>
+                    </span>
+                  </div>
+                <?php } } ?>
+                </div>        
+          <?php // } 
+              }
+          ?>
+        </div>
       </div>
 
     </div>

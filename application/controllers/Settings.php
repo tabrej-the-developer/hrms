@@ -1496,6 +1496,13 @@ $server_output = curl_exec($ch);
 			$data['profileImage'] = "";
 		}		
 		$data['employement_type'] = isset($_POST['employement_type']) ? $_POST['employement_type']: "";
+		$data['totalHours'] = isset($_POST['totalHours']) ? $_POST['totalHours'] : 1;
+		$daysArr["CT__1"] =	isset($_POST['CT_1']) ? 1 : 0; 
+		$daysArr["CT__2"] =	isset($_POST['CT_2']) ? 1 : 0; 
+		$daysArr["CT__3"] =	isset($_POST['CT_3']) ? 1 : 0;
+		$daysArr["CT__4"] =	isset($_POST['CT_4']) ? 1 : 0;
+		$daysArr["CT__5"] =	isset($_POST['CT_5']) ? 1 : 0;
+		$data['daysArr'] = $daysArr["CT__1"].$daysArr["CT__2"].$daysArr["CT__3"].$daysArr["CT__4"].$daysArr["CT__5"];
 		$data['highest_qual_held'] = isset($_POST['highest_qual_held']) ? $_POST['highest_qual_held']: "";
 		$data['highest_qual_date_obtained'] = isset($_POST['highest_qual_date_obtained']) ? $_POST['highest_qual_date_obtained']: "";
 		$data['highest_qual_cert'] = isset($_POST['highest_qual_cert']) ? $_POST['highest_qual_cert']: "";
@@ -1528,6 +1535,8 @@ $server_output = curl_exec($ch);
 	$data['dietaryPreferences'] = isset($_POST['dietaryPreferences']) ? $_POST['dietaryPreferences']: "";
 			$data['userid'] = $this->session->userdata('LoginId');
 		}
+		print_r(json_encode($data));
+		die();
 			$url = BASE_API_URL."settings/createEmployeeProfile";
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
@@ -1650,6 +1659,41 @@ $server_output = curl_exec($ch);
 	}
 	// footprint end
 		
+	}
+
+	public function updateKidsoftKey(){
+		$input = $this->input->post();
+		if($input != null){
+	//footprint start
+	if($this->session->has_userdata('current_url')){
+		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+		$this->session->set_userdata('current_url',currentUrl());
+	}
+	// footprint end
+			$data['userid'] = $this->session->userdata('LoginId');
+			$data['key'] = $input['key'];
+			$data['centerid'] = $input['centerid'];
+			$data['updateVal'] = $input['updateVal'];
+			$url = BASE_API_URL."settings/updateKidsoftKey";
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'x-device-id: '.$this->session->userdata('x-device-id'),
+					'x-token: '.$this->session->userdata('AuthToken')
+				));
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				echo $server_output;
+				curl_close ($ch);
+			}
+			else if($httpcode == 401){
+
+			}
+		}		
 	}
 
 	public function savePermission(){
@@ -1904,7 +1948,42 @@ $server_output = curl_exec($ch);
 	}
 
 
+	public function kidsoftSettings(){
+		if($this->session->has_userdata('LoginId')){
+			//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+				$this->session->set_userdata('current_url',currentUrl());
+			}
+			// footprint end
+			$data['permissions'] = $this->fetchPermissions();
+			$data['kidsoft'] = $this->kidsoftDetails();
+			$this->load->view('kidsoftView',$data);
+		}
+		else{
+			$this->load->view('redirectToLogin');
+		}
+	}
 
+	function kidsoftDetails(){
+		$url = BASE_API_URL."util/GetKidsoftDetails/".$this->session->userdata('LoginId');
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			return $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+
+		}	
+	}
 
 			// Award settings end
 

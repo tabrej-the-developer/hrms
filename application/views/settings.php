@@ -301,6 +301,18 @@ a[href*="settings"],.xero_settings a{
 				</div>
 			</div>
 		<?php } ?>
+			<?php if(isset($permissions->permissions) && $permissions->permissions->kidsoftYN == "Y"){ ?>
+			<div class="tile-box d-md-flex col-3">
+				<div class="col-5">
+					<a href="<?php echo base_url('settings/kidsoftSettings')?>">
+						<img src="<?php echo site_url('assets/images/settings-icons/leave-settings.png'); ?>">
+					</a>
+				</div>
+				<div class="col-6">
+					<a href="<?php echo base_url()?>settings/kidsoftSettings">Kidsoft settings</a>
+				</div>
+			</div>
+		<?php } ?>
 			<div class="tile-box d-md-flex col-3">
 				<div class="col-5">
 					<a href="<?php echo base_url('settings/activityLog')?>">

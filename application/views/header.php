@@ -338,15 +338,15 @@ i.mr-4{
   position: relative;
 }
 .select_css::after{
-  content: ' ';
-  position: absolute;
-  background: url(<?php echo base_url('assets/images/icons/down.png') ?>);
-  background-repeat: no-repeat;
-  padding: 15px;
-      margin-left: -28px;
-    margin-top: 15px;
+    content: ' ';
+    position: absolute;
+    background: url(http://localhost/PN101/assets/images/icons/down.png);
+    background-repeat: no-repeat;
+    padding: 15px;
+    right: 0;
+    top: 40%;
     background-size: 0.6rem 0.6rem;
-    pointer-events: none !important
+    pointer-events: none !important;
 }
 .no_drop_icon.select_css::after{
   background: none !important;

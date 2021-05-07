@@ -585,6 +585,30 @@ class Settings extends CI_Controller
 		}
 	}
 
+	public function updateKidsoftKey(){
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			$this->load->model('authModel');
+			$json = json_decode(file_get_contents('php://input'));
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+			if ($res != null && $res->userid == $json->userid) {
+				$key = isset($json->key) ? $json->key : null;
+				$centerid = isset($json->centerid) ? $json->centerid : null;
+				$updateVal = isset($json->updateVal) ? $json->updateVal : null;
+				$this->load->model('settingsModel');
+				$this->settingsModel->updateKidsoft($key,$centerid,$updateVal);
+				$data['Status'] = "SUCCESS";
+				http_response_code(200);
+				echo json_encode($data);
+			} else {
+				http_response_code(401);
+			}
+		} else {
+			http_response_code(401);
+		}
+	}
+
 	public function getEmployeesForRoles($roleid, $userid)
 	{
 		$headers = $this->input->request_headers();
@@ -943,6 +967,8 @@ class Settings extends CI_Controller
 					$profileImageName = $employee_no . '.png';
 					$target_dir = 'application/assets/profileImages/';
 					$fileNameLoc = $target_dir . $profileImageName;
+					$totalHours = $json->totalHours;
+					$daysArr = $json->daysArr;
 					// var_dump((base64_decode($profileImage)));
 					if ($profileImage != null && $profileImage != "") {
 						file_put_contents($target_dir . $profileImageName, (base64_decode($profileImage)));
@@ -971,7 +997,6 @@ class Settings extends CI_Controller
 					// Users	
 					$name = $fname . " " . $mname . " " . $lname;
 					$password = strtolower($fname) . "@123";
-					var_dump($json);
 					if ($employee_no != null && $employee_no != "") {
 						if ($emails != "" && $emails != null) {
 
@@ -1090,7 +1115,7 @@ class Settings extends CI_Controller
 
 						// Employee Table
 						if ($employee_no != null && $employee_no != "") {
-							$this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId, $title, $fname, $mname, $lname, $emails, $dateOfBirth, $jobTitle, $gender, $homeAddLine1, $homeAddLine2, $homeAddCity, $homeAddRegion, $homeAddPostal, $homeAddCountry, $phone, $mobile, $startDate, $terminationDate, $ordinaryEarningRateId, $payroll_calendar, $userid, $classification, $emergency_contact, $relationship, $emergency_contact_email);
+							$this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId, $title, $fname, $mname, $lname, $emails, $dateOfBirth, $gender, $homeAddLine1, $homeAddLine2, $homeAddCity, $homeAddRegion, $homeAddPostal, $homeAddCountry, $phone, $mobile, $startDate, $terminationDate, $ordinaryEarningRateId, $payroll_calendar, $userid, $classification, $emergency_contact, $relationship, $emergency_contact_email,$totalHours,$daysArr);
 						}
 						$data['status'] = 'SUCCESS';
 						http_response_code(200);

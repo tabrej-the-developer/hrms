@@ -162,6 +162,44 @@ class Util extends CI_Controller
 		}
 	}
 
+	public function GetKidsoftDetails($userid){
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+			if ($res != null && $res->userid == $userid) {
+				$this->load->model('utilModel');
+				$centerIds = ($this->utilModel->getAllCenters($userid));
+				$centers = [];
+				foreach ($centerIds as $centerid) {
+					if ($centerid != null && $centerid != "") {
+						if ($this->utilModel->getCenterById($centerid->centerid) != null)
+							array_push($centers, $this->utilModel->getCenterById($centerid->centerid));
+					}
+				}
+				$data = [];
+				foreach($centers as $center){
+					$object = (object)[];
+					$object = $this->utilModel->getKidsoftDetails($center->centerid);
+					if($this->utilModel->getKidsoftCenterAreas($center->centerid) != null)
+						$object->rooms = $this->utilModel->getKidsoftCenterAreas($center->centerid);
+					else{
+						$object->centerName = $center->name;
+						$object->center = $center->centerid;
+					}
+					$data[] = $object;
+				}
+				http_response_code(200);
+				echo json_encode($data);
+			} else {
+				http_response_code(401);
+			}
+		} else {
+			http_response_code(401);
+		}
+	}
+
 	public function centerTableMigration($userid)
 	{
 		// $headers = $this->input->request_headers();

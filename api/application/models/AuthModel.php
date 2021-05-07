@@ -16,12 +16,6 @@ class AuthModel extends CI_Model {
 		return $query->row();
 	}
 
-	public function getMaxHours($userid){
-		$this->load->database();
-		$query = $this->db->query("SELECT * FROM employee where userid = '$userid' ");
-		return $query->row();
-	}
-
 	public function getSuperAdminId($userid){
 		$this->load->database();
 		$query = $this->db->query("SELECT u1.id as id,email,password,name,imageUrl,role,title,manager,created_at,created_by,roleid,level,bonusRate,alias FROM `users` u1 INNER JOIN usercenters u2 on u2.userid = u1.id where  u2.centerid IN (SELECT centerid from usercenters where userid = '$userid') and role = 1 ");
