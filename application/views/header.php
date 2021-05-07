@@ -10,7 +10,7 @@ $url_page .= $_SERVER['REQUEST_URI'];
 $url_page_array = explode("/",$url_page);
 $selected = "";
 $nth_child = 0;
-  switch(strtolower($url_page_array[array_search("PN101",$url_page_array) + 1])){
+  switch(strtolower($url_page_array[array_search("HRMS101",$url_page_array) + 1])){
     case strtolower("Dashboard"):
       $selected = "dashboard";
       $nth_child = 1;
@@ -211,7 +211,7 @@ select::after{
     background:#171d4b; !important;
   padding: 0 0 0 20px;
 }
-<?php if($nth_child != 0 || $nth_child != null){ ?>
+<?php if(!isset($nth_child_div) && $nth_child != null){ ?>
 .nav-item-header:nth-of-type(<?php echo $nth_child ;?>){
   background:white !important;
   padding: 0 0 0 20px;

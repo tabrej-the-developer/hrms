@@ -518,6 +518,8 @@ class Rosters extends MY_Controller
 								$rav['empTitle'] = $empDetails->title;
 								$rav['empRole'] = $empDetails->roleid;
 								$rav['level'] = $empDetails->level;
+								$empMaxHours = $this->authModel->getMaxHours($employeeid->userid);
+								$rav['maxHoursPerWeek'] = isset($empMaxHours->maxhours) ? $empMaxHours->maxhours : NULL;
 								//$rav['maxHoursPerWeek'] = $empDetails->maxHoursPerWeek;
 								$rav['shifts'] = [];
 								$allShifts = $this->rostersModel->getAllShiftsFromEmployee($rosterid, $employeeid->userid, $area->areaid);
