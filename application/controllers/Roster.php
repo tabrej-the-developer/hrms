@@ -285,7 +285,7 @@ public function getRosterTemplateDetails($rosterTemplateId){
 
 	 function getRoster($rosterid,$userid){
 		
-		$url = BASE_API_URL."/rosters/getRoster/".$rosterid."/".$userid;
+		$url = BASE_API_URL."rosters/getRoster/".$rosterid."/".$userid;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
