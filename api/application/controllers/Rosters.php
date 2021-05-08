@@ -386,7 +386,7 @@ class Rosters extends MY_Controller
 				curl_close ($ch);
 				if($httpcode == 200){
 					$server_output = json_decode($server_output);
-					if($server_output->Attendance != null){
+					if(isset($server_output->Attendance) && $server_output->Attendance != null){
 						$key = key($server_output->Attendance);
 						foreach($server_output->Attendance->{$key} as $areaOcc){
 							$this->rostersModel->addToKidsoftCenterAreas($centerid,strtolower($areaOcc->Room),$areaOcc->Date,$areaOcc->TotalBookings);
