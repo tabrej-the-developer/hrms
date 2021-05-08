@@ -2355,11 +2355,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 	})
 	
 	$(document).on('click','.buttons',function(){
-<<<<<<< HEAD
-		window.location.href = window.location.origin+"/HRMS101/roster/roster_dashboard"
-=======
 		window.location.href = "<?php echo base_url() ?>roster/roster_dashboard"
->>>>>>> 7ac92c89f37f7b79cfed03837cac59bdaa4d4c81
 	})
 
 	$(document).on('click','.shift-edit',function(){
@@ -2403,11 +2399,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
         if(status == "Deny"){
           status = "4";
         }
-<<<<<<< HEAD
-      url = window.location.origin+"/HRMS101/roster/updateShift";
-=======
       url = "<?php echo base_url() ?>roster/updateShift";
->>>>>>> 7ac92c89f37f7b79cfed03837cac59bdaa4d4c81
         loader_icon();
       $.ajax({
         url:url,
@@ -2515,11 +2507,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
       }
 			let bool = confirm("confirm delete shift?");
       if(bool == true){
-<<<<<<< HEAD
-              var url = window.location.origin+"/HRMS101/roster/deleteShift/"+shiftId;
-=======
               var url = "<?php echo base_url() ?>roster/deleteShift/"+shiftId;
->>>>>>> 7ac92c89f37f7b79cfed03837cac59bdaa4d4c81
               loader_icon()
               $.ajax({
               url : url,
@@ -2629,11 +2617,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 			let role = $(this).attr('name2');
 			var areaId = $(this).attr('area-id');
 			$('#areaId').val(areaId);
-<<<<<<< HEAD
-			var url = window.location.origin+'/HRMS101/roster/getShiftDetails/'+shiftid+'/'+role
-=======
 			var url = '<?php echo base_url() ?>roster/getShiftDetails/'+shiftid+'/'+role
->>>>>>> 7ac92c89f37f7b79cfed03837cac59bdaa4d4c81
 				$.ajax({
 					url: url,
 					type: 'GET',
@@ -2642,11 +2626,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 		// var userid = $('#user-id-select').text();
 		var response = JSON.parse(response);
 		var data = "";
-<<<<<<< HEAD
-		var url = window.location.origin+"/HRMS101/settings/getOrgCharts/"+centerid;
-=======
 		var url = "<?php echo base_url() ?>settings/getOrgCharts/"+centerid;
->>>>>>> 7ac92c89f37f7b79cfed03837cac59bdaa4d4c81
 		$.ajax({
 			method:'GET',
 			url:url,
@@ -2717,11 +2697,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 						var areaid = $(this).attr('area-id');
 					}
 
-<<<<<<< HEAD
-			url = window.location.origin+"/HRMS101/roster/updateShift";
-=======
 			url = "<?php echo base_url() ?>roster/updateShift";
->>>>>>> 7ac92c89f37f7b79cfed03837cac59bdaa4d4c81
 			console.log(startTime + " "+ endTime +" "+ shiftid+" "+roleid+" "+status +" "+userid+" "+areaid+ "" + message)
       loader_icon();
 			$.ajax({
@@ -2752,11 +2728,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 
 	$(document).ready(function(){
 		$(document).on('click','.roster__',function(){
-<<<<<<< HEAD
-			var url = window.location.origin+"/HRMS101/roster/updateRoster";
-=======
 			var url = "<?php echo base_url() ?>roster/updateRoster";
->>>>>>> 7ac92c89f37f7b79cfed03837cac59bdaa4d4c81
 			var rosterid = "<?php echo $rosterid; ?>";
 			var userid = "<?php echo $userid; ?>";
 			if($(this).prop('id') == "discard-roster"){
@@ -2769,11 +2741,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 						status: 'Discarded'
 					},
 					success:function(response){
-<<<<<<< HEAD
-						window.location.href= window.location.origin+"/HRMS101/roster/roster_dashboard";
-=======
 						window.location.href= "<?php echo base_url() ?>roster/roster_dashboard";
->>>>>>> 7ac92c89f37f7b79cfed03837cac59bdaa4d4c81
 					}
 
 				}).fail(function(){
@@ -2792,23 +2760,6 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 				}).fail(function(){
         window.location.reload();
       })
-<<<<<<< HEAD
-        window.location.href= window.location.origin+"/HRMS101/roster/roster_dashboard";
-			}
-			if($(this).prop('id') == "publish-roster"){
-        loader_icon();
-				$.ajax({
-					url:url,
-					type:'POST',
-          async:true,
-					data:{
-						userid: userid,
-						rosterid: rosterid,
-						status: 'Published'
-					}
-				})
-        window.location.href= window.location.origin+"/HRMS101/roster/roster_dashboard";
-=======
         window.location.href= "<?php echo base_url() ?>roster/roster_dashboard";
 			}
 			if($(this).prop('id') == "publish-roster"){
@@ -2830,7 +2781,6 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
           })
           window.location.href= "<?php echo base_url() ?>roster/roster_dashboard";
         }
->>>>>>> 7ac92c89f37f7b79cfed03837cac59bdaa4d4c81
 			}
 		})
 	})
@@ -2905,11 +2855,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 	$(document).ready(function(){
 		var centerid = $('#center-id').attr('c_id');
 		// var userid = $('#user-id-select').text();
-<<<<<<< HEAD
-		var url = window.location.origin+"/HRMS101/settings/getOrgCharts/"+centerid;
-=======
 		var url = "<?php echo base_url() ?>settings/getOrgCharts/"+centerid;
->>>>>>> 7ac92c89f37f7b79cfed03837cac59bdaa4d4c81
 		$.ajax({
 			method:'GET',
 			url:url,
@@ -2931,11 +2877,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 		 var centerid = $('#center-id').attr('c_id');
 		// var userid = $('#user-id-select').text();
 		var areaId = $(this).val();
-<<<<<<< HEAD
-		var url = window.location.origin+"/HRMS101/settings/getOrgCharts/"+centerid;
-=======
 		var url = "<?php echo base_url() ?>settings/getOrgCharts/"+centerid;
->>>>>>> 7ac92c89f37f7b79cfed03837cac59bdaa4d4c81
 		$.ajax({
 			method:'GET',
 			url:url,
@@ -3011,11 +2953,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 				priority = j;
 				console.log( areaid);
 		  $.ajax({
-<<<<<<< HEAD
-		  		url: window.location.origin+'/HRMS101/roster/changePriority',
-=======
 		  		url: '<?php echo base_url() ?>roster/changePriority',
->>>>>>> 7ac92c89f37f7b79cfed03837cac59bdaa4d4c81
 		  		data: {
 		  			areaid : areaid,
 		  			priority : priority
@@ -3083,11 +3021,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 				var add_role_id = $('#add_role_id').val();
 				// console.log(date+ "---"+roster_id+ "---"+emp_id+ "---"+add_start_time+ "---"+add_end_time+ "---"+add_role_id+)
 				console.log(dates)
-<<<<<<< HEAD
-				var url = window.location.origin+"/HRMS101/roster/addNewshift";
-=======
 				var url = "<?php echo base_url() ?>roster/addNewshift";
->>>>>>> 7ac92c89f37f7b79cfed03837cac59bdaa4d4c81
         loader_icon();
 				$.ajax({
 					url:url,
@@ -3141,11 +3075,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 	$(document).ready(function(){
 		var centerid = $('#center-id').attr('c_id');
 		// var userid = $('#user-id-select').text();
-<<<<<<< HEAD
-		var url = window.location.origin+"/HRMS101/settings/getOrgCharts/"+centerid;
-=======
 		var url = "<?php echo base_url() ?>settings/getOrgCharts/"+centerid;
->>>>>>> 7ac92c89f37f7b79cfed03837cac59bdaa4d4c81
 		$.ajax({
 			method:'GET',
 			url:url,
@@ -3167,11 +3097,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 		 var centerid = $('#center-id').attr('c_id');
 		// var userid = $('#user-id-select').text();
 		var areaId = $(this).val();
-<<<<<<< HEAD
-		var url = window.location.origin+"/HRMS101/settings/getOrgCharts/"+centerid;
-=======
 		var url = "<?php echo base_url() ?>settings/getOrgCharts/"+centerid;
->>>>>>> 7ac92c89f37f7b79cfed03837cac59bdaa4d4c81
 		$.ajax({
 			method:'GET',
 			url:url,
@@ -3219,11 +3145,7 @@ $('.modal_body').draggable();
 	$(document).ready(function(){
 		var centerid = $('#center-id').attr('c_id');
 		// var userid = $('#user-id-select').text();
-<<<<<<< HEAD
-		var url = window.location.origin+"/HRMS101/settings/getOrgCharts/"+centerid;
-=======
 		var url = "<?php echo base_url() ?>settings/getOrgCharts/"+centerid;
->>>>>>> 7ac92c89f37f7b79cfed03837cac59bdaa4d4c81
 		$.ajax({
 			method:'GET',
 			url:url,
@@ -3245,11 +3167,7 @@ $('.modal_body').draggable();
 		 var centerid = $('#center-id').attr('c_id');
 		// var userid = $('#user-id-select').text();
 		var areaId = $(this).val();
-<<<<<<< HEAD
-		var url = window.location.origin+"/HRMS101/settings/getOrgCharts/"+centerid;
-=======
 		var url = "<?php echo base_url() ?>settings/getOrgCharts/"+centerid;
->>>>>>> 7ac92c89f37f7b79cfed03837cac59bdaa4d4c81
 		$.ajax({
 			method:'GET',
 			url:url,
@@ -3283,11 +3201,7 @@ $('.modal_body').draggable();
 		var casualEmp_role_id = $('#casualEmp_role_id').val();
 		console.log(date+ "---"+roster_id+ "---"+emp_id+ "---"+casualEmp_start_time+ "---"+casualEmp_end_time+ "---"+casualEmp_role_id)
 		if(date != null && date != "" && roster_id != null && roster_id != "" && emp_id != null && emp_id != "" && casualEmp_start_time != null && casualEmp_start_time != "" && casualEmp_end_time != null && casualEmp_end_time != "" && casualEmp_role_id != null && casualEmp_role_id != ""){
-<<<<<<< HEAD
-		var url = window.location.origin+"/HRMS101/roster/addCasualEmployee";
-=======
 		var url = "<?php echo base_url() ?>roster/addCasualEmployee";
->>>>>>> 7ac92c89f37f7b79cfed03837cac59bdaa4d4c81
 		$.ajax({
 			url:url,
 			method:'POST',
@@ -3414,11 +3328,7 @@ $('.modal_body').draggable();
 			let employeeId = $('#employeeValue').val();
 			let editRoster = ($('#edit_roster').is(':checked') == true) ? 'Y' : 'N' ;
 			let rosterId = "<?php echo $rosterid; ?>";
-<<<<<<< HEAD
-			let url = window.location.origin+'/HRMS101/roster/saveRosterPermissions';
-=======
 			let url = '<?php echo base_url() ?>roster/saveRosterPermissions';
->>>>>>> 7ac92c89f37f7b79cfed03837cac59bdaa4d4c81
 			$.ajax({
 				url : url,
 				method : 'POST',
@@ -3440,11 +3350,7 @@ $('.modal_body').draggable();
 	function getPermissions(){
 		let rosterId = "<?php echo $rosterid; ?>";
 		let employeeId = $('#employeeValue').val();
-<<<<<<< HEAD
-		let url = window.location.origin+'/HRMS101/Roster/getRosterPermissions/'+employeeId+'/'+rosterId;
-=======
 		let url = '<?php echo base_url() ?>Roster/getRosterPermissions/'+employeeId+'/'+rosterId;
->>>>>>> 7ac92c89f37f7b79cfed03837cac59bdaa4d4c81
 	 	$.ajax({
 	 		url : url,
 	 		method : 'GET',
@@ -3491,11 +3397,7 @@ $('.modal_body').draggable();
 			$('.changeRolePriority_mask').addClass("active");
 			var areaId = $(this).attr('area_id');
 			var centerid = $('#center-id').attr('c_id');
-<<<<<<< HEAD
-			let url = window.location.origin+"/HRMS101/settings/getOrgCharts/"+centerid;
-=======
 			let url = "<?php echo base_url() ?>settings/getOrgCharts/"+centerid;
->>>>>>> 7ac92c89f37f7b79cfed03837cac59bdaa4d4c81
 			$.ajax({
 				url : url,
 				method : 'GET',
@@ -3523,11 +3425,7 @@ $('.modal_body').draggable();
 			$(".changeRolePriority_body").disableSelection();
 
 		$(document).on('click','.changeRolePriority_save',function(){
-<<<<<<< HEAD
-			var url = window.location.origin+"/HRMS101/settings/changeRolePriority"
-=======
 			var url = "<?php echo base_url() ?>settings/changeRolePriority"
->>>>>>> 7ac92c89f37f7b79cfed03837cac59bdaa4d4c81
 			var order = [];
 			var obj = {};
 			for(let i=0;i<($('.change_role_priority').length);i++){
