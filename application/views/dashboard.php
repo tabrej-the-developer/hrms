@@ -1182,14 +1182,14 @@ color:#FFFFFF;
           events.forEach((item,index)=>{
             x = fun(item,index,date)
             if(x !== undefined){
-            console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/roster/getRosterDetails?rosterId=${x}&showBudgetYN=N" title="${role}">${role}</a>`));
+            console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>roster/getRosterDetails?rosterId=${x}&showBudgetYN=N" title="${role}">${role}</a>`));
               }
           });
           counter++;
           }
           if(($('.fc-event-title').eq(increment).text()).includes('Leave')){
             var status = $('.fc-event-title').eq(increment).text();
-              console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/Leave" title="${status}">${status}</a>`));
+              console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>Leave" title="${status}">${status}</a>`));
             }
 
           if(($('.fc-event-title').eq(increment).text()).includes('Meeting')){
@@ -1201,16 +1201,16 @@ color:#FFFFFF;
             meetingStatus = meetStatus(item,index,dateMeeting)
             if(y !== undefined ){
               if(meetingStatus.toLowerCase() == 'created'){
-                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/attendence/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
+                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>mom/attendence/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
               }
               if(meetingStatus.toLowerCase() == 'attendence'){
-                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/attendence/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
+                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>mom/attendence/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
               }
               if(meetingStatus.toLowerCase() == 'mom'){
-                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/onBoard/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
+                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>mom/onBoard/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
               }
               if(meetingStatus.toLowerCase() == 'summary'){
-                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/summary/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
+                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>mom/summary/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
                 }
               }
             });
@@ -1261,14 +1261,14 @@ color:#FFFFFF;
           events.forEach((item,index)=>{
             x = fun(item,index,date)
             if(x !== undefined){
-            console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/roster/getRosterDetails?rosterId=${x}" title="${role}">${role}</a>`));
+            console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>roster/getRosterDetails?rosterId=${x}" title="${role}">${role}</a>`));
               }
           });
           counter++;
           }
           if(($('.fc-event-title').eq(increment).text()).includes('Leave')){
             // var status = $('.fc-event-title').eq(increment).text();
-              console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/Leave" title="${status}">${status}</a>`));
+              console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>Leave" title="${status}">${status}</a>`));
             }
 
           if(($('.fc-event-title').eq(increment).text()).includes('Meeting')){
@@ -1280,16 +1280,16 @@ color:#FFFFFF;
             meetingStatus = meetStatus(item,index,dateMeeting)
             if(y !== undefined ){
               if(meetingStatus.toLowerCase() == 'created'){
-                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/attendence/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
+                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>mom/attendence/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
               }
               if(meetingStatus.toLowerCase() == 'attendence'){
-                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/attendence/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
+                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>mom/attendence/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
               }
               if(meetingStatus.toLowerCase() == 'mom'){
-                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/onBoard/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
+                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>mom/onBoard/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
               }
               if(meetingStatus.toLowerCase() == 'summary'){
-                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="${window.location.origin}/PN101/mom/summary/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
+                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>mom/summary/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
                 }
               }
             });
@@ -1366,22 +1366,22 @@ $('#toggle').remove();
     $(document).ready(function(){
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewTimesheetYN : "N") == "Y"){ ?>
       $(document).on('click','.timesheets',function(){
-        window.location.href = window.location.origin+"/PN101/Timesheet";
+        window.location.href = "<?php echo base_url() ?>Timesheet";
       })
 <?php } ?>
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewRosterYN : "N") == "Y"){ ?>
       $(document).on('click','.roster',function(){
-        window.location.href = window.location.origin+"/PN101/Roster";
+        window.location.href = "<?php echo base_url() ?>Roster";
       })
 <?php } ?>
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewPayrollYN : "N") == "Y"){ ?>
       $(document).on('click','.payrolls',function(){
-        window.location.href = window.location.origin+"/PN101/Payroll";
+        window.location.href = "<?php echo base_url() ?>Payroll";
       })
 <?php } ?>
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewLeaveTypeYN : "N") == "Y"){ ?>
       $(document).on('click','.onLeave',function(){
-        window.location.href = window.location.origin+"/PN101/Leave";
+        window.location.href = "<?php echo base_url() ?>Leave";
       })
 <?php } ?>
     })
