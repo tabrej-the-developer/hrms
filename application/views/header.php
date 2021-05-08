@@ -88,7 +88,7 @@ $nth_child = 0;
 <html>
 <head>
 
-<title>PN101</title>
+<title>HRMS101</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
@@ -340,7 +340,7 @@ i.mr-4{
 .select_css::after{
     content: ' ';
     position: absolute;
-    background: url(http://localhost/PN101/assets/images/icons/down.png);
+    background: url(<?php echo base_url(); ?>assets/images/icons/down.png);
     background-repeat: no-repeat;
     padding: 15px;
     right: 0;
@@ -537,7 +537,7 @@ select{
           <li class="nav-item-header" onmouseover="hover('dashboard','<?php echo $selected;?>')" onmouseout="hoverOff('dashboard','<?php echo $selected;?>')">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('dashboard') ?>" title="Dashboard">
               <?php
-              if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Dashboard")){ ?>
+              if($url_page_array[array_search("HRMS101",$url_page_array) + 1] == strtolower("Dashboard")){ ?>
               <i class="mr-4 " ><img id="dashboard" src="<?php echo base_url();?>assets/images/navbar-icons/dashboard.png" style="max-height: 1rem"></i>
               <?php }
               else{ ?>
@@ -550,7 +550,7 @@ select{
       <li class="nav-item-header" onmouseover="hover('roster','<?php echo $selected;?>')" onmouseout="hoverOff('roster','<?php echo $selected;?>')">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('roster/roster_dashboard') ?>" title="roster">
               <?php
-              if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Roster")){ ?>
+              if($url_page_array[array_search("HRMS101",$url_page_array) + 1] == strtolower("Roster")){ ?>
               <i class="mr-4 " ><img id="roster" src="<?php echo base_url();?>assets/images/navbar-icons/roster.png" style="max-height: 1rem"></i>
               <?php }
               else{ ?>
@@ -564,7 +564,7 @@ select{
           <li class="nav-item-header" onmouseover="hover('timesheet','<?php echo $selected;?>')" onmouseout="hoverOff('timesheet','<?php echo $selected;?>')">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('timesheet/timesheetDashboard'); ?>" title="Timesheet">
             <?php
-              if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Timesheet")){ ?>
+              if($url_page_array[array_search("HRMS101",$url_page_array) + 1] == strtolower("Timesheet")){ ?>
               <i class="mr-4 " ><img id="timesheet" src="<?php echo base_url();?>assets/images/navbar-icons/timesheet.png" style="max-height: 1rem"></i>
               <?php }
               else{ ?>
@@ -578,7 +578,7 @@ select{
       <li class="nav-item-header" onmouseover="hover('payroll','<?php echo $selected;?>')" onmouseout="hoverOff('payroll','<?php echo $selected;?>')">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('payroll/payrollList'); ?>" title="payroll"> 
             <?php
-              if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Payroll")){ ?>
+              if($url_page_array[array_search("HRMS101",$url_page_array) + 1] == strtolower("Payroll")){ ?>
               <i class="mr-4 " ><img id="payroll" src="<?php echo base_url();?>assets/images/navbar-icons/payroll.png" style="max-height: 1rem"></i>
               <?php }
               else{ ?>
@@ -592,7 +592,7 @@ select{
 		      <li class="nav-item-header" onmouseover="hover('leaves','<?php echo $selected;?>')" onmouseout="hoverOff('leaves','<?php echo $selected;?>')">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('leave') ?>" title="Leave"> 
             <?php
-              if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Leave")){ ?>
+              if($url_page_array[array_search("HRMS101",$url_page_array) + 1] == strtolower("Leave")){ ?>
               <i class="mr-4 " ><img id = "leaves" src="<?php echo base_url();?>assets/images/navbar-icons/leaves.png" style="max-height: 1rem"></i>
               <?php }
               else{ ?>
@@ -615,7 +615,7 @@ select{
       <li class="nav-item-header" onmouseover="hover('messenger','<?php echo $selected;?>')" onmouseout="hoverOff('messenger','<?php echo $selected;?>')">
         <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('messenger') ?>" title="Cart"> 
           <?php
-              if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Messenger")){ ?>
+              if($url_page_array[array_search("HRMS101",$url_page_array) + 1] == strtolower("Messenger")){ ?>
               <i class="mr-4 " ><img id = "messenger" src="<?php echo base_url();?>assets/images/navbar-icons/messenger.png" style="max-height: 1rem"></i>
               <?php }
               else{ ?>
@@ -628,7 +628,7 @@ select{
       <li class="nav-item-header" onmouseover="hover('notices','<?php echo $selected;?>')" onmouseout="hoverOff('notices','<?php echo $selected;?>')">
         <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('notice') ?>" title="Notices">
         <?php
-              if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Notice")){ ?>
+              if($url_page_array[array_search("HRMS101",$url_page_array) + 1] == strtolower("Notice")){ ?>
               <i class="mr-4 " ><img id = "notices" src="<?php echo base_url();?>assets/images/navbar-icons/notices.png" style="max-height: 1rem"></i>
               <?php }
               else{ ?>
@@ -654,7 +654,7 @@ select{
       <!-- <li class="nav-item-header">
             <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('mom/') ?>" title="roster"> 
             <?php
-              if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("MOM")){ ?>
+              if($url_page_array[array_search("HRMS101",$url_page_array) + 1] == strtolower("MOM")){ ?>
               <i class="mr-4 " ><img src="<?php echo base_url();?>assets/images/navbar-icons/mom_filled.png" style="max-height: 1rem"></i>
               <?php }
               else{ ?>
@@ -669,7 +669,7 @@ select{
             <li class="nav-item-header-div"  onmouseover="hover('settings','<?php echo $selected;?>')" onmouseout="hoverOff('settings','<?php echo $selected;?>')">
               <a class="nav-link-div d-flex justify-content-start" href="<?php echo site_url('settings') ?>" title="Settings">
               <?php
-              if($url_page_array[array_search("PN101",$url_page_array) + 1] == strtolower("Settings")){ ?>
+              if($url_page_array[array_search("HRMS101",$url_page_array) + 1] == strtolower("Settings")){ ?>
               <i class="mr-4 " ><img id = "settings" src="<?php echo base_url();?>assets/images/navbar-icons/settings.png" style="max-height: 1rem"></i>
               <?php }
               else{ ?>
