@@ -38,7 +38,7 @@
                     <li><a href="#features">Features</a></li>
                     <li><a href="#">Faq</a></li>
                     <li><a href="#">Blog</a></li>
-                    <li><a href="https://todquest.com/PN101/welcome/login">Sign Up</a></li>
+                    <li><a href="<?php echo base_url('welcome/login'); ?>">Sign Up</a></li>
                 </ul>
             </div>
         </div>
@@ -146,7 +146,7 @@
                     <li><a href="#">Features</a></li>
                     <li><a href="#">Faq</a></li>
                     <li><a href="#">Blog</a></li>
-                    <li><a href="#">Sign Up</a></li>
+                    <li><a href="<?php base_url('welcom/login'); ?>">Sign Up</a></li>
                 </ul>
                 <p>Copyright © 2021. All rights Reserved.</p>
             </div>
