@@ -903,6 +903,7 @@ font-family: 'Open Sans', sans-serif;
             url:emp_url,
             type:'GET',
             success:function(re){
+            	console.log(re)
               re = JSON.parse(re)
               re.employees.forEach(function(em){
                 a=0;
