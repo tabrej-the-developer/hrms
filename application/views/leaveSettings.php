@@ -637,7 +637,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 
 	$('#XeroLeaves').click(function(){
     var centerid = $('#centerValue').val();
-		var url =  window.location.origin + "/PN101/settings/syncXeroLeaves/"+centerid ;
+		var url =  "<?php echo base_url();?>settings/syncXeroLeaves/"+centerid ;
     console.log(url)
     $.ajax({
 				url:url,
@@ -650,7 +650,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 		})
   $(document).on('change','#centerValue',function(){
       var centerid = $('#centerValue').val();
-      window.location.href = window.location.origin+'/PN101/settings/leaveSettings/'+centerid;
+      window.location.href = '<?php echo base_url();?>settings/leaveSettings/'+centerid;
       // $.ajax({
       //   url : url,
       //   type : 'GET',

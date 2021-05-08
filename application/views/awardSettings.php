@@ -452,7 +452,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 	$(document).ready(function(){
 		$('#awards').click(function(){
 			var centerid = $('#centerValue').val();
-			var url = window.location.origin + "/PN101/settings/syncXeroAwards/"+centerid ;
+			var url = "<?php echo base_url('settings/syncXeroAwards/'); ?>"+centerid ;
 			$.ajax({
 					url:url,
 					type:'GET',
@@ -464,7 +464,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 		
 	  $(document).on('change','#centerValue',function(){
 	      var centerid = $('#centerValue').val();
-	      window.location.href = window.location.origin+'/PN101/settings/awardSettings/'+centerid;
+	      window.location.href = '<?php echo base_url("settings/awardSettings/"); ?>'+centerid;
 	      // $.ajax({
 	      //   url : url,
 	      //   type : 'GET',

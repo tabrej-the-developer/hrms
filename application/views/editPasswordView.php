@@ -117,7 +117,7 @@ font-family: 'Open Sans', sans-serif;
         var newP = document.getElementById("newPassword2").value;
         if(newP === newP2)
           { 
-            var url = window.location.origin+"/PN101/settings/changePassword";
+            var url = "<?php echo base_url();?>settings/changePassword";
                       $.ajax({
                         url : url,
                         type : 'POST',

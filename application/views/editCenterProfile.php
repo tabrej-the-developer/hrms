@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>PN101</title>
+  <title>HRMS101</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">  
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
@@ -323,7 +323,7 @@ font-family: 'Open Sans', sans-serif;
 <script type="text/javascript">
   $(document).on('change','#center-list',function(){
     var centerid = $('#center-list').val();
-    var url = window.location.origin+"/PN101/settings/centerProfile/"+centerid
+    var url = "<?php echo base_url();?>settings/centerProfile/"+centerid
     $.ajax({
       url : url,
       type : 'GET',
