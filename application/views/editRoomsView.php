@@ -240,7 +240,7 @@ input[type="text"],input[type=time],input[type="number"]{
 
 <script type="text/javascript">
   function changeCenter(){
-      var url = window.location.origin+"/PN101/settings/editRooms";
+      var url = "<?php echo base_url();?>settings/editRooms";
       var centerid  = $('select').val();
       $.ajax({
         url:url,
@@ -281,7 +281,7 @@ input[type="text"],input[type=time],input[type="number"]{
     var capacity = $(this).parent().parent().children('.r-capacity').children('.capacity').val();
      var studentRatio = $(this).parent().parent().children('.s-ratio').children('.ratio').val();
      var roomId = $(this).attr('i-v');
-     var url = window.location.origin+"/PN101/settings/updateRoom"
+     var url = "<?php echo base_url();?>settings/updateRoom"
       console.log(centerid+" -"+name+" -"+careAgeFrom+" -"+careAgeTo+" -"+capacity+" -"+studentRatio+" -"+roomId)
       $.ajax({
         url : url,
@@ -307,7 +307,7 @@ input[type="text"],input[type=time],input[type="number"]{
     $(document).ready(function(){
         $(document).on('click','.fa-trash-alt',function(){
           var id = $(this).attr('d-v');
-          var url = window.location.origin+"/PN101/settings/deleteRoom";
+          var url = "<?php echo base_url();?>settings/deleteRoom";
           $.ajax({
             url : url,
             type : 'POST',

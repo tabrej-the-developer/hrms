@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>PN101</title>
+	<title>HRMS101</title>
 	<meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1"> 
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
@@ -25,7 +25,7 @@ font-family: 'Open Sans', sans-serif;
 					</button></a> Enter Employee Details
 			</div>
 		</h4>	
-		<form name ="userinput" action="<?php echo site_url();?>/PN101/createEmployeeProfile" method="post" 
+		<form name ="userinput" action="<?php echo base_url();?>createEmployeeProfile" method="post" 
 		enctype="multipart/form-data" >
 			<hr>
 		 	<span id="employeeDetailsYo">

@@ -562,7 +562,7 @@ font-family: 'Open Sans', sans-serif;
 <script type="text/javascript">
 	function reloadPageBody(){
 		var centerid = $('.sellect').val();
-		var url = window.location.origin+'/PN101/settings/orgChart';
+		var url = '<?php echo base_url();?>settings/orgChart';
 		$.ajax({
 			url : url,
 			type : 'POST',
@@ -652,7 +652,7 @@ font-family: 'Open Sans', sans-serif;
 
 		$(document).on('click','#addAreaSubmit',function(e){
 			e.preventDefault();
-			var url = window.location.origin+"/PN101/settings/addArea";
+			var url = "<?php echo base_url();?>settings/addArea";
 			var centerid = $('.sellect').prop('value');
 			var areaName = $('#areaName').val();
 			var isRoomYN = $('#isRoomYN').val();
@@ -674,7 +674,7 @@ font-family: 'Open Sans', sans-serif;
 
 		$(document).on('click','.addRoleSubmit',function(e){
 			e.preventDefault();
-			var url = window.location.origin+"/PN101/settings/addRole";
+			var url = "<?php echo base_url();?>settings/addRole";
 			var areaid = $(this).parent().parent().parent().attr('areaId');
 			var roleName = $(this).parent().parent().children().children().next().val();
 			$.ajax({
@@ -696,7 +696,7 @@ font-family: 'Open Sans', sans-serif;
 
 	$(document).on('click','.editAreaSubmit',function(e){
 			e.preventDefault();
-			var url = window.location.origin+"/PN101/settings/UpdateArea";
+			var url = "<?php echo base_url();?>settings/UpdateArea";
 			var areaid = $(this).parent().parent().attr('areaId');
 			var areaName = $(this).parent().prev().prev().children().val();
 			var isRoomYN = $(this).parent().prev().children().val();
@@ -721,7 +721,7 @@ font-family: 'Open Sans', sans-serif;
 
 		$(document).on('click','.editRoleSubmit',function(e){
 			e.preventDefault();
-			var url = window.location.origin+"/PN101/settings/UpdateRole";
+			var url = "<?php echo base_url();?>settings/UpdateRole";
 			var roleid = $(this).parent().prev().children().val();
 			var roleName = $(this).parent().prev().prev().children().val();
 			$.ajax({
@@ -745,9 +745,9 @@ font-family: 'Open Sans', sans-serif;
 	}
 
 	$(document).on('change','.sellect',function(){
-		var url = window.location.origin+"/PN101/settings/orgChart";
+		var url = "<?php echo base_url();?>settings/orgChart";
 		var centerid = parseInt($(this).prop('value'));
-		var orgurl = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
+		var orgurl = "<?php echo base_url();?>settings/getOrgCharts/"+centerid;
 		$.ajax({
 			url:orgurl,
 			type:'GET',
@@ -769,7 +769,7 @@ font-family: 'Open Sans', sans-serif;
 	})
 
 	$(document).on('click','.delete-role',function(){
-		var url = window.location.origin+"/PN101/settings/deleteRole"
+		var url = "<?php echo base_url();?>settings/deleteRole"
 		var id = $(this).attr('d-val');
 		$.ajax({
 			url : url ,
@@ -786,7 +786,7 @@ font-family: 'Open Sans', sans-serif;
 	})
 
 	$(document).on('click','.delete-area',function(){
-		var url = window.location.origin+"/PN101/settings/deleteArea"
+		var url = "<?php echo base_url();?>settings/deleteArea"
 		var id = $(this).attr('d-val');
 		$.ajax({
 			url : url ,
@@ -821,7 +821,7 @@ font-family: 'Open Sans', sans-serif;
 		function roleChange(roleId=null,areaId,similarity=null,x){
 			var centerid = $('.sellect').val();
 			// var userid = $('#user-id-select').text();
-				var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
+				var url = "<?php echo base_url();?>settings/getOrgCharts/"+centerid;
 				$.ajax({
 					method:'GET',
 					url:url,
@@ -875,7 +875,7 @@ font-family: 'Open Sans', sans-serif;
 					-------------------------- */
 			$(document).ready(function(){
 				var centerid = $('.sellect').val();
-				var url = window.location.origin+"/PN101/settings/getOrgCharts/"+centerid;
+				var url = "<?php echo base_url();?>settings/getOrgCharts/"+centerid;
 					$.ajax({
 					url:url,
 					type:'GET',
@@ -898,7 +898,7 @@ font-family: 'Open Sans', sans-serif;
 					$('.mask').addClass("active");
 				var employees = sessionStorage.getItem('orgChartData');
 				var employees = JSON.parse(employees);
-         var emp_url = window.location.origin+"/PN101/settings/getEmployeesByCenter/"+centerid;
+         var emp_url = "<?php echo base_url();?>settings/getEmployeesByCenter/"+centerid;
           $.ajax({
             url:emp_url,
             type:'GET',
@@ -948,7 +948,7 @@ font-family: 'Open Sans', sans-serif;
 			var c = 0;
 			for(var i=0;i<count;i++){
 				var role = $('.roleNameClass').eq(i).attr('r_id');
-				url = window.location.origin+"/PN101/settings/getEmployeesForRoles/"+role;
+				url = "<?php echo base_url();?>settings/getEmployeesForRoles/"+role;
 					$.ajax({
 						url : url,
 						type : 'GET',
@@ -992,7 +992,7 @@ $(document).ajaxStop(function(){
 				}
 			}
 			console.log(details)
-			var url = window.location.origin+"/PN101/settings/changeEmployeeRole"
+			var url = "<?php echo base_url();?>settings/changeEmployeeRole"
 			$.ajax({
 				url : url,
 				method : 'POST',

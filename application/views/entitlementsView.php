@@ -342,7 +342,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
           })
 
           $('.submit-edit').on('click',function(){
-              var url = window.location.origin + '/PN101/settings/updateEntitlement';
+              var url = '<?php echo base_url();?>settings/updateEntitlement';
               var rate = $('.c1').val();
               var name = $('.c2').val();
               $.ajax({
@@ -397,7 +397,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
   </script>
   <script type="text/javascript">
                  $(document).on('click','.fa-check-square',function(){
-                 var url = window.location.origin + '/PN101/settings/addEntitlement';
+                 var url = '<?php echo base_url();?>settings/addEntitlement';
                  var rate = $('#a2').val();
                  var name = $('#a1').val();
                    $.ajax({
@@ -448,7 +448,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
     $(document).ready(function(){
         $(document).on('click','.fa-trash-alt',function(){
           var id = $(this).attr('d-v');
-          var url = window.location.origin+"/PN101/settings/deleteEntitlement";
+          var url = "<?php echo base_url();?>settings/deleteEntitlement";
           $.ajax({
             url : url,
             type : 'POST',
@@ -485,7 +485,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
           //var sDate = $('#start-date').val($(this).attr('curr-date'))
           //var tId = $('#timesheet-id').val($(this).attr('timesheet-id'))
            $.ajax({
-            url : window.location.origin+"/PN101/settings/entitlementsMod/"+x,
+            url : "<?php echo base_url();?>settings/entitlementsMod/"+x,
             type : 'GET',
             success : function(response){
 
@@ -501,7 +501,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
         })
 
     $(document).on('change','.level_select',function(){
-      url = window.location.origin + '/PN101/settings/editEmployeeEntitlements';
+      url = '<?php echo base_url();?>settings/editEmployeeEntitlements';
         var empid = $(this).attr('userid');
         var level = $(this).val()
         $.ajax({

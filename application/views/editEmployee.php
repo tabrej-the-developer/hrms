@@ -1273,7 +1273,7 @@ $(document).ready(function(){
 	$(document).ready(function(){
 		$('#center').change(function(){
 	var id = this.value;
-	var url = window.location.origin+"/PN101/settings/addEmployee/"+id;
+	var url = "<?php echo base_url();?>settings/addEmployee/"+id;
 	console.log(id)
 	$.ajax({
 		url:url,
@@ -1443,7 +1443,7 @@ $(document).ready(function(){
 
 	    $(document).on('click','.deleteDocument',function(){
 	    	var docId = $(this).attr('docId')
-	    	var url = window.location.origin+'/PN101/settings/deleteDocument/'+docId;
+	    	var url = '<?php echo base_url();?>settings/deleteDocument/'+docId;
 	    	$.ajax({
 	    		url : url,
 	    		type : 'GET',
@@ -1468,7 +1468,7 @@ $(document).ready(function(){
 
 	    $(document).on('click','.course_delete',function(){
 	    	var courseId = $(this).attr('courseId');
-	    	var url = window.location.origin+'/PN101/settings/DeleteCourse/'+courseId;
+	    	var url = '<?php echo base_url();?>settings/DeleteCourse/'+courseId;
 	    	$.ajax({
 	    		url : url,
 	    		type : 'GET',

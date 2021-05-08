@@ -1330,7 +1330,7 @@ input[type="date"],input[type=time]{
 			if(leaveId != "" && endDate>startDate){
 				document.getElementById("applyLeaveForm").submit();
 			}
-			var url = window.location.origin+"/PN101/leave/applyLeave";
+			var url = "<?php echo base_url();?>leave/applyLeave";
 			$.ajax({
 				url : url,
 				data : {

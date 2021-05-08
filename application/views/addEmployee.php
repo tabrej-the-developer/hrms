@@ -533,7 +533,7 @@ $(document).ready(function(){
 	$(document).ready(function(){
 		$('#center').change(function(){
 	var id = this.value;
-	var url = window.location.origin+"/PN101/settings/addEmployee/"+id;
+	var url = "<?php echo base_url('settings/addEmployee/'); ?>"+id;
 	console.log(url)
 	$.ajax({
 		url:url,

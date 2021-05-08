@@ -572,7 +572,7 @@ $("#mytable #checkall").click(function () {
   $(document).ready(function(){
     $(document).on('click','#create_group',function(){
       if(($('.group_name_input').val() != null && $('.group_name_input').val() != "") && $('.group_select').selected != ""){
-        let url = window.location.origin+"/PN101/notice/createGroup"
+        let url = "<?php echo base_url('notice/createGroup'); ?>"
         let groupName = $('.group_name_input').val();
         let groupMembers = [];
           groupMembers = $('.group_select').val();
@@ -598,8 +598,8 @@ $("#mytable #checkall").click(function () {
     $(document).on('click','.noticeGroupView',function(){
       var groupId = $(this).attr('groupId');
       $('.modalGroupId').val(groupId);
-      var groupUrl = window.location.origin+'/PN101/notice/getGroupUsers/'+groupId;
-      var url = window.location.origin+'/PN101/notice/getUsers';
+      var groupUrl = '<?php echo base_url("notice/getGroupUsers/"); ?>'+groupId;
+      var url = '<?php echo base_url("notice/getUsers"); ?>';
       $.ajax({
         url : groupUrl,
         type : 'GET',
@@ -618,7 +618,7 @@ $("#mytable #checkall").click(function () {
     $(document).on('click','.removeUserFromGroup',function(){
       var groupId =  $(this).attr('groupId');
       var memberId = $(this).attr('memberId');
-      var url = window.location.origin+'/PN101/notice/removeUserFromGroup/'+groupId+'/'+memberId;
+      var url = '<?php echo base_url();?>notice/removeUserFromGroup/'+groupId+'/'+memberId;
       $.ajax({
         url : url,
         type : 'GET',
@@ -637,7 +637,7 @@ $("#mytable #checkall").click(function () {
         members.push($('.addEmployeesToGroup option').eq(i).val())
       }
     }
-    var url = window.location.origin+'/PN101/notice/addUsersToGroup';
+    var url = '<?php echo base_url();?>notice/addUsersToGroup';
     $.ajax({
       url : url,
       type : 'POST',
