@@ -1535,8 +1535,6 @@ $server_output = curl_exec($ch);
 	$data['dietaryPreferences'] = isset($_POST['dietaryPreferences']) ? $_POST['dietaryPreferences']: "";
 			$data['userid'] = $this->session->userdata('LoginId');
 		}
-		print_r(json_encode($data));
-		die();
 			$url = BASE_API_URL."settings/createEmployeeProfile";
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
