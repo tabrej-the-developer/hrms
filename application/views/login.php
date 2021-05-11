@@ -187,7 +187,7 @@ input[type="submit"]{
         </div> 
         <div class="form-group password_group">
           <input type="password" name="password" id="password" class="form-control" placeholder="Password" value="" required />
-          <img src="<?php echo base_url('assets/images/icons/password.png'); ?>" class="hide_password" onclick="pword()">
+          <img src="<?php echo base_url('assets/images/icons/hide_password.png'); ?>" class="hide_password" onclick="pword()">
         </div>
         <center><span style="color: red;"><?php echo $errorText;?></span></center>
 
@@ -228,11 +228,11 @@ input[type="submit"]{
       var passwordClass = document.getElementsByClassName('hide_password');
       var passWord = document.getElementById('password'); 
       if(passwordClass[0].classList.contains('showingPassword')){
-        passwordClass[0].setAttribute('src','<?php echo base_url('assets/images/icons/password.png'); ?>');
+        passwordClass[0].setAttribute('src','<?php echo base_url('assets/images/icons/hide_password.png'); ?>');
          passwordClass[0].classList.remove('showingPassword');
          passWord.setAttribute('type','password');
       }else{
-        passwordClass[0].setAttribute('src','<?php echo base_url('assets/images/icons/hide_password.png'); ?>');
+        passwordClass[0].setAttribute('src','<?php echo base_url('assets/images/icons/password.png'); ?>');
         passwordClass[0].classList.add('showingPassword');
         passWord.setAttribute('type','text');
       }
