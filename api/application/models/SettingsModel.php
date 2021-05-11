@@ -20,7 +20,7 @@ class SettingsModel extends CI_Model {
 		$this->load->database();
 		$date = date('Y-m-d');
 		if($updateVal == 'add')
-			$this->db->query("INSERT INTO kidsoft (center,kidsoftkey,createdate) VALUES ($centerid,$key,'$date')");
+			$this->db->query("INSERT INTO kidsoft (center,kidsoftkey,createdate) VALUES ($centerid,'$key','$date')");
 		if($updateVal == 'del')
 			$this->db->query("DELETE FROM kidsoft where center=$centerid");
 		if($updateVal == 'upd')

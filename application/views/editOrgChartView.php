@@ -897,6 +897,7 @@ font-family: 'Open Sans', sans-serif;
 					$('.priority_areas').empty();
 					$('.mask').addClass("active");
 				var employees = sessionStorage.getItem('orgChartData');
+console.log(employees);
 				var employees = JSON.parse(employees);
          var emp_url = "<?php echo base_url();?>settings/getEmployeesByCenter/"+centerid;
           $.ajax({
