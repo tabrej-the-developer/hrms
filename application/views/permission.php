@@ -849,7 +849,7 @@ button[type=button]{
 <script type="text/javascript">
 	$(document).ready(function(){
 	$('#superfunds').click(function(){
-		var url = window.location.origin + "/PN101/settings/syncXeroSuperfunds" ;
+		var url = "<?php echo base_url() ?>settings/syncXeroSuperfunds" ;
 		$.ajax({
 				url:url,
 				type:'GET',

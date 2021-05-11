@@ -1168,7 +1168,7 @@ $(document).ready(function(){
 	}
 
 	$(document).on('click','.syncXeroEmployees',function(){
-		var url = window.location.origin+'/PN101/settings/syncXeroEmployees/'+ "<?php echo $employeeId ?>";
+		var url = '<?php echo base_url() ?>settings/syncXeroEmployees/'+ "<?php echo $employeeId ?>";
 		$.ajax({
 			url : url,
 			success : function(response){
