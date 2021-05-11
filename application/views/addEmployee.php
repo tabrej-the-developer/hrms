@@ -417,8 +417,9 @@
       $('.notify_').css('visibility','visible');
     }
     function addMessageToNotification(message){
-    	if($('.notify_').css('visibility') == 'hidden')
+    	if($('.notify_').css('visibility') == 'hidden'){
      		$('._notify_message').append(`<li>${message}</li>`)
+    	}
     }
     function closeNotification(){
       $('.notify_').css('visibility','hidden');
@@ -593,19 +594,23 @@ $(document).ready(function(){
 					var response = JSON.parse(response);
 					if(response.Status == 'EXISTS'){
 						localStorage.setItem('checkEnrolled','true');
-				      showNotification();
 				      addMessageToNotification('Employee Id Already Exists');
+				      				      showNotification();
 				      setTimeout(closeNotification,5000)
 				      falseOrTrue = false;
 					}
 				}
+			}).fail(function(){
+		      addMessageToNotification('Enter Employee Id');
+		      showNotification();
+		      setTimeout(closeNotification,5000)
 			}).then(function(){
 				if($('#fname').val() == null || $('#fname').val() == "" || 	$('#lname').val() == null || $('#lname').val() == ""){
 				$('#fname').css({"border-color": "red", 
 		             "border-width":"1px", 
 		             "border-style":"solid"})
-			    showNotification();
 		      addMessageToNotification('All Name Fields are required');
+			    showNotification();
 		      setTimeout(closeNotification,5000)
 				falseOrTrue = false;
 				}
@@ -613,8 +618,8 @@ $(document).ready(function(){
 					$('#emails').css({"border-color": "red", 
 		             "border-width":"1px", 
 		             "border-style":"solid"})
-		      showNotification();
 		      addMessageToNotification('Enter Email');
+		      		      showNotification();
 		      setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 				}
@@ -622,8 +627,8 @@ $(document).ready(function(){
 					$('#alias').css({"border-color": "red", 
 		             "border-width":"1px", 
 		             "border-style":"solid"})
-		      showNotification();
 		      addMessageToNotification('Enter Alias Name');
+		      showNotification();
 		      setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 				}
@@ -641,8 +646,8 @@ $(document).ready(function(){
 					$('#employee_no').css({"border-color": "red", 
 		             "border-width":"1px", 
 		             "border-style":"solid"})
-		      showNotification();
 		      addMessageToNotification('Enter Employee Number');
+		      showNotification();
 		      setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 				}
@@ -650,8 +655,8 @@ $(document).ready(function(){
 					$('#area').css({"border-color": "red", 
 		             "border-width":"1px", 
 		             "border-style":"solid"})
-		      showNotification();
 		      addMessageToNotification('Select Area');
+		      showNotification();
 		      setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 				}
@@ -659,8 +664,8 @@ $(document).ready(function(){
 					$('#role').css({"border-color": "red", 
 		             "border-width":"1px", 
 		             "border-style":"solid"})
-		      showNotification();
 		      addMessageToNotification('Select Role');
+		      showNotification();
 		      setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 				}
@@ -668,8 +673,8 @@ $(document).ready(function(){
 					$('#level').css({"border-color": "red", 
 		             "border-width":"1px", 
 		             "border-style":"solid"})
-		      showNotification();
 		      addMessageToNotification('Select Level');
+		      showNotification();
 		      setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 				}
@@ -685,8 +690,8 @@ $(document).ready(function(){
 					$('#employement_type').css({"border-color": "red", 
 		             "border-width":"1px", 
 		             "border-style":"solid"})
-				      showNotification();
 				      addMessageToNotification('Select days');
+				      showNotification();
 				      setTimeout(closeNotification,5000)
 				      falseOrTrue = false;
 			      }
@@ -695,8 +700,8 @@ $(document).ready(function(){
 					$('#level').css({"border-color": "red", 
 		             "border-width":"1px", 
 		             "border-style":"solid"})
-		      showNotification();
 		      addMessageToNotification('Enter total hours');
+		      showNotification();
 		      setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 				}
