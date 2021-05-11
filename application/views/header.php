@@ -548,7 +548,7 @@ select{
           </li>
 <?php // if((isset(json_decode($permissions)->permissions) ? json_decode($permissions)->permissions->viewRosterYN : "N") == "Y"){ ?> 
       <li class="nav-item-header" onmouseover="hover('roster','<?php echo $selected;?>')" onmouseout="hoverOff('roster','<?php echo $selected;?>')">
-            <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('roster/roster_dashboard') ?>" title="roster">
+            <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('roster/roster_dashboard') ?>" title="Roster">
               <?php
               if($url_page_array[array_search("HRMS101",$url_page_array) + 1] == strtolower("Roster")){ ?>
               <i class="mr-4 " ><img id="roster" src="<?php echo base_url();?>assets/images/navbar-icons/roster.png" style="max-height: 1rem"></i>
@@ -576,7 +576,7 @@ select{
         <?php // } ?>
           <?php // if((isset(json_decode($permissions)->permissions) ? json_decode($permissions)->permissions->viewPayrollYN : "N") == "Y"){ ?>
       <li class="nav-item-header" onmouseover="hover('payroll','<?php echo $selected;?>')" onmouseout="hoverOff('payroll','<?php echo $selected;?>')">
-            <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('payroll/payrollList'); ?>" title="payroll"> 
+            <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('payroll/payrollList'); ?>" title="Payroll"> 
             <?php
               if($url_page_array[array_search("HRMS101",$url_page_array) + 1] == strtolower("Payroll")){ ?>
               <i class="mr-4 " ><img id="payroll" src="<?php echo base_url();?>assets/images/navbar-icons/payroll.png" style="max-height: 1rem"></i>
@@ -613,7 +613,7 @@ select{
           </li> -->
 
       <li class="nav-item-header" onmouseover="hover('messenger','<?php echo $selected;?>')" onmouseout="hoverOff('messenger','<?php echo $selected;?>')">
-        <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('messenger') ?>" title="Cart"> 
+        <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('messenger') ?>" title="Chat101"> 
           <?php
               if($url_page_array[array_search("HRMS101",$url_page_array) + 1] == strtolower("Messenger")){ ?>
               <i class="mr-4 " ><img id = "messenger" src="<?php echo base_url();?>assets/images/navbar-icons/messenger.png" style="max-height: 1rem"></i>
@@ -626,7 +626,7 @@ select{
         </a>
       </li>
       <li class="nav-item-header" onmouseover="hover('notices','<?php echo $selected;?>')" onmouseout="hoverOff('notices','<?php echo $selected;?>')">
-        <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('notice') ?>" title="Notices">
+        <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('notice') ?>" title="Notice">
         <?php
               if($url_page_array[array_search("HRMS101",$url_page_array) + 1] == strtolower("Notice")){ ?>
               <i class="mr-4 " ><img id = "notices" src="<?php echo base_url();?>assets/images/navbar-icons/notices.png" style="max-height: 1rem"></i>
