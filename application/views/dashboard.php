@@ -1104,7 +1104,7 @@ color:#FFFFFF;
             <span>
               <div class="form-group agenda-class">
                   <textarea name="meetingAgenda[]" id="agenda" class="form-control agenda" style="background-color:#eee" placeholder="Add Agenda"></textarea>
-                <span class="click-remove">
+                <span class="click-remove" style="display: none">
                   <i>
                     <img src="<?php echo base_url('assets/images/minus.png');?>" height="25px">
                   </i>
@@ -1352,14 +1352,19 @@ $('#toggle').remove();
     });
 
     var newElement = $('.agenda-class ').html();
-    $('.click-add').click(function(){
-        $('.agenda-class').append(newElement)
-    })
+      $('.click-add').click(function(){
+        $('.agenda-class').append(newElement);
+        if($('.click-remove').length > 0){
+          $('.click-remove').css('display','inline-block')
+        }
+      })
     $(document).on('click','.click-remove',function(){
       if(($('.agenda').length) > 1){
         $(this).prev().remove();
         $(this).remove();
-        // alert( $('.agenda').length )
+        if($('.click-remove').length == 1){
+          $('.click-remove').css('display','none')
+        }
       }
     })
 
