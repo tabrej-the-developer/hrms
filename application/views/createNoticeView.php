@@ -461,7 +461,7 @@ $("#mytable #checkall").click(function () {
             </div>  
            
             <div class="form-group " style="display: flex;justify-content: flex-end;">
-                <button class="btn button" type="submit">SEND</button>
+                <button class="btn button notice_submit" type="submit">SEND</button>
             </div>
             </form>
         </div>
