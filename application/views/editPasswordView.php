@@ -84,13 +84,13 @@ font-family: 'Open Sans', sans-serif;
             <label>Current Password</label> 
 
         <input class="form-control" type="password" name="currentPassword" id="currentPassword" placeholder="Current Password" required>
-         <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password1"></span>
+         <span toggle="#password-field" class="fa fa-fw fa-eye-slash field-icon toggle-password1"></span>
         <label> Enter New Password</label>
         <input class="form-control" type="password" name="newPassword1" id="newPassword1" placeholder="Type new Password" required>
-         <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password2"></span>
+         <span toggle="#password-field" class="fa fa-fw fa-eye-slash field-icon toggle-password2"></span>
         <label> Confirm New Password</label>
         <input class="form-control" type="password" name="newPassword2" id="newPassword2" placeholder="Confirm new Password" required>
-         <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password3"></span>
+         <span toggle="#password-field" class="fa fa-fw fa-eye-slash field-icon toggle-password3"></span>
 
         <span style="color: red;" id="passwordError"></span><br>
         <div style="text-align: center;">
@@ -145,7 +145,13 @@ font-family: 'Open Sans', sans-serif;
     </script>
     <script type="text/javascript">
       $(document).on('click','.fa-fw',function(){
-        
+        if($(this).hasClass('fa-eye-slash')){
+          $(this).removeClass('fa-eye-slash');
+          $(this).addClass('fa-eye');
+        }else{
+          $(this).removeClass('fa-eye');
+          $(this).addClass('fa-eye-slash');
+        }
         if($(this).prev().attr('type') == 'text'){
              $(this).prev().attr('type','password')
         }
