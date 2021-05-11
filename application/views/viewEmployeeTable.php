@@ -380,7 +380,7 @@
 });
 
   $(document).ready(function(){
-    var url = window.location.origin+'/PN101/settings/centersBySuperAdmin';
+    var url = '<?php echo base_url() ?>settings/centersBySuperAdmin';
     var type = 'CENTER';
     var id = "1";
     $.ajax({
@@ -409,7 +409,7 @@
     function viewEmployeeTable(){
       var centerid = $('#centerValue').val();
       var counter = 0;
-        var url = window.location.origin+"/PN101/settings/getEmployeesByCenter/"+centerid; 
+        var url = "<?php echo base_url() ?>settings/getEmployeesByCenter/"+centerid; 
       $.ajax({
         url: url,
         method: 'GET',
@@ -425,8 +425,8 @@
             $('.viewEmployeeTable_memberId').eq(counter).text(employee.id);
             $('.viewEmployeeTable_memberName').eq(counter).text(employee.roleName);
             $('.viewEmployeeTable_action').eq(counter).html(`
-                <button class="button"><a href="${window.location.origin+'/PN101/settings/viewEmployee/'+employee.id}">View</a></button>
-                <button class="button"><a href="${window.location.origin+'/PN101/settings/editEmployeeProfile/'+employee.id}">Edit</a></button>
+                <button class="button"><a href="${'<?php echo base_url() ?>settings/viewEmployee/'+employee.id}">View</a></button>
+                <button class="button"><a href="${'<?php echo base_url() ?>settings/editEmployeeProfile/'+employee.id}">Edit</a></button>
               `)
             counter++;
           })
@@ -439,7 +439,7 @@
   })
 
   function getEmployeeCenters(empid){
-    var url = window.location.origin+'/PN101/settings/getEmployeeDetails/'+empid;
+    var url = '<?php echo base_url() ?>settings/getEmployeeDetails/'+empid;
     $.ajax({
       url : url,
       type : 'GET',
@@ -492,7 +492,7 @@
   })
 
   $(document).on('click','.changeCenterModal_save',function(){
-    var url = window.location.origin+'/PN101/settings/changeEmployeeCenter';
+    var url = '<?php echo base_url() ?>settings/changeEmployeeCenter';
     var empId = $('.changeCenterModalBody').attr('empId');
     var centers = [];
     $('.centerIdCheckbox_parent').each(function(){
@@ -523,7 +523,7 @@
    $(document).on('click','.editEmployeeCenter',function(){
     // Display should be block;
     var userid = $(this).parent().parent().parent().children('.viewEmployeeTable_memberId_parent').children().text();
-    var url = window.location.origin+'/PN101/settings/getEmployeeDetails/'+userid;
+    var url = '<?php echo base_url() ?>settings/getEmployeeDetails/'+userid;
     $.ajax({
       url : url,
       type : 'GET',
@@ -602,7 +602,7 @@
 
     $(document).on('click','.syncXeroEmployees',function(){
       var centerid = $('#centerValue').val(); 
-      var url = window.location.origin+'/PN101/settings/syncXeroEmployees'
+      var url = '<?php echo base_url() ?>settings/syncXeroEmployees'
       $.ajax({
         url : url,
         type : 'POST',

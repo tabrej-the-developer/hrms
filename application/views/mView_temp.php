@@ -1374,7 +1374,7 @@ display: flex;
 .searchbar_wrapper::before{
     content: ' ';
     position: absolute;
-    background-image: url(http://localhost/PN101/assets/images/icons/search.png);
+    background-image: url(<?php echo base_url() ?>assets/images/icons/search.png);
     height: 25px;
     width: 25px;
     background-repeat: no-repeat;
@@ -2430,7 +2430,7 @@ $('.save').click(function(){
 
     var base_url = "<?php echo base_url();?>";
     function loadNewChat(userid,isGroupYN){
-        var url = window.location.origin+'/PN101/messenger/chat/'+userid+'/'+isGroupYN;
+        var url = '<?php echo base_url() ?>messenger/chat/'+userid+'/'+isGroupYN;
         $.ajax({
           url : url,
           type : 'GET',
@@ -2453,7 +2453,7 @@ $('.save').click(function(){
         });
 
       $(document).on('click','.editGroupImageSave',function(){
-        var url = window.location.origin+'/PN101/messenger/postConversation';
+        var url = '<?php echo base_url() ?>messenger/postConversation';
         var allUserids = [];
           $('.groupMembers_wrapper').each(function(){
             if($(this).attr('userid') != null && $(this).attr('userid') != ""){
@@ -2609,7 +2609,7 @@ $('.save').click(function(){
       if(bool == true){
         var groupId = groupId;
         var isGroupYN = 'Y';
-        var url = window.location.origin+'/PN101/messenger/exitGroup';
+        var url = '<?php echo base_url() ?>messenger/exitGroup';
         $.ajax({
           url : url,
           data : {
@@ -2627,7 +2627,7 @@ $('.save').click(function(){
     function loadChatElements(){
       var userId = $('.text-capitalize').attr('user_id')
       var isGroupYN = $('.text-capitalize').attr('group')
-      var url = window.location.origin+'/PN101/messenger/chats/'+userId+'/'+isGroupYN;
+      var url = '<?php echo base_url() ?>messenger/chats/'+userId+'/'+isGroupYN;
       $.ajax({
         url : url,
         type : 'GET',
@@ -2738,7 +2738,7 @@ else{
      --------------------------------------- */
 
     function loadNewChat(chatId){
-      var url = window.location.origin+'/PN101/messenger/chat/'+chatId;
+      var url = '<?php echo base_url() ?>messenger/chat/'+chatId;
       $.ajax({
         url : url,
         type : 'GET',
@@ -2751,7 +2751,7 @@ else{
     }
 
     function lastSeen(isDeletedYN,idMember,idConversation,idOtherUser=null){
-      var url = window.location.origin+'/PN101/messenger/updateMember';
+      var url = '<?php echo base_url() ?>messenger/updateMember';
       var isDeletedYN = isDeletedYN;
       var isAdminYN = null;
       var idMember = idMember;
@@ -2774,7 +2774,7 @@ else{
     }
 
     function postConversation(idUsers,convoName,convoProfilePic,idConversation,isGroupYN,reload=null){
-      var url = window.location.origin+'/PN101/messenger/postConversation' 
+      var url = '<?php echo base_url() ?>messenger/postConversation' 
       $.ajax({
         url : url,
         type : 'POST',
@@ -2800,7 +2800,7 @@ else{
     }
 
     function getConversation(otherIdUser,name){
-      var url = window.location.origin+"/PN101/messenger/getConv/"+otherIdUser;
+      var url = "<?php echo base_url() ?>messenger/getConv/"+otherIdUser;
       $.ajax({
         url : url,
         type : 'GET',
@@ -2878,7 +2878,7 @@ else{
         }
         catch{}
       // var isGroupYN = $(this).attr('group');
-      var url = window.location.origin+'/PN101/messenger/chat/'+userId;
+      var url = '<?php echo base_url() ?>messenger/chat/'+userId;
       $.ajax({
         url : url,
         type : 'GET',
@@ -2898,7 +2898,7 @@ else{
     })
 
     $(document).on('click','.deleteUserFromGroup',function(){
-      var url = window.location.origin+"/PN101/messenger/removeFromGroup";
+      var url = "<?php echo base_url() ?>messenger/removeFromGroup";
       var memberId = $(this).attr('idMember');
       var groupId = $(this).attr('groupId');
       var bool = confirm('Are you sure you want to remove a user from the group?')

@@ -480,7 +480,7 @@ border-bottom-right-radius: 20px;
 		$('#superfunds').click(function(){
 console.log("clicked");
 			var centerid = $('#centerValue').val();
-			var url = window.location.origin + "/PN101/settings/syncXeroSuperfunds/"+centerid ;
+			var url = "<?php echo base_url() ?>settings/syncXeroSuperfunds/"+centerid ;
 			$.ajax({
 					url:url,
 					type:'GET',
@@ -492,7 +492,7 @@ console.log("clicked");
 			})
 		$(document).on('change','#centerValue',function(){
 		  var centerid = $('#centerValue').val();
-		  window.location.href = window.location.origin+'/PN101/settings/superfundsSettings/'+centerid;
+		  window.location.href = '<?php echo base_url() ?>settings/superfundsSettings/'+centerid;
 		  // $.ajax({
 		  //   url : url,
 		  //   type : 'GET',

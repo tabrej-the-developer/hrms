@@ -714,7 +714,7 @@ table.dataTable{
 					//var sDate = $('#start-date').val($(this).attr('curr-date'))
 					//var tId = $('#timesheet-id').val($(this).attr('timesheet-id'))
 					 $.ajax({
-					 	url : window.location.origin+"/PN101/payroll/payrollShiftsModal?timesheetId="+"<?php echo $timesheetId; ?>&x="+x,
+					 	url : "<?php echo base_url() ?>payroll/payrollShiftsModal?timesheetId="+"<?php echo $timesheetId; ?>&x="+x,
 					 	type : 'GET',
 					 	success : function(response){
 
@@ -812,7 +812,7 @@ table.dataTable{
 			// console.log(length)
 			var array = [];
 			var object = {};
-			var url = window.location.origin+'/PN101/payroll/getAllPayruns/<?php echo $timesheetId ?>';
+			var url = '<?php echo base_url() ?>payroll/getAllPayruns/<?php echo $timesheetId ?>';
 			for(var i=0;i<length;i++){
 				object = {};
 				object.pay = $('[pay]').eq(i).attr('pay');
@@ -828,7 +828,7 @@ table.dataTable{
 						array : array
 					},
 					success : function(response){
-						var url_publish = window.location.origin+"/PN101/payroll/updateToPublished"
+						var url_publish = "<?php echo base_url() ?>payroll/updateToPublished"
 						$.ajax({
 							url : url_publish,
 							method : 'POST',
@@ -850,7 +850,7 @@ table.dataTable{
 		 $(document).on('click','.FLAGGED_flag',function(){
 		 	var timesheetid = $(this).attr('timesheetid');
 		 	var userid = $(this).attr('userid')
-		 	var url = window.location.origin+`/PN101/payroll/updateShiftStatus/${timesheetid}/${userid}`;
+		 	var url = `<?php echo base_url() ?>payroll/updateShiftStatus/${timesheetid}/${userid}`;
 		 	var message = "";
 		 		$.ajax({
 		 			url : url,
@@ -875,7 +875,7 @@ table.dataTable{
 		 $(document).on('click','#flag_modal_save',function(){
 		 	var timesheetid = $(this).attr('timesheetid');
 		 	var userid = $(this).attr('userid')
-		 	var url = window.location.origin+`/PN101/payroll/updateShiftStatus/${timesheetid}/${userid}`;
+		 	var url = `<?php echo base_url() ?>payroll/updateShiftStatus/${timesheetid}/${userid}`;
 		 	var message = $('.flag_textarea').val();
 		 		$.ajax({
 		 			url : url,
