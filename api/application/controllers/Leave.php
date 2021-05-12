@@ -312,6 +312,7 @@ class Leave extends CI_Controller
 					$data['Message'] = "You are not allowed";
 				}
 				http_response_code(200);
+				$data['Status'] = "SUCCESS";
 				echo json_encode($data);
 			} else {
 				http_response_code(401);
