@@ -36,7 +36,7 @@ class LeaveModel extends CI_Model {
 
 	public function deleteLeaveType($leaveId){
 		$this->load->database();
-		$query = $this->db->query("DELETE FROM leaves WHERE id=$leaveId");
+		$query = $this->db->query("DELETE FROM leaves WHERE leaveid=$leaveId");
 	}
 
 	public function getLeaveType($leaveId){
