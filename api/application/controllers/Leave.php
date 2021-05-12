@@ -257,6 +257,7 @@ class Leave extends CI_Controller
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
 			$json = json_decode(file_get_contents('php://input'));
 			if ($json != null && $res != null && $res->userid == $json->userid) {
+				$this->load->model('leaveModel');
 				$leaveId = $json->leaveId;
 				$userid = $json->userid;
 				$centerid = $this->leaveModel->getCenterByLeaveId($leaveId);
@@ -264,7 +265,6 @@ class Leave extends CI_Controller
 				$userDetails = $this->authModel->getUserDetails($userid);
 				if ($userDetails != null && $userDetails->role == SUPERADMIN) {
 					$this->load->model('xeroModel');
-					$this->load->model('leaveModel');
 					$xeroTokens = $this->xeroModel->getXeroToken($centerid);
 
 					if ($xeroTokens != null) {
