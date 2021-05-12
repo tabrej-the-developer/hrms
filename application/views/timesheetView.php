@@ -2012,20 +2012,20 @@ $(document).on('click','.buttonn',function(){
 						// }
 					})
 				console.log(values)
-				// $.ajax({
-				// 	url : url,
-				// 	type: 'POST',
-				// 	data : {
-				// 		empId : empId,
-				// 		userid : userid,
-				// 		timesheetid : timesheetId, 
-				// 		visits : values
-				// 	},
-				// 	success : function(response){
-				// 		console.log(response)
-				// 			window.location.reload();
-				// 	}
-				// })
+				$.ajax({
+					url : url,
+					type: 'POST',
+					data : {
+						empId : empId,
+						userid : userid,
+						timesheetid : timesheetId, 
+						visits : values
+					},
+					success : function(response){
+						console.log(response)
+							window.location.reload();
+					}
+				})
 			})
 
 	$(document).on('click','.weekSameAsRoster',function(){
