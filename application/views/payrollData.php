@@ -471,7 +471,7 @@ table.dataTable{
 						$payrollShifts = json_decode($payrollShifts); 
 					}
 		if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN : "N") == "Y"){ 
-			if(isset($payrollShifts->payrun) && $payrollShifts->payrun == null){
+			if(isset($payrollShifts) && $payrollShifts->payrun == null){
 			?>
 		<span class="btn ml-auto d-flex align-self-center create">
 			<a href="javascript:void(0)" id="create-new-roster" class="d-flex" id="publish">
