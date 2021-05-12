@@ -225,7 +225,8 @@
                   <th>Action</th>
                 </tr>
               </thead>
-              <tbody id="filterList" > 
+              <tbody id="filterList" >
+              <?php  if(isset($xeroTokens->center)){ ?> 
                 <?php foreach($xeroTokens->center as $xeroToken){ ?>
                 <tr >
                   <td >
@@ -273,7 +274,8 @@
                     <?php } ?>
                     </td>
                     </tr>
-                    <?php } ?> 
+                    <?php } 
+                  } ?> 
               </tbody>
             </table>
           </div>
