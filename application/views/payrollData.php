@@ -457,7 +457,8 @@ table.dataTable{
 	<div class="d-flex heading-bar">
 		<span class="m-3" id="roster-heading" style="">Payroll Shifts</span>
 		<span class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
-<?php if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN : "N") == "Y"){ ?> 
+<?php 
+if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN : "N") == "Y"){ ?> 
 <!-- 			<div class="filter-icon d-flex">
 				<span class="">Sort&nbsp;by</span>
 				<span class=""><img src="../assets/images/filter-icon.png" height="20px"></span>
@@ -549,7 +550,7 @@ table.dataTable{
 							if($payrollType->earningRateId == $payrollShift->payrollType && $centerid == $payrollType->centerid) {
 								$startMins = intval(($payrollShift->startTime)/100)*60 + ($payrollShift->startTime)%100;
 								$endMins = intval(($payrollShift->endTime)/100)*60 + ($payrollShift->endTime)%100;
-								$totalTime = $totalTime + (intval(($endMins - $startMins)/60)*$rate + ($rate*((($endMins - $startMins)%60)*(10/6)))/100)*$payrollType->multiplier_amount; 
+								$totalTime = $totalTime + (intval(($endMins - $startMins)/60)*$rate + ($rate*((($endMins - $startMins)%60)*(10/6)))/100); 
 							}
 						}
 					}
@@ -909,10 +910,4 @@ table.dataTable{
 </script>
 </body>
 </html>
-
-
-
-
-
-
 
