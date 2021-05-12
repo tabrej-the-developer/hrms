@@ -173,17 +173,21 @@ class Leave extends CI_Controller
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
 			$json = json_decode(file_get_contents('php://input'));
 			if ($json != null && $res != null && $res->userid == $json->userid) {
+				$this->load->model('leaveModel');
 				$leaveId = $json->leaveId;
 				$name = $json->name;
 				$slug = $json->slug;
 				$isPaidYN = $json->isPaidYN;
 				$showOnPaySlipYN = $json->showOnPaySlipYN;
 				$userid = $json->userid;
+				$medicalFile = $json->medicalFile;
+				$hours = $json->hours;
 				$userDetails = $this->authModel->getUserDetails($userid);
+				$centerid = $this->leaveModel->getCenterByLeaveId($leaveId);
+				$centerid = isset($centerid) ? $centerid->centerid : 0;
 				if ($userDetails != null && $userDetails->role == SUPERADMIN) {
 					$this->load->model('xeroModel');
-					$this->load->model('leaveModel');
-					$xeroTokens = $this->xeroModel->getXeroToken();
+					$xeroTokens = $this->xeroModel->getXeroToken($centerid);
 
 					if ($xeroTokens != null) {
 
@@ -221,7 +225,7 @@ class Leave extends CI_Controller
 							}
 						}
 						if ($val == NULL) {
-							$this->leaveModel->editLeaveType($leaveId, $name, $isPaidYN, $slug, $showOnPaySlipYN);
+							$this->leaveModel->editLeaveType($leaveId, $name, $isPaidYN, $slug, $showOnPaySlipYN, $medicalFile, $hours);
 							$data['Status'] = 'SUCCESS';
 						} else {
 							$data['Status'] = "ERROR";
@@ -255,11 +259,13 @@ class Leave extends CI_Controller
 			if ($json != null && $res != null && $res->userid == $json->userid) {
 				$leaveId = $json->leaveId;
 				$userid = $json->userid;
+				$centerid = $this->leaveModel->getCenterByLeaveId($leaveId);
+				$centerid = isset($centerid) ? $centerid->centerid : 0;
 				$userDetails = $this->authModel->getUserDetails($userid);
 				if ($userDetails != null && $userDetails->role == SUPERADMIN) {
 					$this->load->model('xeroModel');
 					$this->load->model('leaveModel');
-					$xeroTokens = $this->xeroModel->getXeroToken();
+					$xeroTokens = $this->xeroModel->getXeroToken($centerid);
 
 					if ($xeroTokens != null) {
 

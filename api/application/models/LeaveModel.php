@@ -9,7 +9,7 @@ class LeaveModel extends CI_Model {
 		if($query->row() != null){
 			//update
 			$leaveid = $query->row()->id;
-			$this->db->query("UPDATE leaves SET name = '$name',isPaidYN = '$isPaidYN',slug = '$slug',showOnPaySlipYN = '$showOnPaySlip',currentRecordYN = '$currentRecordYN' WHERE id = $leaveid");
+			$this->db->query("UPDATE leaves SET name = '$name',isPaidYN = '$isPaidYN',slug = '$slug',showOnPaySlipYN = '$showOnPaySlip',currentRecordYN = '$currentRecord' WHERE id = $leaveid");
 		}
 		else{
 			//insert
@@ -18,9 +18,15 @@ class LeaveModel extends CI_Model {
 		}
 	}
 
-	public function editLeaveType($leaveId,$name,$isPaidYN,$slug,$showOnPaySlip){
+	public function editLeaveType($leaveId,$name,$isPaidYN,$slug,$showOnPaySlip, $medicalFile, $hours){
 		$this->load->database();
-		$query = $this->db->query("UPDATE leaves SET name='$name',isPaidYN='$isPaidYN',slug='$slug',showOnPaySlipYN='$showOnPaySlip' WHERE id=$leaveId");
+		$query = $this->db->query("UPDATE leaves SET name='$name',isPaidYN='$isPaidYN',slug='$slug',showOnPaySlipYN='$showOnPaySlip', medicalFIleYN='$medicalFile', hoursYN='$hours' WHERE id=$leaveId");
+	}
+
+	public function getCenterByLeaveId($leaveId){
+		$this->load->database();
+		$query = $this->db->query("SELECT leaveid from leave where leaveid = '$leaveId'");
+		return $query->row();
 	}
 
 	public function deleteAllLeaveTypes($centerid){
