@@ -261,7 +261,7 @@ class Leave extends CI_Controller
 				$leaveId = $json->leaveId;
 				$userid = $json->userid;
 				$centerid = $this->leaveModel->getCenterByLeaveId($leaveId);
-				$centerid = isset($centerid) ? $centerid : 0;
+				$centerid = isset($centerid) ? $centerid->centerid : 0;
 				$userDetails = $this->authModel->getUserDetails($userid);
 				if ($userDetails != null && $userDetails->role == SUPERADMIN) {
 					$this->load->model('xeroModel');
