@@ -231,6 +231,10 @@ class Leave extends CI_Controller
 							$data['Status'] = "ERROR";
 							$data['Message'] = "An unknown error occured";
 						}
+					}else {
+
+						$data['Status'] = 'ERROR';
+						$data['Message'] = "You are not allowed";
 					}
 				} else {
 
@@ -305,6 +309,10 @@ class Leave extends CI_Controller
 							$data['Status'] = "ERROR";
 							$data['Message'] = "An unknown error occured";
 						}
+					}else {
+
+						$data['Status'] = 'ERROR';
+						$data['Message'] = "You are not allowed";
 					}
 				} else {
 
@@ -312,7 +320,6 @@ class Leave extends CI_Controller
 					$data['Message'] = "You are not allowed";
 				}
 				http_response_code(200);
-				$data['Status'] = "SUCCESS";
 				echo json_encode($data);
 			} else {
 				http_response_code(401);
