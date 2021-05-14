@@ -271,7 +271,8 @@ class Mom extends CI_CONTROLLER
       $remark = $json->remark;
       $len = count($invites);
       for ($it = 0; $it < $len; $it++) {
-        $this->meetingModel->addMeetingRecord($mId, $invites[$it], $sentence[$it], $remark[$it]);
+        $rem = isset($remark[$it]) ? $remark[$it] : "";
+        $this->meetingModel->addMeetingRecord($mId, $invites[$it], $sentence[$it], $rem);
       }
       $this->meetingModel->updateMeetingStatus($mId, 'MOM');
       $data['Status'] = 'Success';

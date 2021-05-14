@@ -341,7 +341,7 @@ class Mom extends CI_CONTROLLER{
   // footprint end   
            $data['invites']  = $form_data['invites'];
            $data['sentence'] = $form_data['sentence'];
-           $data['remark']   = $form_data['remark'];
+           $data['remark']   = isset($form_data['remark']) ? $form_data['remark'] : "";
             
            $url = BASE_API_URL."mom/meetingRecord/".$id;
            $ch = curl_init($url);
