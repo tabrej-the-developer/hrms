@@ -24,7 +24,7 @@ class UtilModel extends CI_Model {
 			JOIN  users on users.id = usercenters.userid 
 			LEFT JOIN orgchartroles on orgchartroles.roleid = users.roleid 
 			LEFT JOIN employee on employee.userid = users.id 
-			WHERE usercenters.centerid = $centerid and (employee.terminationDate <= '1970-01-01' OR  employee.terminationDate > 'CURDATE()' ) ");
+			WHERE usercenters.centerid = $centerid  ");
 		return $query->result();
 	}
 
