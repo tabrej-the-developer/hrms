@@ -116,7 +116,7 @@ class Payroll extends CI_Controller {
 							$server_output = curl_exec($ch);
 							$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 						if($httpcode == 200){
-
+							print_r($server_output);
 						}
 						else if($httpcode == 401){
 
