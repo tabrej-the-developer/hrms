@@ -550,7 +550,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN 
 							if($payrollType->earningRateId == $payrollShift->payrollType && $centerid == $payrollType->centerid) {
 								$startMins = intval(($payrollShift->startTime)/100)*60 + ($payrollShift->startTime)%100;
 								$endMins = intval(($payrollShift->endTime)/100)*60 + ($payrollShift->endTime)%100;
-								$totalTime = $totalTime + (intval(($endMins - $startMins)/60)*$rate + ($rate*((($endMins - $startMins)%60)*(10/6)))/100); 
+								$totalTime = $totalTime + (intval(($endMins - $startMins)/60)*$rate + ($rate*((($endMins - $startMins)%60)*(10/6)))/100)*$payrollType->multiplier_amount; 
 							}
 						}
 					}
@@ -839,7 +839,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN 
 							success : function(res){
 								alert('Payroll Published')
 								window.location.reload();
-								// console.log(array);
+								console.log(array);
 						}
 					})
 				}
