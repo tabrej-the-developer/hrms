@@ -341,7 +341,7 @@ class Mom extends CI_CONTROLLER{
   // footprint end   
            $data['invites']  = $form_data['invites'];
            $data['sentence'] = $form_data['sentence'];
-           $data['remark']   = $form_data['remark'];
+           $data['remark']   = isset($form_data['remark']) ? $form_data['remark'] : "";
             
            $url = BASE_API_URL."mom/meetingRecord/".$id;
            $ch = curl_init($url);
@@ -355,10 +355,10 @@ class Mom extends CI_CONTROLLER{
            ));
            curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
           $server_output = curl_exec($ch);
-        //   var_dump($server_output);
+          var_dump($server_output);
         //   exit;
            $httpcode = curl_getinfo($ch,CURLINFO_HTTP_CODE);
-        //    echo $httpcode;
+            var_dump($httpcode);
         //    exit;
            if($httpcode == 200){
                $jsonOutput = json_decode($server_output);
