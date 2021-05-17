@@ -21,4 +21,10 @@ class XeroModel extends CI_Model {
 		$query = $this->db->query("SELECT * FROM xeroaccesstoken where centerid = $center");
 		return $query->row();
 	}
+	public function getUserCenters($employeeId){
+		$this->load->database();
+		$query = $this->db->query("SELECT *,centers.name as centerName FROM usercenters left join centers on  usercenters.centerid = centers.centerid  where userid = '$employeeId'");
+		return $query->result();
+	}
+
 }	

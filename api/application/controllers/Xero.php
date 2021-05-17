@@ -635,14 +635,15 @@ class Xero extends CI_Controller
 			if ($res != null && $res->userid == $userid) {
 				$this->load->model('xeroModel');
 				$userDetails = $this->authModel->getUserDetails($userid);
-				$userDetails = $userDetails->center;
-				$userCenters = explode("|", $userDetails);
+				// $userDetails = $userDetails->center;
+				// $userCenters = explode("|", $userDetails);
+				$userDetails = $this->xeroModel->getUserCenters($userid);
 				$data['center'] = [];
 				$i = 0;
-				foreach ($userCenters as $center) {
+				foreach ($userDetails as $center) {
 					if ($center != "") {
 						$data['center'][$i] = [];
-						array_push($data['center'][$i], $this->xeroModel->fetchXeroToken($center));
+						array_push($data['center'][$i], $this->xeroModel->fetchXeroToken($center->centerid));
 						array_push($data['center'][$i], $center);
 						$i++;
 					}

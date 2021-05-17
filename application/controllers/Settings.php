@@ -2165,6 +2165,8 @@ $server_output = curl_exec($ch);
 			$data['leaveId'] = $form_data['leaveId'];
 			$data['name'] = $form_data['leaveName'];
 			$data['slug'] = $form_data['leaveSlug'];
+			$data['medicalFile'] = $form_data['medicalFile'];
+			$data['hours'] = $form_data['hours'];
 			if(!isset($form_data['show_in_payslips']))
 				$data['showOnPaySlipYN'] = "N";			
 			else
