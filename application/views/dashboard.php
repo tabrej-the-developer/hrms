@@ -979,7 +979,7 @@ color:#FFFFFF;
                       <label class="label_text">Title</label>
                     </span>
                     <span class="title_span_input">
-                      <input type="text" name="meetingTitle" id="add_meeting" class="input_box__ dashboard_input" placeholder="Enter Title">
+                      <input type="text" name="meetingTitle" id="add_meeting" class="input_box__ dashboard_input" placeholder="Enter Title" required>
                     </span>  
               </div>
                <table class="table table-borderless modal_table dashboard_table">
@@ -991,7 +991,7 @@ color:#FFFFFF;
                             <label class="label_text">Start&nbsp;Date</label>
                           </span>
                           <span class=" date_span_input">
-                            <input type="date" id="date" name="meetingDate" class="input_box__ dashboard_input" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                            <input type="date" id="date" name="meetingDate" class="input_box__ dashboard_input" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" required>
                           </span>
                         </span>
                         <span class="col-md-6 ">
@@ -1013,7 +1013,7 @@ color:#FFFFFF;
                          <span class=" label_text" id="basic-addon1">Start&nbsp;Time</span>
                       </span>
                       <span class="date_span_input">
-                        <input type="time" name="meetingTime" id="time" class="input_box__ dashboard_input" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                        <input type="time" name="meetingTime" id="time" class="input_box__ dashboard_input" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" required>
                       </span>
                     </span>
                     <span class="col-md-6 ">
@@ -1033,7 +1033,7 @@ color:#FFFFFF;
                     <span class="col-md-6">
                       <span class="date_span_label label_text">Where</span>
                       <span class="date_span_input">
-                        <input id="location" type="text" class="input_box__ dashboard_input" id="autocomplete" placeholder="Type Address..." name="meetingLocation">
+                        <input id="location" type="text" class="input_box__ dashboard_input" id="autocomplete" placeholder="Type Address..." name="meetingLocation" required>
                       </span>
                       <div class="form-group">
                        <input type="hidden" class="dashboard_input">
@@ -1065,7 +1065,7 @@ color:#FFFFFF;
                   <div class="blocks_modal d-flex">
                     <span class="add_member_label">Add&nbsp;Member</span>
                     <span class="add_member_span">
-                      <select name="invites[]" class="demo" multiple  id="demo">
+                      <select name="invites[]" class="demo" multiple  id="demo" required>
                       <?php 
                           foreach($users->users as $m):
                       ?>  
