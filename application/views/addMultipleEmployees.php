@@ -12,7 +12,6 @@
 	  background-repeat: no-repeat;
 	  padding: 15px;
     margin-left: -28px;
-    margin-top: 10px !important;
     background-size: 0.6rem 0.6rem;
 	}
 	.addMultipleEmployee_div{
