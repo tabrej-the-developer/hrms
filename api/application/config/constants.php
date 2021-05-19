@@ -97,8 +97,8 @@ define('SMTP_PASSWORD','K!ddz1ng');
 define('USER_IMAGE_PATH','uploads/images/users/');
 define('GROUP_IMAGE_PATH','uploads/images/groups/');
 
-define('XERO_CLIENT_ID','3D20AF99AB37478A9B3BCA53606D06BC');
-define('XERO_CLIENT_SECRET','nbOErkWbgx6hu9tuzeeITpj_zRjeV9evfCH3tHf3lGMnx50R');
+define('XERO_CLIENT_ID','2072D00D47D14E9181C931994FF5BFD2');
+define('XERO_CLIENT_SECRET','UHiK9Rq25xLkclP5vWSUPduXsDWn24qxtPqV1c5fHxtbO9XD');
 define('XERO_ACCOUNT_CODE','477');
 
 

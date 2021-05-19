@@ -14,7 +14,7 @@ class LeaveModel extends CI_Model {
 		else{
 			//insert
 			$query = $this->db->query("INSERT INTO leaves VALUES(0,'$leaveTypeId','$name','$isPaidYN','$slug','$showOnPaySlip','$currentRecord'
-			,now(),'$superadminId',$centerid)");
+			,now(),'$superadminId',$centerid,'Y','Y')");
 		}
 	}
 
@@ -97,7 +97,7 @@ class LeaveModel extends CI_Model {
 
 	public function insertIntoLeaveBalance($userid,$leaveTypeId,$leaveBalance){
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO leavebalance VALUES(0,'$userid',$leaveTypeId,$leaveBalance)");
+		$query = $this->db->query("INSERT INTO leavebalance VALUES(0,'$userid','$leaveTypeId',$leaveBalance)");
 	}
 
 	// public function getGetLeaveBalanceByLeaveId($userid,$leaveId){

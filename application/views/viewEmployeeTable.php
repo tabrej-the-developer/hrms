@@ -610,7 +610,7 @@
           centerid : centerid
         },
         success : function(response){
-          // console.log(response)
+          console.log(response)
           // window.location.href = window.location.href;
         }
       }) 

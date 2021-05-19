@@ -237,7 +237,7 @@ $headers = array_change_key_case($headers);
 					$val = $this->postTimesheetDataToXero($Timesheets,$access_token,$tenant_id);
 					$val = json_decode($val);
 	 					if($val != NULL){
-	 						//var_dump($val);
+	 						 var_dump($val);
 	 						if($val->Status == 401){
 	 							$refresh = $this->refreshXeroToken($refresh_token);
 	 							$refresh = json_decode($refresh);
@@ -283,10 +283,11 @@ $headers = array_change_key_case($headers);
 		$payrollCalendarId = $this->payrollModel->getAllPayrollCalendarId($timesheetId);
 		// var_dump($payrollCalendarId);
 		$payrollCalendar = array();
+		$payrollCal = array();
 		foreach($payrollCalendarId as $calendarId){
-			$payrollCalendarId['PayrollCalendarID'] = $calendarId->payrollCalendarId;
-			$payrollCalendarId['PayRunStatus'] = 'POSTED';
-			array_push($payrollCalendar,$payrollCalendarId);
+			$payrollCal['PayrollCalendarID'] = $calendarId->payrollCalendarId;
+			$payrollCal['PayRunStatus'] = 'POSTED';
+			array_push($payrollCalendar,$payrollCal);
 		}
 
 		$this->load->model('xeroModel');
@@ -298,7 +299,7 @@ $headers = array_change_key_case($headers);
 			$refresh_token = $xeroTokens->refresh_token;
 			// var_dump($payrollCalendar);
 			$createPayrun = $this->createPayrun($payrollCalendar,$access_token,$tenant_id);
-		// var_dump($createPayrun);
+		  var_dump($createPayrun);
 			$createPayrun = json_decode($createPayrun);
 			if($createPayrun != NULL){
 				if($createPayrun->Status == 401){
