@@ -189,7 +189,7 @@ class SettingsModel extends CI_Model {
 			$query = $this->db->query("INSERT INTO users (id,password, email, name,created_at, created_by,roleid,level,alias,isVerified,imageUrl) VALUES ('$employee_no','$password','$emails','$name',NOW(),'$userid',$role,'$level','$alias','N','$fileNameLoc')");
 		}
 
-		public function addToUsersME($employee_no,$password, $emails,$name,$center,$userid,$role,$level,$alias,$centerid){
+		public function addToUsersME($employee_no,$password, $emails,$name,$center,$userid,$role,$level,$alias){
 			$this->load->database();
 			$query = $this->db->query("INSERT INTO users (id,password, email, name,created_at, created_by,roleid,level,alias,isVerified) VALUES ('$employee_no','$password','$emails','$name',NOW(),'$userid',$role,'$level','$alias','N')");
 			$this->db->query("INSERT INTO usercenters (userid,centerid) VALUES ('$userid',$center)");
