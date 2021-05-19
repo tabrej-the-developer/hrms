@@ -65,7 +65,7 @@
 			</div>
 			<br>
 			<span class="addMultipleEmployee_span d-block">
-				<input type="file" name="addemployee">
+				<input type="file" name="addemployee" required>
 				<input type="submit" name="submit" value="submit">
 			</span>
 			<div style="position: absolute;bottom:5rem">
