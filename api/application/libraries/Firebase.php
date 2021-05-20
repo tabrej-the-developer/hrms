@@ -13,36 +13,37 @@ class Firebase{
     {
         // Assign the CodeIgniter super-object
         $this->CI =& get_instance();
-        $this->serviceAccount = ServiceAccount::fromValue($this->CI->config->item('firebase_app_key'));
+        // $this->serviceAccount = ServiceAccount::fromValue($this->CI->config->item('firebase_app_key'));
     }
     
     public function init()
     {
-        return $firebase = (new Factory)->withServiceAccount($this->serviceAccount)->create();
+        return $firebase = (new Factory)->withServiceAccount($this->CI->config->item('firebase_app_key'));
     }
 
-    public function createUser($data){
+    // public function createUser($data){
         
-        $firebaseVal = $this->init();
-        $auth = $firebaseVal->getAuth();
-        $userProperties = [
-            'email' => $data['email'],
-            'emailVerified' => $data['verified'],
-            'password' => $data['password'],
-            'displayName' => $data['name'],
-            'disabled' => false,
-        ];
+    //     $firebaseVal = $this->init();
+    //     $auth = $firebaseVal->getAuth();
+    //     $userProperties = [
+    //         'email' => $data['email'],
+    //         'emailVerified' => $data['verified'],
+    //         'password' => $data['password'],
+    //         'displayName' => $data['name'],
+    //         'disabled' => false,
+    //     ];
 
-        $createdUser = $auth->createUser($userProperties);
+    //     $createdUser = $auth->createUser($userProperties);
 
-        return $createdUser;
-    }
+    //     return $createdUser;
+    // }
 
 
     public function sendMessage($title,$body,$payload,$userid){
 
-        $firebaseVal = $this->init();
-        $messaging = $firebaseVal->getMessaging();
+        $messaging = $this->init()->createMessaging();
+        // $firebaseVal = $this->init();
+        // $messaging = $firebaseVal->getMessaging();
         $message = CloudMessage::withTarget('topic', $userid)
             ->withNotification(['title'=>$title,'body'=>$body])
             ->withData($payload);

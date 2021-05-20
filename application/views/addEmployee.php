@@ -207,7 +207,7 @@
 			</sup></label>
 			<span class="select_css">
 				<select id="center" name="center">
-					<option>--Center--</option>
+					<option value="0">--Center--</option>
 					<?php 
 						$centers = json_decode($centers);
 					foreach($centers->centers as $center){ ?> 
@@ -230,7 +230,7 @@
 				<span class="" id="area-select">
 					<span class="select_css">
 						<select id="area" name="area">
-							<option>--select--</option>
+							<option value="0">--select--</option>
 						<?php 
 						$areas = json_decode($areas);
 						foreach($areas->areas as $area){
@@ -249,7 +249,7 @@
 			<span id="role-select">
 				<span class="select_css">
 					<select id="role" name="role">
-						<option>--select--</option>
+						<option value="0">--select--</option>
 
 						<?php foreach($areas->areas as $roles){?>
 							<?php foreach($roles->roles as $role){?>
@@ -651,7 +651,16 @@ $(document).ready(function(){
 		      setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 				}
-				if( $('#area').val() == null || $('#area').val() == "" ){
+				if( $('#center').val() == null || $('#center').val() == "" || $('#center').val() == 0 ){
+					$('#area').css({"border-color": "red", 
+		             "border-width":"1px", 
+		             "border-style":"solid"})
+		      addMessageToNotification('Select Center');
+		      showNotification();
+		      setTimeout(closeNotification,5000)
+					falseOrTrue = false;
+				}
+				if( $('#area').val() == null || $('#area').val() == "" || $('#area').val() == 0 ){
 					$('#area').css({"border-color": "red", 
 		             "border-width":"1px", 
 		             "border-style":"solid"})
@@ -660,7 +669,7 @@ $(document).ready(function(){
 		      setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 				}
-				if( $('#role').val() == null || $('#role').val() == "" ){
+				if( $('#role').val() == null || $('#role').val() == "" || $('#role').val() == 0 ){
 					$('#role').css({"border-color": "red", 
 		             "border-width":"1px", 
 		             "border-style":"solid"})
