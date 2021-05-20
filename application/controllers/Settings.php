@@ -972,7 +972,7 @@ $server_output = curl_exec($ch);
 			$data['userid'] = $this->session->userdata('LoginId');
 			$data['name'] = $this->input->post('name');
 			$data['rate'] = $this->input->post('rate');
-	 		$url = BASE_API_URL."/payroll/updateEntitlement/".$data['userid'];
+	 		$url = BASE_API_URL."payroll/updateEntitlement/".$data['userid'];
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
 			curl_setopt($ch, CURLOPT_POST, 1);

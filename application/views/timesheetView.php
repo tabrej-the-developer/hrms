@@ -627,7 +627,7 @@ td.shift-edit{
 						} //end of foreach
 					} // end of isset(timesheet) if block
 		 ?>
-		 <th>----</th>
+		 <th></th>
 			</tr>
 			
 <?php 
@@ -1872,6 +1872,7 @@ $(document).on('click','.buttonn',function(){
 														<td class="select__" style="">
 															<span class="select_css" style="display:flex">
 																<select class="modalSelectType" >
+
 																</select>
 															</span>
 														</td>
@@ -1882,9 +1883,6 @@ $(document).on('click','.buttonn',function(){
 							select.payrollTypes.forEach(type => {
 								if(type.earningType == "ORDINARYTIMEEARNINGS" && type.centerid == 6){
 									var option = `<option value="${type.earningRateId}" factor="${type.multiplier_amount}" earningType="${type.earningType}" selected>${type.name}</option>`;
-								}
-								if(type.earningType != "ORDINARYTIMEEARNINGS" && type.centerid == 6){
-									var option = `<option value="${type.earningRateId}" factor="${type.multiplier_amount}" earningType="${type.earningType}">${type.name}</option>`
 								}
 									selectOptions += option;
 								$(`.modalSelectType`).eq($('.modalSelectType').length - 1).append(option);
@@ -1902,6 +1900,13 @@ $(document).on('click','.buttonn',function(){
 			/* Add new visit in timesheets */
 				// Adding new visits field
 			$(document).on('click','.addVisit',function(){
+				var types = "";
+				var payrollTypes = JSON.parse(localStorage.getItem('payrollTypes'))
+					payrollTypes.payrollTypes.forEach((val)=>{
+						if(val.centerid == '<?php echo $timesheetDetails->centerid ?>'){
+							types += `<option value="${val.earningRateId}">${val.name}</option>`
+						}
+					})
 				var code = `<tr class="display_flex_visits">
 											<td class="time_visits"  style="min-width:5vw !important;max-width:5vw !important"><input type="checkbox" checked></td>
 											<td visitid='' startTime='' endTime='' class="visit__" style="">
@@ -1915,14 +1920,14 @@ $(document).on('click','.buttonn',function(){
 												</td>
 											<td class="select__" style="">
 												<span class="select_css" style="display:flex">
-													<select class="modalSelectType" >
+													<select class="modalSelectType" style="width:100%">
+													${types}
 													</select>
 												</span>
 											</td>
 											<td class="totalHoursCount"></td>
 										</tr>`
 										$('.weekTableBody').append(code);
-										$(`.modalSelectType`).eq($('.modalSelectType').length - 1).append(selectOptions);
 			})
 
 			// Changing time, must reflect hours in hours field

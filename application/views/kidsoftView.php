@@ -282,7 +282,7 @@
     })
 
     $(document).on('click','.noClass',function(){
-      $(this).parent().parent().find('.kidsoftKey').html("- -")
+      $(this).parent().parent().parent().find('.kidsoftKey').html("- -")
       $(this).parent().parent().parent().find('.action').html(`<div class="addKey">
                       <span>
                         <img src="<?php echo base_url('assets/images/plus.png') ?>">
