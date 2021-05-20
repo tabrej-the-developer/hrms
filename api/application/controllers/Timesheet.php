@@ -661,7 +661,6 @@ $headers = array_change_key_case($headers);
 							// if($clockedTimes != null || $payedShifts != null)
 							// 	array_push($mData['unrosteredEmployees'],$var);
 						}
-
 						$mData['currentDate'] = $currentDate;
 						array_push($data['timesheet'], $mData);
 						$currentDay++;

@@ -75,7 +75,6 @@ class Payroll extends CI_Controller
 				$rate = $json->rate;
 				$userid = $json->userid;
 				$userDetails = $this->authModel->getUserDetails($userid);
-				if ($userDetails != null && $userDetails->role == SUPERADMIN) {
 					$this->load->model('payrollModel');
 					if ($name != null && $name != "" && $rate != null && $rate != "") {
 						$this->payrollModel->updateEntitlement($id, $name, $rate);
@@ -87,11 +86,6 @@ class Payroll extends CI_Controller
 						http_response_code(200);
 						echo json_encode($data);
 					}
-				} else {
-
-					$data['Status'] = 'ERROR';
-					$data['Message'] = "You are not allowed";
-				}
 			}
 		} else {
 			http_response_code(401);

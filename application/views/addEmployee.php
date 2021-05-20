@@ -192,7 +192,7 @@
 
 		<hr> 
 		<span class="span-class col-3">
-			<label class="labels__">Employee Number<sup>
+			<label class="labels__">Employee Id<sup>
 				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
 			</sup></label>
 			<input id="employee_no" type="text" name="employee_no">
@@ -646,7 +646,7 @@ $(document).ready(function(){
 					$('#employee_no').css({"border-color": "red", 
 		             "border-width":"1px", 
 		             "border-style":"solid"})
-		      addMessageToNotification('Enter Employee Number');
+		      addMessageToNotification('Enter Employee Id');
 		      showNotification();
 		      setTimeout(closeNotification,5000)
 					falseOrTrue = false;

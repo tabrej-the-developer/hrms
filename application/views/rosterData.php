@@ -1974,8 +1974,8 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
       <label class="col-4 modal_label">Days</label>
       <span class="col-7 edit_shift_modal">
         <span class="d-inline-block">
-          <span>Select All</span>
-          <input type="checkbox"  class="d-block select_all_edit_shift">
+          <span class="mr-2">Select All</span>
+          <input type="checkbox"  class="d-block select_all_edit_shift m-auto">
         </span>
         <span class="d-inline-block">
           <span>Mon</span>
@@ -2152,7 +2152,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 				<label>Area</label>
 				<span class="select_css proper_width_select">
 					<select class="casualEmploye-area-select">
-						<option>Change Area</option>
+						<option value="0">Change Area</option>
 					</select>
 				</span>
 			</span>
@@ -3448,6 +3448,18 @@ $('.modal_body').draggable();
         window.location.reload();
       })
 		})
+
+	// Empty form add employee
+	$(document).on('click','.close_priorityed',function(){
+		$('.priority_areased').find('input:text').val('')
+		$('.priority_areased').find('#casualEmp_id').val([])
+		$('.priority_areased').find('.token').remove();
+		$('.priority_areased').find('.casualEmploye-area-select').val(0);
+		$('.priority_areased').find('.casualEmploye-role-select').val('');
+		$('.priority_areased').find('#casualEmp_date').val('')
+		$('.priority_areased').find('#casualEmp_start_time').val("09:00")
+		$('.priority_areased').find('#casualEmp_end_time').val('17:00')
+	})
 </script>
 </body>
 </html>
