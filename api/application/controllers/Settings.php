@@ -278,6 +278,8 @@ class Settings extends CI_Controller
 				$this->load->model('settingsModel');
 				$superfunds = $this->settingsModel->getSuperfunds($centerid);
 				$data['superfunds'] = [];
+				$checkSync = $this->settingsModel->syncedWithXero($centerid);
+				$data['syncedYN'] = ($checkSync !== null) ? 'Y' : 'N';
 				foreach ($superfunds as $superfund) {
 					$var['id'] = $superfund->id;
 					$var['abn'] = $superfund->abn;
@@ -289,8 +291,6 @@ class Settings extends CI_Controller
 					$var['accountName'] = $superfund->accountName;
 					$var['eServiceAddress'] = $superfund->eServiceAddress;
 					$var['employeeNo'] = $superfund->employeeNo;
-					$checkSync = $this->settingsModel->syncedWithXero($centerid);
-					$var['syncedYN'] = ($checkSync !== null) ? 'Y' : 'N';
 					$var['created_at'] = $superfund->created_at;
 					$var['created_by'] = $superfund->created_by;
 					array_push($data['superfunds'], $var);
@@ -317,6 +317,8 @@ class Settings extends CI_Controller
 				$this->load->model('settingsModel');
 				$awards = $this->settingsModel->getAwards($centerid);
 				$data['awards'] = [];
+				$checkSync = $this->settingsModel->syncedWithXero($centerid);
+				$data['syncedYN'] = ($checkSync !== null) ? 'Y' : 'N';
 				foreach ($awards as $award) {
 					$var['id'] = $award->id;
 					$var['earningRateId'] = $award->earningRateId;
@@ -328,8 +330,6 @@ class Settings extends CI_Controller
 					$var['rateType'] = $award->rateType;
 					$var['multiplier_amount'] = $award->multiplier_amount;
 					$var['currentRecordYN'] = $award->currentRecordYN;
-					$checkSync = $this->settingsModel->syncedWithXero($centerid);
-					$var['syncedYN'] = ($checkSync !== null) ? 'Y' : 'N';
 					$var['created_by'] = $award->created_by;
 					$var['created_at'] = $award->created_at;
 					array_push($data['awards'], $var);
