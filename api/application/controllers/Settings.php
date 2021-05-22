@@ -289,6 +289,8 @@ class Settings extends CI_Controller
 					$var['accountName'] = $superfund->accountName;
 					$var['eServiceAddress'] = $superfund->eServiceAddress;
 					$var['employeeNo'] = $superfund->employeeNo;
+					$checkSync = $this->settingsModel->syncedWithXero($centerid);
+					$var['syncedYN'] = ($checkSync !== null) ? 'Y' : 'N';
 					$var['created_at'] = $superfund->created_at;
 					$var['created_by'] = $superfund->created_by;
 					array_push($data['superfunds'], $var);
@@ -326,6 +328,8 @@ class Settings extends CI_Controller
 					$var['rateType'] = $award->rateType;
 					$var['multiplier_amount'] = $award->multiplier_amount;
 					$var['currentRecordYN'] = $award->currentRecordYN;
+					$checkSync = $this->settingsModel->syncedWithXero($centerid);
+					$var['syncedYN'] = ($checkSync !== null) ? 'Y' : 'N';
 					$var['created_by'] = $award->created_by;
 					$var['created_at'] = $award->created_at;
 					array_push($data['awards'], $var);
