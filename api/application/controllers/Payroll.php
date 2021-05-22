@@ -40,7 +40,7 @@ class Payroll extends CI_Controller
 			http_response_code(401);
 		}
 	}
-
+// Original
 	public function getAllEntitlements($userid)
 	{
 		$headers = $this->input->request_headers();
@@ -60,6 +60,26 @@ class Payroll extends CI_Controller
 			http_response_code(401);
 		}
 	}
+// Version
+public function getAllEntitlementsV1($userid,$centerid)
+{
+	$headers = $this->input->request_headers();
+	$headers = array_change_key_case($headers);
+	if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+		$this->load->model('authModel');
+		$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+		if ($res != null && $res->userid == $userid) {
+			$this->load->model('payrollModel');
+			$mdata['entitlements'] = $this->payrollModel->getAllEntitlementsV1($centerid);
+			http_response_code(200);
+			echo json_encode($mdata);
+		} else {
+			http_response_code(401);
+		}
+	} else {
+		http_response_code(401);
+	}
+}
 
 	public function updateEntitlement($userid)
 	{
@@ -105,10 +125,45 @@ class Payroll extends CI_Controller
 				$rate = $json->rate;
 				$userid = $json->userid;
 				$userDetails = $this->authModel->getUserDetails($userid);
-				if ($userDetails != null && $userDetails->role == SUPERADMIN) {
+				if ($userDetails != null ) {
 					$this->load->model('payrollModel');
 					if ($name != null && $name != "" && $rate != null && $rate != "") {
 						$this->payrollModel->addEntitlement($name, $rate, $userid);
+					}
+					$data['Status'] = 'SUCCESS';
+				} else {
+
+					$data['Status'] = 'ERROR';
+					$data['Message'] = "You are not allowed";
+				}
+				http_response_code(200);
+				echo json_encode($data);
+			} else {
+				http_response_code(401);
+			}
+		} else {
+			http_response_code(401);
+		}
+	}
+
+	public function addEntitlementV1()
+	{
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if ($json != null && $res != null && $res->userid == $json->userid) {
+				$name = $json->name;
+				$rate = $json->rate;
+				$userid = $json->userid;
+				$centerid = $json->centerid;
+				$userDetails = $this->authModel->getUserDetails($userid);
+				if ($userDetails != null ) {
+					$this->load->model('payrollModel');
+					if ($name != null && $name != "" && $rate != null && $rate != "") {
+						$this->payrollModel->addEntitlement($name, $rate, $userid,$centerid);
 					}
 					$data['Status'] = 'SUCCESS';
 				} else {
