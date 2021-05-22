@@ -15,16 +15,28 @@ class PayrollModel extends CI_Model {
 		$query = $this->db->query("SELECT * FROM payrollshifttype_v1");
 		return $query->result();
 	}
-
+// Original
 	public function getAllEntitlements(){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM entitlements");
+		$query = $this->db->query("SELECT * FROM entitlements ");
 		return $query->result();
 	}
 
+// Version
+public function getAllEntitlementsV1($centerid){
+	$this->load->database();
+	$query = $this->db->query("SELECT * FROM entitlements where centerid = $centerid");
+	return $query->result();
+}
+
 	public function addEntitlement($name,$rate,$userid){
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO entitlements VALUES(0,'$name',$rate,'$userid')");
+		$query = $this->db->query("INSERT INTO entitlements (name,hourlyRate,createdBy) VALUES('$name',$rate,'$userid')");
+	}
+
+	public function addEntitlementV1($name,$rate,$userid,$centerid){
+		$this->load->database();
+		$query = $this->db->query("INSERT INTO entitlements VALUES(0,'$name',$rate,'$userid',$centerid)");
 	}
 
 	public function getUniqueUsersForTimesheet($timehseetid){
