@@ -282,8 +282,6 @@ class Xero extends CI_Controller
 							$val = $this->getPayItems($access_token, $tenant_id);
 							$val = json_decode($val);
 						}
-						var_dump($val);
-
 						if ($val->Status == "OK") {
 							// NOTICE -- need to get the centerid
 							$this->payrollModel->deleteAllPayrollShiftTypes($centerid);
