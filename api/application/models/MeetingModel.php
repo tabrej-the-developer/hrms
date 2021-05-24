@@ -50,14 +50,12 @@ class MeetingModel extends CI_MODEL{
   }
   public function getPartcipant($id){
       $this->load->database();
-      $query = "SELECT * from participants inner join users on users.id = participants.user_id  where m_id='$id'";
-      $q1 = $this->db->query($query);
+      $q1 = $this->db->query("SELECT name,users.id as id,email,participants.status from users INNER JOIN participants on participants.user_id=users.id  where participants.m_id='$id' ");
       return $q1->result();
   }
   public function getPresent($id){
       $this->load->database();
-      $query = "SELECT * from participants inner join users on users.id = participants.user_id where status = 'P' and m_id='$id' ";
-      $result = $this->db->query($query);
+      $result = $this->db->query("SELECT users.id,users.email,users.name from participants inner join users on users.id = participants.user_id where status = 'P' and m_id='$id' ");
       return $result->result();
   }
   public function getSummary($mid){
@@ -69,7 +67,7 @@ class MeetingModel extends CI_MODEL{
 
    public function getMeetingInfo($mId){
        $this->load->database();
-       $query = "select * from mom where m_id = '$mId'";
+       $query = "select mom.*,users.name as name from mom  inner join users on users.id = mom.user_id  where m_id = '$mId'";
        $result = $this->db->query($query);
        return $result->result();
    }

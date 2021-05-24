@@ -578,6 +578,7 @@ $headers = array_change_key_case($headers);
 							$var['empId'] = $userDetails->id;
 							$var['empName'] = $userDetails->name;
 							$var['level'] = $userDetails->level;
+							$var['hourlyRate'] = $this->rostersModel->getHourlyRate($var['level']);
 							$var['rosterShift'] = [];
 							$leaveApp = $this->leaveModel->getLeaveApplicationForUser($userDetails->id,$currentDate);
 							if($leaveApp != null){

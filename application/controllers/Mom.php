@@ -254,8 +254,8 @@ class Mom extends CI_CONTROLLER{
   }
   // footprint end
            $data['userid']        =      $this->session->userdata('LoginId');
-           $data['title']         =      $form_data['meetingTitle'];
-           $data['location']      =      $form_data['meetingLocation'];
+           $data['title']         =      addslashes($form_data['meetingTitle']);
+           $data['location']      =      addslashes($form_data['meetingLocation']);
            $data['date']          =      $form_data['meetingDate'];
            $data['edate']         =      $form_data['meetingEndDate'];
            $data['time']          =      $form_data['meetingTime'];
@@ -264,7 +264,8 @@ class Mom extends CI_CONTROLLER{
            $data['period']        =      $form_data['meetingcollab'];
            $data['invites']       =      $form_data['invites'];
            $data['status']        =      'CREATED';//$form_data['status'];
-           $data['agendaFile']    =       $form_data['agendaFile'];
+           $data['agendaFile']    =       isset($_FILES['agendaFile']['tmp_name']) ? base64_encode(file_get_contents($_FILES['agendaFile']['tmp_name'])) : "";
+           $data['agendaFileExtension'] = isset($_FILES['agendaFile']['name']) ? pathinfo($_FILES['agendaFile']['name'],PATHINFO_EXTENSION) : "";
            $url = BASE_API_URL."mom/AddMeeting";
            $ch = curl_init($url);
            curl_setopt($ch, CURLOPT_URL, $url);
@@ -277,8 +278,6 @@ class Mom extends CI_CONTROLLER{
          curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
            $server_output = curl_exec($ch);
            $httpcode = curl_getinfo($ch,CURLINFO_HTTP_CODE);
-           // json_encode($data);
-           // print_r($server_output);
             if($httpcode == 200){
               $jsonOutput = json_decode($server_output);
               curl_close($ch);       
@@ -399,7 +398,7 @@ class Mom extends CI_CONTROLLER{
            if($httpcode == 200){
                $jsonOutput = json_decode($server_output);
                curl_close($ch);
-               redirect(base_url().'mom');
+               redirect(base_url().'dashboard');
            }
        // }
    }

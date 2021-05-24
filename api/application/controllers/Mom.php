@@ -75,9 +75,9 @@ class Mom extends CI_CONTROLLER
       // exit;
       $mdata = [];
       foreach ($participants as $p) {
-        $var['uid'] = $p->user_id;
+        $var['uid'] = $p->id;
         $var['email'] = $p->email;
-
+        $var['name'] = $p->name;
         array_push($mdata, $var);
       }
 
@@ -101,8 +101,9 @@ class Mom extends CI_CONTROLLER
       // exit;
       $mdata = [];
       foreach ($participants as $p) {
-        $var['uid'] = $p->user_id;
+        $var['uid'] = $p->id;
         $var['email'] = $p->email;
+        $var['name'] = $p->name;
         array_push($mdata, $var);
       }
 
@@ -145,16 +146,19 @@ class Mom extends CI_CONTROLLER
         $agendaFile   = $json->agendaFile;
         $currentDate       = date("Y-m-d", strtotime($date));
         $dateDifference = strtotime($edate) - strtotime($date);
-        //           if($json->agendaFile != null){
-        //   $file = base64_decode($json->agendaFile);
-        //   $agendaFile = uniqid()."-".uniqid()."pdf";
-        // }
-        // move_uploaded_file($file,'/assets/agendas/'.$agendaFile);
+        $agendaFileName = "";
+        if($agendaFile != null){
+          $file = base64_decode($agendaFile);
+          $agendaFileName = uniqid()."-".uniqid();
+          $agendaFileExtension = isset($json->agendaFileExtension) ? $json->agendaFileExtension : ""; 
+          $agendaFileName = $agendaFileName.".".$agendaFileExtension;
+          file_put_contents("application/assets/uploads/eventfolder/$agendaFileName",$file);
+        }
         // $collab = $json->collab;
         //$offset = $json->offset;
         // var_dump($meetingTitle,$date,$time,$agenda,$invites,$location,$userid,$period);
         if ($period == 'O') {
-          $this->meetingModel->addMeeting($id, $meetingTitle, $date, $edate, $time, $endTime, $location, $period, null, $userid, $status, $agendaFile);
+          $this->meetingModel->addMeeting($id, $meetingTitle, $date, $edate, $time, $endTime, $location, $period, null, $userid, $status, $agendaFileName);
           $this->meetingModel->addParticipant($id, $userid);
           foreach ($agenda as $a) :
             $this->meetingModel->addAgenda($id, $a);
@@ -170,7 +174,7 @@ class Mom extends CI_CONTROLLER
           $id = uniqid();
           //echo $currentDate;
           $dateOfMeeting = date('Y-m-d', strtotime($currentDate . '+1 year'));
-          $this->meetingModel->addMeeting($id, $meetingTitle, $dateOfMeeting, date('Y-m-d', strtotime($dateOfMeeting . '+$dateDifference seconds')), $time, $endTime, $location, $period, null, $userid, $status, $agendaFile);
+          $this->meetingModel->addMeeting($id, $meetingTitle, $dateOfMeeting, date('Y-m-d', strtotime($dateOfMeeting . '+$dateDifference seconds')), $time, $endTime, $location, $period, null, $userid, $status, $agendaFileName);
           $this->meetingModel->addParticipant($id, $userid);
           foreach ($agenda as $a) :
             $this->meetingModel->addAgenda($id, $a);
@@ -187,7 +191,7 @@ class Mom extends CI_CONTROLLER
             $id = uniqid();
             $dateOfMeeting = date('Y-m-d', strtotime($currentDate . '+7days'));
             //$dateOfMeeting = date("Y-m-d",$dateOfMeeting . " +7 day");
-            $this->meetingModel->addMeeting($id, $meetingTitle, date_format($dateOfMeeting, 'Y-m-d'), date('Y-m-d', strtotime($dateOfMeeting . '+$dateDifference')), $time, $endTime, $location, $period, $currentMeetingId, $userid, $status, $agendaFile);
+            $this->meetingModel->addMeeting($id, $meetingTitle, date_format($dateOfMeeting, 'Y-m-d'), date('Y-m-d', strtotime($dateOfMeeting . '+$dateDifference')), $time, $endTime, $location, $period, $currentMeetingId, $userid, $status, $agendaFileName);
             $this->meetingModel->addParticipant($id, $userid);
             foreach ($agenda as $a) :
               $this->meetingModel->addAgenda($id, $a);
@@ -206,7 +210,7 @@ class Mom extends CI_CONTROLLER
             $id = uniqid();
             //$dateOfMeeting = date("Y-m-d",$dateOfMeeting . " +1 month");
             $endMeeting = date('Y-m-d', strtotime($dateOfMeeting . '+' . $dateDifference . 'seconds'));
-            $this->meetingModel->addMeeting($id, $meetingTitle, $dateOfMeeting, $endMeeting, $time, $endTime, $location, $period, null, $userid, $status, $agendaFile, $status, $agendaFile);
+            $this->meetingModel->addMeeting($id, $meetingTitle, $dateOfMeeting, $endMeeting, $time, $endTime, $location, $period, null, $userid, $status, $agendaFileName);
             $dateOfMeeting = date('Y-m-d', strtotime($dateOfMeeting . '+1 month'));
             $this->meetingModel->addParticipant($id, $userid);
             foreach ($agenda as $a) :
@@ -346,7 +350,7 @@ class Mom extends CI_CONTROLLER
       $mdata['mom'] = $this->meetingModel->getMeetingInfo($mId);
       // var_dump($participants);
       // exit;
-      $participants = $this->meetingModel->getPresent($mId);
+      $participants = $this->meetingModel->getPartcipant($mId);
       $title = $this->meetingModel->getTitle($mId);
       //    print_r($title);
       //    exit;
@@ -368,7 +372,8 @@ class Mom extends CI_CONTROLLER
         array_push($mdata['agenda'], $var);
       }
       foreach ($participants as $p) {
-        $var1['userid'] = $p->user_id;
+        $var1['userid'] = $p->id;
+        $var1['name'] = $p->name;
         $var1['status'] = $p->status;
         array_push($mdata['participant'], $var1);
       }

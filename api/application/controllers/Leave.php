@@ -62,6 +62,7 @@ class Leave extends CI_Controller
 			if ($res != null && $res->userid == $userid) {
 				$userDetails = $this->authModel->getSuperAdminId($userid);
 				$this->load->model('leaveModel');
+				$this->load->model('settingsModel');
 				$leaveTypes = $this->leaveModel->getLeaveTypeBySupadmin($userDetails->id, $centerid);
 				$data = array();
 				foreach ($leaveTypes as $lt) {
@@ -71,6 +72,10 @@ class Leave extends CI_Controller
 					$var['isPaidYN'] = $lt->isPaidYN;
 					$var['showOnPaySlipYN'] = $lt->showOnPaySlipYN;
 					$var['currentRecordYN'] = $lt->currentRecordYN;
+					$var['medicalFileYN'] = $lt->medicalFileYN;
+					$var['hoursYN'] = $lt->hoursYN;
+					$checkSync = $this->settingsModel->syncedWithXero($centerid);
+					$var['syncedYN'] = ($checkSync !== null) ? 'Y' : 'N';
 					array_push($data, $var);
 				}
 				$mdata['leaveTypes'] = $data;
@@ -185,12 +190,10 @@ class Leave extends CI_Controller
 				$userDetails = $this->authModel->getUserDetails($userid);
 				$centerid = $this->leaveModel->getCenterByLeaveId($leaveId);
 				$centerid = isset($centerid) ? $centerid->centerid : 0;
-				if ($userDetails != null && $userDetails->role == SUPERADMIN) {
+				if ($userDetails != null ) {
 					$this->load->model('xeroModel');
 					$xeroTokens = $this->xeroModel->getXeroToken($centerid);
-
 					if ($xeroTokens != null) {
-
 						$access_token = $xeroTokens->access_token;
 						$tenant_id = $xeroTokens->tenant_id;
 						$refresh_token = $xeroTokens->refresh_token;
@@ -219,7 +222,7 @@ class Leave extends CI_Controller
 								$access_token = $refresh->access_token;
 								$expires_in = $refresh->expires_in;
 								$refresh_token = $refresh->refresh_token;
-								$this->xeroModel->insertNewToken($access_token, $refresh_token, $tenant_id, $expires_in);
+								$this->xeroModel->insertNewToken($access_token, $refresh_token, $tenant_id, $expires_in,$centerid);
 								$val = $this->postCreateLeaveType($access_token, $tenant_id, json_encode($mdata));
 								$val = json_decode($val);
 							}

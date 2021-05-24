@@ -543,7 +543,7 @@ input[type=checkbox]:checked:before {
                
                </div>
              <div>
-             <h6><?php echo $partcipants[$i]->email; ?></h6>
+             <h6><?php echo $partcipants[$i]->name ." - (".$partcipants[$i]->email.")"; ?></h6>
              
              </div>
        </div>

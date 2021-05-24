@@ -87,6 +87,7 @@ class Dashboard extends CI_Controller
 				$this->load->model('dashboardModel');
 				$this->load->model('rostersModel');
 				$this->load->model('leaveModel');
+				$this->load->model('utilModel');
 				$totalDays = cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y'));
 				$events = [];
 				$event['event'] = [];
@@ -114,21 +115,25 @@ class Dashboard extends CI_Controller
 							array_push($events, $mbdata);
 						}
 					}
-
-					$getBirthdays = $this->dashboardModel->getBirthdays($currentDate);
-					if ($getBirthdays != null) {
-						if ($getBirthdays != "") {
-							$mxdata['date'] = $currentDate;
-							$mxdata['birthday'] = $getBirthdays;
-							array_push($event['birthdays'], $mxdata);
-						}
-					}
-					$getAnniversaries = $this->dashboardModel->getAnniversaries($currentDate);
-					if ($getAnniversaries != null) {
-						if ($getAnniversaries != "") {
-							$mydata['date'] = $currentDate;
-							$mydata['anniversary'] =  $getAnniversaries;
-							array_push($event['anniversary'], $mydata);
+					$centers = ($this->utilModel->getAllCenters($userid));
+					foreach ($centers as $centerid) {
+						if ($centerid != null || $centerid != "") {
+							$getBirthdays = $this->dashboardModel->getBirthdays($currentDate,$centerid);
+							if ($getBirthdays != null) {
+								if ($getBirthdays != "") {
+									$mxdata['date'] = $currentDate;
+									$mxdata['birthday'] = $getBirthdays;
+									array_push($event['birthdays'], $mxdata);
+								}
+							}
+							$getAnniversaries = $this->dashboardModel->getAnniversaries($currentDate,$centerid);
+							if ($getAnniversaries != null) {
+								if ($getAnniversaries != "") {
+									$mydata['date'] = $currentDate;
+									$mydata['anniversary'] =  $getAnniversaries;
+									array_push($event['anniversary'], $mydata);
+								}
+							}
 						}
 					}
 				}

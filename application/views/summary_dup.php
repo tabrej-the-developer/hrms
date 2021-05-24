@@ -527,9 +527,6 @@ table{
       // echo "<pre>";
       // var_dump($summary);
       // exit;
-      
-      $summary = json_decode(json_encode($summary,true));
-      
       // print_r($summary);
 
       $len = count($summary);

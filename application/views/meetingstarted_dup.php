@@ -522,10 +522,10 @@ $present = json_decode($present);
   <div class="card-body">
    <div class="row">
      <div class="col-md-4">
-       <div class="form-group ml-2 mt-2">
+       <div class="form-group ml-2 mt-2 ">
            <select name="invites[]" id="" class="form-control">
                <?php for($i = 0; $i < $len; $i++) { ?>
-               <option value="<?php echo $present[$i]->uid ?>"><?php echo $present[$i]->email; ?></option>
+               <option value="<?php echo $present[$i]->uid ?>"><?php echo $present[$i]->name; ?></option>
                <?php } ?>
            </select>
        </div>

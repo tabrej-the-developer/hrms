@@ -851,7 +851,7 @@ class Settings extends CI_Controller
 						}
 						//var_dump($this->settingsModel->getPermissionForEmployee($data['employee_no']));
 						if ($this->settingsModel->getPermissionForEmployee($data['employee_no']) == null) {
-							$this->settingsModel->addPermissions($data['employee_no'], $isQrReaderYN = 'N', $viewRosterYN = 'Y', $editRosterYN = 'N', $viewTimesheetYN = 'Y', $editTimesheetYN = 'N', $viewPayrollYN = 'Y', $editPayrollYN = 'N', $editLeaveTypeYN = 'N', $viewLeaveTypeYN = 'Y', $createNoticeYN = 'Y', $viewOrgChartYN = 'Y', $editOrgChartYN = 'N', $viewCenterProfileYN = 'Y', $editCenterProfileYN = 'Y', $viewRoomSettingsYN = 'Y', $editRoomSettingsYN = 'N', $viewEntitlementsYN = 'Y', $editEntitlementsYN = 'N', $editEmployeeYN = 'N', $xeroYN = 'N', $viewAwardsYN = 'Y', $editAwardsYN = 'N', $viewSuperfundsYN = 'Y', $editSuperfundsYN = 'N', $createMomYN = 'Y', $editPermissionYN = 'Y', $viewPermissionYN = 'Y');
+							$this->settingsModel->addPermissions($data['employee_no'], $isQrReaderYN = 'N', $viewRosterYN = 'Y', $editRosterYN = 'N', $viewTimesheetYN = 'Y', $editTimesheetYN = 'N', $viewPayrollYN = 'Y', $editPayrollYN = 'N', $editLeaveTypeYN = 'N', $viewLeaveTypeYN = 'Y', $createNoticeYN = 'Y', $viewOrgChartYN = 'Y', $editOrgChartYN = 'N', $viewCenterProfileYN = 'Y', $editCenterProfileYN = 'Y', $viewRoomSettingsYN = 'Y', $editRoomSettingsYN = 'N', $viewEntitlementsYN = 'Y', $editEntitlementsYN = 'N', $editEmployeeYN = 'N', $xeroYN = 'N', $viewAwardsYN = 'Y', $editAwardsYN = 'N', $viewSuperfundsYN = 'Y', $editSuperfundsYN = 'N', $createMomYN = 'Y', $editPermissionYN = 'Y', $viewPermissionYN = 'Y',$kidsoftYN = 'N');
 						}
 
 						$ouput['Status'] = "Records Added Successfully";
@@ -1329,8 +1329,12 @@ class Settings extends CI_Controller
 				// Users	
 				$name = $fname . " " . $mname . " " . $lname;
 				$this->settingsModel->updateUsers($employee_no, $emails, $name, $title, $userid, $alias);
-				// Employee bank account	
-				$this->settingsModel->updateEmployeeBankAccount($employee_no, $accountName, $bsb, $accountNumber, $remainderYN, $amount);
+				// Employee bank account
+				print_r($amount);
+				die();
+				for($i = 0;$i<count($accountName);$i++){	
+					$this->settingsModel->updateEmployeeBankAccount($employee_no, $accountName[$i], $bsb[$i], 	$accountNumber[$i], $remainderYN[$i], isset($amount[$i]) ? $amount[$i] : 0);
+				}
 				// Employee medical info	
 				$this->settingsModel->updateEmployeeMedicalInfo($employee_no, $medicareNo, $medicareRefNo, $healthInsuranceFund, $healthInsuranceNo, $ambulanceSubscriptionNo);
 				// Employee medicals	
@@ -1699,8 +1703,9 @@ class Settings extends CI_Controller
 				$createMomYN = $json->createMomYN;
 				$editPermissionYN = $json->editPermissionYN;
 				$viewPermissionYN = $json->viewPermissionYN;
+				$kidsoftYN = isset($json->kidsoftYN) ? $json->kidsoftYN : 'N';
 				$this->load->model('settingsModel');
-				$this->settingsModel->insertPermission($empId, $isQrReaderYN, $viewRosterYN, $editRosterYN, $viewTimesheetYN, $editTimesheetYN, $viewPayrollYN, $editPayrollYN, $editLeaveTypeYN, $viewLeaveTypeYN, $createNoticeYN, $viewOrgChartYN, $editOrgChartYN, $viewCenterProfileYN, $editCenterProfileYN, $viewRoomSettingsYN, $editRoomSettingsYN, $viewEntitlementsYN, $editEntitlementsYN, $editEmployeeYN, $xeroYN, $viewAwardsYN, $editAwardsYN, $viewSuperfundsYN, $editSuperfundsYN, $createMomYN, $editPermissionYN, $viewPermissionYN);
+				$this->settingsModel->insertPermission($empId, $isQrReaderYN, $viewRosterYN, $editRosterYN, $viewTimesheetYN, $editTimesheetYN, $viewPayrollYN, $editPayrollYN, $editLeaveTypeYN, $viewLeaveTypeYN, $createNoticeYN, $viewOrgChartYN, $editOrgChartYN, $viewCenterProfileYN, $editCenterProfileYN, $viewRoomSettingsYN, $editRoomSettingsYN, $viewEntitlementsYN, $editEntitlementsYN, $editEmployeeYN, $xeroYN, $viewAwardsYN, $editAwardsYN, $viewSuperfundsYN, $editSuperfundsYN, $createMomYN, $editPermissionYN, $viewPermissionYN, $kidsoftYN);
 				$data['Status'] = "SUCCESS";
 				http_response_code(200);
 				echo json_encode($data);

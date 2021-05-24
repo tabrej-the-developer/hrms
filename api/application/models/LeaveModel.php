@@ -25,7 +25,7 @@ class LeaveModel extends CI_Model {
 
 	public function getCenterByLeaveId($leaveId){
 		$this->load->database();
-		$query = $this->db->query("SELECT centerid from leaves where leaveid = '$leaveId'");
+		$query = $this->db->query("SELECT centerid from leaves where id = '$leaveId'");
 		return $query->row();
 	}
 

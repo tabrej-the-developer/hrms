@@ -204,6 +204,20 @@ input[type="text"],input[type=time],select,#casualEmp_date{
             </button>
           </a>
         </span>
+        <span class="select_css">
+          <select class="center-list " id="center-list">
+              <?php $centers = json_decode($centers);
+              
+              for($i=0;$i<count($centers->centers);$i++){
+                if($_SESSION['centerr'] == $centers->centers[$i]->centerid){
+            ?>
+            <option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid; ?>" selected><?php echo $centers->centers[$i]->name?></option>
+          <?php }else{ ?>
+            <option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid; ?>"><?php echo $centers->centers[$i]->name?></option>
+          <?php }}  ?>
+          </select>
+      </span>	
+
         <span class=" create-ent ml-auto">
           <button class="button ent-btn">
             <i>
@@ -316,6 +330,12 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 </script> -->
 
   <script type="text/javascript">
+
+  $(document).on('change','#center-list',function(){
+    var centerid = $('#center-list').val();
+    window.location.href = "<?php echo base_url('settings/viewEntitlements/'); ?>"+centerid
+  })
+
     $(document).on('click','.fa-pencil-alt',function(){
         var parent1 = $(this).parent().parent().parent().prev().prev();
         var parent2 = $(this).parent().parent().parent().prev();
@@ -400,12 +420,14 @@ input[type="text"],input[type=time],select,#casualEmp_date{
                  var url = '<?php echo base_url();?>settings/addEntitlement';
                  var rate = $('#a2').val();
                  var name = $('#a1').val();
+                 var center = $('#center-list').val();
                    $.ajax({
                      url : url,
                      type : 'POST',
                      data : {
                        name : name ,
-                       rate : rate
+                       rate : rate,
+                       center : center
                      },
                      success : function(response){
                          window.location.reload();
@@ -479,13 +501,13 @@ input[type="text"],input[type=time],select,#casualEmp_date{
           //var v = $(this).attr('name');
           //var w = $('.day').eq($(this).index()).html();
           var x = parseInt($(this).parent().prev().children().text());
-          
+          var centerid = $('#center-list').val();
           //var y = $(this).attr('cal-p');
           //var eId = $('#employee-id').val($('this').attr('emp-id'))
           //var sDate = $('#start-date').val($(this).attr('curr-date'))
           //var tId = $('#timesheet-id').val($(this).attr('timesheet-id'))
            $.ajax({
-            url : "<?php echo base_url();?>settings/entitlementsMod/"+x,
+            url : "<?php echo base_url();?>settings/entitlementsMod/"+x+"/"+centerid,
             type : 'GET',
             success : function(response){
 

@@ -848,7 +848,7 @@ $server_output = curl_exec($ch);
 	}
 
 
-	public function viewEntitlements(){
+	public function viewEntitlements($centerid=null){
 			if($this->session->has_userdata('LoginId')){
 		//footprint start
 		if($this->session->has_userdata('current_url')){
@@ -856,9 +856,20 @@ $server_output = curl_exec($ch);
 			$this->session->set_userdata('current_url',currentUrl());
 		}
 		// footprint end
-				$data['centers'] = $this->getAllCenters();
+			$data['centers'] = $this->getAllCenters();
+			if($centerid == null){
+				if(!isset($_SESSION['centerr'])){
+					$id = json_decode($data['centers'])->centers[0]->centerid;
+					$_SESSION['centerr'] = $id;
+				}else{
+					$id = $_SESSION['centerr'];
+				}
+			}else{
+				$_SESSION['centerr'] = $centerid;
+				$id = $centerid;
+			}
 			$data['userid'] = $this->session->userdata('LoginId');
-			$data['entitlements'] = $this->getAllEntitlements($data['userid']);
+			$data['entitlements'] = $this->getAllEntitlements($data['userid'],$id);
 			$data['permissions'] = $this->fetchPermissions();
 			$this->load->view('entitlementsView',$data);
 		}
@@ -875,10 +886,9 @@ $server_output = curl_exec($ch);
 			$this->session->set_userdata('current_url',currentUrl());
 		}
 		// footprint end
-		$data['footprints'] = $this->getFootprints($this->session->userdata('LoginId'));
-				$data['centers'] = $this->getAllCenters();
+			$data['footprints'] = $this->getFootprints($this->session->userdata('LoginId'));
+			$data['centers'] = $this->getAllCenters();
 			$data['userid'] = $this->session->userdata('LoginId');
-			$data['entitlements'] = $this->getAllEntitlements($data['userid']);
 			$data['permissions'] = $this->fetchPermissions();
 			$this->load->view('activityLog',$data);
 		}
@@ -906,8 +916,33 @@ $server_output = curl_exec($ch);
 					return 'error';
 				}
 			}
-		function getAllEntitlements($userid){
-			$url = BASE_API_URL."/Payroll/getAllEntitlements/".$userid;
+		function getAllEntitlements($userid,$centerid,$echo=null){
+			if($userid == '1000001000001')
+				$userid = $this->session->userdata('LoginId');
+			$url = BASE_API_URL."Payroll/getAllEntitlementsV1/$userid/$centerid";
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200 && $echo == 'Y'){
+				echo $server_output;
+			}
+			if($httpcode == 200 && $echo == null){
+				return $server_output;
+				curl_close ($ch);
+			}
+			else if($httpcode == 401){
+
+			}	
+		}
+
+		function getAllEntitlementsByEmployeeCenters($userid){
+			$url = BASE_API_URL."Payroll/getAllEntitlementsByEmployeeCentersV1/$userid";
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -1007,7 +1042,8 @@ $server_output = curl_exec($ch);
 			$data['userid'] = $this->session->userdata('LoginId');
 			$data['name'] = $this->input->post('name');
 			$data['rate'] = $this->input->post('rate');
-	 		$url = BASE_API_URL."/payroll/addEntitlement";
+			$data['centerid'] = $this->input->post('center');
+	 		$url = BASE_API_URL."/payroll/addEntitlementV1";
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -1030,11 +1066,11 @@ $server_output = curl_exec($ch);
 		}
 	}
 
-		public function entitlementsMod($level){
+		public function entitlementsMod($level,$centerid){
 			if($this->session->has_userdata('LoginId')){
 				$userid = $this->session->userdata('LoginId');
 				$data['users'] = $this->userLevel($level);
-				$data['entitlements'] = $this->getAllEntitlements($userid); 
+				$data['entitlements'] = $this->getAllEntitlements($userid,$centerid); 
 			$this->load->view('entitlementsModal',$data);
 		}
 			else{
@@ -1076,7 +1112,7 @@ $server_output = curl_exec($ch);
 
 		function userLevel($level){
 			$id = $this->session->userdata('LoginId');
-			$url = BASE_API_URL."/Payroll/getUserLevels/".$level."/".$id;
+			$url = BASE_API_URL."Payroll/getUserLevels/".$level."/".$id;
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -1204,7 +1240,7 @@ $server_output = curl_exec($ch);
 				$data['centers'] = $this->getAllCenters();
 				$data['areas'] = $this->getAreas($data['centerid']);
 				$data['ordinaryEarningRate'] = $this->getAwardSettings($employeeId,$centerid);
-				$data['levels'] = $this->getAllEntitlements($employeeId);
+				$data['levels'] = $this->getAllEntitlementsByEmployeeCenters($employeeId);
 				$data['superfunds'] = $this->getSuperfunds($employeeId,$centerid);
 				$data['permissions'] = $this->fetchPermissions();
 				$data['getEmployeeData'] = $this->getEmployeeData($employeeId);
@@ -1229,22 +1265,22 @@ $server_output = curl_exec($ch);
 	if($centerid == null){
 		$centerid = (json_decode($this->getAllCenters())->centers[0])->centerid;
 	}
-				$data['centerid'] = $centerid;
-				$data['userid'] = $this->session->userdata('LoginId');
-				$data['centers'] = $this->getAllCenters();
-				$data['areas'] = $this->getAreas($data['centerid']);
-				$data['ordinaryEarningRate'] = $this->getAwardSettings($data['userid'],$centerid);
-				$data['levels'] = $this->getAllEntitlements($data['userid']);
-				$data['superfunds'] = $this->getSuperfunds($data['userid'],$centerid);
-				$data['permissions'] = $this->fetchPermissions();
-				$data['getEmployeeData'] = $this->getEmployeeData($data['userid']);
-				// var_dump($data);
-				$this->load->view('editEmployee',$data);
-			}
-			else{
-				$this->load->view('redirectToLogin');
-			}
+			$data['centerid'] = $centerid;
+			$data['userid'] = $this->session->userdata('LoginId');
+			$data['centers'] = $this->getAllCenters();
+			$data['areas'] = $this->getAreas($data['centerid']);
+			$data['ordinaryEarningRate'] = $this->getAwardSettings($data['userid'],$centerid);
+			$data['levels'] = $this->getAllEntitlementsByEmployeeCenters($data['userid'],$data['centers']);
+			$data['superfunds'] = $this->getSuperfunds($data['userid'],$centerid);
+			$data['permissions'] = $this->fetchPermissions();
+			$data['getEmployeeData'] = $this->getEmployeeData($data['userid']);
+			// var_dump($data);
+			$this->load->view('editEmployee',$data);
 		}
+		else{
+			$this->load->view('redirectToLogin');
+		}
+	}
 
 // Update employee profile
 	public function updateEmployeeProfile($employeeNo = null){
@@ -1377,7 +1413,9 @@ $server_output = curl_exec($ch);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			// var_dump($server_output);
+			var_dump($server_output);
+			print_r($_FILES);
+			die();
 			if($httpcode == 200){
 				redirect(base_url('settings'));
 				curl_close ($ch);
@@ -1406,7 +1444,7 @@ $server_output = curl_exec($ch);
 				$data['centers'] = $this->getAllCenters();
 				$data['areas'] = $this->getAreas($data['centerid']);
 				$data['ordinaryEarningRate'] = $this->getAwardSettings($data['userid'],$centerid);
-				$data['levels'] = $this->getAllEntitlements($data['userid']);
+				$data['levels'] = $this->getAllEntitlements($data['userid'],$centerid);
 				$data['superfunds'] = $this->getSuperfunds($data['userid'],$centerid);
 				$data['permissions'] = $this->fetchPermissions();
 				// var_dump($data['areas']);
@@ -2165,8 +2203,8 @@ $server_output = curl_exec($ch);
 			$data['leaveId'] = $form_data['leaveId'];
 			$data['name'] = $form_data['leaveName'];
 			$data['slug'] = $form_data['leaveSlug'];
-			$data['medicalFile'] = $form_data['medicalFile'];
-			$data['hours'] = $form_data['hours'];
+			$data['medicalFile'] = isset($form_data['medicalFile']) ? 'Y' : 'N';
+			$data['hours'] = isset($form_data['hours']) ? 'Y' : 'N';
 			if(!isset($form_data['show_in_payslips']))
 				$data['showOnPaySlipYN'] = "N";			
 			else
@@ -2189,7 +2227,6 @@ $server_output = curl_exec($ch);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 			$server_output = curl_exec($ch);
-			//var_dump($server_output);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			if($httpcode == 200){
 				$jsonOutput = json_decode($server_output);

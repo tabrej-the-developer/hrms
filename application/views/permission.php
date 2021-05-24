@@ -346,7 +346,7 @@ input[type=checkbox]:checked + label:before {
 
 .permission-container{
 	padding: 4rem 3rem 2rem 2rem;
-	height:calc(100vh - 2rem);
+	height:calc(100vh - 6rem);
 }
 .permission-container-child{
 	background: white;
@@ -621,6 +621,12 @@ button[type=button]{
 						<input type="checkbox" id="viewPermissionYN" checked><label for="viewPermissionYN"></label>
 					</td>
 				</tr>
+				<tr>
+					<td>Kidsoft Permissions</td>
+					<td>
+						<input type="checkbox" id="kidsoftYN" checked><label for="kidsoftYN"></label>
+					</td>
+				</tr>
 			</tbody>
 		
 		</table>
@@ -730,6 +736,7 @@ button[type=button]{
 					document.getElementById("createMomYN").checked = permissions.permissions.createMomYN == "Y";
 					document.getElementById("editPermissionYN").checked = permissions.permissions.editPermissionYN == "Y";
 					document.getElementById("viewPermissionYN").checked = permissions.permissions.viewPermissionYN == "Y";
+					document.getElementById("kidsoftYN").checked = permissions.permissions.kidsoftYN == "Y";
 					setTimeout(remove_loader_icon,200)
 				}
 				else{
@@ -760,6 +767,7 @@ button[type=button]{
 					document.getElementById("createMomYN").checked = false;
 					document.getElementById("editPermissionYN").checked = false;
 					document.getElementById("viewPermissionYN").checked = false;
+					document.getElementById("kidsoftYN").checked = false;
 					setTimeout(remove_loader_icon,200)
 				}
 				}
@@ -798,7 +806,8 @@ button[type=button]{
 		var createMomYN = document.getElementById("createMomYN").checked ? "Y" : "N";
 		var editPermissionYN = document.getElementById("editPermissionYN").checked ? "Y" : "N";
 		var viewPermissionYN = document.getElementById("viewPermissionYN").checked ? "Y" : "N";
-		var data = 'empId='+empId+"&isQrReaderYN="+isQrReaderYN+"&viewRosterYN="+viewRosterYN+"&editRosterYN="+editRosterYN+"&viewTimesheetYN="+viewTimesheetYN+"&editTimesheetYN="+editTimesheetYN+"&viewPayrollYN="+viewPayrollYN+"&editPayrollYN="+editPayrollYN+"&editLeaveTypeYN="+editLeaveTypeYN+"&viewLeaveTypeYN="+viewLeaveTypeYN+"&createNoticeYN="+createNoticeYN+"&viewOrgChartYN="+viewOrgChartYN+"&editOrgChartYN="+editOrgChartYN+"&viewCenterProfileYN="+viewCenterProfileYN+"&editCenterProfileYN="+editCenterProfileYN+"&viewRoomSettingsYN="+viewRoomSettingsYN+"&editRoomSettingsYN="+editRoomSettingsYN+"&viewEntitlementsYN="+viewEntitlementsYN+"&editEntitlementsYN="+editEntitlementsYN+"&editEmployeeYN="+editEmployeeYN+"&xeroYN="+xeroYN+"&viewAwardsYN="+viewAwardsYN+"&editAwardsYN="+editAwardsYN+"&viewSuperfundsYN="+viewSuperfundsYN+"&editSuperfundsYN="+editSuperfundsYN+"&createMomYN="+createMomYN+"&editPermissionYN="+editPermissionYN+"&viewPermissionYN="+viewPermissionYN;
+		var kidsoftYN = document.getElementById("kidsoftYN").checked ? "Y" : "N";
+		var data = 'empId='+empId+"&isQrReaderYN="+isQrReaderYN+"&viewRosterYN="+viewRosterYN+"&editRosterYN="+editRosterYN+"&viewTimesheetYN="+viewTimesheetYN+"&editTimesheetYN="+editTimesheetYN+"&viewPayrollYN="+viewPayrollYN+"&editPayrollYN="+editPayrollYN+"&editLeaveTypeYN="+editLeaveTypeYN+"&viewLeaveTypeYN="+viewLeaveTypeYN+"&createNoticeYN="+createNoticeYN+"&viewOrgChartYN="+viewOrgChartYN+"&editOrgChartYN="+editOrgChartYN+"&viewCenterProfileYN="+viewCenterProfileYN+"&editCenterProfileYN="+editCenterProfileYN+"&viewRoomSettingsYN="+viewRoomSettingsYN+"&editRoomSettingsYN="+editRoomSettingsYN+"&viewEntitlementsYN="+viewEntitlementsYN+"&editEntitlementsYN="+editEntitlementsYN+"&editEmployeeYN="+editEmployeeYN+"&xeroYN="+xeroYN+"&viewAwardsYN="+viewAwardsYN+"&editAwardsYN="+editAwardsYN+"&viewSuperfundsYN="+viewSuperfundsYN+"&editSuperfundsYN="+editSuperfundsYN+"&createMomYN="+createMomYN+"&editPermissionYN="+editPermissionYN+"&viewPermissionYN="+viewPermissionYN+"&kidsoftYN="+kidsoftYN;
 	    var params = typeof data == 'string' ? data : Object.keys(data).map(
 	        function(k){ return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) }
 	    ).join('&');

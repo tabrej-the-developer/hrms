@@ -12,7 +12,7 @@ class AuthModel extends CI_Model {
 
 	public function getUserDetails($userid){
 		$this->load->database();
-		$query = $this->db->query("SELECT id, email, name, imageUrl, role, title,manager, isVerified, created_at, created_by, roleid, level FROM users WHERE id='$userid'");
+		$query = $this->db->query("SELECT users.id, users.email, users.name, users.imageUrl, users.role, users.title,users.manager, users.isVerified, users.created_at, users.created_by, users.roleid, users.level , e.hourlyRate,e.name as levelTitle FROM users LEFT JOIN entitlements e on e.id = users.level  WHERE users.id='$userid'");
 		return $query->row();
 	}
 

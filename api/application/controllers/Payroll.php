@@ -81,6 +81,32 @@ public function getAllEntitlementsV1($userid,$centerid)
 	}
 }
 
+public function getAllEntitlementsByEmployeeCentersV1($userid){
+	$headers = $this->input->request_headers();
+	$headers = array_change_key_case($headers);
+	if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+		$this->load->model('authModel');
+		$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+		if ($res != null && $res->userid == $userid) {
+			$this->load->model('payrollModel');
+			$this->load->model('utilModel');
+			$centers = $this->utilModel->getAllCenters($userid);
+			$mdata['entitlements'] = [];
+			foreach($centers as $center){
+				$ents = $this->payrollModel->getAllEntitlementsV1($center->centerid);
+				if($ents != null)
+				$mdata['entitlements'] = array_merge($mdata['entitlements'] , $ents);
+			}
+			http_response_code(200);
+			echo json_encode($mdata['entitlements']);
+		} else {
+			http_response_code(401);
+		}
+	} else {
+		http_response_code(401);
+	}
+}
+
 	public function updateEntitlement($userid)
 	{
 		$headers = $this->input->request_headers();

@@ -204,6 +204,28 @@ nav > div a.nav-item.nav-link:focus
 .switchToggle label:active:after {width: 60px; } 
 .toggle-switchArea { margin: 10px 0 10px 0; }
 /* Toggle end */
+/* Toggle */
+.switcToggle input[type=checkbox]{height: 0; width: 0; visibility: hidden; position: absolute; }
+.switcToggle label {cursor: pointer; text-indent: -9999px; width: 70px; max-width: 70px; height: 30px; background: #d1d1d1; display: block; border-radius: 100px; position: relative; }
+.switcToggle label:after {content: ''; position: absolute; top: 2px; left: 2px; width: 26px; height: 26px; background: #fff; border-radius: 90px; transition: 0.3s; }
+.switcToggle input:checked + label, .switcToggle input:checked + input + label  {background: #4caf50a6; }
+.switcToggle input + label:before, .switcToggle input + input + label:before {content: 'No'; position: absolute; top: 1px; left: 35px; width: 26px; height: 26px; border-radius: 90px; transition: 0.3s; text-indent: 0; color: #fff; }
+.switcToggle input:checked + label:before, .switcToggle input:checked + input + label:before {content: 'Yes'; position: absolute; top: 1px; left: 10px; width: 26px; height: 26px; border-radius: 90px; transition: 0.3s; text-indent: 0; color: #fff; }
+.switcToggle input:checked + label:after, .switcToggle input:checked + input + label:after {left: calc(100% - 2px); transform: translateX(-100%); }
+.switcToggle label:active:after {width: 60px; } 
+.toggle-switchArea { margin: 10px 0 10px 0; }
+/* Toggle end */
+/* Toggle */
+.switToggle input[type=checkbox]{height: 0; width: 0; visibility: hidden; position: absolute; }
+.switToggle label {cursor: pointer; text-indent: -9999px; width: 70px; max-width: 70px; height: 30px; background: #d1d1d1; display: block; border-radius: 100px; position: relative; }
+.switToggle label:after {content: ''; position: absolute; top: 2px; left: 2px; width: 26px; height: 26px; background: #fff; border-radius: 90px; transition: 0.3s; }
+.switToggle input:checked + label, .switToggle input:checked + input + label  {background: #4caf50a6; }
+.switToggle input + label:before, .switToggle input + input + label:before {content: 'No'; position: absolute; top: 1px; left: 35px; width: 26px; height: 26px; border-radius: 90px; transition: 0.3s; text-indent: 0; color: #fff; }
+.switToggle input:checked + label:before, .switToggle input:checked + input + label:before {content: 'Yes'; position: absolute; top: 1px; left: 10px; width: 26px; height: 26px; border-radius: 90px; transition: 0.3s; text-indent: 0; color: #fff; }
+.switToggle input:checked + label:after, .switToggle input:checked + input + label:after {left: calc(100% - 2px); transform: translateX(-100%); }
+.switToggle label:active:after {width: 60px; } 
+.toggle-switchArea { margin: 10px 0 10px 0; }
+/* Toggle end */
 		/*leaves balance bar*/
 .chat_people{ overflow:hidden; clear:both;}
 .chat_list {
@@ -448,6 +470,8 @@ input[type="text"],input[type=time],select,#casualEmp_date{
                 <th>Leave Name</th>
                 <th>Leave Slug</th>
                 <th>Is Paid</th>
+                <th>Medical Record</th>
+                <th>Hours</th>
                 <th>Action</th>
                 </tr>
             </thead>
@@ -463,6 +487,8 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 					<td id="<?php echo $leaveType->id.'name';?>"><?php echo $leaveType->name;?></td>
 					<td id="<?php echo $leaveType->id.'slug';?>"><?php echo $leaveType->slug;?></td>
 					<td id="<?php echo $leaveType->id.'isPaidYN';?>"><?php echo $leaveType->isPaidYN;?></td>
+          <td id="<?php echo $leaveType->id.'medicalFileYN';?>"><?php echo $leaveType->medicalFileYN;?></td>
+          <td id="<?php echo $leaveType->id.'hoursYN';?>"><?php echo $leaveType->hoursYN;?></td>
 					<td>
 <?php if(isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N" == "Y"){ ?>
 					<span onclick="editLeaveType('<?php echo $leaveType->id;?>')">
@@ -493,10 +519,10 @@ input[type="text"],input[type=time],select,#casualEmp_date{
           </div>
           <div class="modal-body">
 						<div class="col-md-12 col-xl-12">	
-							<form id="leaveType" method="POST" action="<?php echo base_url().'settings/addLeave';?>">
+							<!-- <form id="leaveType" method="POST" action="<?php echo base_url().'settings/addLeave';?>"> -->
 								<input type="hidden" name="leaveId" id="leaveId" value="">
 								<div class="form-group">
-								  <label>New Leave Type</label>
+								  <label>Leave Type</label>
 								  <input type="text" class="form-control" id="leaveName" placeholder="Enter leave name" name="leaveName" >
 								  <span id="new_leave_type_error" class="text-danger"></span>
 								</div>
@@ -517,11 +543,31 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 										</div>
 									</div>
 								</div>
+								<div class="form-group">
+									<label for="leaveIsPaid">Medical Record</label><br>
+									<div class="outerDivFull" >
+										<div class="switcToggle">
+										<!--dont rename id="switch"-->
+											<input type="checkbox" id="switc" name="medicalFile">
+											<label for="switc">Toggle</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="leaveIsPaid">Hours</label><br>
+									<div class="outerDivFull" >
+										<div class="switToggle">
+										<!--dont rename id="switch"-->
+											<input type="checkbox" id="swit" name="hours">
+											<label for="swit">Toggle</label>
+										</div>
+									</div>
+								</div>
 						<div class="">
 							<input type="checkbox" name="show_in_payslips" class="checkbox_label" id="show_in_payslips"><label class=""for="show_in_payslips">Show in payslips</label>
 						</div>
 						<div class="form-group text-center " id="updateLeaveType" >
-  						<button class="" type="button" onclick="addLeave()">
+  						<button class="submitEditLeave" onclick="submitEditLeave()" type="button">
                 <i>
                   <img src="<?php echo base_url('assets/images/icons/pencil.png'); ?>" style="max-height:1rem;margin-right:10px">
                 </i>Update</button>
@@ -534,7 +580,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
                   <img src="<?php echo base_url('assets/images/icons/del.png'); ?>" style="max-height:1rem;margin-right:10px">
                 </i>Delete</button> 
 						</div>
-						<div class="form-group text-center  form-group-add" id="addLeaveType" >
+						<!-- <div class="form-group text-center  form-group-add" id="addLeaveType" >
               <button type="button" class=" " data-dismiss="modal" aria-label="Close">
                 <i>
                   <img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:1rem;margin-right:10px">
@@ -543,8 +589,8 @@ input[type="text"],input[type=time],select,#casualEmp_date{
                 <i>
                   <img src="<?php echo base_url('assets/images/icons/plus.png'); ?>" style="max-height:1rem;margin-right:10px">
                 </i>Add</button>
-						</div>
-				  </form>	
+						</div> -->
+				  <!-- </form>	 -->
 					</div>
 					</div>
 					
@@ -567,11 +613,15 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 			document.getElementById("leaveSlug").value = document.getElementById(leaveId+"slug").innerHTML;
 			document.getElementById("switch").checked = document.getElementById(leaveId+"isPaidYN").innerHTML == "Y";
 			document.getElementById("updateLeaveType").style.display = "block";
-			document.getElementById("addLeaveType").style.display = "none";
+			// document.getElementById("addLeaveType").style.display = "none";
 			jQuery(function($) {
 		        $("#userModal").modal('show');
 		    });
 		}
+
+    function submitEditLeave(){
+      document.getElementById('leaveTypeForm').submit();
+    }
 
 		function addLeaveType(){
 			document.getElementById("leaveName").value =  "";

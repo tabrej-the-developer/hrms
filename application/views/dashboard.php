@@ -772,6 +772,7 @@ color:#FFFFFF;
       $moduleRowCount = json_decode($moduleEntryCount);
     }
      ?>
+     <!-- Top Tiles Start -->
     <div class="row mr-0 mb-5 mb-md-0 mt-3 cardContainer pl-0 pl-md-4 pr-0 pr-md-4">
 <?php if((isset($permissions->permissions) ? $permissions->permissions->viewTimesheetYN : "N") == "Y"){ ?>
       <span class="col-3 cardItem " >
@@ -834,6 +835,7 @@ color:#FFFFFF;
       </span>   
 <?php } ?>  
     </div>
+     <!-- Top Tiles End -->
     <div class="row mr-0 ml-3 mr-3 mt-3 ">
       <?php
       if(isset($footprints)){
@@ -881,8 +883,8 @@ color:#FFFFFF;
       <div id="calendar" class="col-md-9"></div>
       <div class="col-md-3 upcoming_events">
         <div class="upcoming_events_title text-center">Upcoming Events</div>
-        <div class="upcomingEvents_birthday">
-          <div>Birthdays</div>
+        <div class="upcomingEvents_birthday" style="height: 30%">
+          <div class="text-center">Birthdays</div>
           <?php 
           $calendarBirthdays = isset($calendar) ? 
                                ( isset(json_decode($calendar)->birthdays) ?
@@ -892,7 +894,7 @@ color:#FFFFFF;
 
                       ?>
                       <?php // if(count($array) > 0){ ?>
-                <div style="height: 10%;overflow-y: auto;">
+                <div style="height: 100%;overflow-y: auto;">
                 <?php  foreach($calendarBirthdays as $ars){ 
                         foreach($ars->birthday as $ar){
                   ?>
@@ -914,8 +916,8 @@ color:#FFFFFF;
               }
           ?>
         </div>
-        <div class="upcomingEvents_anniversary">
-          <div>Anniversaries</div>
+        <div class="upcomingEvents_anniversary" style="height: 30%">
+          <div class="text-center">Anniversaries</div>
           <?php 
           $calendarAnniversaries = isset($calendar) ?
                               (isset(json_decode($calendar)->anniversary) ? 
@@ -925,7 +927,7 @@ color:#FFFFFF;
 
                       ?>
                       <?php // if(count($array) > 0){ ?>
-                <div style="height: 10%;overflow-y: auto;">
+                <div style="height: 100%;overflow-y: auto;">
                 <?php  foreach($calendarAnniversaries as $ars){ 
                         foreach($ars->anniversary as $ar){
                   ?>
@@ -973,7 +975,7 @@ color:#FFFFFF;
           <h3 class="modal-title ">Schedule New Event</h3>
         </div>
         <div class="modal-body container">
-             <form method="post" action="<?php echo base_url() ?>mom/addMeeting" class="dashboard_form" onsubmit="return onFormSubmit()">
+             <form method="post" action="<?php echo base_url() ?>mom/addMeeting" class="dashboard_form" onsubmit="return onFormSubmit()" enctype="multipart/form-data">
               <div class="form-group modal_title_div">
                    <span class="title_span_label">
                       <label class="label_text">Title</label>
@@ -1204,13 +1206,13 @@ color:#FFFFFF;
                 $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>mom/attendence/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
               }
               if(meetingStatus.toLowerCase() == 'attendence'){
-                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>mom/attendence/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
-              }
-              if(meetingStatus.toLowerCase() == 'mom'){
                 $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>mom/onBoard/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
               }
-              if(meetingStatus.toLowerCase() == 'summary'){
+              if(meetingStatus.toLowerCase() == 'mom'){
                 $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>mom/summary/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
+              }
+              if(meetingStatus.toLowerCase() == 'summary'){
+                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>mom/meetingInfo/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
                 }
               }
             });
@@ -1283,13 +1285,13 @@ color:#FFFFFF;
                 $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>mom/attendence/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
               }
               if(meetingStatus.toLowerCase() == 'attendence'){
-                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>mom/attendence/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
-              }
-              if(meetingStatus.toLowerCase() == 'mom'){
                 $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>mom/onBoard/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
               }
-              if(meetingStatus.toLowerCase() == 'summary'){
+              if(meetingStatus.toLowerCase() == 'mom'){
                 $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>mom/summary/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
+              }
+              if(meetingStatus.toLowerCase() == 'summary'){
+                $('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>mom/meetingInfo/${y}" title="${titleMeeting}">${titleMeeting}</a>`);
                 }
               }
             });
@@ -1327,7 +1329,8 @@ color:#FFFFFF;
     }
   }
   $(document).on('click','.add_agenda_button',function(){
-    $('.agendaFile').trigger('click')
+    if($('.agendaFile').val() == "")
+      $('.agendaFile').trigger('click')
   })
   </script>
 <script type="text/javascript" language="javascript" >
@@ -1399,7 +1402,7 @@ $('#toggle').remove();
                 <img src="<?php echo base_url('assets/images/icons/del.png'); ?>" style="max-height:1rem">
               </i>Delete`)
         $('.add_file').text($('.agendaFile')[0].files[0].name)
-        $('.agendaFile').attr('type','button')
+        // $('.agendaFile').attr('type','button')
       }
     }
 

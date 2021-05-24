@@ -126,7 +126,12 @@ class SettingsModel extends CI_Model {
 
 
 	public function updateCenterRecord($centerid,$center_abn,$center_acn,$center_se_no,$center_date_opened,$center_capacity,$manager_name,$center_admin_name,$centre_nominated_supervisor){
-		$this->db->query("UPDATE centerrecord SET centerId = '$centerid',centreABN = '$center_abn',centreACN = '$center_acn',centreSE_no = '$center_se_no',centreDateOpened = '$center_date_opened',centreCapacity = '$center_capacity',managerId = '$manager_name',centreAdminId = '$center_admin_name',centreNominatedSupervisorId = '$centre_nominated_supervisor' WHERE centerId = $centerid");
+		$check = $this->db->query("SELECT * FROM centerrecord where centerId = $centerid");
+		$centerRecordUniqueId = uniqid();
+		if($check->row() != null)
+			$this->db->query("UPDATE centerrecord SET centerId = '$centerid',centreABN = '$center_abn',centreACN = '$center_acn',centreSE_no = '$center_se_no',centreDateOpened = '$center_date_opened',centreCapacity = '$center_capacity',managerId = '$manager_name',centreAdminId = '$center_admin_name',centreNominatedSupervisorId = '$centre_nominated_supervisor' WHERE centerId = $centerid");
+		else
+			$this->db->query("INSERT INTO centerrecord (centerId,centerRecordUniqueId,centreABN,centreACN,centreSE_no,centreDateOpened,centreCapacity,centreAdminId,centreNominatedSupervisorId) VALUES ($centerid,'$centerRecordUniqueId','$center_abn','$center_acn','$center_se_no','$center_date_opened','$center_capacity','$center_admin_name','$centre_nominated_supervisor')");
 	}
 
 	public function deleteRoom($roomid){
@@ -162,11 +167,11 @@ class SettingsModel extends CI_Model {
 		return $query->row();
 	}
 
-	public function insertPermission($userid,$isQrReaderYN,$viewRosterYN,$editRosterYN,$viewTimesheetYN,$editTimesheetYN,$viewPayrollYN,$editPayrollYN,$editLeaveTypeYN,$viewLeaveTypeYN,$createNoticeYN,$viewOrgChartYN,$editOrgChartYN,$viewCenterProfileYN,$editCenterProfileYN,$viewRoomSettingsYN,$editRoomSettingsYN,$viewEntitlementsYN,$editEntitlementsYN,$editEmployeeYN,$xeroYN,$viewAwardsYN,$editAwardsYN,$viewSuperfundsYN,$editSuperfundsYN,$createMomYN,$editPermissionYN,$viewPermissionYN){
+	public function insertPermission($userid,$isQrReaderYN,$viewRosterYN,$editRosterYN,$viewTimesheetYN,$editTimesheetYN,$viewPayrollYN,$editPayrollYN,$editLeaveTypeYN,$viewLeaveTypeYN,$createNoticeYN,$viewOrgChartYN,$editOrgChartYN,$viewCenterProfileYN,$editCenterProfileYN,$viewRoomSettingsYN,$editRoomSettingsYN,$viewEntitlementsYN,$editEntitlementsYN,$editEmployeeYN,$xeroYN,$viewAwardsYN,$editAwardsYN,$viewSuperfundsYN,$editSuperfundsYN,$createMomYN,$editPermissionYN,$viewPermissionYN,$kidsoftYN){
 
 		$this->load->database();
 		$this->db->query("DELETE FROM permissions WHERE userid = '$userid'");
-		$this->db->query("INSERT INTO permissions VALUES('$userid','$isQrReaderYN','$viewRosterYN','$editRosterYN','$viewTimesheetYN','$editTimesheetYN','$viewPayrollYN','$editPayrollYN','$editLeaveTypeYN','$viewLeaveTypeYN','$createNoticeYN','$viewOrgChartYN','$editOrgChartYN','$viewCenterProfileYN','$editCenterProfileYN','$viewRoomSettingsYN','$editRoomSettingsYN','$viewEntitlementsYN','$editEntitlementsYN','$editEmployeeYN','$xeroYN','$viewAwardsYN','$editAwardsYN','$viewSuperfundsYN','$editSuperfundsYN','$createMomYN','$editPermissionYN','$viewPermissionYN')");
+		$this->db->query("INSERT INTO permissions VALUES('$userid','$isQrReaderYN','$viewRosterYN','$editRosterYN','$viewTimesheetYN','$editTimesheetYN','$viewPayrollYN','$editPayrollYN','$editLeaveTypeYN','$viewLeaveTypeYN','$createNoticeYN','$viewOrgChartYN','$editOrgChartYN','$viewCenterProfileYN','$editCenterProfileYN','$viewRoomSettingsYN','$editRoomSettingsYN','$viewEntitlementsYN','$editEntitlementsYN','$editEmployeeYN','$xeroYN','$viewAwardsYN','$editAwardsYN','$viewSuperfundsYN','$editSuperfundsYN','$createMomYN','$editPermissionYN','$viewPermissionYN','$kidsoftYN')");
 	}
 	
 		public function addToEmployeeCourses( $xeroEmployeeId,$course_nme,$course_desc,$date_obt,$exp_date){

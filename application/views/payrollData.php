@@ -439,7 +439,7 @@ table.dataTable{
 <body>
 	<?php
 		$payrollTypes = json_decode($payrollTypes);
-		$entitlements = json_decode($entitlements);
+		// $entitlements = json_decode($entitlements);
 		$permissions = json_decode($permissions);
 
 		function dateToDay($date){
@@ -520,24 +520,15 @@ if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN 
 					<td class="shift-edit" 
 							cal-x="<?php echo $i; ?>">
 							<?php 				
-						foreach($entitlements->entitlements as $ent){
-				 			if($ent->id == $payrollShifts->employees[$i]->userDetails->level){
-								 echo $ent->name;
-								}
-							} ?>
+								echo $payrollShifts->employees[$i]->userDetails->levelTitle;
+							?>
 					</td>
 					<td class="shift-edit" 
 							cal-x="<?php echo $i; ?>">
 						<?php
 							$rate = 0;
-
-							 foreach($entitlements->entitlements as $ent){
-							 	if($ent->id == $payrollShifts->employees[$i]->userDetails->level)
-							 	{
-							 		$rate = $ent->hourlyRate;
-							 		echo "$".$ent->hourlyRate."/hr";
-							 	}
-							 }
+							$rate = $payrollShifts->employees[$i]->userDetails->hourlyRate;
+							echo "$".$payrollShifts->employees[$i]->userDetails->hourlyRate."/hr";
 						 ?>	
 					</td>
 
@@ -909,11 +900,3 @@ if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN 
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
->>>>>>> 7e7f725fa31f6a988ba304f94ee242cc46742ff3

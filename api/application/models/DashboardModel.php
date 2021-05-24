@@ -14,7 +14,7 @@ class DashboardModel extends CI_Model {
 	}
 	public function payrollCount($centerid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM payrollshift where timesheetid IN (SELECT id from timesheet where timesheet.id = payrollshift.timesheetid and centerid = '$centerid')");
+		$query = $this->db->query("SELECT * FROM payrollshift where timesheetid IN (SELECT id from timesheet where centerid = '$centerid')");
 		return $query->result(); 
 	}
 	public function leavesCount($centerid){
@@ -33,21 +33,21 @@ class DashboardModel extends CI_Model {
 
 	public function getFootprints($userid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM footprints where userid = '$userid' order by id desc");
+		$query = $this->db->query("SELECT * FROM footprints where userid = '$userid' order by id desc LIMIT 50");
 		return $query->result(); 
 	}
 
-	public function getBirthdays($currentDate){
-		$this->load->database();
-		$today = date('-m-d',strtotime($currentDate));
-		$query = $this->db->query("SELECT * FROM employee where LOCATE('$today',dateOfBirth);");
-		return $query->result(); 
-	}
-
-	public function getAnniversaries($currentDate){
+	public function getBirthdays($currentDate,$centerid){
 		$this->load->database();
 		$date = date('-m-d',strtotime($currentDate));
-		$query = $this->db->query("SELECT * FROM employee where LOCATE('$date',startDate);");
+		$query = $this->db->query("SELECT * FROM employee where  userid IN (SELECT userid from usercenters where centerid = $centerid->centerid) and LOCATE('$date',dateOfBirth) ");
+		return $query->result(); 
+	}
+
+	public function getAnniversaries($currentDate,$centerid){
+		$this->load->database();
+		$date = date('-m-d',strtotime($currentDate));
+		$query = $this->db->query("SELECT * FROM employee where userid IN (SELECT userid from usercenters where centerid = $centerid->centerid) and LOCATE('$date',startDate) ");
 		return $query->result(); 
 	}
 

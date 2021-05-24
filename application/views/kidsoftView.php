@@ -216,7 +216,7 @@
               <thead>
                 <tr>
                   <th>Center Name</th>
-                  <th>Access Token</th>
+                  <th>Service Key</th>
                   <th>Created At</th>
                   <th>Action</th>
                 </tr>
