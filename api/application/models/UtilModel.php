@@ -60,8 +60,19 @@ class UtilModel extends CI_Model {
 			return $query->result();
 		}
 
-		public function getAllUsersFromCenter($centerid){
-			$query = $this->db->query("SELECT users.id,users.name,users.imageUrl,users.title,users.email FROM users INNER JOIN usercenters on usercenters.userid = users.id LEFT JOIN employee on employee.userid = users.id where centerid = $centerid and (employee.terminationDate > 'CURDATE()' OR employee.terminationDate < '1970-01-01' )");
+		public function getAllUsersFromCenter($centers){
+			$check = true;
+			$centersCondition = "";
+			foreach($centers as $center){
+				if($check){
+					$centersCondition = " centerid = $center->centerid ";
+					$check = false;
+				}
+				else{					
+					$centersCondition .= " OR centerid = $center->centerid";
+				}
+			}
+			$query = $this->db->query("SELECT users.id,users.name,users.imageUrl,users.title,users.email FROM users where id IN ( SELECT userid from usercenters where $centersCondition)    ");
 			return $query->result();
 		}
 

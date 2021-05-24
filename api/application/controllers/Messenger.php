@@ -48,12 +48,10 @@ class Messenger extends CI_Controller
 
 				// $adminCenters = explode('|',$admin->center);
 				$adminCenters = $this->utilModel->getAllCenters($admin->id);
-				foreach ($adminCenters as $adminCents) {
-					if ($adminCents != null && $adminCents != "") {
-						$allUsersFromCenter = $this->utilModel->getAllUsersFromCenter($adminCents->centerid);
-						if ($allUsersFromCenter != null && $allUsersFromCenter != "" && count($allUsersFromCenter) > 0) {
-							array_push($employees, $allUsersFromCenter);
-						}
+				if ($adminCenters != null && $adminCenters != "") {
+					$allUsersFromCenter = $this->utilModel->getAllUsersFromCenter($adminCenters);
+					if ($allUsersFromCenter != null && $allUsersFromCenter != "" && count($allUsersFromCenter) > 0) {
+						array_push($employees, $allUsersFromCenter);
 					}
 				}
 
