@@ -561,7 +561,7 @@ $present = json_decode($present);
      var div = document.getElementsByClassName('card-body');
      var row = document.createElement('div');
      row.classList.add('row');
- row.innerHTML = '<div class="col-md-4"><div class="form-group ml-2 mt-2"><select name="invites[]" id="" class="form-control"><?php for($j = 0 ; $j < $len;$j++){ ?><option value="<?php echo $present[$j]->uid; ?>"><?php echo $present[$j]->email; ?></option><?php } ?></select></div></div><div class="col-md-6  mt-2"><div class="form-group"><textarea name="sentence[]" id="" cols="30" rows="1" class="form-control"></textarea></div></div><div class="col-md-2 mt-2"><button type="button" onclick="addMore()" class="btn button"><i><img src="<?php echo base_url('assets/images/icons/plus.png'); ?>" style="max-height:0.8rem;margin-right:10px"></i></button></div></div>';
+ row.innerHTML = '<div class="col-md-4"><div class="form-group ml-2 mt-2"><select name="invites[]" id="" class="form-control"><?php for($j = 0 ; $j < $len;$j++){ ?><option value="<?php echo $present[$j]->uid; ?>"><?php echo $present[$j]->name; ?></option><?php } ?></select></div></div><div class="col-md-6  mt-2"><div class="form-group"><textarea name="sentence[]" id="" cols="30" rows="1" class="form-control"></textarea></div></div><div class="col-md-2 mt-2"><button type="button" onclick="addMore()" class="btn button"><i><img src="<?php echo base_url('assets/images/icons/plus.png'); ?>" style="max-height:0.8rem;margin-right:10px"></i></button></div></div>';
     div[0].appendChild(row);
  }
 
