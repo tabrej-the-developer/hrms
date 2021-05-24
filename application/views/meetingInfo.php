@@ -395,7 +395,17 @@
       <h3>Meeting Attendence</h3>
       <ul class="list-group">
         <?php foreach ($info->participant as $p) : ?>
-          <li class="list-group-item disabled" aria-disabled="true"><?php echo $p->name; ?></li>
+          <li class="list-group-item disabled" aria-disabled="true">
+            <span><?php echo $p->name; ?></span>
+            <?php 
+              if($p->status == 'P'){
+                echo "<span style='color:#228659'>Present</span>";
+              }
+              if($p->status == 'A'){
+                echo "<span style='color:#cf6f57 '>Absent</span>";
+              }
+            ?> 
+          </li>
         <?php endforeach; ?>
       </ul>
     </div>
