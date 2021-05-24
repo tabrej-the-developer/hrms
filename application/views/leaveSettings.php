@@ -612,6 +612,8 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 			document.getElementById("leaveName").value = document.getElementById(leaveId+"name").innerHTML;
 			document.getElementById("leaveSlug").value = document.getElementById(leaveId+"slug").innerHTML;
 			document.getElementById("switch").checked = document.getElementById(leaveId+"isPaidYN").innerHTML == "Y";
+      document.getElementById("switc").checked = document.getElementById(leaveId+"medicalFileYN").innerHTML == "Y";
+      document.getElementById("swit").checked = document.getElementById(leaveId+"hoursYN").innerHTML == "Y";
 			document.getElementById("updateLeaveType").style.display = "block";
 			// document.getElementById("addLeaveType").style.display = "none";
 			jQuery(function($) {
