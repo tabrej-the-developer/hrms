@@ -37,17 +37,37 @@ class DashboardModel extends CI_Model {
 		return $query->result(); 
 	}
 
-	public function getBirthdays($currentDate,$centerid){
+	public function getBirthdays($currentDate,$centers){
 		$this->load->database();
 		$date = date('-m-d',strtotime($currentDate));
-		$query = $this->db->query("SELECT * FROM employee where  userid IN (SELECT userid from usercenters where centerid = $centerid->centerid) and LOCATE('$date',dateOfBirth) ");
+		$check = true;
+		$centersCondition = "";
+		foreach($centers as $center){
+			if($check){
+				$centersCondition = "centerid = $center->centerid ";
+				$check = false;
+			}else{
+				$centersCondition .= " OR centerid = $center->centerid";
+			}
+		}
+		$query = $this->db->query("SELECT employee.userid,employee.xeroEmployeeId,employee.title,employee.fname,employee.lname,employee.emails,employee.dateOfBirth,employee.jobTitle,employee.gender,employee.phone,employee.startDate,employee.terminationDate,employee.ordinaryEarningRateId,employee.maxhours,employee.days FROM employee where  userid IN (SELECT userid from usercenters where  $centersCondition) and LOCATE('$date',dateOfBirth) ");
 		return $query->result(); 
 	}
 
-	public function getAnniversaries($currentDate,$centerid){
+	public function getAnniversaries($currentDate,$centers){
 		$this->load->database();
 		$date = date('-m-d',strtotime($currentDate));
-		$query = $this->db->query("SELECT * FROM employee where userid IN (SELECT userid from usercenters where centerid = $centerid->centerid) and LOCATE('$date',startDate) ");
+		$check = true;
+		$centersCondition = "";
+		foreach($centers as $center){
+			if($check){
+				$centersCondition = "centerid = $center->centerid ";
+				$check = false;
+			}else{
+				$centersCondition .= " OR centerid = $center->centerid";
+			}
+		}
+		$query = $this->db->query("SELECT employee.userid,employee.xeroEmployeeId,employee.title,employee.fname,employee.lname,employee.emails,employee.dateOfBirth,employee.jobTitle,employee.gender,employee.phone,employee.startDate,employee.terminationDate,employee.ordinaryEarningRateId,employee.maxhours,employee.days FROM employee where userid IN (SELECT userid from usercenters where $centersCondition) and LOCATE('$date',startDate) ");
 		return $query->result(); 
 	}
 
