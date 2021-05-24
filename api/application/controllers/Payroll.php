@@ -189,7 +189,7 @@ public function getAllEntitlementsByEmployeeCentersV1($userid){
 				if ($userDetails != null ) {
 					$this->load->model('payrollModel');
 					if ($name != null && $name != "" && $rate != null && $rate != "") {
-						$this->payrollModel->addEntitlement($name, $rate, $userid,$centerid);
+						$this->payrollModel->addEntitlementV1($name, $rate, $userid,$centerid);
 					}
 					$data['Status'] = 'SUCCESS';
 				} else {
