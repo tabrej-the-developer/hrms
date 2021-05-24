@@ -64,6 +64,8 @@ class Leave extends CI_Controller
 				$this->load->model('leaveModel');
 				$this->load->model('settingsModel');
 				$leaveTypes = $this->leaveModel->getLeaveTypeBySupadmin($userDetails->id, $centerid);
+				$checkSync = $this->settingsModel->syncedWithXero($centerid);
+				$mdata['syncedYN'] = ($checkSync !== null) ? 'Y' : 'N';
 				$data = array();
 				foreach ($leaveTypes as $lt) {
 					$var['id'] = $lt->id;
