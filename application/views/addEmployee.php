@@ -114,7 +114,9 @@
 			<input id="dateOfBirth"  class="" type="date" name="dateOfBirth">
 		</span> -->
 		<span class="span-class col-3">
-			<label class="labels__">Gender</label>
+			<label class="labels__">Gender<sup>
+				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+			</sup></label>
 			<span class="select_css">
 				<select id="gender"  class="" name="gender">
 					<option value="N">Not Given</option>
@@ -272,11 +274,7 @@
 			</sup></label>
 			<span class="select_css">
 				<select id="level" name="level">
-					<?php $levels = json_decode($levels);
-						foreach($levels->entitlements as $level){
-						?>
-					<option value="<?php echo $level->id; ?>"><?php echo $level->name; ?></option>
-					<?php } ?>
+					
 				</select>
 			</span>
 		</span>
@@ -579,6 +577,27 @@ $(document).ready(function(){
 			}
 		});
 
+		$(document).on('change','#center',function(){
+			var centerid = $(this).val();
+			$('#level').empty();
+			var url = "<?php echo  base_url('settings/getAllEntitlements/1000001000001/'); ?>"+`${centerid}/Y`;
+			$.ajax({
+				url : url,
+				success: function(res){
+				var parse = JSON.parse(res);
+				var code  = "";
+				try{
+					parse.entitlements.forEach((val) => {
+						code += `<option value="${val.id}">${val.name} (${val.hourlyRate})</option>`;
+					})
+						$('#level').append(code)
+				}
+				catch(err){
+					console.log("No data")
+				}
+		      }
+			})
+	})
 
 
 	function onFormSubmit(e){
@@ -606,27 +625,24 @@ $(document).ready(function(){
 		      setTimeout(closeNotification,5000)
 			}).then(function(){
 				if($('#fname').val() == null || $('#fname').val() == "" || 	$('#lname').val() == null || $('#lname').val() == ""){
-				$('#fname').css({"border-color": "red", 
-		             "border-width":"1px", 
-		             "border-style":"solid"})
 		      addMessageToNotification('All Name Fields are required');
 			    showNotification();
 		      setTimeout(closeNotification,5000)
 				falseOrTrue = false;
 				}
 				if($('#emails').val() == null || $('#emails').val() == ""){
-					$('#emails').css({"border-color": "red", 
-		             "border-width":"1px", 
-		             "border-style":"solid"})
-		      addMessageToNotification('Enter Email');
-		      		      showNotification();
-		      setTimeout(closeNotification,5000)
+		        addMessageToNotification('Enter Email');
+		      	showNotification();
+				setTimeout(closeNotification,5000)
+					falseOrTrue = false;
+				}
+				if( !(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/).test($('#emails').val())){
+					addMessageToNotification('Invalid Email Pattern');
+					showNotification();
+					setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 				}
 				if($('#alias').val() == null || $('#alias').val() == ""){
-					$('#alias').css({"border-color": "red", 
-		             "border-width":"1px", 
-		             "border-style":"solid"})
 		      addMessageToNotification('Enter Alias Name');
 		      showNotification();
 		      setTimeout(closeNotification,5000)
@@ -643,46 +659,37 @@ $(document).ready(function(){
 				// 	return false;
 				// }
 				if( $('#employee_no').val() == null || $('#employee_no').val() == "" ){
-					$('#employee_no').css({"border-color": "red", 
-		             "border-width":"1px", 
-		             "border-style":"solid"})
 		      addMessageToNotification('Enter Employee Id');
 		      showNotification();
 		      setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 				}
 				if( $('#center').val() == null || $('#center').val() == "" || $('#center').val() == 0 ){
-					$('#area').css({"border-color": "red", 
-		             "border-width":"1px", 
-		             "border-style":"solid"})
 		      addMessageToNotification('Select Center');
 		      showNotification();
 		      setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 				}
 				if( $('#area').val() == null || $('#area').val() == "" || $('#area').val() == 0 ){
-					$('#area').css({"border-color": "red", 
-		             "border-width":"1px", 
-		             "border-style":"solid"})
 		      addMessageToNotification('Select Area');
 		      showNotification();
 		      setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 				}
 				if( $('#role').val() == null || $('#role').val() == "" || $('#role').val() == 0 ){
-					$('#role').css({"border-color": "red", 
-		             "border-width":"1px", 
-		             "border-style":"solid"})
 		      addMessageToNotification('Select Role');
 		      showNotification();
 		      setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 				}
 				if( $('#level').val() == null || $('#level').val() == "" ){
-					$('#level').css({"border-color": "red", 
-		             "border-width":"1px", 
-		             "border-style":"solid"})
 		      addMessageToNotification('Select Level');
+		      showNotification();
+		      setTimeout(closeNotification,5000)
+					falseOrTrue = false;
+				}
+				if( $('#gender').val() == null || $('#gender').val() == "" || $('#gender').val() == "N" ){
+		      addMessageToNotification('Select Gender');
 		      showNotification();
 		      setTimeout(closeNotification,5000)
 					falseOrTrue = false;
@@ -696,9 +703,6 @@ $(document).ready(function(){
 			      	}
 			      }
 			      if(check == false){
-					$('#employement_type').css({"border-color": "red", 
-		             "border-width":"1px", 
-		             "border-style":"solid"})
 				      addMessageToNotification('Select days');
 				      showNotification();
 				      setTimeout(closeNotification,5000)
@@ -706,9 +710,6 @@ $(document).ready(function(){
 			      }
 				}
 				if( $('#totalHours').val() == null || $('#totalHours').val() <= 1 ){
-					$('#level').css({"border-color": "red", 
-		             "border-width":"1px", 
-		             "border-style":"solid"})
 		      addMessageToNotification('Enter total hours');
 		      showNotification();
 		      setTimeout(closeNotification,5000)
