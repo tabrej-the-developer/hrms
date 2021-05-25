@@ -4,7 +4,7 @@
   $GLOBALS['rolesArray'] = json_decode($roles); 
    $rosterDetails = json_decode($rosterDetails); 
    $GLOBALS['roDetails'] = $rosterDetails;
-   $entitlement = json_decode($entitlements);
+//    $entitlement = json_decode($entitlements);
    $permissions = json_decode($permissions);
    require(APPPATH.'/libraries/fpdf/fpdf.php');
   if(isset($_GET['printMode']) && ($_GET['printMode'] == 'P' || $_GET['printMode'] == 'L')){
@@ -1568,10 +1568,11 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 			<?php
 						$variable = 0;
 						$userLevel = $rosterDetails->roster[$x]->roles[$counter]->level;
-						foreach($entitlement->entitlements as $e){
-								if($e->id == $userLevel ){
-									$variable = $e->hourlyRate;
-								}
+						$variable = isset($rosterDetails->roster[$x]->roles[$counter]->hourlyRate) ? $rosterDetails->roster[$x]->roles[$counter]->hourlyRate : 0 ;
+						// foreach($entitlement->entitlements as $e){
+						// 		if($e->id == $userLevel ){
+						// 			$variable = $e->hourlyRate;
+						// 		}
 			?>
 			<?php } ?>
 			<?php if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){ ?>
@@ -1588,12 +1589,12 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 					<?php for($fiveIterations=0;$fiveIterations<5;$fiveIterations++){
 						$variable = 0;
 		$userLevel = $rosterDetails->roster[$x]->roles[$counter]->level;
-
-		foreach($entitlement->entitlements as $e){
-			if($e->id == $userLevel ){
-				$variable = $e->hourlyRate;
-			}
-		}
+		$variable = isset($rosterDetails->roster[$x]->roles[$counter]->hourlyRate) ? $rosterDetails->roster[$x]->roles[$counter]->hourlyRate : 0 ;
+		// foreach($entitlement->entitlements as $e){
+		// 	if($e->id == $userLevel ){
+		// 		$variable = $e->hourlyRate;
+		// 	}
+		// }
 
 		?>
 		<?php 
@@ -1681,7 +1682,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 
 				</tr>
 			</tr>
-			<?php } }  } }?>
+			<?php } }  }?>
 
 
 	<?php 
@@ -1716,14 +1717,13 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 				<?php 
 			}
 				$value = count($rosterDetails->roster[$x]->roles);
-              
-              $totalHours = 0;
-              $_endTime_100 = 0;
-              $_startTime_100 = 0;
+					$totalHours = 0;
+					$_endTime_100 = 0;
+					$_startTime_100 = 0;
 				for($counter=0;$counter<$value;$counter++){ 
-              $_endTime_100 = 0;
-              $_startTime_100 = 0;       
-              $totalHours = 0;
+					$_endTime_100 = 0;
+					$_startTime_100 = 0;       
+					$totalHours = 0;
           ?>
 				<tr  class="table-row">
 					<td   style="width:16vw" class=" cell-boxes left-most 
@@ -1743,13 +1743,12 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 			<?php
 						$variable = 0;
 						$userLevel = $rosterDetails->roster[$x]->roles[$counter]->level;
-						foreach($entitlement->entitlements as $e){
-								if($e->id == $userLevel ){
-									$variable = $e->hourlyRate;
-								}
-			?>
-			<?php } ?>
-			<?php if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$counter]->empId){ ?>
+						$variable = isset($rosterDetails->roster[$x]->roles[$counter]->hourlyRate) ? $rosterDetails->roster[$x]->roles[$counter]->hourlyRate : 0 ;
+						// foreach($entitlement->entitlements as $e){
+						// 		if($e->id == $userLevel ){
+						// 			$variable = $e->hourlyRate;
+						// 		} ?>
+			<?php if(isset($rosterDetails->roster[$x]->roles[$counter]->empId) && $this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$counter]->empId){ ?>
 								<span class="title hourly row"><?php echo  $variable; // echo $rosterDetails->roster[$x]->roles[$counter]->empTitle ?></span>
 							<?php } ?>
 							</span>
@@ -1761,12 +1760,13 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 					<?php $weeklyTotal=0;$p=0;$index=0; ?>
 					<?php for($fiveIterations=0;$fiveIterations<5;$fiveIterations++){
 						$variable = 0;
-		$userLevel = $rosterDetails->roster[$x]->roles[$counter]->level;
-		foreach($entitlement->entitlements as $e){
-			if($e->id == $userLevel ){
-				$variable = $e->hourlyRate;
-			}
-		}
+		$userLevel = isset($rosterDetails->roster[$x]->roles[$counter]->level) ? $rosterDetails->roster[$x]->roles[$counter]->level : 0;
+		$variable = isset($rosterDetails->roster[$x]->roles[$counter]->hourlyRate) ? $rosterDetails->roster[$x]->roles[$counter]->hourlyRate : 0 ;
+		// foreach($entitlement->entitlements as $e){
+		// 	if($e->id == $userLevel ){
+		// 		$variable = $e->hourlyRate;
+		// 	}
+		// }
 		?>
 		<?php 
 				$date = date('Y-m-d',strtotime($rosterDetails->startDate)); 
@@ -1841,7 +1841,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
           </td>
 
 				</tr>
-			<?php }  } }?>
+			<?php }  } } ?>
 
 
 
@@ -2333,6 +2333,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 
 <?php } ?>
 <script type="text/javascript">
+
   remove_loader_icon();
     function remove_loader_icon(){
     $('.loading').hide();
@@ -2979,6 +2980,8 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 
 	$(".close_priority").on("click", function(){
 		  closeModal();
+		  $('.priority_areass input').val('');
+		  $('.priority_areass select').val('')
 		$(".priority_areas").empty();
 	});
 
@@ -3131,6 +3134,7 @@ $('.modal_body').draggable();
 
 	$(document).on('click','.casualEmploye-btn',function(){
 			$(".masked").addClass("actived");
+			$('.token-search input').attr('placeholder','Search Employees')
 		});
 
 	function closeModalEmp(){
@@ -3350,6 +3354,7 @@ $('.modal_body').draggable();
 	function getPermissions(){
 		let rosterId = "<?php echo $rosterid; ?>";
 		let employeeId = $('#employeeValue').val();
+		$('.token-search input').attr('placeholder','Search Employees')
 		let url = '<?php echo base_url() ?>Roster/getRosterPermissions/'+employeeId+'/'+rosterId;
 	 	$.ajax({
 	 		url : url,
