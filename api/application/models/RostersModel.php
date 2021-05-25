@@ -87,6 +87,30 @@ class RostersModel extends CI_Model {
 	// 	return $query->row();
 	// }
 
+	public function getSuperAdminByCenter($centerid){
+		$this->load->database();
+		$query = $this->db->query("SELECT uc.userid,users.email,uc.centerid FROM users  INNER JOIN usercenters uc on uc.userid = users.id where uc.centerid = $centerid and users.id = users.manager");
+		return $query->row();
+	}
+
+	public function getAllEmployeesByCenters($superAdmin){
+		$this->load->database();
+		$check = true;
+		$centersCondition = "";
+		$centers = $this->db->query("SELECT * FROM usercenters where userid = '$superAdmin->userid' ");
+		$centers = $centers->result();
+		foreach($centers as $center){
+			if($check){
+				$centersCondition = " uc.centerid = $center->centerid ";
+				$check = false;
+			}else{
+				$centersCondition .= " OR uc.centerid = $center->centerid";
+			}
+		}
+		$query = $this->db->query("SELECT users.name,users.id,users.email,uc.centerid from users INNER JOIN usercenters uc on uc.userid=users.id where $centersCondition");
+		return $query->result();
+	}
+
 	public function createNewRoster($userid,$startDate,$endDate,$centerid){
 		$this->load->database();
 		$rosterid = uniqid();

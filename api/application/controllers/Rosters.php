@@ -1292,34 +1292,10 @@ class Rosters extends MY_Controller
 
 				$data['casualEmployees'] = [];
 				$rosterEmployees = $this->rostersModel->getAllEmployeesFromRoster($rosterid);
-
-				$userDetails = ($this->utilModel->getUserDetails($userid));
-				$getSuperAdmins = $this->utilModel->getSuperAdmins();
-				$casualEmployees = [];
-				// if($userDetails->role != 1){
-				foreach ($getSuperAdmins as $superadmin) {
-					$centers = explode('|', $superadmin->center);
-					foreach ($centers as $cent) {
-						$cs = explode('|', $userDetails->center);
-						foreach ($cs as $c) {
-							if ($c == $cent && $c != "" && $c != null) {
-								$admin = $superadmin->center;
-								$allusers = $this->utilModel->getAllUsers();
-								foreach ($allusers as $u) {
-									if ($u->role != 1) {
-										$cntrs = explode('|', $u->center);
-										foreach ($cntrs as $cntr) {
-											if ($cntr == $cent) {
-												array_push($casualEmployees, $u);
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-				// }
+				$rosterCenter = ($this->rostersModel->getRosterFromId($rosterid));
+				$rosterCenter = isset($rosterCenter)  ? ($rosterCenter->centerid) : ''; 
+				$getSuperAdminByCenter = $this->rostersModel->getSuperAdminByCenter($rosterCenter); 
+				$casualEmployees = $this->rostersModel->getAllEmployeesByCenters($getSuperAdminByCenter);
 				foreach ($casualEmployees as $emp) {
 					$emp_exists = false;
 					foreach ($rosterEmployees as $roster_emp) {
@@ -1329,7 +1305,6 @@ class Rosters extends MY_Controller
 					}
 					if ($emp_exists == false) {
 						$var['empName'] = $emp->name;
-						$var['empCenter'] = $emp->center;
 						$var['empId'] = $emp->id;
 						array_push($data['casualEmployees'], $var);
 					}
