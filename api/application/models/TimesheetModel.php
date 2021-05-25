@@ -110,7 +110,7 @@ class TimesheetModel extends CI_Model {
 
 	public function getPayrollShiftsById($timesheetid,$currentDate,$userid,$payrollType){
 		$this->load->database();
-		$query = $this->db->query("SELECT sum(clockedInTime) as clockedInTime,sum(clockedOutTime) as clockedOutTime,payrollType from payrollshift where timesheetId = '$timesheetid' and shiftDate = '$currentDate' and userid = '$userid' and payrollType = '$payrollType' group by payrollType");
+		$query = $this->db->query("SELECT clockedInTime,clockedOutTime,payrollType from payrollshift where timesheetId = '$timesheetid' and shiftDate = '$currentDate' and userid = '$userid' and payrollType = '$payrollType' ");
 		return $query->result();
 	}
 

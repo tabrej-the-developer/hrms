@@ -537,7 +537,7 @@ table.dataTable{
 	<div class="d-flex heading-bar">
 		<span class="m-3" id="roster-heading" style="">Rosters</span>
 		<span class="btn sort-by m-3 ">
-<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?> 
+<?php // if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?> 
 <!-- 			<div class="filter-icon d-flex">
 				<span class="">Sort&nbsp;by</span>
 				<span class=""><img src="../assets/images/filter-icon.png" height="20px"></span>
@@ -555,7 +555,7 @@ table.dataTable{
 				 <?php }}  ?>
 				</select>
 		</span>	
-						<?php } ?>
+						<?php // } ?>
 		</span>
 
 		<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
@@ -781,7 +781,6 @@ table.dataTable{
   // Notification //
 
 	$(document).ready(function(){
-		<?php if($this->session->userdata('UserType')==SUPERADMIN){?>
 		$(document).on('change','.center-list',function(){
 			
 			var val = $(this).val();
@@ -820,7 +819,6 @@ table.dataTable{
 			}
 		});
 	});
-	<?php } ?>
 
 		$(document).on('click','#tbody tr[clickable="yes"]',function(){
 			var rosterId = $(this).prop('id')
