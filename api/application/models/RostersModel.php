@@ -9,6 +9,13 @@ class RostersModel extends CI_Model {
 		return $query->result();
 	}
 
+	// Get hourly rate by level
+	public function getHourlyRate($level){
+		$this->load->database();
+		$query = $this->db->query("SELECT hourlyRate from entitlements where id = $level");
+		return ($query->row() != null) ? ($query->row())->hourlyRate : null;
+	}
+
 	public function getAllAreas($centerid){
 		$this->load->database();
 		$query = $this->db->query("SELECT * FROM orgchartareas WHERE centerid = '$centerid'   order by rosterPriority ASC");

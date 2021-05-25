@@ -182,7 +182,7 @@ class Rosters extends MY_Controller
 					if (date('D', strtotime($startDate)) != 'Mon') {
 						$data['Status'] = 'ERROR';
 						$data['Message'] = "Rosters start from Monday";
-					} else if ($userDetails != null && ($userDetails->role == ADMIN || $userDetails->role == SUPERADMIN)) {
+					} else if ($userDetails != null ) {
 						$this->load->model('rostersModel');
 						$existingRoster = $this->rostersModel->getRosterFromDate($startDate, $centerid);
 						if ($existingRoster == null) {
@@ -408,7 +408,7 @@ class Rosters extends MY_Controller
 				return 11;
 			}
 		}else{
-			return $occupancy->childcount;
+			return $occupancy->childcount == null ? 11 : $occupancy->childcount;
 		}
 	}
 
@@ -431,7 +431,7 @@ class Rosters extends MY_Controller
 				// 		$data['Status'] = 'ERROR';
 				// 		$data['Message'] = "Rosters start from Monday";
 				// }
-				if ($userDetails != null && ($userDetails->role == ADMIN || $userDetails->role == SUPERADMIN)) {
+				if ($userDetails != null) {
 					if ($templateName != null && $templateName != "") {
 
 						$this->load->model('rostersModel');
@@ -453,17 +453,17 @@ class Rosters extends MY_Controller
 							$var['areaName'] = $area->areaName;
 							$var['isRoomYN'] = $area->isARoomYN;
 							$var['occupancy'] = [];
-							if ($var['isRoomYN'] == 'Y') {
-								$currentDateNow = $current; //----------------remove
-								$currentDayNow = 0;
-								while ($currentDayNow < 5) {
-									$currentDateNow = $currentDayNow; //----------------remove
-									$occupancyObj['date'] = $currentDateNow; //----------------remove
-									$occupancyObj['occupancy'] = 11;
-									array_push($var['occupancy'], $occupancyObj);
-									$currentDayNow++;
-								}
-							}
+							// if ($var['isRoomYN'] == 'Y') {
+							// 	$currentDateNow = $current; //----------------remove
+							// 	$currentDayNow = 0;
+							// 	while ($currentDayNow < 5) {
+							// 		$currentDateNow = $currentDayNow; //----------------remove
+							// 		$occupancyObj['date'] = $currentDateNow; //----------------remove
+							// 		$occupancyObj['occupancy'] = 11;
+							// 		array_push($var['occupancy'], $occupancyObj);
+							// 		$currentDayNow++;
+							// 	}
+							// }
 							$var['roles'] = [];
 							$allRoles = $this->rostersModel->getAllRoles($area->areaid);
 							// var_dump($allRoles);
@@ -477,6 +477,7 @@ class Rosters extends MY_Controller
 									$rav['empName'] = $empDetails->name;
 									$rav['empTitle'] = $empDetails->title;
 									$rav['level'] = $employee->level;
+									$rav['hourlyRate'] = $this->rostersModel->getHourlyRate($rav['level']);
 									//$rav['maxHoursPerWeek'] = $employee->maxHoursPerWeek;
 									$rav['shifts'] = [];
 									$day = 0;
@@ -575,6 +576,7 @@ class Rosters extends MY_Controller
 								$rav['empTitle'] = $empDetails->title;
 								$rav['empRole'] = $empDetails->roleid;
 								$rav['level'] = $empDetails->level;
+								$rav['hourlyRate'] = $this->rostersModel->getHourlyRate($rav['level']);
 								$empMaxHours = $this->rostersModel->getMaxHours($employeeid->userid);
 								$rav['maxHoursPerWeek'] = isset($empMaxHours->maxhours) ? $empMaxHours->maxhours : NULL;
 								$rav['shifts'] = [];
@@ -669,6 +671,7 @@ class Rosters extends MY_Controller
 							$rav['empName'] = $empDetails->name;
 							$rav['empTitle'] = $empDetails->title;
 							$rav['level'] = $empDetails->level;
+							$rav['hourlyRate'] = $this->rostersModel->getHourlyRate($rav['level']);
 							//$rav['maxHoursPerWeek'] = $empDetails->maxHoursPerWeek;
 							$rav['shifts'] = [];
 							$allShifts = $this->rostersModel->getAllTemplateShiftsFromEmployee($rosterTemplateId, $employeeid->userid, $area->areaid);
@@ -1258,20 +1261,16 @@ class Rosters extends MY_Controller
 						if ($startTime != null && $endTime != null && $rosterid != null && $roleid != null && $date != null && $emp != null) {
 							$this->rostersModel->addCasualEmployees($startTime, $endTime, $rosterid, $roleid, $date, $emp, $status);
 							$data['Status'] = 'SUCCESS';
-							http_response_code(200);
-							echo json_encode($data);
 						} else {
 							$data['Status'] = 'ERROR';
 							$data['Message'] = "Invalid Parameters";
-							http_response_code(200);
-							echo json_encode($data);
 						}
 					} else {
 						$data['status'] = "REDUNDANT";
-						http_response_code(200);
-						echo json_encode($data);
 					}
 				}
+				http_response_code(200);
+				echo json_encode($data);
 			} else {
 				http_response_code(401);
 			}
