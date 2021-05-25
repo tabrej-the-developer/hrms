@@ -2382,9 +2382,9 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
       var endTime = parseInt($('#ends').prop('value'));
       var days = {};
       var day = [];
-      for(var i=0;i< ($('.edit_shift_checkbox_space').length);i++){
+      for(var i=0;i< ($('.shift_checkbox_space').length);i++){
         obj = {};
-        obj.YN = ($('.edit_shift_checkbox_space').eq(i).is(':checked'));
+        obj.YN = ($('.shift_checkbox_space').eq(i).is(':checked'));
         day.push(obj);
       } 
       days.day = day;
@@ -2402,7 +2402,8 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
         }
       url = "<?php echo base_url() ?>roster/updateShift";
         loader_icon();
-      $.ajax({
+		console.log(days)
+		  $.ajax({
         url:url,
         type:'POST',
         data:{
