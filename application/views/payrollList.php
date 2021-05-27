@@ -292,6 +292,7 @@ table.dataTable{
 </head>
 <body>
 	<?php
+		$permissions = json_decode($permissions);
 		function dateToDay($date){
 			$date = explode("-",$date);
 			return date("M d",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
@@ -304,8 +305,8 @@ table.dataTable{
 <div class="containers">
 	<div class="d-flex">
 		<span class="m-3" style="font-size: 1.75rem;font-weight: bold">Payrolls</span>
-		<span class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
-			<?php if($this->session->userdata('UserType') == SUPERADMIN){?> 
+		<span class="btn sort-by m-3 ">
+			<?php if ((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN : "N") == "Y") { ?> 
 <!-- 			<div class="filter-icon row">
 				<span class="col">Sort&nbsp;by</span>
 				<span class="col"><img src="../assets/images/filter-icon.png" height="20px"></span>
@@ -336,17 +337,12 @@ table.dataTable{
 			</span>
 		</span>
 		<?php } ?>
-		<?php if($this->session->userdata('UserType') == SUPERADMIN || $this->session->userdata('UserType') == ADMIN ){?>
-		
-		<?php } ?>
 	</div>
 	<div class="table-div">
 		<table class="table">
 			<thead>
 				<th>S.No</th>
-				<?php if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')== ADMIN) {?>
 				<th>Payroll Name</th>
-			<?php } ?>
 				<th>Start Date</th>
 				<th>End Date</th>
 				<th>Status</th>
@@ -357,32 +353,29 @@ table.dataTable{
 				<?php 
 				$centerId; 
 				if(isset($payrolls)){
-				$payroll = json_decode($payrolls);
-				for($i=0;$i<count($payroll->timesheets);$i++){
-				?>
-				<?php if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')== ADMIN) {?>
-				<tr id="<?php echo $payroll->timesheets[$i]->id?>">
-					<td><?php echo $i+1 ?></td>
-					<?php if($this->session->userdata('UserType') == ADMIN ){?>
-						<td><?php echo 'Payroll | '.dateToDay($payroll->timesheets[$i]->startDate).'-'.dateToDay($payroll->timesheets[$i]->endDate) ?></td>
-					<?php } ?>
-					<?php if($this->session->userdata('UserType') ==SUPERADMIN ) { ?>
-					<td><?php echo 'Payroll | '.dateToDay($payroll->timesheets[$i]->startDate).'-'.dateToDay($payroll->timesheets[$i]->endDate) ?></td>
-				<?php }?>
-					<td><?php echo dateToDayAndYear($payroll->timesheets[$i]->startDate) ?></td>
-					<td><?php echo dateToDayAndYear($payroll->timesheets[$i]->endDate) ?></td>
-					<td><?php echo $payroll->timesheets[$i]->status ?></td>
-					</tr>
-				<?php }?>
-			<?php if($this->session->userdata('UserType') == STAFF ) { ?>
-				<tr id="<?php echo $payroll->timesheets[$i]->id?>">
+					$payroll = json_decode($payrolls);
+					for($i=0;$i<count($payroll->timesheets);$i++){
+					?>
+					<?php if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN : "N") == "Y" && $payroll->timesheets[$i]->status == 'Published'){ ?>
+					<tr id="<?php echo $payroll->timesheets[$i]->id?>">
 						<td><?php echo $i+1 ?></td>
-						<td><?php echo $payroll->timesheets[$i]->startDate ?></td>
-						<td><?php echo $payroll->timesheets[$i]->endDate ?></td>
+						<td><?php echo 'Payroll | '.dateToDay($payroll->timesheets[$i]->startDate).'-'.dateToDay($payroll->timesheets[$i]->endDate) ?></td>
+						<td><?php echo dateToDayAndYear($payroll->timesheets[$i]->startDate) ?></td>
+						<td><?php echo dateToDayAndYear($payroll->timesheets[$i]->endDate) ?></td>
 						<td><?php echo $payroll->timesheets[$i]->status ?></td>
-					</tr>
-				<?php } ?>
-<?php } } ?>
+						</tr>
+					<?php }?>
+				<?php if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN : "N") == "N"){ ?>
+					<tr id="<?php echo $payroll->timesheets[$i]->id?>">
+							<td><?php echo $i+1 ?></td>
+							<td><?php echo 'Payroll | '.dateToDay($payroll->timesheets[$i]->startDate).'-'.dateToDay($payroll->timesheets[$i]->endDate) ?></td>
+							<td><?php echo dateToDayAndYear($payroll->timesheets[$i]->startDate) ?></td>
+							<td><?php echo dateToDayAndYear($payroll->timesheets[$i]->endDate) ?></td>
+							<td><?php echo $payroll->timesheets[$i]->status ?></td>
+						</tr>
+					<?php } 
+					} 
+				} ?>
 			</tbody>
 		
 		</table>
@@ -401,10 +394,9 @@ table.dataTable{
  	<form id="create-timesheet-form"  method="POST" action=<?php echo base_url()."timesheet/createTimesheet" ?>>
  		<span id="down-arrow" style="display:flex;justify-content: center;margin:20px"><input  name="timesheet-date" id="timesheet-date" autocomplete="off"></span>
  		<input type="text" name="userId" id="userId" style="display:none" value="<?php echo $userId?>">
- 		
- 		<?php if($this->session->userdata('UserType')==ADMIN) {?><input type="text" name="centerId" id="center-id" value="<?php echo $cents;?>" style="display:none">
- 	<?php } ?>
- 		<?php if($this->session->userdata('UserType')==SUPERADMIN){ ?><input type="text" name="centerId" id="center-id" value="<?php echo $centerId;?>" style="display:none"><?php } ?>
+ 		<?php if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN : "N") == "Y"){ ?>
+			<input type="text" name="centerId" id="center-id" value="<?php echo $centerId;?>" style="display:none">
+	<?php } ?>
  		<div class="text-center">
  		<input type="submit" name="timesheet-submit" id="timesheet-submit" class="button" value="Create">
  		<input type="reset" name="" id="" class="button" value="Reset">
@@ -425,7 +417,7 @@ table.dataTable{
 
 <script type="text/javascript">
 	$(document).ready(function(){
-		<?php if($this->session->userdata('UserType')==SUPERADMIN){?>
+		<?php if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN : "N") == "Y"){ ?>
 		$(document).on('change','.center-list',function(){
 			var val = $(this).val();
 			if(val == null || val == ""){
@@ -450,7 +442,7 @@ table.dataTable{
 		})
 })
 
-	<?php if($this->session->userdata('UserType')==SUPERADMIN){?>
+	<?php if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN : "N") == "Y"){ ?>
 	$(document).ready(function(){
 			equalElements('sort-by','center-list');
 		})
