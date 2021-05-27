@@ -456,20 +456,12 @@ table.dataTable{
 	<div class="d-flex heading-bar">
 		<span class="m-3" id="roster-heading" style="">Payroll Shifts</span>
 		<span class="btn sort-by m-3 <?php if($this->session->userdata('UserType') == ADMIN) {echo "ml-auto"; }?>">
-<?php 
-if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN : "N") == "Y"){ ?> 
-<!-- 			<div class="filter-icon d-flex">
-				<span class="">Sort&nbsp;by</span>
-				<span class=""><img src="../assets/images/filter-icon.png" height="20px"></span>
-			</div> -->
-
-						<?php } ?>
 		</span>
 
 		<?php 
-					if(isset($payrollShifts)){
-						$payrollShifts = json_decode($payrollShifts); 
-					}
+			if(isset($payrollShifts)){
+				$payrollShifts = json_decode($payrollShifts); 
+			}
 		if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN : "N") == "Y"){ 
 			if(isset($payrollShifts) && $payrollShifts->payrun == null){
 			?>
@@ -479,7 +471,8 @@ if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN 
 				<img src="<?php echo base_url('assets/images/icons/publish.png'); ?>" style="margin-right:10px">
 			</i>Publish</a>
 		</span>
-		<?php } 
+		<?php 
+				} 
 			}
 		?>
 	</div>
@@ -487,7 +480,6 @@ if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN 
 		<table class="table">
 		<?php 
 		if(isset($payrollShifts) && $payrollShifts->payrun == null){
-
 		 ?>
 			<thead>
 				<th>Name</th>
@@ -564,7 +556,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN 
 		<?php } } ?>
 			</tbody>
 	<?php } 
-		if(isset($payrollShifts) && $payrollShifts->payslips != null){ 
+		else{
 			?>
 			<thead>
 				<th>Name</th>
@@ -576,7 +568,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN 
 				<th>NetPay</th>
 				<th>Print</th>
 			</thead>
-			
+		<?php if(isset($payrollShifts) && $payrollShifts->payslips != null){  ?>
 			<tbody id="tbody">
 
 				<?php 
@@ -613,7 +605,9 @@ if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN 
 				<?php }?>
 			<?php } ?>
 			</tbody>
-	<?php	}	?>
+		<?php	}
+			}
+		?>
 		</table>
 	</div>
 	<div>
@@ -647,7 +641,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN 
 ------------------------ -->
 
 <!--This is meant for admin-->
-<?php if($this->session->userdata('UserType')==SUPERADMIN || $this->session->userdata('UserType')==ADMIN){ ?>
+<?php if ((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN : "N") == "Y") { ?>
 	<div id="myModal" class="modal">
 	  <!-- Modal content -->
 	  <div class="modal-content">
@@ -690,7 +684,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN 
 </script>
 
 
-<?php if($this->session->userdata('UserType') == ADMIN || $this->session->userdata('UserType') == SUPERADMIN){?>
+<?php if ((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN : "N") == "Y") { ?>
 <script type="text/javascript">
 				var modal = document.getElementById("myModal");
 				var htmlVal = $('timesheet-form').html()
