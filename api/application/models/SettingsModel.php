@@ -174,9 +174,14 @@ class SettingsModel extends CI_Model {
 		$this->db->query("INSERT INTO permissions VALUES('$userid','$isQrReaderYN','$viewRosterYN','$editRosterYN','$viewTimesheetYN','$editTimesheetYN','$viewPayrollYN','$editPayrollYN','$editLeaveTypeYN','$viewLeaveTypeYN','$createNoticeYN','$viewOrgChartYN','$editOrgChartYN','$viewCenterProfileYN','$editCenterProfileYN','$viewRoomSettingsYN','$editRoomSettingsYN','$viewEntitlementsYN','$editEntitlementsYN','$editEmployeeYN','$xeroYN','$viewAwardsYN','$editAwardsYN','$viewSuperfundsYN','$editSuperfundsYN','$createMomYN','$editPermissionYN','$viewPermissionYN','$kidsoftYN')");
 	}
 	
-		public function addToEmployeeCourses( $xeroEmployeeId,$course_nme,$course_desc,$date_obt,$exp_date){
+		public function addToEmployeeCourses( $xeroEmployeeId,$course_nme,$course_desc,$date_obt,$exp_date,$certName=null){
 			$this->load->database();
-			$query = $this->db->query("INSERT INTO employeecourses (employeeId, courseName, courseDescription, dateObtained, courseExpiryDate) VALUES ( '$xeroEmployeeId','$course_nme','$course_desc','$date_obt','$exp_date')");
+			$opt = "";
+			if($certName != null && $certName != ""){
+				$certName = " , '$certName'";
+				$opt = ' , courseCertificate';
+			}
+			$query = $this->db->query("INSERT INTO employeecourses (employeeId, courseName, courseDescription, dateObtained, courseExpiryDate  $opt) VALUES ( '$xeroEmployeeId','$course_nme','$course_desc','$date_obt','$exp_date' $certName)");
 		}
 		public function getAreaId($centerid,$areaName){
 			$this->load->database();
@@ -248,7 +253,7 @@ class SettingsModel extends CI_Model {
 		public function getEmployeeBankAccount($userid){
 			$this->load->database();
 			$query = $this->db->query("SELECT * FROM employeebankaccount where employeeId = '$userid'");
-			return $query->row();
+			return $query->result();
 		}
 		public function getEmployeeCourses($userid){
 			$this->load->database();
@@ -267,7 +272,7 @@ class SettingsModel extends CI_Model {
 		}
 		public function getEmployeeRecord($userid){
 			$this->load->database();
-			$query = $this->db->query("SELECT * FROM employeerecord where employeeId = '$userid'");
+			$query = $this->db->query("SELECT * FROM employeerecord where employeeNo = '$userid'");
 			return $query->row();
 		}
 		public function getEmployeeSuperfunds($userid){
@@ -292,9 +297,12 @@ class SettingsModel extends CI_Model {
 			$query = $this->db->query("UPDATE users SET level = $level where id='$empId'");
 		}
 
-		public function updateEmployeeCourses($id, $xeroEmployeeId,$course_nme,$course_desc,$date_obt,$exp_date){
+		public function updateEmployeeCourses($id, $xeroEmployeeId,$course_nme,$course_desc,$date_obt,$exp_date,$certName){
 			$this->load->database();
-			$query = $this->db->query("UPDATE  employeecourses SET employeeId = '$xeroEmployeeId', courseName = '$course_nme' , courseDescription = '$course_desc' , dateObtained = '$date_obt' , courseExpiryDate = '$exp_date' where id = '$id'");
+			if($certName != null){
+				$certName = " , courseCertificate = '$certName'";
+			}
+			$query = $this->db->query("UPDATE  employeecourses SET employeeId = '$xeroEmployeeId', courseName = '$course_nme' , courseDescription = '$course_desc' , dateObtained = '$date_obt' , courseExpiryDate = '$exp_date' $certName  where id = '$id'");
 		}
 		public function updateUsers($employee_no,$emails,$name,$title,$userid,$alias){
 			$this->load->database();
@@ -302,19 +310,24 @@ class SettingsModel extends CI_Model {
 		}
 		public function updateEmployeeBankAccount( $employeeNo,$accountName,$bsb,$accountNumber,$remainderYN,$amount){
 			$this->load->database();
-			$check = $this->db->query("SELECT * from employeebankaccount where employeeId = '$employeeNo'");
-			$check = $check->row();
-			if($check != null && $check != ""){
-				$query = $this->db->query("UPDATE  employeebankaccount SET  accountName = '$accountName', bsb = '$bsb', accountNumber = '$accountNumber', remainderYN = '$remainderYN', amount = '$amount' where employeeId  = '$employeeNo'");
-			}
-			else{
-				$query = $this->db->query("INSERT INTO employeebankaccount (employeeId, accountName, bsb, accountNumber, remainderYN, amount) VALUES ( '$employeeNo','$accountName','$bsb','$accountNumber','$remainderYN','$amount')");
-			}
+			$query = $this->db->query("INSERT INTO employeebankaccount (employeeId, accountName, bsb, accountNumber, remainderYN, amount) VALUES ( '$employeeNo','$accountName','$bsb','$accountNumber','$remainderYN','$amount')");
 		}
+
+		public function deleteFromBankAccount($employee_no){
+			$this->load->database();
+			$this->db->query("DELETE FROM employeebankaccount where employeeId = '$employee_no'");
+		}
+
 		public function updateEmployeeMedicalInfo($employee_no,$medicareNo, $medicareRefNo,$healthInsuranceFund,$healthInsuranceNo, $ambulanceSubscriptionNo){
 			$this->load->database();
+			$check = $this->db->query("SELECT * FROM employeemedicalinfo where employeeNo = '$employee_no'");
+			if($check->row() != null){
 			$query = $this->db->query("UPDATE employeemedicalinfo  SET medicareNo = '$medicareNo', medicareRefNo = '$medicareRefNo', healthInsuranceFund = '$healthInsuranceFund', healthInsuranceNo = '$healthInsuranceNo' , ambulanceSubscriptionNo = '$ambulanceSubscriptionNo'
  					where employeeNo = '$employee_no'");
+			}else{
+				$query = $this->db->query("INSERT INTO employeemedicalinfo  SET medicareNo = '$medicareNo', medicareRefNo = '$medicareRefNo', healthInsuranceFund = '$healthInsuranceFund', healthInsuranceNo = '$healthInsuranceNo' , ambulanceSubscriptionNo = '$ambulanceSubscriptionNo'
+			, employeeNo = '$employee_no'");
+			}
 		}
 		public function updateEmployeeMedicals( $id,$employee_no,$medC,$medA,$medic,$dietary){
 			$this->load->database();
@@ -323,7 +336,24 @@ class SettingsModel extends CI_Model {
 		}
 		public function updateEmployeeRecord($employee_no, $xeroEmployeeId,  $qual_towards_desc, $highest_qual_held, $qual_towards_percent_comp, $visa_type, $visa_grant_date, $visa_end_date, $visa_conditions, $highest_qual_date_obtained,  $visa_holder,$resume_doc,$contract_doc){
 			$this->load->database();
-			$query = $this->db->query("UPDATE employeerecord SET   EmployeeId = '$xeroEmployeeId',  otherQualDesc = '$qual_towards_desc', highestQualHeld = '$highest_qual_held', qualTowardsPercentcomp = '$qual_towards_percent_comp', visaType = '$visa_type', visaGrantDate = '$visa_grant_date', visaEndDate = '$visa_end_date', visaConditions = '$visa_conditions', highestQualDateObtained = '$highest_qual_date_obtained',  visaHolderYN = '$visa_holder' , resumeDoc = '$resume_doc' , contractDocument = '$contract_doc' where employeeNo = '$employee_no'");
+			$check = $this->db->query("SELECT * FROM employeerecord where employeeNo = '$employee_no'");
+			if($check->row() != null){
+				if($resume_doc == null && $contract_doc == null){
+					$doc = "";
+				}
+				if($resume_doc == null && $contract_doc != null){
+					$doc = " , contractDocument = '$contract_doc'";
+				}
+				if($resume_doc != null && $contract_doc == null){
+					$doc = "  ,resumeDoc = '$resume_doc' ";
+				}
+				if($resume_doc != null && $contract_doc != null){
+					$doc = " ,resumeDoc = '$resume_doc' , contractDocument = '$contract_doc'";
+				}
+				$query = $this->db->query("UPDATE employeerecord SET   EmployeeId = '$xeroEmployeeId',  otherQualDesc = '$qual_towards_desc', highestQualHeld = '$highest_qual_held', qualTowardsPercentcomp = '$qual_towards_percent_comp', visaType = '$visa_type', visaGrantDate = '$visa_grant_date', visaEndDate = '$visa_end_date', visaConditions = '$visa_conditions', highestQualDateObtained = '$highest_qual_date_obtained',  visaHolderYN = '$visa_holder'  $doc where employeeNo = '$employee_no'");
+			}else{
+				$query = $this->db->query("INSERT INTO employeerecord SET   EmployeeId = '$xeroEmployeeId',  otherQualDesc = '$qual_towards_desc', highestQualHeld = '$highest_qual_held', qualTowardsPercentcomp = '$qual_towards_percent_comp', visaType = '$visa_type', visaGrantDate = '$visa_grant_date', visaEndDate = '$visa_end_date', visaConditions = '$visa_conditions', highestQualDateObtained = '$highest_qual_date_obtained',  visaHolderYN = '$visa_holder' , resumeDoc = '$resume_doc' , contractDocument = '$contract_doc' , employeeNo = '$employee_no'");
+			}
 		}
 
 		public function getStates(){
@@ -333,13 +363,25 @@ class SettingsModel extends CI_Model {
 		}
 		public function updateEmployeeSuperfunds( $employee_no, $superFundId,$superMembershipId){
 			$this->load->database();
-			$query = $this->db->query("UPDATE employeesuperfund SET superFundId = '$superFundId', 
+			$check = $this->db->query("SELECT * FROM employeesuperfund where employeeId = '$employee_no'");
+			if($check->row() != null){
+				$query = $this->db->query("UPDATE employeesuperfund SET superFundId = '$superFundId', 
 				superMembershipId = '$superMembershipId' where employeeId = '$employee_no'");
+			}else{
+				$this->db->query("INSERT into employeesuperfund SET superFundId = '$superFundId', 
+				superMembershipId = '$superMembershipId' , employeeId = '$employee_no'");
+			}
 		}
 		public function updateEmployeeTaxDeclaration($employee_no,$tfnExemptionType,$taxFileNumber,$australiantResidentForTaxPurposeYN,$residencyStatue,$taxFreeThresholdClaimedYN,$taxOffsetEstimatedAmount,$hasHELPDebtYN,$hasSFSSDebtYN,$hasTradeSupportLoanDebtYN_,$upwardVariationTaxWitholdingAmount,$eligibleToReceiveLeaveLoadingYN,$approvedWitholdingVariationPercentage){
 			$this->load->database();
+			$check = $this->db->query("SELECT * FROM employeetaxdeclaration where employeeId = '$employee_no' ");
+			if($check->row() == null){
+				$query = $this->db->query("INSERT INTO employeetaxdeclaration SET 
+				tfnExemptionType = '$tfnExemptionType', taxFileNumber = '$taxFileNumber', australiantResidentForTaxPurposeYN = '$australiantResidentForTaxPurposeYN', residencyStatue = '$residencyStatue', taxFreeThresholdClaimedYN = '$taxFreeThresholdClaimedYN', taxOffsetEstimatedAmount = '$taxOffsetEstimatedAmount', hasHELPDebtYN = '$hasHELPDebtYN', hasSFSSDebtYN = '$hasSFSSDebtYN', hasTradeSupportLoanDebtYN = '$hasTradeSupportLoanDebtYN_', upwardVariationTaxWitholdingAmount = '$upwardVariationTaxWitholdingAmount', eligibleToReceiveLeaveLoadingYN = '$eligibleToReceiveLeaveLoadingYN', approvedWitholdingVariationPercentage = '$approvedWitholdingVariationPercentage', employeeId  = '$employee_no'");
+			}else{
 			$query = $this->db->query("UPDATE employeetaxdeclaration SET 
 				tfnExemptionType = '$tfnExemptionType', taxFileNumber = '$taxFileNumber', australiantResidentForTaxPurposeYN = '$australiantResidentForTaxPurposeYN', residencyStatue = '$residencyStatue', taxFreeThresholdClaimedYN = '$taxFreeThresholdClaimedYN', taxOffsetEstimatedAmount = '$taxOffsetEstimatedAmount', hasHELPDebtYN = '$hasHELPDebtYN', hasSFSSDebtYN = '$hasSFSSDebtYN', hasTradeSupportLoanDebtYN = '$hasTradeSupportLoanDebtYN_', upwardVariationTaxWitholdingAmount = '$upwardVariationTaxWitholdingAmount', eligibleToReceiveLeaveLoadingYN = '$eligibleToReceiveLeaveLoadingYN', approvedWitholdingVariationPercentage = '$approvedWitholdingVariationPercentage' where employeeId  = '$employee_no'");
+			}
 		}
 		public function updateEmployeeTable($employee_no, $title,$fname,$mname,$lname,$emails,$dateOfBirth,$gender,$homeAddLine1,$homeAddLine2,$homeAddCity,$homeAddRegion,$homeAddPostal,$homeAddCountry,$phone,$mobile,$terminationDate,$ordinaryEarningRateId,$userid,$classification,$emergency_contact,$relationship,$emergency_contact_email){
 			$this->load->database();
@@ -356,7 +398,8 @@ class SettingsModel extends CI_Model {
 
 	public function addCenter($addStreet,$addCity,$addState,$addZip,$name,$centre_phone_number,$centre_mobile_number,$Centre_email,$userid){
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO centers (addStreet, addCity, addState, addZip, name, centre_phone_number, centre_mobile_number, centre_email) VALUES ('$addStreet','$addCity','$addState','$addZip','$name','$centre_phone_number','$centre_mobile_number','$Centre_email')");
+		$uniqid = uniqid();
+		$query = $this->db->query("INSERT INTO centers (addStreet, addCity, addState, addZip, name, centre_phone_number, centre_mobile_number, centre_email,superadmin) VALUES ('$addStreet','$addCity','$addState','$addZip','$name','$centre_phone_number','$centre_mobile_number','$Centre_email',$uniqid'')");
 		$id = $this->db->query("SELECT centerid FROM centers ORDER BY centerid DESC LIMIT 1");
 		$centers = $this->db->query("SELECT center FROM users where id = '$userid'");
 		$centerId = strval(($id->row())->centerid);
@@ -469,6 +512,13 @@ class SettingsModel extends CI_Model {
 		$this->load->database();
 		$query = $this->db->query('SELECT * from users');
 		return $query->result();
+	}
+
+	public function updateEmployeeProfileApp($userid, $firstName, $middleName, $lastName, $imageUrl){
+		$this->load->database();
+		$query = $this->db->query("UPDATE employee SET fname = '$firstName', mname = '$middleName', lname = '$lastName' where userid = '$userid'");
+		$name = "$firstName $middleName $lastName";
+		$this->db->query("UPDATE users SET name = '$name' where id = '$userid'");
 	}
 
 	// public function employeeRecordMigration(){

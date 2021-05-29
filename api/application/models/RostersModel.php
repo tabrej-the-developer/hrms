@@ -308,11 +308,15 @@ class RostersModel extends CI_Model {
 	}
 
 
-	public function addCasualEmployees($startTime,$endTime,$rosterid,$roleid,$date,$empid,$status){
+	public function addCasualEmployees($startTime,$endTime,$rosterid,$roleid,$date,$empid,$status,$userid){
 		$this->load->database();
 		$uniqueid = uniqid();
+		$time = date('Y-m-d H:i:s');
+		$casEmp = $this->db->query("SELECT * FROM users where centerid (SELECT userid FROM usercenters WHERE centerid IN (SELECT centerid FROM rosters WHERE id = '$rosterid')) AND id = '$empid'");
+		if($casEmp->row() == null){
+			$this->db->query("INSERT INTO editpermissions (rosterid,userid,created_by,created_at,editRoster) VALUES ('$rosterid','$empid','$userid','$time','N')  ");
+		}
 		$query = $this->db->query("INSERT into shift (id,roasterId,rosterDate, userid, startTime, endTime, roleid,status) VALUES ('$uniqueid','$rosterid','$date','$empid','$startTime','$endTime',$roleid,$status)");
-
 	}
 
 	public function getCasualEmployees($centerid){
@@ -335,8 +339,19 @@ class RostersModel extends CI_Model {
 
 	public function getRostersByPermission($userid){
 		$this->load->database();
-		$query = $this->db->query("SELECT rosters.startDate,rosters.endDate,rosters.id,rosters.createdBy,rosters.status from editpermissions inner join rosters on rosters.id = editpermissions.rosterid where  editpermissions.userid = '$userid' and ( ( editpermissions.timesheetid = '') or  editpermissions.rosterid != '') and editRoster = 'Y' ");
+		$query = $this->db->query("SELECT rosters.startDate,rosters.endDate,rosters.id,rosters.createdBy,rosters.status from editpermissions inner join rosters on rosters.id = editpermissions.rosterid where  editpermissions.userid = '$userid' and ( ( editpermissions.timesheetid = '') or  editpermissions.rosterid != '') ");
 		return $query->result();
+	}
+
+	public function getCasualEmpPermission($userid,$rosterid){
+		$this->load->database();
+		$query = $this->db->query("SELECT editpermissions.editRoster from editpermissions inner join rosters on rosters.id = editpermissions.rosterid where  editpermissions.userid = '$userid' and editpermissions.rosterid = '$rosterid' ");
+		if($query->row() == null){
+			return null;
+		}
+		if($query->row() != null){
+			return $query->row();
+		}
 	}
 
 	public function getRosterPermissions($employeeId,$rosterId){

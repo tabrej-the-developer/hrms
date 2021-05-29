@@ -71,6 +71,11 @@ class MeetingModel extends CI_MODEL{
        $result = $this->db->query($query);
        return $result->result();
    }
+   public function getMeetingData($mId){
+       $this->load->database();
+       $query = $this->db->query("SELECT meeting.title,meeting.date,meeting.time,meeting.eTime,meeting.location,meeting.period,meeting.loginid,meeting.agendaFile,users.name FROM meeting LEFT JOIN users on users.id=meeting.loginid WHERE meeting.id='$mId'");
+       return $query->row();
+   }
   public function getAgendaInfo($mId){
       $this->load->database();
       $query = "select * from agenda where m_id = '$mId'";

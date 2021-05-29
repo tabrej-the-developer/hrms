@@ -498,16 +498,22 @@ font-family: 'Open Sans', sans-serif;
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editOrgChartYN : "N") == "Y"){ ?>
 					<span  class="newRole">
 						<a href="javascript:void(0)">
-							<i class="fas fa-plus" ></i>
+							<i class="" >
+								<img height="20px" width="20px" src="<?php echo base_url('assets/images/icons/plus.png'); ?>">
+							</i>
 						</a>
 					</span>
 					<span class="editArea ">
 						<a href="javascript:void(0)">
-							<i class="fas fa-pencil-alt"></i>
+							<i class="">
+								<img height="20px" width="20px" src="<?php echo base_url('assets/images/icons/pencil.png'); ?>">
+							</i>
 						</a>
 					</span>
 					<span class="delete-Area" style="padding-right:20px">
-						<a class="delete-area" href="javascript:void(0)" d-val="<?php echo $orgChart->areaId ?>"><i class="fas fa-trash-alt" style="color: #ff3b30;"></i>
+						<a class="delete-area" href="javascript:void(0)" d-val="<?php echo $orgChart->areaId ?>"><i class="" style="color: #ff3b30;">
+							<img height="20px" width="20px" src="<?php echo base_url('assets/images/icons/delete__.png'); ?>">
+						</i>
 						</a>
 					</span>
 				<?php } ?>
@@ -517,7 +523,7 @@ font-family: 'Open Sans', sans-serif;
 					<?php foreach($orgChart->roles as $roles){
 					echo "<li class='li-c'><span class=\"roleNameClass\"  a_id=".$orgChart->areaId." r_id=".$roles->roleid.">".$roles->roleName."</span><span class=\"roleIdClass\" style=\"display:none\">".$roles->roleid."</span>";
 					if((isset($permissions->permissions) ? $permissions->permissions->editOrgChartYN : 'N') == 'Y'){
-					echo "<span class=\"editRole\" style=\"padding-right:20px\"><i class=\"fas fa-pencil-alt\"></i>&nbsp; &nbsp;</span><span class=\"delete-role\" d-val=\"$roles->roleid\" style=\"padding-right:20px\"><i class=\"fas fa-trash-alt\"></i></span></li>";
+					echo "<span class=\"editRole\" style=\"padding-right:25px\"><i><img height=\"20px\" width=\"20px\" src='".base_url('assets/images/icons/pencil.png')."'></i>&nbsp; &nbsp;</span><span class=\"delete-role\" d-val=\"$roles->roleid\" style=\"padding-right:20px\"><i><img height=\"20px\" width=\"20px\" src='".base_url('assets/images/icons/delete__.png') ."'></i></span></li>";
 						}
 					}
 					?>
@@ -910,14 +916,14 @@ console.log(employees);
                 a=0;
                 a++;
                 var code = `<div id="change_role">
-                    <span class="changeRole__" employeeId="${em.id}" role_id="${em.roleid}"  style="width:30%">${em.name}</span>
-                  <span class="select_css" style="width:35%;">
-                    <select class="select_area" similarity="${x}" style="min-width:80% !important;max-width:80%">
+                    <span class="changeRole__" employeeId="${em.id}" role_id="${em.roleid}"  style="width:35%">${em.name}</span>
+                  <span class="select_css" style="width:30%;">
+                    <select class="select_area" similarity="${x}" style="min-width:100% !important;max-width:100%">
                         <option value="0" disabled selected>--Select Area--</option>
                     </select>
                     </span>
-                  <span class="select_css" style="width:35%;">
-                    <select class="select_role" similarity="${x}" style="min-width:80% !important;max-width:80%">
+                  <span class="select_css" style="width:30%;">
+                    <select class="select_role" similarity="${x}" style="min-width:100% !important;max-width:100%">
                        <option value="0" selected>--Select Role--</option> 
                     </select>
                   </span>

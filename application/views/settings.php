@@ -313,7 +313,7 @@ a[href*="settings"],.xero_settings a{
 				</div>
 			</div>
 		<?php } ?>
-			<div class="tile-box d-md-flex col-3">
+			<!-- <div class="tile-box d-md-flex col-3">
 				<div class="col-5">
 					<a href="<?php echo base_url('settings/activityLog')?>">
 						<img src="<?php echo site_url('assets/images/settings-icons/leave-settings.png'); ?>">
@@ -322,7 +322,7 @@ a[href*="settings"],.xero_settings a{
 				<div class="col-6">
 					<a href="<?php echo base_url()?>settings/activityLog">Activity Log</a>
 				</div>
-			</div>
+			</div> -->
 		</div>
 	</div>
 

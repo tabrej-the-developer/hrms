@@ -95,7 +95,9 @@
 		.data-buttons{
 			padding:10px;
 		}
-
+		#centerValue{
+			background: rgb(164, 217, 214);
+		}
 		/* The Modal (background) */
 .modal {
   display: none; 
@@ -346,7 +348,7 @@ border-bottom-right-radius: 20px;
         </button>
       </a>
       <span  class="superfund-container-child">Superannuations</span>
-      <span class="select_css">
+      <span class="select_css d-inline-flex align-items-center">
       	<?php $syncedWithXero = json_decode($syncedWithXero);  ?>
         <select placehdr="Center" id="centerValue" name="centerValue" >
           <?php 

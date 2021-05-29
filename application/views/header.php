@@ -142,7 +142,11 @@ select::after{
   content: ' ';
   
 }
-
+.settings_title{
+  font-size:1.75rem;
+  color: #171D4B;
+  font-weight: 700;
+}
  body{/* background:#f9f9f9; */}
 /*#wrapper{padding:32px 15px;}*/
 .navbar-expand-lg .navbar-nav.side-nav{flex-direction: column;}

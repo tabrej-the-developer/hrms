@@ -1,413 +1,151 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <?php $this->load->view('header'); ?>
   <title>Leaves</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!--  <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'> -->
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-  <style type="text/css">
-    * {
-      font-family: 'Open Sans', sans-serif;
+  <style>
+    body{
+      background: #f2f2f2;
     }
-
-    .card-header {
-      padding: 0.2rem 1.25rem;
-      /* margin-bottom: 0; */
-      background-color: #ffffff;
-      border-bottom: 0px;
+    .meetingInfo_card{
+      background: white !important;
+      height: calc(100vh - 4rem);
     }
-
-    .card-body {
-      padding: 0rem 1.25rem;
+    .containers{
+      padding: 2rem;
     }
-
-    p {
-      margin-top: 0;
-      margin-bottom: 10px;
+    .overflow_agenda,.overflow_mom{
+      overflow-y: auto;
     }
-
-    .card {
-      border-radius: 0px;
-      padding-top: 15px;
-      padding-bottom: 15px;
-      border: none;
-      box-shadow: none;
+    .infoHead{
+      height: 20%;
     }
-
-    .flex-wrap {
-      margin-bottom: -35px;
+    .agenda_mom{
+      height: 50%;
     }
-
-    div.dataTables_wrapper div.dataTables_paginate {
-      margin-top: -25px;
+    .attendance{
+      height: 30%;
     }
-
-    .page-item.active .page-link {
-      z-index: 1;
-      color: #fff;
-      background-color: #5D78FF;
-      border-color: #5D78FF;
-
+    .meeting_title{
+      font-size: 1.5rem;
+      font-weight: bold;
     }
-
-    .btn.focus,
-    .btn:focus {
-      outline: 0;
-      box-shadow: none;
+    .label{
+      font-weight: bold;
     }
-
-    .btn-group-sm>.btn,
-    .btn-sm {
-      padding: .25rem .5rem;
-      font-size: .875rem;
-      line-height: 1.5;
-      border-radius: 1.2rem;
-      border: 1px solid #ccc;
+    .headerTitle{
+      background-color: #8D91AA;
+      color: #F3F4F7;
+      padding: 0.5rem;
+      display: flex;
+      justify-content: center;
     }
-
-    #example_filter input {
-      border-radius: 1.2rem;
+    td:nth-of-type(1){
+      width: 40%
     }
-
-    .border-shadow {
-      box-shadow: 0 3px 10px rgba(0, 0, 0, .1);
-
+    td{
+      text-align: center;
     }
-
-    .modal-header {
-      border-bottom: none;
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
-      background-color: #307bd3;
-      color: #fff;
+    th{
+      text-align: center
     }
-
-    .modal-content {
-      border-radius: 0;
-    }
-
-
-    /* tabs */
-    nav>div a.nav-item.nav-link,
-    nav>div a.nav-item.nav-link.active {
-      border: none;
-      padding: 10px 15px;
-      color: #212528;
-      background: none;
-      border-radius: 0;
-      font-size: 15px;
-      font-weight: 500;
-    }
-
-    nav>div a.nav-item.nav-link.active:after {
-      content: "";
-      position: relative;
-      bottom: -46px;
-      left: -10%;
-      border: 15px solid transparent;
-      border-top-color: #ddd;
-    }
-
-    .tab-content {
-      line-height: 25px;
-      padding: 30px 25px;
-    }
-
-    nav>div a.nav-item.nav-link:hover,
-    nav>div a.nav-item.nav-link:focus {
-      border: none;
-      background: none;
-      color: #212528;
-      border-radius: 0;
-      transition: background 0.20s linear;
-    }
-
-    /* tabs end */
-
-
-    /* Toggle */
-    .switchToggle input[type=checkbox] {
-      height: 0;
-      width: 0;
-      visibility: hidden;
-      position: absolute;
-    }
-
-    .switchToggle label {
-      cursor: pointer;
-      text-indent: -9999px;
-      width: 70px;
-      max-width: 70px;
-      height: 30px;
-      background: #d1d1d1;
-      display: block;
-      border-radius: 100px;
-      position: relative;
-    }
-
-    .switchToggle label:after {
-      content: '';
-      position: absolute;
-      top: 2px;
-      left: 2px;
-      width: 26px;
-      height: 26px;
-      background: #fff;
-      border-radius: 90px;
-      transition: 0.3s;
-    }
-
-    .switchToggle input:checked+label,
-    .switchToggle input:checked+input+label {
-      background: #4caf50a6;
-    }
-
-    .switchToggle input+label:before,
-    .switchToggle input+input+label:before {
-      content: 'No';
-      position: absolute;
-      top: 1px;
-      left: 35px;
-      width: 26px;
-      height: 26px;
-      border-radius: 90px;
-      transition: 0.3s;
-      text-indent: 0;
-      color: #fff;
-    }
-
-    .switchToggle input:checked+label:before,
-    .switchToggle input:checked+input+label:before {
-      content: 'Yes';
-      position: absolute;
-      top: 1px;
-      left: 10px;
-      width: 26px;
-      height: 26px;
-      border-radius: 90px;
-      transition: 0.3s;
-      text-indent: 0;
-      color: #fff;
-    }
-
-    .switchToggle input:checked+label:after,
-    .switchToggle input:checked+input+label:after {
-      left: calc(100% - 2px);
-      transform: translateX(-100%);
-    }
-
-    .switchToggle label:active:after {
-      width: 60px;
-    }
-
-    .toggle-switchArea {
-      margin: 10px 0 10px 0;
-    }
-
-    /* Toggle end */
-    /*leaves balance bar*/
-    .chat_people {
-      overflow: hidden;
-      clear: both;
-    }
-
-    .chat_list {
-      border-bottom: 1px solid #c4c4c4;
-      margin: 0;
-      padding: 18px 16px 10px;
-    }
-
-    .chat_img {
-      float: left;
-      width: 11%;
-    }
-
-    .checkbox {
-      background-color: #fff;
-      display: inline-block;
-      height: 18px;
-      margin: 0.6em 0 0 0;
-      width: 18px;
-      border-radius: 0;
-      border: 1px solid #ccc;
-      float: right
-    }
-
-    .checkbox span {
-      display: block;
-      height: 20px;
-      position: relative;
-      width: 20px;
-      padding: 0
-    }
-
-    .checkbox span:after {
-      -moz-transform: scaleX(-1) rotate(135deg);
-      -ms-transform: scaleX(-1) rotate(135deg);
-      -webkit-transform: scaleX(-1) rotate(135deg);
-      transform: scaleX(-1) rotate(135deg);
-      -moz-transform-origin: left top;
-      -ms-transform-origin: left top;
-      -webkit-transform-origin: left top;
-      transform-origin: left top;
-      border-right: 3px solid #fff;
-      border-top: 3px solid #fff;
-      content: '';
-      display: block;
-      height: 13px;
-      left: 0;
-      position: absolute;
-      top: 8px;
-      width: 8px
-    }
-
-    .checkbox input {
-      display: none
-    }
-
-    .checkbox input:checked+.default:after {
-      border-color: #242121ad
-    }
-
-    .chat_ib h5 {
-      font-size: 15px;
-      color: #464646;
-      margin: 0 0 8px 0;
-    }
-
-    .chat_ib p {
-      font-size: 14px;
-      color: #989898;
-      margin: auto
-    }
-
-    .chat_img {
-      float: left;
-      width: 11%;
-    }
-
-    .chat_ib {
-      float: left;
-      padding: 0 0 0 15px;
-      width: 88%;
-    }
-
-    img {
-      max-width: 140%;
-    }
-
-    .row.vdivide [class*='col-']:not(:last-child):after {
-      background: #e0e0e0;
-      width: 1px;
-      content: "";
-      display: block;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      right: 0;
-      min-height: 70px;
-    }
-
-    /*leaves balance bar end*/
-    .dropdown-toggle::after {
-      content: none;
-      display: none;
-    }
-
-    /*corousol*/
-    .carousel-control-next,
-    .carousel-control-prev {
-
-      width: 2%;
-
-    }
-
-    .carousel-control-next-icon,
-    .carousel-control-prev-icon {
-      height: 40px;
-      background-color: #ccc;
-    }
-
-    /*corousol end*/
-    .row {
-      padding-right: 0 !important;
-      padding-left: 0 !important;
-      margin-right: 0 !important;
-      margin-left: 0 !important;
+    .attendace_table{
+      overflow-y: auto;
     }
   </style>
-
 </head>
-
+<!-- 
+"title":"Dheeraj Meeting","date":"2021-05-25","time":"100","eTime":"200","location":"Dheeraj place","period":"O","loginid":"ab","agendaFile":"","name":"Arpita Saxena"
+ -->
 <body>
-  <div class="containers">
-    <div class="row">
-      <div class="col-md-6">
-        <h4>Agenda and Summary</h4>
-        <?php
-        $info = json_decode($info);
-        ?>
-        <?php foreach ($info->agenda as $a) : ?>
-          <div class="card border-success mb-3" style="max-width: 18rem;">
-
-            <div class="card-body text-success">
-              <h5 class="card-title"><?php echo $a->text; ?></h5>
-              <p class="card-text"><?php echo $a->summary; ?></p>
+<?php $info = json_decode($info); ?>
+  <div id="wrappers">
+    <div class="containers">
+      <div class="meetingInfo_card">
+        <div class="d-block infoHead">
+          <div class="d-flex justify-content-center">
+            <span class="meeting_title"><?php echo $info->meeting->title; ?></span>
+          </div>
+          <div class="d-flex justify-content-center">
+            <span>
+              <?php echo "<span class='label'>Time : </span>".timex($info->meeting->time)." - ".timex($info->meeting->eTime); ?>
+              <?php echo ", <span class='label'>Date :</span> ".date('d M Y',strtotime($info->meeting->date)); ?></span>
+          </div>
+          <div class="d-flex justify-content-center">
+            <span>
+              <span class='label'>Created By : </span>
+                <?php echo $info->meeting->name; ?> , 
+              <span class='label'>Location : </span>
+                <?php echo $info->meeting->location; ?>
+              </span>
+          </div>
+        </div>
+        <div class="row agenda_mom">
+          <div class="col-md-6">
+            <h5 class="headerTitle">Agenda and Summary</h5>
+            <div class="overflow_agenda">
+              <table style="width: 100%">
+                <thead>
+                  <th>Agenda</th>
+                  <th>Summary</th>
+                </thead>
+                <tbody>
+              <?php foreach ($info->agenda as $a) : ?>
+                  <tr>
+                    <td><?php echo $a->text; ?></td>
+                    <td><?php echo $a->summary; ?></td>
+                  </tr>
+              <?php endforeach; ?>
+                </tbody>
+              </table>
             </div>
           </div>
-
-        <?php endforeach; ?>
-
-
-
+          <div class="col-md-6">
+            <h5 class="headerTitle">Minutes of Meeting</h5>
+            <div class="overflow_mom">
+              <table style="width: 100%">
+                <thead>
+                  <tr>
+                    <th>User</th>
+                    <th>Text</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php foreach($info->mom as $m){ ?>
+                    <tr>
+                      <td><?php print_r($m->name); ?></td>
+                      <td><?php print_r($m->text); ?> </td>
+                    </tr>
+                  <?php } ?>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="attendance col-md-6">
+            <h5 class="headerTitle">Meeting Attendence</h5>
+            <ul class="attendace_table">
+              <?php foreach ($info->participant as $p) : ?>
+                <li class="" aria-disabled="true">
+                  <span><?php echo $p->name; ?></span>
+                  <?php 
+                    if($p->status == 'P'){
+                      echo "<span style='color:#228659'>Present</span>";
+                    }
+                    if($p->status == 'A'){
+                      echo "<span style='color:#cf6f57 '>Absent</span>";
+                    }
+                  ?> 
+                </li>
+              <?php endforeach; ?>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div class="col-md-6">
-        <h3>Minutes of Meeting</h3>
-        <table class="table table-borderless table-dark">
-          <thead>
-            <tr>
-
-              <th scope="col">User</th>
-              <th scope="col">Text</th>
-
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach ($info->mom as $m) : ?>
-
-              <tr>
-                <td><?php print_r($m->name); ?></td>
-                <td><?php print_r($m->text); ?> </td>
-              </tr>
-            <?php endforeach; ?>
-
-
-          </tbody>
-        </table>
-
-      </div>
-    </div>
-    <div class="jumbotron">
-      <h3>Meeting Attendence</h3>
-      <ul class="list-group">
-        <?php foreach ($info->participant as $p) : ?>
-          <li class="list-group-item disabled" aria-disabled="true">
-            <span><?php echo $p->name; ?></span>
-            <?php 
-              if($p->status == 'P'){
-                echo "<span style='color:#228659'>Present</span>";
-              }
-              if($p->status == 'A'){
-                echo "<span style='color:#cf6f57 '>Absent</span>";
-              }
-            ?> 
-          </li>
-        <?php endforeach; ?>
-      </ul>
     </div>
   </div>
 
@@ -422,33 +160,7 @@
     div.innerHTML = "<div class='form-group'><label>Agenda</label><input type='text' class='form-control' name='meetingLocation' id='agenda' placeholder='Agenda'  ><span id='time_error' class='text-danger'></span></div>";
 
   }
-</script>
 
-<script type="text/javascript" language="javascript">
-  $('#datetimepicker12').datetimepicker({
-    defaultDate: new Date(),
-    format: 'DD-MM-YYYY'
-  });
-  $('#datetimepicker121').datetimepicker({
-    defaultDate: new Date(),
-    format: 'DD-MM-YYYY'
-  });
-  $('#datetimepicker13').datetimepicker({
-    defaultDate: new Date(),
-    //format: 'YYYY-MM-DD hh:mm:ss A'
-    format: 'DD-MM-YYYY'
-  });
-  $('#datetimepicker131').datetimepicker({
-    defaultDate: new Date(),
-    //format: 'YYYY-MM-DD hh:mm:ss A'
-    format: 'DD-MM-YYYY'
-  });
-  $('#apply_button').click(function() {
-
-    $('#applyModal').modal('show');
-  });
-</script>
-<script>
   $(document).ready(function() {
     $(".dropdown").hover(
       function() {
@@ -461,10 +173,7 @@
       }
     );
   });
-</script>
 
-
-<script type="text/javascript">
   function addLeaveType() {
 
     jQuery(function($) {
@@ -478,11 +187,68 @@
     $('#addMore').after(div);
     //  }
   });
-</script>
-<script type="text/javascript">
+
   $(document).ready(() => {
-    $('.containers').css('paddingLeft', $('.side-nav').width());
+    $('#wrappers').css('paddingLeft', $('.side-nav').width());
   });
 </script>
-
 </html>
+<?php 
+function timex( $x)
+{ 
+    $output;
+    if(($x/100) < 12 ){
+        if(($x%100)==0){
+          if($x/1200 == 0){
+            $output = "12:00 AM";    
+          }
+          else{
+         $output = intval($x/100) . ":00 AM";
+          }
+        }
+      if(($x%100)!=0){
+        if(($x%100) < 10){
+          $output = intval($x/100) .":0". $x%100 . " AM";
+        }
+        if(($x%100) >= 10){
+          $output = intval($x/100) .":". $x%100 . " AM";
+        }
+        }
+    }
+else if($x/100>12){
+    if(($x%100)==0){
+    $output = intval($x/100)-12 . ":00 PM";
+    }
+    if(($x%100)!=0 && intval($x/100)!=12){
+      if(($x%100) < 10){
+        $output = intval($x/100)-12 .":0". $x%100 . " PM";
+      }
+      if(($x%100) >= 10){
+        $output = intval($x/100)-12 .":". $x%100 . " PM";
+      }
+    }
+    if(($x%100)!=0 && intval($x/100)==12){
+      if(($x%100) < 10){
+        $output = intval($x/100) .":0". $x%100 . " PM";
+      }
+      if(($x%100) >= 10){
+        $output = intval($x/100) .":". $x%100 . " PM";
+      }
+    }
+}
+else{
+if(($x%100)==0){
+     $output = intval($x/100) . ": 00 PM";
+    }
+    if(($x%100)!=0){
+      if(($x%100) < 10){
+        $output = intval($x/100) . ":0". $x%100 . " PM";
+      }
+      if(($x%100) >= 10){
+        $output = intval($x/100) . ":". $x%100 . " PM";
+      }
+    }
+}
+return $output;
+}
+?>

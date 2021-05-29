@@ -48,8 +48,8 @@
 			padding: 1rem;
 			border: none;
 		}
-		.sort-by{
-
+		#centerValue{
+			background: rgb(164, 217, 214);
 		}
 		table{
 			box-shadow: 0 0 20px 2px #eeeff2;
@@ -345,7 +345,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 		        </button>
 		      </a>
           <span  class="awards-container-child">Awards</span>
-          <span class="select_css">
+          <span class="select_css" style="display: inline-flex;align-items: center;">
             <select placehdr="Center" id="centerValue" name="centerValue" >
               <?php 
               foreach($centers->centers as $center){ 

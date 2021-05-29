@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -828,7 +827,7 @@ table.dataTable{
 })
 </script>
 <script type="text/javascript">
-	<?php if($this->session->userdata('UserType')==SUPERADMIN){?>
+	<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
 	$(document).ready(function(){
 			equalElements('sort-by','center-list');
 		})

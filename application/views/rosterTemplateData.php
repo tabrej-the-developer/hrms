@@ -1042,16 +1042,16 @@ td{
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tokenize2.js"></script>
 	<?php 
 		$rosterDetails = json_decode($rosterDetails); 
-		$entitlement = json_decode($entitlements);
+		// $entitlement = json_decode($entitlements);
 		$permissions = json_decode($permissions);
 	?>
 	<div class="containers" id="containers">
-		<div class="heading" id="center-id" c_id="<?php echo isset($rosterDetails->centerid) ? $rosterDetails->centerid : null; ?>">Rosters
+		<div class="heading" id="center-id" c_id="<?php echo isset($rosterDetails->centerid) ? $rosterDetails->centerid : null; ?>"><?php echo $rosterDetails->templateName ?>
 			<span class="top_buttons ml-auto">
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
-				<span class="editPermission-span">
+				<!-- <span class="editPermission-span">
 					<button class="editPermission-btn">Permission</button>
-				</span>
+				</span> -->
 
 				<span class="priority ">
 					<button class="priority-btn ">
@@ -1059,10 +1059,10 @@ td{
 							<img src="<?php echo base_url('assets/images/icons/priority.png'); ?>" style="max-height:0.8rem;margin-right:10px">
 						</i>Priority</button>
 				</span>
-				<span class="showBudget d-flex ">
-					<span class="d-flex justify-content-center align-items-center hide_budget">Hide&nbsp;Budget</span>
+				<!-- <span class="showBudget d-flex ">
+					<span class="d-flex justify-content-center align-items-center hide_budget">Hide&nbsp;Budget</span> -->
 					<!-- Hide budget -->
-					<input type="checkbox" class="showBudget-btn"
+					<!-- <input type="checkbox" class="showBudget-btn"
 					 show-budget="<?php 
 					 	if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') == 'Y'){
 					 		echo 'N';
@@ -1077,7 +1077,7 @@ td{
 					 		echo 'checked';
 					 	}
 					 	 ?>>
-				</span>
+				</span> -->
 	<?php } ?>  
 				<span class="print-button">
 					<button class="print-btn">
@@ -1198,7 +1198,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 					if($rosterDetails->roster[$x]->isRoomYN == "Y")
 						{
 				?>
-				<tr>
+				<!-- <tr>
 					<td>Occupancy</td>
 					<td><?php echo $rosterDetails->roster[$x]->occupancy[0]->occupancy?></td>
 					<td><?php echo $rosterDetails->roster[$x]->occupancy[1]->occupancy?></td>
@@ -1206,7 +1206,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 					<td><?php echo $rosterDetails->roster[$x]->occupancy[3]->occupancy?></td>
 					<td><?php echo $rosterDetails->roster[$x]->occupancy[4]->occupancy?></td>
 					<td> </td>
-				</tr>
+				</tr> -->
 				<?php 
 			}
 	if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){
@@ -1231,10 +1231,11 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 			<?php
 						$variable = 0;
 						$userLevel = $rosterDetails->roster[$x]->roles[$counter]->level;
-						foreach($entitlement->entitlements as $e){
-								if($e->id == $userLevel ){
-									$variable = $e->hourlyRate;
-								}
+						$variable = $rosterDetails->roster[$x]->roles[$counter]->hourlyRate;
+						// foreach($entitlement->entitlements as $e){
+						// 		if($e->id == $userLevel ){
+						// 			$variable = $e->hourlyRate;
+						// 		}
 			?>
 			<?php } ?>
 			<?php if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){ ?>
@@ -1251,12 +1252,12 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 					<?php for($fiveIterations=0;$fiveIterations<5;$fiveIterations++){
 						$variable = 0;
 		$userLevel = $rosterDetails->roster[$x]->roles[$counter]->level;
-
-		foreach($entitlement->entitlements as $e){
-			if($e->id == $userLevel ){
-				$variable = $e->hourlyRate;
-			}
-		}
+		$variable = $rosterDetails->roster[$x]->roles[$counter]->hourlyRate;
+		// foreach($entitlement->entitlements as $e){
+		// 	if($e->id == $userLevel ){
+		// 		$variable = $e->hourlyRate;
+		// 	}
+		// }
 
 		?>
 		<?php 
@@ -1314,7 +1315,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 
 				</tr>
 			</tr>
-			<?php } }  } }?>
+			<?php } }  } ?>
 
 
 	<?php 
@@ -1328,68 +1329,6 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 
 			</table>
 		</div>
-		<div class="budget-table-parent">
-		<div class="total-budget" >
-			<table>
-				<tr class="total-budget-row">
-					<td class="" style="width:16vw"></td>
-				<td class="" style="width:12vw" id="" >
-					<?php if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){ ?>
-						
-					<?php } ?>
-				</td>
-				<td class="" style="width:12vw" id="">
-					<?php if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){ ?>
-						
-					<?php } ?>
-				</td>
-				<td class="" style="width:12vw" id="">
-					<?php if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){ ?>
-						
-					<?php } ?>
-				</td>
-				<td class="" style="width:12vw" id="">
-					<?php if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){ ?>
-						
-					<?php } ?>
-				</td>
-				<td class="" style="width:12vw" id="">
-					<?php if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){ ?>
-						
-					<?php } ?>
-				</td>
-					<td class="" style="width:12vw">---</td>
-				</tr>
-			</table>
-		</div>
-<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?> 
-
-					<?php 
-				if(isset($rosterDetails->status)){
-						if($rosterDetails->status === 'Draft'){ ?>
-						<div class="buttons d-flex justify-content-end">
-							<button id="discard-roster" class="roster__ buttonn">
-								<i>
-									<img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:0.8rem;margin-right:10px">
-								</i>Discard</button>
-							<button id="draft-roster" class="roster__ buttonn">
-								<i>
-									<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
-								</i>Save Draft</button>
-
-						</div>
-					<?php } ?>
-					<?php  }?>
-			<?php } ?>
-			<?php if($this->session->userdata('UserType') == STAFF){?>
-			<div class="buttons d-flex justify-content-end">
-					<button id="publish-roster" class="roster__ buttonn">
-						<i>
-							<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
-						</i>Save</button>
-			</div>
-				<?php } ?>
-			</div>
 </div>
 <!--This is meant for admin-->
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?> 
@@ -1463,7 +1402,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 								<i>
 									<img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:0.8rem;margin-right:10px">
 								</i>Close</button>
-				 		<button type="button" name="shift-submit" id="shift-submit" value="Save" style="margin:30px;width:5rem" class="button">
+				 		<button type="button" name="shift-submit" id="shift-submit" value="Save" style="margin:30px;width:5rem;" class="button">
 								<i>
 									<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
 								</i>Save</button>
@@ -1698,7 +1637,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 				<i>
 					<img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:0.8rem;margin-right:10px">
 				</i>Cancel</button>
-	  	<button class="changeRolePriority_save">
+	  	<button class="changeRolePriority_save" style="padding-left: 1rem">
 				<i>
 					<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
 				</i>Save</button>

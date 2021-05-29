@@ -34,6 +34,9 @@ font-family: 'Open Sans', sans-serif;
 		.d-flex{
 			padding-bottom:5px;
 		}
+		.head{
+			padding-left: 1rem;
+		}
 	</style>
 
 	<script
@@ -44,11 +47,11 @@ font-family: 'Open Sans', sans-serif;
 
 <div>
 
-	<div class="d-flex = m-0">
-		<span class="head head-th col-3">Name</span>
-		<span class="head head-th col-3">Level</span>
+	<div class="d-flex w-100">
+		<span class="head head-th col-4">Name</span>
+		<span class="head head-th col-4">Level</span>
 		<!-- <span class="head head-th col-3">Center</span> -->
-		<span class="head head-th col-3">Title</span>
+		<span class="head head-th col-4">Role Name</span>
 	</div>
 	<?php 
 		$users = json_decode($users);
@@ -58,8 +61,8 @@ font-family: 'Open Sans', sans-serif;
 		 ?>
 		<?php for($x=0;$x<$count;$x++){ ?>
 		<div class="d-flex  m-0">
-			<span class="head col-3"><?php echo $users->users[$x]->name?></span>
-			<span class="head col-3">
+			<span class="head col-4"><?php echo $users->users[$x]->name?></span>
+			<span class="head col-4">
 				<span class="select_css">
 					<select class="level_select" userid="<?php echo $users->users[$x]->id; ?>">
 					<?php foreach($entitlements->entitlements as $e ){ 
@@ -73,7 +76,7 @@ font-family: 'Open Sans', sans-serif;
 				</span>
 			</span>
 			<!-- <span class="head col-3"><?php echo $users->users[$x]->center; ?></span> -->
-			<span class="head col-3"><?php echo $users->users[$x]->title; ?></span>
+			<span class="head col-4"><?php echo $users->users[$x]->roleName; ?></span>
 		</div>
 			<?php } }?>
 </div>

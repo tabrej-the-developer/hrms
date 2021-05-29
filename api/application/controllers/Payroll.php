@@ -50,7 +50,7 @@ class Payroll extends CI_Controller
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
 			if ($res != null && $res->userid == $userid) {
 				$this->load->model('payrollModel');
-				$mdata['entitlements'] = $this->payrollModel->getAllEntitlements();
+				$mdata['entitlements'] = $this->payrollModel->getAllEntitlements($userid);
 				http_response_code(200);
 				echo json_encode($mdata);
 			} else {

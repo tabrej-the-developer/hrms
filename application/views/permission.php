@@ -345,8 +345,8 @@ input[type=checkbox]:checked + label:before {
 }
 
 .permission-container{
-	padding: 4rem 3rem 2rem 2rem;
-	height:calc(100vh - 6rem);
+	padding: 1rem 3rem 2rem 2rem;
+	height:calc(100vh - 9rem);
 }
 .permission-container-child{
 	background: white;
@@ -407,14 +407,14 @@ button[type=button]{
 <input type="text" id="emplId" value="<?php echo $this->session->userdata('LoginId'); ?>" style="display:none">
 <div class="containers">
 	<div class="permission-container">
-		<span style="position: absolute;top:20px;padding-left: 0rem">
-      <a href="<?php echo base_url();?>/settings">
-        <button class="btn back-button">
-          <img src="<?php echo base_url('assets/images/back.svg');?>">
-          <span style="font-size:0.8rem">Edit Permissions</span>
-        </button>
-      </a>
-    </span>
+		<span  class="d-inline-flex">
+			<a href="<?php echo base_url();?>/settings">
+				<button class="btn back-button">
+				<img src="<?php echo base_url('assets/images/back.svg');?>">
+				</button>
+			</a>
+			<span class="settings_title">Edit Permissions</span>
+		</span>
 		<div class="permission-container-child">
 			<div class="d-flex">
 

@@ -683,17 +683,19 @@ $headers = array_change_key_case($headers);
 		}
 	}
 
-	public function getUserWeekTimesheet($userid,$date,$empId){
+	public function getUserWeekTimesheet($userid,$date,$empId,$tid=null){
 		$headers = $this->input->request_headers();
-$headers = array_change_key_case($headers);
+		$headers = array_change_key_case($headers);
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$this->load->model('timesheetModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			if($res != null && $res->userid == $userid){
 				$currentDate = $date;
+				$currentD = $date;
 				$weekData = [];
 				$weekData['visitis'] = [];
+				$weekData['payrollShifts'] = [];
 				$weekData['shift'] = [];
 				$date = date("Y-m-d",strtotime('+5 days',strtotime($date)));
 				while($currentDate < $date){
@@ -702,6 +704,13 @@ $headers = array_change_key_case($headers);
 					$currentDate = date('Y-m-d',strtotime('+1 days',strtotime($currentDate)));
 					array_push($weekData['shift'],$shiftData);
 					array_push($weekData['visitis'],$data);
+				}
+				while($currentD < $date){
+					$data = $this->timesheetModel->getPayrollShifts($currentD,$tid,$empId);
+					$shiftData = $this->timesheetModel->getUserShift($currentDate,$empId);
+					$currentD = date('Y-m-d',strtotime($currentD.'+1 days'));
+					array_push($weekData['shift'],$shiftData);
+					array_push($weekData['payrollShifts'],$data);
 				}
 				http_response_code(200);
 				echo json_encode($weekData);
@@ -823,9 +832,11 @@ $headers = array_change_key_case($headers);
 				$userid = $json->userid;
 				$timesheetid = $json->timesheetid;
 				$visits = $json->visits;
+				$startDate = $json->startDate;
 				$this->load->model('timesheetModel');
+				$this->timesheetModel->deletePayrollEntry($timesheetid,$empId,$startDate);
 				foreach ($visits as $v) {
-					$this->timesheetModel->createPayrollEntry($timesheetid,$empId,$v->shiftdate,$v->clockedInTime,$v->clockedOutTime,$v->startTime,$v->endTime,$userid,$v->payType);
+					$this->timesheetModel->createPayrollShiftEntry($timesheetid,$empId,$v->shiftdate,$v->clockedInTime,$v->clockedOutTime,$v->startTime,$v->endTime,$userid,$v->payType);
 				}
 				$data['Status'] = "SUCCESS";
 				http_response_code(200);

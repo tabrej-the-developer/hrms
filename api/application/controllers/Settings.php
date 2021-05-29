@@ -1215,6 +1215,40 @@ class Settings extends CI_Controller
 		}
 	}
 
+	public function updateEmployeeProfileApp(){
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			$this->load->model('authModel');
+			$this->load->model('settingsModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if ($json != null && $res != null && $res->userid == $json->userid) {
+				$firstName = $json->firstName;
+				$middleName = $json->middleName;
+				$lastName = $json->lastName;
+				$imageUrl = $json->imageUrl;
+				$userid  = $json->userid;
+				if($imageUrl != null && $imageUrl != ""){
+					$imageName = "$userid.png";
+					file_put_contents("application/assets/profileImages/$imageName",base64_decode($imageUrl));
+					$imageUrl = $imageName;
+				}
+				$this->settingsModel->updateEmployeeProfileApp($userid, $firstName, $middleName, $lastName, $imageUrl);
+				$data['Status'] = "SUCCESS";
+			}else{
+				$data['Message'] = "Invalid Request";
+				$data['Status'] = "ERROR";
+				http_response_code(401);
+			}
+		}else{
+			$data['Message'] = "Invalid Request";
+			$data['Status'] = "ERROR";
+			http_response_code(401);
+		}	
+		echo json_encode($data);
+	}
+
 	public function updateEmployeeProfile()
 	{
 		$headers = $this->input->request_headers();
@@ -1268,9 +1302,10 @@ class Settings extends CI_Controller
 				$approvedWitholdingVariationPercentage = $json->approvedWitholdingVariationPercentage;
 				$employee_no = $json->employee_no;
 				$resume_doc = $json->resume_doc;
+				$resume_doc_ = "";
 				if ($resume_doc != null) {
 					file_put_contents('application/assets/uploads/documents/' . $employee_no . '_resume.pdf', base64_decode($resume_doc));
-					$resume_doc = $employee_no . '_resume.pdf';
+					$resume_doc_ = $employee_no . '_resume.pdf';
 				}
 				$profileImage = $json->profileImage;
 				$profileImageName = $employee_no . '.png';
@@ -1315,25 +1350,30 @@ class Settings extends CI_Controller
 					$date_obt = $date_obtained[$i];
 					$exp_date = $expiry_date[$i];
 					$id = $course_id[$i];
-					// $cert = $certificate[$i];
+					$cert = isset($certificate[$i]) ? $certificate[$i] : "";
+					$certName = "";
+					if($cert != null && $cert != ""){
+						$certName = uniqid().".pdf";
+						file_put_contents("application/assets/uploads/documents/$certName",base64_decode($cert));
+					}
 					// get employee Id
 					if ($id != "" && $id != null) {
 						if ($course_nme != null && $course_nme != "")
-							$this->settingsModel->updateEmployeeCourses($id, $employee_no, $course_nme, $course_desc, $date_obt, $exp_date);
+							$this->settingsModel->updateEmployeeCourses($id, $employee_no, $course_nme, $course_desc, $date_obt, $exp_date,$certName);
 					}
 					if ($id == "" || $id == null) {
 						if ($course_nme != null && $course_nme != "")
-							$this->settingsModel->addToEmployeeCourses($employee_no, $course_nme, $course_desc, $date_obt, $exp_date);
+							$this->settingsModel->addToEmployeeCourses($employee_no, $course_nme, $course_desc, $date_obt, $exp_date,$certName);
 					}
 				}
 				// Users	
 				$name = $fname . " " . $mname . " " . $lname;
 				$this->settingsModel->updateUsers($employee_no, $emails, $name, $title, $userid, $alias);
 				// Employee bank account
-				print_r($amount);
-				die();
+
+				$this->settingsModel->deleteFromBankAccount($employee_no);
 				for($i = 0;$i<count($accountName);$i++){	
-					$this->settingsModel->updateEmployeeBankAccount($employee_no, $accountName[$i], $bsb[$i], 	$accountNumber[$i], $remainderYN[$i], isset($amount[$i]) ? $amount[$i] : 0);
+					$this->settingsModel->updateEmployeeBankAccount($employee_no, $accountName[$i], $bsb[$i], 	$accountNumber[$i], count($accountName) > 1 ? ($i == 0 ? 'Y' : 'N') : 'Y', isset($amount[$i -1]) ? $amount[$i-1] : 0);
 				}
 				// Employee medical info	
 				$this->settingsModel->updateEmployeeMedicalInfo($employee_no, $medicareNo, $medicareRefNo, $healthInsuranceFund, $healthInsuranceNo, $ambulanceSubscriptionNo);
@@ -1366,13 +1406,14 @@ class Settings extends CI_Controller
 				$visa_end_date = $json->visa_end_date;
 				$visa_conditions = $json->visa_conditions;
 				$contract_doc = $json->contract_doc;
+				$contract_doc_ = "";
 				if ($contract_doc != null) {
 					file_put_contents('application/assets/uploads/documents/' . $employee_no . '_contract.pdf', base64_decode($contract_doc));
-					$contract_doc = $employee_no . '_contract.pdf';
+					$contract_doc_ = $employee_no . '_contract.pdf';
 				}
 				// Employee No from Users 
 				$uniqueId = uniqid();
-				$this->settingsModel->updateEmployeeRecord($employee_no, $xeroEmployeeId, $qual_towards_desc, $highest_qual_held, $qual_towards_percent_comp, $visa_type, $visa_grant_date, $visa_end_date, $visa_conditions, $highest_qual_date_obtained,  $visa_holder, $resume_doc, $contract_doc);
+				$this->settingsModel->updateEmployeeRecord($employee_no, $xeroEmployeeId, $qual_towards_desc, $highest_qual_held, $qual_towards_percent_comp, $visa_type, $visa_grant_date, $visa_end_date, $visa_conditions, $highest_qual_date_obtained,  $visa_holder, $resume_doc_, $contract_doc_);
 				// Employee superfunds	
 
 				$this->settingsModel->updateEmployeeSuperfunds(

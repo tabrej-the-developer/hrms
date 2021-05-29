@@ -28,12 +28,12 @@ font-family: 'Open Sans', sans-serif;
     overflow-y: hidden;
   }
   .card_future{
-    padding: 50px 25%;
+    padding: 25px 25%;
     background: white;
     width: 100%;
   }
   .password-box{
-    padding: 4rem 2rem 4rem 1rem;
+    padding: 0rem 4rem 6rem 3rem;
     /* background: white; */
     height: 100vh;
     width: 100%;
@@ -48,11 +48,12 @@ font-family: 'Open Sans', sans-serif;
       border-radius: 2px !important;
       margin-top: 1rem;
     }
-    .btn-success{
-      background: rgba(64, 152, 20) !important;
+    .button_submit{
+      background: rgb(164, 217, 214) !important;
+      color: rgb(23, 29, 75);
       padding: 0.7rem !important;
       width: 100%;
-      
+      border-radius: 20px !important;
     }
     .form-control{
       padding: 1.3rem !important;
@@ -62,6 +63,13 @@ font-family: 'Open Sans', sans-serif;
     .fa-eye:before{
       opacity: 0.6 !important;
     }
+    input[type="text"]{
+		background: #ebebeb !important;
+		border-radius: 5px !important;
+	    padding: 5px !important;
+	    border: 1px solid #D2D0D0 !important;
+	    border-radius: 20px !important;
+	}
 </style>
   </head>
 
@@ -70,17 +78,18 @@ font-family: 'Open Sans', sans-serif;
     <?php require_once('header.php') ?>
 
     <div id="wrapper-element">
-    <div class="containers" style="">
-      <span style="position: absolute">
+    <div class="containers">
+      <span class="pt-1 pl-4 pb-2 d-inline-flex">
         <a onclick="goBack()">
-          <button class="btn back-button">
-            <img src="<?php echo base_url('assets/images/back.svg');?>"> <span style="font-size:0.8rem">Password Settings</span>
+          <button class="btn mt-0 back-button">
+            <img src="<?php echo base_url('assets/images/back.svg');?>">
           </button>
         </a>
+        <span class="settings_title">Password Settings</span>
       </span>
         <div class="row mr-0 ml-0 password-box">
           <div class="card_future" >
-            <h4 style="font-weight: 700;margin-bottom: 2rem;color: rgba(11, 36, 107)" class="text-center"> Reset Password</h4>
+            <h4 style="font-weight: 700;margin-bottom: 1rem;color: rgba(11, 36, 107)" class="text-center"> Reset Password</h4>
             <label>Current Password</label> 
 
         <input class="form-control" type="password" name="currentPassword" id="currentPassword" placeholder="Current Password" required>
@@ -93,9 +102,9 @@ font-family: 'Open Sans', sans-serif;
          <span toggle="#password-field" class="fa fa-fw fa-eye-slash field-icon toggle-password3"></span>
 
         <span style="color: red;" id="passwordError"></span><br>
-        <div style="text-align: center;">
-        <button class="btn btn-success" >Reset my password</button>
-      </div>
+        <div style="text-align: center;" class="mt-0">
+          <button class="btn button_submit font-weight-bold" >Reset my password</button>
+        </div>
       </div>
    
       </div>
@@ -111,28 +120,28 @@ font-family: 'Open Sans', sans-serif;
     </a>
 
     <script type="text/javascript">
-      $(document).on('click','.btn-success',function(){
+      $(document).on('click','.button_submit',function(){
         var current = document.getElementById('currentPassword').value;
         var newP2 = document.getElementById("newPassword1").value;
         var newP = document.getElementById("newPassword2").value;
         if(newP === newP2)
           { 
             var url = "<?php echo base_url();?>settings/changePassword";
-                      $.ajax({
-                        url : url,
-                        type : 'POST',
-                        //processData: false,
-                        data : {
-                          password : newP,
-                          passcode : current,
-                          
-                        },
-                        success:function(response){
-                            window.location.href = "<?php echo base_url('settings'); ?>"
-                          }
-                      }).fail(function(res){
-                        console.log('fail')
-                      })
+                $.ajax({
+                  url : url,
+                  type : 'POST',
+                  //processData: false,
+                  data : {
+                    password : newP,
+                    passcode : current,
+                    
+                  },
+                  success:function(response){
+                      window.location.href = "<?php echo base_url('settings'); ?>"
+                    }
+                }).fail(function(res){
+                  console.log('fail')
+                })
               }
               else{
                 $('#passwordError').html('Passwords do not match');
@@ -142,8 +151,7 @@ font-family: 'Open Sans', sans-serif;
                    setTimeout(explode, 5000);
               }
           })
-    </script>
-    <script type="text/javascript">
+
       $(document).on('click','.fa-fw',function(){
         if($(this).hasClass('fa-eye-slash')){
           $(this).removeClass('fa-eye-slash');
@@ -160,8 +168,7 @@ font-family: 'Open Sans', sans-serif;
         }
       })
 
-    </script>
-  <script type="text/javascript">
+
     $(document).ready(()=>{
       $('.containers').css('paddingLeft',$('.side-nav').width());
   });

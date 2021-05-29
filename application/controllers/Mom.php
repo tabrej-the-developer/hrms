@@ -264,7 +264,11 @@ class Mom extends CI_CONTROLLER{
            $data['period']        =      $form_data['meetingcollab'];
            $data['invites']       =      $form_data['invites'];
            $data['status']        =      'CREATED';//$form_data['status'];
-           $data['agendaFile']    =       isset($_FILES['agendaFile']['tmp_name']) ? base64_encode(file_get_contents($_FILES['agendaFile']['tmp_name'])) : "";
+           if(isset($_FILES['agendaFile']['tmp_name']) && $_FILES['agendaFile']['tmp_name'] != null){
+            $data['agendaFile']    =  isset($_FILES['agendaFile']['tmp_name']) ? base64_encode(file_get_contents($_FILES['agendaFile']['tmp_name'])) : "";
+           }else{
+            $data['agendaFile']    = "";
+           }
            $data['agendaFileExtension'] = isset($_FILES['agendaFile']['name']) ? pathinfo($_FILES['agendaFile']['name'],PATHINFO_EXTENSION) : "";
            $url = BASE_API_URL."mom/AddMeeting";
            $ch = curl_init($url);

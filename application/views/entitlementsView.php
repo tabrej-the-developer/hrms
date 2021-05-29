@@ -30,7 +30,8 @@ font-family: 'Open Sans', sans-serif;
 .modal {
   display: none; 
   position: fixed;
-    padding-top: 100px;
+  padding-top: 10vh;
+  padding-bottom: 10vh;
   left: 0;
   top: 0;
   width: 100%;
@@ -52,6 +53,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
   margin: auto;
   border: 1px solid #888;
   width: 60%;
+  height: calc(80vh);
 }
 
 /* The Close Button */
@@ -60,8 +62,13 @@ input[type="text"],input[type=time],select,#casualEmp_date{
   float: right;
   font-size: 28px;
   font-weight: bold;
+  height: 10vh;
+  opacity: 1 !important;
 }
-
+  .close button{
+    height: 6vh;
+    margin: auto;
+  }
 .close:hover,
 .close:focus {
   color: #000;
@@ -143,8 +150,11 @@ input[type="text"],input[type=time],select,#casualEmp_date{
     margin: auto;
     text-align: center;
    }
+   .modalSpace{
+     height: calc(80vh - 20vh);
+   }
    .modalSpace > div > div{
-    height: 20rem;
+    height: calc(80vh - 20vh);
     overflow: auto;
    }
     thead tr{
@@ -159,7 +169,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
       background: white !important;
     }
     .header__{
-      height: 2.5rem;
+      height: 10vh;
       width: 100%;
       background: #8D91AA;
       color: #F3F4F7;
@@ -195,29 +205,15 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 <?php $permissions = json_decode($permissions); ?>
 <?php if(isset($permissions->permissions) ? $permissions->permissions->viewEntitlementsYN : "N" == "Y"){ ?>   
     <div id="wrappers">
-      <span class="d-flex heading">
-        <span>
+      <span class="d-flex heading align-items-center">
+        <span class="d-flex align-items-center">
           <a href="<?php echo base_url('settings');?>">
             <button class="btn back-button">
               <img src="<?php echo base_url('assets/images/back.svg');?>">
-              <span>Entitlements View</span>
             </button>
           </a>
+          <span class="settings_title">Entitlement View</span>
         </span>
-        <span class="select_css">
-          <select class="center-list " id="center-list">
-              <?php $centers = json_decode($centers);
-              
-              for($i=0;$i<count($centers->centers);$i++){
-                if($_SESSION['centerr'] == $centers->centers[$i]->centerid){
-            ?>
-            <option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid; ?>" selected><?php echo $centers->centers[$i]->name?></option>
-          <?php }else{ ?>
-            <option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid; ?>"><?php echo $centers->centers[$i]->name?></option>
-          <?php }}  ?>
-          </select>
-      </span>	
-
         <span class=" create-ent ml-auto">
           <button class="button ent-btn">
             <i>
@@ -232,8 +228,8 @@ input[type="text"],input[type=time],select,#casualEmp_date{
             <table class="table ">
               <thead>
                 <tr>
-                  <th>Entitlement Id</th>
-                  <th>Entitlement name</th>
+                  <th>S.No</th>
+                  <th>Name</th>
                   <th>Hourly rate</th>
                   <th>Edit</th>
                   <th>Delete</th>
@@ -245,13 +241,14 @@ input[type="text"],input[type=time],select,#casualEmp_date{
                       if($entitlement != null){
                 if(isset($entitlement->entitlements)){
        $count = count($entitlement->entitlements);
+       $x=1;
               for($i=0;$i<$count;$i++) {   ?>
                 <tr >
                   <td ><span id="" class="id">
-                          <?php echo $entitlement->entitlements[$i]->id?>
+                          <?php echo $x;$x++;?>
                       </span>
                    </td> 
-                  <td class="name-parent"><span id="" class="names">
+                  <td class="name-parent"><span id="" class="names" entid="<?php echo $entitlement->entitlements[$i]->id?>">
                           <a href="javascript:void(0)"><?php echo $entitlement->entitlements[$i]->name?></a>
                       </span>
                    </td> 
@@ -311,7 +308,9 @@ input[type="text"],input[type=time],select,#casualEmp_date{
       <div class="modalSpace">
     
       </div>
-      <span class="close col-12 d-flex justify-content-center" ><button class="button">Close</button></span>
+      <span class="close d-flex justify-content-center align-items-center" >
+        <button class="button">Close</button>
+      </span>
     </div>
 </div>
 <!-- <script type="text/javascript">
@@ -330,11 +329,6 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 </script> -->
 
   <script type="text/javascript">
-
-  $(document).on('change','#center-list',function(){
-    var centerid = $('#center-list').val();
-    window.location.href = "<?php echo base_url('settings/viewEntitlements/'); ?>"+centerid
-  })
 
     $(document).on('click','.fa-pencil-alt',function(){
         var parent1 = $(this).parent().parent().parent().prev().prev();
@@ -420,14 +414,12 @@ input[type="text"],input[type=time],select,#casualEmp_date{
                  var url = '<?php echo base_url();?>settings/addEntitlement';
                  var rate = $('#a2').val();
                  var name = $('#a1').val();
-                 var center = $('#center-list').val();
                    $.ajax({
                      url : url,
                      type : 'POST',
                      data : {
                        name : name ,
-                       rate : rate,
-                       center : center
+                       rate : rate
                      },
                      success : function(response){
                          window.location.reload();
@@ -500,17 +492,16 @@ input[type="text"],input[type=time],select,#casualEmp_date{
           //var arrayType = $(this).attr('array-type');
           //var v = $(this).attr('name');
           //var w = $('.day').eq($(this).index()).html();
-          var x = parseInt($(this).parent().prev().children().text());
-          var centerid = $('#center-list').val();
+          var x = parseInt($(this).attr('entid'));
           //var y = $(this).attr('cal-p');
           //var eId = $('#employee-id').val($('this').attr('emp-id'))
           //var sDate = $('#start-date').val($(this).attr('curr-date'))
           //var tId = $('#timesheet-id').val($(this).attr('timesheet-id'))
            $.ajax({
-            url : "<?php echo base_url();?>settings/entitlementsMod/"+x+"/"+centerid,
+            url : "<?php echo base_url();?>settings/entitlementsMod/"+x,
             type : 'GET',
             success : function(response){
-
+              console.log(response)
               $('.modalSpace').html(response)
             }
            })

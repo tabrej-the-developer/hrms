@@ -50,7 +50,7 @@ class Rosters extends MY_Controller
 						$var['startDate'] = $rost->startDate;
 						$var['endDate'] = $rost->endDate;
 						$var['id'] = $rost->id;
-						$var['isEditYN'] = $rost->createdBy == $userid ? "Y" : "N";
+						$var['isEditYN'] = $rost->createdBy ;
 						$var['status'] = $rost->status;
 						array_push($data['rosters'], $var);
 					}
@@ -538,11 +538,14 @@ class Rosters extends MY_Controller
 				$roster = $this->rostersModel->getRosterFromId($rosterid);
 				$allAreas = $this->rostersModel->getAllAreas($roster->centerid);
 				$userDetails = $this->authModel->getUserDetails($userid);
+				$casualPermission = $this->rostersModel->getCasualEmpPermission($userid,$rosterid);
+				$casualPermission = $casualPermission != null ? ($casualPermission->editRoster) : "N";
 				$data['id'] = $roster->id;
 				$data['startDate'] = $roster->startDate;
 				$data['endDate'] = $roster->endDate;
 				$data['status'] = $roster->status;
 				$data['centerid'] = $roster->centerid;
+				$data['isEditYN'] = $casualPermission;
 				$data['roster'] = [];
 				foreach ($allAreas as $area) {
 					$var['areaId'] = $area->areaid;
@@ -582,6 +585,7 @@ class Rosters extends MY_Controller
 								$rav['shifts'] = [];
 								$allShifts = $this->rostersModel->getAllShiftsFromEmployee($rosterid, $employeeid->userid, $area->areaid);
 								foreach ($allShifts as $shiftOb) {
+									$shiftObj = [];
 									$shiftObj['currentDate'] = $shiftOb->rosterDate;
 									$leaveApp = $this->leaveModel->getLeaveApplicationForUser($employeeid->userid, $shiftOb->rosterDate);
 									if ($leaveApp == null) {
@@ -594,7 +598,7 @@ class Rosters extends MY_Controller
 										$shiftObj['shiftid'] = $shiftOb->id;
 										$shiftObj['message'] = $shiftOb->message;
 										$shiftObj['status'] = $shiftOb->status == 1 ? "Added" : ($shiftOb->status == 2 ? "Published" : ($shiftOb->status == 3 ? "Accepted" : "Rejected"));
-									} else {
+									} else{
 										$shiftObj['isOnLeave'] = 'Y';
 										$shiftObj['leaveId'] = $leaveApp->leaveId;
 										$shiftObj['leaveStartDate'] = $leaveApp->startDate;
@@ -640,6 +644,7 @@ class Rosters extends MY_Controller
 				$data['day'] = 0;
 				$data['status'] = $rosterTemplate->status;
 				$data['centerid'] = $rosterTemplate->centerid;
+				$data['templateName'] = $rosterTemplate->name;
 				$data['roster'] = [];
 				foreach ($allAreas as $area) {
 					$var['areaId'] = $area->areaid;
@@ -1259,7 +1264,7 @@ class Rosters extends MY_Controller
 						$date = $json->date;
 						$status = "1";
 						if ($startTime != null && $endTime != null && $rosterid != null && $roleid != null && $date != null && $emp != null) {
-							$this->rostersModel->addCasualEmployees($startTime, $endTime, $rosterid, $roleid, $date, $emp, $status);
+							$this->rostersModel->addCasualEmployees($startTime, $endTime, $rosterid, $roleid, $date, $emp, $status, $userid);
 							$data['Status'] = 'SUCCESS';
 						} else {
 							$data['Status'] = 'ERROR';

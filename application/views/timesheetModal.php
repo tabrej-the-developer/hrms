@@ -94,7 +94,7 @@ font-family: 'Open Sans', sans-serif;
 		$shift = json_decode($shift);
 		$rosterShift = json_decode($rosterShift);
 		$timesheetDetails = json_decode($timesheetDetails);
-		$entitlements = json_decode($entitlements);
+		// $entitlements = json_decode($entitlements);
 		// print_r(var_dump($shift->payrollTypes));
 function timex( $x)
   { 
@@ -214,11 +214,12 @@ if($aT == 'rosteredEmployees'){
 	}
 foreach($timesheetDetails->timesheet[$ya]->rosteredEmployees[$xa]->clockedTimes as $visits){
 	$userLevel = $timesheetDetails->timesheet[0]->rosteredEmployees[$xa]->level;
-						foreach ($entitlements as $e) {
-							if($e[0]->id == $userLevel){
-								$variable = $e[0]->hourlyRate;
-							}
-						}
+	$variable = isset($timesheetDetails->timesheet[0]->rosteredEmployees[$xa]->hourlyRate) ? $timesheetDetails->timesheet[0]->rosteredEmployees[$xa]->hourlyRate : 0;
+	// foreach ($entitlements as $e) {
+						// 	if($e[0]->id == $userLevel){
+						// 		$variable = $e[0]->hourlyRate;
+						// 	}
+						// }
 
 	?>
 	  <div start-time="<?php echo $visits->startTime; ?>" end-time="<?php echo $visits->endTime; ?>" class="box-time" style="padding:20px 0px 20px 1rem" hourly="<?php echo $variable;?>">

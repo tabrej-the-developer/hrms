@@ -62,7 +62,7 @@ class Timesheet extends CI_Controller {
 		$data['payrollTypes'] = $this->getShiftType($data['userid']);
 		// var_dump($data);
 		if( $this->getAllCenters() != 'error'){
-			$data['entitlements'] = $this->getAllEntitlements($data['userid']);
+			// $data['entitlements'] = $this->getAllEntitlements($data['userid']);
 		}else{
 			$data['error'] = 'error';
 		}
@@ -88,7 +88,7 @@ class Timesheet extends CI_Controller {
 			$data['userid'] = $this->session->userdata('LoginId');
 			$data['aT'] = $this->input->get('aT');
 			$data['empId'] = $this->input->get('empId');
-			$data['entitlements'] = $this->getAllEntitlements($data['userid']);
+			// $data['entitlements'] = $this->getAllEntitlements($data['userid']);
 			$data['timesheetDetails'] = $this->gettimesheet($data['timesheetid'],$data['userid']);
 			$data['shift'] = $this->getShiftType($data['userid']);
 			$data['centerid'] = $this->input->get('centerid');
@@ -107,7 +107,8 @@ class Timesheet extends CI_Controller {
 		if($formData != null && $formData != ""){
 			$date = $formData['startdate'];
 			$empId = $formData['employeeId'];
-			$url = BASE_API_URL."timesheet/getUserWeekTimesheet/".$this->session->userdata('LoginId')."/".$date."/".$empId;
+			$tid = $formData['tid'];
+			$url = BASE_API_URL."timesheet/getUserWeekTimesheet/".$this->session->userdata('LoginId')."/$date/$empId/$tid";
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -360,6 +361,7 @@ $server_output = curl_exec($ch);
 			$data['empId'] = $this->input->post('empId');
 			$data['timesheetid'] = $this->input->post('timesheetid');
 			$data['visits'] = $this->input->post('visits');
+			$data['startDate'] = $this->input->post('startDate');
 			$url = BASE_API_URL."timesheet/createWeekPayrollEntry";
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
@@ -383,25 +385,25 @@ $server_output = curl_exec($ch);
 		}
 	}
 
-	function getAllEntitlements($userid){
-		$url = BASE_API_URL."payroll/getAllEntitlements/".$this->session->userdata('LoginId');
-		$ch = curl_init($url);
-		curl_setopt($ch, CURLOPT_URL,$url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-			'x-device-id: '.$this->session->userdata('x-device-id'),
-			'x-token: '.$this->session->userdata('AuthToken')
-		));
-		$server_output = curl_exec($ch);
-		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		if($httpcode == 200){
-			return $server_output;
-			curl_close ($ch);
-		}
-		else if($httpcode == 401){
+	// function getAllEntitlements($userid){
+	// 	$url = BASE_API_URL."payroll/getAllEntitlements/".$this->session->userdata('LoginId');
+	// 	$ch = curl_init($url);
+	// 	curl_setopt($ch, CURLOPT_URL,$url);
+	// 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	// 	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+	// 		'x-device-id: '.$this->session->userdata('x-device-id'),
+	// 		'x-token: '.$this->session->userdata('AuthToken')
+	// 	));
+	// 	$server_output = curl_exec($ch);
+	// 	$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	// 	if($httpcode == 200){
+	// 		return $server_output;
+	// 		curl_close ($ch);
+	// 	}
+	// 	else if($httpcode == 401){
 			
-		}
-	}
+	// 	}
+	// }
 
 		public function getShiftType($userid){
 	//footprint start

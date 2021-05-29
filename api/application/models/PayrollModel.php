@@ -16,9 +16,9 @@ class PayrollModel extends CI_Model {
 		return $query->result();
 	}
 // Original
-	public function getAllEntitlements(){
+	public function getAllEntitlements($userid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM entitlements ");
+		$query = $this->db->query("SELECT * FROM entitlements where superadmin IN (SELECT superadmin FROM centers WHERE centerid IN (SELECT centerid FROM usercenters where userid = '$userid' GROUP BY userid)GROUP BY superadmin)");
 		return $query->result();
 	}
 
@@ -31,7 +31,9 @@ public function getAllEntitlementsV1($centerid){
 
 	public function addEntitlement($name,$rate,$userid){
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO entitlements (name,hourlyRate,createdBy) VALUES('$name',$rate,'$userid')");
+		$superadmin = $this->db->query("SELECT DISTINCT(superadmin) FROM centers WHERE centerid IN (SELECT centerid FROM usercenters where userid = '$userid' GROUP BY userid)");
+		$superadmin = $superadmin->row();
+		$query = $this->db->query("INSERT INTO entitlements (name,hourlyRate,createdBy,superadmin) VALUES('$name',$rate,'$userid','$superadmin->superadmin')");
 	}
 
 	public function addEntitlementV1($name,$rate,$userid,$centerid){
@@ -63,7 +65,7 @@ public function getAllEntitlementsV1($centerid){
 
 	public function getUserLevels($level){
 		$this->load->database();
-		$query = $this->db->query("SELECT * from users where level = $level");
+		$query = $this->db->query("SELECT users.*,org.roleid as rId,org.roleName from users LEFT JOIN orgchartroles org on org.roleid = users.roleid where level = $level");
 		return $query->result();
 	}
 

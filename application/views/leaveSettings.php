@@ -29,6 +29,9 @@ font-family: 'Open Sans', sans-serif;
       font-weight: 700;
       margin-top: 20px;
     }
+		#centerValue{
+			background: rgb(164, 217, 214);
+		}
   .close{
     float: none; 
       font-size: inherit; 
@@ -413,13 +416,13 @@ input[type="text"],input[type=time],select,#casualEmp_date{
   ?>
 <div class="containers">
   <span class="d-flex heading">
-	  <span>
+	  <span class="d-inline-flex">
       <a href="<?php echo base_url('settings');?>">
         <button class="btn back-button">
           <img src="<?php echo base_url('assets/images/back.svg');?>">
-          <span >Manage Leave Types</span>
         </button>
       </a>
+      <span class="settings_title">Manage Leave Types</span>
     </span>
     <span class="ml-auto sync_button">
         <?php if(isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N" === "Y"){ ?>

@@ -1663,7 +1663,7 @@ messaging.getToken().then((currentToken) => {
       <!-- Recent Chat  -->
       <div class="recentchat">
         <?php 
-        if($recentConversations != null && $recentConversations != "" ){
+        if(isset($recentConversations) && $recentConversations != null && $recentConversations != "" ){
           if(count($recentConversations) > 0){
         foreach($recentConversations as $chat){ ?>
         <span class="recentchat_wrapper"  chatid="<?php echo $chat->idConversation; ?>" memberid="<?php echo $chat->recentChat[0]->idMember ?>">
@@ -2626,8 +2626,7 @@ $('.save').click(function(){
 
     function loadChatElements(){
       var userId = $('.text-capitalize').attr('user_id')
-      var isGroupYN = $('.text-capitalize').attr('group')
-      var url = '<?php echo base_url() ?>messenger/chats/'+userId+'/'+isGroupYN;
+      var url = '<?php echo base_url() ?>messenger/chat/'+userId;
       $.ajax({
         url : url,
         type : 'GET',
@@ -2647,9 +2646,9 @@ $('.save').click(function(){
 
 
 
-    // $(document).ready(function(){
-    //   setInterval(loadChatElements,5000)
-    // })
+    $(document).ready(function(){
+      setInterval(loadChatElements,5000)
+    })
 
     function saveGroup(){
       var groupName = document.getElementById("recipient-name").value;

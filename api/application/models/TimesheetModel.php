@@ -6,7 +6,7 @@ class TimesheetModel extends CI_Model {
 
 	public function getAllTimesheets($centerid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM timesheet WHERE centerid = '$centerid'");
+		$query = $this->db->query("SELECT * FROM timesheet WHERE centerid = '$centerid' ORDER BY startDate DESC");
 		return $query->result();
 	}
 
@@ -31,7 +31,7 @@ class TimesheetModel extends CI_Model {
 
 	public function getPayrollShifts($startDate,$timesheetId,$userid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM payrollshift WHERE timesheetId = '$timesheetId' AND shiftDate = '$startDate' AND userid = '$userid'");
+		$query = $this->db->query("SELECT * FROM payrollshift WHERE timesheetId = '$timesheetId' AND shiftDate = '$startDate' AND userid = '$userid' ORDER BY shiftDate DESC ");
 		return $query->result();
 	}
 
@@ -81,10 +81,22 @@ class TimesheetModel extends CI_Model {
 		$query = $this->db->query("UPDATE visitis SET status = '$status',signInTime = $startTime,signOutTime = $endTime WHERE id = $visitId");
 	}
 
+	public function deletePayrollEntry($timesheetid,$empid,$startDate){
+		$this->load->database();
+		$endDate = date('Y-m-d',strtotime($startDate . '+ 4 days'));
+		$this->db->query("DELETE FROM payrollshift WHERE timesheetId = '$timesheetid' and userid = '$empid' and shiftDate >= '$startDate' and shiftDate <= '$endDate' ");
+	}
+
+	public function createPayrollShiftEntry($timesheetid,$empid,$shiftDate,$cStartTime,$cEndTime,$startTime,$endTime,$approvedBy,$payTypeId){
+		$this->load->database();
+		$query = $this->db->query("INSERT INTO payrollshift (timesheetId , userid , shiftDate , clockedInTime , clockedOutTime , startTime , endTime , payrollType , createdBy , createdAt , status)VALUES('$timesheetid','$empid','$shiftDate','$cStartTime','$cEndTime',$startTime,$endTime,'$payTypeId','$approvedBy',now(),'Added')");
+		$query = $this->db->query("UPDATE visitis SET status='PUBLISHED' where signInDate='$shiftDate' and userid = '$empid' ");
+	}
+
 	public function createPayrollEntry($timesheetid,$empid,$shiftDate,$cStartTime,$cEndTime,$startTime,$endTime,$approvedBy,$payTypeId){
 		$this->load->database();
-		$query =$this->db->query("DELETE FROM payrollshift WHERE timesheetId = '$timesheetid' and userid = '$empid' and shiftDate = '$shiftDate' and clockedInTime = $cStartTime and clockedOutTime = $cEndTime");
-		$query = $this->db->query("INSERT INTO payrollshift (timesheetId , userid , shiftDate , clockedInTime , clockedOutTime , startTime , endTime , payrollType , createdBy , createdAt , status)VALUES('$timesheetid','$empid','$shiftDate',$cStartTime,$cEndTime,$startTime,$endTime,'$payTypeId','$approvedBy',now(),'Added')");
+		$query =$this->db->query("DELETE FROM payrollshift WHERE timesheetId = '$timesheetid' and userid = '$empid' and shiftDate = '$shiftDate' and clockedInTime = '$cStartTime' and clockedOutTime = '$cEndTime'");
+		$query = $this->db->query("INSERT INTO payrollshift (timesheetId , userid , shiftDate , clockedInTime , clockedOutTime , startTime , endTime , payrollType , createdBy , createdAt , status)VALUES('$timesheetid','$empid','$shiftDate','$cStartTime','$cEndTime',$startTime,$endTime,'$payTypeId','$approvedBy',now(),'Added')");
 		$query = $this->db->query("UPDATE visitis SET status='PUBLISHED' where signInDate='$shiftDate' and userid = '$empid' ");
 	}
 

@@ -14,7 +14,7 @@ class DashboardModel extends CI_Model {
 	}
 	public function payrollCount($centerid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM payrollshift where timesheetid IN (SELECT id from timesheet where centerid = '$centerid')");
+		$query = $this->db->query("SELECT * FROM payruns where timesheetid IN (SELECT id from timesheet where centerid = '$centerid' and status='Published')");
 		return $query->result(); 
 	}
 	public function leavesCount($centerid){
@@ -24,11 +24,14 @@ class DashboardModel extends CI_Model {
 	}
 	public function rosterCount($centerid,$status,$userid){
 		$this->load->database();
-		if($status == 'Published')
+		if($status == 'Published'){
 			$query = $this->db->query("SELECT * FROM rosters where centerid = '$centerid' and status = '$status' ");
-		if($status == 'Draft')
+			return $query->result(); 
+		}
+		if($status == 'Draft'){
 			$query = $this->db->query("SELECT * FROM rosters where centerid = '$centerid' and status = '$status' and createdBy = '$userid' ");
-		return $query->result(); 
+			return $query->result(); 
+		}
 	}
 
 	public function getFootprints($userid){
@@ -37,44 +40,46 @@ class DashboardModel extends CI_Model {
 		return $query->result(); 
 	}
 
-	public function getBirthdays($currentDate,$centers){
+	public function getBirthdays($currentDate,$centerid){
 		$this->load->database();
 		$date = date('-m-d',strtotime($currentDate));
-		$check = true;
-		$centersCondition = "";
-		foreach($centers as $center){
-			if($check){
-				$centersCondition = "centerid = $center->centerid ";
-				$check = false;
-			}else{
-				$centersCondition .= " OR centerid = $center->centerid";
-			}
-		}
+		// $check = true;
+		// $centersCondition = "";
+		// foreach($centers as $center){
+		// 	if($check){
+				$centersCondition = "centerid = $centerid ";
+		// 		$check = false;
+		// 	}else{
+		// 		$centersCondition .= " OR centerid = $center->centerid";
+		// 	}
+		// }
 		$query = $this->db->query("SELECT employee.userid,employee.xeroEmployeeId,employee.title,employee.fname,employee.lname,employee.emails,employee.dateOfBirth,employee.jobTitle,employee.gender,employee.phone,employee.startDate,employee.terminationDate,employee.ordinaryEarningRateId,employee.maxhours,employee.days FROM employee where  userid IN (SELECT userid from usercenters where  $centersCondition) and LOCATE('$date',dateOfBirth) ");
 		return $query->result(); 
 	}
 
-	public function getAnniversaries($currentDate,$centers){
+	public function getAnniversaries($currentDate,$centerid){
 		$this->load->database();
 		$date = date('-m-d',strtotime($currentDate));
-		$check = true;
-		$centersCondition = "";
-		foreach($centers as $center){
-			if($check){
-				$centersCondition = "centerid = $center->centerid ";
-				$check = false;
-			}else{
-				$centersCondition .= " OR centerid = $center->centerid";
-			}
-		}
+		// $check = true;
+		// $centersCondition = "";
+		// foreach($centers as $center){
+		// 	if($check){
+				$centersCondition = "centerid = $centerid ";
+			// 	$check = false;
+			// }else{
+			// 	$centersCondition .= " OR centerid = $center->centerid";
+			// }
+		// }
 		$query = $this->db->query("SELECT employee.userid,employee.xeroEmployeeId,employee.title,employee.fname,employee.lname,employee.emails,employee.dateOfBirth,employee.jobTitle,employee.gender,employee.phone,employee.startDate,employee.terminationDate,employee.ordinaryEarningRateId,employee.maxhours,employee.days FROM employee where userid IN (SELECT userid from usercenters where $centersCondition) and LOCATE('$date',startDate) ");
 		return $query->result(); 
 	}
 
-	public function getShiftDetails($userid,$currentDate){
+	public function getShiftDetails($userid,$currentDate,$centerid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM shift WHERE userid = '$userid' AND rosterDate = '$currentDate'");
-		return $query->row();
+		$day = date('w',strtotime($currentDate));
+		$startDate = date('w',strtotime($currentDate."-$day days"));
+		$query = $this->db->query("SELECT * FROM shift WHERE userid = '$userid' AND roasterId IN (SELECT id from rosters where rosterDate = '$startDate' AND centerid = $centerid)");
+		return $query-> row();
 	}
 
 	public function getAllMeetingsForUser($userid){

@@ -23,18 +23,17 @@ public function roster_dashboard(){
 			  		}else{
 			  			$id = $_SESSION['centerr'];
 			  		}
-
-						}else{
-							$id = $_GET['center'];
-							$_SESSION['centerr'] = $id;
-						}
+				}else{
+					$id = $_GET['center'];
+					$_SESSION['centerr'] = $id;
+				}
 				$var['id'] = $id;
 				$var['centerId'] = $id;
 				$var['userId'] 	= $this->session->userdata('LoginId');
 				$var['center__'] = $id;
 				$var['rosterTemplates'] = $this->getRosterTemplates($id);
 				$var['rosters'] = $this->getPastRosters($id);
-				$var['entitlement'] = $this->getAllEntitlements($var['userId']);
+				// $var['entitlement'] = $this->getAllEntitlements($var['userId']);
 			}
 			else{
 				$var['error'] = 'error';
@@ -158,7 +157,7 @@ public function getRosterDetails(){
 		$data['rosterid'] = $this->input->get('rosterId');
 		$data['userid'] = $this->session->userdata('LoginId');
 		$data['centers'] = $this->getAllCenters();
-		$data['entitlements'] = $this->getAllEntitlements($data['userid']);
+		// $data['entitlements'] = $this->getAllEntitlements($data['userid']);
 		$data['rosterDetails'] = $this->getRoster($data['rosterid'],$data['userid']);
 		$data['permissions'] = $this->fetchPermissions();
 		$data['casualEmployees'] = $this->getCasualEmployees($data['rosterid']);
@@ -207,7 +206,7 @@ public function getRosterTemplateDetails($rosterTemplateId){
 		$data['rosterid'] = $rosterTemplateId;
 		$data['userid'] = $this->session->userdata('LoginId');
 		$data['centers'] = $this->getAllCenters();
-		$data['entitlements'] = $this->getAllEntitlements($data['userid']);
+		// $data['entitlements'] = $this->getAllEntitlements($data['userid']);
 		$data['rosterDetails'] = $this->getRosterTemplate($data['rosterid'],$data['userid']);
 		$data['permissions'] = $this->fetchPermissions();
 		// $data['casualEmployees'] = $this->getCasualEmployees($data['rosterid']);
@@ -284,7 +283,7 @@ public function getRosterTemplateDetails($rosterTemplateId){
 }
 
 	 function getRoster($rosterid,$userid){
-		
+		set_time_limit(0);
 		$url = BASE_API_URL."rosters/getRoster/".$rosterid."/".$userid;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);

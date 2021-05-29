@@ -12,11 +12,6 @@
     body{
       background: #f2f2f2;
     }
-    .xero_settings_title{
-      font-size:1.75rem;
-      color: #171D4B;
-      font-weight: 700;
-    }
       .heading{
       position: relative;
       padding-left: 2rem;
@@ -199,7 +194,7 @@
               <img src="<?php echo base_url('assets/images/back.svg');?>">
             </button>
           </a>
-        <span class="xero_settings_title">Kidsoft Settings</span>
+        <span class="settings_title">Kidsoft Settings</span>
         </span>
         <span class=" create-ent ml-auto">
  <!--          <button class="button ent-btn">

@@ -34,13 +34,13 @@
 <?php $this->load->view('header'); ?>
 <div class="containers">
 <span class="d-flex justify-content-between pt-2">
-	<span style="top:20px;padding-left: 2rem">
+	<span style="top:20px;padding-left: 2rem;display: inline-flex;">
       <a onclick="goBack()">
         <button class="btn back-button">
           <img src="<?php echo base_url('assets/images/back.svg');?>">
-          <span style="font-size:0.8rem">Add Employee</span>
         </button>
       </a>
+	  <span class="settings_title">Add Employee</span>
     </span>
     <span class="addEmployee_top_select">
     	<a href="<?php echo base_url('settings/AddMultipleEmployees');?>">
@@ -52,16 +52,16 @@
 	<div class="addEmployee-container-child">
 	<?php $permissions = json_decode($permissions); ?>
 <?php if(isset($permissions->permissions) ? $permissions->permissions->editEmployeeYN : "N" == "Y"){ ?>
-	<section class="tab-buttons">
+	<!-- <section class="tab-buttons">
 		<div class="tab-buttons-div">
-		<span class="nav-button e-s"><span>Personal</span></span>
+		<span class="nav-button e-s"><span>Personal</span></span> -->
 		<!-- <span class="nav-button e-b-a-s"><span>Bank Account</span></span> -->
 		<!-- <span class="nav-button e-s-s"><span> Superannuation </span></span> -->
 		<!-- <span class="nav-button e-t-d-s"><span>Tax Declaration </span></span> -->
 		<!-- <span class="nav-button e-u-s"><span>Employment</span></span>	 -->
 		<!-- <span class="nav-button m-i"><span>Medical Info</span></span> -->
-		</div>	
-	</section>
+		<!-- </div>	
+	</section> -->
 <form method="POST" action="createEmployeeProfile" id="myForm" style="height: 100%" onsubmit="return onFormSubmit(event)" enctype="multipart/form-data">
 	<section class="employee-section">	
 		<!-- <h3>Personal</h3> -->
@@ -274,7 +274,11 @@
 			</sup></label>
 			<span class="select_css">
 				<select id="level" name="level">
-					
+					<?php $levels = json_decode($levels);
+						foreach($levels->entitlements as $level){
+						?>
+					<option value="<?php echo $level->id; ?>"><?php echo $level->name." (".$level->hourlyRate.")"; ?></option>
+					<?php } ?>
 				</select>
 			</span>
 		</span>
@@ -576,28 +580,6 @@ $(document).ready(function(){
 		console.log($('#role').children('option').eq(x).attr('area-id'))
 			}
 		});
-
-		$(document).on('change','#center',function(){
-			var centerid = $(this).val();
-			$('#level').empty();
-			var url = "<?php echo  base_url('settings/getAllEntitlements/1000001000001/'); ?>"+`${centerid}/Y`;
-			$.ajax({
-				url : url,
-				success: function(res){
-				var parse = JSON.parse(res);
-				var code  = "";
-				try{
-					parse.entitlements.forEach((val) => {
-						code += `<option value="${val.id}">${val.name} (${val.hourlyRate})</option>`;
-					})
-						$('#level').append(code)
-				}
-				catch(err){
-					console.log("No data")
-				}
-		      }
-			})
-	})
 
 
 	function onFormSubmit(e){

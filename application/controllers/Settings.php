@@ -856,20 +856,8 @@ $server_output = curl_exec($ch);
 			$this->session->set_userdata('current_url',currentUrl());
 		}
 		// footprint end
-			$data['centers'] = $this->getAllCenters();
-			if($centerid == null){
-				if(!isset($_SESSION['centerr'])){
-					$id = json_decode($data['centers'])->centers[0]->centerid;
-					$_SESSION['centerr'] = $id;
-				}else{
-					$id = $_SESSION['centerr'];
-				}
-			}else{
-				$_SESSION['centerr'] = $centerid;
-				$id = $centerid;
-			}
 			$data['userid'] = $this->session->userdata('LoginId');
-			$data['entitlements'] = $this->getAllEntitlements($data['userid'],$id);
+			$data['entitlements'] = $this->getAllEntitlements($data['userid']);
 			$data['permissions'] = $this->fetchPermissions();
 			$this->load->view('entitlementsView',$data);
 		}
@@ -916,10 +904,8 @@ $server_output = curl_exec($ch);
 					return 'error';
 				}
 			}
-		function getAllEntitlements($userid,$centerid,$echo=null){
-			if($userid == '1000001000001')
-				$userid = $this->session->userdata('LoginId');
-			$url = BASE_API_URL."Payroll/getAllEntitlementsV1/$userid/$centerid";
+		function getAllEntitlements($userid,$echo=null){
+			$url = BASE_API_URL."Payroll/getAllEntitlements/$userid";
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -942,7 +928,7 @@ $server_output = curl_exec($ch);
 		}
 
 		function getAllEntitlementsByEmployeeCenters($userid){
-			$url = BASE_API_URL."Payroll/getAllEntitlementsByEmployeeCentersV1/$userid";
+			$url = BASE_API_URL."Payroll/getAllEntitlements/$userid";
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -1066,11 +1052,11 @@ $server_output = curl_exec($ch);
 		}
 	}
 
-		public function entitlementsMod($level,$centerid){
+		public function entitlementsMod($level){
 			if($this->session->has_userdata('LoginId')){
 				$userid = $this->session->userdata('LoginId');
 				$data['users'] = $this->userLevel($level);
-				$data['entitlements'] = $this->getAllEntitlements($userid,$centerid); 
+				$data['entitlements'] = $this->getAllEntitlements($userid); 
 			$this->load->view('entitlementsModal',$data);
 		}
 			else{
@@ -1240,11 +1226,11 @@ $server_output = curl_exec($ch);
 				$data['centers'] = $this->getAllCenters();
 				$data['areas'] = $this->getAreas($data['centerid']);
 				$data['ordinaryEarningRate'] = $this->getAwardSettings($employeeId,$centerid);
-				$data['levels'] = $this->getAllEntitlementsByEmployeeCenters($employeeId);
+				$data['levels'] = $this->getAllEntitlements($employeeId);
 				$data['superfunds'] = $this->getSuperfunds($employeeId,$centerid);
 				$data['permissions'] = $this->fetchPermissions();
 				$data['getEmployeeData'] = $this->getEmployeeData($employeeId);
-				// var_dump($data);
+				$data['entitlements'] = $this->getAllEntitlements($data['userid']);
 				$this->load->view('editEmployeeProfile',$data);
 			}
 			else{
@@ -1270,10 +1256,11 @@ $server_output = curl_exec($ch);
 			$data['centers'] = $this->getAllCenters();
 			$data['areas'] = $this->getAreas($data['centerid']);
 			$data['ordinaryEarningRate'] = $this->getAwardSettings($data['userid'],$centerid);
-			$data['levels'] = $this->getAllEntitlementsByEmployeeCenters($data['userid'],$data['centers']);
+			$data['levels'] = $this->getAllEntitlements($data['userid']);
 			$data['superfunds'] = $this->getSuperfunds($data['userid'],$centerid);
 			$data['permissions'] = $this->fetchPermissions();
 			$data['getEmployeeData'] = $this->getEmployeeData($data['userid']);
+			$data['entitlements'] = $this->getAllEntitlements($data['userid']);
 			// var_dump($data);
 			$this->load->view('editEmployee',$data);
 		}
@@ -1368,8 +1355,8 @@ $server_output = curl_exec($ch);
 		// $data['payroll_calendar'] = isset($_POST['payroll_calendar']) ? $_POST['payroll_calendar']: "";
 		$data['employee_group'] = isset($_POST['employee_group']) ? $_POST['employee_group']: "";
 		$data['holiday_group'] = isset($_POST['holiday_group']) ? $_POST['holiday_group']: "";
-		$data['visa_holder'] = isset($_POST['holiday_group']) ? $_POST['holiday_group']: "";
-		$data['visa_type'] = isset($_POST['visa_holder']) ? $_POST['visa_holder']: "";
+		$data['visa_holder'] = isset($_POST['visa_holder']) ? $_POST['visa_holder']: "";
+		$data['visa_type'] = isset($_POST['visa_type']) ? $_POST['visa_type']: "";
 		$data['visa_grant_date'] = isset($_POST['visa_grant_date']) ? $_POST['visa_grant_date']: "";
 		$data['visa_end_date'] = isset($_POST['visa_end_date']) ? $_POST['visa_end_date']: "";
 		$data['visa_conditions'] = isset($_POST['visa_conditions']) ? $_POST['visa_conditions']: "";
@@ -1378,7 +1365,7 @@ $server_output = curl_exec($ch);
 		$data['course_id'] = isset($_POST['course_id']) ? $_POST['course_id']: "";
 		$data['date_obtained'] = isset($_POST['date_obtained']) ? $_POST['date_obtained']: "";
 		$data['expiry_date'] = isset($_POST['expiry_date']) ? $_POST['expiry_date']: "";
-		$data['certificate'] = isset($_FILES['certificate']['tmp_name']) ? $_FILES['certificate']['tmp_name']: "";
+		$data['certificate'] = isset($_FILES['certificate']['tmp_name'][0]) && $_FILES['certificate']['tmp_name'][0] != null ? base64_encode(file_get_contents($_FILES['certificate']['tmp_name'][0])) : "";
 		$data['medicareNo'] = isset($_POST['medicareNo']) ? $_POST['medicareNo']: "";
 		$data['medicareRefNo'] = isset($_POST['medicareRefNo']) ? $_POST['medicareRefNo']: "";
 		$data['healthInsuranceFund'] = isset($_POST['healthInsuranceFund']) ? $_POST['healthInsuranceFund']: "";
@@ -1413,9 +1400,6 @@ $server_output = curl_exec($ch);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			var_dump($server_output);
-			print_r($_FILES);
-			die();
 			if($httpcode == 200){
 				redirect(base_url('settings'));
 				curl_close ($ch);
@@ -1444,7 +1428,7 @@ $server_output = curl_exec($ch);
 				$data['centers'] = $this->getAllCenters();
 				$data['areas'] = $this->getAreas($data['centerid']);
 				$data['ordinaryEarningRate'] = $this->getAwardSettings($data['userid'],$centerid);
-				$data['levels'] = $this->getAllEntitlements($data['userid'],$centerid);
+				$data['levels'] = $this->getAllEntitlements($data['userid']);
 				$data['superfunds'] = $this->getSuperfunds($data['userid'],$centerid);
 				$data['permissions'] = $this->fetchPermissions();
 				// var_dump($data['areas']);
@@ -1559,7 +1543,7 @@ $server_output = curl_exec($ch);
 			$data['course_description'] = $_POST['course_description'];
 			$data['date_obtained'] = $_POST['date_obtained'];
 			$data['expiry_date'] = $_POST['expiry_date'];
-			$data['certificate'] = $_FILES['certificate'];
+			$data['certificate'] = base64_encode(file_get_contents($_FILES['certificate']['tmp_name']));
 		}
 		$data['medicareNo'] = isset($_POST['medicareNo']) ? $_POST['medicareNo']: "";
 		$data['medicareRefNo'] = isset($_POST['medicareRefNo']) ? $_POST['medicareRefNo']: "";

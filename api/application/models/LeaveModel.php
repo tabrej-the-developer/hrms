@@ -150,4 +150,11 @@ class LeaveModel extends CI_Model {
 		$query = $this->db->query("SELECT email FROM `leaveapplication` INNER JOIN users on leaveApplication.userid = users.id WHERE applicationId='$leaveApplication'");
 		return $query->row();
 	}
+
+	// This model has been used in dashboard
+	public function getLeaveApplicationsForUser($userid,$currentDate,$centerid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM `leaveapplication` INNER JOIN leaves on leaves.leaveid = leaveapplication.leaveId WHERE startDate<='$currentDate' and endDate >= '$currentDate' AND userid = '$userid'  and leaves.centerid = '$centerid' ");
+		return $query->row();
+	}
 }

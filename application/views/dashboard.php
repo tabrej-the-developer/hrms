@@ -51,9 +51,6 @@
     display: block;
     background: white;
   }
-  .cardItemChild{
-
-  }
   .module-name{
   width: 100%;
   display: block;
@@ -211,6 +208,7 @@
   .button_class{
     width: 100%;
     display: flex;
+    align-items: center;
   }
   .events_title{
     font-size: 2rem;
@@ -220,7 +218,16 @@
   }
   /*---------------------------------------------------------------------------------------*/
 
-
+    .select_css__{
+      margin-left: 1rem;
+      background: rgb(164, 217, 214);
+      font-weight: 700;
+      color: rgb(23, 29, 75);
+      border-radius: 20px;
+      padding: 5px;
+      border: 2px solid #e9e9e9 !important;
+      height: fit-content;
+		}
     div.dataTables_wrapper div.dataTables_paginate {
         margin-top: -25px;
         position: fixed;
@@ -869,6 +876,18 @@ color:#FFFFFF;
       </span> -->
       <span class="button_class">
         <span class="events_title">Events</span>
+        <span class="select_css select_css__">
+              <select class="center-list " id="center-list" onchange="changeDashboardCenter()" style="background: none; border: none">
+                  <?php $centers = json_decode($centers);
+                  for($i=0;$i<count($centers->centers);$i++){
+                    if($_SESSION['centerr'] == $centers->centers[$i]->centerid){
+                ?>
+                <option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid; ?>" selected><?php echo $centers->centers[$i]->name?></option>
+              <?php }else{ ?>
+                <option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid; ?>"><?php echo $centers->centers[$i]->name?></option>
+              <?php }}  ?>
+              </select>
+            </span>	
         <span class="ml-auto">
           <button id="mom_button" type="button"  class="button" data-toggle="modal" data-target="#myModal">
             <i style="padding-right:0.5rem;padding-left:0.5rem">
@@ -889,14 +908,14 @@ color:#FFFFFF;
           $calendarBirthdays = isset($calendar) ? 
                                ( isset(json_decode($calendar)->birthdays) ?
                                        json_decode($calendar)->birthdays : "") : "";
-          if(isset($calendarBirthdays)){
-              
-
                       ?>
-                      <?php // if(count($array) > 0){ ?>
+                      <?php $aCount = 0; $bCount = 0; ?>
                 <div style="height: 100%;overflow-y: auto;">
-                <?php  foreach($calendarBirthdays as $ars){ 
+                <?php  
+          if(isset($calendarBirthdays) && $calendarBirthdays != null){
+                foreach($calendarBirthdays as $ars){ 
                         foreach($ars->birthday as $ar){
+                          $bCount++;
                   ?>
                       <?php if(date('m') == date('m',strtotime($ar->dateOfBirth))){
                         $eventType = 'Birthday';
@@ -910,11 +929,12 @@ color:#FFFFFF;
                       <?php echo $ar->fname.'  '.$ar->lname ?>
                     </span>
                   </div>
-                <?php } } ?>
+                <?php  } } }
+                  if($bCount == 0 ){
+                    echo "<h5 style='display:flex;justify-content:center;align-items:center;height:70%'>No Birthdays</h5>";
+                  }
+                ?>
                 </div>        
-          <?php // } 
-              }
-          ?>
         </div>
         <div class="upcomingEvents_anniversary" style="height: 30%">
           <div class="text-center">Anniversaries</div>
@@ -922,13 +942,12 @@ color:#FFFFFF;
           $calendarAnniversaries = isset($calendar) ?
                               (isset(json_decode($calendar)->anniversary) ? 
                                         json_decode($calendar)->anniversary : "") : "" ; 
-          if(isset($calendarAnniversaries)){
-              
-
                       ?>
                       <?php // if(count($array) > 0){ ?>
                 <div style="height: 100%;overflow-y: auto;">
-                <?php  foreach($calendarAnniversaries as $ars){ 
+                <?php  
+              if(isset($calendarAnniversaries) && $calendarAnniversaries != null){
+                foreach($calendarAnniversaries as $ars){ 
                         foreach($ars->anniversary as $ar){
                   ?>
                       <?php if(date('m') == date('m',strtotime($ar->startDate))){
@@ -943,11 +962,11 @@ color:#FFFFFF;
                       <?php echo $ar->fname.'  '.$ar->lname ?>
                     </span>
                   </div>
-                <?php } } ?>
+                <?php } } }
+                  if($bCount == 0 ){
+                    echo "<h5 style='display:flex;justify-content:center;align-items:center;height:70%'>No Anniversaries</h5>";
+                  } ?>
                 </div>        
-          <?php // } 
-              }
-          ?>
         </div>
       </div>
 
@@ -1138,6 +1157,11 @@ color:#FFFFFF;
         Modal Schedule Event
 -------------------------------- -->
 <script type="text/javascript">
+      function changeDashboardCenter(){
+        var centerid = $('#center-list').val();
+        window.location.href = `<?php echo base_url('dashboard?centerid=') ?>${centerid}`
+      }
+
   $(document).ready(()=>{
       $('.containers').css('paddingLeft',$('.side-nav').width());
   });

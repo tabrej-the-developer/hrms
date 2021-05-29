@@ -20,7 +20,7 @@ class Dashboard extends CI_Controller
 	{
 	}
 
-	public function moduleRowCounts($userid)
+	public function moduleRowCounts($centerId,$userid)
 	{
 		$headers = $this->input->request_headers();
 		$headers = array_change_key_case($headers);
@@ -39,11 +39,12 @@ class Dashboard extends CI_Controller
 				$data['payrollsCount'] =  0;
 				$data['leavesCount'] = 0;
 				foreach ($centers as $centerid) {
-					if ($centerid != null || $centerid != "") {
+					if (($centerid != null || $centerid != "") && $centerId == $centerid->centerid ) {
 						$data['rostersCount'] = $data['rostersCount'] + sizeof($this->dashboardModel->rosterCount($centerid->centerid, 'Published', $userid)) + sizeof($this->dashboardModel->rosterCount($centerid->centerid, 'Draft', $userid));
 						$data['timesheetsCount'] = $data['timesheetsCount'] + sizeof($this->dashboardModel->timesheetCount($centerid->centerid, 'Published', $userid)) + sizeof($this->dashboardModel->timesheetCount($centerid->centerid, 'Draft', $userid));
 						$data['payrollsCount'] = $data['payrollsCount'] + sizeof($this->dashboardModel->payrollCount($centerid->centerid));
 						$data['leavesCount'] = $data['leavesCount'] + sizeof($this->dashboardModel->leavesCount($centerid->centerid));
+						break;
 					}
 				}
 				http_response_code(200);
@@ -76,7 +77,7 @@ class Dashboard extends CI_Controller
 		}
 	}
 
-	public function calendarDetails($userid)
+	public function calendarDetails($centerid,$userid)
 	{
 		$headers = $this->input->request_headers();
 		$headers = array_change_key_case($headers);
@@ -98,7 +99,7 @@ class Dashboard extends CI_Controller
 				$startDate = "$y-$m-01";
 				for ($i = 0; $i < $totalDays; $i++) {
 					$currentDate = date('Y-m-d', strtotime("+$i day", strtotime("$startDate")));
-					$getShiftDetails = $this->dashboardModel->getShiftDetails($userid, $currentDate);
+					$getShiftDetails = $this->dashboardModel->getShiftDetails($userid, $currentDate,$centerid);
 					if ($getShiftDetails != null) {
 						if ($getShiftDetails != "") {
 							$mdata['title'] = 'Shift - ' . $this->timex($getShiftDetails->startTime) . ' - ' . $this->timex($getShiftDetails->endTime);
@@ -107,7 +108,7 @@ class Dashboard extends CI_Controller
 							array_push($events, $mdata);
 						}
 					}
-					$getLeaveDetails = $this->leaveModel->getLeaveApplicationForUser($userid, $currentDate);
+					$getLeaveDetails = $this->leaveModel->getLeaveApplicationsForUser($userid, $currentDate, $centerid);
 					if ($getLeaveDetails != null) {
 						if ($getLeaveDetails != "") {
 							$mbdata['title'] = 'Leave Status - ' . $getLeaveDetails->status;
@@ -115,8 +116,8 @@ class Dashboard extends CI_Controller
 							array_push($events, $mbdata);
 						}
 					}
-					$centers = ($this->utilModel->getAllCenters($userid));
-					$getBirthdays = $this->dashboardModel->getBirthdays($currentDate,$centers);
+					// $centers = ($this->utilModel->getAllCenters($userid));
+					$getBirthdays = $this->dashboardModel->getBirthdays($currentDate,$centerid);
 					if ($getBirthdays != null) {
 						if ($getBirthdays != "") {
 							$mxdata['date'] = $currentDate;
@@ -124,7 +125,7 @@ class Dashboard extends CI_Controller
 							array_push($event['birthdays'], $mxdata);
 						}
 					}
-					$getAnniversaries = $this->dashboardModel->getAnniversaries($currentDate,$centers);
+					$getAnniversaries = $this->dashboardModel->getAnniversaries($currentDate,$centerid);
 					if ($getAnniversaries != null) {
 						if ($getAnniversaries != "") {
 							$mydata['date'] = $currentDate;

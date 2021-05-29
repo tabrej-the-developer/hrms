@@ -53,7 +53,6 @@ font-family: 'Open Sans', sans-serif;
       border-radius: 20px !important;
       border: 1px solid #D2D0D0 !important;
       padding-left: 1rem !important;
-      font-size: 0.75rem !important;
     }
     label{
       display: block;
@@ -87,6 +86,7 @@ font-family: 'Open Sans', sans-serif;
       }
       .center-list{
         width: 13rem;
+        background: rgb(164, 217, 214) !important;
       }
       .center_list{
         margin-left: auto;
@@ -98,7 +98,11 @@ font-family: 'Open Sans', sans-serif;
         padding-top: 1rem;
         padding-bottom: 0.5rem;
       }
-
+    .save_submit{
+      color: rgb(23, 29, 75) !important;
+      background: rgb(164, 217, 214) !important;
+      border-radius: 20px !important;
+    }
   </style>
 </head>
 <body id="page-top">
@@ -121,7 +125,7 @@ font-family: 'Open Sans', sans-serif;
       </a>
       <span style="font-size:1.75rem;font-weight: bold;color: rgb(23, 29, 75); ">Edit Center</span>
     </span>
-    <span class="select_css center_list">
+    <span class="select_css center_list d-inline-flex align-items-center mr-3">
         <select class="center-list " id="center-list">
 
         <?php    for($i=0;$i<count($centers->centers);$i++){
@@ -144,7 +148,7 @@ font-family: 'Open Sans', sans-serif;
       } ?>
         </select> 
       </span>
-    <span class="addEmployee_top_select pr-5">
+    <span class="addEmployee_top_select pr-5 d-inline-flex align-items-center">
       <a href="<?php echo base_url('settings/createCenter');?>">
         <button id="addCenter_multipleEmployees" >
           <i class="mr-1 ml-1">
@@ -298,7 +302,7 @@ font-family: 'Open Sans', sans-serif;
 
           <div class="row text-center justify-content-center align-self-center submit_button">
             <div class=""></div>
-            <center><button type="submit" class="btn btn-success" style="padding: 6px 30px;"><i style="color: #fff;" class=""></i>&nbsp;  Save</button></center>
+            <center><button type="submit" class="btn save_submit font-weight-bold" style="padding: 6px 30px;"><i style="color: #fff;" class=""></i>&nbsp;  Save</button></center>
           </div>
         </span>
         </form>

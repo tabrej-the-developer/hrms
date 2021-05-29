@@ -233,8 +233,8 @@
 	}
 	.employee-section,.employee-bank-account-section,.employee-superfund-section, 
 	.employee-tax-declaration-section,.employee-details,.medical-info{
-		max-height: 80%;
-		height: 80%;
+		max-height: 100%;
+		height: 100%;
 		overflow: auto
 	}
 	.row.employee-bank-account-section_row{

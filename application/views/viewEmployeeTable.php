@@ -85,7 +85,7 @@
       overflow-y: hidden;
     }
     #content-wrappers{
-        padding: 0  2rem 2rem 3rem;
+        padding: 2rem 2rem 2rem 3rem;
         height:calc(100vh - 4rem);
     }
     .content-wrappers-child{
@@ -187,9 +187,6 @@
       display: flex;
       justify-content: center;
     }
-    .viewEmployeeTable_search {
-      margin-left: 1rem;
-    }
     #filter{
       padding-left:1rem;
     }
@@ -240,12 +237,8 @@
       align-items: center;
       background: white;
     }
-    .syncXeroEmployees{
-      margin-right: 2rem !important;
-    }
     #centerValue{
       background: rgb(164, 217, 214) !important;
-      max-width: 12rem;
     }
     .viewEmployeeTable_row{
       text-align: left;
@@ -265,7 +258,7 @@
       // print_r(json_encode($xeroTokens));
 ?>  
     <div id="wrappers">
-      <span class="d-flex heading">
+      <span class="d-flex heading justify-content-between">
         <span>
           <a href="<?php echo base_url('settings');?>">
             <button class="btn back-button">
@@ -274,42 +267,48 @@
           </a>
         <span class="view_employee_title">View Employee Table</span>
         </span>
-        <span class="viewEmployeeTable_center ml-auto">
-          <span class="select_css">
-            <select placehdr="Center" id="centerValue" name="centerValue" >
-              <?php 
-              foreach($centers->centers as $center){ 
-                if($_SESSION['centerr'] == $center->centerid){
-                ?> 
-                <option value="<?php echo $center->centerid;?>" selected><?php echo $center->name;?></option>
-              <?php }else{ ?>
-                <option value="<?php echo $center->centerid;?>"><?php echo $center->name;?></option>
-            <?php  }
-            } 
-              $centerId = "";
-              foreach($centers->centers as $center){ 
-                  $centerId = $centerId . $center->centerid . "|";
-               } ?>
-               <option value="<?php echo $centerId?>"><?php echo "All Centers";?></option>
-            </select>
-          </span>
-        </span>
-        <span class="viewEmployeeTable_roles ml-3">
-          <span class="select_css">
-            <select placehdr="Center" id="roleValue" name="roleValue" > 
-                <option value="">Role Value</option>
-            </select>
-          </span>
-        </span>
-        <span class="viewEmployeeTable_search ">
-          <input type="" name="" onkeyup="searchBy()" id="filter" placeholder="Search">
-        </span>
-        <span class="syncXeroEmployees">
-          <button class="button d-inline-flex" id="XeroEmployees" >
-            <i>
-              <img src="<?php echo base_url('assets/images/icons/xero.png'); ?>" style="max-height:2rem;margin-right:10px">
-            </i>Sync&nbsp;Xero&nbsp;Employees</button>
-        </span>
+        <div class="d-flex pr-4">
+          <div class="d-flex flex-column w-100">
+            <span class="viewEmployeeTable_roles w-100 " style="padding-top: 0.15rem !important;">
+              <span class="select_css w-100">
+                <select placehdr="Center" id="roleValue" name="roleValue" class="w-100"> 
+                    <option value="">Role Value</option>
+                </select>
+              </span>
+            </span>
+            <span class="viewEmployeeTable_search w-100">
+              <input type="" name="" class="w-100" onkeyup="searchBy()" id="filter" placeholder="Search" style="margin-top:0.5rem !important;">
+            </span>
+          </div>
+          <div class="d-flex flex-column w-100">
+            <span class="syncXeroEmployees w-100">
+              <button class="button d-inline-flex w-100 p-1" id="XeroEmployees" style="padding:2px !important">
+                <i>
+                  <img src="<?php echo base_url('assets/images/icons/xero.png'); ?>" style="max-height:2rem;margin-right:10px">
+                </i>Sync&nbsp;Xero&nbsp;Employees</button>
+            </span>
+            <span class="viewEmployeeTable_center w-100">
+              <span class="select_css w-100">
+                <select placehdr="Center" id="centerValue" name="centerValue" class="w-100" style="margin-top:0.35rem !important;">
+                  <?php 
+                  foreach($centers->centers as $center){ 
+                    if($_SESSION['centerr'] == $center->centerid){
+                    ?> 
+                    <option value="<?php echo $center->centerid;?>" selected><?php echo $center->name;?></option>
+                  <?php }else{ ?>
+                    <option value="<?php echo $center->centerid;?>"><?php echo $center->name;?></option>
+                <?php  }
+                } 
+                  $centerId = "";
+                  foreach($centers->centers as $center){ 
+                      $centerId = $centerId . $center->centerid . "|";
+                  } ?>
+                  <option value="<?php echo $centerId?>"><?php echo "All Centers";?></option>
+                </select>
+              </span>
+            </span>
+          </div>
+        </div>
       </span>
       <div id="content-wrappers" class="containers">
         <div class="row content-wrappers-child">

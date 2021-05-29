@@ -77,7 +77,7 @@ class Payroll extends CI_Controller {
 				$data['payrollShifts'] = $this->getAllPayrollShifts($data['timesheetId'] , $data['userId']);
 				$data['permissions'] = $this->fetchPermissions();
 				$data['payrollTypes'] = $this->getAllPayrollTypes($data['userId']);
-				$data['entitlements'] = $this->getAllEntitlements($data['userId']);
+				// $data['entitlements'] = $this->getAllEntitlements($data['userId']);
 			}
 	//footprint start
 	if($this->session->has_userdata('current_url')){

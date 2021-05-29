@@ -382,10 +382,8 @@ body{
 		<table class="table">
 			<thead>
 				<th>S.No</th>
-<?php if((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y"){ ?> 
 				<th>Timesheet Name</th>
 				<!-- <th>Edit Y/N</th> -->
-			<?php } ?>
 				<th>Start Date</th>
 				<th>End Date</th>
 				<th>Status</th>
@@ -410,11 +408,12 @@ body{
 					<td><?php echo $timesheet->timesheets[$i]->status ?></td>
 				</tr>
 				<?php }?>
-			<?php if($this->session->userdata('UserType') == STAFF ) { ?>
+			<?php if((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "N"){ ?>
 				<tr id="<?php echo $timesheet->timesheets[$i]->id?>" clickable="yes">
 					<td><?php echo $i+1 ?></td>
-					<td><?php echo $timesheet->timesheets[$i]->startDate ?></td>
-					<td><?php echo $timesheet->timesheets[$i]->endDate ?></td>
+					<td><?php echo  'Timesheet | '.dateToDay($timesheet->timesheets[$i]->startDate).'-'.dateToDay($timesheet->timesheets[$i]->endDate) ?></td>
+					<td><?php echo dateToDayAndYear($timesheet->timesheets[$i]->startDate) ?></td>
+					<td><?php echo dateToDayAndYear($timesheet->timesheets[$i]->endDate) ?></td>
 					<td><?php echo $timesheet->timesheets[$i]->status ?></td>
 				</tr>
 				<?php } ?>
@@ -465,7 +464,7 @@ body{
 
 <script type="text/javascript">
 	$(document).ready(function(){
-		<?php if($this->session->userdata('UserType')==SUPERADMIN){?>
+	<?php if((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y"){ ?> 
 		$(document).on('change','.center-list',function(){
 			var val = $(this).val();
 			if(val == null || val == ""){
@@ -493,7 +492,7 @@ body{
 })
 </script>
 <script type="text/javascript">
-	<?php if($this->session->userdata('UserType')==SUPERADMIN){?>
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y"){ ?> 
 	$(document).ready(function(){
 			equalElements('sort-by','center-list');
 		})
