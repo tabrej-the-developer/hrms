@@ -48,25 +48,53 @@ class Payroll extends CI_Controller {
 			}
 	}
 
-		 function getPastPayrolls($centerid){
-		$url = BASE_API_URL."/timesheet/getPastTimesheet/".$centerid."/".$this->session->userdata('LoginId');
-		$ch = curl_init($url);
-		curl_setopt($ch, CURLOPT_URL,$url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-			'x-device-id: '.$this->session->userdata('x-device-id'),
-			'x-token: '.$this->session->userdata('AuthToken')
-		));
-		$server_output = curl_exec($ch);
-		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		if($httpcode == 200){
-			return $server_output;
-			curl_close ($ch);
-		}
-		else if($httpcode == 401){
+		function getPastPayrolls($centerid){
+			$url = BASE_API_URL."/timesheet/getPastTimesheet/".$centerid."/".$this->session->userdata('LoginId');
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				return $server_output;
+				curl_close ($ch);
+			}
+			else if($httpcode == 401){
 
+			}
 		}
-	}
+
+		public function getPayrollDetails(){
+			$form_data = $this->input->post();
+			if($form_data != null){
+				$data['timesheetid'] = $form_data['timesheetid'];
+				$data['empId'] = $form_data['userid'];
+				$data['userid'] = $this->session->userdata('LoginId');
+				$url = BASE_API_URL."Payroll/GetPayrollDetails";
+				$ch = curl_init($url);
+				curl_setopt($ch, CURLOPT_URL,$url);
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+						'x-device-id: '.$this->session->userdata('x-device-id'),
+						'x-token: '.$this->session->userdata('AuthToken')
+					));
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				$server_output = curl_exec($ch);
+				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				if($httpcode == 200){
+					print_r($server_output);
+					curl_close($ch);
+				}
+				else if($httpcode == 401){}
+			}else{
+				echo "{'status':'ERROR'}";
+			}
+		}
 
 	public function payrollShifts(){
 		if($this->session->has_userdata('LoginId')){

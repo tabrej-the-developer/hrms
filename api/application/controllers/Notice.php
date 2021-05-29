@@ -121,9 +121,10 @@ class Notice extends CI_Controller
 								$this->email->set_newline("\r\n");
 								$this->email->from('demo@todquest.com', 'Todquest');
 								$mailId = $this->noticeModel->getMailId($memberid);
+								// $this->email->to("dheerajreddynannuri1709@gmail.com");
 								$this->email->to($mailId->email);
 								$this->email->subject($subject);
-								$this->email->message($text);
+								$this->email->message(html_entity_decode($text));
 								$this->email->send();
 								$this->noticeModel->addNotice($userid, $memberid, $subject, $text);
 							}

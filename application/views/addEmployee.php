@@ -377,18 +377,16 @@
 		</div>
 	</div>
 </div>
+<!-- Notification -->
 <div class="notify_">
 	<div class="note">
-		  <div class="notify_body">
-    <span class="_notify_message">
-      
-    </span>
-    <span class="_notify_close" onclick="closeNotification()">
-      &times;
-    </span>
-  </div>
+		<div class="notify_body">
+			<span class="_notify_message"></span>
+			<span class="_notify_close" onclick="closeNotification()">&times;</span>
+    	</div>
 	</div>
 </div>
+<!-- Notification -->
 <script type="text/javascript">
 	$(document).ready(()=>{
 		if($(document).width() > 1024){

@@ -80,6 +80,15 @@ public function getAllEntitlementsV1($centerid){
 		// var_dump($query);
 	}
 
+	public function GetPayrollDetails($timesheetid,$empId){
+		$this->load->database();
+		$query = $this->db->query("SELECT message FROM payrollshift WHERE timesheetId = '$timesheetid' and userid = '$empId' ");
+		if($query->row() != null)
+			return ($query->row())->message;
+		if($query->row() == null)
+			return null;
+	}
+
 	public function deleteAllPayrollShiftTypes($centerid){
 		$this->load->database();
 		$this->db->query("DELETE FROM payrollshifttype_v1 where centerid = $centerid");

@@ -126,7 +126,7 @@ class Notice extends CI_Controller {
 			var_dump($httpcode);
 			if($httpcode == 200){
 				curl_close ($ch);
-				redirect(base_url().'notice/notices/Sent');
+				redirect(base_url().'notice/notices');
 			}
 			else if($httpcode == 401){
 

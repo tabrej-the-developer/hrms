@@ -207,6 +207,34 @@ public function getAllEntitlementsByEmployeeCentersV1($userid){
 		}
 	}
 
+	public function GetPayrollDetails(){
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			$this->load->model('authModel');
+			$this->load->model('payrollModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if ($json != null && $res != null && $res->userid == $json->userid) {
+				$timesheetid = $json->timesheetid;
+				$empId = $json->empId;
+				if ($timesheetid != null && $empId != null ) {
+					$data['Message'] = $this->payrollModel->GetPayrollDetails($timesheetid,$empId);
+					$data['Status'] = 'SUCCESS';
+				} else {
+					$data['Status'] = 'ERROR';
+					$data['Message'] = "You are not allowed";
+				}
+				http_response_code(200);
+				echo json_encode($data);
+			} else {
+				http_response_code(401);
+			}
+		} else {
+			http_response_code(401);
+		}
+	}
+
 	public function getAllPayrollShifts($timesheetid, $userid)
 	{
 		$headers = $this->input->request_headers();

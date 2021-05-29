@@ -541,7 +541,7 @@ table.dataTable{
 					<td pay="<?php echo $totalTime; ?>" userid="<?php  echo $payrollShifts->employees[$i]->payrollShifts[0]->userid ?>" timesheetid="<?php  echo $payrollShifts->timesheetid ?>"><?php echo '$ '.sprintf("%.02f",$totalTime); ?></td>
 					<?php if($payrollShifts->employees[$i]->payrollShifts[0]->status != 'FLAGGED'){ ?>
 					<td >
-						<button class="button flag_button flagged" userid="<?php  echo $payrollShifts->employees[$i]->payrollShifts[0]->userid ?>"  timesheetid="<?php  echo $payrollShifts->timesheetid ?>" onclick="flag('<?php  echo $payrollShifts->timesheetid ?>','<?php  echo $payrollShifts->employees[$i]->payrollShifts[0]->userid ?>')">
+						<button class="button flag_button flagged" userid="<?php  echo $payrollShifts->employees[$i]->payrollShifts[0]->userid ?>"  timesheetid="<?php  echo $payrollShifts->timesheetid ?>" onclick="flag('<?php  echo $payrollShifts->timesheetid ?>','<?php  echo $payrollShifts->employees[$i]->payrollShifts[0]->userid ?>','create')">
 							<i>
 								<img src="<?php echo base_url('assets/images/icons/flag.png'); ?>" style="max-height:1.3rem;margin-right:10px">
 							</i>Flag</button>
@@ -661,6 +661,18 @@ table.dataTable{
 	  </div>
 </div>
 <?php } ?>
+
+<!-- Notification -->
+<div class="notify_">
+	<div class="note">
+		<div class="notify_body">
+			<span class="_notify_message"></span>
+			<span class="_notify_close" onclick="closeNotification()">&times;</span>
+    	</div>
+	</div>
+</div>
+<!-- Notification -->
+
 <!-- Till here -->>
 
 
@@ -673,8 +685,7 @@ table.dataTable{
 		     searching : false
 		    });
 		} );
-</script>
-<script type="text/javascript">
+
 	$(document).ready(function(){
 			$('.dataTables_length').remove()
 			$('.dataTables_info').remove()
@@ -723,9 +734,7 @@ table.dataTable{
 		$('.containers').css('paddingLeft',$('.side-nav').width());					
 		}
 	});
-	</script>
 
-	<script type="text/javascript">
 	function timer( x)
 	{ 
 	    var output="";
@@ -788,11 +797,24 @@ table.dataTable{
 	return output;
 }
 
+// Notification //
+	function showNotification(){
+      $('.notify_').css('visibility','visible');
+    }
+    function addMessageToNotification(message){
+    	if($('.notify_').css('visibility') == 'hidden'){
+     		$('._notify_message').append(`<li>${message}</li>`)
+    	}
+    }
+    function closeNotification(){
+      $('.notify_').css('visibility','hidden');
+      $('._notify_message').empty();
+    }
+// Notification //
 
-</script>
-<script type="text/javascript">
 	$(document).ready(function(){
 		$(document).on('click','.create',function(){
+			if($('.FLAGGED_flag').length == 0){
 			var length = $('[pay]').length;
 			// console.log(length)
 			var array = [];
@@ -828,26 +850,12 @@ table.dataTable{
 					})
 				}
 			})
+			}else{
+		        addMessageToNotification('Unflag before submit');
+		      	showNotification();
+				setTimeout(closeNotification,5000)
+			}
 		})
-	})
-
-	$(document).ready(function(){
-		 $(document).on('click','.FLAGGED_flag',function(){
-		 	var timesheetid = $(this).attr('timesheetid');
-		 	var userid = $(this).attr('userid')
-		 	var url = `<?php echo base_url() ?>payroll/updateShiftStatus/${timesheetid}/${userid}`;
-		 	var message = "";
-		 		$.ajax({
-		 			url : url,
-		 			type : 'POST',
-		 			data : {
-		 				message : message
-		 			},
-		 			success : function(response){
-		 				window.location.reload();
-		 			}
-		 		})
-		 })
 	})
 
 	$(document).on('click','.print_image',function(){
@@ -858,6 +866,8 @@ table.dataTable{
 
 	$(document).ready(function(){
 		 $(document).on('click','#flag_modal_save',function(){
+			 var type = $(this).attr('modalType')
+			 if(type == 'create'){
 		 	var timesheetid = $(this).attr('timesheetid');
 		 	var userid = $(this).attr('userid')
 		 	var url = `<?php echo base_url() ?>payroll/updateShiftStatus/${timesheetid}/${userid}`;
@@ -872,25 +882,70 @@ table.dataTable{
 		 				window.location.reload();
 		 			}
 		 		})
+			}else{
+				var timesheetid = $(this).attr('timesheetid');
+				var userid = $(this).attr('userid')
+				var url = `<?php echo base_url() ?>payroll/updateShiftStatus/${timesheetid}/${userid}`;
+				var message = "";
+		 		$.ajax({
+		 			url : url,
+		 			type : 'POST',
+		 			data : {
+		 				message : message
+		 			},
+		 			success : function(response){
+		 				window.location.reload();
+		 			}
+		 		})
+			}
 		 })
 	})
 
-</script>
-<script type="text/javascript">
-	function flag(timesheetid,userid){
+
+	function flag(timesheetid,userid,type){
 		var docs = document.getElementById('flag_modal');
 		var selector = document.getElementById('flag_modal_save');
 			selector.setAttribute("timesheetid",timesheetid);
 			selector.setAttribute("userid",userid);
-	  docs.style.display = "flex"
+			selector.setAttribute("modalType",type);
+	  		docs.style.display = "flex";
+			if(type == 'create')
+			 	$('#flag_modal_save').html(`<i>
+              <img src="<?php echo base_url('assets/images/icons/flag.png'); ?>" style="max-height:1.3rem;margin-right:10px">
+            </i>Flag`);
 	}
+
 	function closes(){
 		var selector = document.getElementById('flag_modal_save');
 			selector.removeAttribute('timesheetid');
 			selector.removeAttribute('userid');
-		var docss = document.getElementById('flag_modal');
-	  docss.style.display = "none"
+			selector.removeAttribute("modalType");
+			var docss = document.getElementById('flag_modal');
+			$('.flag_textarea').val("");
+	  		docss.style.display = "none"
 	}
+
+	$(document).on('click','.FLAGGED_flag',function(){
+		var timesheetid = $(this).attr('timesheetid');
+		var userid = $(this).attr('userid');
+		var url = "<?php echo base_url('payroll/getPayrollDetails') ?>";
+		$('#flag_modal_save').html(`<i><img src="<?php echo base_url('assets/images/icons/flag.png'); ?>" style="max-height:1.3rem;margin-right:10px"></i>Unflag`);
+		$.ajax({
+			url : url,
+			type : 'POST',
+			data : {
+				timesheetid : timesheetid,
+				userid : userid
+			},
+			success : function(res){
+				var response = JSON.parse(res);
+				flag(timesheetid,userid,'edit');
+				$('.flag_textarea').val(response.Message);
+			} 
+		}) 
+	})
+
+
 </script>
 </body>
 </html>
