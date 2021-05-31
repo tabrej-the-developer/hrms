@@ -528,6 +528,9 @@ class SettingsModel extends CI_Model {
 		$query = $this->db->query("UPDATE employee SET fname = '$firstName', mname = '$middleName', lname = '$lastName' where userid = '$userid'");
 		$name = "$firstName $middleName $lastName";
 		$this->db->query("UPDATE users SET name = '$name' where id = '$userid'");
+		if($imageUrl != null && $imageUrl != ""){
+			$this->db->query("UPDATE users SET imageUrl = '$imageUrl' where id = '$userid'");
+		}
 	}
 
 	// public function employeeRecordMigration(){
