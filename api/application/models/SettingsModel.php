@@ -226,10 +226,15 @@ class SettingsModel extends CI_Model {
 			$this->load->database();
 			$query = $this->db->query("INSERT INTO employeerecord (employeeNo, EmployeeId, uniqueId, resumeDoc, employmentType,  otherQualDesc, highestQualHeld, qualTowardsPercentcomp, visaType, visaGrantDate, visaEndDate, visaConditions, contractDocument, highestQualDateObtained, highestQualCertificate,  visaHolderYN) VALUES ('$employee_no', '$xeroEmployeeId', '$uniqueId','$resume_doc', '$employement_type', '$qual_towards_desc', '$highest_qual_held', '$qual_towards_percent_comp', '$visa_type', '$visa_grant_date', '$visa_end_date', '$visa_conditions', '$contract_doc', '$highest_qual_date_obtained', '$highest_qual_cert', '$visa_holder')" );
 		}
-		public function addToEmployeeSuperfunds( $xeroEmployeeId, $superFundId, $superMembershipId){
+		public function addToEmployeeSuperfunds( $employee_no, $superFundId, $superMembershipId,$superfundEmployeeNumber){
 			$this->load->database();
-			$query = $this->db->query("INSERT INTO employeesuperfund (employeeId, superFundId, superMembershipId,employeeNumber) VALUES ('$xeroEmployeeId', '$superFundId', '$superMembershipId','$superfundEmployeeNumber')");
+			$query = $this->db->query("INSERT INTO employeesuperfund (employeeId, superFundId, superMembershipId,employeeNumber) VALUES ('$employee_no', '$superFundId', '$superMembershipId','$superfundEmployeeNumber')");
 		}
+		public function deleteEmployeeSuperfunds($employee_no){
+			$this->load->database();
+			$this->db->query("DELETE from employeesuperfund where employeeId = '$employee_no' ");
+		}
+
 		public function addToEmployeeTaxDeclaration($xeroEmployeeId,$employmentBasis,$tfnExemptionType,$taxFileNumber,$australiantResidentForTaxPurposeYN,$residencyStatue,$taxFreeThresholdClaimedYN,$taxOffsetEstimatedAmount,$hasHELPDebtYN,$hasSFSSDebtYN,$hasTradeSupportLoanDebtYN_,$upwardVariationTaxWitholdingAmount,$eligibleToReceiveLeaveLoadingYN,$approvedWitholdingVariationPercentage){
 			$this->load->database();
 			$query = $this->db->query("INSERT INTO employeetaxdeclaration (employeeId, employmentBasis, tfnExemptionType, taxFileNumber, australiantResidentForTaxPurposeYN, residencyStatue, taxFreeThresholdClaimedYN, taxOffsetEstimatedAmount, hasHELPDebtYN, hasSFSSDebtYN, hasTradeSupportLoanDebtYN, upwardVariationTaxWitholdingAmount, eligibleToReceiveLeaveLoadingYN, approvedWitholdingVariationPercentage) VALUES ('$xeroEmployeeId','$employmentBasis','$tfnExemptionType','$taxFileNumber','$australiantResidentForTaxPurposeYN','$residencyStatue','$taxFreeThresholdClaimedYN','$taxOffsetEstimatedAmount','$hasHELPDebtYN','$hasSFSSDebtYN','$hasTradeSupportLoanDebtYN_','$upwardVariationTaxWitholdingAmount','$eligibleToReceiveLeaveLoadingYN','$approvedWitholdingVariationPercentage')");
@@ -278,7 +283,7 @@ class SettingsModel extends CI_Model {
 		public function getEmployeeSuperfunds($userid){
 			$this->load->database();
 			$query = $this->db->query("SELECT * FROM employeesuperfund as es INNER JOIN superfund as s on s.superfundid = es.superfundid  where employeeId IN (SELECT userid FROM employee where userid = '$userid')");
-			return $query->row();
+			return $query->result();
 		}
 		public function getEmployeeTaxDec($userid){
 			$this->load->database();
@@ -388,7 +393,11 @@ class SettingsModel extends CI_Model {
 			$check = $this->db->query("SELECT * from employee where userid = '$employee_no'");
 			$check = $check->row();
 			if($check != null && $check != ""){
-			$query = $this->db->query("UPDATE employee SET 	title = '$title', fname = '$fname', mname = '$mname', lname = '$lname', emails = '$emails', dateOfBirth = '$dateOfBirth', gender = '$gender', homeAddLine1 = '$homeAddLine1', homeAddLine2 = '$homeAddLine2', homeAddCity = '$homeAddCity', homeAddRegion = '$homeAddRegion', homeAddPostal = '$homeAddPostal', homeAddCountry = '$homeAddCountry', phone = '$phone', mobile = '$mobile', terminationDate = '$terminationDate', ordinaryEarningRateId = '$ordinaryEarningRateId', classification = '$classification',  emergency_contact = '$emergency_contact', relationship = '$relationship', emergency_contact_email = '$emergency_contact_email' where userid = '$employee_no'");
+				$ordinaryEarningRate = "";
+				if($userid == $employee_no){
+					$ordinaryEarningRate = ", ordinaryEarningRateId = '\"$ordinaryEarningRateId\"'";
+				}
+			$query = $this->db->query("UPDATE employee SET 	title = '$title', fname = '$fname', mname = '$mname', lname = '$lname', emails = '$emails', dateOfBirth = '$dateOfBirth', gender = '$gender', homeAddLine1 = '$homeAddLine1', homeAddLine2 = '$homeAddLine2', homeAddCity = '$homeAddCity', homeAddRegion = '$homeAddRegion', homeAddPostal = '$homeAddPostal', homeAddCountry = '$homeAddCountry' $ordinaryEarningRate, phone = '$phone', mobile = '$mobile', terminationDate = '$terminationDate', classification = '$classification',  emergency_contact = '$emergency_contact', relationship = '$relationship', emergency_contact_email = '$emergency_contact_email' where userid = '$employee_no'");
 				}
 				else{
 			$query = $this->db->query("INSERT INTO employee (userid,  title, fname, mname, lname, emails, dateOfBirth,  gender, homeAddLine1, homeAddLine2, homeAddCity, homeAddRegion, homeAddPostal, homeAddCountry, phone, mobile,  terminationDate, ordinaryEarningRateId,  created_at, created_by, classification,  emergency_contact, relationship, emergency_contact_email) VALUES ('$employee_no', '$title','$fname','$mname','$lname','emails','$dateOfBirth','$gender','$homeAddLine1','$homeAddLine2','$homeAddCity','$homeAddRegion','$homeAddPostal','$homeAddCountry','$phone','$mobile','$terminationDate','$ordinaryEarningRateId',NOW(),'$userid','$classification','$emergency_contact','$relationship','$emergency_contact_email')");

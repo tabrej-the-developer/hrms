@@ -1305,9 +1305,8 @@ $server_output = curl_exec($ch);
 		$data['accountNumber'] = isset($_POST['accountNumber']) ? $_POST['accountNumber']: "";
 		$data['remainderYN'] = isset($_POST['remainderYN']) ? $_POST['remainderYN']: "";
 		$data['amount'] = isset($_POST['amount']) ? $_POST['amount']: "";
-		$data['superFundId'] = isset($_POST['superFundId']) ? $_POST['superFundId']: "";
-		$data['superMembershipId'] = isset($_POST['superMembershipId']) ? $_POST['superMembershipId']: "";
-		$data['tfnExemptionType'] = isset($_POST['tfnExemptionType']) ? $_POST['tfnExemptionType']: "";
+		$data['superFunds'] = isset($_POST['superFund']) ? $_POST['superFund']: "";
+		$data['tfnExemptionType'] = isset($_POST['tfnExemptionType']) ? $_POST['tfnExemptionType'] : "";
 		$data['taxFileNumber'] = isset($_POST['taxFileNumber']) ? $_POST['taxFileNumber']: "";
 		$data['australiantResidentForTaxPurposeYN'] = isset($_POST['australiantResidentForTaxPurposeYN']) ? $_POST['australiantResidentForTaxPurposeYN']: "";
 		$data['residencyStatue'] = isset($_POST['residencyStatue']) ? $_POST['residencyStatue']: "";
@@ -1401,6 +1400,7 @@ $server_output = curl_exec($ch);
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			if($httpcode == 200){
+				$this->session->set_flashdata('editEmployee','Profile Updated');
 				redirect(base_url('settings'));
 				curl_close ($ch);
 
@@ -1569,9 +1569,8 @@ $server_output = curl_exec($ch);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			var_dump($httpcode);
-			var_dump($server_output);
 			if($httpcode == 200){
+				$this->session->set_flashdata('employeeAdded', 'This is my message');
 				redirect(base_url('settings'));
 				curl_close ($ch);
 			}

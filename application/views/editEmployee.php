@@ -359,6 +359,7 @@
 <?php $this->load->view('header'); ?>
 <?php 
 	$employeeData = json_decode($getEmployeeData);
+	$superfunds = json_decode($superfunds);
 ?>
 <div class="containers">
 	<span style="position: absolute;top:20px;padding-left: 2rem" class="d-inline-flex align-items-center">
@@ -519,9 +520,9 @@
 				<label class="labels__">Mobile</label>
 				<input placeholder="Mobile" id="mobile"  class="" type="text" name="mobile" value="<?php echo isset($employeeData->employee->mobile) ? $employeeData->employee->mobile : ''; ?>">
 			</span>
-			<span class="span-class col-3">
+			<span class="span-class col-3" >
 				<label class="labels__">Email</label>
-				<input placeholder="Emails" id="emails"  class="" type="text" name="emails" value="<?php echo isset($employeeData->employee->emails) ? $employeeData->employee->emails : ''; ?>">
+				<input style="cursor: not-allowed" placeholder="Emails" id="emails"  class="" type="text" name="emails" disabled value="<?php echo isset($employeeData->employee->emails) ? $employeeData->employee->emails : ''; ?>">
 			</span>
 			<hr>
 	<span class="d-block">
@@ -529,7 +530,6 @@
 			<label>Start Date</label>
 		<input placeholder="Start Date" id="startDate"  class="" type="date" name="startDate" value="<?php // echo isset($employeeData->employee->startDate) ? $employeeData->employee->startDate : ''; ?>">
 		</span> -->
-
 	</span>
 <!-- 		<span class="span-class col-3">
 			<label>created_at</label>
@@ -624,23 +624,35 @@
 			<input placeholder="Employee Id" id="employeeId" >
 		</span> -->
 			<div class="superfund-parent">
+			<?php foreach($employeeData->employeeSuperfunds as $supFund){ ?>
 				<div class="superfund-child row">
 					<span class="span-class col-3">
 						<label>Super Fund Id</label>
 						<span class="select_css">
-							<select placeholder="Super Fund Id" class="superFundId" name="superFundId" value="<?php echo isset($employeeData->employeesuperfund->superFundId) ? $employeeData->employeesuperfund->superFundId : ''; ?>">
+							<select placeholder="Super Fund Id" class="superFundId" name="superFund[Id][]" value="<?php echo isset($supFund->superFundId) ? $supFund->superFundId : ''; ?>">
+							<?php 
+							$superFundValue = isset($supFund->superFundId) ? $supFund->superFundId : '';
+							foreach($superfunds->superfunds as $superfund){
+								if($superFundValue == $superfund->superFundId){
+									echo "<option value='$superfund->superFundId' selected>$superfund->name</option>";
+								}else{
+									echo "<option value='$superfund->superFundId'>$superfund->name</option>";
+								}
+							}
+							?>
 							</select>
 						</span>
 					</span>
 					<span class="span-class col-3">
 						<label>Super Membership Id</label>
-						<input placeholder="Super Membership Id" class="superMembershipId" type="text" name="superMembershipId" value="<?php echo isset($employeeData->employeesuperfund->superMembershipId) ? $employeeData->employeesuperfund->superMembershipId : ''; ?>">
+						<input placeholder="Super Membership Id" class="superMembershipId" type="text" name="superFund[MembershipId][]" value="<?php echo isset($supFund->superMembershipId) ? $supFund->superMembershipId : ''; ?>">
 					</span>
 					<span class="span-class col-3">
 						<label class="labels__">Employee Number</label>
-						<input class="employeeNumber" type="text" name="superfundEmployeeNumber">
+						<input class="employeeNumber" type="text" name="superFund[EmployeeNumber][]" value="<?php echo isset($supFund->employeeNumber) ? $supFund->employeeNumber : ''; ?>">
 					</span>
 				</div>
+				<?php } ?>
 			</div>
 
 	</section>
@@ -721,7 +733,7 @@
 		</span>
 		<span class="span-class col-3">
 			<label>Upward Variation Tax Witholding Amount</label>
-			<input placeholder="Upward Variation Tax Witholding Amount" id="upwardVariationTaxWitholdingAmount" name="upwardVariationTaxWitholdingAmount" type="text" value="<?php echo isset($employeeData->employeeTaxDeclaration->upwardVariationTaxWitholdingAmount) ? $employeeData->employeeTaxDeclaration->upwardVariationTaxWitholdingAmount : ''; ?>">
+			<input placeholder="Upward Variation Tax Witholding Amount" id="upwardVariationTaxWitholdingAmount" name="upwardVariationTaxWitholdingAmount" type="number" value="<?php echo isset($employeeData->employeeTaxDeclaration->upwardVariationTaxWitholdingAmount) ? $employeeData->employeeTaxDeclaration->upwardVariationTaxWitholdingAmount : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label>Eligible To Receive Leave Loading</label>
@@ -732,7 +744,7 @@
 		</span>
 		<span class="span-class col-3">
 			<label>Approved Witholding Variation Percentage</label>
-			<input placeholder="Approved Witholding Variation Percentage" id="approvedWitholdingVariationPercentage" name="approvedWitholdingVariationPercentage" type="text" value="<?php echo isset($employeeData->employeeTaxDeclaration->approvedWitholdingVariationPercentage) ? $employeeData->employeeTaxDeclaration->approvedWitholdingVariationPercentage : ''; ?>">
+			<input placeholder="Approved Witholding Variation Percentage" id="approvedWitholdingVariationPercentage" name="approvedWitholdingVariationPercentage" type="number" value="<?php echo isset($employeeData->employeeTaxDeclaration->approvedWitholdingVariationPercentage) ? $employeeData->employeeTaxDeclaration->approvedWitholdingVariationPercentage : ''; ?>">
 		</span>
 		
 	</div>
@@ -815,12 +827,12 @@
 		</span> -->
 
 		<span class="span-class col-3">
-			<label>Highest-qual-held</label>
+			<label>Highest qual held</label>
 		<input placeholder="Highest-qual-held" id="highest_qual_held" name="highest_qual_held" type="text"  value="<?php echo isset($employeeData->employeeRecord->highestQualHeld) ? $employeeData->employeeRecord->highestQualHeld : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label>Date Obtained</label>
-		<input placeholder="Date Obtained" id="highest_qual_date_obtained" name="highest_qual_date_obtained" type="text"  value="<?php echo isset($employeeData->employeeRecord->highestQualDateObtained) ? $employeeData->employeeRecord->highestQualDateObtained : ''; ?>">
+		<input placeholder="Date Obtained" id="highest_qual_date_obtained" name="highest_qual_date_obtained" type="date"  value="<?php echo isset($employeeData->employeeRecord->highestQualDateObtained) ? $employeeData->employeeRecord->highestQualDateObtained : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label>Highest Qualification Certificate</label>
@@ -835,7 +847,7 @@
 		<input placeholder="Qual-towards-desc" id="qual_towards_desc" name="qual_towards_desc" type="text" value="<?php echo isset($employeeData->employeeRecord->qualWorkingTowards) ? $employeeData->employeeRecord->qualWorkingTowards : ''; ?>">
 		</span>
 		<span class="span-class col-3">
-			<label>Qual-towards-%-comp</label>
+			<label>Qual towards % comp</label>
 		<input placeholder="Qual towards % comp" id="qual_towards_percent_comp" name="qual_towards_percent_comp" type="text" value="<?php echo isset($employeeData->employeeRecord->qualTowardsPercentcomp) ? $employeeData->employeeRecord->qualTowardsPercentcomp : ''; ?>">
 		</span>
 
@@ -877,19 +889,19 @@
 			<input type="radio" name="visa_holder" class="visa_holder yn-input" value="N" <?php echo isset($employeeData->employeeRecord->visaHolderYN) ? (($employeeData->employeeRecord->visaHolderYN == 'N') ? 'checked' : '') : ''; ?>>
 		</span>
 		<span class="span-class col-3">
-			<label>	Visa-type		</label>
+			<label>	Visa type		</label>
 			<input placeholder="Visa-type" id="visa_type" name="visa_type" type="text" value="<?php echo isset($employeeData->employeeRecord->visaType) ? $employeeData->employeeRecord->visaType : ''; ?>">
 		</span>
 		<span class="span-class col-3">
-			<label>	Visa-grant-date	</label>
+			<label>	Visa Grant Date	</label>
 			<input placeholder="Visa-grant-date" id="visa_grant_date" name="visa_grant_date" type="date" value="<?php echo isset($employeeData->employeeRecord->visaGrantDate) ? $employeeData->employeeRecord->visaGrantDate : ''; ?>">
 		</span>
 		<span class="span-class col-3">
-			<label>	Visa-end-date	</label>
+			<label>	Visa End Date	</label>
 			<input placeholder="Visa-end-date" id="visa_end_date" name="visa_end_date" type="date" value="<?php echo isset($employeeData->employeeRecord->visaEndDate) ? $employeeData->employeeRecord->visaEndDate : ''; ?>">
 		</span>
 		<span class="span-class col-3">
-			<label>	Visa-conditions</label>
+			<label>	Visa Conditions</label>
 			<input placeholder="Visa-conditions" id="visa_conditions" name="visa_conditions" type="text" value="<?php echo isset($employeeData->employee->visaConditions) ? $employeeData->employee->visaConditions : ''; ?>">
 		</span>
 		<span class="span-class col-3">
@@ -1474,7 +1486,7 @@ $(document).ready(function(){
 	    		url : url,
 	    		type : 'GET',
 	    		success : function(response){
-	    			console.log(response)
+	    			window.location.reload();
 	    		}
 	    	})
 	    })
@@ -1499,7 +1511,7 @@ $(document).ready(function(){
 	    		url : url,
 	    		type : 'GET',
 	    		success: function(response){
-
+					window.location.href = "<?php echo base_url('settings/editEmployee'); ?>";
 	    		}
 	    	})
 	    })

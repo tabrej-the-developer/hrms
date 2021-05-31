@@ -178,7 +178,7 @@
 		font-weight: 700;
 		cursor: pointer;
 	}
-		#submit,
+		#subm,
 		.addRemoveDocumentAdd,
 		.removeDocumentButton,
 		.singleDocDownload,
@@ -357,7 +357,9 @@
 </head>
 <body>
 <?php $this->load->view('header'); ?>
-<?php $employeeData = json_decode($getEmployeeData); 
+<?php 
+	$employeeData = json_decode($getEmployeeData);
+	$superfunds = json_decode($superfunds);
 ?>
 <div class="containers">
 	<span style="position: absolute;top:20px;padding-left: 2rem" class="d-inline-flex align-items-center">
@@ -384,7 +386,7 @@
 		<span class="nav-button d-c"><span>Documents</span></span>
 		</div>	
 	</section>
-<form method="POST" action="<?php echo base_url('settings/updateEmployeeProfile/').$employeeId; ?>" style="height: 100%" enctype="multipart/form-data">
+<form method="POST" action="<?php echo base_url('settings/updateEmployeeProfile/').$employeeId ?>" style="height: 100%" enctype="multipart/form-data" onsubmit="return onFormSubmit(event)" id="formSubmit">
 	<section class="employee-section">	
 		<!-- <h3>Personal</h3> -->
 		<span class="d-flex">
@@ -399,15 +401,19 @@
 			</span>
 		</span>
 		<span class="span-class col-3 ">
-			<label class="labels__">First Name</label>
-			<input placeholder="First Name" id="fname"  class="" type="text" name="fname" value="<?php echo isset($employeeData->employee->fname) ? $employeeData->employee->fname : ''; ?>" required>
+			<label class="labels__">First Name<sup>
+				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+			</sup></label>
+			<input placeholder="First Name" id="fname"  class="" type="text" name="fname" value="<?php echo isset($employeeData->employee->fname) ? $employeeData->employee->fname : ''; ?>" >
 		</span>
 		<span class="span-class col-3 ">
 			<label class="labels__">Middle Name</label>
 			<input placeholder="Middle Name" id="mname"  class="" type="text" name="mname" value="<?php echo isset($employeeData->employee->mname) ? $employeeData->employee->mname : ''; ?>">
 		</span>
 		<span class="span-class col-3 ">
-			<label class="labels__">Last Name</label>
+			<label class="labels__">Last Name<sup>
+				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+			</sup></label>
 			<input placeholder="Last Name" id="lname"  class="" type="text" name="lname" value="<?php echo isset($employeeData->employee->lname) ? $employeeData->employee->lname : ''; ?>">
 		</span>
 </span>
@@ -417,32 +423,35 @@
 			<input placeholder="Alias" id="alias"  class="" type="text" name="alias" value="<?php echo isset($employeeData->users->alias) ? $employeeData->users->alias : ''; ?>">
 		</span>
 		<span class="span-class col-3">
-			<label class="labels__">Date Of Birth</label>
+			<label class="labels__">Date Of Birth<sup>
+				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+			</sup></label>
 			<input placeholder="Date Of Birth" id="dateOfBirth"  class="" type="date" name="dateOfBirth" value="<?php echo isset($employeeData->employee->dateOfBirth) ? $employeeData->employee->dateOfBirth : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label class="labels__">Gender</label>
 			<span class="select_css">
-				<select placeholder="Gender" id="gender"  class="" name="gender" value="<?php echo isset($employeeData->employee->gender) ? $employeeData->employee->gender : ''; ?>">
-					<option value="N">Not Given</option>
-					<option value="M">Male</option>
-					<option value="F">Female</option>
-					<option value="I">Non binary</option>
+			<?php $gender = isset($employeeData->employee->gender) ? $employeeData->employee->gender : ''; ?>
+				<select placeholder="Gender" id="gender"  class="" name="gender" value="<?php echo $gender ?>">
+					<option value="N" <?php echo ($gender == 'N') ? 'selected' : "" ?>>Not Given</option>
+					<option value="M" <?php echo ($gender == 'M') ? 'selected' : "" ?>>Male</option>
+					<option value="F" <?php echo ($gender == 'F') ? 'selected' : "" ?>>Female</option>
+					<option value="I" <?php echo ($gender == 'I') ? 'selected' : "" ?>>Non binary</option>
 				</select>				
 			</span>
 		</span>
 
 		<span class="span-class profileImage_parent col-3" style="width: auto !important">
 			<span style="height:100px;width:100px">
-				<?php if(file_exists('api/application/assets/profileImages/'.$employeeId.'.png') && filesize("api/application/assets/profileImages/".$employeeId.".png") > 0){ 
+				<?php if(file_exists('api/application/assets/profileImages/'.$this->session->userdata('LoginId').'.png') && filesize("api/application/assets/profileImages/".$this->session->userdata('LoginId').".png") > 0){ 
 					?>
-				<img src="<?php echo BASE_API_URL."application/assets/profileImages/".$employeeId.".png"?>" style="height:100px;width:100px;border-radius:0.5rem">
+				<img src="<?php echo BASE_API_URL."application/assets/profileImages/".$this->session->userdata("LoginId").".png"?>" style="height:100px;width:100px;border-radius:0.5rem">
 			<?php 
 					}else{ 
-					if(isset($employeeData->employee->fname)){
-		              $side_bar_name =  isset($employeeData->employee->fname) ? $employeeData->employee->fname : '';
+					if($this->session->has_userdata('Name')){
+		              $side_bar_name =  $this->session->userdata('Name');
 		              $side_bar_name = explode(' ',$side_bar_name);
-		              $userid = $employeeId;
+		              $userid = $this->session->userdata('LoginId');
 		            }
 				?>
 				<span class="user_profileImage icon-parent">
@@ -502,16 +511,18 @@
 		</span>
 		<hr>
 			<span class="span-class col-3">
-				<label class="labels__">Phone</label>
+				<label class="labels__">Phone<sup>
+				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+			</sup></label>
 				<input placeholder="Phone" id="phone"  class="" type="text" name="phone" value="<?php echo isset($employeeData->employee->phone) ? $employeeData->employee->phone : ''; ?>">
 			</span>
 			<span class="span-class col-3">
 				<label class="labels__">Mobile</label>
 				<input placeholder="Mobile" id="mobile"  class="" type="text" name="mobile" value="<?php echo isset($employeeData->employee->mobile) ? $employeeData->employee->mobile : ''; ?>">
 			</span>
-			<span class="span-class col-3">
+			<span class="span-class col-3" >
 				<label class="labels__">Email</label>
-				<input placeholder="Emails" id="emails"  class="" type="text" name="emails" value="<?php echo isset($employeeData->employee->emails) ? $employeeData->employee->emails : ''; ?>">
+				<input style="cursor: not-allowed" placeholder="Emails" id="emails"  class="" type="text" name="emails" disabled value="<?php echo isset($employeeData->employee->emails) ? $employeeData->employee->emails : ''; ?>">
 			</span>
 			<hr>
 	<span class="d-block">
@@ -519,7 +530,6 @@
 			<label>Start Date</label>
 		<input placeholder="Start Date" id="startDate"  class="" type="date" name="startDate" value="<?php // echo isset($employeeData->employee->startDate) ? $employeeData->employee->startDate : ''; ?>">
 		</span> -->
-
 	</span>
 <!-- 		<span class="span-class col-3">
 			<label>created_at</label>
@@ -552,6 +562,9 @@
       </span>
     </h3>
 		<div class="parent-child">
+			<?php 
+				$eba = $employeeData->employeeBankAccount;
+				for($i=0;$i<count($employeeData->employeeBankAccount);$i++){ ?>
 			<div class="child">
 				<div class="statement"></div>
 <!-- 			<div class="row">
@@ -561,38 +574,85 @@
 		</span> -->
 		<span class="span-class col-3">
 			<label>Account Name</label>
-			<input placeholder="Account Name" type="text" class="accountName" name="accountName" value="<?php echo isset($employeeData->employeeBankAccount->accountName) ? $employeeData->employeeBankAccount->accountName : ''; ?>">
+			<input placeholder="Account Name" type="text" class="accountName" name="accountName[]" value="<?php echo isset($eba[$i]->accountName) ? $eba[$i]->accountName : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label>BSB</label>
-			<input placeholder="BSB" type="text" class="bsb" name="bsb" value="<?php echo isset($employeeData->employeeBankAccount->bsb) ? $employeeData->employeeBankAccount->bsb : ''; ?>">
+			<input placeholder="BSB" type="text" class="bsb" name="bsb[]" value="<?php echo isset($eba[$i]->bsb) ? $eba[$i]->bsb : ''; ?>">
 		</span>
 <!-- 	</div>
  -->		
 <!-- 	<span class="row">
  -->		<span class="span-class col-3">
 			<label>Account Number</label>
-			<input placeholder="Account Number" type="text" class="accountNumber" name="accountNumber" value="<?php echo isset($employeeData->employeeBankAccount->accountNumber) ? $employeeData->employeeBankAccount->accountNumber : ''; ?>">
+			<input placeholder="Account Number" type="text" class="accountNumber" name="accountNumber[]" value="<?php echo isset($eba[$i]->accountNumber) ? $eba[$i]->accountNumber : ''; ?>">
 		</span>
+		<?php if($i ==  0){ ?>
 		<span class="span-class col-3 remainder_parent">
 			<label>Remainder</label>
 				<span>
 					<label class="yn-label">Yes</label>
-					<input value="Y" class="remainderYN yn-input" type="radio" name="remainderYN" <?php echo isset($employeeData->employeeBankAccount->remainderYN) ? ($employeeData->employeeBankAccount->remainderYN == 'Y' ? 'checked' : '') : ''; ?>>
+					<input value="Y" class="remainderYN yn-input" type="radio" name="remainderYN[]" <?php echo isset($eba[$i]->remainderYN) ? ($eba[$i]->remainderYN == 'Y' ? 'checked' : '') : ''; ?>>
 				</span>
 				<span>
 					<label class="yn-label">No</label>
-					<input value="N" class="remainderYN yn-input" type="radio" name="remainderYN" <?php echo isset($employeeData->employeeBankAccount->remainderYN) ? (($employeeData->employeeBankAccount->remainderYN == 'Y') ? 'checked' : '') : ''; ?>>
+					<input value="N" class="remainderYN yn-input" type="radio" name="remainderYN[]" <?php echo isset($eba[$i]->remainderYN) ? (($eba[$i]->remainderYN == 'Y') ? 'checked' : '') : ''; ?>>
 				</span>
 		</span>
+		<?php   } ?>
 		<span class="span-class amount-class-parent col-3">
 			<div class="amount-class">
 				<label>Amount</label>
-				<input placeholder="Amount" type="text" class="amount" name="amount" value="<?php echo isset($employeeData->employeeBankAccount->amount) ? $employeeData->employeeBankAccount->amount : ''; ?>">
+				<input placeholder="Amount" type="text" class="amount" name="amount[]" value="<?php echo isset($eba[$i]->amount) ? $eba[$i]->amount : ''; ?>">
 			</div>
 		</span>
 <!-- 	</span>
  -->			</div>
+				<?php }if(count($eba) == 0){ ?>
+			<div class="child">
+				<div class="statement"></div>
+<!-- 			<div class="row">
+ --><!-- 		<span class="span-class col-3">
+			<label>Statement Text</label>
+			<input placeholder="Statement Text" type="text" class="statementText" >
+		</span> -->
+		<span class="span-class col-3">
+			<label>Account Name</label>
+			<input placeholder="Account Name" type="text" class="accountName" name="accountName[]" >
+		</span>
+		<span class="span-class col-3">
+			<label>BSB</label>
+			<input placeholder="BSB" type="text" class="bsb" name="bsb[]" >
+		</span>
+<!-- 	</div>
+ -->		
+<!-- 	<span class="row">
+ -->		<span class="span-class col-3">
+			<label>Account Number</label>
+			<input placeholder="Account Number" type="text" class="accountNumber" name="accountNumber[]" >
+		</span>
+		<?php if($i ==  0){ ?>
+		<span class="span-class col-3 remainder_parent">
+			<label>Remainder</label>
+				<span>
+					<label class="yn-label">Yes</label>
+					<input value="Y" class="remainderYN yn-input" type="radio" name="remainderYN[]" >
+				</span>
+				<span>
+					<label class="yn-label">No</label>
+					<input value="N" class="remainderYN yn-input" type="radio" name="remainderYN[]" >
+				</span>
+		</span>
+		<?php   } ?>
+		<span class="span-class amount-class-parent col-3">
+			<div class="amount-class">
+				<label>Amount</label>
+				<input placeholder="Amount" type="text" class="amount" name="amount[]" >
+			</div>
+		</span>
+<!-- 	</span>
+ -->			</div>
+				<?php } ?>
 		</div>
 	</section>
 
@@ -608,23 +668,35 @@
 			<input placeholder="Employee Id" id="employeeId" >
 		</span> -->
 			<div class="superfund-parent">
+			<?php foreach($employeeData->employeeSuperfunds as $supFund){ ?>
 				<div class="superfund-child row">
 					<span class="span-class col-3">
 						<label>Super Fund Id</label>
 						<span class="select_css">
-							<select placeholder="Super Fund Id" class="superFundId" name="superFundId" value="<?php echo isset($employeeData->employeesuperfund->superFundId) ? $employeeData->employeesuperfund->superFundId : ''; ?>">
+							<select placeholder="Super Fund Id" class="superFundId" name="superFund[Id][]" value="<?php echo isset($supFund->superFundId) ? $supFund->superFundId : ''; ?>">
+							<?php 
+							$superFundValue = isset($supFund->superFundId) ? $supFund->superFundId : '';
+							foreach($superfunds->superfunds as $superfund){
+								if($superFundValue == $superfund->superFundId){
+									echo "<option value='$superfund->superFundId' selected>$superfund->name</option>";
+								}else{
+									echo "<option value='$superfund->superFundId'>$superfund->name</option>";
+								}
+							}
+							?>
 							</select>
 						</span>
 					</span>
 					<span class="span-class col-3">
 						<label>Super Membership Id</label>
-						<input placeholder="Super Membership Id" class="superMembershipId" type="text" name="superMembershipId" value="<?php echo isset($employeeData->employeesuperfund->superMembershipId) ? $employeeData->employeesuperfund->superMembershipId : ''; ?>">
+						<input placeholder="Super Membership Id" class="superMembershipId" type="text" name="superFund[MembershipId][]" value="<?php echo isset($supFund->superMembershipId) ? $supFund->superMembershipId : ''; ?>">
 					</span>
 					<span class="span-class col-3">
 						<label class="labels__">Employee Number</label>
-						<input class="employeeNumber" type="text" name="superfundEmployeeNumber">
+						<input class="employeeNumber" type="text" name="superFund[EmployeeNumber][]" value="<?php echo isset($supFund->employeeNumber) ? $supFund->employeeNumber : ''; ?>">
 					</span>
 				</div>
+				<?php } ?>
 			</div>
 
 	</section>
@@ -705,7 +777,7 @@
 		</span>
 		<span class="span-class col-3">
 			<label>Upward Variation Tax Witholding Amount</label>
-			<input placeholder="Upward Variation Tax Witholding Amount" id="upwardVariationTaxWitholdingAmount" name="upwardVariationTaxWitholdingAmount" type="text" value="<?php echo isset($employeeData->employeeTaxDeclaration->upwardVariationTaxWitholdingAmount) ? $employeeData->employeeTaxDeclaration->upwardVariationTaxWitholdingAmount : ''; ?>">
+			<input placeholder="Upward Variation Tax Witholding Amount" id="upwardVariationTaxWitholdingAmount" name="upwardVariationTaxWitholdingAmount" type="number" value="<?php echo isset($employeeData->employeeTaxDeclaration->upwardVariationTaxWitholdingAmount) ? $employeeData->employeeTaxDeclaration->upwardVariationTaxWitholdingAmount : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label>Eligible To Receive Leave Loading</label>
@@ -716,7 +788,7 @@
 		</span>
 		<span class="span-class col-3">
 			<label>Approved Witholding Variation Percentage</label>
-			<input placeholder="Approved Witholding Variation Percentage" id="approvedWitholdingVariationPercentage" name="approvedWitholdingVariationPercentage" type="text" value="<?php echo isset($employeeData->employeeTaxDeclaration->approvedWitholdingVariationPercentage) ? $employeeData->employeeTaxDeclaration->approvedWitholdingVariationPercentage : ''; ?>">
+			<input placeholder="Approved Witholding Variation Percentage" id="approvedWitholdingVariationPercentage" name="approvedWitholdingVariationPercentage" type="number" value="<?php echo isset($employeeData->employeeTaxDeclaration->approvedWitholdingVariationPercentage) ? $employeeData->employeeTaxDeclaration->approvedWitholdingVariationPercentage : ''; ?>">
 		</span>
 		
 	</div>
@@ -799,12 +871,12 @@
 		</span> -->
 
 		<span class="span-class col-3">
-			<label>Highest-qual-held</label>
+			<label>Highest qual held</label>
 		<input placeholder="Highest-qual-held" id="highest_qual_held" name="highest_qual_held" type="text"  value="<?php echo isset($employeeData->employeeRecord->highestQualHeld) ? $employeeData->employeeRecord->highestQualHeld : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label>Date Obtained</label>
-		<input placeholder="Date Obtained" id="highest_qual_date_obtained" name="highest_qual_date_obtained" type="text"  value="<?php echo isset($employeeData->employeeRecord->highestQualDateObtained) ? $employeeData->employeeRecord->highestQualDateObtained : ''; ?>">
+		<input placeholder="Date Obtained" id="highest_qual_date_obtained" name="highest_qual_date_obtained" type="date"  value="<?php echo isset($employeeData->employeeRecord->highestQualDateObtained) ? $employeeData->employeeRecord->highestQualDateObtained : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label>Highest Qualification Certificate</label>
@@ -819,7 +891,7 @@
 		<input placeholder="Qual-towards-desc" id="qual_towards_desc" name="qual_towards_desc" type="text" value="<?php echo isset($employeeData->employeeRecord->qualWorkingTowards) ? $employeeData->employeeRecord->qualWorkingTowards : ''; ?>">
 		</span>
 		<span class="span-class col-3">
-			<label>Qual-towards-%-comp</label>
+			<label>Qual towards % comp</label>
 		<input placeholder="Qual towards % comp" id="qual_towards_percent_comp" name="qual_towards_percent_comp" type="text" value="<?php echo isset($employeeData->employeeRecord->qualTowardsPercentcomp) ? $employeeData->employeeRecord->qualTowardsPercentcomp : ''; ?>">
 		</span>
 
@@ -861,19 +933,19 @@
 			<input type="radio" name="visa_holder" class="visa_holder yn-input" value="N" <?php echo isset($employeeData->employeeRecord->visaHolderYN) ? (($employeeData->employeeRecord->visaHolderYN == 'N') ? 'checked' : '') : ''; ?>>
 		</span>
 		<span class="span-class col-3">
-			<label>	Visa-type		</label>
+			<label>	Visa type		</label>
 			<input placeholder="Visa-type" id="visa_type" name="visa_type" type="text" value="<?php echo isset($employeeData->employeeRecord->visaType) ? $employeeData->employeeRecord->visaType : ''; ?>">
 		</span>
 		<span class="span-class col-3">
-			<label>	Visa-grant-date	</label>
+			<label>	Visa Grant Date	</label>
 			<input placeholder="Visa-grant-date" id="visa_grant_date" name="visa_grant_date" type="date" value="<?php echo isset($employeeData->employeeRecord->visaGrantDate) ? $employeeData->employeeRecord->visaGrantDate : ''; ?>">
 		</span>
 		<span class="span-class col-3">
-			<label>	Visa-end-date	</label>
+			<label>	Visa End Date	</label>
 			<input placeholder="Visa-end-date" id="visa_end_date" name="visa_end_date" type="date" value="<?php echo isset($employeeData->employeeRecord->visaEndDate) ? $employeeData->employeeRecord->visaEndDate : ''; ?>">
 		</span>
 		<span class="span-class col-3">
-			<label>	Visa-conditions</label>
+			<label>	Visa Conditions</label>
 			<input placeholder="Visa-conditions" id="visa_conditions" name="visa_conditions" type="text" value="<?php echo isset($employeeData->employee->visaConditions) ? $employeeData->employee->visaConditions : ''; ?>">
 		</span>
 		<span class="span-class col-3">
@@ -985,11 +1057,6 @@
 				</div>
 	</section>
 	<section class="medical-info">
-		<h3>Medical Information<!-- <span id="Medical Information"> + </span> --></h3>
-<!-- 		<span class="span-class col-3">
-			<label>Employee Id</label>
-			<input placeholder="Employee Id" id="employeeId" >
-		</span> -->
 		<span class="span-class col-3">
 			<label>Medicare Number</label>
 				<input  type="text"  name="medicareNo" class="medicareNo" value="<?php echo isset($employeeData->employeeMedicalInfo->medicareNo) ? $employeeData->employeeMedicalInfo->medicareNo : ''; ?>">
@@ -1096,7 +1163,7 @@
 		</div>
 	</section>
 	<div class="submit-div">
-		<button id="submit">
+		<button id="subm">
 			<i>
 				<img src="<?php echo base_url('assets/images/icons/send.png'); ?>" style="max-height:1rem;margin-right:10px">
 			</i>Submit</button>
@@ -1106,6 +1173,20 @@
 		</div>
 	</div>
 </div>
+<!-- Notification -->
+<div class="notify_">
+	<div class="note">
+		  <div class="notify_body">
+    <span class="_notify_message">
+      
+    </span>
+    <span class="_notify_close" onclick="closeNotification()">
+      &times;
+    </span>
+  </div>
+	</div>
+</div>
+<!-- Notification -->
 <script type="text/javascript">
 	$(document).ready(()=>{
 		if($(document).width() > 1024){
@@ -1211,11 +1292,12 @@
 		})
 	})
 
-	var new_child = $('.parent-child ').html();
+	var new_child = $('.parent-child ').children('.child')[0].outerHTML;
 
 	$(document).on('click','.add-row',function(){
 		$('.parent-child').append(new_child);
 				accountCount();
+			console.log(new_child)
 	});
 	function accountCount(){
 		var count = $('.statement').length;
@@ -1448,7 +1530,7 @@ $(document).ready(function(){
 	    		url : url,
 	    		type : 'GET',
 	    		success : function(response){
-	    			console.log(response)
+	    			window.location.reload();
 	    		}
 	    	})
 	    })
@@ -1473,11 +1555,61 @@ $(document).ready(function(){
 	    		url : url,
 	    		type : 'GET',
 	    		success: function(response){
-
+					window.location.href = "<?php echo base_url('settings/editEmployee'); ?>";
 	    		}
 	    	})
 	    })
+
     })
+
+// Notification //
+function showNotification(){
+      $('.notify_').css('visibility','visible');
+    }
+    function addMessageToNotification(message){
+    	if($('.notify_').css('visibility') == 'hidden'){
+     		$('._notify_message').append(`<li>${message}</li>`)
+    	}
+    }
+    function closeNotification(){
+      $('.notify_').css('visibility','hidden');
+      $('._notify_message').empty();
+    }
+  // Notification //
+
+		function onFormSubmit(e){
+			e.preventDefault();
+			var falseOrTrue = true;
+			if($('#fname').val() == null || $('#fname').val() == ""){
+		      addMessageToNotification('Enter First Name');
+		      		      showNotification();
+		      setTimeout(closeNotification,5000)
+					falseOrTrue = false;
+				}
+				if($('#lname').val() == null || $('#lname').val() == ""){
+		      addMessageToNotification('Enter Last Name');
+		      		      showNotification();
+		      setTimeout(closeNotification,5000)
+					falseOrTrue = false;
+				}
+				if($('#dateOfBirth').val() == null || $('#dateOfBirth').val() == ""){
+		      addMessageToNotification('Enter DOB');
+		      		      showNotification();
+		      setTimeout(closeNotification,5000)
+					falseOrTrue = false;
+				}
+				if($('#phone').val() == null || $('#phone').val() == ""){
+		      addMessageToNotification('Enter Phone Number');
+		      		      showNotification();
+		      setTimeout(closeNotification,5000)
+					falseOrTrue = false;
+				}
+				if(falseOrTrue){
+					document.getElementById('formSubmit').submit();
+				}
+			return falseOrTrue;
+		}
+
 </script>
 </body>
 </html>

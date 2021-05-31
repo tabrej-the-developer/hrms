@@ -287,6 +287,7 @@ class Settings extends CI_Controller
 					$var['type'] = $superfund->type;
 					$var['name'] = $superfund->name;
 					$var['bsb'] = $superfund->bsb;
+					$var['superFundId'] = $superfund->superfundId;
 					$var['accountNumber'] = $superfund->accountNumber;
 					$var['accountName'] = $superfund->accountName;
 					$var['eServiceAddress'] = $superfund->eServiceAddress;
@@ -1104,7 +1105,7 @@ class Settings extends CI_Controller
 						if ($employee_no != null && $employee_no != "") {
 							if ($superFundId != "" && $superFundId != null) {
 								$this->settingsModel->addToEmployeeSuperfunds(
-									$xeroEmployeeId,
+									$employee_no,
 									$superFundId,
 									$superMembershipId,
 									$superfundEmployeeNumber
@@ -1286,14 +1287,13 @@ class Settings extends CI_Controller
 				$emergency_contact = $json->emergency_contact;
 				$relationship = $json->relationship;
 				$emergency_contact_email = $json->emergency_contact_email;
-				$superFundId = $json->superFundId;
-				$superMembershipId = $json->superMembershipId;
-				$tfnExemptionType = $json->tfnExemptionType;
+				$superFunds = $json->superFunds;
 				$taxFileNumber = $json->taxFileNumber;
 				$australiantResidentForTaxPurposeYN = $json->australiantResidentForTaxPurposeYN;
 				$residencyStatue = $json->residencyStatue;
 				$taxFreeThresholdClaimedYN = $json->taxFreeThresholdClaimedYN;
 				$taxOffsetEstimatedAmount = $json->taxOffsetEstimatedAmount;
+				$tfnExemptionType = $json->tfnExemptionType;
 				$hasHELPDebtYN = $json->hasHELPDebtYN;
 				$hasSFSSDebtYN = $json->hasSFSSDebtYN;
 				$hasTradeSupportLoanDebtYN_ = $json->hasTradeSupportLoanDebtYN_;
@@ -1416,11 +1416,19 @@ class Settings extends CI_Controller
 				$this->settingsModel->updateEmployeeRecord($employee_no, $xeroEmployeeId, $qual_towards_desc, $highest_qual_held, $qual_towards_percent_comp, $visa_type, $visa_grant_date, $visa_end_date, $visa_conditions, $highest_qual_date_obtained,  $visa_holder, $resume_doc_, $contract_doc_);
 				// Employee superfunds	
 
-				$this->settingsModel->updateEmployeeSuperfunds(
-					$employee_no,
-					$superFundId,
-					$superMembershipId
-				);
+				if ($employee_no != null && $employee_no != "") {
+					if ($superFunds != "" && $superFunds != null && isset($superFunds->Id)) {
+						$this->settingsModel->deleteEmployeeSuperfunds($employee_no);
+						for($x=0;$x<count($superFunds->Id);$x++){
+							$this->settingsModel->addToEmployeeSuperfunds(
+								$employee_no,
+								$superFunds->Id[$x],
+								$superFunds->MembershipId[$x],
+								$superFunds->EmployeeNumber[$x]
+							);
+						}	
+					}
+				}
 				// Employee Tax Declaration
 
 				$this->settingsModel->updateEmployeeTaxDeclaration($employee_no, $tfnExemptionType, $taxFileNumber, $australiantResidentForTaxPurposeYN, $residencyStatue, $taxFreeThresholdClaimedYN, $taxOffsetEstimatedAmount, $hasHELPDebtYN, $hasSFSSDebtYN, $hasTradeSupportLoanDebtYN_, $upwardVariationTaxWitholdingAmount, $eligibleToReceiveLeaveLoadingYN, $approvedWitholdingVariationPercentage);

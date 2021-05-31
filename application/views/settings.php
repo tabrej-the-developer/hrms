@@ -333,22 +333,48 @@ a[href*="settings"],.xero_settings a{
         <h4><a href="<?php echo base_url(); ?>">Click here</a> to login</h4>
     </div>
 </div>
-<!-- <script type="text/javascript">
-	if($(window).width() > '720'){
-	var widthOfNav = $('.navbar-nav').width();
-	$('.containers').css('padding-left','60px');
-$(document).on('mouseover','.navbar-nav',function(){
-		$('.containers').css('padding-left','200px');
-	})
-$(document).on('mouseleave','.navbar-nav',function(){
-		$('.containers').css('padding-left','60px');
-	})
-}
-</script> -->
+<!-- Notification -->
+<div class="notify_">
+	<div class="note">
+		<div class="notify_body">
+			<span class="_notify_message"></span>
+			<span class="_notify_close" onclick="closeNotification()">&times;</span>
+    	</div>
+	</div>
+</div>
+<!-- Notification -->
   <script type="text/javascript">
     $(document).ready(()=>{
       $('.containers').css('paddingLeft',$('.side-nav').width());
   });
+
+  // Notification //
+	function showNotification(){
+      $('.notify_').css('visibility','visible');
+    }
+    function addMessageToNotification(message){
+		$('._notify_message').append(`<li>${message}</li>`)
+    }
+    function closeNotification(){
+      $('.notify_').css('visibility','hidden');
+      $('._notify_message').empty();
+    }
+  // Notification //
+
+  <?php 
+		$flash = "";
+	if($this->session->flashdata('employeeAdded') != null){
+		$flash = $this->session->flashdata('employeeAdded');
+	}
+	if($this->session->flashdata('editEmployee') != null){
+		$flash = $this->session->flashdata('editEmployee');
+	}
+	if(isset($flash) && $flash != ""){ ?>
+      showNotification();
+      addMessageToNotification('<?php echo $flash; ?>');
+      setTimeout(closeNotification,5000)
+	<?php	} ?>
+
   </script>
 
 <?php if( isset($error) ){ ?>
