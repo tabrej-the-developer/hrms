@@ -1029,7 +1029,7 @@ $server_output = curl_exec($ch);
 			$data['name'] = $this->input->post('name');
 			$data['rate'] = $this->input->post('rate');
 			$data['centerid'] = $this->input->post('center');
-	 		$url = BASE_API_URL."/payroll/addEntitlementV1";
+	 		$url = BASE_API_URL."payroll/addEntitlement";
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -1041,6 +1041,8 @@ $server_output = curl_exec($ch);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			var_dump($server_output);
+			die();
 			if($httpcode == 200){
 				return $server_output;
 				curl_close ($ch);

@@ -577,7 +577,7 @@ font-family: 'Open Sans', sans-serif;
 			} ,
 			success:function(response){
 				$('.thisOne').html($(response).find('.thisOne').html());
-				getEmployeesCountByRole();
+				// getEmployeesCountByRole();
 			} 
 		});
 	}
@@ -672,7 +672,7 @@ font-family: 'Open Sans', sans-serif;
 				},
 				success:function(response){
 					reloadPageBody()
-					getEmployeesCountByRole()
+					// getEmployeesCountByRole()
 					// window.location.reload();
 				}
 			})
@@ -693,7 +693,7 @@ font-family: 'Open Sans', sans-serif;
 				success:function(response){
 					// window.location.reload();
 					reloadPageBody()
-					getEmployeesCountByRole()
+					// getEmployeesCountByRole()
 					// alert(areaid + " " + roleName)
 				}
 			})
@@ -717,7 +717,7 @@ font-family: 'Open Sans', sans-serif;
 				success:function(response){
 					// window.location.reload();
 					reloadPageBody()
-					getEmployeesCountByRole()
+					// getEmployeesCountByRole()
 				}
 			}).fail(function(){
 				alert('fail')
@@ -740,7 +740,7 @@ font-family: 'Open Sans', sans-serif;
 				success:function(response){
 					// window.location.reload();
 					reloadPageBody()
-					getEmployeesCountByRole()
+					// getEmployeesCountByRole()
 					// alert(roleid + " " + roleName )
 				}
 			})
@@ -769,7 +769,7 @@ font-family: 'Open Sans', sans-serif;
 			} ,
 			success:function(response){
 				$('.thisOne').html($(response).find('.thisOne').html());
-				getEmployeesCountByRole();
+				// getEmployeesCountByRole();
 			} 
 		});
 	})
@@ -786,7 +786,7 @@ font-family: 'Open Sans', sans-serif;
 			success : function(response){
 				// window.location.reload();
 				reloadPageBody()
-				getEmployeesCountByRole()
+				// getEmployeesCountByRole()
 			}
 		})
 	})
@@ -803,7 +803,7 @@ font-family: 'Open Sans', sans-serif;
 			success : function(response){
 				 // window.location.reload();
 				 reloadPageBody()
-				 getEmployeesCountByRole()
+				//  getEmployeesCountByRole()
 			}
 		})
 	})
@@ -944,9 +944,9 @@ console.log(employees);
 						Open Assign Roles Modal
 				-------------------------- */
 
-		$(document).ready(function(){
-				getEmployeesCountByRole()
-			})
+		// $(document).ready(function(){
+		// 		getEmployeesCountByRole()
+		// 	})
 
 
 

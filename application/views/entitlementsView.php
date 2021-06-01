@@ -421,7 +421,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
                        name : name ,
                        rate : rate
                      },
-                     success : function(response){
+                     success : function(res){
                          window.location.reload();
                      }
                    });
