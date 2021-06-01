@@ -265,7 +265,7 @@ class Xero extends CI_Controller
 					$this->load->model('payrollModel');
 					//xero 
 					$xeroTokens = $this->xeroModel->getXeroToken($centerid);
-					var_dump($xeroTokens);
+					// var_dump($xeroTokens);
 					if ($xeroTokens != null) {
 						$access_token = $xeroTokens->access_token;
 						$tenant_id = $xeroTokens->tenant_id;
@@ -474,30 +474,33 @@ class Xero extends CI_Controller
 	{
 		$headers = $this->input->request_headers();
 		$headers = array_change_key_case($headers);
+		// var_dump($headers);
 		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
 			$this->load->model('authModel');
 			$this->load->model('employeeModel');
 			$this->load->model('xeroModel');
 			$this->load->model('settingsModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+			// var_dump($res);
 			$json = json_decode(file_get_contents('php://input'));
-
+			
 			if (!isset($json->centerid)) {
 				$employeeCenter = $this->settingsModel->getUserCenters($empId);
 				$centers = $employeeCenter;
 				foreach ($centers as $center) {
-					$this->xeroToken($json->userid,$center->centerid, $empId);
+					$this->xeroToken($res->userid,$center->centerid, $empId);
 				}
 			}
 			if (isset($json->centerid) && ($json->centerid != null && $json->centerid != "")) {
 				$centerid = $json->centerid;
-				$this->xeroToken($json->userid,$centerid);
+				$this->xeroToken($res->userid,$centerid);
 			}
 		}
 	}
 	function xeroToken($userid,$centerid, $empId = null)
 	{
 		$xeroTokens = $this->xeroModel->getXeroToken($centerid);
+		// var_dump($xeroTokens);
 		if ($xeroTokens != null) {
 			$access_token = $xeroTokens->access_token;
 			$tenant_id = $xeroTokens->tenant_id;
@@ -514,9 +517,11 @@ class Xero extends CI_Controller
 				$val = $this->getPayItems($access_token, $tenant_id);
 				$val = json_decode($val);
 			}
+			// var_dump($val);
 			if ($val->Status == "OK") {
 				//employees
 				$employees = $this->getEmployees($access_token, $tenant_id, $empId);
+				// var_dump($employees);
 				$employees = json_decode($employees)->Employees;
 				for ($i = 0; $i < count($employees); $i++) {
 					$employeeId = $employees[$i]->EmployeeID;
@@ -725,6 +730,8 @@ class Xero extends CI_Controller
 		if ($employeeId != null && $employeeId != "") {
 			$url = "https://api.xero.com/payroll.xro/1.0/Employees/" . $employeeId;
 		}
+		// var_dump($url);
+
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -734,6 +741,7 @@ class Xero extends CI_Controller
 			'Xero-tenant-id:' . $tenant_id
 		));
 		$server_output = curl_exec($ch);
+		// var_dump($server_output);
 		return $server_output;
 	}
 
