@@ -312,7 +312,7 @@ class RostersModel extends CI_Model {
 		$this->load->database();
 		$uniqueid = uniqid();
 		$time = date('Y-m-d H:i:s');
-		$casEmp = $this->db->query("SELECT * FROM users where centerid IN (SELECT userid FROM usercenters WHERE centerid IN (SELECT centerid FROM rosters WHERE id = '$rosterid')) AND id = '$empid'");
+		$casEmp = $this->db->query("SELECT * FROM users where id IN (SELECT userid FROM usercenters WHERE centerid IN (SELECT centerid FROM rosters WHERE id = '$rosterid')) AND id = '$empid'");
 		if($casEmp->row() == null){
 			$this->db->query("INSERT INTO editpermissions (rosterid,userid,created_by,created_at,editRoster) VALUES ('$rosterid','$empid','$userid','$time','N')  ");
 		}
