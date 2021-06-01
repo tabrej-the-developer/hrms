@@ -23,10 +23,10 @@
 		width: 20%;
 	}
 	.employee-details .span-class,.medical-info .span-class,.tax-declaration-class .span-class,.employee-bank-account-section_row .span-class{
-		width: 24%;
+		width: 25%;
 	}
 	.col-3{
-		width: 24% !important;
+		width: 25% !important;
 	}
 	</style>
 </head>

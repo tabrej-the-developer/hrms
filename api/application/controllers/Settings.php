@@ -1236,6 +1236,10 @@ class Settings extends CI_Controller
 					$imageUrl = $imageName;
 				}
 				$this->settingsModel->updateEmployeeProfileApp($userid, $firstName, $middleName, $lastName, $imageUrl);
+				$data['Fname'] = $firstName;
+				$data['Lname'] = $lastName;
+				$data['Mname'] =  $middleName;
+				$data['FileName'] = "$json->userid.png";
 				$data['Status'] = "SUCCESS";
 			}else{
 				$data['Message'] = "Invalid Request";
