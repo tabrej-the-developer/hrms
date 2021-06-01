@@ -1275,10 +1275,13 @@ class Rosters extends MY_Controller
 					}
 				}
 				http_response_code(200);
-				echo json_encode($data);
+				$data['Status'] = "SUCCESS";
 			} else {
+				$data['Status'] = 'ERROR';
+				$data['Message'] = "Invalid Parameters";
 				http_response_code(401);
 			}
+			echo json_encode($data);
 		} else {
 			http_response_code(401);
 		}

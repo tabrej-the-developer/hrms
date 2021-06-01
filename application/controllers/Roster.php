@@ -259,7 +259,7 @@ public function getRosterTemplateDetails($rosterTemplateId){
 		$data['casualEmp_start_time'] = $this->input->post('casualEmp_start_time');
 		$data['casualEmp_end_time'] = $this->input->post('casualEmp_end_time');
 		$data['casualEmp_role_id'] = $this->input->post('casualEmp_role_id');
-	 		$url = BASE_API_URL."/Rosters/addCasualEmployee/".$this->session->userdata('LoginId');
+	 		$url = BASE_API_URL."Rosters/addCasualEmployee/".$this->session->userdata('LoginId');
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -271,6 +271,7 @@ public function getRosterTemplateDetails($rosterTemplateId){
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				$server_output = curl_exec($ch);
 				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				print_r($server_output);
 		if($httpcode == 200){
 			// $jsonOutput = json_decode($);
 			curl_close ($ch);
