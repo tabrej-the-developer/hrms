@@ -49,7 +49,7 @@ public function getAllEntitlementsV1($centerid){
 
 	public function getAllPayrollShifts($timehseetid,$userid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM payrollshift WHERE timesheetId = '$timehseetid' and userid = '$userid'");
+		$query = $this->db->query("SELECT * FROM payrollshift WHERE timesheetId = '$timehseetid' and userid = '$userid' ORDER BY shiftDate ASC");
 		return $query->result();
 	}
 

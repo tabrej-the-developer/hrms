@@ -433,10 +433,42 @@ public function getAllEntitlementsByEmployeeCentersV1($userid){
 			if ($res != null && $res->userid == $userid) {
 				$this->load->model('payrollModel');
 				if ($timesheetid != null && $memberid != null) {
-					if ($json->message != "")
+					if ($json->message != ""){
 						$this->payrollModel->updateFlag($timesheetid, $memberid, $json->message);
-					else
+						$details = $this->payrollModel->getAllPayrollShifts($timesheetid,$memberid);
+						$payrollData['details'] = $details;
+						if($details != null){
+							$publisherDetails = $this->authModel->getUserDetails($details[0]->createdBy);
+							$payrollData['name'] = $publisherDetails->name;
+							$publisherDetails = $this->authModel->getUserDetails($memberid);
+							$payrollData['emp'] = $publisherDetails->name;
+							if($publisherDetails != null){
+								$config = array(
+									'protocol'  => 'smtp',
+									'smtp_host' => 'ssl://smtp.zoho.com',
+									'smtp_port' => 465,
+									'smtp_user' => 'demo@todquest.com',
+									'smtp_pass' => 'K!ddz1ng',
+									'mailtype'  => 'html',
+									'charset'   => 'utf-8'
+								);
+								// $to = $publisherDetails->email;
+								$to = "dheerajreddynannuri1709@gmail.com";
+								$subject = 'Payroll Flagged';
+								$this->load->library('email', $config); // Load email template
+								$this->email->set_newline("\r\n");
+								$this->email->from('demo@todquest.com', 'Todquest');
+								$this->email->to($to);
+								$this->email->subject($subject);
+								$message = $this->load->view('payrollFlagged',$payrollData,TRUE);
+								$this->email->message($message);
+								$this->email->send();
+							}
+						}
+					}
+					else{
 						$this->payrollModel->updateFlag($timesheetid, $memberid, "");
+					}
 				}
 				$data['status'] = 'SUCCESS';
 			}

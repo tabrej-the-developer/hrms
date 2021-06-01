@@ -846,7 +846,7 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 									<?php	 }
 									} ?>
 									<td><?php echo isset($totalTimeForWeek) ? intval(($totalTimeForWeek) / 60) . "." . sprintf("%02d", intval(($totalTimeForWeek) % 60)) : ""; ?>
-										<img src="<?php echo base_url('assets/images/icons/pencil.png'); ?>" pay="<?php echo $variable; ?>" onclick="getEmployeeTimesheet(this)" height="25px" width="25px" style="height:20px;width:20px;cursor: pointer;" class="weekModal" userid="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empId; ?>" date="<?php echo $timesheetDetails->startDate; ?>" tsid="<?php echo $timesheetDetails->id ?>">
+										<img src="<?php echo base_url('assets/images/icons/pencil.png'); ?>" pay="<?php echo $variable; ?>" onclick="getEmployeeTimesheet(this)" height="25px" width="25px" style="height:20px;width:20px;cursor: pointer;" class="weekModal" userid="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empId; ?>" date="<?php echo $timesheetDetails->startDate; ?>" tsid="<?php echo $timesheetDetails->id ?>" centerid="<?php echo $timesheetDetails->centerid ?>">
 									</td>
 									</td>
 									<!-- 			<td class=" " style="min-width:14vw;font-weight:bolder"><?php //echo "$".$weeklyTotal;
@@ -1912,6 +1912,7 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 			var startDate = $(e).attr('date');
 			$('.weekTimesheetModalHeader').attr('date', startDate);
 			var tid = $(e).attr('tsid')
+			var centerid = $(e).attr('centerid')
 			var url = "<?php echo base_url('timesheet/getEmployeeTimesheet'); ?>";
 			var select = JSON.parse(localStorage.getItem('payrollTypes'));
 			var check = true;
@@ -1957,14 +1958,14 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 														${dateWithHiphen[2]} ${month[dateWithHiphen[1]-1]} ${dateWithHiphen[0]}
 											</td>
 											<td class="time_visits_child oldtime newStartTime" style="">
-																<input type="time" value="${timer(payrollShift.startTime)}"> 
+																<input type="time" value="${timer(payrollShift.startTime)}" required> 
 											</td>
 															<td class="time_visits_child oldtime newEndTime" style="">
-																<input type="time" value="${timer(payrollShift.endTime)}">
+																<input type="time" value="${timer(payrollShift.endTime)}" required>
 															</td>
 														<td class="select__" style="">
 															<span class="select_css" style="display:flex">
-																<select class="modalSelectType" >
+																<select class="modalSelectType" required>
 
 																</select>
 															</span>
@@ -1974,8 +1975,10 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 							$('.weekTableBody').append(code);
 							selectOptions = "";
 							select.payrollTypes.forEach(type => {
-								if (type.earningType == "ORDINARYTIMEEARNINGS" && type.centerid == 6) {
+								if (type.earningRateId == payrollShift.payrollType && type.centerid == centerid) {
 									var option = `<option value="${type.earningRateId}" factor="${type.multiplier_amount}" earningType="${type.earningType}" selected>${type.name}</option>`;
+								}if(type.earningRateId != payrollShift.payrollType && type.centerid == centerid ){
+									var option = `<option value="${type.earningRateId}" factor="${type.multiplier_amount}" earningType="${type.earningType}" >${type.name}</option>`;
 								}
 								selectOptions += option;
 								$(`.modalSelectType`).eq($('.modalSelectType').length - 1).append(option);
@@ -2041,7 +2044,7 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 							$('.weekTableBody').append(code);
 							selectOptions = "";
 							select.payrollTypes.forEach(type => {
-								if (type.earningType == "ORDINARYTIMEEARNINGS" && type.centerid == 6) {
+								if (type.earningType == "ORDINARYTIMEEARNINGS" && type.centerid == centerid) {
 									var option = `<option value="${type.earningRateId}" factor="${type.multiplier_amount}" earningType="${type.earningType}" selected>${type.name}</option>`;
 								}
 								selectOptions += option;

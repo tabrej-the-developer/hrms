@@ -292,7 +292,7 @@ img{ max-width:140%;}
 	background: white;
 	/*box-shadow: 0 0 4px 1px rgba(0,0,0,0.1);*/
 }
-table.dataTable tbody th, table.dataTable tbody td{
+table.dataTable tbody th{
 	padding:1rem;
 	border-bottom: none;
 }
@@ -683,7 +683,10 @@ input[type="date"],input[type=time]{
     transform: translateX(1500px) skewX(30deg) scaleX(1.3);
   }
 }
-
+tr td{
+  text-align: center !important;
+  vertical-align: middle !important;
+}
 	/*-------------------------
 		Confirm Box Css
 	--------------------------*/
@@ -855,7 +858,7 @@ input[type="date"],input[type=time]{
 										<td>
 		                  <p><?php echo $leave->notes;?></p>
 										</td>
-										<td class="d-flex justify-content-around">
+										<td style="text-align: center; vertical-align: center">
 										<?php 
 							if($leave->userid == $this->session->userdata('LoginId')){
 								echo $leave->status;
@@ -874,7 +877,7 @@ input[type="date"],input[type=time]{
 												$color = $leave->status == "Approved" ? '#4CAF50' : '#F44336'; 
                         $img = $leave->status == "Approved" ? 'accept' : 'deny'; ?>
 												<span style="color: <?php echo $color;?>;">
-													<span class="status__"><img src="<?php echo base_url('assets/images/'.$img.'.png'); ?>"></span><?php echo $leave->status;?>
+													<span class="status__"><img style="max-width:1.3rem" src="<?php echo base_url('assets/images/'.$img.'.png'); ?>"></span><?php echo $leave->status;?>
 												</span>
 												<?php
 											}}
@@ -963,11 +966,11 @@ input[type="date"],input[type=time]{
                       if($l->status == "Approved") $color = '#4CAF50';
 
                       if($l->userid == $this->session->userdata('LoginId')){
-                        echo "<td class=\"d-flex justify-content-center span__\">".$l->status."</td>";
+                        echo "<td style=\"text-align: center; vertical-align: center\" class=\" span__\">".$l->status."</td>";
                       }else{
                         if($l->status == "Applied"){ 
                     ?>
-                   <td class="d-flex justify-content-center span__ "> 
+                   <td style="text-align: center; vertical-align: center" class="span__ "> 
                     <div onclick="updateLeaveApp('<?php echo $l->id;?>','2')" class="pr-3">
                       <img src="<?php echo base_url("assets/images/accept.png"); ?>" style="max-width:1.3rem;cursor: pointer" />
                     </div>
@@ -980,7 +983,7 @@ input[type="date"],input[type=time]{
                     $color = $l->status == "Approved" ? '#4CAF50' : '#F44336'; 
                     $sta = $l->status == "Approved" ? 'appr' : 'reje'; 
                     $img = $l->status == "Approved" ? 'accept' : 'deny'; ?>
-                    <td class="d-flex justify-content-center span__ <?php echo $sta; ?> ">
+                    <td style="text-align: center; vertical-align: center" class=" span__ <?php echo $sta; ?> ">
                     <span style="color: <?php echo $color;?>; " class="status-<?php echo $sta; ?>">
                       <span><img src="<?php echo base_url('assets/images/'.$img.'.png'); ?>" class="immg"></span><?php echo $l->status;?>
                     </span>
