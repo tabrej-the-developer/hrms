@@ -1254,6 +1254,7 @@ class Rosters extends MY_Controller
 			$this->load->model('rostersModel');
 			if ($json != null && $res != null && $res->userid == $userid) {
 				$employees  = $json->emp_id;
+				$data['Status'] = "ERROR";
 				foreach ($employees as $emp) {
 					$checkUserShift = $this->rostersModel->getShiftDetails($emp, $json->date);
 					if ($checkUserShift == null) {
@@ -1271,11 +1272,10 @@ class Rosters extends MY_Controller
 							$data['Message'] = "Invalid Parameters";
 						}
 					} else {
-						$data['status'] = "REDUNDANT";
+						$data['Status'] = "REDUNDANT";
 					}
 				}
 				http_response_code(200);
-				$data['Status'] = "SUCCESS";
 			} else {
 				$data['Status'] = 'ERROR';
 				$data['Message'] = "Invalid Parameters";

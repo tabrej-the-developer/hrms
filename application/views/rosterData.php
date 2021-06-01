@@ -3228,7 +3228,7 @@ $('.modal_body').draggable();
 				casualEmp_role_id : casualEmp_role_id
 			},
 			success:function(response){ 
-				if(JSON.parse(response).status == "REDUNDANT"){
+				if(JSON.parse(response).Status == "REDUNDANT"){
 					alert('Shift for this user, for the particular date already exists in another center. Please delete the shift to add a new one');
 				}else{
           // console.log(response)
