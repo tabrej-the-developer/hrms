@@ -486,16 +486,16 @@ class Xero extends CI_Controller
 				$employeeCenter = $this->settingsModel->getUserCenters($empId);
 				$centers = $employeeCenter;
 				foreach ($centers as $center) {
-					$this->xeroToken($center->centerid, $empId);
+					$this->xeroToken($json->userid,$center->centerid, $empId);
 				}
 			}
 			if (isset($json->centerid) && ($json->centerid != null && $json->centerid != "")) {
 				$centerid = $json->centerid;
-				$this->xeroToken($centerid);
+				$this->xeroToken($json->userid,$centerid);
 			}
 		}
 	}
-	function xeroToken($centerid, $empId = null)
+	function xeroToken($userid,$centerid, $empId = null)
 	{
 		$xeroTokens = $this->xeroModel->getXeroToken($centerid);
 		if ($xeroTokens != null) {
@@ -565,7 +565,7 @@ class Xero extends CI_Controller
 					$myEmployee = $this->employeeModel->getUserFromId($myUserid);
 					if ($myEmployee == null) {
 						//insert 
-						$this->employeeModel->insertEmployee($myUserid, $employeeId, $Title, $FirstName, $MiddleNames, $LastName, $Status, $Email, $DateOfBirth, $JobTitle, $Gender, $AddressLine1, $AddressLine2, $City, $Region, $PostalCode, $Country, $Phone, $Mobile, $StartDate, $TerminationDate, $OrdinaryEarningsRateID, $PayrollCalendarID, $userid, $classification);
+						$this->employeeModel->insertEmployee($myUserid, $employeeId, $Title, $FirstName, $MiddleNames, $LastName, $Status, $Email, $DateOfBirth, $JobTitle, $Gender, $AddressLine1, $AddressLine2, $City, $Region, $PostalCode, $Country, $Phone, $Mobile, $StartDate, $TerminationDate, $OrdinaryEarningsRateID, $PayrollCalendarID, $userid, '');
 					} else {
 						//update
 						$this->employeeModel->updateEmployee($employeeId, $Title, $FirstName, $MiddleNames, $LastName, $Status, $Email, $DateOfBirth, $JobTitle, $Gender, $AddressLine1, $AddressLine2, $City, $Region, $PostalCode, $Country, $Phone, $Mobile, $StartDate, $TerminationDate, $OrdinaryEarningsRateID, $PayrollCalendarID, $myUserid);

@@ -452,8 +452,7 @@ public function getAllEntitlementsByEmployeeCentersV1($userid){
 									'mailtype'  => 'html',
 									'charset'   => 'utf-8'
 								);
-								// $to = $publisherDetails->email;
-								$to = "dheerajreddynannuri1709@gmail.com";
+								$to = $publisherDetails->email;
 								$subject = 'Payroll Flagged';
 								$this->load->library('email', $config); // Load email template
 								$this->email->set_newline("\r\n");
@@ -495,7 +494,7 @@ public function getAllEntitlementsByEmployeeCentersV1($userid){
 						$this->payrollModel->updateShift($payroll->timesheetid, $payroll->userid);
 					}
 				}
-				$data['status'] = 'SUCCESS';
+				$data['Status'] = 'SUCCESS';
 				http_response_code(200);
 				echo json_encode($data);
 			} else {

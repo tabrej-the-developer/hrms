@@ -1754,7 +1754,7 @@ $server_output = curl_exec($ch);
 		$data['userid'] = $this->session->userdata('LoginId');
 		if(isset($input['centerid']) && $input['centerid'] != null && $input['centerid'] != "")
 			$data['centerid'] = $input['centerid'];
-		$url = BASE_API_URL."/xero/syncXeroEmployees/".$employeeId;
+		$url = BASE_API_URL."xero/syncXeroEmployees/".$employeeId;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
