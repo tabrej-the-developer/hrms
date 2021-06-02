@@ -452,7 +452,8 @@ public function getAllEntitlementsByEmployeeCentersV1($userid){
 									'mailtype'  => 'html',
 									'charset'   => 'utf-8'
 								);
-								$to = $publisherDetails->email;
+								// $to = $publisherDetails->email;
+								$to = "dheerajreddynannuri1709@gmail.com";
 								$subject = 'Payroll Flagged';
 								$this->load->library('email', $config); // Load email template
 								$this->email->set_newline("\r\n");

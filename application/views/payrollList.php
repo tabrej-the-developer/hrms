@@ -357,24 +357,15 @@ table.dataTable{
 					$payrollCount = 1;
 					for($i=0;$i<count($payroll->timesheets);$i++){
 					?>
-					<?php if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN : "N") == "Y" && $payroll->timesheets[$i]->status == 'Published'){ ?>
+					<?php if( $payroll->timesheets[$i]->status == 'Published'){ ?>
 					<tr id="<?php echo $payroll->timesheets[$i]->id?>">
 						<td><?php echo $payrollCount;$payrollCount++; ?></td>
 						<td><?php echo 'Payroll | '.dateToDay($payroll->timesheets[$i]->startDate).'-'.dateToDay($payroll->timesheets[$i]->endDate) ?></td>
 						<td><?php echo dateToDayAndYear($payroll->timesheets[$i]->startDate) ?></td>
 						<td><?php echo dateToDayAndYear($payroll->timesheets[$i]->endDate) ?></td>
-						<td><?php echo $payroll->timesheets[$i]->status ?></td>
+						<td><?php echo $payroll->timesheets[$i]->payrollStatus ?></td>
 						</tr>
-					<?php }?>
-				<?php if((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN : "N") == "N"){ ?>
-					<tr id="<?php echo $payroll->timesheets[$i]->id?>">
-							<td><?php echo $i+1 ?></td>
-							<td><?php echo 'Payroll | '.dateToDay($payroll->timesheets[$i]->startDate).'-'.dateToDay($payroll->timesheets[$i]->endDate) ?></td>
-							<td><?php echo dateToDayAndYear($payroll->timesheets[$i]->startDate) ?></td>
-							<td><?php echo dateToDayAndYear($payroll->timesheets[$i]->endDate) ?></td>
-							<td><?php echo $payroll->timesheets[$i]->status ?></td>
-						</tr>
-					<?php } 
+					<?php }
 					} 
 				} ?>
 			</tbody>

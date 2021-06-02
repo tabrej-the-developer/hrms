@@ -564,6 +564,9 @@ class Xero extends CI_Controller
 					if ($myUser == null) {
 						$password = $FirstName . $LastName . "@123";
 						$myUserid = $this->authModel->insertUser($Email, $password, $FirstName . " " . $LastName, 4, $JobTitle, null, null, $userid, 0, 0, 0);
+
+						// Add to user center table
+						$this->authModel->addToUserCenters($myUserid,$centerid);
 					} else {
 						$myUserid = $myUser->id;
 					}
