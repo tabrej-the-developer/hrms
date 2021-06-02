@@ -533,6 +533,12 @@ class SettingsModel extends CI_Model {
 		}
 	}
 
+	public function getXeroEmployeeId($empId){
+		$this->load->database();
+		$query = $this->db->query("SELECT xeroEmployeeId FROM employee where userid = '$empId'");
+		return $query->row() != null ? ($query->row())->xeroEmployeeId : null ;
+	}
+
 	// public function employeeRecordMigration(){
 	// 	$this->load->database();
 	// 	$query = $this->db->query("SELECT * from employeetaxdeclaration");

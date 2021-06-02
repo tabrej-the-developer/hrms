@@ -487,8 +487,11 @@ class Xero extends CI_Controller
 			if (!isset($json->centerid)) {
 				$employeeCenter = $this->settingsModel->getUserCenters($empId);
 				$centers = $employeeCenter;
-				foreach ($centers as $center) {
-					$this->xeroToken($res->userid,$center->centerid, $empId);
+				$employeeId = $this->settingsModel->getXeroEmployeeId($empId);
+				if($employeeId != null){
+					foreach ($centers as $center) {
+						$this->xeroToken($res->userid,$center->centerid, $employeeId);
+					}
 				}
 			}
 			if (isset($json->centerid) && ($json->centerid != null && $json->centerid != "")) {
@@ -497,6 +500,8 @@ class Xero extends CI_Controller
 			}
 		}
 	}
+
+
 	function xeroToken($userid,$centerid, $empId = null)
 	{
 		$xeroTokens = $this->xeroModel->getXeroToken($centerid);
