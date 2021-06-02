@@ -20,7 +20,7 @@ class Timesheet extends CI_Controller{
 
 	public function getPastTimesheet($centerid,$userid){
 		$headers = $this->input->request_headers();
-$headers = array_change_key_case($headers);
+		$headers = array_change_key_case($headers);
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
@@ -35,6 +35,7 @@ $headers = array_change_key_case($headers);
 						$var['id'] = $timesh->id;
 						$var['isEditYN'] = $timesh->createdBy == $userid ? "Y" : "N";
 						$var['status'] = $timesh->status;
+						$var['payrollStatus'] = $this->timesheetModel->getPayrollStatus($timesh->id);
 						array_push($data['timesheets'],$var);
 					}
 				}

@@ -164,4 +164,11 @@ class TimesheetModel extends CI_Model {
 		$this->load->database();
 		$query =  $this->db->query("INSERT INTO payruns (	payrunId,timesheetId,storedAt,storedBy) VALUES ('$payrunId','$timesheetId',NOW(),'$storedBy')");
 	}
+
+	public function getPayrollStatus($timesheetid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM payruns WHERE timesheetId = '$timesheetid'");
+		return $query->row() == null ? 'Draft' : 'Published';
+	}
+
 }
