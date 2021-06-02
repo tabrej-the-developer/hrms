@@ -227,7 +227,7 @@ body {
     padding: 200px 0 0;
 }
 .bannerBg .container::before {
-    background: url(../img/bannerBg.png) no-repeat 0 top;
+    background: url(../images/landing/bannerBg.png) no-repeat 0 top;
     position: absolute;
     width: 1726px;
     height: 800px;
@@ -317,13 +317,13 @@ img.laptop {
     position: relative;
 }
 a.facebook {
-    background: url(../img/socialImg.png) no-repeat;
+    background: url(../images/landing/socialImg.png) no-repeat;
     width: 61px;
     height: 64px;
     margin: 0 0 0 10px;
 }
 a.twitter {
-    background: url(../img/socialImg.png) no-repeat -70px 0;
+    background: url(../images/landing/socialImg.png) no-repeat -70px 0;
     width: 61px;
     height: 64px;
     margin: 0 0 0 10px;
@@ -342,10 +342,10 @@ a.twitter {
     -webkit-transition: all 300ms ease;
 }
 .social a.facebook span {
-    background: url(../img/socialImg.png) no-repeat 0 -68px;
+    background: url(../images/landing/socialImg.png) no-repeat 0 -68px;
 }
 .social a.twitter span {
-    background: url(../img/socialImg.png) no-repeat -70px -68px;
+    background: url(../images/landing/socialImg.png) no-repeat -70px -68px;
 }
 .social a:hover span {
     opacity: 1;
@@ -357,7 +357,7 @@ a.twitter {
 }
 
 .features {
-    background: url(../img/featuresBg.png) no-repeat right center;
+    background: url(../images/landing/featuresBg.png) no-repeat right center;
     padding: 100px 0;
 }
 .features .container {
@@ -389,7 +389,7 @@ a.twitter {
 }
 .featuresText ul li {
     flex: 1 0 41%;
-    background: url(../img/check.png) no-repeat left center;
+    background: url(../images/landing/check.png) no-repeat left center;
     list-style: none;
     padding-left: 54px;
     line-height: 47px;
@@ -482,7 +482,7 @@ a.twitter {
 }
 .featurePointDiv.firstArrow::after {
     position: absolute;
-    background: url(../img/first-arrow.png) no-repeat;
+    background: url(../images/landing/first-arrow.png) no-repeat;
     width: 58px;
     height: 87px;
     content: "";
@@ -491,7 +491,7 @@ a.twitter {
 }
 .featurePointDiv.lastArrow::after {
     position: absolute;
-    background: url(../img/last-arrow.png) no-repeat;
+    background: url(../images/landing/last-arrow.png) no-repeat;
     width: 58px;
     height: 67px;
     content: "";
@@ -551,7 +551,7 @@ a.twitter {
 }
 .seeHowWeWork a {
     font-size: 0;
-    background: url(../img/play.png) no-repeat;
+    background: url(../images/landing/play.png) no-repeat;
     width: 77px;
     height: 77px;
 }
@@ -576,7 +576,7 @@ a.twitter {
     position: absolute;
     right: 10px;
     top: 50px;
-    background: url(../img/cancel.png) no-repeat;
+    background: url(../images/landing/cancel.png) no-repeat;
     opacity: 1;
     cursor: pointer;
 }

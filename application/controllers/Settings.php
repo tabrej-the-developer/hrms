@@ -1757,6 +1757,8 @@ $server_output = curl_exec($ch);
 		if(isset($input['centerid']) && $input['centerid'] != null && $input['centerid'] != "")
 			$data['centerid'] = $input['centerid'];
 		$url = BASE_API_URL."xero/syncXeroEmployees/".$employeeId;
+		var_dump($url);
+
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -1767,8 +1769,10 @@ $server_output = curl_exec($ch);
 			));
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		$server_output = curl_exec($ch);
-		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		var_dump($server_output);
+
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		var_dump($httpcode);
 		// print_r($httpcode);
 		if($httpcode == 200){
 			echo $server_output;
