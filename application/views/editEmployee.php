@@ -522,7 +522,7 @@
 			</span>
 			<span class="span-class col-3" >
 				<label class="labels__">Email</label>
-				<input style="cursor: not-allowed" placeholder="Emails" id="emails"  class="" type="text" name="emails" disabled value="<?php echo isset($employeeData->employee->emails) ? $employeeData->employee->emails : ''; ?>">
+				<input style="cursor: not-allowed" placeholder="Emails" id="emails"  class="" type="text" name="emails" readonly="readonly" value="<?php echo isset($employeeData->employee->emails) ? $employeeData->employee->emails : ''; ?>">
 			</span>
 			<hr>
 	<span class="d-block">

@@ -1041,8 +1041,8 @@ $server_output = curl_exec($ch);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			var_dump($server_output);
-			die();
+			// var_dump($server_output);
+			// die();
 			if($httpcode == 200){
 				return $server_output;
 				curl_close ($ch);
@@ -1273,7 +1273,7 @@ $server_output = curl_exec($ch);
 
 // Update employee profile
 	public function updateEmployeeProfile($employeeNo = null){
-		$form_data = $this->input->post();
+		$form_data = $this->input->post();	
 		if($form_data != null){
 	//footprint start
 	if($this->session->has_userdata('current_url')){
@@ -1757,8 +1757,6 @@ $server_output = curl_exec($ch);
 		if(isset($input['centerid']) && $input['centerid'] != null && $input['centerid'] != "")
 			$data['centerid'] = $input['centerid'];
 		$url = BASE_API_URL."xero/syncXeroEmployees/".$employeeId;
-		var_dump($url);
-
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -1769,10 +1767,8 @@ $server_output = curl_exec($ch);
 			));
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		$server_output = curl_exec($ch);
-		var_dump($server_output);
-
 		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		var_dump($httpcode);
+		var_dump($server_output);
 		// print_r($httpcode);
 		if($httpcode == 200){
 			echo $server_output;
