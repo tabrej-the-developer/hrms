@@ -1172,7 +1172,17 @@ $(document).ready(function(){
 		$.ajax({
 			url : url,
 			success : function(response){
-				console.log(response)
+				if(response != null && response != "" && response != " "){
+					var res = JSON.parse(response)
+					if(res.Status == 'OK'){
+						window.location.href = "<?php echo base_url('settings/viewEmployeeTable'); ?>"
+					}
+					if(res.Type == 'Error'){
+						alert(res.Message);
+					}
+				}else{
+					alert("ERROR")
+				}
 			}
 		})
 	})

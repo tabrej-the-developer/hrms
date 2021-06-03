@@ -16,7 +16,12 @@
   .containers{
 
   }
-
+  .fc-scroller{
+    overflow: hidden;
+  }
+  tbody{
+    height: 1px;
+  }
   .btn{
     display:  inherit;
     font-weight:  inherit;
@@ -1034,7 +1039,7 @@ color:#FFFFFF;
                          <span class=" label_text" id="basic-addon1">Start&nbsp;Time</span>
                       </span>
                       <span class="date_span_input">
-                        <input type="time" name="meetingTime" id="time" class="input_box__ dashboard_input" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" required>
+                        <input type="time" name="meetingTime" class="input_box__ dashboard_input" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" required>
                       </span>
                     </span>
                     <span class="col-md-6 ">
@@ -1042,7 +1047,7 @@ color:#FFFFFF;
                         <span class=" label_text" id="basic-addon1">End&nbsp;Time</span>
                       </span>
                       <span class="date_span_input">
-                        <input type="time" name="meetingEndTime" id="time" class="input_box__ dashboard_input" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                        <input type="time" name="meetingEndTime" class="input_box__ dashboard_input" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
                       </span>
                     </span>
                   </div>

@@ -526,7 +526,7 @@ class Xero extends CI_Controller
 			if ($val->Status == "OK") {
 				//employees
 				$employees = $this->getEmployees($access_token, $tenant_id, $empId);
-				// var_dump($employees);
+				print_r($employees);
 				$employees = json_decode($employees)->Employees;
 				for ($i = 0; $i < count($employees); $i++) {
 					$employeeId = $employees[$i]->EmployeeID;
