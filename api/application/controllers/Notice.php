@@ -44,10 +44,11 @@ class Notice extends CI_Controller
 					$var['senderName'] = $userDetails->name;
 					if (is_numeric($notice->receiverId) != 1) {
 						$receiverDetails = $this->authModel->getUserDetails($notice->receiverId);
-						$var['receiverId'] = $receiverDetails->name;
+						$var['receiverId'] = isset($receiverDetails->name) ? $receiverDetails->name : "";
 					} else {
 						$receiverDetails = $this->noticeModel->getGroupDetails($notice->receiverId);
 						$var['receiverId'] = $receiverDetails->groupName;
+						$var['members'] = $this->noticeModel->getMembersOfGroup($notice->receiverId);
 					}
 					$var['subject'] = $notice->subject;
 					$var['text'] = $notice->htmlText;
