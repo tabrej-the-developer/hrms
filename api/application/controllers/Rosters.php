@@ -1406,4 +1406,36 @@ class Rosters extends MY_Controller
 			http_response_code(401);
 		}
 	}
+
+	public function createRosterPDF($rosterid,$userid){
+		$this->load->model('rostersModel');
+		set_time_limit(0);
+		$authToken = "::1";
+		$url = "http://localhost/PN101/api/rosters/getRoster/$rosterid/$userid";
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '."$authToken",
+			'x-token: 60b9b664a84e8'
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			$data['rolesArray'] = $this->rostersModel->getRoles(); 
+			$data['rosterDetails'] = json_decode($server_output);
+			$data['editRosterYN'] = isset($data['rosterDetails']->isEditYN) ? $data['rosterDetails']->isEditYN : null;
+			$data['roDetails'] = $data['rosterDetails'];
+			$data['file'] = uniqid().".pdf";
+		 //    $entitlement = json_decode($entitlements);
+			$this->load->view('rosterPdf',$data);
+			$output['file'] = $data['file'];
+			$output['path'] = base_url('uploads/pdfs/');
+			$output['Status'] = 'SUCCESS';
+			echo  json_encode($output);
+			curl_close ($ch);
+		}
+
+ 
+	}
 }
