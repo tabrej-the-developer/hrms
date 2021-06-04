@@ -1444,6 +1444,7 @@ class Rosters extends MY_Controller
 				$output['Status'] = "ERROR";
 				$output['Message'] = "Invalid";
 				echo  json_encode($output);
+				}
 			}
 		}
 	}
