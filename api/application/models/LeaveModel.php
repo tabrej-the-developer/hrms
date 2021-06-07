@@ -64,11 +64,11 @@ class LeaveModel extends CI_Model {
 
 	public function getAllLeavesByCenter($centerid,$startDate = null,$endDate = null){
 		$this->load->database();
-		$queryTxt = "SELECT * FROM leaveapplication WHERE userid IN (SELECT id FROM users WHERE id IN (SELECT userid FROM usercenters WHERE centerid = $centerid )";
+		$queryTxt = "SELECT * FROM leaveapplication WHERE userid IN (SELECT id FROM users WHERE id IN (SELECT userid FROM usercenters WHERE centerid = $centerid ))";
 		if($startDate != null)
 			$queryTxt .= " AND startDate <= $startDate";
 		if($endDate != null)
-			$queryTxt .= " ADN endDate >= $endDate";
+			$queryTxt .= " AND endDate >= $endDate";
 		$query = $this->db->query($queryTxt);
 		return $query->result();
 	}
