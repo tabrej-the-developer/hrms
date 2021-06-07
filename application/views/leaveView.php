@@ -812,7 +812,7 @@ tr td{
                   </nav>
         <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
           	<?php
-          	if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "N"){ ?>
+          	if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "Y"){ ?>
 				<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
         	<div class="card">
             <div class="card-header">
