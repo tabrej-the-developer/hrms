@@ -20,12 +20,12 @@ class PDF extends FPDF
       $earningRate = $GLOBALS['payslip']->EarningRates;
             $this->SetFont('Arial','B',16);
             $this->SetDrawColor(180,180,180);
-      $this->Image(base_url('assets/images/icons/amigo.jpeg'),$leftSpaceLeftImage,6,60);
+    //   $this->Image(base_url('assets/images/icons/amigo.jpeg'),$leftSpaceLeftImage,6,60);
       $date = $payslip->Payslip->UpdatedDateUTC;
       $payslips = $payslip->Payslip;
                 preg_match( '/([\d]{10})/', $date, $matches );
       $this->Cell($size,20,'Payslip',0,0,'C');
-      $this->Image(base_url('assets/images/icons/Todquest_logo.png'),$leftSpaceRightImage,10,20);
+    //   $this->Image(base_url('assets/images/icons/Todquest_logo.png'),$leftSpaceRightImage,10,20);
                 $this->Ln();
     /* Header*/
     $this->SetFont('Arial','',16);
