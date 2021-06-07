@@ -860,19 +860,18 @@ tr td{
 										</td>
 										<td style="text-align: center; vertical-align: center" class="span__">
 										<?php 
-							if($leave->userid == $this->session->userdata('LoginId')){
-								echo $leave->status;
-							}else{
-											if($leave->status == "Applied"){ 
-
-												?>
-												<div onclick="updateLeaveApp('<?php echo $leave->id;?>','2')" class="pr-1">
-													<img src="<?php echo base_url("assets/images/accept.png"); ?>" style="max-width:1.3rem;cursor: pointer" />
-												</div>
-												<div onclick="updateLeaveApp('<?php echo $leave->id;?>','3')" class="pl-1">
-													<img src="<?php echo base_url("assets/images/deny.png"); ?>"  style="max-width:1.3rem;cursor: pointer">
-												</div>
-										<?php }
+							// if($leave->userid == $this->session->userdata('LoginId')){
+							// 	echo $leave->status;
+							// }else{
+								if($leave->status == "Applied"){ 
+									?>
+								<div onclick="updateLeaveApp('<?php echo $leave->id;?>','2')" class="pr-1">
+									<img src="<?php echo base_url("assets/images/accept.png"); ?>" style="max-width:1.3rem;cursor: pointer" />
+								</div>
+								<div onclick="updateLeaveApp('<?php echo $leave->id;?>','3')" class="pl-1">
+									<img src="<?php echo base_url("assets/images/deny.png"); ?>"  style="max-width:1.3rem;cursor: pointer">
+								</div>
+							<?php }
 											else{
 												$color = $leave->status == "Approved" ? '#4CAF50' : '#F44336'; 
                         $img = $leave->status == "Approved" ? 'accept' : 'deny'; ?>
@@ -880,7 +879,8 @@ tr td{
 													<span class="status__"><img style="max-width:1.3rem" src="<?php echo base_url('assets/images/'.$img.'.png'); ?>"></span><?php echo $leave->status;?>
 												</span>
 												<?php
-											}}
+											}
+                    // }
 										?>
 										</td>
 									</tr>
@@ -985,7 +985,10 @@ tr td{
                     $img = $l->status == "Approved" ? 'accept' : 'deny'; ?>
                     <td style="text-align: left; vertical-align: center;display:flex" class=" span__ <?php echo $sta; ?> ">
                     <span style="color: <?php echo $color;?>; " class="status-<?php echo $sta; ?>">
-                      <span><img src="<?php echo base_url('assets/images/'.$img.'.png'); ?>" class="immg"></span><?php echo $l->status;?>
+                      <span>
+                        <img src="<?php echo base_url('assets/images/'.$img.'.png'); ?>" class="immg">
+                      </span>
+                      <?php echo $l->status;?>
                     </span>
                   </td>
                     <?php
