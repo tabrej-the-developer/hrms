@@ -908,7 +908,7 @@ tr td{
             <div class="col-md-6"></div>
             <div class="col-md-6 text-right">
               <!-- Apply Leave Button -->
-          <?php if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "N"){?>
+          <?php if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "N"){ ?>
               <button type="button" name="apply_button" id="apply_button" class="button" data-toggle="modal" data-target="#exampleModal"> <i class="fas fa-plus-circle"></i> Apply Leave</button>
           <?php }?>
             </div>
@@ -931,7 +931,7 @@ tr td{
               </thead>
               <tbody>
                 <?php 
-                $leaves = json_decode($leaves);
+                $leaves = json_decode($leave);
                 if(isset($leaves) && count($leaves->leaves)>0){
                 
                 foreach ($leaves->leaves as $l) { ?>
