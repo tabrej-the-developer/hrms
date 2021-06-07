@@ -1,6 +1,7 @@
 <?php 
 
    $GLOBALS['payslip'] = json_decode($PaySlip); 
+   $GLOBALS['fileName'] = $file;
    require(APPPATH.'/libraries/fpdf/fpdf.php');
 
 class PDF extends FPDF
