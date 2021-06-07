@@ -1020,6 +1020,7 @@ tr td{
     </div>
   </div>
 </div>    
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "N"){ ?>
  <!-- apply leave modal start here -->
             <div class="modal fade" id="applyModal">
                 <div class="modal-dialog">
@@ -1114,7 +1115,8 @@ tr td{
 					</form>
                 </div>
             </div>
-            <!-- modal end here -->       
+            <!-- modal end here -->  
+<?php } ?>     
 
  <div class="modal-logout">
       <div class="modal-content-logout">
