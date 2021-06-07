@@ -1450,7 +1450,7 @@ else{
                 parseFloat((parseFloat($('#applyLeaveId :selected').attr('balance')).toFixed(2)) - ($('#total-leave-hours').val())).toFixed(2)
               }`)
               console.log()
-            if($('#total-leave-hours').val() > (parseFloat($('#applyLeaveId :selected').attr('balance')).toFixed(2)) && $('#total-leave-hours').val() <= 0 ){
+            if($('#total-leave-hours').val() > (parseFloat($('#applyLeaveId :selected').attr('balance')).toFixed(2))){
               $('.total-leave-hours').text('Exceeded Leaves Limit')
               $('.apply_leave').prop('disabled',true)
             }
