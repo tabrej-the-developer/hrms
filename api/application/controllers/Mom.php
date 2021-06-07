@@ -188,7 +188,7 @@ class Mom extends CI_CONTROLLER
           //weekly meeting
           $index = 0;
           $dateOfMeeting = $currentDate;
-          while ($dateOfMeeting < $edate) {
+          while ($dateOfMeeting <= $edate) {
             $id = uniqid();
             $currentMeetingId = $id;
             $this->meetingModel->addMeeting($id, $meetingTitle, $dateOfMeeting, $dateOfMeeting, $time, $endTime, $location, $period, $currentMeetingId, $userid, $status, $agendaFileName);
@@ -205,7 +205,7 @@ class Mom extends CI_CONTROLLER
           //monthly meeting
           $index = 0;
           $dateOfMeeting = $date;
-          while ($dateOfMeeting < $edate) {
+          while ($dateOfMeeting <= $edate) {
             $id = uniqid();
             $this->meetingModel->addMeeting($id, $meetingTitle, $dateOfMeeting, $dateOfMeeting, $time, $endTime, $location, $period, null, $userid, $status, $agendaFileName);
             $dateOfMeeting = date('Y-m-d', strtotime($dateOfMeeting . '+1 month'));
