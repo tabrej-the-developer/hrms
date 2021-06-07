@@ -238,7 +238,7 @@ $pdf = new PDF('P','mm','A4');
 $pdf->SetTitle('Payslip');
 $pdf->AddPage();
 $pdf->Table();
-$fileName = "uploads/pdfs/".$GLOBALS['fileName'];
+$fileName = "/var/www/html/HRMS101/api/uploads/pdfs/".$GLOBALS['fileName'];
 $pdf->Output($fileName,'F');
 
 // $this->SetFont('Arial','B',25);
@@ -248,6 +248,4 @@ $pdf->Output($fileName,'F');
 // $this->Ln();
 // $this->Cell($cellSize,7,"",1,0,'L');
 ?>
-
-<!-- Print part End -->
 
