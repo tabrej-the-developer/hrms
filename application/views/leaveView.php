@@ -811,7 +811,7 @@ tr td{
                   </nav>
         <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
           	<?php
-          	if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "Y"){ ?>
+          	if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "N"){ ?>
 				<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
         	<div class="card">
             <div class="card-header">
@@ -930,7 +930,7 @@ tr td{
               </thead>
               <tbody>
                 <?php 
-                $leaves = json_decode($leave);
+                $leaves = json_decode($leaves);
                 if(isset($leaves) && count($leaves->leaves)>0){
                 
                 foreach ($leaves->leaves as $l) { ?>

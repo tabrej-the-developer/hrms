@@ -25,10 +25,9 @@ class Leave extends CI_Controller {
 			  $data['leaveType'] = $this->getLeaveType();
 			  if($data['centers'] != null){
 				  $data['leaves'] = $this->getLeaveByCenter($id);
-				  $data['leaveRequests'] = $data['leaves'];
+				  $data['leaveRequests'] = $this->getAllLeavesByUser();
 			  }
 			  $data['balance'] = $this->getLeaveBalance();
-			  $data['leave'] = $this->getAllLeavesByUser();
 			  $data['permissions'] = $this->fetchPermissions();
 			  //footprint start
 			  if($this->session->has_userdata('current_url')){
