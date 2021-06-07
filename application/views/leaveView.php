@@ -858,7 +858,7 @@ tr td{
 										<td>
 		                  <p><?php echo $leave->notes;?></p>
 										</td>
-										<td style="text-align: center; vertical-align: center">
+										<td style="text-align: center; vertical-align: center" class="span__">
 										<?php 
 							if($leave->userid == $this->session->userdata('LoginId')){
 								echo $leave->status;
