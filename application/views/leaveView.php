@@ -760,7 +760,7 @@ tr td{
               		$balance = json_decode($balance);
               		// print_r($balance);
                   if(count($balance->balance) > 0){
-                    $count = count($balance->balance) >0 ? count($balance->balance) : 1;
+                    $count = count($balance->balance) > 0 ? count($balance->balance) : 1;
                     $count = ceil($count/3);
                 		for($i=0; $i < $count; $i+=3){ ?>
                 <div class="carousel-item row no-gutters  <?php if($i == 0) echo 'active';?>">
@@ -1434,14 +1434,14 @@ else{
                 parseFloat((parseFloat($('#applyLeaveId :selected').attr('balance')).toFixed(2)) - ($('#total-leave-hours').val())).toFixed(2)
               }`)
               console.log()
-            if($('#total-leave-hours').val() > (parseFloat($('#applyLeaveId :selected').attr('balance')).toFixed(2))){
+            if($('#total-leave-hours').val() > (parseFloat($('#applyLeaveId :selected').attr('balance')).toFixed(2)) && $('#total-leave-hours').val() > 0 ){
               $('.total-leave-hours').text('Exceeded Leaves Limit')
               $('.apply_leave').prop('disabled',true)
             }
-          else{
-            $('.total-leave-hours').empty()
-            $('.apply_leave').prop('disabled',false)
-          }
+            else{
+              $('.total-leave-hours').empty()
+              $('.apply_leave').prop('disabled',false)
+            }
           }
         })
         $(document).on('change','#total-leave-hours',function(){
