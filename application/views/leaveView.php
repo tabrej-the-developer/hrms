@@ -863,15 +863,7 @@ tr td{
 							// if($leave->userid == $this->session->userdata('LoginId')){
 							// 	echo $leave->status;
 							// }else{
-								if($leave->status == "Applied"){ 
-									?>
-								<div onclick="updateLeaveApp('<?php echo $leave->id;?>','2')" class="pr-1">
-									<img src="<?php echo base_url("assets/images/accept.png"); ?>" style="max-width:1.3rem;cursor: pointer" />
-								</div>
-								<div onclick="updateLeaveApp('<?php echo $leave->id;?>','3')" class="pl-1">
-									<img src="<?php echo base_url("assets/images/deny.png"); ?>"  style="max-width:1.3rem;cursor: pointer">
-								</div>
-							<?php }
+								if($leave->status == "Applied"){ echo $leave->status; }
 											else{
 												$color = $leave->status == "Approved" ? '#4CAF50' : '#F44336'; 
                         $img = $leave->status == "Approved" ? 'accept' : 'deny'; ?>
