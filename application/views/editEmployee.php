@@ -608,6 +608,50 @@
 		</span>
 <!-- 	</span>
  -->			</div>
+				<?php }if(count($eba) == 0){ ?>
+			<div class="child">
+				<div class="statement"></div>
+<!-- 			<div class="row">
+ --><!-- 		<span class="span-class col-3">
+			<label>Statement Text</label>
+			<input placeholder="Statement Text" type="text" class="statementText" >
+		</span> -->
+		<span class="span-class col-3">
+			<label>Account Name</label>
+			<input placeholder="Account Name" type="text" class="accountName" name="accountName[]" >
+		</span>
+		<span class="span-class col-3">
+			<label>BSB</label>
+			<input placeholder="BSB" type="text" class="bsb" name="bsb[]" >
+		</span>
+<!-- 	</div>
+ -->		
+<!-- 	<span class="row">
+ -->		<span class="span-class col-3">
+			<label>Account Number</label>
+			<input placeholder="Account Number" type="text" class="accountNumber" name="accountNumber[]" >
+		</span>
+		<?php if($i ==  0){ ?>
+		<span class="span-class col-3 remainder_parent">
+			<label>Remainder</label>
+				<span>
+					<label class="yn-label">Yes</label>
+					<input value="Y" class="remainderYN yn-input" type="radio" name="remainderYN[]" >
+				</span>
+				<span>
+					<label class="yn-label">No</label>
+					<input value="N" class="remainderYN yn-input" type="radio" name="remainderYN[]" >
+				</span>
+		</span>
+		<?php   } ?>
+		<span class="span-class amount-class-parent col-3">
+			<div class="amount-class">
+				<label>Amount</label>
+				<input placeholder="Amount" type="text" class="amount" name="amount[]" >
+			</div>
+		</span>
+<!-- 	</span>
+ -->			</div>
 				<?php } ?>
 		</div>
 	</section>
@@ -624,7 +668,9 @@
 			<input placeholder="Employee Id" id="employeeId" >
 		</span> -->
 			<div class="superfund-parent">
-			<?php foreach($employeeData->employeeSuperfunds as $supFund){ ?>
+			<?php 
+			$checkSuperfund = count($employeeData->employeeSuperfunds);
+			foreach($employeeData->employeeSuperfunds as $supFund){ ?>
 				<div class="superfund-child row">
 					<span class="span-class col-3">
 						<label>Super Fund Id</label>
@@ -650,6 +696,30 @@
 					<span class="span-class col-3">
 						<label class="labels__">Employee Number</label>
 						<input class="employeeNumber" type="text" name="superFund[EmployeeNumber][]" value="<?php echo isset($supFund->employeeNumber) ? $supFund->employeeNumber : ''; ?>">
+					</span>
+				</div>
+				<?php }if($checkSuperfund == 0){ ?>
+				<div class="superfund-child row">
+					<span class="span-class col-3">
+						<label>Super Fund Id</label>
+						<span class="select_css">
+							<select placeholder="Super Fund Id" class="superFundId" name="superFund[Id][]">
+							<?php 
+							$superFundValue = isset($supFund->superFundId) ? $supFund->superFundId : '';
+							foreach($superfunds->superfunds as $superfund){
+									echo "<option value='$superfund->superFundId'>$superfund->name</option>";
+							}
+							?>
+							</select>
+						</span>
+					</span>
+					<span class="span-class col-3">
+						<label>Super Membership Id</label>
+						<input placeholder="Super Membership Id" class="superMembershipId" type="text" name="superFund[MembershipId][]" >
+					</span>
+					<span class="span-class col-3">
+						<label class="labels__">Employee Number</label>
+						<input class="employeeNumber" type="text" name="superFund[EmployeeNumber][]" >
 					</span>
 				</div>
 				<?php } ?>

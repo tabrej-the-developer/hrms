@@ -386,7 +386,7 @@
 		<span class="nav-button d-c"><span>Documents</span></span>
 		</div>	
 	</section>
-<form method="POST" action="<?php echo base_url('settings/updateEmployeeProfile/').$employeeId ?>" style="height: 100%" enctype="multipart/form-data" onsubmit="return onFormSubmit(event)" id="formSubmit">
+<form method="POST" action="updateEmployeeProfile" style="height: 100%" enctype="multipart/form-data" onsubmit="return onFormSubmit(event)" id="formSubmit">
 	<section class="employee-section">	
 		<!-- <h3>Personal</h3> -->
 		<span class="d-flex">
@@ -522,7 +522,7 @@
 			</span>
 			<span class="span-class col-3" >
 				<label class="labels__">Email</label>
-				<input style="cursor: not-allowed" placeholder="Emails" id="emails"  class="" type="text" name="emails" disabled value="<?php echo isset($employeeData->employee->emails) ? $employeeData->employee->emails : ''; ?>">
+				<input style="cursor: not-allowed" placeholder="Emails" id="emails"  class="" type="text" name="emails" readonly="readonly" value="<?php echo isset($employeeData->employee->emails) ? $employeeData->employee->emails : ''; ?>">
 			</span>
 			<hr>
 	<span class="d-block">
@@ -668,7 +668,9 @@
 			<input placeholder="Employee Id" id="employeeId" >
 		</span> -->
 			<div class="superfund-parent">
-			<?php foreach($employeeData->employeeSuperfunds as $supFund){ ?>
+			<?php 
+			$checkSuperfund = count($employeeData->employeeSuperfunds);
+			foreach($employeeData->employeeSuperfunds as $supFund){ ?>
 				<div class="superfund-child row">
 					<span class="span-class col-3">
 						<label>Super Fund Id</label>
@@ -694,6 +696,29 @@
 					<span class="span-class col-3">
 						<label class="labels__">Employee Number</label>
 						<input class="employeeNumber" type="text" name="superFund[EmployeeNumber][]" value="<?php echo isset($supFund->employeeNumber) ? $supFund->employeeNumber : ''; ?>">
+					</span>
+				</div>
+				<?php }if($checkSuperfund == 0){ ?>
+				<div class="superfund-child row">
+					<span class="span-class col-3">
+						<label>Super Fund Id</label>
+						<span class="select_css">
+							<select placeholder="Super Fund Id" class="superFundId" name="superFund[Id][]">
+							<?php 
+							foreach($superfunds->superfunds as $superfund){
+									echo "<option value='$superfund->superFundId'>$superfund->name</option>";
+							}
+							?>
+							</select>
+						</span>
+					</span>
+					<span class="span-class col-3">
+						<label>Super Membership Id</label>
+						<input placeholder="Super Membership Id" class="superMembershipId" type="text" name="superFund[MembershipId][]" >
+					</span>
+					<span class="span-class col-3">
+						<label class="labels__">Employee Number</label>
+						<input class="employeeNumber" type="text" name="superFund[EmployeeNumber][]" >
 					</span>
 				</div>
 				<?php } ?>
@@ -752,7 +777,7 @@
 		</span>
 		<span class="span-class col-3">
 			<label>Tax Offset Estimated Amount</label>
-			<input placeholder="Tax Offset Estimated Amount" id="taxOffsetEstimatedAmount" type="text" name="taxOffsetEstimatedAmount" value="<?php echo isset($employeeData->employeeTaxDeclaration->taxOffsetEstimatedAmount) ? $employeeData->employeeTaxDeclaration->taxOffsetEstimatedAmount : ''; ?>">
+			<input placeholder="Tax Offset Estimated Amount" id="taxOffsetEstimatedAmount" type="number" name="taxOffsetEstimatedAmount" value="<?php echo isset($employeeData->employeeTaxDeclaration->taxOffsetEstimatedAmount) ? $employeeData->employeeTaxDeclaration->taxOffsetEstimatedAmount : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label>Has HELP Debt</label>
@@ -892,7 +917,7 @@
 		</span>
 		<span class="span-class col-3">
 			<label>Qual towards % comp</label>
-		<input placeholder="Qual towards % comp" id="qual_towards_percent_comp" name="qual_towards_percent_comp" type="text" value="<?php echo isset($employeeData->employeeRecord->qualTowardsPercentcomp) ? $employeeData->employeeRecord->qualTowardsPercentcomp : ''; ?>">
+		<input placeholder="Qual towards % comp" id="qual_towards_percent_comp" name="qual_towards_percent_comp" type="number" value="<?php echo isset($employeeData->employeeRecord->qualTowardsPercentcomp) ? $employeeData->employeeRecord->qualTowardsPercentcomp : ''; ?>">
 		</span>
 
 <!-- 		<span class="span-class col-3">
@@ -1580,33 +1605,87 @@ function showNotification(){
 		function onFormSubmit(e){
 			e.preventDefault();
 			var falseOrTrue = true;
-			if($('#fname').val() == null || $('#fname').val() == ""){
-		      addMessageToNotification('Enter First Name');
-		      		      showNotification();
-		      setTimeout(closeNotification,5000)
+			if(!(/^[a-zA-Z]+$/).test($('#fname').val()) ){
+		      	addMessageToNotification('Enter First Name');
+		      	showNotification();
+		     	setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 				}
-				if($('#lname').val() == null || $('#lname').val() == ""){
-		      addMessageToNotification('Enter Last Name');
-		      		      showNotification();
-		      setTimeout(closeNotification,5000)
+			if(!(/^[a-zA-Z]+$/).test($('#lname').val())){
+		        addMessageToNotification('Enter Last Name');
+		      	showNotification();
+		        setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 				}
-				if($('#dateOfBirth').val() == null || $('#dateOfBirth').val() == ""){
-		      addMessageToNotification('Enter DOB');
-		      		      showNotification();
-		      setTimeout(closeNotification,5000)
+			if( !($('#mname').val() == null ||  !(/^[\sa-zA-Z]+$/).test($('#mname').val())) ){
+		        addMessageToNotification('Invalid Last Name');
+		      	showNotification();
+		        setTimeout(closeNotification,5000)
+					falseOrTrue = false;
+			}
+			if($('#dateOfBirth').val() == null || $('#dateOfBirth').val() == ""){
+		    	addMessageToNotification('Enter DOB');
+		      	showNotification();
+		        setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 				}
-				if($('#phone').val() == null || $('#phone').val() == ""){
-		      addMessageToNotification('Enter Phone Number');
-		      		      showNotification();
-		      setTimeout(closeNotification,5000)
+			if($('#phone').val() == null || $('#phone').val() == ""){
+		        addMessageToNotification('Enter Phone Number');
+		      	showNotification();
+		        setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 				}
-				if(falseOrTrue){
-					document.getElementById('formSubmit').submit();
-				}
+			if( ! ($('#alias').val() == null || $('#alias').val() == "" ||  (/^[a-zA-Z]+$/).test($('#alias').val())) ){
+		        addMessageToNotification('Invalid Alias');
+		      	showNotification();
+		        setTimeout(closeNotification,5000)
+					falseOrTrue = false;
+			}
+			if( !($('#homeAddCity').val() == null || $('#homeAddCity').val() == "" ||  (/^[a-zA-Z]+$/).test($('#homeAddCity').val())) ){
+		        addMessageToNotification('Invalid City');
+		      	showNotification();
+		        setTimeout(closeNotification,5000)
+					falseOrTrue = false;
+			}
+			if( !( $('#homeAddPostal').val() == null || $('#homeAddPostal').val() == ""  || (/^[0-9]+$/).test($('#homeAddPostal').val() ) ) ){
+		        addMessageToNotification('Invalid Postal Code');
+		      	showNotification();
+		        setTimeout(closeNotification,5000)
+					falseOrTrue = false;
+			}
+			if( !( $('#homeAddCountry').val() == null || $('#homeAddCountry').val() == ""  || (/^[0-9]+$/).test($('#homeAddCountry').val() ) ) ){
+		        addMessageToNotification('Invalid Country');
+		      	showNotification();
+		        setTimeout(closeNotification,5000)
+					falseOrTrue = false;
+			}
+			if(  !($('#phone').val() == null || $('#phone').val() == "" ||(/^[0-9]+$/).test($('#phone').val() ) )  ){
+		        addMessageToNotification('Invalid Phone');
+		      	showNotification();
+		        setTimeout(closeNotification,5000)
+					falseOrTrue = false;
+			}
+			if(  !($('#mobile').val() == null || $('#mobile').val() == "" ||(/^[0-9]+$/).test($('#mobile').val() ) )  ){
+		        addMessageToNotification('Invalid mobile');
+		      	showNotification();
+		        setTimeout(closeNotification,5000)
+					falseOrTrue = false;
+			}
+			if(  !($('#emergency_contact').val() == null || $('#emergency_contact').val() == "" ||(/^[0-9]+$/).test($('#emergency_contact').val() ) )  ){
+		        addMessageToNotification('Invalid Emergency Contact');
+		      	showNotification();
+		        setTimeout(closeNotification,5000)
+					falseOrTrue = false;
+			}
+			if(  !($('#employeeNumber').val() == null || $('#employeeNumber').val() == "" ||(/^[0-9]+$/).test($('#employeeNumber').val() ) )  ){
+		        addMessageToNotification('Invalid Emergency Contact');
+		      	showNotification();
+		        setTimeout(closeNotification,5000)
+					falseOrTrue = false;
+			}
+			if(falseOrTrue){
+				document.getElementById('formSubmit').submit();
+			}
 			return falseOrTrue;
 		}
 

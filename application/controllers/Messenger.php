@@ -31,6 +31,7 @@ class Messenger extends CI_Controller {
 			$data['getChat'] = $this->getChat($idConversation);
 			$data['getConversation'] = $this->getConversation($idConversation);
 			}
+			// print_r($data['recentConversations']);die();
 			$this->load->view('mView_temp',$data);
 		}
 	}
