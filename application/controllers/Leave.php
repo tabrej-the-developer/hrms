@@ -5,39 +5,31 @@ class Leave extends CI_Controller {
 
 	public function index(){
 	  if($this->session->has_userdata('LoginId')){
-		if($this->session->userdata('UserType') == SUPERADMIN){
-
 			if($this->getLeaveType() == 'failed'){
 				$data['error'] = 'failed';
 			}
-			if(!isset($_GET['center'])){
-							$id = 0;
-							$oldid=1;
-						}else{
-							$id = $_GET['center'];
-							$id = intval($id)-1;
-							$oldid = $id;
-						}
-					$var['id'] = $id;
-					$var['centerId'] = $oldid;
-				$data['leaveType'] = $this->getLeaveType();
-				$data['centers'] = $this->getAllCenters();
-			if($data['centers'] != null){
-				$centers = json_decode($data['centers'])->centers;
-				$data['leaves'] = $this->getLeaveByCenter($centers[$id]->centerid);
-			}
-		} 
-		else{
-			
-			$data['balance'] = $this->getLeaveBalance();
 			$data['centers'] = $this->getAllCenters();
-			$data['leaves'] = $this->getAllLeavesByUser();
-			if($data['centers'] != null){
-				$centers = json_decode($data['centers'])->centers;
-				$data['leaveRequests'] = $this->getLeaveByCenter($centers[0]->centerid);
+			if(!isset($_GET['center'])){
+				if(!isset($_SESSION['centerr'])){
+					  $id = json_decode($data['centers'])->centers[0]->centerid;
+					  $_SESSION['centerr'] = $id;
+				}else{
+					$id = $_SESSION['centerr'];
+				}
+			}else{
+				$id = $_GET['center'];
+				$_SESSION['centerr'] = $id;
 			}
-		}
-		$data['permissions'] = $this->fetchPermissions();
+			$var['id'] = $id;
+			$var['centerId'] = $id;
+			$data['leaveType'] = $this->getLeaveType();
+			if($data['centers'] != null){
+				$data['leaves'] = $this->getLeaveByCenter($id);
+				$data['leaveRequests'] = $this->getLeaveByCenter($id);
+			}
+			$data['balance'] = $this->getLeaveBalance();
+			$data['leaves'] = $this->getAllLeavesByUser();
+			$data['permissions'] = $this->fetchPermissions();
 		//footprint start
 		if($this->session->has_userdata('current_url')){
 			footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
@@ -48,7 +40,7 @@ class Leave extends CI_Controller {
 				}
 		else{
 			$this->load->view('redirectToLogin');
-			}
+		}
 	}
 
 

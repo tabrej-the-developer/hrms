@@ -375,7 +375,7 @@ class Leave extends CI_Controller
 		}
 	}
 
-	public function GetAllLeavesByUser($userid, $memeberid, $startDate = null, $endDate = null)
+	public function GetAllLeavesByUser($userid, $startDate = null, $endDate = null)
 	{
 		$headers = $this->input->request_headers();
 		$headers = array_change_key_case($headers);
@@ -385,7 +385,7 @@ class Leave extends CI_Controller
 			if ($res != null && $res->userid == $userid) {
 				$this->load->model('leaveModel');
 				$allLeaves = $this->leaveModel->getAllLeavesByUser($userid, $startDate, $endDate);
-				$userDetails = $this->authModel->getUserDetails($memeberid);
+				$userDetails = $this->authModel->getUserDetails($userid);
 				$data = array();
 				foreach ($allLeaves as $leaveApp) {
 					$var['id'] = $leaveApp->applicationId;
