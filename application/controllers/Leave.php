@@ -123,7 +123,7 @@ class Leave extends CI_Controller {
 	}
 
 	function getAllLeavesByUser(){
-		$url = BASE_API_URL."leave/getAllLeavesByUser/".$this->session->userdata('LoginId')."/".$this->session->userdata('LoginId');
+		$url = BASE_API_URL."leave/getAllLeavesByUser/".$this->session->userdata('LoginId');
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
