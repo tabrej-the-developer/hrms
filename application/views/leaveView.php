@@ -684,7 +684,7 @@ input[type="date"],input[type=time]{
   }
 }
 tr td{
-  text-align: center !important;
+  text-align: left !important;
   vertical-align: middle !important;
 }
 	/*-------------------------
@@ -983,7 +983,7 @@ tr td{
                     $color = $l->status == "Approved" ? '#4CAF50' : '#F44336'; 
                     $sta = $l->status == "Approved" ? 'appr' : 'reje'; 
                     $img = $l->status == "Approved" ? 'accept' : 'deny'; ?>
-                    <td style="text-align: center; vertical-align: center;display:flex" class=" span__ <?php echo $sta; ?> ">
+                    <td style="text-align: left; vertical-align: center;display:flex" class=" span__ <?php echo $sta; ?> ">
                     <span style="color: <?php echo $color;?>; " class="status-<?php echo $sta; ?>">
                       <span><img src="<?php echo base_url('assets/images/'.$img.'.png'); ?>" class="immg"></span><?php echo $l->status;?>
                     </span>
