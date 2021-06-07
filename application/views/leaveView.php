@@ -970,7 +970,7 @@ tr td{
                       }else{
                         if($l->status == "Applied"){ 
                     ?>
-                   <td style="text-align: center; vertical-align: center" class="span__ "> 
+                   <td style="text-align: center; vertical-align: center;display:flex" class="span__ "> 
                     <div onclick="updateLeaveApp('<?php echo $l->id;?>','2')" class="pr-3">
                       <img src="<?php echo base_url("assets/images/accept.png"); ?>" style="max-width:1.3rem;cursor: pointer" />
                     </div>
@@ -983,7 +983,7 @@ tr td{
                     $color = $l->status == "Approved" ? '#4CAF50' : '#F44336'; 
                     $sta = $l->status == "Approved" ? 'appr' : 'reje'; 
                     $img = $l->status == "Approved" ? 'accept' : 'deny'; ?>
-                    <td style="text-align: center; vertical-align: center" class=" span__ <?php echo $sta; ?> ">
+                    <td style="text-align: center; vertical-align: center;display:flex" class=" span__ <?php echo $sta; ?> ">
                     <span style="color: <?php echo $color;?>; " class="status-<?php echo $sta; ?>">
                       <span><img src="<?php echo base_url('assets/images/'.$img.'.png'); ?>" class="immg"></span><?php echo $l->status;?>
                     </span>
