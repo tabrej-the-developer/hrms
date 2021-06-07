@@ -716,18 +716,17 @@ tr td{
         <span class=""><img src="../assets/images/filter-icon.png" height="20px"></span>
       </div> -->
         <span class="select_css">
-         <select class="center-list " id="center-list">
-          <?php $centers = json_decode($centers); 
-            for($i=0;$i<count($centers->centers);$i++){
-          ?>
-            <option href="javascript:void(0)"
-                    class="center-class"
-                    id="<?php echo $centers->centers[$i]->centerid ?>"
-                     value="<?php echo $centers->centers[$i]->centerid; ?>">
-                     <?php echo $centers->centers[$i]->name?>
-           </option>
-            <?php } ?>
-          </select> 
+          <select class="center-list " id="center-list">
+              <?php $centers = json_decode($centers);
+              
+              for($i=0;$i<count($centers->centers);$i++){
+                if($_SESSION['centerr'] == $centers->centers[$i]->centerid){
+            ?>
+            <option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid; ?>" selected><?php echo $centers->centers[$i]->name?></option>
+          <?php }else{ ?>
+            <option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid; ?>"><?php echo $centers->centers[$i]->name?></option>
+          <?php }}  ?>
+          </select>
         </span>
 <?php } ?>
           </div>
