@@ -231,6 +231,7 @@ class Rosters extends MY_Controller
 											$rav['shifts'] = [];
 											$day = 0;
 											while ($day < 5) {
+
 												$shiftObj['currentDate'] = date("Y-m-d", strtotime("$startDate +$day day"));
 												$shiftObj['roleid'] = $role->roleid;
 												$shiftObj['roleName'] = $role->roleName;

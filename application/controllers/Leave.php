@@ -4,45 +4,44 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Leave extends CI_Controller {
 
 	public function index(){
-		if($this->session->has_userdata('LoginId')){
-			  if($this->getLeaveType() == 'failed'){
-				  $data['error'] = 'failed';
-			  }
-			  $data['centers'] = $this->getAllCenters();
-			  if(!isset($_GET['center'])){
-				  if(!isset($_SESSION['centerr'])){
-						$id = json_decode($data['centers'])->centers[0]->centerid;
-						$_SESSION['centerr'] = $id;
-				  }else{
-					  $id = $_SESSION['centerr'];
-				  }
-			  }else{
-				  $id = $_GET['center'];
-				  $_SESSION['centerr'] = $id;
-			  }
-			  $var['id'] = $id;
-			  $var['centerId'] = $id;
-			  $data['leaveType'] = $this->getLeaveType();
-			  if($data['centers'] != null){
-				  $data['leaves'] = $this->getLeaveByCenter($id);
-				  $data['leaveRequests'] = $data['leaves'];
-			  }
-			  $data['balance'] = $this->getLeaveBalance();
-			  $data['leave'] = $this->getAllLeavesByUser();
-			  $data['permissions'] = $this->fetchPermissions();
-			  //footprint start
-			  if($this->session->has_userdata('current_url')){
-				  footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-				  $this->session->set_userdata('current_url',currentUrl());
-			  }
-			  // footprint end
-			  $this->load->view('leaveView',$data);
-		  }
-		  else{
-			  $this->load->view('redirectToLogin');
-		  }
-	  }
-  
+	  if($this->session->has_userdata('LoginId')){
+			if($this->getLeaveType() == 'failed'){
+				$data['error'] = 'failed';
+			}
+			$data['centers'] = $this->getAllCenters();
+			if(!isset($_GET['center'])){
+				if(!isset($_SESSION['centerr'])){
+					  $id = json_decode($data['centers'])->centers[0]->centerid;
+					  $_SESSION['centerr'] = $id;
+				}else{
+					$id = $_SESSION['centerr'];
+				}
+			}else{
+				$id = $_GET['center'];
+				$_SESSION['centerr'] = $id;
+			}
+			$var['id'] = $id;
+			$var['centerId'] = $id;
+			$data['leaveType'] = $this->getLeaveType();
+			if($data['centers'] != null){
+				$data['leaves'] = $this->getLeaveByCenter($id);
+				$data['leaveRequests'] = $data['leaves'];
+			}
+			$data['balance'] = $this->getLeaveBalance();
+			$data['leave'] = $this->getAllLeavesByUser();
+			$data['permissions'] = $this->fetchPermissions();
+			//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+				$this->session->set_userdata('current_url',currentUrl());
+			}
+			// footprint end
+			$this->load->view('leaveView',$data);
+		}
+		else{
+			$this->load->view('redirectToLogin');
+		}
+	}
 
 
 	function getLeaveType(){

@@ -172,6 +172,6 @@
 	 $pdf = new PDF($_GET['printMode'],'mm','A3');
 	 $pdf->AddPage();
 	 $pdf->Table();
-	 $fileName = "uploads/pdfs/".$GLOBALS['fileName'];
+	 $fileName = "/var/www/html/HRMS101/api/uploads/pdfs/".$GLOBALS['fileName'];
 	 $pdf->Output($fileName,'F');
 	  }

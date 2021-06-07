@@ -716,17 +716,18 @@ tr td{
         <span class=""><img src="../assets/images/filter-icon.png" height="20px"></span>
       </div> -->
         <span class="select_css">
-          <select class="center-list " id="center-list">
-              <?php $centers = json_decode($centers);
-              
-              for($i=0;$i<count($centers->centers);$i++){
-                if($_SESSION['centerr'] == $centers->centers[$i]->centerid){
-            ?>
-            <option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid; ?>" selected><?php echo $centers->centers[$i]->name?></option>
-          <?php }else{ ?>
-            <option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid; ?>"><?php echo $centers->centers[$i]->name?></option>
-          <?php }}  ?>
-          </select>
+         <select class="center-list " id="center-list">
+          <?php $centers = json_decode($centers); 
+            for($i=0;$i<count($centers->centers);$i++){
+          ?>
+            <option href="javascript:void(0)"
+                    class="center-class"
+                    id="<?php echo $centers->centers[$i]->centerid ?>"
+                     value="<?php echo $centers->centers[$i]->centerid; ?>">
+                     <?php echo $centers->centers[$i]->name?>
+           </option>
+            <?php } ?>
+          </select> 
         </span>
 <?php } ?>
           </div>
@@ -811,7 +812,7 @@ tr td{
                   </nav>
         <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
           	<?php
-          	if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "Y"){ ?>
+          	if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "N"){ ?>
 				<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
         	<div class="card">
             <div class="card-header">
@@ -930,7 +931,7 @@ tr td{
               </thead>
               <tbody>
                 <?php 
-                $leaves = json_decode($leave);
+                $leaves = json_decode($leaves);
                 if(isset($leaves) && count($leaves->leaves)>0){
                 
                 foreach ($leaves->leaves as $l) { ?>
