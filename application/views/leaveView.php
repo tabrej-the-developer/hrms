@@ -931,7 +931,7 @@ tr td{
               </thead>
               <tbody>
                 <?php 
-                $leaves = json_decode($leaves);
+                $leaves = json_decode($leave);
                 if(isset($leaves) && count($leaves->leaves)>0){
                 
                 foreach ($leaves->leaves as $l) { ?>
