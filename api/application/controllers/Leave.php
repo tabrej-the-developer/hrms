@@ -404,7 +404,7 @@ class Leave extends CI_Controller
 					$var['title'] = $userDetails->title;
 					array_push($data, $var);
 				}
-				// $mdata['userid'] = $memeberid;
+				// $mdata['userid'] = $userid;
 				// $mdata['name'] = $userDetails->name;
 				// $mdata['title'] = $userDetails->title;
 				$mdata['leaves'] = $data;
