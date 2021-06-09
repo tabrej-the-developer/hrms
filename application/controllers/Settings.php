@@ -118,7 +118,7 @@ public function editRooms(){
 		$data['careAgeTo'] = $this->input->post('careAgeTo');
 		$data['capacity'] = $this->input->post('capacity');
 		$data['studentRatio'] = $this->input->post('studentRatio');
-		$url = BASE_API_URL."/settings/editRoom";
+		$url = BASE_API_URL."settings/editRoom";
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -426,7 +426,7 @@ public function editRooms(){
 		if($formData != null){
 			$data['details'] = $formData['details'];  
 			$data['userid'] = $this->session->userdata('LoginId'); 
-		$url = BASE_API_URL."/settings/changeEmployeeRole/".$this->session->userdata('LoginId');
+		$url = BASE_API_URL."settings/changeEmployeeRole/".$this->session->userdata('LoginId');
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -521,7 +521,7 @@ $server_output = curl_exec($ch);
 			$data['userid'] = $this->session->userdata('LoginId');
 			$data['roleName'] = $this->input->post('roleName');
 
- 		$url = BASE_API_URL."/settings/addRole";
+ 		$url = BASE_API_URL."settings/addRole";
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -560,7 +560,7 @@ $server_output = curl_exec($ch);
 			$data['userid'] = $this->session->userdata('LoginId');
 			$data['roleName'] = $this->input->post('roleName');
 
- 		$url = BASE_API_URL."/settings/UpdateRole";
+ 		$url = BASE_API_URL."settings/UpdateRole";
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -600,7 +600,7 @@ $server_output = curl_exec($ch);
 			$data['areaName'] = $this->input->post('areaName');
 			$data['isRoomYN'] = $this->input->post('isRoomYN');
 
- 		$url = BASE_API_URL."/settings/UpdateArea";
+ 		$url = BASE_API_URL."settings/UpdateArea";
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -761,7 +761,7 @@ $server_output = curl_exec($ch);
 	// footprint end
 		$data['id'] = $this->input->post('id'); 
 		$data['userid'] = $this->session->userdata('LoginId');
-		$url = BASE_API_URL."/settings/deleteRoom/".$data['id']."/".$data['userid'];
+		$url = BASE_API_URL."settings/deleteRoom/".$data['id']."/".$data['userid'];
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -793,7 +793,7 @@ $server_output = curl_exec($ch);
 			// footprint end
 		$data['id'] = $this->input->post('id'); 
 		$data['userid'] = $this->session->userdata('LoginId');
-		$url = BASE_API_URL."/settings/deleteArea/".$data['id']."/".$data['userid'];
+		$url = BASE_API_URL."settings/deleteArea/".$data['id']."/".$data['userid'];
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -825,7 +825,7 @@ $server_output = curl_exec($ch);
 	// footprint end
 		$data['id'] = $this->input->post('id'); 
 		$data['userid'] = $this->session->userdata('LoginId');
-		$url = BASE_API_URL."/settings/deleteRole/".$data['id']."/".$data['userid'];
+		$url = BASE_API_URL."settings/deleteRole/".$data['id']."/".$data['userid'];
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -958,7 +958,7 @@ $server_output = curl_exec($ch);
 	// footprint end
 		$data['id'] = $this->input->post('id'); 
 		$data['userid'] = $this->session->userdata('LoginId');
-		$url = BASE_API_URL."/payroll/deleteEntitlement/".$data['id']."/".$data['userid'];
+		$url = BASE_API_URL."payroll/deleteEntitlement/".$data['id']."/".$data['userid'];
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -1070,7 +1070,7 @@ $server_output = curl_exec($ch);
 			$form_data = $this->input->post();
 			if($form_data != null){
 				$id = $this->session->userdata('LoginId');
-				$url = BASE_API_URL."/settings/editEmployeeEntitlements";
+				$url = BASE_API_URL."settings/editEmployeeEntitlements";
 				$data['userid'] = $this->session->userdata('LoginId');
 				$data['empid'] = $form_data['empid'];
 				$data['level'] = $form_data['level'];
@@ -1150,7 +1150,7 @@ $server_output = curl_exec($ch);
 	// 		$data['roleid'] = $this->load->post('roleid');
 	// 		$data['levelId'] = $this->load->post('levelId');
 	// 		$data['roleName'] = $this->load->post('roleName');
-	// 	$url = BASE_API_URL."/settings/addEmployee";
+	// 	$url = BASE_API_URL."settings/addEmployee";
 	// 	$ch = curl_init($url);
 	// 	curl_setopt($ch, CURLOPT_URL,$url);
 	// 	curl_setopt($ch, CURLOPT_POST, 1);
@@ -1227,9 +1227,9 @@ $server_output = curl_exec($ch);
 				$data['userid'] = $this->session->userdata('LoginId');
 				$data['centers'] = $this->getAllCenters();
 				$data['areas'] = $this->getAreas($data['centerid']);
-				$data['ordinaryEarningRate'] = $this->getAwardSettings($employeeId,$centerid);
+				$data['ordinaryEarningRate'] = $this->getAwardSettings($data['userid'],$centerid);
 				$data['levels'] = $this->getAllEntitlements($employeeId);
-				$data['superfunds'] = $this->getSuperfunds($employeeId,$centerid);
+				$data['superfunds'] = $this->getSuperfunds($data['userid'],$centerid);
 				$data['permissions'] = $this->fetchPermissions();
 				$data['getEmployeeData'] = $this->getEmployeeData($employeeId);
 				$data['entitlements'] = $this->getAllEntitlements($data['userid']);
@@ -1643,7 +1643,7 @@ $server_output = curl_exec($ch);
 				}	
 				fclose($handle);
 //var_dump($array);
-				$url = BASE_API_URL."/settings/addMultipleEmployees/".$this->session->userdata('LoginId');
+				$url = BASE_API_URL."settings/addMultipleEmployees/".$this->session->userdata('LoginId');
 				$ch = curl_init($url);
 				curl_setopt($ch, CURLOPT_URL,$url);
 				curl_setopt($ch, CURLOPT_POST, 1);
@@ -1728,7 +1728,7 @@ $server_output = curl_exec($ch);
 	// footprint end
 			$data = $this->input->post();
 			$data['userid'] = $this->session->userdata('LoginId');
-			$url = BASE_API_URL."/settings/PostEmployeePermission";
+			$url = BASE_API_URL."settings/PostEmployeePermission";
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -1847,14 +1847,50 @@ $server_output = curl_exec($ch);
 	public function permissionSettings(){	
 		$data['centers'] = $this->getAllCenters();
 		$data['permissions'] = $this->fetchPermissions();
-	//footprint start
-	if($this->session->has_userdata('current_url')){
-		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-		$this->session->set_userdata('current_url',currentUrl());
-	}
-	// footprint end
+		//footprint start
+		if($this->session->has_userdata('current_url')){
+			footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+			$this->session->set_userdata('current_url',currentUrl());
+		}
+		// footprint end
 		$this->load->view('permission',$data);
 	}
+
+	public function notificationSettings(){	
+		$data['permissions'] = $this->fetchPermissions();
+		$data['notifications']  =$this->fetchNotificationPermissions();
+		//footprint start
+		if($this->session->has_userdata('current_url')){
+			footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+			$this->session->set_userdata('current_url',currentUrl());
+		}
+		// footprint end
+		$this->load->view('notificationPermissions',$data);
+	}
+
+	public function postNotificationSettings(){
+		$formData = $this->input->post();
+		if($formData != null){
+			$url = BASE_API_URL."settings/NotificationPermissions/".$this->session->userdata('LoginId');
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($formData));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'x-device-id: '.$this->session->userdata('x-device-id'),
+					'x-token: '.$this->session->userdata('AuthToken')
+				));
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				$server_output = curl_exec($ch);
+				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				if($httpcode == 200){
+					redirect('settings/notificationSettings');
+					curl_close ($ch);
+				}
+				else if($httpcode == 401){
+				}
+			}
+		}
 
 	public function awardSettings($centerid = null){
 		$data['userid'] = $this->session->userdata('LoginId');
@@ -1877,7 +1913,7 @@ $server_output = curl_exec($ch);
 
 	function getEmployeeProfile($employeeId){
 		$userid = $this->session->userdata('LoginId');
-		$url = BASE_API_URL."/settings/getEmployeeProfile/".$userid."/".$employeeId;
+		$url = BASE_API_URL."settings/getEmployeeProfile/".$userid."/".$employeeId;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -1897,7 +1933,7 @@ $server_output = curl_exec($ch);
 	}
 
 	function getEmployeeData($userid){
-		$url = BASE_API_URL."/settings/getEmployeeData/".$userid;
+		$url = BASE_API_URL."settings/getEmployeeData/".$userid;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -1917,7 +1953,7 @@ $server_output = curl_exec($ch);
 	}
 
 	function getAwardSettings($userid,$centerid){
-		$url = BASE_API_URL."/settings/getAwardSettings/".$userid."/".$centerid;
+		$url = BASE_API_URL."settings/getAwardSettings/".$userid."/".$centerid;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -1944,7 +1980,7 @@ $server_output = curl_exec($ch);
 	}
 	// footprint end
 		$data['userid'] = $this->session->userdata('LoginId');
-		$url = BASE_API_URL."/xero/syncXeroAwards/".$centerid;
+		$url = BASE_API_URL."xero/syncXeroAwards/".$centerid;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -2058,7 +2094,7 @@ $server_output = curl_exec($ch);
 	}
 	// footprint end
 		$data['userid'] = $this->session->userdata('LoginId');
-		$url = BASE_API_URL."/xero/syncXeroSuperfunds/".$centerid;
+		$url = BASE_API_URL."xero/syncXeroSuperfunds/".$centerid;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -2362,15 +2398,15 @@ $server_output = curl_exec($ch);
 			}
 		}
 
-		public function  syncXeroLeaves($centerid){
-	//footprint start
-	if($this->session->has_userdata('current_url')){
-		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-		$this->session->set_userdata('current_url',currentUrl());
-	}
-	// footprint end
+	public function  syncXeroLeaves($centerid){
+		//footprint start
+		if($this->session->has_userdata('current_url')){
+			footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+			$this->session->set_userdata('current_url',currentUrl());
+		}
+		// footprint end
 		$data['userid'] = $this->session->userdata('LoginId');
-		$url = BASE_API_URL."/xero/syncXeroLeaves/".$centerid;
+		$url = BASE_API_URL."xero/syncXeroLeaves/".$centerid;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -2450,7 +2486,27 @@ $server_output = curl_exec($ch);
 		}
 
 	function getStates(){
-		$url = BASE_API_URL."/settings/getStates/".$this->session->userdata('LoginId');
+		$url = BASE_API_URL."settings/getStates/".$this->session->userdata('LoginId');
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			return $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+
+		}
+	}
+
+	function fetchNotificationPermissions(){
+		$url = BASE_API_URL."settings/NotificationPermissions/".$this->session->userdata('LoginId');
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

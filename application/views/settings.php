@@ -160,6 +160,18 @@ a[href*="settings"],.xero_settings a{
 				</div>
 			</div>
 		<?php } ?>
+		<?php // if(isset($permissions->permissions) && $permissions->permissions->viewOrgChartYN == "Y"){ ?>
+			<div class="tile-box col-3 d-md-flex">
+				<div class=" col-5">
+					<a href="<?php echo base_url()?>settings/orgChart">
+						<img src="<?php echo site_url()?>/assets/images/settings-icons/organization-chart.png">
+					</a>
+				</div>
+				<div class="p-s col-6">
+					<a href="<?php echo base_url()?>settings/notificationSettings">Notification settings</a>
+				</div>
+			</div>
+		<?php // } ?>
 		</div>
 		<span style="width: 100%;text-align: center;">
 			<span style="border:1px solid rgba(151, 151, 151,0.3);bottom: 0;width: 95%;display: inline-block;"></span>

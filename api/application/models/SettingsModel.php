@@ -539,6 +539,24 @@ class SettingsModel extends CI_Model {
 		return $query->row() != null ? ($query->row())->xeroEmployeeId : null ;
 	}
 
+	public function fetchNotificationPermissions($userid){
+		$this->load->database();
+		$query = $this->db->query("SELECT np.typeid,np.appYN,np.emailYN,nt.notificationtype FROM notificationpermissions np INNER JOIN notificationtypes nt on np.typeid = nt.id  where np.userid ='$userid' ");
+		return $query->result();
+	}
+
+	public function postNotificationPermissions($userid,$notifications){
+		$this->load->database();
+		$query = $this->db->query("DELETE FROM notificationpermissions where userid = '$userid'");
+		foreach($notifications as $key=>$notification){
+			$values = array_values($notification);
+			$query = $this->db->query("SELECT id from notificationtypes where notificationtype ='$key' ");
+			$id = ($query->row() != null) ? ($query->row())->id : null;
+			if($id != null);
+				$this->db->query("INSERT INTO notificationpermissions (userid,typeid,appYN,emailYN) VALUES ('$userid','$id','$values[0]','$values[1]') ");
+		}
+	}
+
 	// public function employeeRecordMigration(){
 	// 	$this->load->database();
 	// 	$query = $this->db->query("SELECT * from employeetaxdeclaration");
