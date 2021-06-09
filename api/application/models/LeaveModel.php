@@ -161,9 +161,9 @@ class LeaveModel extends CI_Model {
 	public function addLeaveBalanceOnReject($leaveApplication){
 		$this->load->database();
 		$leaveApp = $this->db->query("SELECT * FROM leaveapplication WHERE applicationId = '$leaveApplication'");
-		$userid = isset($leaveApp->row()) ? ($leaveApp->row())->userid : null;
-		$hours = isset($leaveApp->row()) ? ($leaveApp->row())->noOfHours : null;
-		$leaveid = isset($leaveApp->row()) ? ($leaveApp->row())->leaveId : null;
+		$userid = ($leaveApp->row() != null) ? ($leaveApp->row())->userid : null;
+		$hours = ($leaveApp->row() != null) ? ($leaveApp->row())->noOfHours : null;
+		$leaveid = ($leaveApp->row() != null) ? ($leaveApp->row())->leaveId : null;
 		$query = $this->db->query("UPDATE leavebalance SET leaveId = '$leaveid' , leaveBalance = leaveBalance + $hours WHERE userid = '$userid'");
 	}
 }
