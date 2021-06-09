@@ -1434,7 +1434,7 @@ else{
                 parseFloat((parseFloat($('#applyLeaveId :selected').attr('balance')).toFixed(2)) - ($('#total-leave-hours').val())).toFixed(2)
               }`)
               console.log()
-            if($('#total-leave-hours').val() > (parseFloat($('#applyLeaveId :selected').attr('balance')).toFixed(2)) && $('#total-leave-hours').val() <= 0 ){
+            if($('#total-leave-hours').val() > (parseFloat($('#applyLeaveId :selected').attr('balance')).toFixed(2)) ){
               $('.total-leave-hours').text('Exceeded Leaves Limit')
               $('.apply_leave').prop('disabled',true)
             }
@@ -1449,15 +1449,22 @@ else{
               $('.leave_balance').text(`${
                 parseFloat((parseFloat($('#applyLeaveId :selected').attr('balance')).toFixed(2)) - ($('#total-leave-hours').val())).toFixed(2)
               }`)
-              console.log()
             if($('#total-leave-hours').val() > (parseFloat($('#applyLeaveId :selected').attr('balance')).toFixed(2))){
               $('.total-leave-hours').text('Exceeded Leaves Limit')
               $('.apply_leave').prop('disabled',true)
             }
-          else{
-            $('.total-leave-hours').empty()
-            $('.apply_leave').prop('disabled',false)
-          }
+            else if($('#total-leave-hours').val() == null){
+              $('.total-leave-hours').text('Value Cannot Be Null')
+              $('.apply_leave').prop('disabled',true)
+            }
+            else if($('#total-leave-hours').val() <= 0){
+              $('.total-leave-hours').text('Value Must Be Greater Than 0')
+              $('.apply_leave').prop('disabled',true)
+            }
+            else{
+              $('.total-leave-hours').empty()
+              $('.apply_leave').prop('disabled',false)
+            }
           }
         })
       })

@@ -630,6 +630,7 @@ class Leave extends CI_Controller
 					$this->leaveModel->updateLeave($leaveApplication, $status, $message);
 				} else {
 					$this->leaveModel->updateLeave($leaveApplication, $status, $message);
+					$this->leaveModel->addLeaveBalanceOnReject($leaveApplication);
 					$to = $this->leaveModel->getUserFromLeaveApplication($leaveApplication);
 					$config = array(
 						'protocol'  => 'smtp',
