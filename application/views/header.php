@@ -494,7 +494,7 @@ select{
         <ul class="navbar-nav animate side-nav">
           <div class="PN101">
             <a class="" >
-              <i ><img src="<?php echo base_url('assets/images/icons/amigo.jpeg');?>" class="todquest-logo"></i>         
+              <i ><img src="<?php echo base_url('assets/images/icons/'."$this->session->companyImage");?>" class="todquest-logo"></i>         
             </a>
           </div>  
           <div userid="<?php echo $this->session->userdata('LoginId') ?>" id="user_data_id">
