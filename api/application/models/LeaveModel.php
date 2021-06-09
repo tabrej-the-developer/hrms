@@ -86,7 +86,7 @@ class LeaveModel extends CI_Model {
 
 	public function applyLeave($userid,$leaveId,$noOfHours,$startDate,$endDate,$notes){
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO leaveapplication (userid,appliedDate, leaveId, noOfHours, startDate,endDate,status,notes) VALUES('$userid',CURDATE(),$leaveId,$noOfHours,'$startDate','$endDate',1,'$notes')");
+		$query = $this->db->query("INSERT INTO leaveapplication (userid,appliedDate, leaveId, noOfHours, startDate,endDate,status,notes) VALUES('$userid',CURDATE(),'$leaveId',$noOfHours,'$startDate','$endDate',1,'$notes')");
 	}
 
 	public function getLeaveBalance($userid){
