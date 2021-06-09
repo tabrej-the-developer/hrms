@@ -1355,7 +1355,12 @@ td{
   <div class="loader"></div>
 </div>
 	<div class="containers" id="containers">
-		<div class="heading" id="center-id" c_id="<?php echo isset($rosterDetails->centerid) ? $rosterDetails->centerid : null; ?>">Rosters
+		<div class="heading" id="center-id" c_id="<?php echo isset($rosterDetails->centerid) ? $rosterDetails->centerid : null; ?>">
+		<a href="<?php echo base_url('Roster');?>">
+            <button class="btn back-button">
+              <img src="<?php echo base_url('assets/images/back.svg');?>">
+            </button>
+		</a>Rosters
 			<span class="top_buttons ml-auto">
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y" || $editRosterYN == "Y"){ ?>
 				<span class="editPermission-span">

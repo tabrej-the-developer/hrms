@@ -671,7 +671,12 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 	// }
 	?>
 	<div class="containers" id="containers" style="overflow-x:scroll">
-		<div class="heading ">Timesheets</div>
+		<div class="heading ">
+		<a href="<?php echo base_url('Timesheet');?>">
+            <button class="btn back-button">
+              <img src="<?php echo base_url('assets/images/back.svg');?>">
+            </button>
+          </a>Timesheets</div>
 		<div class="timesheet-dates">
 			<?php
 			if (isset($timesheetDetails->timesheet[0]->currentDate)) {
