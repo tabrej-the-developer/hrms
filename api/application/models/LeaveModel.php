@@ -126,7 +126,7 @@ class LeaveModel extends CI_Model {
 
 	public function getSumOfLeave($userid,$leaveid,$startDate){
 		$this->load->database();
-		$query = $this->db->query("SELECT SUM(noOfHours) as sum FROM leaveapplication WHERE userid = '$userid' AND startDate >= '$startDate' AND leaveId = $leaveid");
+		$query = $this->db->query("SELECT SUM(noOfHours) as sum FROM leaveapplication WHERE userid = '$userid' AND startDate >= '$startDate' AND leaveId = '$leaveid'");
 		return $query->row();
 	}
 
@@ -137,7 +137,7 @@ class LeaveModel extends CI_Model {
 
 	public function updateLeaveBalance($userid,$leaveId,$toUpdate){
 		$this->load->database();
-		$this->db->query("UPDATE leavebalance SET leavebalance = leaveBalance + $toUpdate WHERE userid = '$userid' AND leaveId = $leaveId");
+		$this->db->query("UPDATE leavebalance SET leavebalance = leaveBalance + $toUpdate WHERE userid = '$userid' AND leaveId = '$leaveId'");
 	}
 
 	public function getLeaveApplicationForUser($userid,$currentDate){
