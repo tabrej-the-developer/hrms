@@ -786,7 +786,7 @@ color:#FFFFFF;
      ?>
      <!-- Top Tiles Start -->
     <div class="row mr-0 mb-5 mb-md-0 mt-3 cardContainer pl-0 pl-md-4 pr-0 pr-md-4">
-<?php if((isset($permissions->permissions) ? $permissions->permissions->viewTimesheetYN : "N") == "Y"){ ?>
+<?php // if((isset($permissions->permissions) ? $permissions->permissions->viewTimesheetYN : "N") == "Y"){ ?>
       <span class="col-3 cardItem " >
         <span class="row p-0 m-0 timesheets">
           <span class="col-6 dashboard-icons" style="background:rgba(0, 84, 254,0.07)">
@@ -800,8 +800,8 @@ color:#FFFFFF;
           </span>
         </span>
       </span>
-<?php } ?>
-<?php if((isset($permissions->permissions) ? $permissions->permissions->viewRosterYN : "N") == "Y"){ ?>
+<?php // } ?>
+<?php //if((isset($permissions->permissions) ? $permissions->permissions->viewRosterYN : "N") == "Y"){ ?>
       <span class="col-3 cardItem " >
         <span class="row p-0 m-0 roster">
           <span class="col-6 dashboard-icons" style="background:rgba(254, 237, 242)">
@@ -815,8 +815,8 @@ color:#FFFFFF;
           </span>
         </span>
       </span>
-<?php } ?>
-<?php if((isset($permissions->permissions) ? $permissions->permissions->viewPayrollYN : "N") == "Y"){ ?>
+<?php //} ?>
+<?php  // if((isset($permissions->permissions) ? $permissions->permissions->viewPayrollYN : "N") == "Y"){ ?>
       <span class="col-3 cardItem " >
         <span class="row p-0 m-0 payrolls">
           <span class="col-6 dashboard-icons" style="background:rgba(233, 255, 208)">
@@ -830,8 +830,8 @@ color:#FFFFFF;
           </span>
         </span>
       </span>
-<?php } ?>
-<?php if((isset($permissions->permissions) ? $permissions->permissions->viewLeaveTypeYN : "N") == "Y"){ ?>
+<?php // } ?>
+<?php // if((isset($permissions->permissions) ? $permissions->permissions->viewLeaveTypeYN : "N") == "Y"){ ?>
       <span class="col-3 cardItem " >
         <span class="row p-0 m-0 onLeave">
           <span class="col-6 dashboard-icons" style="background:rgba(253, 188, 0,0.18)">
@@ -845,7 +845,7 @@ color:#FFFFFF;
           </span>
         </span>
       </span>   
-<?php } ?>  
+<?php // } ?>  
     </div>
      <!-- Top Tiles End -->
     <div class="row mr-0 ml-3 mr-3 mt-3 ">
