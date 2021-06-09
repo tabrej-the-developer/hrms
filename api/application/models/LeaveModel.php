@@ -41,7 +41,7 @@ class LeaveModel extends CI_Model {
 
 	public function getLeaveType($leaveId){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM leaves WHERE id=$leaveId");
+		$query = $this->db->query("SELECT * FROM leaves WHERE leaveid=$leaveId");
 		return $query->row();
 	}
 
