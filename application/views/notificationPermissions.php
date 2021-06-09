@@ -414,7 +414,7 @@ button[type=button]{
                     <img src="<?php echo base_url('assets/images/back.svg');?>">
                     </button>
                 </a>
-                <span class="settings_title">Edit Permissions</span>
+                <span class="settings_title">Notification Settings</span>
             </span>
             <form method="POST" action="postNotificationSettings" class="permission-container-child">
                 <div  class="table-div">
