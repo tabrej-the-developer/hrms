@@ -1417,7 +1417,6 @@ class Rosters extends MY_Controller
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
 			if ($res != null && $res->userid == $userid) {
 				set_time_limit(0);
-				$authToken = "::1";
 				$url = base_url('rosters/getRoster/')."$rosterid/$userid";
 				$ch = curl_init($url);
 				curl_setopt($ch, CURLOPT_URL,$url);

@@ -258,7 +258,7 @@
       // print_r(json_encode($xeroTokens));
 ?>  
     <div id="wrappers">
-      <span class="d-flex heading justify-content-between">
+      <span class="d-flex heading justify-content-between align-items-baseline">
         <span>
           <a href="<?php echo base_url('settings');?>">
             <button class="btn back-button">
@@ -269,27 +269,9 @@
         </span>
         <div class="d-flex pr-4">
           <div class="d-flex flex-column w-100">
-            <span class="viewEmployeeTable_roles w-100 " style="padding-top: 0.15rem !important;">
-              <span class="select_css w-100">
-                <select placehdr="Center" id="roleValue" name="roleValue" class="w-100"> 
-                    <option value="">Role Value</option>
-                </select>
-              </span>
-            </span>
-            <span class="viewEmployeeTable_search w-100">
-              <input type="" name="" class="w-100" onkeyup="searchBy()" id="filter" placeholder="Search" style="margin-top:0.5rem !important;">
-            </span>
-          </div>
-          <div class="d-flex flex-column w-100">
-            <span class="syncXeroEmployees w-100">
-              <button class="button d-inline-flex w-100 p-1" id="XeroEmployees" style="padding:2px !important">
-                <i>
-                  <img src="<?php echo base_url('assets/images/icons/xero.png'); ?>" style="max-height:2rem;margin-right:10px">
-                </i>Sync&nbsp;Xero&nbsp;Employees</button>
-            </span>
             <span class="viewEmployeeTable_center w-100">
               <span class="select_css w-100">
-                <select placehdr="Center" id="centerValue" name="centerValue" class="w-100" style="margin-top:0.35rem !important;">
+                <select placehdr="Center" id="centerValue" name="centerValue" class="w-100" style="margin-top:2px !important;">
                   <?php 
                   foreach($centers->centers as $center){ 
                     if($_SESSION['centerr'] == $center->centerid){
@@ -304,6 +286,24 @@
                       $centerId = $centerId . $center->centerid . "|";
                   } ?>
                   <option value="<?php echo $centerId?>"><?php echo "All Centers";?></option>
+                </select>
+              </span>
+            </span>
+            <span class="viewEmployeeTable_search w-100">
+              <input type="" name="" class="w-100" onkeyup="searchBy()" id="filter" placeholder="Search" style="margin-top:5px !important;">
+            </span>
+          </div>
+          <div class="d-flex flex-column w-100">
+            <span class="syncXeroEmployees w-100">
+              <button class="button d-inline-flex w-100 p-1" id="XeroEmployees" style="padding:2px !important">
+                <i>
+                  <img src="<?php echo base_url('assets/images/icons/xero.png'); ?>" style="max-height:2rem;margin-right:10px">
+                </i>Sync&nbsp;Xero&nbsp;Employees</button>
+            </span>
+            <span class="viewEmployeeTable_roles w-100 " style="padding-top: 0.15rem !important;">
+              <span class="select_css w-100">
+                <select placehdr="Center" id="roleValue" name="roleValue" class="w-100"> 
+                    <option value="">Role Value</option>
                 </select>
               </span>
             </span>

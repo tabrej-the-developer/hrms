@@ -861,7 +861,7 @@ table.dataTable{
 	$(document).on('click','.print_image',function(){
 		var timesheetid = '<?php echo $this->input->get('timesheetId') ?>';
 		var payslipId = $(this).attr('payslipid');
-			window.location.href = "<?php echo base_url();?>"+`payroll/getPayslip/${payslipId}/${timesheetid}`;
+			window.location.href = "<?php echo base_url();?>"+`payroll/printPayslipPDF/${payslipId}/${timesheetid}`;
 	})
 
 	$(document).ready(function(){

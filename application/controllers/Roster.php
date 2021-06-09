@@ -982,6 +982,31 @@ function getAllEntitlements($userid){
 			}
 	}
 
+	public function printRosterPDF($rosterid,$mode){
+		$url = BASE_API_URL."Rosters/createRosterPDF/$rosterid/".$this->session->userdata('LoginId')."?printMode=$mode";
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			$output = json_decode($server_output);
+			if($output->Status == 'SUCCESS'){
+				redirect($output->path.$output->file);
+			}else{
+				print_r("<h1>ERROR please go back</h1>");
+			}
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+
+		}
+	}
+
 		function fetchPermissions(){
 			$url = BASE_API_URL."auth/fetchMyPermissions/".$this->session->userdata('LoginId');
 			$ch = curl_init($url);

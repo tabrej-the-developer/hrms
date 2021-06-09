@@ -1396,8 +1396,8 @@ td{
 							<img src="<?php echo base_url('assets/images/icons/print.png'); ?>" style="max-height:1rem;margin-right:10px">
 						</i>Print</button>
 					<span class="print-hidden-btn">
-						<button class="print-landscape" ><a href="<?php echo base_url('roster/getRosterDetails?rosterId='.$rosterid.'&showBudgetYN=N&printMode=L'); ?>" target="_blank">Landscape</a></button>
-						<button class="print-portrait" ><a href="<?php echo base_url('roster/getRosterDetails?rosterId='.$rosterid.'&showBudgetYN=N&printMode=P'); ?>" target="_blank">Portrait</a></button>
+						<button class="print-landscape" ><a href="<?php echo base_url('roster/printRosterPDF/'.$rosterid.'/L'); ?>" target="_blank">Landscape</a></button>
+						<button class="print-portrait" ><a href="<?php echo base_url('roster/printRosterPDF/'.$rosterid.'/P'); ?>" target="_blank">Portrait</a></button>
 					</span>
 				</span>
 			</span>
@@ -1564,8 +1564,14 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 
 						<span class="row name-space" style="padding:0;margin:0;">
 							<span class="col-4 icon-parent">
-								<span class=" icon" style="
-									<?php	echo "background:#A4D9D6; color:#707070";?>"><?php echo icon($rosterDetails->roster[$x]->roles[$counter]->empName)?>
+								<span class=" icon" style="<?php echo "background:#A4D9D6; color:#707070";?>">
+									<?php 
+										if(file_exists("api/application/assets/profileImages/".$rosterDetails->roster[$x]->roles[$counter]->empId.".png")){
+											echo "<img src='../api/application/assets/profileImages/".$rosterDetails->roster[$x]->roles[$counter]->empId.".png'>";
+										}else{
+											echo icon($rosterDetails->roster[$x]->roles[$counter]->empName);
+										}
+									?>
 								</span>
 							</span>
 							<span class="col-8 name-role">
