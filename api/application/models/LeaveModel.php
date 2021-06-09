@@ -164,6 +164,6 @@ class LeaveModel extends CI_Model {
 		$userid = ($leaveApp->row() != null) ? ($leaveApp->row())->userid : null;
 		$hours = ($leaveApp->row() != null) ? ($leaveApp->row())->noOfHours : null;
 		$leaveid = ($leaveApp->row() != null) ? ($leaveApp->row())->leaveId : null;
-		$query = $this->db->query("UPDATE leavebalance SET leaveId = '$leaveid' , leaveBalance = leaveBalance + $hours WHERE userid = '$userid'");
+		$query = $this->db->query("UPDATE leavebalance SET leaveBalance = leaveBalance + $hours WHERE userid = '$userid' and leaveId = '$leaveid'");
 	}
 }

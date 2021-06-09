@@ -232,7 +232,7 @@ class Xero extends CI_Controller
 							$LeaveTypeID = $leaveBalance->LeaveTypeID;
 							$leaveDets = $this->leaveModel->getLeaveTypeById($LeaveTypeID);
 							$NumberOfUnits = $leaveBalance->NumberOfUnits;
-							$this->leaveModel->insertIntoLeaveBalance($myUserid, $leaveDets->id, $NumberOfUnits);
+							$this->leaveModel->insertIntoLeaveBalance($myUserid, $leaveDets->leaveid, $NumberOfUnits);
 						}
 					}
 				}
