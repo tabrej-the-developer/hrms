@@ -203,7 +203,7 @@ class Leave extends CI_Controller
 
 						$allLeaves = $this->leaveModel->getLeaveTypeBySuperadmin($userid);
 						foreach ($allLeaves as $leave) {
-							$var['LeaveTypeID'] = $leave->id;
+							$var['LeaveTypeID'] = $leave->leaveid;
 							if ($leave->id == $leaveId) {
 								$var['Name'] = $name;
 								$var['IsPaidLeave'] = $isPaidYN == "Y";
@@ -286,7 +286,7 @@ class Leave extends CI_Controller
 						$allLeaves = $this->leaveModel->getLeaveTypeBySuperadmin($userid);
 						foreach ($allLeaves as $leave) {
 							if ($leave->id != $leaveId) {
-								$var['LeaveTypeID'] = $leave->id;
+								$var['LeaveTypeID'] = $leave->leaveid;
 								$var['Name'] = $leave->name;
 								$var['IsPaidLeave'] = $leave->isPaidYN == "Y";
 								$var['ShowOnPayslip'] = $leave->showOnPaySlipYN == "Y";
