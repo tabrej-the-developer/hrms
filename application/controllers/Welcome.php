@@ -63,7 +63,8 @@ class Welcome extends CI_Controller {
 						'UserType' => $jsonOutput->role,
 						'Name' => $jsonOutput->name,
 						'ImgUrl' => $jsonOutput->imageUrl,
-						'x-device-id' => $data['deviceid']
+						'x-device-id' => $data['deviceid'],
+						'companyImage' => $jsonOutput->companyImage
 					));
 					footprint(currentUrl(),' ',$this->session->userdata('LoginId'),'LogIn');
                		$this->session->set_userdata('current_url', currentUrl());
