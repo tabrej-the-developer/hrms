@@ -908,7 +908,7 @@ color:#FFFFFF;
       <div class="col-md-3 upcoming_events">
         <div class="upcoming_events_title text-center">Upcoming Events</div>
         <div class="upcomingEvents_birthday" style="height: 30%">
-          <div class="text-center">Birthdays</div>
+          <div class="text-center" style="background: #8D91AA;color: #F3F4F7;">Birthdays</div>
           <?php 
           $calendarBirthdays = isset($calendar) ? 
                                ( isset(json_decode($calendar)->birthdays) ?
@@ -942,7 +942,7 @@ color:#FFFFFF;
                 </div>        
         </div>
         <div class="upcomingEvents_anniversary" style="height: 30%">
-          <div class="text-center">Anniversaries</div>
+          <div class="text-center" style="background: #8D91AA;color: #F3F4F7;">Anniversaries</div>
           <?php 
           $calendarAnniversaries = isset($calendar) ?
                               (isset(json_decode($calendar)->anniversary) ? 
