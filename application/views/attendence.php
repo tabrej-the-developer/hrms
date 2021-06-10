@@ -518,6 +518,13 @@ input[type=checkbox]:checked:before {
 .bg-default.attendance_background{
   padding:1rem;
 }
+
+  @media only screen and (max-width:700px ){
+    .card-body{
+      padding-left: 0;
+    }
+  }
+
 </style>
 </head>
 <body style="background-color:#eee;">
@@ -543,17 +550,25 @@ input[type=checkbox]:checked:before {
                
                </div>
              <div>
-             <h6><?php echo $partcipants[$i]->name ." - (".$partcipants[$i]->email.")"; ?></h6>
+              <h6>
+                <div class="d-inline-block">
+                  <span class="d-flex"><?php echo $partcipants[$i]->name ; ?></span>
+                  <span class="d-flex"><?php echo " (".$partcipants[$i]->email.")"; ?></span>
+                </div>
+              </h6>
              
              </div>
        </div>
       </div>
           <?php } ?>
       <div class="d-flex bg-default attendance_background">
-           <button type="submit" class="button">
-            <i>
-              <img class="attendance_image" src="<?php echo base_url('assets/images/icons/attendance.png'); ?>" style="max-height:1.2rem;margin-right:10px">
-            </i>Mark Absent</a>
+            <div class="d-flex flex-column">
+              <button type="submit" class="button">
+                <i>
+                  <img class="attendance_image" src="<?php echo base_url('assets/images/icons/attendance.png'); ?>" style="max-height:1.2rem;margin-right:10px">
+                </i>Mark Attendance</button>
+              <div><i>Check to mark absent</i></div>
+            </div>
       </div>
   </form>
  </div>

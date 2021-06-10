@@ -223,7 +223,7 @@
 		}
 
 	.addEmployee-container{
-		height:100vh;
+		height: calc(100vh - 4rem);
 		padding:1.1rem 3rem 2rem 2rem;
 	}
 	.addEmployee-container-child{

@@ -954,6 +954,7 @@ color:#FFFFFF;
               if(isset($calendarAnniversaries) && $calendarAnniversaries != null){
                 foreach($calendarAnniversaries as $ars){ 
                         foreach($ars->anniversary as $ar){
+                          $aCount++;
                   ?>
                       <?php if(date('m') == date('m',strtotime($ar->startDate))){
                         $eventType = 'Anniversary';
@@ -968,7 +969,7 @@ color:#FFFFFF;
                     </span>
                   </div>
                 <?php } } }
-                  if($bCount == 0 ){
+                  if($aCount == 0 ){
                     echo "<h5 style='display:flex;justify-content:center;align-items:center;height:70%'>No Anniversaries</h5>";
                   } ?>
                 </div>        
@@ -1148,7 +1149,7 @@ color:#FFFFFF;
           <i style="padding-right:0.5rem;padding-left:0.5rem">
             <img src="<?php echo base_url('assets/images/icons/close.png'); ?>" style="max-height:1rem">
           </i>Close</button>
-        <button class="btn button_form">
+        <button class="btn button_form submitForm">
           <i style="padding-right:0.5rem;padding-left:0.5rem">
             <img src="<?php echo base_url('assets/images/icons/send.png'); ?>" style="max-height:1rem">
           </i>Submit</button>
@@ -1157,6 +1158,30 @@ color:#FFFFFF;
     </form>
   </div>
 
+<!-- Notification -->
+<div class="notify_">
+	<div class="note">
+		<div class="notify_body">
+			<span class="_notify_message"></span>
+			<span class="_notify_close" onclick="closeNotification()">&times;</span>
+    	</div>
+	</div>
+</div>
+<!-- Notification -->
+  <script type="text/javascript">
+  // Notification //
+	function showNotification(){
+      $('.notify_').css('visibility','visible');
+    }
+    function addMessageToNotification(message){
+		$('._notify_message').append(`<li>${message}</li>`)
+    }
+    function closeNotification(){
+      $('.notify_').css('visibility','hidden');
+      $('._notify_message').empty();
+    }
+  // Notification //
+  </script>
 
 <!-- ---------------------------
         Modal Schedule Event
@@ -1443,6 +1468,25 @@ $('#toggle').remove();
                 <img src="<?php echo base_url('assets/images/icons/plus.png'); ?>" style="max-height:1rem">
               </i>Add File`)
     })
+
+    $(document).on('click','.clos',function(){
+      if($('.agendaFile').val() != "" && $('.agendaFile').val() !=  null){
+        $('.add_agenda_button').click();
+      }
+      $('.dashboard_form')[0].reset();
+      $('.token').remove();
+    })
+
+    $(document).on('submit','form',function(e){
+      // e.preventDefault();
+      if($('.agenda').val() == null || $('.agenda').val() == ""){
+        e.preventDefault();
+        showNotification();
+        addMessageToNotification('Agenda Cannot Be Empty');
+        setTimeout(closeNotification,5000)
+      }
+    })
+
   </script>
 
 <?php } ?>

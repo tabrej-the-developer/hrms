@@ -1870,10 +1870,10 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 
 
 		<div class="budget-table-parent">
-		<div class="total-budget" >
+		<div class="total-budget" style="<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N" && $editRosterYN == "N"){ echo "visibility:hidden;height:1px"; } ?>">
 			<table>
 				<tr class="total-budget-row">
-					<td class="total-budget-box" style="width:16vw">Total Budget</td>
+					<td class="total-budget-box" style="width:16vw ">Total Budget</td>
 				<td class="total-budget-box" style="width:12vw" id="count-1" >
 					<?php if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){ ?>
 						$
@@ -2231,12 +2231,12 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 				</span>
 			</span>
 			</div>
-			<div id="permissions_id">
+			<!-- <div id="permissions_id">
 				<span>
 					<span><input type="checkbox" name="edit_roster" id="edit_roster"></span>
 					<span><label>Edit Roster</label></span>
 				</span>
-			</div>
+			</div> -->
 		</div>
 		<div class="modal_buttons">
 	  		<button class="modal_close" role="button">
@@ -3351,7 +3351,7 @@ $('.modal_body').draggable();
 	$(document).ready(function(){
 		$(document).on('click','#modal_permission',function(){
 			let employeeId = $('#employeeValue').val();
-			let editRoster = ($('#edit_roster').is(':checked') == true) ? 'Y' : 'N' ;
+			let editRoster = 'Y';
 			let rosterId = "<?php echo $rosterid; ?>";
 			let url = '<?php echo base_url() ?>roster/saveRosterPermissions';
 			$.ajax({

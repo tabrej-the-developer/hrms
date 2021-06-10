@@ -24,19 +24,33 @@
 	.addMultipleEmployee_span{
 
 	}
+	.button{
+        border: none !important;
+      color: rgb(23, 29, 75) !important;
+      text-align: center !important;
+      text-decoration: none !important;
+      display: inline-block !important;
+      font-weight: 700 !important;
+      margin: 2px !important;
+      width:8rem !important;
+      border-radius: 20px !important;
+      padding: 4px 8px !important;
+      background: rgb(164, 217, 214) !important;
+      font-size: 1rem !important;
+   }
 	</style>
 </head>
 <body class="add_employee_body">
 <?php $this->load->view('header'); ?>
 <div class="containers">
 <span class="d-flex justify-content-between pt-2">
-	<span style="top:20px;padding-left: 2rem">
+	<span style="top:20px;padding-left: 2rem" class="d-flex align-items-center">
       <a onclick="goBack()">
         <button class="btn back-button">
           <img src="<?php echo base_url('assets/images/back.svg');?>">
-          <span style="font-size:0.8rem">Add Multiple Employee</span>
         </button>
       </a>
+	  <span style="font-size: 1.75rem;font-weight: bold;color: rgb(23, 29, 75) !important;padding-left:1rem">Add Multiple Employee</span>
     </span>
 </span>
 	<div class="addEmployee-container">
@@ -48,25 +62,25 @@
 
 		</div>	
 	</section>
-<form method="POST" action="AddEmployeesMultiple" style="height: 100%" enctype="multipart/form-data">
+<form method="POST" action="AddEmployeesMultiple" style="height: 100%" enctype="multipart/form-data" onsubmit="return validate(this)">
 	<section class="employee-section">
 		<div class="addMultipleEmployee_div">
-			<div>
-				<label>Center</label>
+			<div class="d-inline-block align-center">
+				<label class="d-flex justify-content-center" style="font-size: 1rem;font-weight: bold;color: rgb(23, 29, 75) !important;">Add Employees To </label>
 				<span class="select_css">
 						<?php $centers = json_decode($centers);
 						?>
 					<select  name="centerid">
 						<?php foreach($centers->centers as $center){ ?>
-						<option value="<?php echo $center->centerid ?>"><?php echo $center->name ?></option>
-					<?php } ?>
+							<option value="<?php echo $center->centerid ?>"><?php echo $center->name ?></option>
+						<?php } ?>
 					</select>
 				</span>
 			</div>
 			<br>
 			<span class="addMultipleEmployee_span d-block">
-				<input type="file" name="addemployee" required>
-				<input type="submit" name="submit" value="submit">
+				<input type="file" name="addemployee" id="addFile" >
+				<input type="submit" name="submit" value="submit" class="button" >
 			</span>
 			<div style="position: absolute;bottom:5rem">
 				<span>Download a sample file structure</span>
@@ -103,6 +117,16 @@
 
 
 <script type="text/javascript">
+
+function validate(e){
+	var fileInput =  $('#addFile').val();
+	var allowedExtensions =  /(\.csv)$/i; 
+	if (!allowedExtensions.exec(fileInput)) { 
+		$('#addFile').val("") 
+		alert('Invalid file type'); 
+		return false
+	}
+}
 	$(document).ready(function(){
 		$(document).on('click','.e-b-a-s',function(){
 			$('.employee-bank-account-section').css('display','block')

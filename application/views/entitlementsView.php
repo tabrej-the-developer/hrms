@@ -395,8 +395,8 @@ input[type="text"],input[type=time],select,#casualEmp_date{
      </td>
      <td>
        <span style="cursor: pointer;" id="create_new_entitlements">
-          <div>
-           <i class="fas fa-check-square" style="color: #0077ff;" u-v=""></i> Create</div>
+          <div u-v="" class="addEnt">
+           <i class="fas fa-check-square" style="color: #0077ff;" ></i> Create</div>
        </span>
      </td>
      <td>
@@ -410,7 +410,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
          });
   </script>
   <script type="text/javascript">
-                 $(document).on('click','.fa-check-square',function(){
+                 $(document).on('click','.addEnt',function(){
                  var url = '<?php echo base_url();?>settings/addEntitlement';
                  var rate = $('#a2').val();
                  var name = $('#a1').val();

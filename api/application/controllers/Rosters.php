@@ -914,23 +914,25 @@ class Rosters extends MY_Controller
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
 			$json = json_decode(file_get_contents('php://input'));
 			if ($json != null && $res != null && $res->userid == $userid) {
-				$employeeId = $json->employeeId;
+				$employeeIds = $json->employeeId;
 				$editRoster = $json->editRoster;
 				$rosterId = $json->rosterId;
 				$this->load->model('rostersModel');
-				if ($employeeId != null && $employeeId != "" && $editRoster != null && $rosterId != null && $editRoster != "" && $rosterId != "") {
-					$rosterPermission = $this->rostersModel->getRosterPermissions($employeeId, $rosterId, $userid);
-					if (count($rosterPermission)  > 0) {
-						$this->rostersModel->updateRosterPermission($employeeId, $rosterId, $userid, $editRoster);
-						$data['Status'] = 'SUCCESS';
-						http_response_code(200);
-						echo json_encode($data);
-					}
-					if (count($rosterPermission) == 0) {
-						$this->rostersModel->addRosterPermission($employeeId, $rosterId, $userid, $editRoster);
-						$data['Status'] = 'SUCCESS';
-						http_response_code(200);
-						echo json_encode($data);
+				foreach($employeeIds as $employeeId){
+					if ($employeeId != null && $employeeId != "" && $editRoster != null && $rosterId != null && $editRoster != "" && $rosterId != "") {
+						$rosterPermission = $this->rostersModel->getRosterPermissions($employeeId, $rosterId, $userid);
+						if (count($rosterPermission)  > 0) {
+							$this->rostersModel->updateRosterPermission($employeeId, $rosterId, $userid, $editRoster);
+							$data['Status'] = 'SUCCESS';
+							http_response_code(200);
+							echo json_encode($data);
+						}
+						if (count($rosterPermission) == 0) {
+							$this->rostersModel->addRosterPermission($employeeId, $rosterId, $userid, $editRoster);
+							$data['Status'] = 'SUCCESS';
+							http_response_code(200);
+							echo json_encode($data);
+						}
 					}
 				}
 			} else {
