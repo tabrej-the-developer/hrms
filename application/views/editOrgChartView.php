@@ -615,7 +615,8 @@ font-family: 'Open Sans', sans-serif;
 			if($(parent).text().length == 0){
 			$(parent).append(code)
 			$(parent).children().children('input.editClassArea').val(nameOfArea)
-			$(parent).children().children('input.editClassYN').val(isRoomYN)
+			$(parent).children().children('.editClassYN').val(isRoomYN)
+			// $(parent).children().children(`input.editClassYN option[value="${isRoomYN}"]`).attr('selected','selected')
 				}
 			$('span').off('click').on('click','.editAreaCancel',function(){
 				var divParent = $(this).parent().parent();

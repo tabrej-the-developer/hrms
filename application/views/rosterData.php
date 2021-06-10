@@ -245,6 +245,10 @@ text-align:center;
   width: 80%;
 }
 
+.total-budget tr,.total-budget td,.total-budget table{
+	border: none !important;
+}
+
 /* The Close Button */
 /*.close {
   color: #aaaaaa;

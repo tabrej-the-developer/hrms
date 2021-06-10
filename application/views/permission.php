@@ -543,7 +543,7 @@ button[type=button]{
 						<input type="checkbox" id="editCenterProfileYN" checked><label for="editCenterProfileYN"></label>
 					</td>
 				</tr>
-				<tr>
+				<!-- <tr>
 					<td>View Room Settings</td>
 					<td>
 						<input type="checkbox" id="viewRoomSettingsYN" checked><label for="viewRoomSettingsYN"></label>
@@ -554,7 +554,7 @@ button[type=button]{
 					<td>
 						<input type="checkbox" id="editRoomSettingsYN" checked><label for="editRoomSettingsYN"></label>
 					</td>
-				</tr>
+				</tr> -->
 				<tr>
 					<td>View Entitlements</td>
 					<td>
@@ -723,8 +723,8 @@ button[type=button]{
 					document.getElementById("editOrgChartYN").checked = permissions.permissions.editOrgChartYN == "Y";
 					document.getElementById("viewCenterProfileYN").checked = permissions.permissions.viewCenterProfileYN == "Y";
 					document.getElementById("editCenterProfileYN").checked = permissions.permissions.editCenterProfileYN == "Y";
-					document.getElementById("viewRoomSettingsYN").checked = permissions.permissions.viewRoomSettingsYN == "Y";
-					document.getElementById("editRoomSettingsYN").checked = permissions.permissions.editRoomSettingsYN == "Y";
+					// document.getElementById("viewRoomSettingsYN").checked = permissions.permissions.viewRoomSettingsYN == "Y";
+					// document.getElementById("editRoomSettingsYN").checked = permissions.permissions.editRoomSettingsYN == "Y";
 					document.getElementById("viewEntitlementsYN").checked = permissions.permissions.viewEntitlementsYN == "Y";
 					document.getElementById("editEntitlementsYN").checked = permissions.permissions.editEntitlementsYN == "Y";
 					document.getElementById("editEmployeeYN").checked = permissions.permissions.editEmployeeYN == "Y";
@@ -754,8 +754,8 @@ button[type=button]{
 					document.getElementById("editOrgChartYN").checked = false;
 					document.getElementById("viewCenterProfileYN").checked = false;
 					document.getElementById("editCenterProfileYN").checked = false;
-					document.getElementById("viewRoomSettingsYN").checked = false;
-					document.getElementById("editRoomSettingsYN").checked = false;
+					// document.getElementById("viewRoomSettingsYN").checked = false;
+					// document.getElementById("editRoomSettingsYN").checked = false;
 					document.getElementById("viewEntitlementsYN").checked = false;
 					document.getElementById("editEntitlementsYN").checked = false;
 					document.getElementById("editEmployeeYN").checked = false;
@@ -793,8 +793,8 @@ button[type=button]{
 		var editOrgChartYN = document.getElementById("editOrgChartYN").checked ? "Y" : "N";
 		var viewCenterProfileYN = document.getElementById("viewCenterProfileYN").checked ? "Y" : "N";
 		var editCenterProfileYN = document.getElementById("editCenterProfileYN").checked ? "Y" : "N";
-		var viewRoomSettingsYN = document.getElementById("viewRoomSettingsYN").checked ? "Y" : "N";
-		var editRoomSettingsYN = document.getElementById("editRoomSettingsYN").checked ? "Y" : "N";
+		// var viewRoomSettingsYN = document.getElementById("viewRoomSettingsYN").checked ? "Y" : "N";
+		// var editRoomSettingsYN = document.getElementById("editRoomSettingsYN").checked ? "Y" : "N";
 		var viewEntitlementsYN = document.getElementById("viewEntitlementsYN").checked ? "Y" : "N";
 		var editEntitlementsYN = document.getElementById("editEntitlementsYN").checked ? "Y" : "N";
 		var editEmployeeYN = document.getElementById("editEmployeeYN").checked ? "Y" : "N";
@@ -807,7 +807,7 @@ button[type=button]{
 		var editPermissionYN = document.getElementById("editPermissionYN").checked ? "Y" : "N";
 		var viewPermissionYN = document.getElementById("viewPermissionYN").checked ? "Y" : "N";
 		var kidsoftYN = document.getElementById("kidsoftYN").checked ? "Y" : "N";
-		var data = 'empId='+empId+"&isQrReaderYN="+isQrReaderYN+"&viewRosterYN="+viewRosterYN+"&editRosterYN="+editRosterYN+"&viewTimesheetYN="+viewTimesheetYN+"&editTimesheetYN="+editTimesheetYN+"&viewPayrollYN="+viewPayrollYN+"&editPayrollYN="+editPayrollYN+"&editLeaveTypeYN="+editLeaveTypeYN+"&viewLeaveTypeYN="+viewLeaveTypeYN+"&createNoticeYN="+createNoticeYN+"&viewOrgChartYN="+viewOrgChartYN+"&editOrgChartYN="+editOrgChartYN+"&viewCenterProfileYN="+viewCenterProfileYN+"&editCenterProfileYN="+editCenterProfileYN+"&viewRoomSettingsYN="+viewRoomSettingsYN+"&editRoomSettingsYN="+editRoomSettingsYN+"&viewEntitlementsYN="+viewEntitlementsYN+"&editEntitlementsYN="+editEntitlementsYN+"&editEmployeeYN="+editEmployeeYN+"&xeroYN="+xeroYN+"&viewAwardsYN="+viewAwardsYN+"&editAwardsYN="+editAwardsYN+"&viewSuperfundsYN="+viewSuperfundsYN+"&editSuperfundsYN="+editSuperfundsYN+"&createMomYN="+createMomYN+"&editPermissionYN="+editPermissionYN+"&viewPermissionYN="+viewPermissionYN+"&kidsoftYN="+kidsoftYN;
+		var data = 'empId='+empId+"&isQrReaderYN="+isQrReaderYN+"&viewRosterYN="+viewRosterYN+"&editRosterYN="+editRosterYN+"&viewTimesheetYN="+viewTimesheetYN+"&editTimesheetYN="+editTimesheetYN+"&viewPayrollYN="+viewPayrollYN+"&editPayrollYN="+editPayrollYN+"&editLeaveTypeYN="+editLeaveTypeYN+"&viewLeaveTypeYN="+viewLeaveTypeYN+"&createNoticeYN="+createNoticeYN+"&viewOrgChartYN="+viewOrgChartYN+"&editOrgChartYN="+editOrgChartYN+"&viewCenterProfileYN="+viewCenterProfileYN+"&editCenterProfileYN="+editCenterProfileYN+"&viewEntitlementsYN="+viewEntitlementsYN+"&editEntitlementsYN="+editEntitlementsYN+"&editEmployeeYN="+editEmployeeYN+"&xeroYN="+xeroYN+"&viewAwardsYN="+viewAwardsYN+"&editAwardsYN="+editAwardsYN+"&viewSuperfundsYN="+viewSuperfundsYN+"&editSuperfundsYN="+editSuperfundsYN+"&createMomYN="+createMomYN+"&editPermissionYN="+editPermissionYN+"&viewPermissionYN="+viewPermissionYN+"&kidsoftYN="+kidsoftYN;
 	    var params = typeof data == 'string' ? data : Object.keys(data).map(
 	        function(k){ return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) }
 	    ).join('&');

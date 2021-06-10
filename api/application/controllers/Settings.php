@@ -1743,8 +1743,8 @@ class Settings extends CI_Controller
 				$editOrgChartYN = $json->editOrgChartYN;
 				$viewCenterProfileYN = $json->viewCenterProfileYN;
 				$editCenterProfileYN = $json->editCenterProfileYN;
-				$viewRoomSettingsYN = $json->viewRoomSettingsYN;
-				$editRoomSettingsYN = $json->editRoomSettingsYN;
+				$viewRoomSettingsYN = isset($json->viewRoomSettingsYN) ? $json->viewRoomSettingsYN : 'N';
+				$editRoomSettingsYN = isset($json->editRoomSettingsYN) ? $json->editRoomSettingsYN : 'N';
 				$viewEntitlementsYN = $json->viewEntitlementsYN;
 				$editEntitlementsYN = $json->editEntitlementsYN;
 				$editEmployeeYN = $json->editEmployeeYN;

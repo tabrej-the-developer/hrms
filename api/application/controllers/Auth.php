@@ -51,7 +51,7 @@ class Auth extends CI_Controller
 					$data['role'] = $user->role;
 					$data['title'] = $user->title;
 					$data['manager'] = $user->manager;
-					$data['companyImage'] = isset($companyDetails->companyLogo) ? $companyDetails->companyLogo : null;
+					$data['companyImage'] = isset($companyDetails->companyLogo) ? $companyDetails->companyLogo : "no_image_available.PNG";
 					//$data['firebaseid'] = $user->firebaseid;
 					$data['isVerified'] = $user->isVerified;
 					$permissions = $this->authModel->getPermissions($user->id);
