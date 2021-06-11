@@ -14,7 +14,7 @@ class DashboardModel extends CI_Model {
 	}
 	public function payrollCount($centerid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM payruns where timesheetid IN (SELECT id from timesheet where centerid = '$centerid' and status='Published')");
+		$query = $this->db->query("SELECT id from timesheet where centerid = '$centerid' and status='Published'");
 		return $query->result(); 
 	}
 	public function leavesCount($centerid){

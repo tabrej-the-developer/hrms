@@ -38,15 +38,15 @@ class Dashboard extends CI_Controller
 				$data['timesheetsCount'] = 0;
 				$data['payrollsCount'] =  0;
 				$data['leavesCount'] = 0;
-				foreach ($centers as $centerid) {
-					if (($centerid != null || $centerid != "") && $centerId == $centerid->centerid ) {
-						$data['rostersCount'] = $data['rostersCount'] + sizeof($this->dashboardModel->rosterCount($centerid->centerid, 'Published', $userid)) + sizeof($this->dashboardModel->rosterCount($centerid->centerid, 'Draft', $userid));
-						$data['timesheetsCount'] = $data['timesheetsCount'] + sizeof($this->dashboardModel->timesheetCount($centerid->centerid, 'Published', $userid)) + sizeof($this->dashboardModel->timesheetCount($centerid->centerid, 'Draft', $userid));
-						$data['payrollsCount'] = $data['payrollsCount'] + sizeof($this->dashboardModel->payrollCount($centerid->centerid));
-						$data['leavesCount'] = $data['leavesCount'] + sizeof($this->dashboardModel->leavesCount($centerid->centerid));
-						break;
-					}
-				}
+				// foreach ($centers as $centerid) {
+					// if ( $centerId == $centerid->centerid ) {
+						$data['rostersCount'] = $data['rostersCount'] + sizeof($this->dashboardModel->rosterCount($centerId, 'Published', $userid)) + sizeof($this->dashboardModel->rosterCount($centerId, 'Draft', $userid));
+						$data['timesheetsCount'] = $data['timesheetsCount'] + sizeof($this->dashboardModel->timesheetCount($centerId, 'Published', $userid)) + sizeof($this->dashboardModel->timesheetCount($centerId, 'Draft', $userid));
+						$data['payrollsCount'] = $data['payrollsCount'] + sizeof($this->dashboardModel->payrollCount($centerId));
+						$data['leavesCount'] = $data['leavesCount'] + sizeof($this->dashboardModel->leavesCount($centerId));
+						// break;
+					// }
+				// }
 				http_response_code(200);
 				echo json_encode($data);
 			} else {

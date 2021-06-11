@@ -759,7 +759,7 @@
 				<input type="radio" name="australiantResidentForTaxPurposeYN" class="australiantResidentForTaxPurposeYN yn-input" value="N" <?php echo isset($employeeData->employeeTaxDeclaration->australiantResidentForTaxPurposeYN) ? (($employeeData->employeeTaxDeclaration->australiantResidentForTaxPurposeYN == 'N') ? 'checked' : '') : ''; ?>>
 		</span>
 		<span class="span-class col-3">
-			<label>Residency Statue</label>
+			<label>Residency Status</label>
 			<span class="select_css">
 				<select placeholder="residencyStatue" id="residencyStatue" name="residencyStatue" value="<?php echo isset($employeeData->employeeTaxDeclaration->residencyStatue) ? $employeeData->employeeTaxDeclaration->residencyStatue : ''; ?>">
 					<option value="AUSTRALIANRESIDENT">Australian Resident</option>
