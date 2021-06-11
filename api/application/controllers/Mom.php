@@ -153,7 +153,7 @@ class Mom extends CI_CONTROLLER
           $agendaFileName = uniqid()."-".uniqid();
           $agendaFileExtension = isset($json->agendaFileExtension) ? $json->agendaFileExtension : ""; 
           $agendaFileName = $agendaFileName.".".$agendaFileExtension;
-          file_put_contents("application/assets/uploads/eventfolder/$agendaFileName",$file);
+          file_put_contents("/var/www/html/api/application/assets/uploads/eventfolder/$agendaFileName",$file);
         }
         // $collab = $json->collab;
         //$offset = $json->offset;
