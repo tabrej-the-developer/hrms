@@ -1507,13 +1507,13 @@ $('#toggle').remove();
       }
       if($('.agenda').val() == null || $('.agenda').val() == ""){
         e.preventDefault();
-        addMessageToNotification('Agenda Cannot Be Empty');
+        addMessageToNotification('Add Agenda');
         showNotification();
         setTimeout(closeNotification,5000)
       }
       if($('.token').length == 0){
         e.preventDefault();
-        addMessageToNotification('Members Cannot Be Empty');
+        addMessageToNotification('Add Members');
         showNotification();
         setTimeout(closeNotification,5000)
       }
