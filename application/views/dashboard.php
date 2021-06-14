@@ -1,4 +1,4 @@
-<?php // print_r(json_encode(json_decode($calendar)->event[0])); ?>
+<?php // print_r(json_encode(json_decode($calendar)->event[0]));die(); ?>
 <html>
 <head>
   <title>Dashboard</title>
@@ -600,6 +600,9 @@ table.dataTable thead th, table.dataTable thead td{
 .prevv,.futt{
   margin-bottom: 40px
 }
+.modal{
+  opacity : 1 !important;
+}
 .arrow::after{
   content: " ";
     /* background: red; */
@@ -1092,7 +1095,7 @@ color:#FFFFFF;
                   <div class="blocks_modal d-flex">
                     <span class="add_member_label">Add&nbsp;Member</span>
                     <span class="add_member_span">
-                      <select name="invites[]" class="demo" multiple  id="demo" required>
+                      <select name="invites[]" class="demo" multiple  id="demo" >
                       <?php 
                           foreach($users->users as $m):
                       ?>  
@@ -1174,7 +1177,9 @@ color:#FFFFFF;
       $('.notify_').css('visibility','visible');
     }
     function addMessageToNotification(message){
-		$('._notify_message').append(`<li>${message}</li>`)
+    	if($('.notify_').css('visibility') == 'hidden'){
+     		$('._notify_message').append(`<li>${message}</li>`)
+      }
     }
     function closeNotification(){
       $('.notify_').css('visibility','hidden');
@@ -1248,6 +1253,11 @@ color:#FFFFFF;
               console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>Leave" title="${status}">${status}</a>`));
             }
 
+            if(($('.fc-event-title').eq(increment).text()).includes('+')){
+              var status = $('.fc-event-title').eq(increment).text();
+              $('.fc-event-title').eq(increment).html(`<a style="cursor:pointer" class="events_text" title="${status}">${status}</a>`)
+            }
+
           if(($('.fc-event-title').eq(increment).text()).includes('Meeting')){
           meetingElement[meetingCount] = $('.fc-event-title').eq(increment).closest('td').attr('data-date');
           var dateMeeting = meetingElement[meetingCount];
@@ -1296,12 +1306,17 @@ color:#FFFFFF;
         }
         console.log(events)
 
+    $(document).on('click','.events_text',function(){
+      date = $(this).closest('.fc-daygrid-day').attr('data-date');
+    })
+
   $(document).on('click','.fc-button',function(){
     var d = new Date();
     var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     if($('.fc-header-toolbar .fc-toolbar-chunk .fc-toolbar-title').text() == `${months[d.getMonth()]} ${d.getFullYear()}`){
         var events = <?php print_r(json_encode(json_decode($calendar)->event[0])); ?>;
         var count = $('.fc-event-title').length; 
+        alert(count)
         var counter = 0;
         var increment = 0;
         var element = [];
@@ -1323,8 +1338,13 @@ color:#FFFFFF;
           counter++;
           }
           if(($('.fc-event-title').eq(increment).text()).includes('Leave')){
-            // var status = $('.fc-event-title').eq(increment).text();
+            var status = $('.fc-event-title').eq(increment).text();
               console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>Leave" title="${status}">${status}</a>`));
+            }
+
+            if(($('.fc-event-title').eq(increment).text()).includes('+')){
+              var status = $('.fc-event-title').eq(increment).text();
+              $('.fc-event-title').eq(increment).html(`<a style="cursor:pointer" class="events_text" title="${status}">${status}</a>`);alert()
             }
 
           if(($('.fc-event-title').eq(increment).text()).includes('Meeting')){
@@ -1469,7 +1489,7 @@ $('#toggle').remove();
               </i>Add File`)
     })
 
-    $(document).on('click','.clos',function(){
+    $(document).on('click','.clos,#mom_button',function(){
       if($('.agendaFile').val() != "" && $('.agendaFile').val() !=  null){
         $('.add_agenda_button').click();
       }
@@ -1479,10 +1499,22 @@ $('#toggle').remove();
 
     $(document).on('submit','form',function(e){
       // e.preventDefault();
+      if($('#enddate').val() < $('#date').val()){
+        e.preventDefault();
+        addMessageToNotification('Invalid dates entered');
+        showNotification();
+        setTimeout(closeNotification,5000)
+      }
       if($('.agenda').val() == null || $('.agenda').val() == ""){
         e.preventDefault();
-        showNotification();
         addMessageToNotification('Agenda Cannot Be Empty');
+        showNotification();
+        setTimeout(closeNotification,5000)
+      }
+      if($('.token').length == 0){
+        e.preventDefault();
+        addMessageToNotification('Members Cannot Be Empty');
+        showNotification();
         setTimeout(closeNotification,5000)
       }
     })

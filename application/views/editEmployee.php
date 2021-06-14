@@ -1630,7 +1630,7 @@ function showNotification(){
 		        setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 				}
-			if($('#phone').val() == null || $('#phone').val() == ""){
+			if($('#phone').val() == null || $('#phone').val() == ""   ){
 		        addMessageToNotification('Enter Phone Number');
 		      	showNotification();
 		        setTimeout(closeNotification,5000)
@@ -1642,7 +1642,7 @@ function showNotification(){
 		        setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 			}
-			if( !($('#homeAddCity').val() == null || $('#homeAddCity').val() == "" ||  (/^[a-zA-Z]+$/).test($('#homeAddCity').val())) ){
+			if( !( (/\b^[a-zA-Z]+[\s]*[a-zA-Z]+$\b/).test($('#homeAddCity').val())) ){
 		        addMessageToNotification('Invalid City');
 		      	showNotification();
 		        setTimeout(closeNotification,5000)
@@ -1660,25 +1660,25 @@ function showNotification(){
 		        setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 			}
-			if(  !($('#phone').val() == null || $('#phone').val() == "" ||(/^[0-9]+$/).test($('#phone').val() ) )  ){
+			if(  !($('#phone').val() == null || $('#phone').val() == "" || (/^[0-9]{6,}$/).test($('#phone').val() ) )  ){
 		        addMessageToNotification('Invalid Phone');
 		      	showNotification();
 		        setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 			}
-			if(  !($('#mobile').val() == null || $('#mobile').val() == "" ||(/^[0-9]+$/).test($('#mobile').val() ) )  ){
+			if(  !($('#mobile').val() == null || $('#mobile').val() == "" ||(/^[0-9]{6,}$/).test($('#mobile').val() ) )  ){
 		        addMessageToNotification('Invalid mobile');
 		      	showNotification();
 		        setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 			}
-			if(  !($('#emergency_contact').val() == null || $('#emergency_contact').val() == "" ||(/^[0-9]+$/).test($('#emergency_contact').val() ) )  ){
+			if(  !($('#emergency_contact').val() == null || $('#emergency_contact').val() == "" || (/^[0-9]{6,}$/).test($('#emergency_contact').val() ) )  ){
 		        addMessageToNotification('Invalid Emergency Contact');
 		      	showNotification();
 		        setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 			}
-			if(  !($('#employeeNumber').val() == null || $('#employeeNumber').val() == "" ||(/^[0-9]+$/).test($('#employeeNumber').val() ) )  ){
+			if(  !($('#employeeNumber').val() == null || $('#employeeNumber').val() == "" ||(/^[0-9]{6,}$/).test($('#employeeNumber').val() ) )  ){
 		        addMessageToNotification('Invalid Emergency Contact');
 		      	showNotification();
 		        setTimeout(closeNotification,5000)

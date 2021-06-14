@@ -539,7 +539,7 @@ table{
          <td>
           <div class="form-group">
           <input type="hidden" value="<?php  echo $summary[$i]->id;?>" name="id[]">
-          <input type="text" name="summary[]" class="form-control">
+          <input type="text" name="summary[]" class="form-control" required>
           </div>
          </td>
        </tr>

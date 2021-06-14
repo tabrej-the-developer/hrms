@@ -545,19 +545,27 @@ input[type=checkbox]:checked:before {
             <input type="checkbox" name="absent[]" value="<?php echo $partcipants[$i]->uid; ?>">
             
             </div>
-               <div>
-               <img class="attendance_image" src="<?php echo base_url() ?>assets/images/boyunnamed.jpg">
-               
-               </div>
-             <div>
+            <div>
+            <span class="col-12 icon-parent">
+              <span class=" icon" style="<?php echo "background:#A4D9D6; color:#707070";?>">
+                <?php 
+                  if(file_exists("api/application/assets/profileImages/".$partcipants[$i]->uid.".png")){
+                    echo "<img src='../../api/application/assets/profileImages/".$partcipants[$i]->uid.".png'>";
+                  }else{
+                    echo icon($partcipants[$i]->name);
+                  }
+                ?>
+              </span>
+            </span>
+            </div>
+            <div>
               <h6>
                 <div class="d-inline-block">
                   <span class="d-flex"><?php echo $partcipants[$i]->name ; ?></span>
                   <span class="d-flex"><?php echo " (".$partcipants[$i]->email.")"; ?></span>
                 </div>
               </h6>
-             
-             </div>
+            </div>
        </div>
       </div>
           <?php } ?>

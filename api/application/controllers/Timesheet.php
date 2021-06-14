@@ -128,7 +128,10 @@ $headers = array_change_key_case($headers);
 					if(count($val->PayRuns) > 0){
 						$startDate = $val->PayRuns[0]->PaymentDate;
 					$this->postTimesheetToXero($timesheetId,$userid,$centerid,$startDate);
+					http_response_code(200);
 					}
+				}else{
+					http_response_code(401);
 				}
 			}
 		}

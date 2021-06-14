@@ -351,7 +351,9 @@ font-family: 'Open Sans', sans-serif;
       $('.notify_').css('visibility','visible');
     }
     function addMessageToNotification(message){
-      $('._notify_message').append(`<li>${message}</li>`)
+    	if($('.notify_').css('visibility') == 'hidden'){
+     		$('._notify_message').append(`<li>${message}</li>`)
+      }
     }
     function closeNotification(){
       $('.notify_').css('visibility','hidden');
@@ -366,8 +368,8 @@ font-family: 'Open Sans', sans-serif;
       
     }else{
       $('#'+variable).val('');
-      showNotification();
       addMessageToNotification('File size must be less than 4MB');
+      showNotification();
       setTimeout(closeNotification,5000)
     }
   }

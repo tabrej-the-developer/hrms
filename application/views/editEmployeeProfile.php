@@ -1641,7 +1641,7 @@ function showNotification(){
 		        setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 			}
-			if( !($('#homeAddCity').val() == null || $('#homeAddCity').val() == "" ||  (/^[a-zA-Z]+$/).test($('#homeAddCity').val())) ){
+			if( !($('#homeAddCity').val() == null || $('#homeAddCity').val() == "" ||  !(/\b^[a-zA-Z]+[\s]*[a-zA-Z]*$\b/).test($('#homeAddCity').val())) ){
 		        addMessageToNotification('Invalid City');
 		      	showNotification();
 		        setTimeout(closeNotification,5000)

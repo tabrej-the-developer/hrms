@@ -365,7 +365,9 @@ a[href*="settings"],.xero_settings a{
       $('.notify_').css('visibility','visible');
     }
     function addMessageToNotification(message){
-		$('._notify_message').append(`<li>${message}</li>`)
+    	if($('.notify_').css('visibility') == 'hidden'){
+     		$('._notify_message').append(`<li>${message}</li>`)
+      }
     }
     function closeNotification(){
       $('.notify_').css('visibility','hidden');
@@ -382,8 +384,8 @@ a[href*="settings"],.xero_settings a{
 		$flash = $this->session->flashdata('editEmployee');
 	}
 	if(isset($flash) && $flash != ""){ ?>
-      showNotification();
       addMessageToNotification('<?php echo $flash; ?>');
+      showNotification();
       setTimeout(closeNotification,5000)
 	<?php	} ?>
 

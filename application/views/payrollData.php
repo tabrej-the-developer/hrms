@@ -835,6 +835,7 @@ table.dataTable{
 						array : array
 					},
 					success : function(response){
+						if(response.status == 200){
 						var url_publish = "<?php echo base_url() ?>payroll/updateToPublished"
 						$.ajax({
 							url : url_publish,
@@ -846,8 +847,13 @@ table.dataTable{
 								alert('Payroll Published')
 								window.location.reload();
 								console.log(array);
-						}
-					})
+							}
+						})
+					}else{
+						addMessageToNotification('Error While Publishing');
+						showNotification();
+						setTimeout(closeNotification,5000)
+					}
 				}
 			})
 			}else{

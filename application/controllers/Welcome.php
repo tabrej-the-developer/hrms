@@ -34,6 +34,7 @@ class Welcome extends CI_Controller {
 
 	public function login(){
 		$this->load->helper('form');
+		unset($_SESSION['centerr']);
 		$form_data = $this->input->post();
 		$data['errorText'] = "";
 		$data['email'] = "";
