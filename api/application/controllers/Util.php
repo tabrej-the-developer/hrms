@@ -182,7 +182,7 @@ class Util extends CI_Controller
 				foreach($centers as $center){
 					$object = (object)[];
 					$object = $this->utilModel->getKidsoftDetails($center->centerid);
-					if($this->utilModel->getKidsoftCenterAreas($center->centerid) != null)
+					if($object->center != null)
 						$object->rooms = $this->utilModel->getKidsoftCenterAreas($center->centerid);
 					else{
 						$object->centerName = $center->name;
