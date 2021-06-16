@@ -15,6 +15,9 @@
 	    background-size: 0.6rem 0.6rem;
 	    top:0 !important;
 	}
+	.employee-section{
+		height: 90% !important;
+	}
 	.profileImage_input{
 		width: 20%;
 	}

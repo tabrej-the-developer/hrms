@@ -2160,8 +2160,19 @@ $server_output = curl_exec($ch);
 
 	public function leaveSettings($centerid = null){
 		$data['centers'] = $this->getAllCenters();
+		// if($centerid == null){
+		// 	$centerid = json_decode($data['centers'])->centers[0]->centerid;
+		// }
 		if($centerid == null){
-			$centerid = json_decode($data['centers'])->centers[0]->centerid;
+			if(!isset($_SESSION['centerr'])){
+				$centerid = json_decode($data['centers'])->centers[0]->centerid;
+				$_SESSION['centerr'] = $centerid;
+			}else{
+				$centerid = $_SESSION['centerr'];
+			}
+		}else{
+			$centerid = $centerid;
+			$_SESSION['centerr'] = $centerid;
 		}
 		$data['syncedWithXero'] = $this->SyncedWithXero($centerid);
 		$data['leaveType'] = $this->getLeaveType($centerid);
