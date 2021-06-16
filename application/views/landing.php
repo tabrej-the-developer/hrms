@@ -159,10 +159,10 @@
                         <img src="<?php echo base_url(); ?>assets/images/landing/slider3.jpg">
                     </div>
                     <div data-aos="flip-left">
-                        <img src="<?php echo base_url(); ?>assets/images/landing/slider4.png">
+                        <img src="<?php echo base_url(); ?>assets/images/landing/slider4.jpg">
                     </div>
                     <div data-aos="flip-left">
-                        <img src="<?php echo base_url(); ?>assets/images/landing/slider5.png">
+                        <img src="<?php echo base_url(); ?>assets/images/landing/slider5.jpg">
                     </div>
                 </div>
             </div>
