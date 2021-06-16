@@ -40,9 +40,8 @@
 			overflow-y: auto;
 		}
 		.table-div{
-			max-height:80%;
+			max-height:100%;
 			overflow-y: auto;
-			padding: 0 20px;
 		}	
 		.table  td,.table th{
 			padding: 1rem;
@@ -232,10 +231,10 @@ border-bottom-right-radius: 20px;
         transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
     }
     .awards-container{
-    	padding: 4rem 3rem 2rem 2rem;
-    	height: 100%;
+    	padding: 2rem 2rem 1rem 1rem;
+    	height: 90%;
 	    overflow: hidden;
-	    padding: 1rem 0 1rem 2rem;
+	    padding: 1rem 2rem 1rem 2rem;
 	    margin: 0 !important;
 	    color: rgba(11, 36, 107);width: 100%
     }
@@ -380,7 +379,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
           </span>
     </span>
 	<div class="awards-container">
-		<div >
+		<div style="height:100%">
 	<?php
 		$permissions = json_decode($permissions);
 	 ?>
