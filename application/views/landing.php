@@ -164,6 +164,12 @@
                     <div data-aos="flip-left">
                         <img src="<?php echo base_url(); ?>assets/images/landing/slider5.jpg">
                     </div>
+                    <div data-aos="flip-left">
+                        <img src="<?php echo base_url(); ?>assets/images/landing/slider6.jpg">
+                    </div>
+                    <div data-aos="flip-left">
+                        <img src="<?php echo base_url(); ?>assets/images/landing/slider7.jpg">
+                    </div>
                 </div>
             </div>
         </div>
