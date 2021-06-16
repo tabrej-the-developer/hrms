@@ -33,7 +33,12 @@
                         <img src="<?php echo base_url(); ?>assets/images/landing/logo.png">
                     </a>
                 </div>
-                <ul>
+                <div class="mobileMenu" style="display: none;">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <ul class="toggleMenu">
                     <li><a href="index.html">Home</a></li>
                     <li><a href="#features">Features</a></li>
                     <li><a href="#">Faq</a></li>

@@ -18,6 +18,10 @@ $(document).ready(function(){
         $("body").css("overflow-y", "scroll");
     });
 
+    $(".mobileMenu").on("click", function(){
+        $(".toggleMenu").toggle();
+    });
+
 
     $(".owl-carousel").owlCarousel({
         items: 3,

@@ -768,6 +768,29 @@ button.owl-dot.active {
     .container {
         width: 90%;
     }
+    .mobileMenu {
+        display: block !important;
+        position: relative;
+        z-index: 8;
+    }
+    .header ul {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        flex-direction: column;
+        background: #fff;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+        z-index: 7;
+    }
+    .header ul li {
+        padding: 15px 0;
+    }
     .social {
         display: none;
     }
@@ -805,6 +828,14 @@ button.owl-dot.active {
     .sliderSection h2 {
         font-size: 26px;
         line-height: 46px;
+    }
+    ul.footerMenu {
+        margin: 0;
+        padding: 0;
+        flex-direction: column;
+    }
+    ul.footerMenu li {
+        padding: 10px 0;
     }
 }
 
