@@ -795,8 +795,16 @@ button.owl-dot.active {
     .seeHowWeWork .container {
         width: 90%;
     }
+    .seeHowWeWork video {
+        height: 100%;
+        width: auto;
+    }
     .seeHowWeWork p {
         width: 100%;
+    }
+    .sliderSection h2 {
+        font-size: 26px;
+        line-height: 46px;
     }
 }
 
