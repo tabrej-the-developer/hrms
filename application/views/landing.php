@@ -150,13 +150,13 @@
 
                 <div class="owl-carousel">
                     <div data-aos="flip-left">
-                        <img src="<?php echo base_url(); ?>assets/images/landing/slider1.png">
+                        <img src="<?php echo base_url(); ?>assets/images/landing/slider1.jpg">
                     </div>
                     <div data-aos="flip-left">
-                        <img src="<?php echo base_url(); ?>assets/images/landing/slider2.png">
+                        <img src="<?php echo base_url(); ?>assets/images/landing/slider2.jpg">
                     </div>
                     <div data-aos="flip-left">
-                        <img src="<?php echo base_url(); ?>assets/images/landing/slider3.png">
+                        <img src="<?php echo base_url(); ?>assets/images/landing/slider3.jpg">
                     </div>
                     <div data-aos="flip-left">
                         <img src="<?php echo base_url(); ?>assets/images/landing/slider4.png">
