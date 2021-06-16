@@ -897,12 +897,14 @@ color:#FFFFFF;
               </select>
             </span>	
         <span class="ml-auto">
+        <?php  if((isset($permissions->permissions) ? $permissions->permissions->createMomYN : "N") == "Y"){ ?>
           <button id="mom_button" type="button"  class="button" data-toggle="modal" data-target="#myModal">
             <i style="padding-right:0.5rem;padding-left:0.5rem">
               <img src="<?php echo base_url('assets/images/icons/addEvent_calendar.png'); ?>" style="max-height:1rem">
             </i>
             <span style="padding-right:0.5rem">Add Event</span>
           </button>
+          <?php } ?>
         </span>
       </span>
     </div>
