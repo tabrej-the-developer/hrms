@@ -765,8 +765,32 @@ button.owl-dot.active {
 }
 
 @media only screen and (max-width: 1023px){
+    .container {
+        width: 90%;
+    }
+    .bannerBg .container::before {
+        display: none;
+    }
+    .bannerBg h1 {
+        font-size: 38px;
+    }
+    .bannerBg h6 {
+        width: 100%;
+    }
+    img.laptop {
+        width: 100%;
+    }
+    .featuresText h2 {
+        font-size: 36px;
+    }
     .featuresText ul li {
         flex: 0 0 100%;
+    }
+    .seeHowWeWork .container {
+        width: 90%;
+    }
+    .seeHowWeWork p {
+        width: 100%;
     }
 }
 
