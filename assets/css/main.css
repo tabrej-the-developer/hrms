@@ -768,6 +768,9 @@ button.owl-dot.active {
     .container {
         width: 90%;
     }
+    .social {
+        display: none;
+    }
     .bannerBg .container::before {
         display: none;
     }
@@ -779,6 +782,9 @@ button.owl-dot.active {
     }
     img.laptop {
         width: 100%;
+    }
+    .features {
+        background: none;
     }
     .featuresText h2 {
         font-size: 36px;
