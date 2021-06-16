@@ -48,8 +48,8 @@
         <div class="social" data-aos="fade-up">
             Follow us on : <a class="facebook" href="#"><span></span></a> <a class="twitter" href="#"><span></span></a>
         </div>
-            <h1 data-aos="fade-up">Easy Web Management</h1>
-            <h6 data-aos="fade-up">We believe everyone should be able to access to the apps and information by the smartphone. Technology is the medium to achievemore daily needs.</h6>
+            <h1 data-aos="fade-up">Let us take care of your HRMS101</h1>
+            <h6 data-aos="fade-up">With HRMS101 management of your administrative roles in an organization becomes easy to manage. Our team makes your company’s HR services tech-friendly. It’s your key to success!</h6>
             <a class="button" data-aos="fade-up" href="#">Get Started Now</a>
             <img class="laptop" data-aos="zoom-in" src="<?php echo base_url(); ?>assets/images/landing/laptop.png">
         </div>
@@ -58,42 +58,66 @@
         <div id="features" class="features clearfix">
             <div class="container">
                 <div class="featuresText">
-                    <h2>Stunning Features</h2>
-                    <p>Faff about only a quid blower I don’t want no agro bleeding chimney pot burke tosser cras nice one boot fanny.!</p>
+                    <h2>Know more about HRMS features</h2>
+                    <p>HRMS101 features innovating your world. HRMS101 provide features that make greater motivation and a greater human resources approach to management</p>
                     <ul>
-                        <li>Roster</li>
-                        <li>Leave</li>
-                        <li>Timesheet</li>
-                        <li>Payroll</li>
-                        <li>Chat</li>
-                        <li>Chat</li>
+                        <li>
+                            <img src="<?php echo base_url(); ?>assets/images/landing/feature1.png">
+                            <h3>Roster</h3>
+                            <p>The Roster module assists you in forming rosters for your employees. You can set a date and time for each employee, the admin can check and formulate changes in rosters of all centres. This helps you in checking and maintaining the record.</p>
+                        </li>
+                        <li>
+                            <img src="<?php echo base_url(); ?>assets/images/landing/feature2.png">
+                            <h3>Time sheet</h3>
+                            <p>The Timesheet module with a quick yet comprehensive view for employees to fill their activities, duration, visits.  It lets them focus on their real job rather than filling time and its layout will not let them miss any small detail.</p>
+                        </li>
+                        <li>
+                            <img src="<?php echo base_url(); ?>assets/images/landing/feature3.png">
+                            <h3>Leave module</h3>
+                            <p>The Leave module features your leave. It includes everything required in an application for leave from reason to applied date and it’s status. Exerting long procedure of communication with HR. </p>
+                        </li>
+                        <li>
+                            <img src="<?php echo base_url(); ?>assets/images/landing/feature4.png">
+                            <h3>Payroll</h3>
+                            <p>The Payroll option holds an updated sheet of employees with their name, taxes, mode of payment. This option is not just beneficial to the company but for the employee to track their paycheck avoiding future payment conflicts. </p>
+                        </li>
+                        <li>
+                            <img src="<?php echo base_url(); ?>assets/images/landing/feature5.png">
+                            <h3>Chat Module</h3>
+                            <p>The Chat101 module where you can interact with your office employees giving rise to easier and safer communication.  This helps in icebreaking among employees and focusing on a harmonious and unity among workplace. </p>
+                        </li>
+                        <li>
+                            <img src="<?php echo base_url(); ?>assets/images/landing/feature6.png">
+                            <h3>Minutes of meeting</h3>
+                            <p>Formulating an event in the HRMS101 app allows you to decide the agenda of the meeting to be discussed. Minutes of meeting shows you the number of people and their text. We can also mention the summary of the meeting as well. </p>
+                        </li>
              
                     </ul>
-                    <a class="button" href="#">Read More</a>
+                    <!-- <a class="button" href="#">Read More</a> -->
                 </div>
-                <div class="featurePoint ">
+                <!-- <div class="featurePoint ">
                     <div class="featurePointDiv rightDiv firstArrow" data-aos="fade-right">
-                        <img src="<?php echo base_url(); ?>assets/images/landing/mic.png">
+                        <img src="<?php // echo base_url(); ?>assets/images/landing/mic.png">
                         <span>
                             <h5>Market research</h5>
                             <p>loremipsumdolor sit amet</p>
                         </span>
                     </div>
                     <div class="featurePointDiv" data-aos="fade-left">
-                        <img src="<?php echo base_url(); ?>assets/images/landing/chess.png">
+                        <img src="<?php // echo base_url(); ?>assets/images/landing/chess.png">
                         <span>
                             <h5>Stategy & Direction</h5>
                             <p>loremipsumdolor sit amet</p>
                         </span>
                     </div>
                     <div class="featurePointDiv rightDiv lastArrow" data-aos="fade-right">
-                        <img src="<?php echo base_url(); ?>assets/images/landing/one.png">
+                        <img src="<?php // echo base_url(); ?>assets/images/landing/one.png">
                         <span>
                             <h5>Brand Marketing</h5>
                             <p>loremipsumdolor sit amet</p>
                         </span>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
 
@@ -103,7 +127,7 @@
             </video>
             <div class="container">
                 <h2>See How We Work</h2>
-                <p>Take control over your business by deploying an all in one business data monitoring solution. Take control over your business</p>
+                <p>Everything you need to increase your company’s efficiency in one platform HRMS101.</p>
                 <a class="Play" data-aos="flip-left" href="#">Play</a>
             </div>
         </div>
