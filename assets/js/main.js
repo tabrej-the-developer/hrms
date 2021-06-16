@@ -24,7 +24,7 @@ $(document).ready(function(){
 
 
     $(".owl-carousel").owlCarousel({
-        items: 3,
+        items: 4,
         loop:Infinity,
         nav: false,
         dots: true,
@@ -39,7 +39,7 @@ $(document).ready(function(){
                 nav:false
             },
             1000:{
-                items:3,
+                items:4,
                 nav:true,
                 loop:false
             }
