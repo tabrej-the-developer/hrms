@@ -50,7 +50,7 @@
         </div>
             <h1 data-aos="fade-up">Let us take care of your HRMS101</h1>
             <h6 data-aos="fade-up">With HRMS101 management of your administrative roles in an organization becomes easy to manage. Our team makes your company’s HR services tech-friendly. It’s your key to success!</h6>
-            <a class="button" data-aos="fade-up" href="#">Get Started Now</a>
+            <a class="button" data-aos="fade-up" href="<?php echo base_url('welcome/login'); ?>">Get Started Now</a>
             <img class="laptop" data-aos="zoom-in" src="<?php echo base_url(); ?>assets/images/landing/laptop.png">
         </div>
         </div>
@@ -61,32 +61,32 @@
                     <h2>Know more about HRMS features</h2>
                     <p>HRMS101 features innovating your world. HRMS101 provide features that make greater motivation and a greater human resources approach to management</p>
                     <ul>
-                        <li>
+                        <li data-aos="fade-up">
                             <img src="<?php echo base_url(); ?>assets/images/landing/feature1.png">
                             <h3>Roster</h3>
                             <p>The Roster module assists you in forming rosters for your employees. You can set a date and time for each employee, the admin can check and formulate changes in rosters of all centres. This helps you in checking and maintaining the record.</p>
                         </li>
-                        <li>
+                        <li data-aos="fade-up">
                             <img src="<?php echo base_url(); ?>assets/images/landing/feature2.png">
                             <h3>Time sheet</h3>
                             <p>The Timesheet module with a quick yet comprehensive view for employees to fill their activities, duration, visits.  It lets them focus on their real job rather than filling time and its layout will not let them miss any small detail.</p>
                         </li>
-                        <li>
+                        <li data-aos="fade-up">
                             <img src="<?php echo base_url(); ?>assets/images/landing/feature3.png">
                             <h3>Leave module</h3>
                             <p>The Leave module features your leave. It includes everything required in an application for leave from reason to applied date and it’s status. Exerting long procedure of communication with HR. </p>
                         </li>
-                        <li>
+                        <li data-aos="fade-up">
                             <img src="<?php echo base_url(); ?>assets/images/landing/feature4.png">
                             <h3>Payroll</h3>
                             <p>The Payroll option holds an updated sheet of employees with their name, taxes, mode of payment. This option is not just beneficial to the company but for the employee to track their paycheck avoiding future payment conflicts. </p>
                         </li>
-                        <li>
+                        <li data-aos="fade-up">
                             <img src="<?php echo base_url(); ?>assets/images/landing/feature5.png">
                             <h3>Chat Module</h3>
                             <p>The Chat101 module where you can interact with your office employees giving rise to easier and safer communication.  This helps in icebreaking among employees and focusing on a harmonious and unity among workplace. </p>
                         </li>
-                        <li>
+                        <li data-aos="fade-up">
                             <img src="<?php echo base_url(); ?>assets/images/landing/feature6.png">
                             <h3>Minutes of meeting</h3>
                             <p>Formulating an event in the HRMS101 app allows you to decide the agenda of the meeting to be discussed. Minutes of meeting shows you the number of people and their text. We can also mention the summary of the meeting as well. </p>

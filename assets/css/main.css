@@ -366,7 +366,8 @@ a.twitter {
     justify-content: space-between;
 }
 .featuresText {
-    width: 50%;
+    width: 100%;
+    text-align: center;
 }
 .featuresText h2 {
     font-size: 42px;
@@ -388,12 +389,22 @@ a.twitter {
     flex-wrap: wrap;
 }
 .featuresText ul li {
-    flex: 1 0 41%;
-    background: url(../images/landing/check.png) no-repeat left center;
+    flex: 0 0 33.333%;
+    /* background: url(../images/landing/check.png) no-repeat left center; */
     list-style: none;
-    padding-left: 54px;
+    padding: 54px 15px 0;
     line-height: 47px;
     margin: 0 0 18px;
+    box-sizing: border-box;
+}
+.featuresText ul li h3 {
+    margin: 0;
+}
+.featuresText ul li p{
+    color: rgb(0 0 0 / 68%);
+    font-size: 15px;
+    line-height: 22px;
+    margin: 0 0 20px;
 }
 .featuresText a.button {
     clear: both;
