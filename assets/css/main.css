@@ -764,7 +764,7 @@ button.owl-dot.active {
     }
 }
 
-@media only screen and (max-width: 1023){
+@media only screen and (max-width: 1023px){
     .featuresText ul li {
         flex: 0 0 100%;
     }
