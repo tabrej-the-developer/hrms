@@ -343,6 +343,7 @@ class Mom extends CI_CONTROLLER
     $headers = array_change_key_case($headers);
     if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
       $this->load->model('meetingModel');
+      $mdata['mId'] = $mId;
       $mdata['meeting'] = $this->meetingModel->getMeetingData($mId);
       $mdata['mom'] = $this->meetingModel->getMeetingInfo($mId);
       // var_dump($participants);
