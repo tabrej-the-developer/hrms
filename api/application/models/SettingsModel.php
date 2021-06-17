@@ -282,7 +282,7 @@ class SettingsModel extends CI_Model {
 		}
 		public function getEmployeeSuperfunds($userid){
 			$this->load->database();
-			$query = $this->db->query("SELECT * FROM employeesuperfund as es INNER JOIN superfund as s on s.superfundid = es.superfundid  where employeeId IN (SELECT userid FROM employee where userid = '$userid')");
+			$query = $this->db->query("SELECT * FROM employeesuperfund as es INNER JOIN superfund as s on s.superfundid = es.superfundid  where employeeId IN (SELECT userid FROM employee where userid = '$userid') ORDER BY superfundId");
 			return $query->result();
 		}
 		public function getEmployeeTaxDec($userid){

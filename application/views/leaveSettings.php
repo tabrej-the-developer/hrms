@@ -600,14 +600,39 @@ input[type="text"],input[type=time],select,#casualEmp_date{
                     </div>
 					</form>
                 </div>
+              <!-- Notification -->
+              <div class="notify_">
+                <div class="note">
+                  <div class="notify_body">
+                    <span class="_notify_message"></span>
+                    <span class="_notify_close" onclick="closeNotification()">&times;</span>
+                    </div>
+                </div>
+              </div>
+              <!-- Notification -->
             </div>
             <!-- modal end here -->
 <script type="text/javascript">
+
+// Notification //
+function showNotification(){
+      $('.notify_').css('visibility','visible');
+    }
+    function addMessageToNotification(message){
+    	if($('.notify_').css('visibility') == 'hidden'){
+     		$('._notify_message').append(`<li>${message}</li>`)
+    	}
+    }
+    function closeNotification(){
+      $('.notify_').css('visibility','hidden');
+      $('._notify_message').empty();
+    }
+  // Notification //
+
 	$(document).ready(()=>{
     $('.containers').css('paddingLeft',$('.side-nav').width());
 });
-</script>
-<script type="text/javascript">
+
   	var base_url = "<?php echo base_url(); ?>";
 		function editLeaveType(leaveId){
 			document.getElementById("leaveId").value = leaveId;
