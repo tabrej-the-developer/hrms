@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Mom extends CI_CONTROLLER
+class Mom extends MY_Controller
 {
 
   function __construct()
@@ -172,17 +172,20 @@ class Mom extends CI_CONTROLLER
         }
         if ($period == 'A') {
           //annual meeting
-          $id = uniqid();
-          //echo $currentDate;
-          $dateOfMeeting = date('Y-m-d', strtotime($currentDate . '+1 year'));
-          $this->meetingModel->addMeeting($id, $meetingTitle, $dateOfMeeting, $dateOfMeeting, $time, $endTime, $location, $period, null, $userid, $status, $agendaFileName);
-          $this->meetingModel->addParticipant($id, $userid);
-          foreach ($agenda as $a) :
-            $this->meetingModel->addAgenda($id, $a);
-          endforeach;
-          foreach ($invites as $i) :
-            $this->meetingModel->addParticipant($id, $i);
-          endforeach;
+          $dateOfMeeting = $currentDate;
+          while ($dateOfMeeting <= $edate) {
+            $id = uniqid();
+            //echo $currentDate;
+            $this->meetingModel->addMeeting($id, $meetingTitle, $dateOfMeeting, $dateOfMeeting, $time, $endTime, $location, $period, null, $userid, $status, $agendaFileName);
+            $this->meetingModel->addParticipant($id, $userid);
+            foreach ($agenda as $a) :
+              $this->meetingModel->addAgenda($id, $a);
+            endforeach;
+            foreach ($invites as $i) :
+              $this->meetingModel->addParticipant($id, $i);
+            endforeach;
+            $dateOfMeeting = date('Y-m-d', strtotime($currentDate . '+1 year'));
+          }
           //$afterOneYear = date("Y-m-d",$currentDate . " +1 year");
         } else if ($period == 'W') {
           //weekly meeting
@@ -207,8 +210,7 @@ class Mom extends CI_CONTROLLER
           $dateOfMeeting = $date;
           while ($dateOfMeeting <= $edate) {
             $id = uniqid();
-            $this->meetingModel->addMeeting($id, $meetingTitle, $dateOfMeeting, $dateOfMeeting, $time, $endTime, $location, $period, null, $userid, $status, $agendaFileName);
-            $dateOfMeeting = date('Y-m-d', strtotime($dateOfMeeting . '+1 month'));
+            $this->meetingModel->addMeeting($id, $meetingTitle, $dateOfMeeting, $dateOfMeeting, $time, $endTime, $location, $period, $currentMeetingId, $userid, $status, $agendaFileName);
             $this->meetingModel->addParticipant($id, $userid);
             foreach ($agenda as $a) :
               $this->meetingModel->addAgenda($id, $a);
@@ -217,9 +219,25 @@ class Mom extends CI_CONTROLLER
               $this->meetingModel->addParticipant($id, $i);
             endforeach;
             $currentMeetingId = $id;
+            $dateOfMeeting = date('Y-m-d', strtotime($dateOfMeeting . '+1 month'));
           }
         }
-
+        // Email & Notification
+        // $permissions = $this->getNotificationPermissions($invites,1);
+        // foreach($permissions as $permission){
+        //   if($permission->appYN == 'Y'){
+        //     $this->utilModel->insertNotification($permission->userid, $intent, $title, $body, json_encode($payload));
+        //     // $this->firebase->sendMessage($title,$body,$payload,$empId);
+        //   }
+        //   if($permission->emailYN == 'Y'){
+        //     $subject = "Meeting Created";
+        //     $template = "notificatioEmail";
+        //     $body['body'] = "<div style=\"display:flex;align-items:center;justify-content:center;height:100%;\"><div>
+        //         <h1 style=\"text-align:center\">Meeting Created</h1><h4 style=\"text-align:center\">$meetingTitle</h4><h4 style=\"text-align:center\">Location : $location</h4><h4 style=\"text-align:center\">Period : $period</h4></div></div>";
+        //     $this->Emails($permission->email,$template,$subject,$body);
+        //   }
+        // }
+        // Email & Notification
         $data['Status'] = 'Success';
         http_response_code(200);
         echo json_encode($data);
@@ -297,9 +315,29 @@ class Mom extends CI_CONTROLLER
       $mId = $meetingId;
       $len = count($summary);
       for ($k = 0; $k < $len; $k++) {
-        $this->meetingModel->meetingSummary($t[$k], $summary[$k]);
+        // $this->meetingModel->meetingSummary($t[$k], $summary[$k]);
       }
-      $this->meetingModel->updateMeetingStatus($mId, 'Summary');
+      // $this->meetingModel->updateMeetingStatus($mId, 'Summary');
+      $meetingInvites = $this->meetingModel->getPresent($mId);
+      $invites = [];
+      foreach($meetingInvites as $participant){
+        array_push($invites , $participant->id);
+      }
+        // Email & Notification
+        // $permissions = $this->getNotificationPermissions($invites,2);
+        // foreach($permissions as $permission){
+        //   if($permission->appYN == 'Y'){
+        //     // $this->utilModel->insertNotification($permission->userid, $intent, $title, $body, json_encode($payload));
+        //     // $this->firebase->sendMessage($title,$body,$payload,$empId);
+        //   }
+        //   if($permission->emailYN == 'Y'){
+        //     $subject = "Meeting Ended";
+        //     $template = "notificatioEmail";
+        //     $body['body'] = "<div style='display:flex;align-items:center;justify-content:center;height:100%;'><div><h1 style='text-align:center'>Meeting Ended</h1><h4 style='text-align:center'>Thank You</h4></div></div>";
+        //     $this->Emails("dheerajreddynannuri1709@gmail.com",$template,$subject,$body);
+        //   }
+        // }
+        // Email & Notification
       $data['Status'] = 'Success';
       $data['respons_code'] = http_response_code(200);
       http_response_code(200);
@@ -343,7 +381,6 @@ class Mom extends CI_CONTROLLER
     $headers = array_change_key_case($headers);
     if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
       $this->load->model('meetingModel');
-      $mdata['mId'] = $mId;
       $mdata['meeting'] = $this->meetingModel->getMeetingData($mId);
       $mdata['mom'] = $this->meetingModel->getMeetingInfo($mId);
       // var_dump($participants);

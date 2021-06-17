@@ -363,7 +363,7 @@ class Xero extends CI_Controller
 							$leaveTypes = $val->PayItems->LeaveTypes;
 							// var_dump($leaveTypes);
 							// NOTICE -- need to get the centerid
-							// $this->leaveModel->deleteAllLeaveTypes($centerid);
+							$this->leaveModel->deleteAllLeaveTypes($centerid);
 							for ($i = 0; $i < count($leaveTypes); $i++) {
 								$LeaveTypeID = $leaveTypes[$i]->LeaveTypeID;
 								$Name = addslashes($leaveTypes[$i]->Name);
