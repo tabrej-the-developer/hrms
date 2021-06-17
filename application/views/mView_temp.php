@@ -2156,7 +2156,11 @@ messaging.getToken().then((currentToken) => {
             <span class="groupMembers_userIcon">
               <span class=" icon" style="
                 <?php echo "background:".$colors_array[rand(0,5)]?>">
-                <?php echo isset($members->DisplayName) ? icon($members->DisplayName) : "";?>
+                <?php 
+                  if(isset($members->convoProfilePic)){
+                    echo "<img src=".base_url()."api/uploads/images/conversation/".$members->convoProfilePic.">";
+                  }{
+                echo isset($members->DisplayName) ? icon($members->DisplayName) : ""; }?>
               </span>
             </span>
             <span class="groupMembers_tile">
@@ -2325,6 +2329,17 @@ messaging.getToken().then((currentToken) => {
   </div>
 </div>
 <!-- Add User Modal -->
+
+<!-- Notification -->
+<div class="notify_">
+	<div class="note">
+		<div class="notify_body">
+			<span class="_notify_message"></span>
+			<span class="_notify_close" onclick="closeNotification()">&times;</span>
+    	</div>
+	</div>
+</div>
+<!-- Notification -->
 
 </body>
 
@@ -2644,7 +2659,20 @@ $('.save').click(function(){
       })
     }
 
-
+// Notification //
+function showNotification(){
+      $('.notify_').css('visibility','visible');
+    }
+    function addMessageToNotification(message){
+    	if($('.notify_').css('visibility') == 'hidden'){
+     		$('._notify_message').append(`<li>${message}</li>`)
+    	}
+    }
+    function closeNotification(){
+      $('.notify_').css('visibility','hidden');
+      $('._notify_message').empty();
+    }
+  // Notification //
 
     $(document).ready(function(){
       setInterval(loadChatElements,5000)
@@ -2936,7 +2964,20 @@ else{
       })
       $(document).on('click','.createGroupClass_wrapper',function(){
         var groupName = $('.groupNameInput').val();
-        postConversation(arr,groupName,null,null,'Y');
+        if($('.groupNameInput').val() != null && $('.groupNameInput').val() != ""){
+          postConversation(arr,groupName,null,null,'Y');
+        }
+        if(arr.length == 0){
+		      addMessageToNotification('Add Members');
+		      showNotification();
+		      setTimeout(closeNotification,5000)
+        }
+        else{
+          console.log(arr)
+		      addMessageToNotification('Enter Group Name');
+		      showNotification();
+		      setTimeout(closeNotification,5000)
+        }
       })
 
       $(document).on('click','.addUser__save',function(){
