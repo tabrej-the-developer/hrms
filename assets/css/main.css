@@ -694,6 +694,7 @@ button.owl-dot.active {
     background: rgba(0, 0, 0, 0.493);
     align-items: center;
     justify-content: center;
+    z-index: 999;
 }
 .midCont {
     background: #fff;
@@ -701,9 +702,47 @@ button.owl-dot.active {
     padding: 60px 50px 50px;
     box-sizing: border-box;
 }
-
-
-
+.midCont form {
+    display: flex;
+    flex-direction: column;
+}
+.midCont form input {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 10px 0;
+    box-sizing: border-box;
+}
+.midCont form input[type="submit"] {
+    background: #ef802d;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+span.closeGetStartedCont {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    height: 50px;
+    background: #1f317f;
+}
+span.closeGetStartedCont:before {
+    position: absolute;
+    width: 40px;
+    height: 4px;
+    background: #fff;
+    content: "";
+    transform: rotate( 45deg ) translate(19px, 12px);
+}
+span.closeGetStartedCont:after {
+    position: absolute;
+    width: 40px;
+    height: 4px;
+    background: #fff;
+    content: "";
+    transform: rotate( -45deg ) translate(-11px, 19px);
+}
 
 /* ==========================================================================
    Media Queries
