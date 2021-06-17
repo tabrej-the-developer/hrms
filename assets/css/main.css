@@ -684,6 +684,27 @@ button.owl-dot.active {
     text-transform: uppercase;
 }
 
+
+.getStartedCont {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.493);
+    align-items: center;
+    justify-content: center;
+}
+.midCont {
+    background: #fff;
+    width: 500px;
+    padding: 60px 50px 50px;
+    box-sizing: border-box;
+}
+
+
+
+
 /* ==========================================================================
    Media Queries
    ========================================================================== */

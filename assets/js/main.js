@@ -1,3 +1,5 @@
+const { on } = require("process");
+
 $(document).ready(function(){
     $(window).scroll(function() {
         if ($(window).scrollTop() > 0) {
@@ -44,6 +46,13 @@ $(document).ready(function(){
                 loop:false
             }
         }
+    });
+
+    $(".getStarted").on("click", function(){
+        $(".getStartedCont").css("display", "flex");
+    });
+    $(".closeGetStartedCont").on("click", function(){
+        $(".getStartedCont").hide();
     });
     
     

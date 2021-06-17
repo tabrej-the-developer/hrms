@@ -41,9 +41,7 @@
                 <ul class="toggleMenu">
                     <li><a href="index.html">Home</a></li>
                     <li><a href="#features">Features</a></li>
-                    <li><a href="#">Faq</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="<?php echo base_url('welcome/login'); ?>">Sign Up</a></li>
+                    <li><a href="<?php echo base_url('welcome/login'); ?>">Sign In</a></li>
                 </ul>
             </div>
         </div>
@@ -55,9 +53,21 @@
         </div>
             <h1 data-aos="fade-up">Let us take care of your HRMS101</h1>
             <h6 data-aos="fade-up">With HRMS101 management of your administrative roles in an organization becomes easy to manage. Our team makes your company’s HR services tech-friendly. It’s your key to success!</h6>
-            <a class="button" data-aos="fade-up" href="<?php echo base_url('welcome/login'); ?>">Get Started Now</a>
+            <a class="button getStarted" data-aos="fade-up" href="#">Get Started Now</a>
             <img class="laptop" data-aos="zoom-in" src="<?php echo base_url(); ?>assets/images/landing/laptop.png">
         </div>
+        </div>
+
+        <div class="getStartedCont" style="display: none;">
+            <div class="midCont">
+                <span class="closeGetStartedCont"></span>
+                <form>
+                <input type="text" placeholder="Your Name">
+                <input type="email" placeholder="Your Email">
+                <input type="tel" placeholder="Your Phone Number">
+                <input type="submit" value="Submit">
+                </form>
+            </div>
         </div>
 
         <div id="features" class="features clearfix">
@@ -178,10 +188,8 @@
             <div class="container">
                 <ul class="footerMenu">
                     <li><a href="#">Home</a></li>
-                    <li><a href="#">Features</a></li>
-                    <li><a href="#">Faq</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="<?php base_url('welcom/login'); ?>">Sign Up</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="<?php base_url('welcom/login'); ?>">Sign In</a></li>
                 </ul>
                 <p>Copyright © 2021. All rights Reserved.</p>
             </div>
