@@ -701,6 +701,7 @@ button.owl-dot.active {
     width: 500px;
     padding: 60px 50px 50px;
     box-sizing: border-box;
+    position: relative;
 }
 .midCont form {
     display: flex;
@@ -709,6 +710,8 @@ button.owl-dot.active {
 .midCont form input {
     border: 1px solid #ddd;
     border-radius: 5px;
+    -o-border-radius: 5px;
+    -webkit-border-radius: 5px;
     padding: 15px;
     margin: 10px 0;
     box-sizing: border-box;
@@ -725,7 +728,7 @@ span.closeGetStartedCont {
     right: 0;
     width: 50px;
     height: 50px;
-    background: #1f317f;
+    background: #0f5ca3;
 }
 span.closeGetStartedCont:before {
     position: absolute;
