@@ -1,4 +1,4 @@
-const { on } = require("process");
+
 
 $(document).ready(function(){
     $(window).scroll(function() {
@@ -48,10 +48,12 @@ $(document).ready(function(){
         }
     });
 
-    $(".getStarted").on("click", function(){
+    $(".getStarted").on("click", function(e){
+        e.preventDefault();
         $(".getStartedCont").css("display", "flex");
     });
-    $(".closeGetStartedCont").on("click", function(){
+    $(".closeGetStartedCont").on("click", function(e){
+        e.preventDefault();
         $(".getStartedCont").hide();
     });
     
