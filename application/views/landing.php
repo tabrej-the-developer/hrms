@@ -39,8 +39,9 @@
                     <span></span>
                 </div>
                 <ul class="toggleMenu">
-                    <li><a href="index.html">Home</a></li>
+                    <li><a href="https://stage.todquest.com/HRMS101/welcome/landing">Home</a></li>
                     <li><a href="#features">Features</a></li>
+                    <li><a href="https://stage.todquest.com/help">Help</a></li>
                     <li><a href="<?php echo base_url('welcome/login'); ?>">Sign In</a></li>
                 </ul>
             </div>
@@ -187,8 +188,9 @@
         <div class="footer">
             <div class="container">
                 <ul class="footerMenu">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#features">Features</a></li>
+                    <li><a href="https://stage.todquest.com/HRMS101/welcome/landing">Home</a></li>
+                    <li><a href="https://stage.todquest.com/HRMS101/welcome/landing#features">Features</a></li>
+                    <li><a href="https://stage.todquest.com/help">Help</a></li>
                     <li><a href="<?php base_url('welcom/login'); ?>">Sign In</a></li>
                 </ul>
                 <p>Copyright © 2021. All rights Reserved.</p>
