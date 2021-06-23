@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Notice extends CI_Controller
+class Notice extends MY_Controller
 {
 
 	function __construct()
@@ -108,7 +108,7 @@ class Notice extends CI_Controller
 					$this->load->model('noticeModel');
 					if ($text != null && $text != "" && $subject != null && $subject != "" && (count($json->members) > 0)) {
 						foreach ($json->members as $memberid) {
-							if (preg_match('/[a-z]/i', $memberid) == 1) {
+							if (preg_match('/(isGROUP)/i', $memberid) == 0) {
 								$config = array(
 									'protocol'  => 'smtp',
 									'smtp_host' => 'ssl://smtp.zoho.com',
@@ -123,17 +123,17 @@ class Notice extends CI_Controller
 								$this->email->from('demo@todquest.com', 'Todquest');
 								$mailId = $this->noticeModel->getMailId($memberid);
 								// $this->email->to("dheerajreddynannuri1709@gmail.com");
-								$this->email->to($mailId->email);
+								// $this->email->to($mailId->email);
 								$this->email->subject($subject);
 								$this->email->message(html_entity_decode($text));
 								$this->email->send();
 								$this->noticeModel->addNotice($userid, $memberid, $subject, $text);
 							}
-							if (preg_match('/[a-z]/i', $memberid) == 0) {
-								// $groupMembers = $this->noticeModel->getMembersOfGroup($memberid);
-								// foreach($groupMembers as $member){
-								$this->noticeModel->addNotice($userid, $memberid, $subject, $text);
-								// }
+							if (preg_match('/(isGROUP)/i', $memberid) == 1) {
+								$groupMembers = $this->noticeModel->getMembersOfGroup(substr($memberid,0,strlen($memberid)-6 ));
+								foreach($groupMembers as $member){
+									$this->noticeModel->addNotice($userid, $member->memberid, $subject, $text);
+								}
 							}
 						}
 					}
