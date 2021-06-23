@@ -127,12 +127,12 @@ class Notice extends MY_Controller
 								$this->email->subject($subject);
 								$this->email->message(html_entity_decode($text));
 								$this->email->send();
-								$this->noticeModel->addNotice($userid, $memberid, $subject, $text);
+								$this->noticeModel->addNotice($userid, $memberid, $subject, $text,'N');
 							}
 							if (preg_match('/(isGROUP)/i', $memberid) == 1) {
 								// $groupMembers = $this->noticeModel->getMembersOfGroup(substr($memberid,0,strlen($memberid)-6 ));
 								// foreach($groupMembers as $member){
-									$this->noticeModel->addNotice($userid, substr($memberid,0,strlen($memberid)-6 ), $subject, $text);
+									$this->noticeModel->addNotice($userid, substr($memberid,0,strlen($memberid)-7 ), $subject, $text,'Y');
 								// }
 							}
 						}
