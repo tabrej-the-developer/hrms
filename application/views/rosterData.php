@@ -2373,7 +2373,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 	$(document).on('click','.shift-edit',function(){
 		 model.style.display = "block";
 		for(var i=1;i<=5;i++){
-			var checker = $(this).parent().children(`value="${i}"`).attr('status');
+			var checker = $(this).parent().children(`.count-${i}`).attr('status');
 			if(checker != null && checker != "Rejected" && checker != "Accepted"){
 				$('.shiftDays').eq(i-1).attr('disabled',false)
 				$('.shiftDays').eq(i-1).attr('checked',true)
@@ -2387,7 +2387,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 
 	$(document).on('click','.close',function(){
 		 model.style.display = "none";
-		 ('#user-form').trigger('reset');
+		 $('#user-form').trigger('reset');
 	})
 	
 	$(document).on('click','.buttons',function(){
