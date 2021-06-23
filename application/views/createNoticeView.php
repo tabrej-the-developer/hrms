@@ -509,10 +509,10 @@ $("#mytable #checkall").click(function () {
                     <span>
                       <li class="group_name_li_tag">
                         <span>
-                          <input type="checkbox" name="group" value="<?php echo $group->gid; ?>" class="group_list">
+                          <input type="checkbox" name="group" value="<?php echo $group->gid."isGROUP"; ?>" class="group_list">
                         </span>
                         <span class="group_name_list"><?php echo $group->groupName; ?></span>
-                        <span class="ml-auto noticeGroupView" groupId="<?php echo $group->gid; ?>">
+                        <span class="ml-auto noticeGroupView" groupId="<?php echo $group->gid."isGROUP"; ?>">
                           <i>
                             <img src="<?php echo base_url('assets/images/icons/pencil.png'); ?>" width="18px" height="18px">
                           </i>
