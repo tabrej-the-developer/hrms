@@ -2063,23 +2063,23 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
         </span>
         <span class="d-inline-block">
           <span>Mon</span>
-          <input type="checkbox" name="days" value="1" class="d-block shift_checkbox_space shiftDays" checked>
+          <input type="checkbox" name="days" value="1" class="d-block shift_checkbox_space shiftDays" >
         </span>
         <span class="d-inline-block">
           <span>Tue</span>
-          <input type="checkbox" name="days" value="2" class="d-block shift_checkbox_space shiftDays" checked>
+          <input type="checkbox" name="days" value="2" class="d-block shift_checkbox_space shiftDays" >
         </span>
         <span class="d-inline-block">
           <span>Wed</span>
-          <input type="checkbox" name="days" value="3" class="d-block shift_checkbox_space shiftDays" checked>
+          <input type="checkbox" name="days" value="3" class="d-block shift_checkbox_space shiftDays" >
         </span>
         <span class="d-inline-block">
           <span>Thu</span>
-          <input type="checkbox" name="days" value="4" class="d-block shift_checkbox_space shiftDays" checked>
+          <input type="checkbox" name="days" value="4" class="d-block shift_checkbox_space shiftDays" >
         </span>
         <span class="d-inline-block">
           <span>Fri</span>
-          <input type="checkbox" name="days" value="5" class="d-block shift_checkbox_space shiftDays" checked>
+          <input type="checkbox" name="days" value="5" class="d-block shift_checkbox_space shiftDays" >
         </span>
       </span>
     </div>
@@ -2391,12 +2391,23 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 		var role = $(this).attr('name2');
 		var userid = "<?php echo $userid ?>";
 		var shiftid = $(this).attr('name4');
+		var that = $(this)
 			document.getElementsByClassName('box-name')[0].innerHTML = $('th').eq(name).html();
 			document.getElementsByClassName('box-space')[0].innerHTML = timings;
 			document.getElementById('starts').value = starts; 
 			document.getElementById('ends').value = ends;
 			document.getElementById('role-Id').value = role;
 			document.getElementById('shift-Id').value = shiftid;
+            for(var i=1;i<=5;i++){
+				var checker = that.parent().children(`.count-${i}`).attr('status');
+              if(checker != null && checker != "Rejected" && checker != "Accepted"){
+                $('.editShiftDays').eq(i-1).attr('disabled',false)
+                $('.editShiftDays').eq(i-1).attr('checked',true)
+              }else{
+                $('.editShiftDays').eq(i-1).attr('disabled',true)
+                $('.editShiftDays').eq(i-1).attr('checked',false)
+              }
+            }
 	})
 
   $(document).ready(function(){
