@@ -2675,7 +2675,7 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
           })
             for(var i=1;i<=5;i++){
 				var checker = that.parent().children(`.count-${i}`).attr('status');
-              if(checker != null && checker != "Rejected" && checker != "Published"){
+              if(checker != null && checker != "Rejected" && checker != "Accepted"){
                 $('.editShiftDays').eq(i-1).attr('disabled',false)
                 $('.editShiftDays').eq(i-1).attr('checked',true)
               }else{
