@@ -2509,7 +2509,9 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 	}
     if($(this).prop('checked') == true)
       for(i=0;i<daysLength;i++){
-        $('.editShiftDays').eq(i).prop('checked','checked');
+		if($('.editShiftDays').eq(i).attr('disabled') != false){
+       		$('.editShiftDays').eq(i).prop('checked','checked');
+		}
       }
   })
 
