@@ -2366,12 +2366,22 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
     $('.loading').show();
   };
 
-<?php 		 if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N" && $editRosterYN == "N"){ ?>
+<?php 	if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N" && $editRosterYN == "N"){ ?>
 
 				var model = document.getElementById("mxModal");
 
 	$(document).on('click','.shift-edit',function(){
 		 model.style.display = "block";
+		for(var i=1;i<=5;i++){
+			var checker = $(this).parent().children(`value="${i}"`).attr('status');
+			if(checker != null && checker != "Rejected" && checker != "Accepted"){
+			$('.shiftDays').eq(i-1).attr('disabled',false)
+			$('.shiftDays').eq(i-1).attr('checked',true)
+			}else{
+			$('.shiftDays').eq(i-1).attr('disabled',true)
+			$('.shiftDays').eq(i-1).attr('checked',false)
+			}
+		}
 	})
 
 	$(document).on('click','.close',function(){
@@ -2391,23 +2401,12 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 		var role = $(this).attr('name2');
 		var userid = "<?php echo $userid ?>";
 		var shiftid = $(this).attr('name4');
-		var that = $(this)
 			document.getElementsByClassName('box-name')[0].innerHTML = $('th').eq(name).html();
 			document.getElementsByClassName('box-space')[0].innerHTML = timings;
 			document.getElementById('starts').value = starts; 
 			document.getElementById('ends').value = ends;
 			document.getElementById('role-Id').value = role;
 			document.getElementById('shift-Id').value = shiftid;
-            for(var i=1;i<=5;i++){
-				var checker = that.parent().children(`value="${i}"`).attr('status');
-              if(checker != null && checker != "Rejected" && checker != "Accepted"){
-                $('.shiftDays').eq(i-1).attr('disabled',false)
-                $('.shiftDays').eq(i-1).attr('checked',true)
-              }else{
-                $('.shiftDays').eq(i-1).attr('disabled',true)
-                $('.shiftDays').eq(i-1).attr('checked',false)
-              }
-            }
 	})
 
   $(document).ready(function(){
