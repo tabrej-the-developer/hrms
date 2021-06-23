@@ -2528,14 +2528,20 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 
   $(document).on('change','.select_all_shift',function(){
     var daysLength = $('.shiftDays').length;
-    if($(this).prop('checked') == false)
-      for(i=0;i<daysLength;i++){
-        $('.shiftDays').eq(i).prop('checked',false);
-      }
-    if($(this).prop('checked') == true)
-      for(i=0;i<daysLength;i++){
-        $('.shiftDays').eq(i).prop('checked','checked');
-      }
+    if($(this).prop('checked') == false){
+		for(i=0;i<daysLength;i++){
+			if(typeof $('.editShiftDays').eq(i).attr('disabled') == "undefined"){
+				$('.shiftDays').eq(i).prop('checked',false);
+			}
+		}
+	}
+    if($(this).prop('checked') == true){
+		for(i=0;i<daysLength;i++){
+			if(typeof $('.editShiftDays').eq(i).attr('disabled') == "undefined"){
+				$('.shiftDays').eq(i).prop('checked','checked');
+			}
+		}
+	}
   })
 
 	$(document).ready(function(){
