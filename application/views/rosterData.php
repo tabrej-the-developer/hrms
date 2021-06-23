@@ -2530,14 +2530,14 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
     var daysLength = $('.shiftDays').length;
     if($(this).prop('checked') == false){
 		for(i=0;i<daysLength;i++){
-			if(typeof $('.editShiftDays').eq(i).attr('disabled') == "undefined"){
+			if(typeof $('.shiftDays').eq(i).attr('disabled') == "undefined"){
 				$('.shiftDays').eq(i).prop('checked',false);
 			}
 		}
 	}
     if($(this).prop('checked') == true){
 		for(i=0;i<daysLength;i++){
-			if(typeof $('.editShiftDays').eq(i).attr('disabled') == "undefined"){
+			if(typeof $('.shiftDays').eq(i).attr('disabled') == "undefined"){
 				$('.shiftDays').eq(i).prop('checked','checked');
 			}
 		}
