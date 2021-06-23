@@ -130,10 +130,10 @@ class Notice extends MY_Controller
 								$this->noticeModel->addNotice($userid, $memberid, $subject, $text);
 							}
 							if (preg_match('/(isGROUP)/i', $memberid) == 1) {
-								$groupMembers = $this->noticeModel->getMembersOfGroup(substr($memberid,0,strlen($memberid)-6 ));
-								foreach($groupMembers as $member){
-									$this->noticeModel->addNotice($userid, $member->memberid, $subject, $text);
-								}
+								// $groupMembers = $this->noticeModel->getMembersOfGroup(substr($memberid,0,strlen($memberid)-6 ));
+								// foreach($groupMembers as $member){
+									$this->noticeModel->addNotice($userid, substr($memberid,0,strlen($memberid)-6 ), $subject, $text);
+								// }
 							}
 						}
 					}
