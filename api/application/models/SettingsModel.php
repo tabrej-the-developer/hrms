@@ -552,8 +552,9 @@ class SettingsModel extends CI_Model {
 			$values = array_values($notification);
 			$query = $this->db->query("SELECT id from notificationtypes where notificationtype ='$key' ");
 			$id = ($query->row() != null) ? ($query->row())->id : null;
-			if($id != null);
+			if($id != null){
 				$this->db->query("INSERT INTO notificationpermissions (userid,typeid,appYN,emailYN) VALUES ('$userid','$id','$values[0]','$values[1]') ");
+			}
 		}
 	}
 
