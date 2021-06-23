@@ -2399,7 +2399,7 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 			document.getElementById('role-Id').value = role;
 			document.getElementById('shift-Id').value = shiftid;
             for(var i=1;i<=5;i++){
-				var checker = that.parent().children(`.count-${i}`).attr('status');
+				var checker = that.parent().children(`value="${i}"`).attr('status');
               if(checker != null && checker != "Rejected" && checker != "Accepted"){
                 $('.editShiftDays').eq(i-1).attr('disabled',false)
                 $('.editShiftDays').eq(i-1).attr('checked',true)
