@@ -2375,12 +2375,13 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 		for(var i=1;i<=5;i++){
 			var checker = $(this).parent().children(`value="${i}"`).attr('status');
 			if(checker != null && checker != "Rejected" && checker != "Accepted"){
-			$('.shiftDays').eq(i-1).attr('disabled',false)
-			$('.shiftDays').eq(i-1).attr('checked',true)
+				$('.shiftDays').eq(i-1).attr('disabled',false)
+				$('.shiftDays').eq(i-1).attr('checked',true)
 			}else{
-			$('.shiftDays').eq(i-1).attr('disabled',true)
-			$('.shiftDays').eq(i-1).attr('checked',false)
+				$('.shiftDays').eq(i-1).attr('disabled',true)
+				$('.shiftDays').eq(i-1).attr('checked',false)
 			}
+			console.log("check")
 		}
 	})
 
