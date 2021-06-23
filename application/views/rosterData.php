@@ -2502,14 +2502,14 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
     var daysLength = $('.editShiftDays').length;
     if($(this).prop('checked') == false){
 		for(i=0;i<daysLength;i++){
-			if($('.editShiftDays').eq(i).attr('disabled') == false){
+			if($('.editShiftDays').eq(i).attr('disabled') == true){
 				$('.editShiftDays').eq(i).prop('checked',false);
 			}
     	}
 	}
     if($(this).prop('checked') == true)
       for(i=0;i<daysLength;i++){
-		if($('.editShiftDays').eq(i).attr('disabled') != false){
+		if($('.editShiftDays').eq(i).attr('disabled') != true){
        		$('.editShiftDays').eq(i).prop('checked','checked');
 		}
       }
