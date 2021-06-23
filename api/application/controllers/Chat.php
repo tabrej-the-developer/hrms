@@ -248,11 +248,13 @@ class Chat extends CI_Controller
                             if ($convo->isGroupYN == "Y") {
                                 $var['convoName'] = $convo->convoName;
                                 $var['convoProfilePic'] = $convo->convoProfilePic;
+                                $var['isGroupYN'] = "Y";
                             } else {
                                 $other = $this->chatModel->getOtherMemberInConvo($idUser, $convo->idConversation);
                                 $otherUser = $this->authModel->getUserDetails($other->idUser);
                                 $var['convoName'] = $otherUser->name;
                                 $var['convoProfilePic'] = $otherUser->imageUrl;
+                                $var['isGroupYN'] = "N";
                             }
                             $var['recentChat'] = $this->chatModel->getChat($convo->idConversation, $idUser, 0, 1);
                             if ($var['recentChat'] != null) {
