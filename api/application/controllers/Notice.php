@@ -42,7 +42,7 @@ class Notice extends MY_Controller
 					$userDetails = $this->authModel->getUserDetails($notice->senderId);
 					$var['senderId'] = $notice->senderId;
 					$var['senderName'] = $userDetails->name;
-					if (is_numeric($notice->receiverId) != 1) {
+					if (($notice->isGroup) != 'N') {
 						$receiverDetails = $this->authModel->getUserDetails($notice->receiverId);
 						$var['receiverId'] = isset($receiverDetails->name) ? $receiverDetails->name : "";
 					} else {
