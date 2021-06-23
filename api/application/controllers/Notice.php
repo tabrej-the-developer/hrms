@@ -133,7 +133,7 @@ class Notice extends MY_Controller
 								// $groupMembers = $this->noticeModel->getMembersOfGroup(substr($memberid,0,strlen($memberid)-6 ));
 								// foreach($groupMembers as $member){
 									$this->noticeModel->addNotice($userid, substr($memberid,0,strlen($memberid)-7 ), $subject, $text,'Y');
-								// }
+								// } ALTER TABLE notices add column isGroup ENUM('Y','N')
 							}
 						}
 					}
