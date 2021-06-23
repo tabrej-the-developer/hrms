@@ -2502,13 +2502,16 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
     var daysLength = $('.editShiftDays').length;
     if($(this).prop('checked') == false)
       for(i=0;i<daysLength;i++){
-        $('.editShiftDays').eq(i).prop('checked',false);
+		if($('.editShiftDays').eq(i).prop('disabled') == false){
+        	$('.editShiftDays').eq(i).prop('checked',false);
+		}
       }
     if($(this).prop('checked') == true)
       for(i=0;i<daysLength;i++){
         $('.editShiftDays').eq(i).prop('checked','checked');
       }
   })
+
   $(document).on('change','.select_all_shift',function(){
     var daysLength = $('.shiftDays').length;
     if($(this).prop('checked') == false)
