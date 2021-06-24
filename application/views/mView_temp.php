@@ -2878,14 +2878,14 @@ else{
             var idUsers = [];
             $('.groupMembers_wrapper').each(function(){
               if($(this).attr('userid') != null && $(this).attr('userid') != ""){
-                idUsers.push($(this).attr('userid'))
+                // idUsers.push($(this).attr('userid'))
               }
             })
             var convoName = $('.editGroupName_input').val();
             var convoProfilePic = null
             var idConversation = $('#user_name_view').attr('conversationid');
             var isGroupYN = 'Y';
-            postConversation(idUsers,convoName,convoProfilePic,idConversation,isGroupYN);
+            postConversation(null,convoName,convoProfilePic,idConversation,isGroupYN);
               $('#user_name_view').empty();
               $('#user_name_view').append(convoName);
         })
@@ -2964,19 +2964,18 @@ else{
       })
       $(document).on('click','.createGroupClass_wrapper',function(){
         var groupName = $('.groupNameInput').val();
-        if($('.groupNameInput').val() != null && $('.groupNameInput').val() != ""){
-          postConversation(arr,groupName,null,null,'Y');
-        }
         if(arr.length == 0){
 		      addMessageToNotification('Add Members');
 		      showNotification();
 		      setTimeout(closeNotification,5000)
         }
-        else{
+        else if(groupName == null || groupName == ""){
           console.log(arr)
 		      addMessageToNotification('Enter Group Name');
 		      showNotification();
 		      setTimeout(closeNotification,5000)
+        }else{
+          postConversation(arr,groupName,null,null,'Y');
         }
       })
 

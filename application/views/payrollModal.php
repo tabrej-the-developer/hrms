@@ -101,23 +101,30 @@ function timex( $x)
 			return date("d M, Y ",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
 		}
 	 ?>
-	<div class="d-flex row m-0">
-		<span class="head head-th col-3">Date</span>
-		<span class="head head-th col-2">Clocked&nbsp;In</span>
-		<span class="head head-th col-3">Clocked&nbsp;Out</span>
-		<span class="head head-th col-2">Timed&nbsp;In</span>
-		<span class="head head-th col-2">Timed&nbsp;Out</span>
-	</div>
-	<?php  ?>
-	<?php for($r=0;$r<count($payrollShifts->employees[$x]->payrollShifts);$r++){ ?>
-	<div class="d-flex row m-0">
-		<span class="head col-3"><?php echo dateToDay($payrollShifts->employees[$x]->payrollShifts[$r]->shiftDate);?></span>
-		<span class="head col-2"><?php echo timex($payrollShifts->employees[$x]->payrollShifts[$r]->clockedInTime); ?></span>
-		<span class="head col-3"><?php echo timex($payrollShifts->employees[$x]->payrollShifts[$r]->clockedOutTime); ?></span>
-		<span class="head col-2"><?php echo timex($payrollShifts->employees[$x]->payrollShifts[$r]->startTime); ?></span>
-		<span class="head col-2"><?php echo timex($payrollShifts->employees[$x]->payrollShifts[$r]->endTime); ?></span>
-	</div>
+   <table style="width: 100%;">
+      <thead>
+        <tr class="">
+          <th style="padding: 0.5rem">Date</th>
+          <th style="padding: 0.5rem">Clocked&nbsp;In</th>
+          <th style="padding: 0.5rem">Clocked&nbsp;Out</th>
+          <th style="padding: 0.5rem">Timed&nbsp;In</th>
+          <th style="padding: 0.5rem">Timed&nbsp;Out</th>
+        </tr>
+      </thead>
+    <?php  ?>
+    <tbody>
+    <?php for($r=0;$r<count($payrollShifts->employees[$x]->payrollShifts);$r++){ ?>
+      
+        <tr >
+          <td style="padding: 0.5rem"><?php echo dateToDay($payrollShifts->employees[$x]->payrollShifts[$r]->shiftDate);?></td>
+          <td style="padding: 0.5rem"><?php echo timex($payrollShifts->employees[$x]->payrollShifts[$r]->clockedInTime); ?></td>
+          <td style="padding: 0.5rem"><?php echo timex($payrollShifts->employees[$x]->payrollShifts[$r]->clockedOutTime); ?></td>
+          <td style="padding: 0.5rem"><?php echo timex($payrollShifts->employees[$x]->payrollShifts[$r]->startTime); ?></td>
+          <td style="padding: 0.5rem"><?php echo timex($payrollShifts->employees[$x]->payrollShifts[$r]->endTime); ?></td>
+        </tr>
 	<?php } ?>
+  </tbody>
+   </table>
 </div>
 
 

@@ -184,7 +184,7 @@ class Mom extends MY_Controller
             foreach ($invites as $i) :
               $this->meetingModel->addParticipant($id, $i);
             endforeach;
-            $dateOfMeeting = date('Y-m-d', strtotime($currentDate . '+1 year'));
+            $dateOfMeeting = date('Y-m-d', strtotime($dateOfMeeting . '+1 year'));
           }
           //$afterOneYear = date("Y-m-d",$currentDate . " +1 year");
         } else if ($period == 'W') {

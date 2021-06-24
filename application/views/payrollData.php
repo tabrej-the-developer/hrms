@@ -705,6 +705,7 @@ table.dataTable{
 					//var v = $(this).attr('name');
 					//var w = $('.day').eq($(this).index()).html();
 					var x = $(this).attr('cal-x');
+					var that = $(this);
 					//var y = $(this).attr('cal-p');
 					//var eId = $('#employee-id').val($('this').attr('emp-id'))
 					//var sDate = $('#start-date').val($(this).attr('curr-date'))
@@ -713,8 +714,9 @@ table.dataTable{
 					 	url : "<?php echo base_url() ?>payroll/payrollShiftsModal?timesheetId="+"<?php echo $timesheetId; ?>&x="+x,
 					 	type : 'GET',
 					 	success : function(response){
-
-					 		$('.modalSpace').html(response)
+							 var name = that.parent().children('.shift-edit').html();
+							$('.box-name').html(`<h5 style="padding-left: 1rem">${name}</h5>`);
+							$('.modalSpace').html(response)
 					 	}
 					 })
 				})
