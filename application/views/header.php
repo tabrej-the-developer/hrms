@@ -736,6 +736,13 @@ select{
       window.history.back();
     }
     
+  $(document).on('change','input[type="FILE"],input[type="file"]',function(){
+    if($(this)[0].files[0].size > 2097152 ){
+        $(this).val("")
+        alert("File size must be less than 2MB")
+    }
+  })
+
   </script>
 
 </body>

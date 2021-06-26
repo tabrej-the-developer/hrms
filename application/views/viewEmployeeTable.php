@@ -438,7 +438,8 @@
   })
 
   function getEmployeeCenters(empid){
-    var url = '<?php echo base_url() ?>settings/getEmployeeDetails/'+empid;
+    var centerid = $('#centerValue').val();
+    var url = '<?php echo base_url() ?>settings/getEmployeeDetails/'+empid+'/'+centerid;
     $.ajax({
       url : url,
       type : 'GET',
@@ -521,8 +522,9 @@
    ------------------------------- */
    $(document).on('click','.editEmployeeCenter',function(){
     // Display should be block;
+    var centerid = $('#centerValue').val();
     var userid = $(this).parent().parent().parent().children('.viewEmployeeTable_memberId_parent').children().text();
-    var url = '<?php echo base_url() ?>settings/getEmployeeDetails/'+userid;
+    var url = '<?php echo base_url() ?>settings/getEmployeeDetails/'+userid+'/'+centerid;
     $.ajax({
       url : url,
       type : 'GET',

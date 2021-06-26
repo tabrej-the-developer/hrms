@@ -178,6 +178,20 @@
 			padding:10px;
 			width:auto;
 		}
+		select[name="centerid"]{
+			min-width: 100% !important;
+			max-width: 100% !important;
+			width: 100% !important;
+		}
+
+		#addFile{
+			width: 100% !important;			
+			background: #DDDEE0;
+			border: 1px solid #C4C4C4;
+			box-sizing: border-box;
+			border-radius: 20px !important;
+			margin-left: 5px;
+		}
 		.yn-input{
 			width:auto;
 			display: inline;
@@ -233,8 +247,8 @@
 	}
 	.employee-section,.employee-bank-account-section,.employee-superfund-section, 
 	.employee-tax-declaration-section,.employee-details,.medical-info{
-		max-height: 100%;
-		height: 100%;
+		max-height: 80%;
+		height: 80%;
 		overflow: auto
 	}
 	.row.employee-bank-account-section_row{

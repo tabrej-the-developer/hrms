@@ -422,9 +422,33 @@ p.ovrflowtext {
 .icon-parent{
   display: flex;
   align-content: center;
-  justify-content: center
-  padding:0;
+  justify-content: center;
+  padding: 0;
 }
+.loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #307bd3;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+    z-index: 9999;
+  }
+  .loading{
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    background: rgba(0,0,0,0.2)
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
 
 
 /*profile card*/
@@ -2340,7 +2364,11 @@ messaging.getToken().then((currentToken) => {
 	</div>
 </div>
 <!-- Notification -->
-
+<!-- Loader -->
+<div class="loading">
+  <div class="loader"></div>
+</div>
+<!--  Loader -->
 </body>
 
 <script type="text/javascript">
@@ -2936,6 +2964,13 @@ else{
     })
 
 
+    function loader_icon(){
+            $('.loading').show();
+          }; 
+    remove_loader_icon();
+    function remove_loader_icon(){
+        $('.loading').hide();
+      };
 
     $(document).ready(function(){
 
@@ -2976,6 +3011,7 @@ else{
 		      setTimeout(closeNotification,5000)
         }else{
           postConversation(arr,groupName,null,null,'Y');
+          loader_icon();
         }
       })
 

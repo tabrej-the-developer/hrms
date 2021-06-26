@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Settings extends CI_Controller
+class Settings extends MY_Controller
 {
 	function __construct()
 	{
@@ -362,6 +362,17 @@ class Settings extends CI_Controller
 				$user = $this->authModel->getUserDetails($userid);
 				if ($user != null) {
 					$user = $this->settingsModel->changePassword($userid, md5($password), md5($passcode));
+        // Email & Notification
+        $permissions = $this->getNotificationPermissions($userid,14);
+        foreach($permissions as $permission){
+          if($permission->appYN == 'Y'){
+			  // $this->firebase->sendMessage($title,$body,$payload,$employee->userid);
+		  }
+          if($permission->emailYN == 'Y'){
+            // $this->Emails($permission->email,$template,$subject,$arr);
+          }
+        }
+        // Email & Notification
 					$data['Status'] = "SUCCESS";
 				} else {
 					$data['Status'] = "ERROR";
@@ -708,6 +719,18 @@ class Settings extends CI_Controller
 					$this->load->model('settingsModel');
 					foreach ($details as $employee) {
 						$this->settingsModel->updateEmployeeRole($employee->employeeId, $employee->roleId);
+        // Email & Notification
+        $permissions = $this->getNotificationPermissions($employee->employeeId,17);
+        foreach($permissions as $permission){
+          if($permission->appYN == 'Y'){
+			//   $this->utilModel->insertNotification($employee->employeeId, $intent, $title, $body, json_encode($payload));
+			  // $this->firebase->sendMessage($title,$body,$payload,$empId);
+		  }
+          if($permission->emailYN == 'Y'){
+            // $this->Emails($permission->email,$template,$subject,$arr);
+          }
+        }
+        // Email & Notification
 					}
 					$data['Status'] = "SUCCESS";
 					$data['Message'] = "Role Updated";
@@ -883,6 +906,18 @@ class Settings extends CI_Controller
 				$empid = $json->empid;
 				$level = $json->level;
 				$this->settingsModel->editEmployeeEntitlement($level, $empid);
+        // Email & Notification
+        $permissions = $this->getNotificationPermissions($empid,16);
+        foreach($permissions as $permission){
+          if($permission->appYN == 'Y'){
+			//   $this->utilModel->insertNotification($empid, $intent, $title, $body, json_encode($payload));
+			  // $this->firebase->sendMessage($title,$body,$payload,$empId);
+		  }
+          if($permission->emailYN == 'Y'){
+            // $this->Emails($permission->email,$template,$subject,$arr);
+          }
+        }
+        // Email & Notification
 				$data['Status'] = 'SUCCESS';
 				$data['Message'] = 'Entitlement updated';
 			} else {
@@ -1104,12 +1139,12 @@ class Settings extends CI_Controller
 						// Employee superfunds	
 						if ($employee_no != null && $employee_no != "") {
 							if ($superFundId != "" && $superFundId != null) {
-								$this->settingsModel->addToEmployeeSuperfunds(
-									$employee_no,
-									$superFundId,
-									$superMembershipId,
-									$superfundEmployeeNumber
-								);
+								// $this->settingsModel->addToEmployeeSuperfunds(
+								// 	$employee_no,
+								// 	$superFundId,
+								// 	$superMembershipId,
+								// 	$superfundEmployeeNumber
+								// );
 							}
 						}
 						// Employee Tax Declaration
@@ -1157,7 +1192,7 @@ class Settings extends CI_Controller
 
 	// View Employee
 
-	public function getEmployeeProfile($userid, $employeeId)
+	public function getEmployeeProfile($userid, $employeeId, $centerid=null)
 	{
 		$headers = $this->input->request_headers();
 		$headers = array_change_key_case($headers);
@@ -1175,7 +1210,7 @@ class Settings extends CI_Controller
 				$data['employeeMedicalInfo']	= $this->settingsModel->getEmployeeMedicalInfo($employeeId);
 				$data['employeeMedicals']	= $this->settingsModel->getEmployeeMedicals($employeeId);
 				$data['employeeRecord']	= $this->settingsModel->getEmployeeRecord($employeeId);
-				$data['employeeSuperfunds']	= $this->settingsModel->getEmployeeSuperfunds($employeeId);
+				$data['employeeSuperfunds']	= $this->settingsModel->getEmployeeSuperfunds($employeeId,$centerid);
 				$data['employeeTaxDeclaration'] = $this->settingsModel->getEmployeeTaxDec($employeeId);
 				$data['Status'] = 'SUCCESS';
 			}
@@ -1188,7 +1223,7 @@ class Settings extends CI_Controller
 
 	// Edit Employee 
 
-	public function getEmployeeData($userid)
+	public function getEmployeeData($userid,$centerid)
 	{
 		$headers = $this->input->request_headers();
 		$headers = array_change_key_case($headers);
@@ -1205,7 +1240,7 @@ class Settings extends CI_Controller
 				$data['employeeMedicalInfo']	= $this->settingsModel->getEmployeeMedicalInfo($userid);
 				$data['employeeMedicals']	= $this->settingsModel->getEmployeeMedicals($userid);
 				$data['employeeRecord']	= $this->settingsModel->getEmployeeRecord($userid);
-				$data['employeeSuperfunds']	= $this->settingsModel->getEmployeeSuperfunds($userid);
+				$data['employeeSuperfunds']	= $this->settingsModel->getEmployeeSuperfunds($userid,$centerid);
 				$data['employeeTaxDeclaration'] = $this->settingsModel->getEmployeeTaxDec($userid);
 				$data['Status'] = 'SUCCESS';
 			}
@@ -1213,6 +1248,48 @@ class Settings extends CI_Controller
 			echo json_encode($data);
 		} else {
 			http_response_code(401);
+		}
+	}
+
+	public function superfundsByCenter($centerid,$empId,$userid){
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			$this->load->model('authModel');
+			$this->load->model('settingsModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+			if ( $res != null && $res->userid == $userid) {
+				$data['empSuperfunds'] = $this->settingsModel->getEmployeeSuperfunds($empId,$centerid);
+				$data['superfunds'] = $this->settingsModel->getSuperfunds($centerid);
+				echo json_encode($data);
+			}
+		}
+	}
+
+	public function saveSuperfundByCenter(){
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			$this->load->model('authModel');
+			$this->load->model('settingsModel');
+			$json = json_decode(file_get_contents('php://input'));
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+			if ($json != null && $res != null && $res->userid == $json->userid) {
+				$values = $json->values;
+				$empId = $json->empId;
+				if($empId == null){
+					$empId = $json->userid;
+				}
+				$centerid = $json->centerid;
+				$this->settingsModel->deleteEmployeeSuperfunds($empId);
+				foreach($values as $value){
+					$superfundId = $value->superfundId;
+					$superMembershipId = $value->superMembershipId;
+					$employeeNumber = $value->employeeNumber;
+					$this->settingsModel->addToEmployeeSuperfunds($empId,$superfundId,
+								$superMembershipId,$employeeNumber,$centerid);
+				}
+			}
 		}
 	}
 
@@ -1422,14 +1499,14 @@ class Settings extends CI_Controller
 
 				if ($employee_no != null && $employee_no != "") {
 					if ($superFunds != "" && $superFunds != null && isset($superFunds->Id)) {
-						$this->settingsModel->deleteEmployeeSuperfunds($employee_no);
+						// $this->settingsModel->deleteEmployeeSuperfunds($employee_no);
 						for($x=0;$x<count($superFunds->Id);$x++){
-							$this->settingsModel->addToEmployeeSuperfunds(
-								$employee_no,
-								$superFunds->Id[$x],
-								$superFunds->MembershipId[$x],
-								$superFunds->EmployeeNumber[$x]
-							);
+							// $this->settingsModel->addToEmployeeSuperfunds(
+							// 	$employee_no,
+							// 	$superFunds->Id[$x],
+							// 	$superFunds->MembershipId[$x],
+							// 	$superFunds->EmployeeNumber[$x]
+							// );
 						}	
 					}
 				}
@@ -1676,6 +1753,18 @@ class Settings extends CI_Controller
 						$this->settingsModel->editEmployeeCenter($center, $empId);
 					}
 					$this->settingsModel->updateEmployeeCenter($cent, $empId);
+        // Email & Notification
+        $permissions = $this->getNotificationPermissions($empId,15);
+        foreach($permissions as $permission){
+          if($permission->appYN == 'Y'){
+			//   $this->utilModel->insertNotification($empId, $intent, $title, $body, json_encode($payload));
+			  // $this->firebase->sendMessage($title,$body,$payload,$empId);
+		  }
+          if($permission->emailYN == 'Y'){
+            // $this->Emails($permission->email,$template,$subject,$arr);
+          }
+        }
+        // Email & Notification
 					$data['Status'] = 'SUCCESS';
 					$data['Message'] = 'Employee centers updated';
 				} else {

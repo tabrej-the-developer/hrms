@@ -95,4 +95,9 @@ class UtilModel extends CI_Model {
 			$query = $this->db->query("SELECT * FROM kidsoftcenterareas where center = $center");
 			return $query->result();
 		}
+
+		public function getNotificationPermissions($user,$typeId){
+			$query = $this->db->query("SELECT np.*,u.email FROM users u INNER JOIN notificationpermissions np on u.id = np.userid  where np.userid = '$user' and np.typeid = '$typeId'");
+			return $query->row();
+		}
 }

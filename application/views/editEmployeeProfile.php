@@ -386,7 +386,7 @@
 		<span class="nav-button d-c"><span>Documents</span></span>
 		</div>	
 	</section>
-<form method="POST" action="updateEmployeeProfile" style="height: 100%" enctype="multipart/form-data" onsubmit="return onFormSubmit(event)" id="formSubmit">
+<form method="POST" action="<?php echo base_url('settings/updateEmployeeProfile/').$employeeId;?>" style="height: 100%" enctype="multipart/form-data" onsubmit="return onFormSubmit(event)" id="formSubmit">
 	<section class="employee-section">	
 		<!-- <h3>Personal</h3> -->
 		<span class="d-flex">
@@ -659,10 +659,29 @@
 
 
 	<section class="employee-superfund-section">
-		<h3> Superannuation 
+	<div> 
+			<span>
+				<span>Superannuation</span> 
+				<span>
+					<span class="select_css">
+						<?php 
+							$centers = json_decode($centers); 
+							if(isset($centers->centers) && count($centers->centers) > 0){
+						?>
+						<select name="" id="" class="center-select">
+							<?php foreach($centers->centers as $center){ ?>
+							<option value="<?php echo $center->centerid; ?>"><?php echo $center->name; ?></option>
+							<?php } ?>
+						</select>
+						<?php } ?>
+					</span>
+				</span>
+			</span>
 			<span class="add_remove_superfund">
 				<span id="superfund-add"> Add </span>
-				<span class="superfund-remove"> Remove </span></span></h3>
+				<span class="superfund-remove"> Remove </span>
+			</span>
+		</div>
 <!-- 		<span class="span-class col-3">
 			<label>Employee Id</label>
 			<input placeholder="Employee Id" id="employeeId" >
@@ -722,8 +741,11 @@
 					</span>
 				</div>
 				<?php } ?>
-			</div>
 
+			</div>
+			<div>
+					<span id="subm" class="saveSuperfund">SAVE</span>
+			</div>
 	</section>
 
 
@@ -1431,10 +1453,77 @@ $(document).ready(function(){
 
 <script type="text/javascript">
 	$(document).ready(function(){
-
-		var superfundHTML = $('.superfund-parent').html();
+		var superfundHTML = $('.superfund-child')[0].outerHTML;
 		$(document).on('click','#superfund-add',function(){
-		$('.superfund-parent').append(superfundHTML);
+			$('.superfund-parent').append(superfundHTML);
+		})
+	})
+
+	$(document).on('change','.center-select',function(){
+			var userid = "<?php echo $employeeId ?>";
+			var centerid = $(this).val();
+			var url = "<?php echo base_url() ?>settings/superfundByCenter/"+centerid+"/"+userid;
+			$.ajax({
+				url : url,
+				success : function(response){
+					var encode = JSON.parse(response);
+					var empsups = encode.empSuperfunds;
+					var sups = encode.superfunds;
+					var code = "";
+					empsups.forEach(function(empsup){
+						var option = "";
+						sups.forEach(function(sup){
+							if(sup.superfundId == empsup.superFundId){
+								option +=`<option value="${sup.superfundId}" selected>${sup.name}</option>`
+							}else{
+								option +=`<option value="${sup.superfundId}">${sup.name}</option>`
+							}
+						})
+						code += `<div class='superfund-child row'>
+							<span class='span-class col-3'>
+								<label>Super Fund Id</label>
+								<span class='select_css'>
+									<select placeholder='Super Fund Id' class='superFundId' name='superFund[Id][]'>${option}</select>
+								</span>
+							</span>
+							<span class='span-class col-3'>
+								<label>Super Membership Id</label>
+								<input placeholder='Super Membership Id' class='superMembershipId' type='text' name='superFund[MembershipId][]' value='${empsup.superMembershipId}'>
+							</span>
+							<span class='span-class col-3'>
+								<label class='labels__'>Employee Number</label>
+								<input class='employeeNumber' type='text' name='superFund[EmployeeNumber][]' value='${empsup.employeeNumber}'>
+							</span>
+						</div>`; 	
+					})
+					$('.superfund-parent').html(code)
+				}
+			})
+		})
+
+	$(document).on('click','.saveSuperfund',function(){
+		var userid = "<?php echo $employeeId ?>";
+		var centerid = $('.center-select').val();
+		var url = `<?php echo base_url() ?>settings/saveSuperfundByCenter/${centerid}/${userid}`;
+		var values = [];
+		var obj = {};
+		$('.superfund-child').each(function(child){
+			obj = {};
+			obj.superfundId = $(this).find('select').val();
+			obj.superMembershipId = $(this).find('.superMembershipId').val();
+			obj.employeeNumber = $(this).find('.employeeNumber').val();
+			values.push(obj);
+		})
+		console.log(values)
+		$.ajax({
+			url : url,
+			type: 'POST',
+			data : {
+				values : values
+			},
+			success : function(response){
+				console.log(response)
+			}
 		})
 	})
 </script>
@@ -1641,7 +1730,7 @@ function showNotification(){
 		        setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 			}
-			if( !($('#homeAddCity').val() == null || $('#homeAddCity').val() == "" ||  !(/\b^[a-zA-Z]+[\s]*[a-zA-Z]*$\b/).test($('#homeAddCity').val())) ){
+			if( !( (/\b^[a-zA-Z]+[\s]*[a-zA-Z]+$\b/).test($('#homeAddCity').val())) ){
 		        addMessageToNotification('Invalid City');
 		      	showNotification();
 		        setTimeout(closeNotification,5000)

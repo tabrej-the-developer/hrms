@@ -1191,9 +1191,15 @@ $server_output = curl_exec($ch);
 					// $data['employeeid'] = $employeeid;
 					$data['userid'] = $this->session->userdata('LoginId');
 					$data['centers'] = $this->getAllCenters();
+					if(!isset($_SESSION['centerr'])){
+							$centerid = json_decode($data['centers'])->centers[0]->centerid;
+							$_SESSION['centerr'] = $centerid;
+						}else{
+							$centerid = $_SESSION['centerr'];
+					}
 					$data['employeeId'] = $employeeId;
 					if($employeeId != null){
-						$data['getEmployeeData'] = $this->getEmployeeProfile($employeeId);
+						$data['getEmployeeData'] = $this->getEmployeeProfile($employeeId,$centerid);
 					}
 					// $data['areas'] = $this->getAreas($data['centerid']);
 					// $data['ordinaryEarningRate'] = $this->getAwardSettings($data['userid']);
@@ -1219,24 +1225,80 @@ $server_output = curl_exec($ch);
 		$this->session->set_userdata('current_url',currentUrl());
 	}
 	// footprint end
+	$data['centers'] = $this->getAllCenters();
 	if($centerid == null){
-		$centerid = (json_decode($this->getAllCenters())->centers[0])->centerid;
+		if(!isset($_SESSION['centerr'])){
+			  $centerid = json_decode($data['centers'])->centers[0]->centerid;
+			  $_SESSION['centerr'] = $centerid;
+			}else{
+				$centerid = $_SESSION['centerr'];
+			}
+	}else{
+		$_SESSION['centerr'] = $centerid;
 	}
 				$data['centerid'] = $centerid;
 				$data['employeeId'] = $employeeId;
 				$data['userid'] = $this->session->userdata('LoginId');
-				$data['centers'] = $this->getAllCenters();
 				$data['areas'] = $this->getAreas($data['centerid']);
 				$data['ordinaryEarningRate'] = $this->getAwardSettings($data['userid'],$centerid);
 				$data['levels'] = $this->getAllEntitlements($employeeId);
 				$data['superfunds'] = $this->getSuperfunds($data['userid'],$centerid);
 				$data['permissions'] = $this->fetchPermissions();
-				$data['getEmployeeData'] = $this->getEmployeeData($employeeId);
+				$data['getEmployeeData'] = $this->getEmployeeData($employeeId,$centerid);
 				$data['entitlements'] = $this->getAllEntitlements($data['userid']);
 				$this->load->view('editEmployeeProfile',$data);
 			}
 			else{
 				$this->load->view('redirectToLogin');
+			}
+		}
+
+
+		public function superfundByCenter($centerid,$userid=null){
+			$url = BASE_API_URL."settings/superfundsByCenter/$centerid/$userid/".$this->session->userdata('LoginId');
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				echo $server_output;
+				curl_close ($ch);
+			}
+			else if($httpcode == 401){
+	
+			}
+		}
+
+		public function saveSuperfundByCenter($centerid,$userid=null){
+			$url = BASE_API_URL."settings/saveSuperfundByCenter";
+			$formData['values'] = $this->input->post('values'); 
+			$formData['centerid'] = $centerid;
+			$formData['empId'] = $userid;
+			$formData['userid'] = $this->session->userdata('LoginId');
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($formData));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'x-device-id:'.$this->session->userdata('x-device-id'),
+					'x-token:'.$this->session->userdata('AuthToken')
+				));
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			// var_dump($server_output);
+			// var_dump($httpcode);
+			if($httpcode == 200){
+				echo $server_output;
+				curl_close ($ch);
+			}
+			else if($httpcode == 401){
+	
 			}
 		}
 
@@ -1250,18 +1312,25 @@ $server_output = curl_exec($ch);
 		$this->session->set_userdata('current_url',currentUrl());
 	}
 	// footprint end
-	if($centerid == null){
-		$centerid = (json_decode($this->getAllCenters())->centers[0])->centerid;
-	}
 			$data['centerid'] = $centerid;
 			$data['userid'] = $this->session->userdata('LoginId');
 			$data['centers'] = $this->getAllCenters();
+			if($centerid == null){
+				if(!isset($_SESSION['centerr'])){
+					  $centerid = json_decode($data['centers'])->centers[0]->centerid;
+					  $_SESSION['centerr'] = $centerid;
+					}else{
+						$centerid = $_SESSION['centerr'];
+					}
+			}else{
+				$_SESSION['centerr'] = $centerid;
+			}
 			$data['areas'] = $this->getAreas($data['centerid']);
 			$data['ordinaryEarningRate'] = $this->getAwardSettings($data['userid'],$centerid);
 			$data['levels'] = $this->getAllEntitlements($data['userid']);
 			$data['superfunds'] = $this->getSuperfunds($data['userid'],$centerid);
 			$data['permissions'] = $this->fetchPermissions();
-			$data['getEmployeeData'] = $this->getEmployeeData($data['userid']);
+			$data['getEmployeeData'] = $this->getEmployeeData($data['userid'],$centerid);
 			$data['entitlements'] = $this->getAllEntitlements($data['userid']);
 			// var_dump($data);
 			$this->load->view('editEmployee',$data);
@@ -1780,7 +1849,7 @@ $server_output = curl_exec($ch);
 		}
 	}
 
-	public function getEmployeeDetails($employeeId){
+	public function getEmployeeDetails($employeeId,$centerid=null){
 		if($employeeId != null && $employeeId != ""){
 			//footprint start
 			if($this->session->has_userdata('current_url')){
@@ -1788,7 +1857,7 @@ $server_output = curl_exec($ch);
 				$this->session->set_userdata('current_url',currentUrl());
 			}
 			// footprint end
-			$url = BASE_API_URL."settings/getEmployeeProfile/".$this->session->userdata('LoginId')."/".$employeeId;
+			$url = BASE_API_URL."settings/getEmployeeProfile/".$this->session->userdata('LoginId')."/$employeeId/$centerid";
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -1911,9 +1980,9 @@ $server_output = curl_exec($ch);
 		$this->load->view('awardSettings',$data);
 	}
 
-	function getEmployeeProfile($employeeId){
+	function getEmployeeProfile($employeeId,$centerid){
 		$userid = $this->session->userdata('LoginId');
-		$url = BASE_API_URL."settings/getEmployeeProfile/".$userid."/".$employeeId;
+		$url = BASE_API_URL."settings/getEmployeeProfile/".$userid."/".$employeeId."/".$centerid;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -1932,8 +2001,8 @@ $server_output = curl_exec($ch);
 		}
 	}
 
-	function getEmployeeData($userid){
-		$url = BASE_API_URL."settings/getEmployeeData/".$userid;
+	function getEmployeeData($userid,$centerid=null){
+		$url = BASE_API_URL."settings/getEmployeeData/$userid/$centerid";
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -2065,8 +2134,8 @@ $server_output = curl_exec($ch);
 		$this->load->view('superfundSettings',$data);
 	}
 
-	function getSuperfunds($userid,$centerid){
-		$url = BASE_API_URL."settings/getSuperfunds/".$userid."/".$centerid;
+	function getSuperfunds($userid,$centerid=null){
+		$url = BASE_API_URL."settings/getSuperfunds/$userid/$centerid";
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

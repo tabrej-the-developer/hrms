@@ -392,7 +392,7 @@ class Chat extends CI_Controller
                             $idConversation = $this->chatModel->createConversation($convoName, $isGroupYN, $idUser);
                             $idMember = $this->chatModel->createMember($idUser, $idConversation, 'Y');
                             $txt = $userDetails->name . " created the group";
-                            if ($isGroupYN == "Y") {
+                            if ($isGroupYN == "Y" && $idMember != -1) {
                                 $this->chatModel->postChat($idMember, $txt, null, 'TRANSACTION');
                             }
                             $data['idConversation'] = $idConversation;

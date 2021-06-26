@@ -226,9 +226,14 @@ class SettingsModel extends CI_Model {
 			$this->load->database();
 			$query = $this->db->query("INSERT INTO employeerecord (employeeNo, EmployeeId, uniqueId, resumeDoc, employmentType,  otherQualDesc, highestQualHeld, qualTowardsPercentcomp, visaType, visaGrantDate, visaEndDate, visaConditions, contractDocument, highestQualDateObtained, highestQualCertificate,  visaHolderYN) VALUES ('$employee_no', '$xeroEmployeeId', '$uniqueId','$resume_doc', '$employement_type', '$qual_towards_desc', '$highest_qual_held', '$qual_towards_percent_comp', '$visa_type', '$visa_grant_date', '$visa_end_date', '$visa_conditions', '$contract_doc', '$highest_qual_date_obtained', '$highest_qual_cert', '$visa_holder')" );
 		}
-		public function addToEmployeeSuperfunds( $employee_no, $superFundId, $superMembershipId,$superfundEmployeeNumber){
+		public function addToEmployeeSuperfunds( $employee_no, $superFundId, $superMembershipId,$superfundEmployeeNumber,$centerid=null){
 			$this->load->database();
-			$query = $this->db->query("INSERT INTO employeesuperfund (employeeId, superFundId, superMembershipId,employeeNumber) VALUES ('$employee_no', '$superFundId', '$superMembershipId','$superfundEmployeeNumber')");
+			if($centerid != null){
+			$query = $this->db->query("INSERT INTO employeesuperfund (employeeId, superFundId, superMembershipId,employeeNumber,centerid) VALUES ('$employee_no', '$superFundId', '$superMembershipId','$superfundEmployeeNumber',$centerid)");
+			}
+			else{
+				$query = $this->db->query("INSERT INTO employeesuperfund (employeeId, superFundId, superMembershipId,employeeNumber) VALUES ('$employee_no', '$superFundId', '$superMembershipId','$superfundEmployeeNumber')");
+			}
 		}
 		public function deleteEmployeeSuperfunds($employee_no){
 			$this->load->database();
@@ -280,9 +285,9 @@ class SettingsModel extends CI_Model {
 			$query = $this->db->query("SELECT * FROM employeerecord where employeeNo = '$userid'");
 			return $query->row();
 		}
-		public function getEmployeeSuperfunds($userid){
+		public function getEmployeeSuperfunds($userid,$centerid){
 			$this->load->database();
-			$query = $this->db->query("SELECT * FROM employeesuperfund as es INNER JOIN superfund as s on s.superfundid = es.superfundid  where employeeId IN (SELECT userid FROM employee where userid = '$userid')");
+			$query = $this->db->query("SELECT es.*,s.name FROM employeesuperfund as es INNER JOIN superfund as s on s.superfundid = es.superfundid AND es.centerid = s.centerid where es.employeeId = '$userid' AND es.centerid = $centerid ");
 			return $query->result();
 		}
 		public function getEmployeeTaxDec($userid){

@@ -749,6 +749,41 @@ color:#FFFFFF;
     #collab{
       padding-left: 1rem;
     }
+/* The modal background */
+.eventModal {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	background-color: rgba(0,0,0,0.1);
+}
+/* modal content box */
+.eventModalContent{
+  background-color: white;
+  padding: 20px;
+  border: 1px solid rgba(0,0,0,0.1);
+  width: 50%;
+  height: 60%;
+  top: 20%;
+  position: absolute;
+  left: 25%;
+}
+.eventModalHeader{
+  height: 20%;
+}
+.eventModalBody{
+  height:65%;
+}
+.eventModalFooter{
+  height: 15%;
+}
+.eventModalClose{
+  cursor: pointer;
+}
 @media only screen and (max-width: 780px ){
       #calendar{
         width: 100%;
@@ -1162,6 +1197,9 @@ color:#FFFFFF;
       </div>
     </form>
   </div>
+</div>
+                          </div>
+                          </div>
 
 <!-- Notification -->
 <div class="notify_">
@@ -1173,7 +1211,86 @@ color:#FFFFFF;
 	</div>
 </div>
 <!-- Notification -->
+
+
+<!-- ---------------------------------
+            Events Modal
+---------------------------------- -->
+
+<div id="eventModal" class="eventModal">
+    <div class="eventModalContent">
+      <div class="eventModalHeader">
+        <div>Events</div>
+        <div class="eventModalDate"></div>
+      </div>
+      <div class="eventModalBody">
+      </div>
+      <div class="eventModalFooter">
+        <button class="eventModalClose button">Close</button>
+      </div>
+    </div>
+</div>
+
+<!-- ---------------------------------
+            Events Modal
+---------------------------------- -->
+
   <script type="text/javascript">
+
+  // Fetch events for a date
+
+  $(document).on('click','.modalOpen',function(){
+    var modal = document.getElementById("eventModal");
+    var date = $(this).closest('.fc-daygrid-day').attr('data-date');
+    var centerid = $('#center-list').val();
+    var url = '<?php echo base_url(); ?>dashboard/getEventsByDate/'+date+'/'+centerid;
+    $.ajax({
+      url : url,
+      success : function(response){
+        $('.eventModalDate').text(date)
+        try{
+          var json = JSON.parse(response);
+          console.log(json)
+          json.event[0].forEach(function(eve){
+            if((eve.title).includes('Shift ')){
+              $('.eventModalBody').append(`<div><span><a href="<?php echo base_url() ?>roster/getRosterDetails?rosterId=${eve.roster}&showBudgetYN=N">${eve.title}</a></span></div>`);
+            }
+            if((eve.title).includes('Leave ')){
+              $('.eventModalBody').append(`<div><span><a href="<?php echo base_url() ?>Leave">${eve.title}</a></span></div>`);
+            }
+            if((eve.title).includes('- Meeting')){
+              if((eve.meetingStatus).toLowerCase() == 'created'){
+                $('.eventModalBody').append(`<div><span><a href="<?php echo base_url() ?>mom/attendence/${eve.meetingId}" title="${eve.title}">${eve.title}</a></span></div>`);
+                }
+                if((eve.meetingStatus).toLowerCase() == 'attendence'){
+                  $('.eventModalBody').append(`<div><span><a href="<?php echo base_url() ?>mom/onBoard/${eve.meetingId}" title="${eve.title}">${eve.title}</a></span></div>`);
+                }
+                if((eve.meetingStatus).toLowerCase() == 'mom'){
+                  $('.eventModalBody').append(`<div><span><a href="<?php echo base_url() ?>mom/summary/${eve.meetingId}" title="${eve.title}">${eve.title}</a></span></div>`);
+                }
+                if((eve.meetingStatus).toLowerCase() == 'summary'){
+                  $('.eventModalBody').append(`<div><span><a href="<?php echo base_url() ?>mom/meetingInfo/${eve.meetingId}" title="${eve.title}">${eve.title}</a></span></div>`);
+                  }
+                }
+              })
+          modal.style.display = "block";
+        }catch(e){
+          addMessageToNotification('Error fetching events');
+          showNotification();
+          setTimeout(closeNotification,5000)
+        }
+      }
+    })
+  })
+
+  //  Events Modal
+    var modal = document.getElementById("eventModal");
+    document.getElementsByClassName("eventModalClose")[0].addEventListener("click", function(){
+        modal.style.display = "none";
+        $('.eventModalBody').empty();
+    })
+    //  Events Modal
+
   // Notification //
 	function showNotification(){
       $('.notify_').css('visibility','visible');
@@ -1254,10 +1371,10 @@ color:#FFFFFF;
             var status = $('.fc-event-title').eq(increment).text();
               console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>Leave" title="${status}">${status}</a>`));
             }
-
+            
             if(($('.fc-event-title').eq(increment).text()).includes('+')){
-              var status = $('.fc-event-title').eq(increment).text();
-              $('.fc-event-title').eq(increment).html(`<a style="cursor:pointer" class="events_text" title="${status}">${status}</a>`)
+            var status = $('.fc-event-title').eq(increment).text();
+              console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text modalOpen">${status}</a>`));
             }
 
           if(($('.fc-event-title').eq(increment).text()).includes('Meeting')){

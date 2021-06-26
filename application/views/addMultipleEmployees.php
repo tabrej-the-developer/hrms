@@ -15,7 +15,7 @@
     background-size: 0.6rem 0.6rem;
 	}
 	.addMultipleEmployee_div{
-		height: 100%;
+		height: 60%;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -64,25 +64,29 @@
 	</section>
 <form method="POST" action="AddEmployeesMultiple" style="height: 100%" enctype="multipart/form-data" onsubmit="return validate(this)">
 	<section class="employee-section">
-		<div class="addMultipleEmployee_div">
-			<div class="d-inline-block align-center">
-				<label class="d-flex justify-content-center" style="font-size: 1rem;font-weight: bold;color: rgb(23, 29, 75) !important;">Add Employees To </label>
-				<span class="select_css">
+		<div class="addMultipleEmployee_div d-block">
+			<div class="d-flex mt-3">
+				<label class="col-4" style="font-size: 1rem;font-weight: bold;color: rgb(23, 29, 75) !important;">Add Employees To </label>
+				<span class="select_css col-8">
 						<?php $centers = json_decode($centers);
 						?>
-					<select  name="centerid">
+					<select  name="centerid" class="d-flex col-12 w-100">
 						<?php foreach($centers->centers as $center){ ?>
 							<option value="<?php echo $center->centerid ?>"><?php echo $center->name ?></option>
 						<?php } ?>
 					</select>
 				</span>
 			</div>
-			<br>
-			<span class="addMultipleEmployee_span d-block">
-				<input type="file" name="addemployee" id="addFile" >
+			<div class="d-flex mt-3" style="padding: 15px">
+				<span class="col-4">Choose CSV File</span>
+				<div class="col-8" style="padding:5px">
+					<input type="file" name="addemployee" id="addFile" class="col-12 p-1">
+				</div>
+			</div>
+			<span class="addMultipleEmployee_span d-flex justify-content-end p-3">
 				<input type="submit" name="submit" value="submit" class="button" >
 			</span>
-			<div style="position: absolute;bottom:5rem">
+			<div style="position: absolute;bottom:5rem;left: 35%">
 				<span>Download a sample file structure</span>
 				<span><a href="<?php echo base_url('assets/files/sample.csv'); ?>" download>Download</a></span>
 			</div>
@@ -126,7 +130,13 @@ function validate(e){
 		alert('Invalid file type'); 
 		return false
 	}
+	if ($('#addFile')[0].files[0].size > 2097152) { 
+		$('#addFile').val("") 
+		alert('File size must be less than 2MB'); 
+		return false
+	}
 }
+
 	$(document).ready(function(){
 		$(document).on('click','.e-b-a-s',function(){
 			$('.employee-bank-account-section').css('display','block')
