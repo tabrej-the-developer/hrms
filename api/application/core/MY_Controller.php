@@ -36,4 +36,31 @@ class My_Controller extends CI_Controller {
 			$this->email->send();
 		}
 	} 
+
+	public function getNotificationPermissions($userid,$notificationType){
+		$this->load->model('utilModel');
+		$output = [];
+		if(is_array($userid)){
+			foreach($userid as $user){
+				$userData = (Object)[];
+				$permission = $this->utilModel->getNotificationPermissions($user,$notificationType);
+				$userData->appYN = isset($permission->appYN) ? $permission->appYN : "N";
+				$userData->emailYN = isset($permission->emailYN) ? $permission->emailYN : "N";
+				$userData->userid = $user;
+				$userData->email = isset($permission->email) ? $permission->email : null;
+				if($userData != null)
+					array_push($output,$userData);
+			}
+		}else{
+			$userData = (Object)[];
+			$permission = $this->utilModel->getNotificationPermissions($userid,$notificationType);
+			$userData->appYN = isset($permission->appYN) ? $permission->appYN : "N";
+			$userData->emailYN = isset($permission->emailYN) ? $permission->emailYN : "N";
+			$userData->email = isset($permission->email) ? $permission->email : null;
+			$userData->userid = $userid;
+			if($userData != null)
+				array_push($output,$userData);
+		}
+		return $output;
+	}
 }
