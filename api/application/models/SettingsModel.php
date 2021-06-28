@@ -235,9 +235,9 @@ class SettingsModel extends CI_Model {
 				$query = $this->db->query("INSERT INTO employeesuperfund (employeeId, superFundId, superMembershipId,employeeNumber) VALUES ('$employee_no', '$superFundId', '$superMembershipId','$superfundEmployeeNumber')");
 			}
 		}
-		public function deleteEmployeeSuperfunds($employee_no){
+		public function deleteEmployeeSuperfunds($employee_no,$centerid){
 			$this->load->database();
-			$this->db->query("DELETE from employeesuperfund where employeeId = '$employee_no' ");
+			$this->db->query("DELETE from employeesuperfund where employeeId = '$employee_no' and centerid = $centerid");
 		}
 
 		public function addToEmployeeTaxDeclaration($xeroEmployeeId,$employmentBasis,$tfnExemptionType,$taxFileNumber,$australiantResidentForTaxPurposeYN,$residencyStatue,$taxFreeThresholdClaimedYN,$taxOffsetEstimatedAmount,$hasHELPDebtYN,$hasSFSSDebtYN,$hasTradeSupportLoanDebtYN_,$upwardVariationTaxWitholdingAmount,$eligibleToReceiveLeaveLoadingYN,$approvedWitholdingVariationPercentage){

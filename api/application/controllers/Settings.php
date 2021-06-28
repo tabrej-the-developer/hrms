@@ -1281,7 +1281,7 @@ class Settings extends MY_Controller
 					$empId = $json->userid;
 				}
 				$centerid = $json->centerid;
-				$this->settingsModel->deleteEmployeeSuperfunds($empId);
+				$this->settingsModel->deleteEmployeeSuperfunds($empId,$centerid);
 				foreach($values as $value){
 					$superfundId = $value->superfundId;
 					$superMembershipId = $value->superMembershipId;

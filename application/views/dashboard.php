@@ -1435,7 +1435,6 @@ color:#FFFFFF;
     if($('.fc-header-toolbar .fc-toolbar-chunk .fc-toolbar-title').text() == `${months[d.getMonth()]} ${d.getFullYear()}`){
         var events = <?php print_r(json_encode(json_decode($calendar)->event[0])); ?>;
         var count = $('.fc-event-title').length; 
-        alert(count)
         var counter = 0;
         var increment = 0;
         var element = [];
@@ -1463,7 +1462,7 @@ color:#FFFFFF;
 
             if(($('.fc-event-title').eq(increment).text()).includes('+')){
               var status = $('.fc-event-title').eq(increment).text();
-              $('.fc-event-title').eq(increment).html(`<a style="cursor:pointer" class="events_text" title="${status}">${status}</a>`);alert()
+              $('.fc-event-title').eq(increment).html(`<a style="cursor:pointer" class="events_text" title="${status}">${status}</a>`);
             }
 
           if(($('.fc-event-title').eq(increment).text()).includes('Meeting')){

@@ -834,25 +834,27 @@ font-family: 'Open Sans', sans-serif;
 					url:url,
 					dataType: 'JSON',
 					success:function(response){
-							// $('.select_role').empty()
+						let code = "<option value='0'>--Select Role--</option>";
 						response['orgchart'].forEach(function(index){
 							index['roles'].forEach(function(values){
 								if(areaId == values.areaid){
 									if(roleId == values.roleid){
-										var data = "<option value="+values.roleid+" selected>"+values.roleName+"</option>";
+										code += "<option value="+values.roleid+" selected>"+values.roleName+"</option>";
 										}
 									else{
-										var data = "<option value="+values.roleid+">"+values.roleName+"</option>";
-									}
-									if(similarity != null){
-											$('.select_role[similarity='+similarity+']').append(data)
-										}
-										else{
-											$('.select_role').eq(x).append(data)
+										code += "<option value="+values.roleid+">"+values.roleName+"</option>";
 										}
 									}
 								})
 							})
+							if(similarity != null){
+								$('.select_role[similarity='+similarity+']').empty();
+								$('.select_role[similarity='+similarity+']').append(code)
+							}
+							else{
+								$('.select_role').eq(x).empty();
+								$('.select_role').eq(x).append(code)
+							}
 						}
 					})
 				}
@@ -920,7 +922,7 @@ console.log(employees);
                     <span class="changeRole__" employeeId="${em.id}" role_id="${em.roleid}"  style="width:35%">${em.name}</span>
                   <span class="select_css" style="width:30%;">
                     <select class="select_area" similarity="${x}" style="min-width:100% !important;max-width:100%">
-                        <option value="0" disabled selected>--Select Area--</option>
+                        <option value="0" selected>--Select Area--</option>
                     </select>
                     </span>
                   <span class="select_css" style="width:30%;">
