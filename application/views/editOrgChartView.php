@@ -255,7 +255,7 @@ font-family: 'Open Sans', sans-serif;
 	padding: 20px 0 0 0;
 }
 .priority_areas {
-	padding-top: 2rem;
+	padding-top: 1rem;
 	display: block;
     text-align: center;
     justify-content: center;
@@ -548,6 +548,10 @@ font-family: 'Open Sans', sans-serif;
 	<span class="changeRole_head" >
 		<a class="text-center  changeRole_heading" style="padding:1rem 0"></a>
 	</span>
+	<div class="d-flex justify-content-end pr-3">
+		<span><input type="checkbox" class="toggleByEmpty"></span>
+		<span class="ml-2">Hide Unassigned</span>
+	</div>
 		<div class="priority_areas"></div>
 		<div class="priority_buttons">
 	  	<button class="close_priority" role="button">
@@ -1017,6 +1021,15 @@ $(document).ajaxStop(function(){
 			})
 
 		})
+
+		$(document).on('click','.toggleByEmpty',function(){
+			$('.select_area').each(function(){
+				if($(this).val() == 0){
+					$(this).parent().parent().toggle();
+				}
+			})
+		})
+
 	})
 </script>
 
