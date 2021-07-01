@@ -60,7 +60,9 @@ class Welcome extends CI_Controller {
 	public function check(){
 		// exec('/usr/bin/nohup php script.php >/dev/null 2>&1 &');
 		try{
-			exec('/var/www/html/HRMS101 nohup php email.php >/dev/null 2>&1 &');
+			// exec('/var/www/html/HRMS101 nohup php email.php >/dev/null 2>&1 &');
+			$pid = shell_exec("php /var/www/html/HRMS101/email.php  >/dev/null 2>&1 &");
+			var_dump($pid);
 		}catch(Exception $e){
 			var_dump($e);
 		}
