@@ -23,7 +23,7 @@ try {
 
     //Recipients
     $mail->setFrom('demo@todquest.com', 'Mailer');
-    $mail->addAddress('dheerareddynannuri1709@gmail.com');     //Add a recipient
+    $mail->addAddress('dheerajreddynannuri1709@gmail.com','Great Spirits');     //Add a recipient
     $mail->Subject = 'Here is the subject';
     $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
     if($mail->send()){
