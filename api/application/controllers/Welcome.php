@@ -56,4 +56,33 @@ class Welcome extends CI_Controller {
 			//$this->email->send();
 		}
 	}
+
+	public function check(){
+		// exec('/usr/bin/nohup php script.php >/dev/null 2>&1 &');
+		try{
+			exec('/var/www/html/HRMS101 nohup php email.php >/dev/null 2>&1 &');
+		}catch(Exception $e){
+			var_dump($e);
+		}
+	}
+
+	public function argue(){
+		$config = array(
+			'protocol'  => 'smtp',
+			'smtp_host' => 'ssl://smtp.zoho.com',
+			'smtp_port' => 465,
+			'smtp_user' => 'demo@todquest.com',
+			'smtp_pass' => 'K!ddz1ng',
+			'mailtype'  => 'html',
+			'charset'   => 'utf-8'
+		);
+			$this->load->library('email', $config); // Load email template
+			$this->email->set_newline("\r\n");
+			$this->email->from('demo@todquest.com', 'Todquest');
+			$this->email->to("dheerajreddynannuri1709@gmail.com");
+			$this->email->subject("NO");
+			$this->email->message("WOW");
+			$this->email->send();
+	}
+
 }
