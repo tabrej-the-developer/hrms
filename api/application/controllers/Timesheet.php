@@ -618,8 +618,8 @@ $headers = array_change_key_case($headers);
 									array_push($var['clockedTimes'],$mar);
 								}
 								foreach ($meetingTimes as $mee) {
-									$meet['startTime'] = intval($mee->time)*100;
-									$meet['endTime'] = intval($mee->eTime)*100;
+									$meet['startTime'] = intval($mee->time);
+									$meet['endTime'] = intval($mee->eTime);
 									$meet['message'] = "Meeting";
 									array_push($var['clockedTimes'],$meet);
 								}
