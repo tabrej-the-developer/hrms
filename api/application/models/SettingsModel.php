@@ -410,15 +410,28 @@ class SettingsModel extends CI_Model {
 			}
 // 		// add center 
 
-	public function addCenter($addStreet,$addCity,$addState,$addZip,$name,$centre_phone_number,$centre_mobile_number,$Centre_email,$userid){
+	public function addCenter($addStreet,$addCity,$addState,$addZip,$name,$centre_phone_number,$centre_mobile_number,$Centre_email,$userid,$uniqid ){
 		$this->load->database();
-		$uniqid = uniqid();
-		$query = $this->db->query("INSERT INTO centers (addStreet, addCity, addState, addZip, name, centre_phone_number, centre_mobile_number, centre_email,superadmin) VALUES ('$addStreet','$addCity','$addState','$addZip','$name','$centre_phone_number','$centre_mobile_number','$Centre_email',$uniqid'')");
+		$query = $this->db->query("INSERT INTO centers (addStreet, addCity, addState, addZip, name, centre_phone_number, centre_mobile_number, centre_email,superadmin) VALUES ('$addStreet','$addCity','$addState','$addZip','$name','$centre_phone_number','$centre_mobile_number','$Centre_email','$uniqid')");
 		$id = $this->db->query("SELECT centerid FROM centers ORDER BY centerid DESC LIMIT 1");
 		$centers = $this->db->query("SELECT center FROM users where id = '$userid'");
 		$centerId = strval(($id->row())->centerid);
 					$this->db->query("UPDATE users set center = CONCAT(center,'|$centerId') where id='$userid'");
 		return strval(($id->row())->centerid);
+	}
+
+	// Get Superadmin 
+
+	public function getSuperadmin($centerid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM centers where centerid = '$centerid'");
+		return $query->row();
+	}
+
+	public function getNotificationsForUser($userid,$start,$count){
+		$this->load->database();
+		$query = $this->db->query("SELECT title,intent,body,data,isReadYN,datetime FROM notifications where userid = '$userid' LIMIT $start , $count ");
+		return $query->result();
 	}
 
 	public function addRoom($centerid,$room_name,$capacity_,$minimum_age,$maximum_age){

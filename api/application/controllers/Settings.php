@@ -441,7 +441,15 @@ class Settings extends MY_Controller
 				$minimum_age = $json->minimum_age;
 				$maximum_age = $json->maximum_age;
 				if ($center_name != null && $center_name != "") {
-					$centerid = $this->settingsModel->addCenter($center_street, $center_city, $center_state, $center_zip, $center_name, $center_phone, $center_mobile, $center_email, $json->userid);
+					$centers = $this->settingsModel->getUserCenters($json->userid);
+					if($centers != null){
+						$superadmin = $this->settingsModel->getSuperadmin($centers[0]->centerid);
+						$uniqid = $superadmin->superadmin;
+					}
+					else{
+						$uniqid = uniqid();
+					}
+					$centerid = $this->settingsModel->addCenter($center_street, $center_city, $center_state, $center_zip, $center_name, $center_phone, $center_mobile, $center_email, $json->userid,$uniqid);
 					$centerRecordUniqueId = uniqid();
 					$this->settingsModel->addCenterRecord($centerid, $centerRecordUniqueId, $center_abn, $center_acn, $center_se_no, $center_date_opened, $center_capacity, $center_approval_doc, $center_ccs_doc, $center_admin_name, $centre_nominated_supervisor);
 					$this->settingsModel->addToUserCenters($json->userid,$centerid);
@@ -455,7 +463,7 @@ class Settings extends MY_Controller
 				}
 				$data['Status'] = "SUCCESS";
 				http_response_code(200);
-				echo json_encode($room_name);
+				echo json_encode($data);
 			} else {
 				http_response_code(401);
 			}
@@ -2005,6 +2013,30 @@ class Settings extends MY_Controller
 					$this->settingsModel->addToEmployeeTable($userFromUsersTable->id, null, null, $name[0], null, null, 'ACTIVE', $userFromUsersTable->email, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 				}
 			}
+		}
+	}
+
+	public function getAllNotifications(){
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			$this->load->model('authModel');
+			$this->load->model('settingsModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if ($res != null && $json != null && $res->userid == $json->userid) {
+				$userid = $json->userid;
+				$start = isset($json->start) ? $json->start : 0;
+				$count = isset($json->count) ? $json->count : 25; 
+				$notifications = $this->settingsModel->getNotificationsForUser($userid,$start,$count);
+				$data['Notifications'] = $notifications;
+				$data['Status'] = 'SUCCESS';
+			}else{
+				$data['Status'] = 'ERROR';
+				$data['Message'] = 'Invalid !';
+			}
+			echo json_encode($data);
+			http_response_code(200);
 		}
 	}
 }
