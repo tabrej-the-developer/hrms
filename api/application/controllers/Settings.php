@@ -2039,4 +2039,24 @@ class Settings extends MY_Controller
 			http_response_code(200);
 		}
 	}
+
+	public function updateNotifications($userid){
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			$this->load->model('authModel');
+			$this->load->model('settingsModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+			if ($res != null && $res->userid == $userid) {
+				$this->settingsModel->updateNotifications($userid);
+				$data['Status'] = 'SUCCESS';
+			}else{
+				$data['Status'] = 'ERROR';
+				$data['Message'] = 'Invalid !';
+			}
+			echo json_encode($data);
+			http_response_code(200);
+		}
+	}
+
 }

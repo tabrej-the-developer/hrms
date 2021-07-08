@@ -434,6 +434,11 @@ class SettingsModel extends CI_Model {
 		return $query->result();
 	}
 
+	public function updateNotifications($userid){
+		$this->load->database();
+		$query = $this->db->query("UPDATE notifications SET isReadYN = 'Y' WHERE userid = '$userid'");
+	}
+
 	public function addRoom($centerid,$room_name,$capacity_,$minimum_age,$maximum_age){
 		$this->load->database();
 		$uniqueId = uniqid();
