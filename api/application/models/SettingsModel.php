@@ -430,7 +430,7 @@ class SettingsModel extends CI_Model {
 
 	public function getNotificationsForUser($userid,$start,$count){
 		$this->load->database();
-		$query = $this->db->query("SELECT title,intent,body,data,isReadYN,datetime FROM notifications where userid = '$userid' LIMIT $start , $count ");
+		$query = $this->db->query("SELECT title,intent,body,data,isReadYN,datetime FROM notifications where userid = '$userid' ORDER BY id DESC LIMIT $start , $count ");
 		return $query->result();
 	}
 
