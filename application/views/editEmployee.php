@@ -1706,12 +1706,6 @@ function showNotification(){
 		        setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 				}
-			if( !($('#mname').val() == null ||  !(/^[\sa-zA-Z]+$/).test($('#mname').val())) ){
-		        addMessageToNotification('Invalid Last Name');
-		      	showNotification();
-		        setTimeout(closeNotification,5000)
-					falseOrTrue = false;
-			}
 			if($('#dateOfBirth').val() == null || $('#dateOfBirth').val() == ""){
 		    	addMessageToNotification('Enter DOB');
 		      	showNotification();
@@ -1724,7 +1718,7 @@ function showNotification(){
 		        setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 				}
-			if( ! ($('#alias').val() == null || $('#alias').val() == "" ||  (/^[a-zA-Z]+$/).test($('#alias').val())) ){
+			if($('#alias').val() == null || ! ($('#alias').val() == "" ||  (/^[a-zA-Z]+$/).test($('#alias').val())) ){
 		        addMessageToNotification('Invalid Alias');
 		      	showNotification();
 		        setTimeout(closeNotification,5000)
@@ -1736,37 +1730,31 @@ function showNotification(){
 		        setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 			}
-			if( !( $('#homeAddPostal').val() == null || $('#homeAddPostal').val() == ""  || (/^[0-9]+$/).test($('#homeAddPostal').val() ) ) ){
+			if( $('#homeAddPostal').val() == null || !(  $('#homeAddPostal').val() == ""  || (/^[0-9]+$/).test($('#homeAddPostal').val() ) ) ){
 		        addMessageToNotification('Invalid Postal Code');
 		      	showNotification();
 		        setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 			}
-			if( !( $('#homeAddCountry').val() == null || $('#homeAddCountry').val() == ""  || (/^[0-9]+$/).test($('#homeAddCountry').val() ) ) ){
+			if( $('#homeAddCountry').val() == null || !(  $('#homeAddCountry').val() == ""  || (/^[0-9]+$/).test($('#homeAddCountry').val() ) ) ){
 		        addMessageToNotification('Invalid Country');
 		      	showNotification();
 		        setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 			}
-			if(  !($('#phone').val() == null || $('#phone').val() == "" || (/^[0-9]{6,}$/).test($('#phone').val() ) )  ){
+			if( $('#phone').val() == null || !( $('#phone').val() == "" || (/^[0-9]{6,}$/).test($('#phone').val() ) )  ){
 		        addMessageToNotification('Invalid Phone');
 		      	showNotification();
 		        setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 			}
-			if(  !($('#mobile').val() == null || $('#mobile').val() == "" ||(/^[0-9]{6,}$/).test($('#mobile').val() ) )  ){
+			if( $('#mobile').val() == null || $('#mobile').val() == "" || !((/^[0-9]{6,}$/).test($('#mobile').val() ) )  ){
 		        addMessageToNotification('Invalid mobile');
 		      	showNotification();
 		        setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 			}
-			if(  !($('#emergency_contact').val() == null || $('#emergency_contact').val() == "" || (/^[0-9]{6,}$/).test($('#emergency_contact').val() ) )  ){
-		        addMessageToNotification('Invalid Emergency Contact');
-		      	showNotification();
-		        setTimeout(closeNotification,5000)
-					falseOrTrue = false;
-			}
-			if(  !($('#employeeNumber').val() == null || $('#employeeNumber').val() == "" ||(/^[0-9]{6,}$/).test($('#employeeNumber').val() ) )  ){
+			if( $('#emergency_contact').val() == null || $('#emergency_contact').val() == "" || !(  (/^[0-9]{6,}$/).test($('#emergency_contact').val() ) )  ){
 		        addMessageToNotification('Invalid Emergency Contact');
 		      	showNotification();
 		        setTimeout(closeNotification,5000)
