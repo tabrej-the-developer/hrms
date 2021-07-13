@@ -1637,6 +1637,43 @@ $('#toggle').remove();
       }
     })
 
+    <?php if($this->session->flashdata('MemberData') != null){ ?>
+      var url = "<?php echo base_url(); ?>api/Util/sendEmails";
+      var data = (<?php echo $this->session->flashdata('MemberData') ?>);
+      var ud = "<?php echo $this->session->userdata('LoginId'); ?>";
+      var period = "<?php echo $this->session->flashdata('period') ?>";
+      var loc = "<?php echo $this->session->flashdata('loc') ?>";
+      var title = "<?php echo $this->session->flashdata('title') ?>";
+      var category = "<?php echo $this->session->flashdata('category') ?>";
+      var x = [];
+      x.push({"userid" : ud,"data" : data,"title":title,"loc":loc,"period":period,"category":category});
+      x = JSON.stringify(x);
+      console.log(x)
+      $.ajax({
+        url : url,
+        type : 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        data : x,
+        success : function(response){
+          console.log(response);
+        }
+      }).fail(function(response){
+        console.log(response)
+      })
+    <?php } ?>
+
+    $(document).ready(function(){
+      <?php for($i=0;$i<3;$i++){ ?>
+      // var url = "<?php echo base_url(); ?>"+"email.php";
+      // $.ajax({
+      //   url : url,
+      //   success : function(response){
+      //   }
+      // })
+      <?php } ?>
+    })
+
   </script>
 
 <?php } ?>

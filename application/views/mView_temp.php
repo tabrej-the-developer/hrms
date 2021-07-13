@@ -2233,9 +2233,9 @@ messaging.getToken().then((currentToken) => {
         <?php 
         foreach($getConversation->members as $mems){
         if((($mems->idUser) == ($this->session->userdata('LoginId'))) && ($mems->isAdminYN == 'Y') ){ ?>
-      <div>
+      <!-- <div>
         <span class="delete_group" groupId="<?php echo $getConversation->conversation->idConversation; ?>">Delete Group</span>
-      </div>
+      </div> -->
     <?php }  ?>
       <?php if((($mems->idUser) == ($this->session->userdata('LoginId'))) && ($mems->isAdminYN == 'N') ){ ?>
     <div>

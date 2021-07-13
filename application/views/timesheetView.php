@@ -784,23 +784,25 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 									<?php
 									$totalTimeForWeek = 0;
 									for ($p = 0; $p < 5; $p++) {
-										if ($timesheetDetails->timesheet[$p]->rosteredEmployees != null) { ?>
-											<td class="<?php echo (count($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes) || (count($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->payrollShifts))) > 0 ? 'shift-edit' : '' ?> " name="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName ?>" cal-x="<?php echo $x; ?>" cal-p="<?php echo $p; ?>" array-type="rosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empId ?>" curr-date="<?php echo $timesheetDetails->timesheet[$p]->currentDate ?>" timesheet-id="<?php echo $timesheetDetails->id; ?>" payrollShifts="<?php echo (count($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes) || (count($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->payrollShifts))) > 0 ? 'shift-edit' : '' ?>">
+										if ($timesheetDetails->timesheet[$p]->rosteredEmployees != null) { 
+												$timesheetDetailRosteredEmps = $timesheetDetails->timesheet[$p]->rosteredEmployees[$x];
+											?>
+											<td class="<?php echo (count($timesheetDetailRosteredEmps->clockedTimes) || (count($timesheetDetailRosteredEmps->payrollShifts))) > 0 ? 'shift-edit' : '' ?> " name="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName ?>" cal-x="<?php echo $x; ?>" cal-p="<?php echo $p; ?>" array-type="rosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empId ?>" curr-date="<?php echo $timesheetDetails->timesheet[$p]->currentDate ?>" timesheet-id="<?php echo $timesheetDetails->id; ?>" payrollShifts="<?php echo (count($timesheetDetailRosteredEmps->clockedTimes) || (count($timesheetDetailRosteredEmps->payrollShifts))) > 0 ? 'shift-edit' : '' ?>">
 												<?php
 
-												if ($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->isOnLeave == "N") {
-													if (count($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes) > 0 || count($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->payrollShifts) > 0) {
+												if ($timesheetDetailRosteredEmps->isOnLeave == "N") {
+													if (count($timesheetDetailRosteredEmps->clockedTimes) > 0 || count($timesheetDetailRosteredEmps->payrollShifts) > 0) {
 														// $timesheetDetails->timesheet[$p]->employees[$x];
-														if (count($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->payrollShifts) > 0) {
-															$times = $timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->payrollShifts;
+														if (count($timesheetDetailRosteredEmps->payrollShifts) > 0) {
+															$times = $timesheetDetailRosteredEmps->payrollShifts;
 														} else {
-															$times = $timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes;
+															$times = $timesheetDetailRosteredEmps->clockedTimes;
 														}
 														$totalTime = 0;
 
 												?>
 														<div style="padding:3px;" class="full_box <?php echo isset($times[0]->status) ? $times[0]->status : "" ?>">
-															<div class="<?php if ($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->isOnLeave == "Y") {
+															<div class="<?php if ($timesheetDetailRosteredEmps->isOnLeave == "Y") {
 																			echo "leave";
 																		} else {
 																			echo 'div-box';
@@ -813,19 +815,19 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 																	$totalTime = $totalTime + $end - $start;
 																}
 																$number = 0;
-																if (count($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->payrollShifts) > 0) {
-																	foreach ($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->payrollShifts as $visits) {
+																if (count($timesheetDetailRosteredEmps->payrollShifts) > 0) {
+																	foreach ($timesheetDetailRosteredEmps->payrollShifts as $visits) {
 																		$number++;
 																	}
 																} else {
-																	foreach ($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes as $visits) {
+																	foreach ($timesheetDetailRosteredEmps->clockedTimes as $visits) {
 																		$number++;
 																	}
 																}
 																$totalVisits = $number;
 																?>
-																<span><?php echo isset($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->rosterShift->roleName->roleName) ? $timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->rosterShift->roleName->roleName : ""; ?></span>
-																<span><?php echo isset($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->rosterShift->startTime) ? timex($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->rosterShift->startTime) : "Empty"; ?> - <?php echo isset($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->rosterShift->endTime) ? timex($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->rosterShift->endTime) : "Empty"; ?></span>
+																<span><?php echo isset($timesheetDetailRosteredEmps->rosterShift->roleName->roleName) ? $timesheetDetailRosteredEmps->rosterShift->roleName->roleName : ""; ?></span>
+																<span><?php echo isset($timesheetDetailRosteredEmps->rosterShift->startTime) ? timex($timesheetDetailRosteredEmps->rosterShift->startTime) : "Empty"; ?> - <?php echo isset($timesheetDetailRosteredEmps->rosterShift->endTime) ? timex($timesheetDetailRosteredEmps->rosterShift->endTime) : "Empty"; ?></span>
 																<span>Total Hours : <?php
 																					$totalTimeForWeek = $totalTimeForWeek + $totalTime;
 																					echo  intVal($totalTime / 60) . "." . sprintf("%02d", $totalTime % 60);
@@ -985,7 +987,7 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 								$incrementer++;
 							}
 						} ?>
-						<th>----</th>
+						<th></th>
 					</tr>
 
 					<?php
@@ -1040,20 +1042,20 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 									for ($p = 7; $p < 12; $p++) {
 										$totalTime = 0;
 										if ($timesheetDetails->timesheet[$p]->rosteredEmployees != null) { ?>
-											<td style="min-width:8vw;" class="<?php echo count($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes) > 0 ?  'shift-edit' : '' ?> " name="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName ?>" cal-x="<?php echo $x; ?>" cal-p="<?php echo $p; ?>" array-type="rosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empId ?>" curr-date="<?php echo $timesheetDetails->timesheet[$p]->currentDate ?>" timesheet-id="<?php echo $timesheetDetails->id; ?>">
+											<td style="min-width:8vw;" class="<?php echo count($timesheetDetailRosteredEmps->clockedTimes) > 0 ?  'shift-edit' : '' ?> " name="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName ?>" cal-x="<?php echo $x; ?>" cal-p="<?php echo $p; ?>" array-type="rosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empId ?>" curr-date="<?php echo $timesheetDetails->timesheet[$p]->currentDate ?>" timesheet-id="<?php echo $timesheetDetails->id; ?>">
 												<?php
-												if ($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->isOnLeave == "N") {
+												if ($timesheetDetailRosteredEmps->isOnLeave == "N") {
 													// $timesheetDetails->timesheet[$p]->employees[$x];
-													if (count($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes) > 0) {
-														if (count($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->payrollShifts) > 0) {
-															$times = $timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->payrollShifts;
+													if (count($timesheetDetailRosteredEmps->clockedTimes) > 0) {
+														if (count($timesheetDetailRosteredEmps->payrollShifts) > 0) {
+															$times = $timesheetDetailRosteredEmps->payrollShifts;
 														} else {
-															$times = $timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes;
+															$times = $timesheetDetailRosteredEmps->clockedTimes;
 														}
 
 												?>
 														<div style="padding:3px" class="full_box <?php echo isset($times[0]->status) ? $times[0]->status : "" ?>">
-															<div class="<?php if ($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->isOnLeave == "Y") {
+															<div class="<?php if ($timesheetDetailRosteredEmps->isOnLeave == "Y") {
 																			echo "leave";
 																		} else {
 																			echo 'div-box';
@@ -1066,19 +1068,19 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 																	$totalTime = $totalTime + $end - $start;
 																}
 																$number = 0;
-																if (count($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->payrollShifts) > 0) {
-																	foreach ($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->payrollShifts as $visits) {
+																if (count($timesheetDetailRosteredEmps->payrollShifts) > 0) {
+																	foreach ($timesheetDetailRosteredEmps->payrollShifts as $visits) {
 																		$number++;
 																	}
 																} else {
-																	foreach ($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->clockedTimes as $visits) {
+																	foreach ($timesheetDetailRosteredEmps->clockedTimes as $visits) {
 																		$number++;
 																	}
 																}
 																$totalVisits = $number;
 																?>
-																<span><?php echo isset($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->rosterShift->roleName->roleName) ? $timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->rosterShift->roleName->roleName : ""; ?></span>
-																<span><?php echo isset($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->rosterShift->startTime) ? timex($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->rosterShift->startTime) : "Empty"; ?> - <?php echo isset($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->rosterShift->endTime) ? timex($timesheetDetails->timesheet[$p]->rosteredEmployees[$x]->rosterShift->endTime) : "Empty"; ?></span>
+																<span><?php echo isset($timesheetDetailRosteredEmps->rosterShift->roleName->roleName) ? $timesheetDetailRosteredEmps->rosterShift->roleName->roleName : ""; ?></span>
+																<span><?php echo isset($timesheetDetailRosteredEmps->rosterShift->startTime) ? timex($timesheetDetailRosteredEmps->rosterShift->startTime) : "Empty"; ?> - <?php echo isset($timesheetDetailRosteredEmps->rosterShift->endTime) ? timex($timesheetDetailRosteredEmps->rosterShift->endTime) : "Empty"; ?></span>
 																<span></span>
 																<span>Total Hours : <?php $totalTimeForWeek = $totalTimeForWeek + $totalTime;
 																					echo  intVal($totalTime / 60) . "." . sprintf("%02d", $totalTime % 60);  ?></span>
@@ -1948,51 +1950,8 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 						}
 						return `${Math.floor(time/60)}.${Math.floor(time%60)}`;
 					}
-					if(view.payrollShifts != null){
-						var sameAsRoster = "";
-						view.payrollShifts.forEach(day => {
-							var dayLoopCounter = 0;
-							day.forEach(payrollShift => {
-							dayLoopCounter++;
-							check = false;
-							var dateWithHiphen = (payrollShift.shiftDate).split("-");
-							var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
-							var code = `<tr class="display_flex_visits">
-											<td class="time_visits"  style="min-width:5vw !important;max-width:5vw !important"><input type="checkbox" checked></td>
-											<td visitid='${payrollShift.id}' class="visit__" style="" dateAttr = "${payrollShift.shiftDate}">
-														${dateWithHiphen[2]} ${month[dateWithHiphen[1]-1]} ${dateWithHiphen[0]}
-											</td>
-											<td class="time_visits_child oldtime newStartTime" style="">
-																<input type="time" value="${timer(payrollShift.startTime)}" required> 
-											</td>
-															<td class="time_visits_child oldtime newEndTime" style="">
-																<input type="time" value="${timer(payrollShift.endTime)}" required>
-															</td>
-														<td class="select__" style="">
-															<span class="select_css" style="display:flex">
-																<select class="modalSelectType" required>
 
-																</select>
-															</span>
-														</td>
-														<td class="totalHoursCount">${getHoursAndMinutes(payrollShift.startTime,payrollShift.endTime)}</td>
-													</tr>`
-							$('.weekTableBody').append(code);
-							selectOptions = "";
-							select.payrollTypes.forEach(type => {
-								if (type.earningRateId == payrollShift.payrollType && type.centerid == centerid) {
-									var option = `<option value="${type.earningRateId}" factor="${type.multiplier_amount}" earningType="${type.earningType}" selected>${type.name}</option>`;
-								}if(type.earningRateId != payrollShift.payrollType && type.centerid == centerid ){
-									var option = `<option value="${type.earningRateId}" factor="${type.multiplier_amount}" earningType="${type.earningType}" >${type.name}</option>`;
-								}
-								selectOptions += option;
-								$(`.modalSelectType`).eq($('.modalSelectType').length - 1).append(option);
-							})
-						})
-					})
-
-				}
-					if(check){					
+					// if(check){					
 					view.visitis.forEach(day => {
 						var sameAsRoster = "";
 						try {
@@ -2027,15 +1986,15 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 							var dateWithHiphen = (visit.signInDate).split("-");
 							var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
 							var code = `<tr class="display_flex_visits">
-														<td class="time_visits"  style="min-width:5vw !important;max-width:5vw !important"><input type="checkbox" checked></td>
+														<td class="time_visits"  style="min-width:5vw !important;max-width:5vw !important"><input type="checkbox" ${(visit.payrollType == null) ? '' : 'checked'}></td>
 														<td visitid='${visit.id}' ${checkShiftLength(inTime,outTime,day.length,dayLoopCounter)} startTime='${visit.signInTime}' endTime='${visit.signOutTime}' class="visit__" style="" dateAttr = "${visit.signInDate}">
 														${dateWithHiphen[2]} ${month[dateWithHiphen[1]-1]} ${dateWithHiphen[0]}
 													</td>
 														<td class="time_visits_child oldtime newStartTime" style="">
-																<input type="time" value="${timer(visit.signInTime)}"> 
+																<input type="time" value="${(visit.startTime == null ) ? timer(visit.signInTime) : timer(visit.startTime)}"> 
 															</td>
 															<td class="time_visits_child oldtime newEndTime" style="">
-																<input type="time" value="${timer(visit.signOutTime)}">
+																<input type="time" value="${(visit.endTime == null) ? timer(visit.signOutTime) : timer(visit.endTime)}">
 															</td>
 														<td class="select__" style="">
 															<span class="select_css" style="display:flex">
@@ -2045,7 +2004,7 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 															</span>
 														</td>
 														<td class="totalHoursCount">${getHoursAndMinutes(visit.signInTime,visit.signOutTime)}</td>
-													</tr>`
+													</tr><tr class="text-center"><td colspan="6">${visit.message}</td></tr>`
 							$('.weekTableBody').append(code);
 							selectOptions = "";
 							select.payrollTypes.forEach(type => {
@@ -2060,7 +2019,7 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 						x++;
 						getBudget();
 					})
-				  }
+				//   }
 				}
 			})
 		}
@@ -2182,6 +2141,7 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 				var obj = {};
 				var d = new Date();
 				if ($(this).children('.time_visits').children('input').prop('checked') == true) {
+					obj.visitid = $(this).children('.visit__').attr('visitid');
 					obj.startTime = ($(this).children('.time_visits_child').eq(0).children('input').val()).replace(":", "").toString();
 					obj.endTime = ($(this).children('.time_visits_child').eq(1).children('input').val()).replace(":", "").toString();
 					obj.payType = $(this).children('.select__').children('.select_css').children('select').val();

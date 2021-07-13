@@ -37,7 +37,13 @@ class TimesheetModel extends CI_Model {
 
 	public function getMeetingTime($currentDate,$empId){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM mom INNER JOIN meeting on mom.m_id = meeting.id WHERE mom.user_id = '$empId' AND meeting.date = '$currentDate'");
+		$query = $this->db->query("SELECT * FROM participants INNER JOIN meeting on participants.m_id = meeting.id WHERE participants.user_id = '$empId' AND meeting.date = '$currentDate' AND participants.status = 'P'");
+		return $query->result();
+	}
+
+	public function getMeetingTimeForUser($currentDate,$empId){
+		$this->load->database();
+		$query = $this->db->query("SELECT payrollshift.startTime,payrollshift.endTime,payrollshift.payrollType,meeting.id,user_id as userid, date as signInDate, time as signInTime, eTime as signOutTime, summary as message FROM participants INNER JOIN meeting on participants.m_id = meeting.id LEFT JOIN payrollshift on payrollshift.idtype = meeting.id  WHERE participants.user_id = '$empId' AND meeting.date = '$currentDate' AND participants.status = 'P'");
 		return $query->result();
 	}
 
@@ -55,7 +61,7 @@ class TimesheetModel extends CI_Model {
 
 	public function getUserVisits($signInDate,$userid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * from visitis where userid = '$userid' AND signInDate = '$signInDate'");
+		$query = $this->db->query("SELECT visitis.*,payrollshift.startTime,payrollshift.endTime,payrollshift.payrollType from visitis LEFT JOIN payrollshift on payrollshift.idtype = visitis.id where visitis.userid = '$userid' AND visitis.signInDate = '$signInDate' ");
 		return $query->result();
 	} 
 
@@ -87,13 +93,13 @@ class TimesheetModel extends CI_Model {
 		$this->db->query("DELETE FROM payrollshift WHERE timesheetId = '$timesheetid' and userid = '$empid' and shiftDate >= '$startDate' and shiftDate <= '$endDate' ");
 	}
 
-	public function createPayrollShiftEntry($timesheetid,$empid,$shiftDate,$cStartTime,$cEndTime,$startTime,$endTime,$approvedBy,$payTypeId){
+	public function createPayrollShiftEntry($timesheetid,$empid,$shiftDate,$cStartTime,$cEndTime,$startTime,$endTime,$approvedBy,$payTypeId,$visitid){
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO payrollshift (timesheetId , userid , shiftDate , clockedInTime , clockedOutTime , startTime , endTime , payrollType , createdBy , createdAt , status)VALUES('$timesheetid','$empid','$shiftDate','$cStartTime','$cEndTime',$startTime,$endTime,'$payTypeId','$approvedBy',now(),'Added')");
+		$query = $this->db->query("INSERT INTO payrollshift (timesheetId , userid , shiftDate , clockedInTime , clockedOutTime , startTime , endTime , payrollType , createdBy , createdAt , status, idtype)VALUES('$timesheetid','$empid','$shiftDate','$cStartTime','$cEndTime',$startTime,$endTime,'$payTypeId','$approvedBy',now(),'Added','$visitid')");
 		$query = $this->db->query("UPDATE visitis SET status='PUBLISHED' where signInDate='$shiftDate' and userid = '$empid' ");
 	}
 
-	public function createPayrollEntry($timesheetid,$empid,$shiftDate,$cStartTime,$cEndTime,$startTime,$endTime,$approvedBy,$payTypeId){
+	public function createPayrollEntry($timesheetid,$empid,$shiftDate,$cStartTime,$cEndTime,$startTime,$endTime,$approvedBy,$payTypeId,$visitid){
 		$this->load->database();
 		$query =$this->db->query("DELETE FROM payrollshift WHERE timesheetId = '$timesheetid' and userid = '$empid' and shiftDate = '$shiftDate' and clockedInTime = '$cStartTime' and clockedOutTime = '$cEndTime'");
 		$query = $this->db->query("INSERT INTO payrollshift (timesheetId , userid , shiftDate , clockedInTime , clockedOutTime , startTime , endTime , payrollType , createdBy , createdAt , status)VALUES('$timesheetid','$empid','$shiftDate','$cStartTime','$cEndTime',$startTime,$endTime,'$payTypeId','$approvedBy',now(),'Added')");

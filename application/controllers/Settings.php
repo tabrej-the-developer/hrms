@@ -184,14 +184,18 @@ public function editRooms(){
 		$data['center_se_no'] = $this->input->post('center_se_no');
 		$data['center_date_opened'] = $this->input->post('center_date_opened');
 		$data['center_capacity'] = $this->input->post('center_capacity');
-		if($_FILES['center_approval_doc']['name'] != null && $_FILES['center_approval_doc']['name'] != "")
+		if(isset($_FILES['center_approval_doc']['name']) && $_FILES['center_approval_doc']['name'] != ""){
 			$data['center_approval_doc'] = base64_encode(file_get_contents($_FILES['center_approval_doc']['tmp_name']));
-		else
+		}
+		else{
 			$data['center_approval_doc'] = "";
-		if($_FILES['center_ccs_doc']['name'] != null && $_FILES['center_ccs_doc']['name'] != "")
+		}
+		if(isset($_FILES['center_ccs_doc']['name']) && $_FILES['center_ccs_doc']['name'] != ""){
 			$data['center_ccs_doc'] = base64_encode(file_get_contents($_FILES['center_ccs_doc']['tmp_name']));
-		else
+		}
+		else{
 			$data['center_ccs_doc'] = "";
+		}
 		$data['center_admin_name'] = $this->input->post('center_admin_name');
 		$data['centre_nominated_supervisor'] = $this->input->post('centre_nominated_supervisor');
 		$data['room_name'] = $this->input->post('room_name');
@@ -211,7 +215,6 @@ public function editRooms(){
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			var_dump($httpcode);
 			if($httpcode == 200){
 				$this->session->set_flashdata('centerCreated','Center Created Successfully');
 				redirect(base_url('settings/createCenter'));
@@ -255,6 +258,27 @@ public function editRooms(){
 				else if($httpcode == 401){
 
 				}
+		}
+	}
+
+	public function getNotifications(){
+		$url = BASE_API_URL."settings/getAllNotifications/".$this->session->userdata('LoginId');
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	// var_dump($server_output);
+		if($httpcode == 200){
+			return $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+			return 'error';
 		}
 	}
 
@@ -304,24 +328,24 @@ public function editRooms(){
 
 	function editCenterProfile($centerid){
 		if($this->session->has_userdata('LoginId')){
-		$url = BASE_API_URL."settings/editCenter/".$centerid."/".$this->session->userdata('LoginId');
-		$ch = curl_init($url);
-		curl_setopt($ch, CURLOPT_URL,$url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-			'x-device-id: '.$this->session->userdata('x-device-id'),
-			'x-token: '.$this->session->userdata('AuthToken')
-		));
-		$server_output = curl_exec($ch);
-		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			$url = BASE_API_URL."settings/editCenter/".$centerid."/".$this->session->userdata('LoginId');
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		// var_dump($server_output);
-		if($httpcode == 200){
-			return $server_output;
-			curl_close ($ch);
-		}
-		else if($httpcode == 401){
-			return 'error';
-		}
+			if($httpcode == 200){
+				return $server_output;
+				curl_close ($ch);
+			}
+			else if($httpcode == 401){
+				return 'error';
+			}
 		}
 	}	
 

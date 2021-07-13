@@ -661,7 +661,7 @@ public	function updateShift(){
 			$data['userid'] = $this->session->userdata('LoginId');
 			$data['message'] = addslashes($this->input->post('message'));
 			$data['days'] = $this->input->post('days');
-
+			print_r(json_encode($data));
 			$url = BASE_API_URL."rosters/updateShift";
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
@@ -674,6 +674,10 @@ public	function updateShift(){
 			 $server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			if($httpcode == 200){
+				$jsonOutput = json_decode($server_output);
+				$this->session->set_flashdata('MemberData',json_encode($jsonOutput->MemberData));
+				$this->session->set_flashdata('arr',json_encode($jsonOutput->arr));
+				$this->session->set_flashdata('category',$jsonOutput->category);
 				print_r($server_output);
 				curl_close ($ch);
 			}

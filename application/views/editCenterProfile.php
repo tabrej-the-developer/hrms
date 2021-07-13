@@ -168,7 +168,7 @@ font-family: 'Open Sans', sans-serif;
             <div class="input_box">
               <label>
                 <i style="color: #aa63ff;" class=""></i> Center Name</label>
-              <input type="text" class="" name="center_name" id="ceter name" placeholder="Center name" value="<?php echo isset($cD->name) ? $cD->name : ''; ?>" required>
+              <input type="text" class="" name="center_name" id="ceter name" value="<?php echo isset($cD->name) ? $cD->name : ''; ?>" required>
               <input type="text" name="centerid" value="<?php echo $cD->centerid; ?>" style="display: none">
             </div>
             <div class="input_box">
@@ -213,27 +213,27 @@ font-family: 'Open Sans', sans-serif;
             <div class="input_box">
               <label>
                 <i style="color: #aa63ff;" class=""></i> Centre ABN</label>
-              <input class="" type="text" name="center_abn" id="centre_abn" placeholder="Centre ABN" value="<?php echo isset($cR->centreABN) ? $cR->centreABN : '' ?>" >
+              <input class="" type="text" name="center_abn" id="centre_abn" value="<?php echo isset($cR->centreABN) ? $cR->centreABN : '' ?>" >
             </div>
             <div class="input_box">
               <label>
                 <i style="color: #aa63ff;" class=""></i> Centre ACN</label>
-              <input class="" type="text" name="center_acn" id="centre_acn" placeholder="Centre ACN" value="<?php echo isset($cR->centreACN) ? $cR->centreACN : '' ?>">
+              <input class="" type="text" name="center_acn" id="centre_acn" value="<?php echo isset($cR->centreACN) ? $cR->centreACN : '' ?>">
             </div>
             <div class="input_box">
               <label>
                 <i style="color: #aa63ff;" class=""></i> Centre SE Number</label>
-              <input class="" type="text" name="center_se_no" id="centre_se_no" placeholder="Centre SE no" value="<?php echo isset($cR->centreSE_no) ? $cR->centreSE_no : '' ?>">
+              <input class="" type="text" name="center_se_no" id="centre_se_no" value="<?php echo isset($cR->centreSE_no) ? $cR->centreSE_no : '' ?>">
             </div>
             <div class="input_box">
               <label>
                 <i style="color: #aa63ff;" class=""></i> Center Date Opened</label>
-              <input class="" type="date" name="center_date_opened" id="centre_date_opened" placeholder="Center date-opened" value="<?php echo isset($cR->centreDateOpened) ? $cR->centreDateOpened : '' ?>">
+              <input class="" type="date" name="center_date_opened" id="centre_date_opened" value="<?php echo isset($cR->centreDateOpened) ? $cR->centreDateOpened : '' ?>">
             </div>
             <div class="input_box">
               <label>
                 <i style="color: #aa63ff;" class=""></i> Centre Capacity</label>
-              <input class="" type="text" name="center_capacity" id="centre_capacity" placeholder="Centre capacity" value="<?php echo isset($cR->centreCapacity) ? $cR->centreCapacity : '' ?>">
+              <input class="" type="text" name="center_capacity" id="centre_capacity" value="<?php echo isset($cR->centreCapacity) ? $cR->centreCapacity : '' ?>">
             </div>
 <!--             <div class="input_box">
               <label>
@@ -243,7 +243,7 @@ font-family: 'Open Sans', sans-serif;
                     <img src="<?php echo base_url('assets/images/icons/download.png')?>">
                   </i>Download</a>
                   <?php } ?>
-              <input class="" type="file" name="center_approval_doc" id="centre_approval_doc" placeholder="Centre approval doc" value="<?php echo isset($cR->centreApprovalDoc) ? $cR->centreApprovalDoc : '' ?>" onchange="validate('centre_approval_doc')">
+              <input class="" type="file" name="center_approval_doc" id="centre_approval_doc" value="<?php echo isset($cR->centreApprovalDoc) ? $cR->centreApprovalDoc : '' ?>" onchange="validate('centre_approval_doc')">
             </div>
             <div class="input_box">
               <label>
@@ -253,22 +253,22 @@ font-family: 'Open Sans', sans-serif;
                   <img src="<?php echo base_url('assets/images/icons/download.png')?>">
                 </i>Download</a>
               <?php } ?>
-              <input class="" type="file" name="center_ccs_doc" id="centre_ccs_doc" placeholder="Center CCS-doc" value="" onchange="validate('centre_ccs_doc')">
+              <input class="" type="file" name="center_ccs_doc" id="centre_ccs_doc" value="" onchange="validate('centre_ccs_doc')">
             </div> -->
             <div class="input_box">
               <label>
                 <i style="color: #aa63ff;" class=""></i> Manager Name</label>
-              <input class="" type="text" name="manager_name" id="manager_name" placeholder="Manager-name" value="<?php echo isset($cR->managerId) ? $cR->managerId : '' ?>">
+              <input class="" type="text" name="manager_name" id="manager_name" value="<?php echo isset($cR->managerId) ? $cR->managerId : '' ?>">
             </div>
             <div class="input_box">
               <label>
                 <i style="color: #aa63ff;" class=""></i> Center Admin Name</label>
-              <input class="" type="text" name="center_admin_name" id="centre_admin_name" placeholder="Center admin-name" value="<?php echo isset($cR->centreAdminId) ? $cR->centreAdminId : '' ?>">
+              <input class="" type="text" name="center_admin_name" id="centre_admin_name" value="<?php echo isset($cR->centreAdminId) ? $cR->centreAdminId : '' ?>">
             </div>
             <div class="input_box">
               <label>
                 <i style="color: #aa63ff;" class="fas "></i> Center Nominated Supervisor</label>
-              <input class="" type="text" name="centre_nominated_supervisor" id="centre_nominated_supervisor" placeholder="Center nominated-supervisor" value="<?php echo isset($cR->centreNominatedSupervisorId) ? $cR->centreNominatedSupervisorId : '' ?>">
+              <input class="" type="text" name="centre_nominated_supervisor" id="centre_nominated_supervisor" value="<?php echo isset($cR->centreNominatedSupervisorId) ? $cR->centreNominatedSupervisorId : '' ?>">
             </div>
           </div>
         <!-- <hr> -->
@@ -285,7 +285,7 @@ font-family: 'Open Sans', sans-serif;
           </div>
           <div class="input_box">
             <label><i style="color: #aa63ff;" class=""></i> Capacity</label>
-            <input type="number" class="capacity_" name="capacity_[]" value="" placeholder="Capacity" > 
+            <input type="number" class="capacity_" name="capacity_[]" value="" > 
           </div>
           <div class="input_box">
             <label><i style="color: #aa63ff;" class=""></i> Minimum Age</label>
@@ -294,7 +294,7 @@ font-family: 'Open Sans', sans-serif;
           <div class="input_box">
             <label>
               <i style="color: #aa63ff;" class=""></i> Maximum Age</label>
-            <input type="number" class="maximum_age" name="maximum_age[]" id="" value="" placeholder="Max age in months" > 
+            <input type="number" class="maximum_age" name="maximum_age[]" id="" value="" > 
           </div>
             </div>
           </span>  -->

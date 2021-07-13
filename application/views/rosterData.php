@@ -3514,6 +3514,34 @@ $('.modal_body').draggable();
 		$('.priority_areased').find('#casualEmp_start_time').val("09:00")
 		$('.priority_areased').find('#casualEmp_end_time').val('17:00')
 	})
+
+    <?php if($this->session->flashdata('MemberData') != null){ ?>
+      var url = "<?php echo base_url(); ?>api/Util/sendEmails";
+      var data = (<?php echo $this->session->flashdata('MemberData') ?>);
+      var ud = "<?php echo $this->session->userdata('LoginId'); ?>";
+      var period = "<?php echo $this->session->flashdata('period') ?>";
+      var loc = "<?php echo $this->session->flashdata('loc') ?>";
+      var title = "<?php echo $this->session->flashdata('title') ?>";
+      var category = "<?php echo $this->session->flashdata('category') ?>";
+	  var arr = <?php echo $this->session->flashdata('arr') ?>;
+      var x = [];
+      x.push({"userid" : ud,"data" : data,"title":title,"loc":loc,"period":period,"category":category,"arr":arr});
+      x = JSON.stringify(x);
+      console.log(x)
+      $.ajax({
+        url : url,
+        type : 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        data : x,
+        success : function(response){
+          console.log(response);
+        }
+      }).fail(function(response){
+        console.log(response)
+      })
+    <?php } ?>
+
 </script>
 </body>
 </html>

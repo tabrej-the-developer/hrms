@@ -274,7 +274,7 @@ font-family: 'Open Sans', sans-serif;
     function addMessageToNotification(message){
     	if($('.notify_').css('visibility') == 'hidden'){
      		$('._notify_message').append(`<li>${message}</li>`)
-      }
+      	}
     }
     function closeNotification(){
       $('.notify_').css('visibility','hidden');
@@ -297,18 +297,18 @@ font-family: 'Open Sans', sans-serif;
 <?php 
 	$flash = $this->session->flashdata('centerCreated');
 	if(isset($flash)){ ?>
-      showNotification();
-      addMessageToNotification('<?php echo $this->session->flashdata('centerCreated') ?>');
-      setTimeout(closeNotification,5000)
+		addMessageToNotification('<?php echo $flash; ?>');
+		showNotification();
+		setTimeout(closeNotification,5000)
 	<?php	} ?>
 	function validate(variable){
-		if(($('#'+variable)[0].files[0].size)/(1024*1024) < 4){
+		if(($('#'+variable)[0].files[0].size)/(1024*1024) < 2){
 			
 		}else{
 			$('#'+variable).val('');
-		      showNotification();
-		      addMessageToNotification('File size must be less than 4MB');
-		      setTimeout(closeNotification,5000)
+				addMessageToNotification('File size must be less than 2MB');
+				showNotification();
+				setTimeout(closeNotification,5000)
 		}
 	}
 

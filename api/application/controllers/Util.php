@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Util extends CI_Controller
+class Util extends MY_Controller
 {
 
 	function __construct()
@@ -227,17 +227,63 @@ class Util extends CI_Controller
 		// 	http_response_code(401);
 		// }
 	}
+
+	public function sendEmails(){
+		$json = json_decode(file_get_contents('php://input'));
+		$this->load->model('utilModel');
+		$userData = $json[0]->data;
+		$empId = [];
+		$category = $json[0]->category;
+		// Subject Varies by category
+		switch($category){
+			case 1 : 
+				$subject = "Meeting Created";
+				break;
+			case 2 : 
+				$subject = "Meeting Ended";
+				break;
+			case 4 : 
+				$subject = "Shift Updated";
+				break;
+		}
+		// Subject Varies by category
+
+		// Body Varies by category
+		switch($category){
+			case 1 : 
+				$arr['body'] = "<div style=\"display:flex;align-items:center;justify-content:center;height:100%;width:100%\"><div><h1 style=\"text-align:center\">Meeting Created</h1><h4 style=\"text-align:center\">".$json[0]->title ."</h4><h4 style=\"text-align:center\">Location : ".$json[0]->loc ."</h4><h4 style=\"text-align:center\">Period : ".$json[0]->period ."</h4></div></div>";
+				break;
+			case 2 : 
+            	$arr['body'] = "<div style='display:flex;align-items:center;justify-content:center;height:100%;width:100%;'><div><h1 style='text-align:center'>Meeting Ended</h1><h4 style='text-align:center'>Thank You</h4></div></div>";
+				break;
+			case 4 : 
+				$arr['body'] = "<div style='display:flex;align-items:center;justify-content:center;height:100%;width:100%;'><div><h1 style='text-align:center'>Meeting Ended</h1><h4 style='text-align:center'>Thank You</h4></div></div>";
+				break;
+		}
+		// Body Varies by category
+		foreach($userData as $ud){
+			if(isset($ud->YN) && $ud->YN == 'N'){
+				$config = Array(    
+					'protocol'  => 'smtp',
+					'smtp_host' => 'ssl://smtp.zoho.com',
+					'smtp_port' => 465,
+					'smtp_user' => 'demo@todquest.com',
+					'smtp_pass' => 'K!ddz1ng',
+					'mailtype'  => 'html',
+					'charset'   => 'utf-8'
+				);
+				$this->load->library('email',$config); // Load email template
+				$this->email->set_newline("\r\n");
+				$this->email->from('demo@todquest.com','Todquest');
+				$this->email->to($ud->email); 
+				$this->email->subject($subject); 
+				$mess = $this->load->view('notificatioEmail',$arr,true);
+				$this->email->message($mess); 
+				$this->email->send();
+			}
+		}
+		http_response_code(200);
+		echo json_encode($json);
+	}
+
 }
-
-
-
-	// 	if($type == "LoggedIn"){
-	// $query1 = $this->db->query("UPDATE footprints SET end_time = now() WHERE userid = '$userid' ORDER BY id DESC LIMIT 1 AND end_time = '0000-00-00 00:00:00'");
-	// $query2 = $this->db->query("INSERT into footprints (page_tag,prev_page_tag,start_time,ip,userid) VALUES ('$currentUrl','$previousUrl',now(),'$ip','$userid')");
-	// 		}
-	// 	if($type == "LogIn"){
-	// 	$query = $this->db->query("INSERT into footprints (page_tag,prev_page_tag,start_time,end_time,ip,userid) VALUES ('$currentUrl',' ',now(),now(),'$ip','$userid')");
-	// 		}
-	// 	if($type == "LogOut"){
-	// 	$query = $this->db->query("INSERT into footprints (page_tag,prev_page_tag,start_time,end_time,ip,userid) VALUES ('$currentUrl','$previousUrl',now(),now(),'$ip','$userid')");
-	// 		}

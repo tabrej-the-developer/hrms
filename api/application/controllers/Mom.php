@@ -208,6 +208,7 @@ class Mom extends MY_Controller
           //monthly meeting
           $index = 0;
           $dateOfMeeting = $date;
+          $currentMeetingId = "";
           while ($dateOfMeeting <= $edate) {
             $id = uniqid();
             $this->meetingModel->addMeeting($id, $meetingTitle, $dateOfMeeting, $dateOfMeeting, $time, $endTime, $location, $period, $currentMeetingId, $userid, $status, $agendaFileName);
@@ -223,21 +224,25 @@ class Mom extends MY_Controller
           }
         }
         // Email & Notification
-        // $permissions = $this->getNotificationPermissions($invites,1);
-        // foreach($permissions as $permission){
-        //   if($permission->appYN == 'Y'){
-        //     $this->utilModel->insertNotification($permission->userid, $intent, $title, $body, json_encode($payload));
-        //     // $this->firebase->sendMessage($title,$body,$payload,$empId);
-        //   }
-        //   if($permission->emailYN == 'Y'){
-        //     $subject = "Meeting Created";
-        //     $template = "notificatioEmail";
-        //     $body['body'] = "<div style=\"display:flex;align-items:center;justify-content:center;height:100%;\"><div>
-        //         <h1 style=\"text-align:center\">Meeting Created</h1><h4 style=\"text-align:center\">$meetingTitle</h4><h4 style=\"text-align:center\">Location : $location</h4><h4 style=\"text-align:center\">Period : $period</h4></div></div>";
-        //     $this->Emails($permission->email,$template,$subject,$body);
-        //   }
-        // }
-        // Email & Notification
+        $data['MemberData'] = [];
+        $permissions = $this->getNotificationPermissions($invites,1);
+        foreach($permissions as $permission){
+          if($permission->appYN == 'Y'){
+            // $this->utilModel->insertNotification($permission->userid, $intent, $title, $body, json_encode($payload));
+            // $this->firebase->sendMessage($title,$body,$payload,$empId);
+          }
+          $obj = (Object)[];
+          $obj->userid = $permission->userid;
+          $obj->email = $permission->email;
+          $obj->YN = $permission->emailYN;
+          if($obj != null)
+            array_push($data['MemberData'],$obj);
+        }
+        $data['title'] = $meetingTitle;
+        $data['period'] = $period;
+        $data['loc'] = $location;
+        $data['category'] = 1;
+            // Email & Notification
         $data['Status'] = 'Success';
         http_response_code(200);
         echo json_encode($data);
@@ -323,20 +328,22 @@ class Mom extends MY_Controller
       foreach($meetingInvites as $participant){
         array_push($invites , $participant->id);
       }
+      $data['MemberData'] = [];
         // Email & Notification
-        // $permissions = $this->getNotificationPermissions($invites,2);
-        // foreach($permissions as $permission){
-        //   if($permission->appYN == 'Y'){
-        //     // $this->utilModel->insertNotification($permission->userid, $intent, $title, $body, json_encode($payload));
-        //     // $this->firebase->sendMessage($title,$body,$payload,$empId);
-        //   }
-        //   if($permission->emailYN == 'Y'){
-        //     $subject = "Meeting Ended";
-        //     $template = "notificatioEmail";
-        //     $body['body'] = "<div style='display:flex;align-items:center;justify-content:center;height:100%;'><div><h1 style='text-align:center'>Meeting Ended</h1><h4 style='text-align:center'>Thank You</h4></div></div>";
-        //     $this->Emails("dheerajreddynannuri1709@gmail.com",$template,$subject,$body);
-        //   }
-        // }
+        $permissions = $this->getNotificationPermissions($invites,2);
+        foreach($permissions as $permission){
+          if($permission->appYN == 'Y'){
+            // $this->utilModel->insertNotification($permission->userid, $intent, $title, $body, json_encode($payload));
+            // $this->firebase->sendMessage($title,$body,$payload,$empId);
+          }
+          $obj = (Object)[];
+          $obj->userid = $permission->userid;
+          $obj->email = $permission->email;
+          $obj->YN = $permission->emailYN;
+          if($obj != null)
+            array_push($data['MemberData'],$obj);
+        }
+          $data['category'] = 2;
         // Email & Notification
       $data['Status'] = 'Success';
       $data['respons_code'] = http_response_code(200);
