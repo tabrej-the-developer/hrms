@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap');
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+p{
+    font-family: 'Ubuntu', sans-serif!important;
+}
+span{
+    font-size: 14px;
+}
+body{
+    overflow-y:hidden;
+    height: 100vh;
+}
+input{
+    /* border: 2px solid transparent!important; */
+    box-shadow: none!important;
+    /* border-radius: 0px!important; */
+    /* box-shadow: inset 0 0 0 2px black, inset 6px 6px 0 rgba(30, 144, 255, 0.2), 3px 3px 0 rgba(30, 144, 255, 0.2)!important; */
+    -webkit-appearance: none!important;
+    background-color: transparent!important;
+}
+button{
+    box-shadow: none!important;
+}
+::placeholder{
+    /* color:dimgray!important; */
+    font-size: 14px;
+}
+.form-screen{
+    margin-left: -5%!important;
+}
+.show-case-buttons{
+    background: #ff7f50;width:70%;border-radius: 40px;
+}
+.bottom {
+    position: fixed;
+    right:10px;
+    bottom: 10px;
+    font-size: 14px;
+    line-height: 18px;
+    color: #979797;
+}
+.ca-btn:hover,.la-btn:hover {
+    background: white!important;
+    border: 2px dashed #3e957b!important;
+    color: #3e957b!important;
+}
+#particle {
+    background-color: #fff;
+    position:fixed;
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+    z-index:0; 
+  }
+#overlay {
+position: relative;
+}
+  .select2-selection__rendered {
+    line-height: 31px !important;
+}
+.select2-container .select2-selection--single {
+    height: 35px !important;
+}
+.select2-selection__arrow {
+    height: 34px !important;
+}
+/* On screens that are 992px or less, set the background color to blue */
+@media screen and (max-width: 992px) {
+    body {
+      background-color: white;
+      height: 100vh;
+      display: grid;
+      place-items: center;
+    }
+    .main-frame{
+        display: none;
+    }
+    .form-screen{
+        margin-left: 0%!important;
+    }
+    .show-case-buttons{
+        width:100%;border-radius: 10px!important;padding:5px!important;
+    }
+  }
