@@ -157,6 +157,56 @@ class Dashboard extends CI_Controller
 		}
 	}
 
+
+	public function birthdaysAndAnniversariesByMonth($centerid,$date,$userid)
+	{
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+			if ($res != null && $res->userid == $userid) {
+				$this->load->model('dashboardModel');
+				$this->load->model('rostersModel');
+				$this->load->model('utilModel');
+				$totalDays = cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y'));
+				$events = [];
+				$event['birthdays'] = [];
+				$event['anniversary'] = [];
+				$y = date('Y',strtotime($date));
+				$m = date('m',strtotime($date));
+				$startDate = "$y-$m-01";
+				for ($i = 0; $i < $totalDays; $i++) {
+					$currentDate = date('Y-m-d', strtotime("+$i day", strtotime("$startDate")));
+					$getShiftDetails = $this->dashboardModel->getShiftDetails($userid, $currentDate,$centerid);
+					$getBirthdays = $this->dashboardModel->getBirthdays($currentDate,$centerid);
+					if ($getBirthdays != null) {
+						if ($getBirthdays != "") {
+							$mxdata['date'] = $currentDate;
+							$mxdata['birthday'] = $getBirthdays;
+							array_push($event['birthdays'], $mxdata);
+						}
+					}
+					$getAnniversaries = $this->dashboardModel->getAnniversaries($currentDate,$centerid);
+					if ($getAnniversaries != null) {
+						if ($getAnniversaries != "") {
+							$mydata['date'] = $currentDate;
+							$mydata['anniversary'] =  $getAnniversaries;
+							array_push($event['anniversary'], $mydata);
+						}
+					}
+				}
+				array_push($event['event'], $events);
+				http_response_code(200);
+				echo json_encode($event);
+			} else {
+				http_response_code(401);
+			}
+		} else {
+			http_response_code(401);
+		}
+	}
+
 	public function getEventsByDate($date,$centerid,$userid){
 		$headers = $this->input->request_headers();
 		$headers = array_change_key_case($headers);

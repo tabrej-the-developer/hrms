@@ -52,6 +52,10 @@ $nth_child = 0;
       $selected = "MOM";
       $nth_child = 8;
       break;
+    case strtolower("Notifications"):
+      $selected = "Notifications";
+      $nth_child = 9;
+      break;
     // case strtolower("settings"):
     //     $selected = "settings";
     //     $nth_child = 8;
@@ -643,6 +647,19 @@ select{
           <span>Notices </span>
         </a>
       </li>
+      <!-- <li class="nav-item-header" onmouseover="hover('notices','<?php echo $selected;?>')" onmouseout="hoverOff('notices','<?php echo $selected;?>')">
+        <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('notifications') ?>" title="Notice">
+        <?php
+              if($url_page_array[array_search("HRMS101",$url_page_array) + 1] == strtolower("Notice")){ ?>
+              <i class="mr-4 " ><img id = "notices" src="<?php echo base_url();?>assets/images/navbar-icons/notices.png" style="max-height: 1rem"></i>
+              <?php }
+              else{ ?>
+                <i class="mr-4 " ><img id = "notices" src="<?php echo base_url();?>assets/images/navbar-icons/notices_filled.png" style="max-height: 1rem"></i>
+              <?php } 
+          ?>
+          <span>Notifications </span>
+        </a>
+      </li> -->
               
 		  
 <!--       <li class="nav-item-header">

@@ -326,7 +326,7 @@ a[href*="settings"],.xero_settings a{
 			<div class="tile-box d-md-flex col-3">
 				<div class="col-5">
 					<a href="<?php echo base_url('settings/kidsoftSettings')?>">
-						<img src="<?php echo site_url('assets/images/settings-icons/leave-settings.png'); ?>">
+						<img src="<?php echo site_url('assets/images/settings-icons/kidsoft_icon.jpg'); ?>" height="50px" width="50px">
 					</a>
 				</div>
 				<div class="col-6">

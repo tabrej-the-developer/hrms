@@ -1234,7 +1234,7 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 					<div class="weekTimesheetModalHeader">NAME</div>
 					<div class="weekTimesheetModalEdit d-inline-flex align-items-center">
 						<div>
-							<input type="checkbox" class="weekSameAsRoster" name="">Same as roster &nbsp;
+							<!-- <input type="checkbox" class="weekSameAsRoster" name="">Same as roster &nbsp; -->
 						</div>
 						<img class="addVisit" src="<?php echo base_url('assets/images/icons/plus.png'); ?>" height="20px" width="20px">
 					</div>
@@ -1987,7 +1987,7 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 							var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
 							var code = `<tr class="display_flex_visits">
 														<td class="time_visits"  style="min-width:5vw !important;max-width:5vw !important"><input type="checkbox" ${(visit.payrollType == null) ? '' : 'checked'}></td>
-														<td visitid='${visit.id}' ${checkShiftLength(inTime,outTime,day.length,dayLoopCounter)} startTime='${visit.signInTime}' endTime='${visit.signOutTime}' class="visit__" style="" dateAttr = "${visit.signInDate}">
+														<td visitid='${visit.id != undefined ? visit.id : '' }' ${checkShiftLength(inTime,outTime,day.length,dayLoopCounter)} startTime='${visit.signInTime}' endTime='${visit.signOutTime}' class="visit__" style="" dateAttr = "${visit.signInDate}">
 														${dateWithHiphen[2]} ${month[dateWithHiphen[1]-1]} ${dateWithHiphen[0]}
 													</td>
 														<td class="time_visits_child oldtime newStartTime" style="">
@@ -2140,7 +2140,9 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 			$(`.display_flex_visits`).each(function() {
 				var obj = {};
 				var d = new Date();
-				if ($(this).children('.time_visits').children('input').prop('checked') == true) {
+				// if ($(this).children('.time_visits').children('input').prop('checked') == true) {
+					var is = $(this).children('.time_visits').children('input').prop('checked');
+					obj.check = (is == true) ? true : false;
 					obj.visitid = $(this).children('.visit__').attr('visitid');
 					obj.startTime = ($(this).children('.time_visits_child').eq(0).children('input').val()).replace(":", "").toString();
 					obj.endTime = ($(this).children('.time_visits_child').eq(1).children('input').val()).replace(":", "").toString();
@@ -2153,7 +2155,7 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 						obj.shiftdate = $(this).children('.visit__').children().val();
 					}
 					values.push(obj)
-				}
+				// }
 				// if($(this).children('.visit__').children('.time_visits_child').hasClass('oldtime'))
 				// {
 				// 	if($(this).children('.visit__').children().children('input').prop('checked') == true){
