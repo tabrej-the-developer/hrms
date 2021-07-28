@@ -20,7 +20,7 @@ class Timesheet extends CI_Controller{
 
 	public function getPastTimesheet($centerid,$userid){
 		$headers = $this->input->request_headers();
-$headers = array_change_key_case($headers);
+		$headers = array_change_key_case($headers);
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
@@ -35,6 +35,7 @@ $headers = array_change_key_case($headers);
 						$var['id'] = $timesh->id;
 						$var['isEditYN'] = $timesh->createdBy == $userid ? "Y" : "N";
 						$var['status'] = $timesh->status;
+						$var['payrollStatus'] = $this->timesheetModel->getPayrollStatus($timesh->id);
 						array_push($data['timesheets'],$var);
 					}
 				}
@@ -127,7 +128,10 @@ $headers = array_change_key_case($headers);
 					if(count($val->PayRuns) > 0){
 						$startDate = $val->PayRuns[0]->PaymentDate;
 					$this->postTimesheetToXero($timesheetId,$userid,$centerid,$startDate);
+					http_response_code(200);
 					}
+				}else{
+					http_response_code(401);
 				}
 			}
 		}
@@ -547,7 +551,7 @@ function createPayrun($payrollCalendarId,$access_token,$tenant_id){
 
 	public function getTimesheet($timesheetid,$userid){
 		$headers = $this->input->request_headers();
-$headers = array_change_key_case($headers);
+		$headers = array_change_key_case($headers);
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
@@ -614,8 +618,8 @@ $headers = array_change_key_case($headers);
 									array_push($var['clockedTimes'],$mar);
 								}
 								foreach ($meetingTimes as $mee) {
-									$meet['startTime'] = intval($mee->time)*100;
-									$meet['endTime'] = intval($mee->eTime)*100;
+									$meet['startTime'] = intval($mee->time);
+									$meet['endTime'] = intval($mee->eTime);
 									$meet['message'] = "Meeting";
 									array_push($var['clockedTimes'],$meet);
 								}
@@ -700,8 +704,11 @@ $headers = array_change_key_case($headers);
 				$date = date("Y-m-d",strtotime('+5 days',strtotime($date)));
 				while($currentDate < $date){
 					$data = $this->timesheetModel->getUserVisits($currentDate,$empId);
+					$meetingData = $this->timesheetModel->getMeetingTimeForUser($currentDate,$empId);
 					$shiftData = $this->timesheetModel->getUserShift($currentDate,$empId);
 					$currentDate = date('Y-m-d',strtotime('+1 days',strtotime($currentDate)));
+					if($meetingData != null)
+						$data = array_merge($data,$meetingData);
 					array_push($weekData['shift'],$shiftData);
 					array_push($weekData['visitis'],$data);
 				}
@@ -822,7 +829,7 @@ $headers = array_change_key_case($headers);
 
 	public function createWeekPayrollEntry(){
 		$headers = $this->input->request_headers();
-$headers = array_change_key_case($headers);
+		$headers = array_change_key_case($headers);
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
@@ -832,11 +839,20 @@ $headers = array_change_key_case($headers);
 				$userid = $json->userid;
 				$timesheetid = $json->timesheetid;
 				$visits = $json->visits;
-				$startDate = $json->startDate;
 				$this->load->model('timesheetModel');
-				$this->timesheetModel->deletePayrollEntry($timesheetid,$empId,$startDate);
+				$currDate = "";
 				foreach ($visits as $v) {
-					$this->timesheetModel->createPayrollShiftEntry($timesheetid,$empId,$v->shiftdate,$v->clockedInTime,$v->clockedOutTime,$v->startTime,$v->endTime,$userid,$v->payType);
+					if($currDate == $v->shiftdate){
+						if(isset($v->check) && $v->check == "true"){
+							$this->timesheetModel->createPayrollShiftEntry($timesheetid,$empId,$v->shiftdate,$v->clockedInTime,$v->clockedOutTime,$v->startTime,$v->endTime,$userid,$v->payType,$v->visitid);
+						}
+					}else{
+						$currDate = $v->shiftdate;
+						$this->timesheetModel->deletePayrollEntry($timesheetid,$empId,$v->shiftdate);
+						if(isset($v->check) && $v->check == "true"){
+							$this->timesheetModel->createPayrollShiftEntry($timesheetid,$empId,$v->shiftdate,$v->clockedInTime,$v->clockedOutTime,$v->startTime,$v->endTime,$userid,$v->payType,$v->visitid);
+						}
+					}
 				}
 				$data['Status'] = "SUCCESS";
 				http_response_code(200);

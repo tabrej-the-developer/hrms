@@ -1046,7 +1046,12 @@ td{
 		$permissions = json_decode($permissions);
 	?>
 	<div class="containers" id="containers">
-		<div class="heading" id="center-id" c_id="<?php echo isset($rosterDetails->centerid) ? $rosterDetails->centerid : null; ?>"><?php echo $rosterDetails->templateName ?>
+		<div class="heading" id="center-id" c_id="<?php echo isset($rosterDetails->centerid) ? $rosterDetails->centerid : null; ?>">
+			<a href="<?php echo base_url('Roster');?>">
+            	<button class="btn back-button">
+            	  <img src="<?php echo base_url('assets/images/back.svg');?>">
+            	</button>
+         	</a><?php echo $rosterDetails->templateName ?>
 			<span class="top_buttons ml-auto">
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
 				<!-- <span class="editPermission-span">
@@ -1079,7 +1084,7 @@ td{
 					 	 ?>>
 				</span> -->
 	<?php } ?>  
-				<span class="print-button">
+				<!-- <span class="print-button">
 					<button class="print-btn">
 						<i>
 							<img src="<?php echo base_url('assets/images/icons/print.png'); ?>" style="max-height:1rem;margin-right:10px">
@@ -1088,10 +1093,10 @@ td{
 						<button class="print-landscape" onclick="landscape()">Landscape</button>
 						<button class="print-portrait" onclick="portrait()">Portrait</button>
 					</span>
-				</span>
+				</span> -->
 			</span>
 		</div>
-		<div class="roster-dates"><?php 
+		<?php 
 
 //PHP functions //
 
@@ -1153,21 +1158,20 @@ function dateToDay($date){
   		 $str2 = 4; 
 			 $v1 = explode("-",$str1);
 			 $v2 = explode("-",$str2);
-		 echo "Mon to Fri"; 
     }
-		 ?> </div>
+		 ?> 
 		<div class="table-div" style="">
 			<table>
 				<tr class="day-row">
-					<th id="table-id-1" class="day" style="width:16vw">Employees</th>	<?php $x=0;
+					<th id="table-id-1" class="day" style="width:18vw">Employees</th>	<?php $x=0;
 					if(isset($rosterDetails->day)){
 						$startDate = date('Y-m-d', strtotime($rosterDetails->day));
 						?>
-					<th id="table-id-2" class="day" style="width:12vw">Mon</th>
-					<th id="table-id-3" class="day"  style="width:12vw">Tue</th>
-					<th id="table-id-4" class="day"  style="width:12vw">Wed</th>
-					<th id="table-id-5" class="day"  style="width:12vw">Thu</th>
-					<th id="table-id-6" class="day" style="width:12vw">Fri</th>
+					<th id="table-id-2" class="day" style="width:13vw">Mon</th>
+					<th id="table-id-3" class="day"  style="width:13vw">Tue</th>
+					<th id="table-id-4" class="day"  style="width:13vw">Wed</th>
+					<th id="table-id-5" class="day"  style="width:13vw">Thu</th>
+					<th id="table-id-6" class="day" style="width:13vw">Fri</th>
         <?php } ?>
 
 				</tr>
@@ -1217,7 +1221,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 		}
 				for($counter=0;$counter<$value;$counter++){ ?>
 				<tr  class="table-row">
-					<td   style="width:16vw" class=" cell-boxes left-most">
+					<td   style="width:18vw" class=" cell-boxes left-most">
 						<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
 
 						<span class="row name-space" style="padding:0;margin:0;">
@@ -1274,7 +1278,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 
 		 ?>
 
-					<td class="shift-edit cell-boxes count-<?php echo $index+1;?> <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"  style="width:12vw" 
+					<td class="shift-edit cell-boxes count-<?php echo $index+1;?> <?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->status?>"  style="width:13vw" 
 					 name4="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->shiftid ?>"  
 
 					 name2="<?php echo $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->isOnLeave == "Y" ? "" : $rosterDetails->roster[$x]->roles[$counter]->shifts[$p]->roleid ?>"

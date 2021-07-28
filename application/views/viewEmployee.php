@@ -574,7 +574,7 @@
 				<input disabled  type="radio" name="australiantResidentForTaxPurposeYN" class="australiantResidentForTaxPurposeYN yn-input" value="N" <?php echo isset($employeeData->employeeTaxDeclaration->australiantResidentForTaxPurposeYN) ? (($employeeData->employeeTaxDeclaration->australiantResidentForTaxPurposeYN == 'N') ? 'checked' : '') : ''; ?>>
 		</span>
 		<span class="span-class col-3">
-			<label class="labels__">Residency Statue</label>
+			<label class="labels__">Residency Status</label>
 				<input disabled   id="residencyStatue" name="residencyStatue" value="<?php echo isset($employeeData->employeeTaxDeclaration->residencyStatue) ? $employeeData->employeeTaxDeclaration->residencyStatue : ''; ?>" type="text">
 		</span>
 		<span class="span-class col-3">
@@ -1172,7 +1172,17 @@ $(document).ready(function(){
 		$.ajax({
 			url : url,
 			success : function(response){
-				console.log(response)
+				if(response != null && response != "" && response != " "){
+					var res = JSON.parse(response)
+					if(res.Status == 'OK'){
+						window.location.href = "<?php echo base_url('settings/viewEmployeeTable'); ?>"
+					}
+					if(res.Type == 'Error'){
+						alert(res.Message);
+					}
+				}else{
+					alert("ERROR")
+				}
 			}
 		})
 	})

@@ -67,7 +67,7 @@ font-family: 'Open Sans', sans-serif;
 .forgot-password{
     color: #444444;
     font-size: 0.8rem;
-    font-family: : Open Sans;
+    font-family: Open Sans;
 }
 .login-container-child{
     height: 100%;
@@ -183,7 +183,7 @@ input[type="submit"]{
       <form method="post" action="<?php echo base_url('welcome/login'); ?>">    
         <?php  echo '<label class="text-danger">'.$this->session->flashdata("error").'</label>';  ?>
         <div class="form-group">
-          <input type="text" name="email" class="form-control" placeholder="Email Address" value="<?php echo $email;?>" required />
+          <input type="text" name="email" class="form-control" placeholder="Email Id/Employee Id" value="<?php echo $email;?>" required />
         </div> 
         <div class="form-group password_group">
           <input type="password" name="password" id="password" class="form-control" placeholder="Password" value="" required />

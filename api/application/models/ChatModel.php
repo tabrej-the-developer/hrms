@@ -81,9 +81,9 @@ class ChatModel extends CI_Model {
     }
 
     public function getConversationOrdered($idUser){
-            $this->load->database();
+        $this->load->database();
         try{
-        $query = $this->db->query("SELECT * FROM chat_conversation WHERE idConversation IN (SELECT idConversation FROM chat_conversationmembers WHERE idUser = '$idUser' ORDER BY lastUpdated DESC)");
+        $query = $this->db->query("SELECT * FROM chat_conversation WHERE idConversation IN (SELECT idConversation FROM chat_conversationmembers WHERE idUser = '$idUser' ) ORDER BY lastUpdated DESC");
         return $query->result();
         }
         catch(Exception $e){
@@ -165,8 +165,12 @@ class ChatModel extends CI_Model {
     public function createMember($idUser,$idConversation,$isAdminYN){
             $this->load->database();
         try{
-                $query = $this->db->query("INSERT INTO chat_conversationmembers(idConversation,idUser,isAdminYN,addedDate,lastSeen) VALUES($idConversation,'$idUser','$isAdminYN',now(),now())");
-            return $this->db->insert_id();  
+            $check = $this->db->query("SELECT * FROM chat_conversationmembers WHERE idConversation = $idConversation AND idUser = '$idUser'");
+            if($check->row() == null){
+                $query = $this->db->query("INSERT INTO chat_conversationmembers(idConversation,idUser,isAdminYN,addedDate,lastSeen) VALUES ($idConversation,'$idUser','$isAdminYN',now(),now())");
+                return $this->db->insert_id();  
+            }
+            return -1;
         }
         catch(Exception $e){
             $this->handlerex->index($e->getMessage());

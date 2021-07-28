@@ -765,7 +765,9 @@ table.dataTable{
       $('.notify_').css('visibility','visible');
     }
     function addMessageToNotification(message){
-      $('._notify_message').append(`<li>${message}</li>`)
+    	if($('.notify_').css('visibility') == 'hidden'){
+     		$('._notify_message').append(`<li>${message}</li>`)
+      }
     }
     function closeNotification(){
       $('.notify_').css('visibility','hidden');
@@ -773,8 +775,8 @@ table.dataTable{
     }
 
 <?php  if(($this->session->flashdata('errorMessage') != null) && ($this->session->flashdata('errorMessage') != "") ){ ?>
+	addMessageToNotification('<?php echo $this->session->flashdata('errorMessage') ?>');
       showNotification();
-      addMessageToNotification('<?php echo $this->session->flashdata('errorMessage') ?>');
       setTimeout(closeNotification,5000)
     <?php  } ?>
   // Notification //

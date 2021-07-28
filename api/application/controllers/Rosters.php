@@ -231,6 +231,7 @@ class Rosters extends MY_Controller
 											$rav['shifts'] = [];
 											$day = 0;
 											while ($day < 5) {
+
 												$shiftObj['currentDate'] = date("Y-m-d", strtotime("$startDate +$day day"));
 												$shiftObj['roleid'] = $role->roleid;
 												$shiftObj['roleName'] = $role->roleName;
@@ -913,23 +914,25 @@ class Rosters extends MY_Controller
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
 			$json = json_decode(file_get_contents('php://input'));
 			if ($json != null && $res != null && $res->userid == $userid) {
-				$employeeId = $json->employeeId;
+				$employeeIds = $json->employeeId;
 				$editRoster = $json->editRoster;
 				$rosterId = $json->rosterId;
 				$this->load->model('rostersModel');
-				if ($employeeId != null && $employeeId != "" && $editRoster != null && $rosterId != null && $editRoster != "" && $rosterId != "") {
-					$rosterPermission = $this->rostersModel->getRosterPermissions($employeeId, $rosterId, $userid);
-					if (count($rosterPermission)  > 0) {
-						$this->rostersModel->updateRosterPermission($employeeId, $rosterId, $userid, $editRoster);
-						$data['Status'] = 'SUCCESS';
-						http_response_code(200);
-						echo json_encode($data);
-					}
-					if (count($rosterPermission) == 0) {
-						$this->rostersModel->addRosterPermission($employeeId, $rosterId, $userid, $editRoster);
-						$data['Status'] = 'SUCCESS';
-						http_response_code(200);
-						echo json_encode($data);
+				foreach($employeeIds as $employeeId){
+					if ($employeeId != null && $employeeId != "" && $editRoster != null && $rosterId != null && $editRoster != "" && $rosterId != "") {
+						$rosterPermission = $this->rostersModel->getRosterPermissions($employeeId, $rosterId, $userid);
+						if (count($rosterPermission)  > 0) {
+							$this->rostersModel->updateRosterPermission($employeeId, $rosterId, $userid, $editRoster);
+							$data['Status'] = 'SUCCESS';
+							http_response_code(200);
+							echo json_encode($data);
+						}
+						if (count($rosterPermission) == 0) {
+							$this->rostersModel->addRosterPermission($employeeId, $rosterId, $userid, $editRoster);
+							$data['Status'] = 'SUCCESS';
+							http_response_code(200);
+							echo json_encode($data);
+						}
 					}
 				}
 			} else {
@@ -1404,6 +1407,47 @@ class Rosters extends MY_Controller
 			}
 		} else {
 			http_response_code(401);
+		}
+	}
+
+	public function createRosterPDF($rosterid,$userid){
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			$this->load->model('authModel');
+			$this->load->model('rostersModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+			if ($res != null && $res->userid == $userid) {
+				set_time_limit(0);
+				$url = base_url('rosters/getRoster/')."$rosterid/$userid";
+				$ch = curl_init($url);
+				curl_setopt($ch, CURLOPT_URL,$url);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'x-device-id: '.$headers['x-device-id'],
+					'x-token: '.$headers['x-token']
+				));
+				$server_output = curl_exec($ch);
+				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				if($httpcode == 200){
+					$data['rolesArray'] = $this->rostersModel->getRoles(); 
+					$data['rosterDetails'] = json_decode($server_output);
+					$data['editRosterYN'] = isset($data['rosterDetails']->isEditYN) ? $data['rosterDetails']->isEditYN : null;
+					$data['roDetails'] = $data['rosterDetails'];
+					$data['file'] = uniqid().".pdf";
+				//    $entitlement = json_decode($entitlements);
+					$this->load->view('rosterPdf',$data);
+					$output['file'] = $data['file'];
+					$output['path'] = base_url('uploads/pdfs/');
+					$output['Status'] = 'SUCCESS';
+					echo  json_encode($output);
+					curl_close ($ch);
+			}else{
+				$output['Status'] = "ERROR";
+				$output['Message'] = "Invalid";
+				echo  json_encode($output);
+				}
+			}
 		}
 	}
 }

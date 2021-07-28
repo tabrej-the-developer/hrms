@@ -227,7 +227,7 @@ body {
     padding: 200px 0 0;
 }
 .bannerBg .container::before {
-    background: url(../img/bannerBg.png) no-repeat 0 top;
+    background: url(../images/landing/bannerBg.png) no-repeat 0 top;
     position: absolute;
     width: 1726px;
     height: 800px;
@@ -317,13 +317,13 @@ img.laptop {
     position: relative;
 }
 a.facebook {
-    background: url(../img/socialImg.png) no-repeat;
+    background: url(../images/landing/socialImg.png) no-repeat;
     width: 61px;
     height: 64px;
     margin: 0 0 0 10px;
 }
 a.twitter {
-    background: url(../img/socialImg.png) no-repeat -70px 0;
+    background: url(../images/landing/socialImg.png) no-repeat -70px 0;
     width: 61px;
     height: 64px;
     margin: 0 0 0 10px;
@@ -342,10 +342,10 @@ a.twitter {
     -webkit-transition: all 300ms ease;
 }
 .social a.facebook span {
-    background: url(../img/socialImg.png) no-repeat 0 -68px;
+    background: url(../images/landing/socialImg.png) no-repeat 0 -68px;
 }
 .social a.twitter span {
-    background: url(../img/socialImg.png) no-repeat -70px -68px;
+    background: url(../images/landing/socialImg.png) no-repeat -70px -68px;
 }
 .social a:hover span {
     opacity: 1;
@@ -357,7 +357,7 @@ a.twitter {
 }
 
 .features {
-    background: url(../img/featuresBg.png) no-repeat right center;
+    background: url(../images/landing/featuresBg.png) no-repeat right center;
     padding: 100px 0;
 }
 .features .container {
@@ -366,7 +366,8 @@ a.twitter {
     justify-content: space-between;
 }
 .featuresText {
-    width: 50%;
+    width: 100%;
+    text-align: center;
 }
 .featuresText h2 {
     font-size: 42px;
@@ -388,12 +389,22 @@ a.twitter {
     flex-wrap: wrap;
 }
 .featuresText ul li {
-    flex: 1 0 41%;
-    background: url(../img/check.png) no-repeat left center;
+    flex: 0 0 33.333%;
+    /* background: url(../images/landing/check.png) no-repeat left center; */
     list-style: none;
-    padding-left: 54px;
+    padding: 54px 15px 0;
     line-height: 47px;
     margin: 0 0 18px;
+    box-sizing: border-box;
+}
+.featuresText ul li h3 {
+    margin: 0;
+}
+.featuresText ul li p{
+    color: rgb(0 0 0 / 68%);
+    font-size: 15px;
+    line-height: 22px;
+    margin: 0 0 20px;
 }
 .featuresText a.button {
     clear: both;
@@ -482,7 +493,7 @@ a.twitter {
 }
 .featurePointDiv.firstArrow::after {
     position: absolute;
-    background: url(../img/first-arrow.png) no-repeat;
+    background: url(../images/landing/first-arrow.png) no-repeat;
     width: 58px;
     height: 87px;
     content: "";
@@ -491,7 +502,7 @@ a.twitter {
 }
 .featurePointDiv.lastArrow::after {
     position: absolute;
-    background: url(../img/last-arrow.png) no-repeat;
+    background: url(../images/landing/last-arrow.png) no-repeat;
     width: 58px;
     height: 67px;
     content: "";
@@ -551,7 +562,7 @@ a.twitter {
 }
 .seeHowWeWork a {
     font-size: 0;
-    background: url(../img/play.png) no-repeat;
+    background: url(../images/landing/play.png) no-repeat;
     width: 77px;
     height: 77px;
 }
@@ -576,7 +587,7 @@ a.twitter {
     position: absolute;
     right: 10px;
     top: 50px;
-    background: url(../img/cancel.png) no-repeat;
+    background: url(../images/landing/cancel.png) no-repeat;
     opacity: 1;
     cursor: pointer;
 }
@@ -673,6 +684,69 @@ button.owl-dot.active {
     text-transform: uppercase;
 }
 
+
+.getStartedCont {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.493);
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+.midCont {
+    background: #fff;
+    width: 500px;
+    padding: 60px 50px 50px;
+    box-sizing: border-box;
+    position: relative;
+}
+.midCont form {
+    display: flex;
+    flex-direction: column;
+}
+.midCont form input {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    -o-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    padding: 15px;
+    margin: 10px 0;
+    box-sizing: border-box;
+}
+.midCont form input[type="submit"] {
+    background: #ef802d;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+span.closeGetStartedCont {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    height: 50px;
+    background: #0f5ca3;
+}
+span.closeGetStartedCont:before {
+    position: absolute;
+    width: 40px;
+    height: 4px;
+    background: #fff;
+    content: "";
+    transform: rotate( 45deg ) translate(19px, 12px);
+}
+span.closeGetStartedCont:after {
+    position: absolute;
+    width: 40px;
+    height: 4px;
+    background: #fff;
+    content: "";
+    transform: rotate( -45deg ) translate(-11px, 19px);
+}
+
 /* ==========================================================================
    Media Queries
    ========================================================================== */
@@ -750,6 +824,95 @@ button.owl-dot.active {
     .main aside {
         float: right;
         width: 28%;
+    }
+}
+
+@media only screen and (max-width: 1023px){
+    .container {
+        width: 90%;
+    }
+    .mobileMenu {
+        display: block !important;
+        position: relative;
+        z-index: 8;
+        width: 50px;
+        height: 50px;
+        border: 1px solid #000;
+        padding: 12px 5px;
+        box-sizing: border-box;
+    }
+    .mobileMenu span {
+        width: 100%;
+        display: block;
+        background: #000;
+        height: 4px;
+    }
+    .mobileMenu span:nth-child(2) {
+        margin: 6px 0;
+    }
+    .header ul {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        flex-direction: column;
+        background: #fff;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        padding: 60px 0 0;
+        z-index: 7;
+    }
+    .header ul li {
+        padding: 15px 0;
+    }
+    .social {
+        display: none;
+    }
+    .bannerBg .container::before {
+        display: none;
+    }
+    .bannerBg h1 {
+        font-size: 38px;
+    }
+    .bannerBg h6 {
+        width: 100%;
+    }
+    img.laptop {
+        width: 100%;
+    }
+    .features {
+        background: none;
+    }
+    .featuresText h2 {
+        font-size: 36px;
+    }
+    .featuresText ul li {
+        flex: 0 0 100%;
+    }
+    .seeHowWeWork .container {
+        width: 90%;
+    }
+    .seeHowWeWork video {
+        height: 100%;
+        width: auto;
+    }
+    .seeHowWeWork p {
+        width: 100%;
+    }
+    .sliderSection h2 {
+        font-size: 26px;
+        line-height: 46px;
+    }
+    ul.footerMenu {
+        margin: 0;
+        padding: 0;
+        flex-direction: column;
+    }
+    ul.footerMenu li {
+        padding: 10px 0;
     }
 }
 

@@ -1,3 +1,5 @@
+
+
 $(document).ready(function(){
     $(window).scroll(function() {
         if ($(window).scrollTop() > 0) {
@@ -18,9 +20,13 @@ $(document).ready(function(){
         $("body").css("overflow-y", "scroll");
     });
 
+    $(".mobileMenu").on("click", function(){
+        $(".toggleMenu").toggle();
+    });
+
 
     $(".owl-carousel").owlCarousel({
-        items: 3,
+        items: 4,
         loop:Infinity,
         nav: false,
         dots: true,
@@ -35,11 +41,20 @@ $(document).ready(function(){
                 nav:false
             },
             1000:{
-                items:3,
+                items:4,
                 nav:true,
                 loop:false
             }
         }
+    });
+
+    $(".getStarted").on("click", function(e){
+        e.preventDefault();
+        $(".getStartedCont").css("display", "flex");
+    });
+    $(".closeGetStartedCont").on("click", function(e){
+        e.preventDefault();
+        $(".getStartedCont").hide();
     });
     
     

@@ -26,7 +26,7 @@ class NoticeModel extends CI_Model {
 
 	public function getAllNoticesForGroupId($groupid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * from notices where receiverId = '$groupid' ");
+		$query = $this->db->query("SELECT * from notices where receiverId = '$groupid'  and isGroup = 'Y'");
 		return $query->result();
 	}
 
@@ -35,9 +35,9 @@ class NoticeModel extends CI_Model {
 		$query = $this->db->query("UPDATE notices SET status = $status WHERE receiverId='$userid' AND id=$noticeid");
 	}
 
-	public function addNotice($senderId,$receiverId,$subject,$text){
+	public function addNotice($senderId,$receiverId,$subject,$text,$isGroup){
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO notices VALUES(0,'$senderId','$receiverId','$text','$subject',0,CURDATE())");
+		$query = $this->db->query("INSERT INTO notices VALUES(0,'$senderId','$receiverId','$text','$subject',0,CURDATE(),'$isGroup')");
 	}
 
 	public function getMailId($memberid){

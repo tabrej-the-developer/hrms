@@ -231,8 +231,10 @@ input[type="text"],input[type=time],select,#casualEmp_date{
                   <th>S.No</th>
                   <th>Name</th>
                   <th>Hourly rate</th>
+                  <?php if((isset($permissions->permissions) ? $permissions->permissions->editEntitlementsYN : "N") == "Y"){ ?>
                   <th>Edit</th>
                   <th>Delete</th>
+                  <?php } ?>
                 </tr>
               </thead>
               <tbody id="filterList" > 
@@ -257,9 +259,8 @@ input[type="text"],input[type=time],select,#casualEmp_date{
                          </span>
                     </td>
 
-
+                    <?php if((isset($permissions->permissions) ? $permissions->permissions->editEntitlementsYN : "N") == "Y"){ ?>
                     <td>
-                    <?php if(isset($permissions->permissions) ? $permissions->permissions->editEntitlementsYN : "N" == "Y"){ ?>
                         <span style="cursor: pointer;">
                          <div><i class="fas fa-pencil-alt" style="color: #0077ff;" u-v="<?php echo $entitlement->entitlements[$i]->id;?>">
                             <i>
@@ -267,17 +268,17 @@ input[type="text"],input[type=time],select,#casualEmp_date{
                             </i>
                          </i> </div>
                         </span>
-                        <?php }else{ echo "-";} ?>
                     </td>
+                    <?php } ?>
+                    <?php if((isset($permissions->permissions) ? $permissions->permissions->editEntitlementsYN : "N") == "Y"){ ?>
                     <td>
-                    <?php if(isset($permissions->permissions) ? $permissions->permissions->editEntitlementsYN : "N" == "Y"){ ?>
                       <span style="cursor: pointer;"><i class="fas fa-trash-alt" style="color: #ff3b30;" d-v="<?php echo $entitlement->entitlements[$i]->id;?>">
                         <i>
                           <img src="<?php echo base_url('assets/images/icons/del.png'); ?>" style="max-height:01rem;margin-right:10px">
                         </i>
                       </i></span>
-                    <?php }else{ echo "-";} ?>
                     </td>
+                    <?php } ?>
                     </tr>
                     <?php }}}?> 
               </tbody>
@@ -395,8 +396,8 @@ input[type="text"],input[type=time],select,#casualEmp_date{
      </td>
      <td>
        <span style="cursor: pointer;" id="create_new_entitlements">
-          <div>
-           <i class="fas fa-check-square" style="color: #0077ff;" u-v=""></i> Create</div>
+          <div u-v="" class="addEnt">
+           <i class="fas fa-check-square" style="color: #0077ff;" ></i> Create</div>
        </span>
      </td>
      <td>
@@ -410,7 +411,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
          });
   </script>
   <script type="text/javascript">
-                 $(document).on('click','.fa-check-square',function(){
+                 $(document).on('click','.addEnt',function(){
                  var url = '<?php echo base_url();?>settings/addEntitlement';
                  var rate = $('#a2').val();
                  var name = $('#a1').val();

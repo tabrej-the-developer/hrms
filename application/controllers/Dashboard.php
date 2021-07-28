@@ -28,6 +28,43 @@ class Dashboard extends CI_Controller {
 		$data['meetings'] = $this->getMeetings($id);
 		// Need to pass center
 		$data['calendar'] = $this->getCalendar($id);
+		$cal = json_decode($data['calendar']);
+		// print_r($cal->event[0][2]);die();
+		if($cal != null){
+			$ar = [];
+			$arr = [];
+			$store = (Object)[];
+			$x=0;
+			foreach($cal->event[0] as $key=>$calEvent){
+				if(!in_array($calEvent->start,$ar)){
+					array_push($ar,$calEvent->start);
+					array_push($arr,$calEvent);
+				}else{
+					if(isset($store->{$calEvent->start})){
+						$store->{"$calEvent->start"} = $store->{"$calEvent->start"} + 1;
+					}else{
+						$store->{"$calEvent->start"} = 1;
+					}
+					// \array_splice($cal->event[0],$key,$key);
+					// $key--;
+				}
+				$x++;
+			}
+
+			foreach($store as $key => $val){
+				$ob = (object)[];
+				$ob->title = "+$val Events";
+				$ob->start = "$key"; 
+				if($ob != null){
+					$ob = (array)$ob;
+					array_push($arr,$ob);
+				}
+			}
+
+		}
+		$cal->event[0] = $arr;
+		$data['calendar'] = json_encode($cal);
+
 		// Need to pass center
 		$data['moduleEntryCount'] = $this->moduleEntryCounts($id);
 		$data['footprints'] = $this->getFootprints($this->session->userdata('LoginId'));
@@ -58,6 +95,25 @@ class Dashboard extends CI_Controller {
         else if($httpcode == 401){
                 }
     }
+
+	public function getEventsByDate($date,$centerid){
+        $url =  BASE_API_URL."Dashboard/getEventsByDate/$date/$centerid/".$this->session->userdata('LoginId');
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_URL,$url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER,array(
+            'x-device-id: '.$this->session->userdata('x-device-id'),
+            'x-token: '.$this->session->userdata('AuthToken')
+        ));
+        $server_output = curl_exec($ch);
+        $httpcode = curl_getinfo($ch , CURLINFO_HTTP_CODE);
+        if($httpcode == 200){
+            echo $server_output;
+            curl_close($ch);
+        }
+        else if($httpcode == 401){
+		}
+	}
 
 	function getAllCenters(){
 		$url = BASE_API_URL."util/getAllCenters/".$this->session->userdata('LoginId');

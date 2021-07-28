@@ -42,6 +42,7 @@
       padding: 0.5rem;
       display: flex;
       justify-content: center;
+      cursor: pointer;
     }
     td:nth-of-type(1){
       width: 40%
@@ -54,6 +55,16 @@
     }
     .attendace_table{
       overflow-y: auto;
+    }
+    .selected{
+      color: #8D91AA  !important;
+      background-color: #F3F4F7 !important;
+    }
+    .tabSelected{
+      display: block !important;
+    }
+    .tabNameClass_0,.tabNameClass_1,.tabNameClass_2{
+      display: none;
     }
   </style>
 </head>
@@ -83,9 +94,13 @@
               </span>
           </div>
         </div>
-        <div class="row agenda_mom">
-          <div class="col-md-6">
-            <h5 class="headerTitle">Agenda and Summary</h5>
+        <div class="agenda_mom">
+        <div class="d-flex col-12 ">
+          <h5 class="headerTitle tabName_0 col-4 " intVal="0">Agenda and Summary</h5>
+          <h5 class="headerTitle tabName_1 col-4 " intVal="1">Minutes of Meeting</h5>
+          <h5 class="headerTitle  tabName_2 col-4 " intVal="2">Meeting Attendence</h5>
+        </div>
+          <div class="col-12 tabNameClass_0">
             <div class="overflow_agenda">
               <table style="width: 100%">
                 <thead>
@@ -103,8 +118,7 @@
               </table>
             </div>
           </div>
-          <div class="col-md-6">
-            <h5 class="headerTitle">Minutes of Meeting</h5>
+          <div class="col-12 tabNameClass_1">
             <div class="overflow_mom">
               <table style="width: 100%">
                 <thead>
@@ -124,25 +138,30 @@
               </table>
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="attendance col-md-6">
-            <h5 class="headerTitle">Meeting Attendence</h5>
-            <ul class="attendace_table">
+          <div class="attendance col-12 tabNameClass_2">
+            <table class="col-12">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
               <?php foreach ($info->participant as $p) : ?>
-                <li class="" aria-disabled="true">
-                  <span><?php echo $p->name; ?></span>
+                <tr>
+                  <td><?php echo $p->name; ?></td>
                   <?php 
                     if($p->status == 'P'){
-                      echo "<span style='color:#228659'>Present</span>";
+                      echo "<td style='color:#228659'>Present</td>";
                     }
                     if($p->status == 'A'){
-                      echo "<span style='color:#cf6f57 '>Absent</span>";
+                      echo "<td style='color:#cf6f57 '>Absent</td>";
                     }
                   ?> 
-                </li>
-              <?php endforeach; ?>
-            </ul>
+                </tr>
+              <?php endforeach ?>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -155,11 +174,23 @@
 <script>
   function addAgenda() {
     alert('clicked');
-
     var div = document.getElementById('agendaMore');
     div.innerHTML = "<div class='form-group'><label>Agenda</label><input type='text' class='form-control' name='meetingLocation' id='agenda' placeholder='Agenda'  ><span id='time_error' class='text-danger'></span></div>";
-
   }
+
+  function viewToggleElement(val){
+    for(var i=0;i<3;i++){
+      $(`.tabName_${i}`).removeClass('selected');
+      $(`.tabNameClass_${i}`).removeClass('tabSelected');
+    }
+    $(`.tabName_${val}`).addClass('selected');
+    $(`.tabNameClass_${val}`).addClass('tabSelected');
+  }
+  viewToggleElement(0);
+ 
+  $(document).on('click','.headerTitle',function(){
+    viewToggleElement($(this).attr('intVal'));
+  })
 
   $(document).ready(function() {
     $(".dropdown").hover(

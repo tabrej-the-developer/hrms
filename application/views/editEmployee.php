@@ -522,7 +522,7 @@
 			</span>
 			<span class="span-class col-3" >
 				<label class="labels__">Email</label>
-				<input style="cursor: not-allowed" placeholder="Emails" id="emails"  class="" type="text" name="emails" disabled value="<?php echo isset($employeeData->employee->emails) ? $employeeData->employee->emails : ''; ?>">
+				<input style="cursor: not-allowed" placeholder="Emails" id="emails"  class="" type="text" name="emails" readonly="readonly" value="<?php echo isset($employeeData->employee->emails) ? $employeeData->employee->emails : ''; ?>">
 			</span>
 			<hr>
 	<span class="d-block">
@@ -608,6 +608,50 @@
 		</span>
 <!-- 	</span>
  -->			</div>
+				<?php }if(count($eba) == 0){ ?>
+			<div class="child">
+				<div class="statement"></div>
+<!-- 			<div class="row">
+ --><!-- 		<span class="span-class col-3">
+			<label>Statement Text</label>
+			<input placeholder="Statement Text" type="text" class="statementText" >
+		</span> -->
+		<span class="span-class col-3">
+			<label>Account Name</label>
+			<input placeholder="Account Name" type="text" class="accountName" name="accountName[]" >
+		</span>
+		<span class="span-class col-3">
+			<label>BSB</label>
+			<input placeholder="BSB" type="text" class="bsb" name="bsb[]" >
+		</span>
+<!-- 	</div>
+ -->		
+<!-- 	<span class="row">
+ -->		<span class="span-class col-3">
+			<label>Account Number</label>
+			<input placeholder="Account Number" type="text" class="accountNumber" name="accountNumber[]" >
+		</span>
+		<?php if($i ==  0){ ?>
+		<span class="span-class col-3 remainder_parent">
+			<label>Remainder</label>
+				<span>
+					<label class="yn-label">Yes</label>
+					<input value="Y" class="remainderYN yn-input" type="radio" name="remainderYN[]" >
+				</span>
+				<span>
+					<label class="yn-label">No</label>
+					<input value="N" class="remainderYN yn-input" type="radio" name="remainderYN[]" >
+				</span>
+		</span>
+		<?php   } ?>
+		<span class="span-class amount-class-parent col-3">
+			<div class="amount-class">
+				<label>Amount</label>
+				<input placeholder="Amount" type="text" class="amount" name="amount[]" >
+			</div>
+		</span>
+<!-- 	</span>
+ -->			</div>
 				<?php } ?>
 		</div>
 	</section>
@@ -615,16 +659,37 @@
 
 
 	<section class="employee-superfund-section">
-		<h3> Superannuation 
+		<div> 
+			<span>
+				<span>Superannuation</span> 
+				<span>
+					<span class="select_css">
+						<?php 
+							$centers = json_decode($centers); 
+							if(isset($centers->centers) && count($centers->centers) > 0){
+						?>
+						<select name="" id="" class="center-select">
+							<?php foreach($centers->centers as $center){ ?>
+							<option value="<?php echo $center->centerid; ?>"><?php echo $center->name; ?></option>
+							<?php } ?>
+						</select>
+						<?php } ?>
+					</span>
+				</span>
+			</span>
 			<span class="add_remove_superfund">
 				<span id="superfund-add"> Add </span>
-				<span class="superfund-remove"> Remove </span></span></h3>
+				<span class="superfund-remove"> Remove </span>
+			</span>
+		</div>
 <!-- 		<span class="span-class col-3">
 			<label>Employee Id</label>
 			<input placeholder="Employee Id" id="employeeId" >
 		</span> -->
 			<div class="superfund-parent">
-			<?php foreach($employeeData->employeeSuperfunds as $supFund){ ?>
+			<?php 
+			$checkSuperfund = count($employeeData->employeeSuperfunds);
+			foreach($employeeData->employeeSuperfunds as $supFund){ ?>
 				<div class="superfund-child row">
 					<span class="span-class col-3">
 						<label>Super Fund Id</label>
@@ -652,9 +717,35 @@
 						<input class="employeeNumber" type="text" name="superFund[EmployeeNumber][]" value="<?php echo isset($supFund->employeeNumber) ? $supFund->employeeNumber : ''; ?>">
 					</span>
 				</div>
+				<?php }if($checkSuperfund == 0){ ?>
+				<div class="superfund-child row">
+					<span class="span-class col-3">
+						<label>Super Fund Id</label>
+						<span class="select_css">
+							<select placeholder="Super Fund Id" class="superFundId" name="superFund[Id][]">
+							<?php 
+							$superFundValue = isset($supFund->superFundId) ? $supFund->superFundId : '';
+							foreach($superfunds->superfunds as $superfund){
+									echo "<option value='$superfund->superFundId'>$superfund->name</option>";
+							}
+							?>
+							</select>
+						</span>
+					</span>
+					<span class="span-class col-3">
+						<label>Super Membership Id</label>
+						<input placeholder="Super Membership Id" class="superMembershipId" type="text" name="superFund[MembershipId][]" >
+					</span>
+					<span class="span-class col-3">
+						<label class="labels__">Employee Number</label>
+						<input class="employeeNumber" type="text" name="superFund[EmployeeNumber][]" >
+					</span>
+				</div>
 				<?php } ?>
 			</div>
-
+			<div>
+					<span id="subm" class="saveSuperfund">SAVE</span>
+			</div>
 	</section>
 
 
@@ -690,7 +781,7 @@
 				<input type="radio" name="australiantResidentForTaxPurposeYN" class="australiantResidentForTaxPurposeYN yn-input" value="N" <?php echo isset($employeeData->employeeTaxDeclaration->australiantResidentForTaxPurposeYN) ? (($employeeData->employeeTaxDeclaration->australiantResidentForTaxPurposeYN == 'N') ? 'checked' : '') : ''; ?>>
 		</span>
 		<span class="span-class col-3">
-			<label>Residency Statue</label>
+			<label>Residency Status</label>
 			<span class="select_css">
 				<select placeholder="residencyStatue" id="residencyStatue" name="residencyStatue" value="<?php echo isset($employeeData->employeeTaxDeclaration->residencyStatue) ? $employeeData->employeeTaxDeclaration->residencyStatue : ''; ?>">
 					<option value="AUSTRALIANRESIDENT">Australian Resident</option>
@@ -708,7 +799,7 @@
 		</span>
 		<span class="span-class col-3">
 			<label>Tax Offset Estimated Amount</label>
-			<input placeholder="Tax Offset Estimated Amount" id="taxOffsetEstimatedAmount" type="text" name="taxOffsetEstimatedAmount" value="<?php echo isset($employeeData->employeeTaxDeclaration->taxOffsetEstimatedAmount) ? $employeeData->employeeTaxDeclaration->taxOffsetEstimatedAmount : ''; ?>">
+			<input placeholder="Tax Offset Estimated Amount" id="taxOffsetEstimatedAmount" type="number" name="taxOffsetEstimatedAmount" value="<?php echo isset($employeeData->employeeTaxDeclaration->taxOffsetEstimatedAmount) ? $employeeData->employeeTaxDeclaration->taxOffsetEstimatedAmount : ''; ?>">
 		</span>
 		<span class="span-class col-3">
 			<label>Has HELP Debt</label>
@@ -848,7 +939,7 @@
 		</span>
 		<span class="span-class col-3">
 			<label>Qual towards % comp</label>
-		<input placeholder="Qual towards % comp" id="qual_towards_percent_comp" name="qual_towards_percent_comp" type="text" value="<?php echo isset($employeeData->employeeRecord->qualTowardsPercentcomp) ? $employeeData->employeeRecord->qualTowardsPercentcomp : ''; ?>">
+		<input placeholder="Qual towards % comp" id="qual_towards_percent_comp" name="qual_towards_percent_comp" type="number" value="<?php echo isset($employeeData->employeeRecord->qualTowardsPercentcomp) ? $employeeData->employeeRecord->qualTowardsPercentcomp : ''; ?>">
 		</span>
 
 <!-- 		<span class="span-class col-3">
@@ -1362,10 +1453,77 @@ $(document).ready(function(){
 
 <script type="text/javascript">
 	$(document).ready(function(){
-
-		var superfundHTML = $('.superfund-parent').html();
+		var superfundHTML = $('.superfund-child')[0].outerHTML;
 		$(document).on('click','#superfund-add',function(){
-		$('.superfund-parent').append(superfundHTML);
+			$('.superfund-parent').append(superfundHTML);
+		})
+	})
+
+	$(document).on('change','.center-select',function(){
+			var userid = "<?php echo isset($employeeId) ? $employeeId : "" ?>";
+			var centerid = $(this).val();
+			var url = "<?php echo base_url() ?>settings/superfundByCenter/"+centerid+"/"+userid;
+			$.ajax({
+				url : url,
+				success : function(response){
+					var encode = JSON.parse(response);
+					var empsups = encode.empSuperfunds;
+					var sups = encode.superfunds;
+					var code = "";
+					empsups.forEach(function(empsup){
+						var option = "";
+						sups.forEach(function(sup){
+							if(sup.superfundId == empsup.superFundId){
+								option +=`<option value="${sup.superfundId}" selected>${sup.name}</option>`
+							}else{
+								option +=`<option value="${sup.superfundId}">${sup.name}</option>`
+							}
+						})
+						code += `<div class='superfund-child row'>
+							<span class='span-class col-3'>
+								<label>Super Fund Id</label>
+								<span class='select_css'>
+									<select placeholder='Super Fund Id' class='superFundId' name='superFund[Id][]'>${option}</select>
+								</span>
+							</span>
+							<span class='span-class col-3'>
+								<label>Super Membership Id</label>
+								<input placeholder='Super Membership Id' class='superMembershipId' type='text' name='superFund[MembershipId][]' value='${empsup.superMembershipId}'>
+							</span>
+							<span class='span-class col-3'>
+								<label class='labels__'>Employee Number</label>
+								<input class='employeeNumber' type='text' name='superFund[EmployeeNumber][]' value='${empsup.employeeNumber}'>
+							</span>
+						</div>`; 	
+					})
+					$('.superfund-parent').html(code)
+				}
+			})
+		})
+
+	$(document).on('click','.saveSuperfund',function(){
+		var userid = "<?php echo isset($employeeId) ? $employeeId : "" ?>";
+		var centerid = $('.center-select').val();
+		var url = `<?php echo base_url() ?>settings/saveSuperfundByCenter/${centerid}/${userid}`;
+		var values = [];
+		var obj = {};
+		$('.superfund-child').each(function(child){
+			obj = {};
+			obj.superfundId = $(this).find('select').val();
+			obj.superMembershipId = $(this).find('.superMembershipId').val();
+			obj.employeeNumber = $(this).find('.employeeNumber').val();
+			values.push(obj);
+		})
+		console.log(values)
+		$.ajax({
+			url : url,
+			type: 'POST',
+			data : {
+				values : values
+			},
+			success : function(response){
+				console.log(response)
+			}
 		})
 	})
 </script>
@@ -1536,35 +1694,78 @@ function showNotification(){
 		function onFormSubmit(e){
 			e.preventDefault();
 			var falseOrTrue = true;
-			if($('#fname').val() == null || $('#fname').val() == ""){
-		      addMessageToNotification('Enter First Name');
-		      		      showNotification();
-		      setTimeout(closeNotification,5000)
+			if(!(/^[a-zA-Z]+$/).test($('#fname').val()) ){
+		      	addMessageToNotification('Enter First Name');
+		      	showNotification();
+		     	setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 				}
-				if($('#lname').val() == null || $('#lname').val() == ""){
-		      addMessageToNotification('Enter Last Name');
-		      		      showNotification();
-		      setTimeout(closeNotification,5000)
+			if(!(/^[a-zA-Z]+$/).test($('#lname').val())){
+		        addMessageToNotification('Enter Last Name');
+		      	showNotification();
+		        setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 				}
-				if($('#dateOfBirth').val() == null || $('#dateOfBirth').val() == ""){
-		      addMessageToNotification('Enter DOB');
-		      		      showNotification();
-		      setTimeout(closeNotification,5000)
+			if($('#dateOfBirth').val() == null || $('#dateOfBirth').val() == ""){
+		    	addMessageToNotification('Enter DOB');
+		      	showNotification();
+		        setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 				}
-				if($('#phone').val() == null || $('#phone').val() == ""){
-		      addMessageToNotification('Enter Phone Number');
-		      		      showNotification();
-		      setTimeout(closeNotification,5000)
+			if($('#phone').val() == null || $('#phone').val() == ""   ){
+		        addMessageToNotification('Enter Phone Number');
+		      	showNotification();
+		        setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 				}
-				if(falseOrTrue){
-					document.getElementById('formSubmit').submit();
-				}
+			if($('#alias').val() == null || ! ($('#alias').val() == "" ||  (/^[a-zA-Z]+$/).test($('#alias').val())) ){
+		        addMessageToNotification('Invalid Alias');
+		      	showNotification();
+		        setTimeout(closeNotification,5000)
+					falseOrTrue = false;
+			}
+			if( !( (/\b^[a-zA-Z]+[\s]*[a-zA-Z]+$\b/).test($('#homeAddCity').val())) ){
+		        addMessageToNotification('Invalid City');
+		      	showNotification();
+		        setTimeout(closeNotification,5000)
+					falseOrTrue = false;
+			}
+			if( $('#homeAddPostal').val() == null || !(  $('#homeAddPostal').val() == ""  || (/^[0-9]+$/).test($('#homeAddPostal').val() ) ) ){
+		        addMessageToNotification('Invalid Postal Code');
+		      	showNotification();
+		        setTimeout(closeNotification,5000)
+					falseOrTrue = false;
+			}
+			if( $('#homeAddCountry').val() == null || !(  $('#homeAddCountry').val() == ""  || (/^[0-9]+$/).test($('#homeAddCountry').val() ) ) ){
+		        addMessageToNotification('Invalid Country');
+		      	showNotification();
+		        setTimeout(closeNotification,5000)
+					falseOrTrue = false;
+			}
+			if( $('#phone').val() == null || !( $('#phone').val() == "" || (/^[0-9]{6,}$/).test($('#phone').val() ) )  ){
+		        addMessageToNotification('Invalid Phone');
+		      	showNotification();
+		        setTimeout(closeNotification,5000)
+					falseOrTrue = false;
+			}
+			if( $('#mobile').val() == null || $('#mobile').val() == "" || !((/^[0-9]{6,}$/).test($('#mobile').val() ) )  ){
+		        addMessageToNotification('Invalid mobile');
+		      	showNotification();
+		        setTimeout(closeNotification,5000)
+					falseOrTrue = false;
+			}
+			if( $('#emergency_contact').val() == null || $('#emergency_contact').val() == "" || !(  (/^[0-9]{6,}$/).test($('#emergency_contact').val() ) )  ){
+		        addMessageToNotification('Invalid Emergency Contact');
+		      	showNotification();
+		        setTimeout(closeNotification,5000)
+					falseOrTrue = false;
+			}
+			if(falseOrTrue){
+				document.getElementById('formSubmit').submit();
+			}
 			return falseOrTrue;
 		}
+
 
 </script>
 </body>

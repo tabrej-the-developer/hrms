@@ -428,15 +428,15 @@ input[type="text"],input[type=time],select,#casualEmp_date{
         <?php if(isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N" === "Y"){ ?>
           <span class="select_css">
             <select placehdr="Center" id="centerValue" name="centerValue" >
-              <?php 
-              foreach($centers->centers as $center){ 
-        if(isset($centerid) && $centerid == $center->centerid ){
-                ?> 
-                <option value="<?php echo $center->centerid;?>" selected><?php echo $center->name;?></option>
-              <?php }else{ ?>
-        <option value="<?php echo $center->centerid;?>"><?php echo $center->name;?></option>
-          <?php  }  
-          } ?>
+						  <?php // $centers = json_decode($centers);
+						    for($i=0;$i<count($centers->centers);$i++){
+						    	if($_SESSION['centerr'] == $centers->centers[$i]->centerid){
+				    	?>
+					        <option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid; ?>" selected><?php echo $centers->centers[$i]->name?></option>
+			      	<?php }else{ ?>
+				      	<option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid; ?>"><?php echo $centers->centers[$i]->name?></option>
+			        <?php }
+                  }  ?>
             </select>
           </span>
           <?php $syncedWithXero = json_decode($syncedWithXero);  ?>
@@ -600,16 +600,40 @@ input[type="text"],input[type=time],select,#casualEmp_date{
                     </div>
 					</form>
                 </div>
+              <!-- Notification -->
+              <div class="notify_">
+                <div class="note">
+                  <div class="notify_body">
+                    <span class="_notify_message"></span>
+                    <span class="_notify_close" onclick="closeNotification()">&times;</span>
+                    </div>
+                </div>
+              </div>
+              <!-- Notification -->
             </div>
             <!-- modal end here -->
 <script type="text/javascript">
+
+// Notification //
+function showNotification(){
+      $('.notify_').css('visibility','visible');
+    }
+    function addMessageToNotification(message){
+    	if($('.notify_').css('visibility') == 'hidden'){
+     		$('._notify_message').append(`<li>${message}</li>`)
+    	}
+    }
+    function closeNotification(){
+      $('.notify_').css('visibility','hidden');
+      $('._notify_message').empty();
+    }
+  // Notification //
+
 	$(document).ready(()=>{
     $('.containers').css('paddingLeft',$('.side-nav').width());
 });
-</script>
-<script type="text/javascript">
-	var base_url = "<?php echo base_url();?>";
 
+  	var base_url = "<?php echo base_url(); ?>";
 		function editLeaveType(leaveId){
 			document.getElementById("leaveId").value = leaveId;
 			document.getElementById("leaveName").value = document.getElementById(leaveId+"name").innerHTML;
@@ -668,7 +692,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 		    xhr.onreadystatechange = function() {
 		        if (xhr.readyState>3 && xhr.status==200) { 
               // console.log(xhr.responseText)
-		        	location.reload();
+		        	// location.reload();
 		        }
 		    };
 		    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
@@ -678,17 +702,6 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 </script>
 <script type="text/javascript">
 	$(document).ready(function(){
-
-    // function syncedWithXero(centerid){
-    //   var url = ;
-    //   $.ajax({
-    //     url : url,
-    //     type : 'GET',
-    //     success : function(response){
-
-    //     }
-    //   })
-    // }
 
 	$('#XeroLeaves').click(function(){
     var centerid = $('#centerValue').val();
@@ -703,19 +716,10 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 				}
 			})
 		})
+
   $(document).on('change','#centerValue',function(){
       var centerid = $('#centerValue').val();
       window.location.href = '<?php echo base_url();?>settings/leaveSettings/'+centerid;
-      // $.ajax({
-      //   url : url,
-      //   type : 'GET',
-      //   success : function(response){
-      //     $('tbody').html($(response).find('tbody').html())
-      //     $('.sync_button button').replaceWith($(response).find('.sync_button button')[0].outerHTML);
-          // sycedWithXero(centerid);
-          // console.log($(response).find('tbody').html())
-      //   }
-      // })
     })
 	})
 </script>

@@ -203,7 +203,7 @@ class Leave extends CI_Controller
 
 						$allLeaves = $this->leaveModel->getLeaveTypeBySuperadmin($userid);
 						foreach ($allLeaves as $leave) {
-							$var['LeaveTypeID'] = $leave->id;
+							$var['LeaveTypeID'] = $leave->leaveid;
 							if ($leave->id == $leaveId) {
 								$var['Name'] = $name;
 								$var['IsPaidLeave'] = $isPaidYN == "Y";
@@ -286,7 +286,7 @@ class Leave extends CI_Controller
 						$allLeaves = $this->leaveModel->getLeaveTypeBySuperadmin($userid);
 						foreach ($allLeaves as $leave) {
 							if ($leave->id != $leaveId) {
-								$var['LeaveTypeID'] = $leave->id;
+								$var['LeaveTypeID'] = $leave->leaveid;
 								$var['Name'] = $leave->name;
 								$var['IsPaidLeave'] = $leave->isPaidYN == "Y";
 								$var['ShowOnPayslip'] = $leave->showOnPaySlipYN == "Y";
@@ -375,7 +375,7 @@ class Leave extends CI_Controller
 		}
 	}
 
-	public function GetAllLeavesByUser($userid, $memeberid, $startDate = null, $endDate = null)
+	public function GetAllLeavesByUser($userid, $startDate = null, $endDate = null)
 	{
 		$headers = $this->input->request_headers();
 		$headers = array_change_key_case($headers);
@@ -385,26 +385,26 @@ class Leave extends CI_Controller
 			if ($res != null && $res->userid == $userid) {
 				$this->load->model('leaveModel');
 				$allLeaves = $this->leaveModel->getAllLeavesByUser($userid, $startDate, $endDate);
-				$userDetails = $this->authModel->getUserDetails($memeberid);
+				$userDetails = $this->authModel->getUserDetails($userid);
 				$data = array();
 				foreach ($allLeaves as $leaveApp) {
 					$var['id'] = $leaveApp->applicationId;
 					$var['appliedDate'] = $leaveApp->appliedDate;
 					$leaveDetails = $this->leaveModel->getLeaveType($leaveApp->leaveId);
-					$var['leaveTypeName'] = $leaveDetails->name;
-					$var['leaveTypeSlug'] = $leaveDetails->slug;
-					$var['startDate'] = $leaveApp->startDate;
-					$var['noOfHours'] = $leaveApp->noOfHours;
-					$var['endDate'] = $leaveApp->endDate;
+					$var['leaveTypeName'] = isset($leaveDetails->name) ? $leaveDetails->name : null;
+					$var['leaveTypeSlug'] = isset($leaveDetails->slug) ? $leaveDetails->slug : null;
+					$var['startDate'] = isset($leaveApp->startDate) ? $leaveApp->startDate : null;
+					$var['noOfHours'] = isset($leaveApp->noOfHours) ? $leaveApp->noOfHours : null;
+					$var['endDate'] = isset($leaveApp->endDate) ? $leaveApp->endDate : null;
 					$var['status'] = $leaveApp->status == 1 ? "Applied" : ($leaveApp->status == 2 ? "Approved" : "Rejected");
 					$var['notes'] = $leaveApp->notes;
 					$var['userid'] = $leaveApp->userid;
 					$userDetails = $this->authModel->getUserDetails($var['userid']);
-					$var['name'] = $userDetails->name;
-					$var['title'] = $userDetails->title;
+					$var['name'] = isset($userDetails->name) ? $userDetails->name : null;
+					$var['title'] = isset($userDetails->title) ? $userDetails->title : null;
 					array_push($data, $var);
 				}
-				// $mdata['userid'] = $memeberid;
+				// $mdata['userid'] = $userid;
 				// $mdata['name'] = $userDetails->name;
 				// $mdata['title'] = $userDetails->title;
 				$mdata['leaves'] = $data;
@@ -630,6 +630,7 @@ class Leave extends CI_Controller
 					$this->leaveModel->updateLeave($leaveApplication, $status, $message);
 				} else {
 					$this->leaveModel->updateLeave($leaveApplication, $status, $message);
+					$this->leaveModel->addLeaveBalanceOnReject($leaveApplication);
 					$to = $this->leaveModel->getUserFromLeaveApplication($leaveApplication);
 					$config = array(
 						'protocol'  => 'smtp',

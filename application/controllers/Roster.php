@@ -661,7 +661,7 @@ public	function updateShift(){
 			$data['userid'] = $this->session->userdata('LoginId');
 			$data['message'] = addslashes($this->input->post('message'));
 			$data['days'] = $this->input->post('days');
-
+			print_r(json_encode($data));
 			$url = BASE_API_URL."rosters/updateShift";
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
@@ -674,6 +674,10 @@ public	function updateShift(){
 			 $server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			if($httpcode == 200){
+				$jsonOutput = json_decode($server_output);
+				$this->session->set_flashdata('MemberData',json_encode($jsonOutput->MemberData));
+				$this->session->set_flashdata('arr',json_encode($jsonOutput->arr));
+				$this->session->set_flashdata('category',$jsonOutput->category);
 				print_r($server_output);
 				curl_close ($ch);
 			}
@@ -980,6 +984,31 @@ function getAllEntitlements($userid){
 			else if($httpcode == 401){
 		
 			}
+	}
+
+	public function printRosterPDF($rosterid,$mode){
+		$url = BASE_API_URL."Rosters/createRosterPDF/$rosterid/".$this->session->userdata('LoginId')."?printMode=$mode";
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			$output = json_decode($server_output);
+			if($output->Status == 'SUCCESS'){
+				redirect($output->path.$output->file);
+			}else{
+				print_r("<h1>ERROR please go back</h1>");
+			}
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+
+		}
 	}
 
 		function fetchPermissions(){

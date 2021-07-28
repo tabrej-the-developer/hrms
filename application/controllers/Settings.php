@@ -118,7 +118,7 @@ public function editRooms(){
 		$data['careAgeTo'] = $this->input->post('careAgeTo');
 		$data['capacity'] = $this->input->post('capacity');
 		$data['studentRatio'] = $this->input->post('studentRatio');
-		$url = BASE_API_URL."/settings/editRoom";
+		$url = BASE_API_URL."settings/editRoom";
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -184,14 +184,18 @@ public function editRooms(){
 		$data['center_se_no'] = $this->input->post('center_se_no');
 		$data['center_date_opened'] = $this->input->post('center_date_opened');
 		$data['center_capacity'] = $this->input->post('center_capacity');
-		if($_FILES['center_approval_doc']['name'] != null && $_FILES['center_approval_doc']['name'] != "")
+		if(isset($_FILES['center_approval_doc']['name']) && $_FILES['center_approval_doc']['name'] != ""){
 			$data['center_approval_doc'] = base64_encode(file_get_contents($_FILES['center_approval_doc']['tmp_name']));
-		else
+		}
+		else{
 			$data['center_approval_doc'] = "";
-		if($_FILES['center_ccs_doc']['name'] != null && $_FILES['center_ccs_doc']['name'] != "")
+		}
+		if(isset($_FILES['center_ccs_doc']['name']) && $_FILES['center_ccs_doc']['name'] != ""){
 			$data['center_ccs_doc'] = base64_encode(file_get_contents($_FILES['center_ccs_doc']['tmp_name']));
-		else
+		}
+		else{
 			$data['center_ccs_doc'] = "";
+		}
 		$data['center_admin_name'] = $this->input->post('center_admin_name');
 		$data['centre_nominated_supervisor'] = $this->input->post('centre_nominated_supervisor');
 		$data['room_name'] = $this->input->post('room_name');
@@ -211,7 +215,6 @@ public function editRooms(){
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			var_dump($httpcode);
 			if($httpcode == 200){
 				$this->session->set_flashdata('centerCreated','Center Created Successfully');
 				redirect(base_url('settings/createCenter'));
@@ -255,6 +258,27 @@ public function editRooms(){
 				else if($httpcode == 401){
 
 				}
+		}
+	}
+
+	public function getNotifications(){
+		$url = BASE_API_URL."settings/getAllNotifications/".$this->session->userdata('LoginId');
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	// var_dump($server_output);
+		if($httpcode == 200){
+			return $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+			return 'error';
 		}
 	}
 
@@ -304,24 +328,24 @@ public function editRooms(){
 
 	function editCenterProfile($centerid){
 		if($this->session->has_userdata('LoginId')){
-		$url = BASE_API_URL."settings/editCenter/".$centerid."/".$this->session->userdata('LoginId');
-		$ch = curl_init($url);
-		curl_setopt($ch, CURLOPT_URL,$url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-			'x-device-id: '.$this->session->userdata('x-device-id'),
-			'x-token: '.$this->session->userdata('AuthToken')
-		));
-		$server_output = curl_exec($ch);
-		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			$url = BASE_API_URL."settings/editCenter/".$centerid."/".$this->session->userdata('LoginId');
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		// var_dump($server_output);
-		if($httpcode == 200){
-			return $server_output;
-			curl_close ($ch);
-		}
-		else if($httpcode == 401){
-			return 'error';
-		}
+			if($httpcode == 200){
+				return $server_output;
+				curl_close ($ch);
+			}
+			else if($httpcode == 401){
+				return 'error';
+			}
 		}
 	}	
 
@@ -426,7 +450,7 @@ public function editRooms(){
 		if($formData != null){
 			$data['details'] = $formData['details'];  
 			$data['userid'] = $this->session->userdata('LoginId'); 
-		$url = BASE_API_URL."/settings/changeEmployeeRole/".$this->session->userdata('LoginId');
+		$url = BASE_API_URL."settings/changeEmployeeRole/".$this->session->userdata('LoginId');
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -521,7 +545,7 @@ $server_output = curl_exec($ch);
 			$data['userid'] = $this->session->userdata('LoginId');
 			$data['roleName'] = $this->input->post('roleName');
 
- 		$url = BASE_API_URL."/settings/addRole";
+ 		$url = BASE_API_URL."settings/addRole";
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -560,7 +584,7 @@ $server_output = curl_exec($ch);
 			$data['userid'] = $this->session->userdata('LoginId');
 			$data['roleName'] = $this->input->post('roleName');
 
- 		$url = BASE_API_URL."/settings/UpdateRole";
+ 		$url = BASE_API_URL."settings/UpdateRole";
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -600,7 +624,7 @@ $server_output = curl_exec($ch);
 			$data['areaName'] = $this->input->post('areaName');
 			$data['isRoomYN'] = $this->input->post('isRoomYN');
 
- 		$url = BASE_API_URL."/settings/UpdateArea";
+ 		$url = BASE_API_URL."settings/UpdateArea";
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -761,7 +785,7 @@ $server_output = curl_exec($ch);
 	// footprint end
 		$data['id'] = $this->input->post('id'); 
 		$data['userid'] = $this->session->userdata('LoginId');
-		$url = BASE_API_URL."/settings/deleteRoom/".$data['id']."/".$data['userid'];
+		$url = BASE_API_URL."settings/deleteRoom/".$data['id']."/".$data['userid'];
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -793,7 +817,7 @@ $server_output = curl_exec($ch);
 			// footprint end
 		$data['id'] = $this->input->post('id'); 
 		$data['userid'] = $this->session->userdata('LoginId');
-		$url = BASE_API_URL."/settings/deleteArea/".$data['id']."/".$data['userid'];
+		$url = BASE_API_URL."settings/deleteArea/".$data['id']."/".$data['userid'];
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -825,7 +849,7 @@ $server_output = curl_exec($ch);
 	// footprint end
 		$data['id'] = $this->input->post('id'); 
 		$data['userid'] = $this->session->userdata('LoginId');
-		$url = BASE_API_URL."/settings/deleteRole/".$data['id']."/".$data['userid'];
+		$url = BASE_API_URL."settings/deleteRole/".$data['id']."/".$data['userid'];
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -958,7 +982,7 @@ $server_output = curl_exec($ch);
 	// footprint end
 		$data['id'] = $this->input->post('id'); 
 		$data['userid'] = $this->session->userdata('LoginId');
-		$url = BASE_API_URL."/payroll/deleteEntitlement/".$data['id']."/".$data['userid'];
+		$url = BASE_API_URL."payroll/deleteEntitlement/".$data['id']."/".$data['userid'];
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -1041,8 +1065,8 @@ $server_output = curl_exec($ch);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			var_dump($server_output);
-			die();
+			// var_dump($server_output);
+			// die();
 			if($httpcode == 200){
 				return $server_output;
 				curl_close ($ch);
@@ -1070,7 +1094,7 @@ $server_output = curl_exec($ch);
 			$form_data = $this->input->post();
 			if($form_data != null){
 				$id = $this->session->userdata('LoginId');
-				$url = BASE_API_URL."/settings/editEmployeeEntitlements";
+				$url = BASE_API_URL."settings/editEmployeeEntitlements";
 				$data['userid'] = $this->session->userdata('LoginId');
 				$data['empid'] = $form_data['empid'];
 				$data['level'] = $form_data['level'];
@@ -1150,7 +1174,7 @@ $server_output = curl_exec($ch);
 	// 		$data['roleid'] = $this->load->post('roleid');
 	// 		$data['levelId'] = $this->load->post('levelId');
 	// 		$data['roleName'] = $this->load->post('roleName');
-	// 	$url = BASE_API_URL."/settings/addEmployee";
+	// 	$url = BASE_API_URL."settings/addEmployee";
 	// 	$ch = curl_init($url);
 	// 	curl_setopt($ch, CURLOPT_URL,$url);
 	// 	curl_setopt($ch, CURLOPT_POST, 1);
@@ -1191,9 +1215,15 @@ $server_output = curl_exec($ch);
 					// $data['employeeid'] = $employeeid;
 					$data['userid'] = $this->session->userdata('LoginId');
 					$data['centers'] = $this->getAllCenters();
+					if(!isset($_SESSION['centerr'])){
+							$centerid = json_decode($data['centers'])->centers[0]->centerid;
+							$_SESSION['centerr'] = $centerid;
+						}else{
+							$centerid = $_SESSION['centerr'];
+					}
 					$data['employeeId'] = $employeeId;
 					if($employeeId != null){
-						$data['getEmployeeData'] = $this->getEmployeeProfile($employeeId);
+						$data['getEmployeeData'] = $this->getEmployeeProfile($employeeId,$centerid);
 					}
 					// $data['areas'] = $this->getAreas($data['centerid']);
 					// $data['ordinaryEarningRate'] = $this->getAwardSettings($data['userid']);
@@ -1219,24 +1249,80 @@ $server_output = curl_exec($ch);
 		$this->session->set_userdata('current_url',currentUrl());
 	}
 	// footprint end
+	$data['centers'] = $this->getAllCenters();
 	if($centerid == null){
-		$centerid = (json_decode($this->getAllCenters())->centers[0])->centerid;
+		if(!isset($_SESSION['centerr'])){
+			  $centerid = json_decode($data['centers'])->centers[0]->centerid;
+			  $_SESSION['centerr'] = $centerid;
+			}else{
+				$centerid = $_SESSION['centerr'];
+			}
+	}else{
+		$_SESSION['centerr'] = $centerid;
 	}
 				$data['centerid'] = $centerid;
 				$data['employeeId'] = $employeeId;
 				$data['userid'] = $this->session->userdata('LoginId');
-				$data['centers'] = $this->getAllCenters();
 				$data['areas'] = $this->getAreas($data['centerid']);
-				$data['ordinaryEarningRate'] = $this->getAwardSettings($employeeId,$centerid);
+				$data['ordinaryEarningRate'] = $this->getAwardSettings($data['userid'],$centerid);
 				$data['levels'] = $this->getAllEntitlements($employeeId);
-				$data['superfunds'] = $this->getSuperfunds($employeeId,$centerid);
+				$data['superfunds'] = $this->getSuperfunds($data['userid'],$centerid);
 				$data['permissions'] = $this->fetchPermissions();
-				$data['getEmployeeData'] = $this->getEmployeeData($employeeId);
+				$data['getEmployeeData'] = $this->getEmployeeData($employeeId,$centerid);
 				$data['entitlements'] = $this->getAllEntitlements($data['userid']);
 				$this->load->view('editEmployeeProfile',$data);
 			}
 			else{
 				$this->load->view('redirectToLogin');
+			}
+		}
+
+
+		public function superfundByCenter($centerid,$userid=null){
+			$url = BASE_API_URL."settings/superfundsByCenter/$centerid/$userid/".$this->session->userdata('LoginId');
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				echo $server_output;
+				curl_close ($ch);
+			}
+			else if($httpcode == 401){
+	
+			}
+		}
+
+		public function saveSuperfundByCenter($centerid,$userid=null){
+			$url = BASE_API_URL."settings/saveSuperfundByCenter";
+			$formData['values'] = $this->input->post('values'); 
+			$formData['centerid'] = $centerid;
+			$formData['empId'] = $userid;
+			$formData['userid'] = $this->session->userdata('LoginId');
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($formData));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'x-device-id:'.$this->session->userdata('x-device-id'),
+					'x-token:'.$this->session->userdata('AuthToken')
+				));
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			// var_dump($server_output);
+			// var_dump($httpcode);
+			if($httpcode == 200){
+				echo $server_output;
+				curl_close ($ch);
+			}
+			else if($httpcode == 401){
+	
 			}
 		}
 
@@ -1250,18 +1336,25 @@ $server_output = curl_exec($ch);
 		$this->session->set_userdata('current_url',currentUrl());
 	}
 	// footprint end
-	if($centerid == null){
-		$centerid = (json_decode($this->getAllCenters())->centers[0])->centerid;
-	}
 			$data['centerid'] = $centerid;
 			$data['userid'] = $this->session->userdata('LoginId');
 			$data['centers'] = $this->getAllCenters();
+			if($centerid == null){
+				if(!isset($_SESSION['centerr'])){
+					  $centerid = json_decode($data['centers'])->centers[0]->centerid;
+					  $_SESSION['centerr'] = $centerid;
+					}else{
+						$centerid = $_SESSION['centerr'];
+					}
+			}else{
+				$_SESSION['centerr'] = $centerid;
+			}
 			$data['areas'] = $this->getAreas($data['centerid']);
 			$data['ordinaryEarningRate'] = $this->getAwardSettings($data['userid'],$centerid);
 			$data['levels'] = $this->getAllEntitlements($data['userid']);
 			$data['superfunds'] = $this->getSuperfunds($data['userid'],$centerid);
 			$data['permissions'] = $this->fetchPermissions();
-			$data['getEmployeeData'] = $this->getEmployeeData($data['userid']);
+			$data['getEmployeeData'] = $this->getEmployeeData($data['userid'],$centerid);
 			$data['entitlements'] = $this->getAllEntitlements($data['userid']);
 			// var_dump($data);
 			$this->load->view('editEmployee',$data);
@@ -1273,7 +1366,7 @@ $server_output = curl_exec($ch);
 
 // Update employee profile
 	public function updateEmployeeProfile($employeeNo = null){
-		$form_data = $this->input->post();
+		$form_data = $this->input->post();	
 		if($form_data != null){
 	//footprint start
 	if($this->session->has_userdata('current_url')){
@@ -1572,7 +1665,7 @@ $server_output = curl_exec($ch);
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			if($httpcode == 200){
-				$this->session->set_flashdata('employeeAdded', 'This is my message');
+				$this->session->set_flashdata('employeeAdded', 'Employee Added');
 				redirect(base_url('settings'));
 				curl_close ($ch);
 			}
@@ -1643,7 +1736,7 @@ $server_output = curl_exec($ch);
 				}	
 				fclose($handle);
 //var_dump($array);
-				$url = BASE_API_URL."/settings/addMultipleEmployees/".$this->session->userdata('LoginId');
+				$url = BASE_API_URL."settings/addMultipleEmployees/".$this->session->userdata('LoginId');
 				$ch = curl_init($url);
 				curl_setopt($ch, CURLOPT_URL,$url);
 				curl_setopt($ch, CURLOPT_POST, 1);
@@ -1728,7 +1821,7 @@ $server_output = curl_exec($ch);
 	// footprint end
 			$data = $this->input->post();
 			$data['userid'] = $this->session->userdata('LoginId');
-			$url = BASE_API_URL."/settings/PostEmployeePermission";
+			$url = BASE_API_URL."settings/PostEmployeePermission";
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -1768,7 +1861,7 @@ $server_output = curl_exec($ch);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		$server_output = curl_exec($ch);
 		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		var_dump($server_output);
+		// var_dump($server_output);
 		// print_r($httpcode);
 		if($httpcode == 200){
 			echo $server_output;
@@ -1780,7 +1873,7 @@ $server_output = curl_exec($ch);
 		}
 	}
 
-	public function getEmployeeDetails($employeeId){
+	public function getEmployeeDetails($employeeId,$centerid=null){
 		if($employeeId != null && $employeeId != ""){
 			//footprint start
 			if($this->session->has_userdata('current_url')){
@@ -1788,7 +1881,7 @@ $server_output = curl_exec($ch);
 				$this->session->set_userdata('current_url',currentUrl());
 			}
 			// footprint end
-			$url = BASE_API_URL."settings/getEmployeeProfile/".$this->session->userdata('LoginId')."/".$employeeId;
+			$url = BASE_API_URL."settings/getEmployeeProfile/".$this->session->userdata('LoginId')."/$employeeId/$centerid";
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -1847,14 +1940,50 @@ $server_output = curl_exec($ch);
 	public function permissionSettings(){	
 		$data['centers'] = $this->getAllCenters();
 		$data['permissions'] = $this->fetchPermissions();
-	//footprint start
-	if($this->session->has_userdata('current_url')){
-		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-		$this->session->set_userdata('current_url',currentUrl());
-	}
-	// footprint end
+		//footprint start
+		if($this->session->has_userdata('current_url')){
+			footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+			$this->session->set_userdata('current_url',currentUrl());
+		}
+		// footprint end
 		$this->load->view('permission',$data);
 	}
+
+	public function notificationSettings(){	
+		$data['permissions'] = $this->fetchPermissions();
+		$data['notifications']  =$this->fetchNotificationPermissions();
+		//footprint start
+		if($this->session->has_userdata('current_url')){
+			footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+			$this->session->set_userdata('current_url',currentUrl());
+		}
+		// footprint end
+		$this->load->view('notificationPermissions',$data);
+	}
+
+	public function postNotificationSettings(){
+		$formData = $this->input->post();
+		if($formData != null){
+			$url = BASE_API_URL."settings/NotificationPermissions/".$this->session->userdata('LoginId');
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($formData));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'x-device-id: '.$this->session->userdata('x-device-id'),
+					'x-token: '.$this->session->userdata('AuthToken')
+				));
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				$server_output = curl_exec($ch);
+				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				if($httpcode == 200){
+					redirect('settings/notificationSettings');
+					curl_close ($ch);
+				}
+				else if($httpcode == 401){
+				}
+			}
+		}
 
 	public function awardSettings($centerid = null){
 		$data['userid'] = $this->session->userdata('LoginId');
@@ -1875,9 +2004,9 @@ $server_output = curl_exec($ch);
 		$this->load->view('awardSettings',$data);
 	}
 
-	function getEmployeeProfile($employeeId){
+	function getEmployeeProfile($employeeId,$centerid){
 		$userid = $this->session->userdata('LoginId');
-		$url = BASE_API_URL."/settings/getEmployeeProfile/".$userid."/".$employeeId;
+		$url = BASE_API_URL."settings/getEmployeeProfile/".$userid."/".$employeeId."/".$centerid;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -1896,8 +2025,8 @@ $server_output = curl_exec($ch);
 		}
 	}
 
-	function getEmployeeData($userid){
-		$url = BASE_API_URL."/settings/getEmployeeData/".$userid;
+	function getEmployeeData($userid,$centerid=null){
+		$url = BASE_API_URL."settings/getEmployeeData/$userid/$centerid";
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -1917,7 +2046,7 @@ $server_output = curl_exec($ch);
 	}
 
 	function getAwardSettings($userid,$centerid){
-		$url = BASE_API_URL."/settings/getAwardSettings/".$userid."/".$centerid;
+		$url = BASE_API_URL."settings/getAwardSettings/".$userid."/".$centerid;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -1944,7 +2073,7 @@ $server_output = curl_exec($ch);
 	}
 	// footprint end
 		$data['userid'] = $this->session->userdata('LoginId');
-		$url = BASE_API_URL."/xero/syncXeroAwards/".$centerid;
+		$url = BASE_API_URL."xero/syncXeroAwards/".$centerid;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -2029,8 +2158,8 @@ $server_output = curl_exec($ch);
 		$this->load->view('superfundSettings',$data);
 	}
 
-	function getSuperfunds($userid,$centerid){
-		$url = BASE_API_URL."settings/getSuperfunds/".$userid."/".$centerid;
+	function getSuperfunds($userid,$centerid=null){
+		$url = BASE_API_URL."settings/getSuperfunds/$userid/$centerid";
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -2058,7 +2187,7 @@ $server_output = curl_exec($ch);
 	}
 	// footprint end
 		$data['userid'] = $this->session->userdata('LoginId');
-		$url = BASE_API_URL."/xero/syncXeroSuperfunds/".$centerid;
+		$url = BASE_API_URL."xero/syncXeroSuperfunds/".$centerid;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -2124,8 +2253,19 @@ $server_output = curl_exec($ch);
 
 	public function leaveSettings($centerid = null){
 		$data['centers'] = $this->getAllCenters();
+		// if($centerid == null){
+		// 	$centerid = json_decode($data['centers'])->centers[0]->centerid;
+		// }
 		if($centerid == null){
-			$centerid = json_decode($data['centers'])->centers[0]->centerid;
+			if(!isset($_SESSION['centerr'])){
+				$centerid = json_decode($data['centers'])->centers[0]->centerid;
+				$_SESSION['centerr'] = $centerid;
+			}else{
+				$centerid = $_SESSION['centerr'];
+			}
+		}else{
+			$centerid = $centerid;
+			$_SESSION['centerr'] = $centerid;
 		}
 		$data['syncedWithXero'] = $this->SyncedWithXero($centerid);
 		$data['leaveType'] = $this->getLeaveType($centerid);
@@ -2362,15 +2502,15 @@ $server_output = curl_exec($ch);
 			}
 		}
 
-		public function  syncXeroLeaves($centerid){
-	//footprint start
-	if($this->session->has_userdata('current_url')){
-		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-		$this->session->set_userdata('current_url',currentUrl());
-	}
-	// footprint end
+	public function  syncXeroLeaves($centerid){
+		//footprint start
+		if($this->session->has_userdata('current_url')){
+			footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+			$this->session->set_userdata('current_url',currentUrl());
+		}
+		// footprint end
 		$data['userid'] = $this->session->userdata('LoginId');
-		$url = BASE_API_URL."/xero/syncXeroLeaves/".$centerid;
+		$url = BASE_API_URL."xero/syncXeroLeaves/".$centerid;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -2450,7 +2590,27 @@ $server_output = curl_exec($ch);
 		}
 
 	function getStates(){
-		$url = BASE_API_URL."/settings/getStates/".$this->session->userdata('LoginId');
+		$url = BASE_API_URL."settings/getStates/".$this->session->userdata('LoginId');
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			return $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+
+		}
+	}
+
+	function fetchNotificationPermissions(){
+		$url = BASE_API_URL."settings/NotificationPermissions/".$this->session->userdata('LoginId');
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Mom extends CI_CONTROLLER
+class Mom extends MY_Controller
 {
 
   function __construct()
@@ -153,7 +153,7 @@ class Mom extends CI_CONTROLLER
           $agendaFileName = uniqid()."-".uniqid();
           $agendaFileExtension = isset($json->agendaFileExtension) ? $json->agendaFileExtension : ""; 
           $agendaFileName = $agendaFileName.".".$agendaFileExtension;
-          file_put_contents("application/assets/uploads/eventfolder/$agendaFileName",$file);
+          file_put_contents("/var/www/html/api/application/assets/uploads/eventfolder/$agendaFileName",$file);
         }
         // $collab = $json->collab;
         //$offset = $json->offset;
@@ -172,23 +172,26 @@ class Mom extends CI_CONTROLLER
         }
         if ($period == 'A') {
           //annual meeting
-          $id = uniqid();
-          //echo $currentDate;
-          $dateOfMeeting = date('Y-m-d', strtotime($currentDate . '+1 year'));
-          $this->meetingModel->addMeeting($id, $meetingTitle, $dateOfMeeting, $dateOfMeeting, $time, $endTime, $location, $period, null, $userid, $status, $agendaFileName);
-          $this->meetingModel->addParticipant($id, $userid);
-          foreach ($agenda as $a) :
-            $this->meetingModel->addAgenda($id, $a);
-          endforeach;
-          foreach ($invites as $i) :
-            $this->meetingModel->addParticipant($id, $i);
-          endforeach;
+          $dateOfMeeting = $currentDate;
+          while ($dateOfMeeting <= $edate) {
+            $id = uniqid();
+            //echo $currentDate;
+            $this->meetingModel->addMeeting($id, $meetingTitle, $dateOfMeeting, $dateOfMeeting, $time, $endTime, $location, $period, null, $userid, $status, $agendaFileName);
+            $this->meetingModel->addParticipant($id, $userid);
+            foreach ($agenda as $a) :
+              $this->meetingModel->addAgenda($id, $a);
+            endforeach;
+            foreach ($invites as $i) :
+              $this->meetingModel->addParticipant($id, $i);
+            endforeach;
+            $dateOfMeeting = date('Y-m-d', strtotime($dateOfMeeting . '+1 year'));
+          }
           //$afterOneYear = date("Y-m-d",$currentDate . " +1 year");
         } else if ($period == 'W') {
           //weekly meeting
           $index = 0;
           $dateOfMeeting = $currentDate;
-          while ($dateOfMeeting < $edate) {
+          while ($dateOfMeeting <= $edate) {
             $id = uniqid();
             $currentMeetingId = $id;
             $this->meetingModel->addMeeting($id, $meetingTitle, $dateOfMeeting, $dateOfMeeting, $time, $endTime, $location, $period, $currentMeetingId, $userid, $status, $agendaFileName);
@@ -205,10 +208,10 @@ class Mom extends CI_CONTROLLER
           //monthly meeting
           $index = 0;
           $dateOfMeeting = $date;
-          while ($dateOfMeeting < $edate) {
+          $currentMeetingId = "";
+          while ($dateOfMeeting <= $edate) {
             $id = uniqid();
-            $this->meetingModel->addMeeting($id, $meetingTitle, $dateOfMeeting, $dateOfMeeting, $time, $endTime, $location, $period, null, $userid, $status, $agendaFileName);
-            $dateOfMeeting = date('Y-m-d', strtotime($dateOfMeeting . '+1 month'));
+            $this->meetingModel->addMeeting($id, $meetingTitle, $dateOfMeeting, $dateOfMeeting, $time, $endTime, $location, $period, $currentMeetingId, $userid, $status, $agendaFileName);
             $this->meetingModel->addParticipant($id, $userid);
             foreach ($agenda as $a) :
               $this->meetingModel->addAgenda($id, $a);
@@ -217,9 +220,29 @@ class Mom extends CI_CONTROLLER
               $this->meetingModel->addParticipant($id, $i);
             endforeach;
             $currentMeetingId = $id;
+            $dateOfMeeting = date('Y-m-d', strtotime($dateOfMeeting . '+1 month'));
           }
         }
-
+        // Email & Notification
+        $data['MemberData'] = [];
+        $permissions = $this->getNotificationPermissions($invites,1);
+        foreach($permissions as $permission){
+          if($permission->appYN == 'Y'){
+            // $this->utilModel->insertNotification($permission->userid, $intent, $title, $body, json_encode($payload));
+            // $this->firebase->sendMessage($title,$body,$payload,$empId);
+          }
+          $obj = (Object)[];
+          $obj->userid = $permission->userid;
+          $obj->email = $permission->email;
+          $obj->YN = $permission->emailYN;
+          if($obj != null)
+            array_push($data['MemberData'],$obj);
+        }
+        $data['title'] = $meetingTitle;
+        $data['period'] = $period;
+        $data['loc'] = $location;
+        $data['category'] = 1;
+            // Email & Notification
         $data['Status'] = 'Success';
         http_response_code(200);
         echo json_encode($data);
@@ -297,9 +320,31 @@ class Mom extends CI_CONTROLLER
       $mId = $meetingId;
       $len = count($summary);
       for ($k = 0; $k < $len; $k++) {
-        $this->meetingModel->meetingSummary($t[$k], $summary[$k]);
+        // $this->meetingModel->meetingSummary($t[$k], $summary[$k]);
       }
-      $this->meetingModel->updateMeetingStatus($mId, 'Summary');
+      // $this->meetingModel->updateMeetingStatus($mId, 'Summary');
+      $meetingInvites = $this->meetingModel->getPresent($mId);
+      $invites = [];
+      foreach($meetingInvites as $participant){
+        array_push($invites , $participant->id);
+      }
+      $data['MemberData'] = [];
+        // Email & Notification
+        $permissions = $this->getNotificationPermissions($invites,2);
+        foreach($permissions as $permission){
+          if($permission->appYN == 'Y'){
+            // $this->utilModel->insertNotification($permission->userid, $intent, $title, $body, json_encode($payload));
+            // $this->firebase->sendMessage($title,$body,$payload,$empId);
+          }
+          $obj = (Object)[];
+          $obj->userid = $permission->userid;
+          $obj->email = $permission->email;
+          $obj->YN = $permission->emailYN;
+          if($obj != null)
+            array_push($data['MemberData'],$obj);
+        }
+          $data['category'] = 2;
+        // Email & Notification
       $data['Status'] = 'Success';
       $data['respons_code'] = http_response_code(200);
       http_response_code(200);

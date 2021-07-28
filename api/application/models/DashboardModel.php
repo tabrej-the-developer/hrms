@@ -14,12 +14,12 @@ class DashboardModel extends CI_Model {
 	}
 	public function payrollCount($centerid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM payruns where timesheetid IN (SELECT id from timesheet where centerid = '$centerid' and status='Published')");
+		$query = $this->db->query("SELECT id from timesheet where centerid = '$centerid' and status='Published'");
 		return $query->result(); 
 	}
 	public function leavesCount($centerid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM leaveapplication where userid IN (SELECT id from usercenters where centerid = '$centerid' )");
+		$query = $this->db->query("SELECT * FROM leaveapplication where userid IN (SELECT userid from usercenters where centerid = '$centerid' )");
 		return $query->result(); 
 	}
 	public function rosterCount($centerid,$status,$userid){
@@ -76,15 +76,19 @@ class DashboardModel extends CI_Model {
 
 	public function getShiftDetails($userid,$currentDate,$centerid){
 		$this->load->database();
-		$day = date('w',strtotime($currentDate));
-		$startDate = date('w',strtotime($currentDate."-$day days"));
-		$query = $this->db->query("SELECT * FROM shift WHERE userid = '$userid' AND roasterId IN (SELECT id from rosters where rosterDate = '$startDate' AND centerid = $centerid)");
-		return $query-> row();
+		// $day = date('w',strtotime($currentDate));
+		// $startDate = date('w',strtotime($currentDate."-$day days"));
+		$query = $this->db->query("SELECT * FROM shift WHERE userid = '$userid' AND roasterId IN (SELECT id from rosters where rosterDate = '$currentDate' AND centerid = $centerid)");
+		return $query->row();
 	}
 
-	public function getAllMeetingsForUser($userid){
+	public function getAllMeetingsForUser($userid,$currentDate=null){
 		$this->load->database();
-		$query = $this->db->query("SELECT * from meeting where id IN (SELECT m_id FROM participants where user_id = '$userid')");
+		if($currentDate != null)
+			$date = " AND date = '$currentDate'";
+		else
+			$date = "";
+		$query = $this->db->query("SELECT * from meeting where id IN (SELECT m_id FROM participants where user_id = '$userid') $date");
 		return $query->result(); 
 	}
 }

@@ -219,8 +219,8 @@
               <thead>
                 <tr>
                   <th>Center Name</th>
-                  <th>Access Token</th>
-                  <th>Expires In</th>
+                  <!-- <th>Access Token</th> -->
+                  <!-- <th>Expires In</th> -->
                   <th>Created At</th>
                   <th>Action</th>
                 </tr>
@@ -240,16 +240,16 @@
                       ?>
                     </span>
                    </td> 
-                  <td class="name-parent">
+                  <!-- <td class="name-parent">
                     <span id="" class="names">
                       <a href="javascript:void(0)"><?php echo ""; ?></a>
                     </span>
-                   </td> 
-                    <td class="hourly-rate-parent">
+                   </td>  -->
+                    <!-- <td class="hourly-rate-parent">
                       <span id="" class="hourly-rate">
                         <?php echo isset($xeroToken[0]) ? $xeroToken[0]->expires_in : ""; ?>
                       </span>
-                    </td>
+                    </td> -->
                     <td>
                       <span>
                         <?php 
@@ -270,6 +270,10 @@
                             Create Xero Token
                           </a>
                         </button>
+                      </span>
+                    <?php }else{ ?>
+                      <span>
+                        Token Created
                       </span>
                     <?php } ?>
                     </td>

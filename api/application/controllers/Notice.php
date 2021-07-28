@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Notice extends CI_Controller
+class Notice extends MY_Controller
 {
 
 	function __construct()
@@ -42,12 +42,13 @@ class Notice extends CI_Controller
 					$userDetails = $this->authModel->getUserDetails($notice->senderId);
 					$var['senderId'] = $notice->senderId;
 					$var['senderName'] = $userDetails->name;
-					if (is_numeric($notice->receiverId) != 1) {
+					if (($notice->isGroup) == 'N') {
 						$receiverDetails = $this->authModel->getUserDetails($notice->receiverId);
-						$var['receiverId'] = $receiverDetails->name;
+						$var['receiverId'] = isset($receiverDetails->name) ? $receiverDetails->name : "";
 					} else {
 						$receiverDetails = $this->noticeModel->getGroupDetails($notice->receiverId);
 						$var['receiverId'] = $receiverDetails->groupName;
+						$var['members'] = $this->noticeModel->getMembersOfGroup($notice->receiverId);
 					}
 					$var['subject'] = $notice->subject;
 					$var['text'] = $notice->htmlText;
@@ -107,7 +108,7 @@ class Notice extends CI_Controller
 					$this->load->model('noticeModel');
 					if ($text != null && $text != "" && $subject != null && $subject != "" && (count($json->members) > 0)) {
 						foreach ($json->members as $memberid) {
-							if (preg_match('/[a-z]/i', $memberid) == 1) {
+							if (preg_match('/(isGROUP)/i', $memberid) == 0) {
 								$config = array(
 									'protocol'  => 'smtp',
 									'smtp_host' => 'ssl://smtp.zoho.com',
@@ -122,17 +123,17 @@ class Notice extends CI_Controller
 								$this->email->from('demo@todquest.com', 'Todquest');
 								$mailId = $this->noticeModel->getMailId($memberid);
 								// $this->email->to("dheerajreddynannuri1709@gmail.com");
-								$this->email->to($mailId->email);
+								// $this->email->to($mailId->email);
 								$this->email->subject($subject);
 								$this->email->message(html_entity_decode($text));
 								$this->email->send();
-								$this->noticeModel->addNotice($userid, $memberid, $subject, $text);
+								$this->noticeModel->addNotice($userid, $memberid, $subject, $text,'N');
 							}
-							if (preg_match('/[a-z]/i', $memberid) == 0) {
-								// $groupMembers = $this->noticeModel->getMembersOfGroup($memberid);
+							if (preg_match('/(isGROUP)/i', $memberid) == 1) {
+								// $groupMembers = $this->noticeModel->getMembersOfGroup(substr($memberid,0,strlen($memberid)-6 ));
 								// foreach($groupMembers as $member){
-								$this->noticeModel->addNotice($userid, $memberid, $subject, $text);
-								// }
+									$this->noticeModel->addNotice($userid, substr($memberid,0,strlen($memberid)-7 ), $subject, $text,'Y');
+								// } ALTER TABLE notices add column isGroup ENUM('Y','N')
 							}
 						}
 					}

@@ -135,7 +135,7 @@ a[href*="settings"],.xero_settings a{
 <div class="containers ">
 		<div class="heading" id="center-id" >Settings</div>
 	<div class="ps-os-view" style="position: relative;">
-		<div style="font-size: 1rem;font-weight: 700;margin: 1.5rem 3rem">Organizational Settings</div>
+		<div style="font-size: 1rem;font-weight: 700;margin: 1.5rem 3rem">Personal Settings</div>
 		<div class="top-box d-flex">
 			<div class="tile-box col-3 d-md-flex">
 				<div class=" col-5">
@@ -148,6 +148,27 @@ a[href*="settings"],.xero_settings a{
 				</div>
 			</div>
 			
+		<?php // if(isset($permissions->permissions) && $permissions->permissions->viewOrgChartYN == "Y"){ ?>
+			<div class="tile-box col-3 d-md-flex">
+				<div class=" col-5">
+					<a href="<?php echo base_url()?>settings/orgChart">
+						<img src="<?php echo site_url()?>/assets/images/settings-icons/organization-chart.png">
+					</a>
+				</div>
+				<div class="p-s col-6">
+					<a href="<?php echo base_url()?>settings/notificationSettings">Notification Settings</a>
+				</div>
+			</div>
+		<?php // } ?>
+		</div>
+		<span style="width: 100%;text-align: center;">
+			<span style="border:1px solid rgba(151, 151, 151,0.3);bottom: 0;width: 95%;display: inline-block;"></span>
+		</span>
+	</div>
+	<div class="ps-os-view" style="position: relative;">
+		<div style="font-size: 1rem;font-weight: 700;margin: 1.5rem 3rem">Organizational Settings</div>
+		<div class="top-box d-flex">
+		
 			<?php if(isset($permissions->permissions) && $permissions->permissions->viewOrgChartYN == "Y"){ ?>
 			<div class="tile-box col-3 d-md-flex">
 				<div class=" col-5">
@@ -156,7 +177,7 @@ a[href*="settings"],.xero_settings a{
 					</a>
 				</div>
 				<div class="p-s col-6">
-					<a href="<?php echo base_url()?>settings/orgChart">Organizational settings</a>
+					<a href="<?php echo base_url()?>settings/orgChart">Organizational Settings</a>
 				</div>
 			</div>
 		<?php } ?>
@@ -249,7 +270,7 @@ a[href*="settings"],.xero_settings a{
 					</a>
 				</div>
 				<div class="col-6 xero_settings">
-					<a href="<?php echo base_url().'settings/xeroSettings';?>" >Xero settings</a>
+					<a href="<?php echo base_url().'settings/xeroSettings';?>" >Xero Settings</a>
 				</div>
 			</div>
 		<?php } ?>
@@ -261,7 +282,7 @@ a[href*="settings"],.xero_settings a{
 					</a>
 				</div>
 				<div class="col-6">
-					<a href="<?php echo base_url()?>settings/awardSettings">Awards settings</a>
+					<a href="<?php echo base_url()?>settings/awardSettings">Award Settings</a>
 				</div>
 			</div>
 		<?php } ?>
@@ -273,7 +294,7 @@ a[href*="settings"],.xero_settings a{
 					</a>
 				</div>
 				<div class="col-6">
-					<a href="<?php echo base_url()?>settings/superfundsSettings">Superannuation settings</a>
+					<a href="<?php echo base_url()?>settings/superfundsSettings">Superannuation Settings</a>
 				</div>
 			</div>
 		<?php } ?>
@@ -285,7 +306,7 @@ a[href*="settings"],.xero_settings a{
 					</a>
 				</div>
 				<div class="col-6">
-					<a href="<?php echo base_url()?>settings/permissionSettings">Permission settings</a>
+					<a href="<?php echo base_url()?>settings/permissionSettings">Permission Settings</a>
 				</div>
 			</div>
 		<?php } ?>
@@ -297,7 +318,7 @@ a[href*="settings"],.xero_settings a{
 					</a>
 				</div>
 				<div class="col-6">
-					<a href="<?php echo base_url()?>settings/leaveSettings">Leave settings</a>
+					<a href="<?php echo base_url()?>settings/leaveSettings">Leave Settings</a>
 				</div>
 			</div>
 		<?php } ?>
@@ -309,7 +330,7 @@ a[href*="settings"],.xero_settings a{
 					</a>
 				</div>
 				<div class="col-6">
-					<a href="<?php echo base_url()?>settings/kidsoftSettings">Kidsoft settings</a>
+					<a href="<?php echo base_url()?>settings/kidsoftSettings">Kidsoft Settings</a>
 				</div>
 			</div>
 		<?php } ?>
@@ -353,7 +374,9 @@ a[href*="settings"],.xero_settings a{
       $('.notify_').css('visibility','visible');
     }
     function addMessageToNotification(message){
-		$('._notify_message').append(`<li>${message}</li>`)
+    	if($('.notify_').css('visibility') == 'hidden'){
+     		$('._notify_message').append(`<li>${message}</li>`)
+      }
     }
     function closeNotification(){
       $('.notify_').css('visibility','hidden');
@@ -370,8 +393,8 @@ a[href*="settings"],.xero_settings a{
 		$flash = $this->session->flashdata('editEmployee');
 	}
 	if(isset($flash) && $flash != ""){ ?>
-      showNotification();
       addMessageToNotification('<?php echo $flash; ?>');
+      showNotification();
       setTimeout(closeNotification,5000)
 	<?php	} ?>
 

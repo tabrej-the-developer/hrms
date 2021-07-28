@@ -33,3 +33,4 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 /api/config/database.php
 /application/config/constants.php
 application/controllers/Library.php
+api/application/controllers/Rosters.php

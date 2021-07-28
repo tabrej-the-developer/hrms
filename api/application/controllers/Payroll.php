@@ -376,6 +376,43 @@ public function getAllEntitlementsByEmployeeCentersV1($userid){
 		}
 	}
 
+	public function getPayslipDetails($payslipId,$timesheetId,$userid){
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+			if ($res != null && $res->userid == $userid) {
+				set_time_limit(0);
+				$authToken = "::1";
+				$url = base_url('Payroll/getPayslipData/')."$payslipId/$timesheetId/$userid";
+				$ch = curl_init($url);
+				curl_setopt($ch, CURLOPT_URL,$url);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'x-device-id: '.$headers['x-device-id'],
+					'x-token: '.$headers['x-token']
+				));
+				$server_output = curl_exec($ch);
+				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				if($httpcode == 200 && $server_output != ""){
+					$data['file'] = uniqid().".pdf";
+					$data['PaySlip'] = $server_output;
+					$this->load->view('printPayslip',$data);
+					$output['file'] = $data['file'];
+					$output['path'] = base_url('uploads/pdfs/');
+					$output['Status'] = 'SUCCESS';
+					echo  json_encode($output);
+					curl_close ($ch);
+			}else{
+				$output['Status'] = "ERROR";
+				$output['Message'] = "Invalid";
+				echo  json_encode($output);
+				}
+			}
+		}
+	} 
+
 	function getPaySlip($payslipId, $access_token, $token_id)
 	{
 		$url = "https://api.xero.com/payroll.xro/1.0/Payslip/$payslipId";

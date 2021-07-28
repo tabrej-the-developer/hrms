@@ -41,6 +41,7 @@ class Auth extends CI_Controller
 				} else {
 					$authToken = uniqid();
 					$this->authModel->insertLogin($user->id, $deviceid, $authToken, $devicetype);
+					$companyDetails = $this->authModel->getCompanyDetails($user->id);
 					$data['Status'] = "SUCCESS";
 					$data['AuthToken'] = $authToken;
 					$data['userid'] = $user->id;
@@ -50,6 +51,7 @@ class Auth extends CI_Controller
 					$data['role'] = $user->role;
 					$data['title'] = $user->title;
 					$data['manager'] = $user->manager;
+					$data['companyImage'] = isset($companyDetails->companyLogo) ? $companyDetails->companyLogo : "no_image_available.png";
 					//$data['firebaseid'] = $user->firebaseid;
 					$data['isVerified'] = $user->isVerified;
 					$permissions = $this->authModel->getPermissions($user->id);

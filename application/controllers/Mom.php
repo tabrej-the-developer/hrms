@@ -284,6 +284,11 @@ class Mom extends CI_CONTROLLER{
            $httpcode = curl_getinfo($ch,CURLINFO_HTTP_CODE);
             if($httpcode == 200){
               $jsonOutput = json_decode($server_output);
+              $this->session->set_flashdata('MemberData',json_encode($jsonOutput->MemberData));
+              $this->session->set_flashdata('period',$jsonOutput->period);
+              $this->session->set_flashdata('loc',$jsonOutput->loc);
+              $this->session->set_flashdata('title',$jsonOutput->title);
+              $this->session->set_flashdata('category',$jsonOutput->category);
               curl_close($ch);       
               redirect(base_url().'dashboard');
             }
@@ -401,6 +406,8 @@ class Mom extends CI_CONTROLLER{
            $httpcode = curl_getinfo($ch,CURLINFO_HTTP_CODE);
            if($httpcode == 200){
                $jsonOutput = json_decode($server_output);
+               $this->session->set_flashdata('MemberData',json_encode($jsonOutput->MemberData));
+               $this->session->set_flashdata('category',$jsonOutput->category);
                curl_close($ch);
                redirect(base_url().'dashboard');
            }

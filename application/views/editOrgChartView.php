@@ -255,7 +255,7 @@ font-family: 'Open Sans', sans-serif;
 	padding: 20px 0 0 0;
 }
 .priority_areas {
-	padding-top: 2rem;
+	padding-top: 1rem;
 	display: block;
     text-align: center;
     justify-content: center;
@@ -548,6 +548,10 @@ font-family: 'Open Sans', sans-serif;
 	<span class="changeRole_head" >
 		<a class="text-center  changeRole_heading" style="padding:1rem 0"></a>
 	</span>
+	<div class="d-flex justify-content-end pr-3">
+		<span><input type="checkbox" class="toggleByEmpty"></span>
+		<span class="ml-2">Hide Unassigned</span>
+	</div>
 		<div class="priority_areas"></div>
 		<div class="priority_buttons">
 	  	<button class="close_priority" role="button">
@@ -615,7 +619,8 @@ font-family: 'Open Sans', sans-serif;
 			if($(parent).text().length == 0){
 			$(parent).append(code)
 			$(parent).children().children('input.editClassArea').val(nameOfArea)
-			$(parent).children().children('input.editClassYN').val(isRoomYN)
+			$(parent).children().children('.editClassYN').val(isRoomYN)
+			// $(parent).children().children(`input.editClassYN option[value="${isRoomYN}"]`).attr('selected','selected')
 				}
 			$('span').off('click').on('click','.editAreaCancel',function(){
 				var divParent = $(this).parent().parent();
@@ -833,25 +838,27 @@ font-family: 'Open Sans', sans-serif;
 					url:url,
 					dataType: 'JSON',
 					success:function(response){
-							// $('.select_role').empty()
+						let code = "<option value='0'>--Select Role--</option>";
 						response['orgchart'].forEach(function(index){
 							index['roles'].forEach(function(values){
 								if(areaId == values.areaid){
 									if(roleId == values.roleid){
-										var data = "<option value="+values.roleid+" selected>"+values.roleName+"</option>";
+										code += "<option value="+values.roleid+" selected>"+values.roleName+"</option>";
 										}
 									else{
-										var data = "<option value="+values.roleid+">"+values.roleName+"</option>";
-									}
-									if(similarity != null){
-											$('.select_role[similarity='+similarity+']').append(data)
-										}
-										else{
-											$('.select_role').eq(x).append(data)
+										code += "<option value="+values.roleid+">"+values.roleName+"</option>";
 										}
 									}
 								})
 							})
+							if(similarity != null){
+								$('.select_role[similarity='+similarity+']').empty();
+								$('.select_role[similarity='+similarity+']').append(code)
+							}
+							else{
+								$('.select_role').eq(x).empty();
+								$('.select_role').eq(x).append(code)
+							}
 						}
 					})
 				}
@@ -919,7 +926,7 @@ console.log(employees);
                     <span class="changeRole__" employeeId="${em.id}" role_id="${em.roleid}"  style="width:35%">${em.name}</span>
                   <span class="select_css" style="width:30%;">
                     <select class="select_area" similarity="${x}" style="min-width:100% !important;max-width:100%">
-                        <option value="0" disabled selected>--Select Area--</option>
+                        <option value="0" selected>--Select Area--</option>
                     </select>
                     </span>
                   <span class="select_css" style="width:30%;">
@@ -1014,6 +1021,15 @@ $(document).ajaxStop(function(){
 			})
 
 		})
+
+		$(document).on('click','.toggleByEmpty',function(){
+			$('.select_area').each(function(){
+				if($(this).val() == 0){
+					$(this).parent().parent().toggle();
+				}
+			})
+		})
+
 	})
 </script>
 

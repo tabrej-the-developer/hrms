@@ -202,7 +202,7 @@ class SettingsModel extends CI_Model {
 		public function addToUsersME($employee_no,$password, $emails,$name,$center,$userid,$role,$level,$alias){
 			$this->load->database();
 			$query = $this->db->query("INSERT INTO users (id,password, email, name,created_at, created_by,roleid,level,alias,isVerified) VALUES ('$employee_no','$password','$emails','$name',NOW(),'$userid',$role,'$level','$alias','N')");
-			$this->db->query("INSERT INTO usercenters (userid,centerid) VALUES ('$userid',$center)");
+			$this->db->query("INSERT INTO usercenters (userid,centerid) VALUES ('$employee_no',$center)");
 		}
 
 		public function addToUserCenters($userid,$centerid){
@@ -226,13 +226,18 @@ class SettingsModel extends CI_Model {
 			$this->load->database();
 			$query = $this->db->query("INSERT INTO employeerecord (employeeNo, EmployeeId, uniqueId, resumeDoc, employmentType,  otherQualDesc, highestQualHeld, qualTowardsPercentcomp, visaType, visaGrantDate, visaEndDate, visaConditions, contractDocument, highestQualDateObtained, highestQualCertificate,  visaHolderYN) VALUES ('$employee_no', '$xeroEmployeeId', '$uniqueId','$resume_doc', '$employement_type', '$qual_towards_desc', '$highest_qual_held', '$qual_towards_percent_comp', '$visa_type', '$visa_grant_date', '$visa_end_date', '$visa_conditions', '$contract_doc', '$highest_qual_date_obtained', '$highest_qual_cert', '$visa_holder')" );
 		}
-		public function addToEmployeeSuperfunds( $employee_no, $superFundId, $superMembershipId,$superfundEmployeeNumber){
+		public function addToEmployeeSuperfunds( $employee_no, $superFundId, $superMembershipId,$superfundEmployeeNumber,$centerid=null){
 			$this->load->database();
-			$query = $this->db->query("INSERT INTO employeesuperfund (employeeId, superFundId, superMembershipId,employeeNumber) VALUES ('$employee_no', '$superFundId', '$superMembershipId','$superfundEmployeeNumber')");
+			if($centerid != null){
+			$query = $this->db->query("INSERT INTO employeesuperfund (employeeId, superFundId, superMembershipId,employeeNumber,centerid) VALUES ('$employee_no', '$superFundId', '$superMembershipId','$superfundEmployeeNumber',$centerid)");
+			}
+			else{
+				$query = $this->db->query("INSERT INTO employeesuperfund (employeeId, superFundId, superMembershipId,employeeNumber) VALUES ('$employee_no', '$superFundId', '$superMembershipId','$superfundEmployeeNumber')");
+			}
 		}
-		public function deleteEmployeeSuperfunds($employee_no){
+		public function deleteEmployeeSuperfunds($employee_no,$centerid){
 			$this->load->database();
-			$this->db->query("DELETE from employeesuperfund where employeeId = '$employee_no' ");
+			$this->db->query("DELETE from employeesuperfund where employeeId = '$employee_no' and centerid = $centerid");
 		}
 
 		public function addToEmployeeTaxDeclaration($xeroEmployeeId,$employmentBasis,$tfnExemptionType,$taxFileNumber,$australiantResidentForTaxPurposeYN,$residencyStatue,$taxFreeThresholdClaimedYN,$taxOffsetEstimatedAmount,$hasHELPDebtYN,$hasSFSSDebtYN,$hasTradeSupportLoanDebtYN_,$upwardVariationTaxWitholdingAmount,$eligibleToReceiveLeaveLoadingYN,$approvedWitholdingVariationPercentage){
@@ -241,7 +246,7 @@ class SettingsModel extends CI_Model {
 		}
 		public function addToEmployeeTable($employee_no, $xeroEmployeeId,$title,$fname,$mname,$lname,$emails,$dateOfBirth,$gender,$homeAddLine1,$homeAddLine2,$homeAddCity,$homeAddRegion,$homeAddPostal,$homeAddCountry,$phone,$mobile,$startDate,$terminationDate,$ordinaryEarningRateId,$payrollCalendarId,$userid,$classification,$emergency_contact,$relationship,$emergency_contact_email,$maxhours,$days){
 			$this->load->database();
-			$query = $this->db->query("INSERT INTO employee (userid, xeroEmployeeId, title, fname, mname, lname, emails, dateOfBirth, gender, homeAddLine1, homeAddLine2, homeAddCity, homeAddRegion, homeAddPostal, homeAddCountry, phone, mobile, startDate, terminationDate, ordinaryEarningRateId, payrollCalendarId, created_at, created_by, classification,  emergency_contact, relationship, emergency_contact_email,maxhours,days) VALUES ('$employee_no', '$xeroEmployeeId','$title','$fname','$mname','$lname','emails','$dateOfBirth','$gender','$homeAddLine1','$homeAddLine2','$homeAddCity','$homeAddRegion','$homeAddPostal','$homeAddCountry','$phone','$mobile','$startDate','$terminationDate','$ordinaryEarningRateId','$payrollCalendarId',NOW(),'$userid','$classification','$emergency_contact','$relationship','$emergency_contact_email',$maxhours,'$days')");
+			$query = $this->db->query("INSERT INTO employee (userid, xeroEmployeeId, title, fname, mname, lname, emails, dateOfBirth, gender, homeAddLine1, homeAddLine2, homeAddCity, homeAddRegion, homeAddPostal, homeAddCountry, phone, mobile, startDate, terminationDate, ordinaryEarningRateId, payrollCalendarId, created_at, created_by, classification,  emergency_contact, relationship, emergency_contact_email,maxhours,days) VALUES ('$employee_no', '$xeroEmployeeId','$title','$fname','$mname','$lname','$emails','$dateOfBirth','$gender','$homeAddLine1','$homeAddLine2','$homeAddCity','$homeAddRegion','$homeAddPostal','$homeAddCountry','$phone','$mobile','$startDate','$terminationDate','$ordinaryEarningRateId','$payrollCalendarId',NOW(),'$userid','$classification','$emergency_contact','$relationship','$emergency_contact_email',$maxhours,'$days')");
 		}
 
 		public function getUserData($userid){
@@ -280,9 +285,9 @@ class SettingsModel extends CI_Model {
 			$query = $this->db->query("SELECT * FROM employeerecord where employeeNo = '$userid'");
 			return $query->row();
 		}
-		public function getEmployeeSuperfunds($userid){
+		public function getEmployeeSuperfunds($userid,$centerid){
 			$this->load->database();
-			$query = $this->db->query("SELECT * FROM employeesuperfund as es INNER JOIN superfund as s on s.superfundid = es.superfundid  where employeeId IN (SELECT userid FROM employee where userid = '$userid')");
+			$query = $this->db->query("SELECT es.*,s.name FROM employeesuperfund as es INNER JOIN superfund as s on s.superfundid = es.superfundid AND es.centerid = s.centerid where es.employeeId = '$userid' AND es.centerid = $centerid ");
 			return $query->result();
 		}
 		public function getEmployeeTaxDec($userid){
@@ -400,20 +405,38 @@ class SettingsModel extends CI_Model {
 			$query = $this->db->query("UPDATE employee SET 	title = '$title', fname = '$fname', mname = '$mname', lname = '$lname', emails = '$emails', dateOfBirth = '$dateOfBirth', gender = '$gender', homeAddLine1 = '$homeAddLine1', homeAddLine2 = '$homeAddLine2', homeAddCity = '$homeAddCity', homeAddRegion = '$homeAddRegion', homeAddPostal = '$homeAddPostal', homeAddCountry = '$homeAddCountry' $ordinaryEarningRate, phone = '$phone', mobile = '$mobile', terminationDate = '$terminationDate', classification = '$classification',  emergency_contact = '$emergency_contact', relationship = '$relationship', emergency_contact_email = '$emergency_contact_email' where userid = '$employee_no'");
 				}
 				else{
-			$query = $this->db->query("INSERT INTO employee (userid,  title, fname, mname, lname, emails, dateOfBirth,  gender, homeAddLine1, homeAddLine2, homeAddCity, homeAddRegion, homeAddPostal, homeAddCountry, phone, mobile,  terminationDate, ordinaryEarningRateId,  created_at, created_by, classification,  emergency_contact, relationship, emergency_contact_email) VALUES ('$employee_no', '$title','$fname','$mname','$lname','emails','$dateOfBirth','$gender','$homeAddLine1','$homeAddLine2','$homeAddCity','$homeAddRegion','$homeAddPostal','$homeAddCountry','$phone','$mobile','$terminationDate','$ordinaryEarningRateId',NOW(),'$userid','$classification','$emergency_contact','$relationship','$emergency_contact_email')");
+			$query = $this->db->query("INSERT INTO employee (userid,  title, fname, mname, lname, emails, dateOfBirth,  gender, homeAddLine1, homeAddLine2, homeAddCity, homeAddRegion, homeAddPostal, homeAddCountry, phone, mobile,  terminationDate, ordinaryEarningRateId,  created_at, created_by, classification,  emergency_contact, relationship, emergency_contact_email) VALUES ('$employee_no', '$title','$fname','$mname','$lname','$emails','$dateOfBirth','$gender','$homeAddLine1','$homeAddLine2','$homeAddCity','$homeAddRegion','$homeAddPostal','$homeAddCountry','$phone','$mobile','$terminationDate','$ordinaryEarningRateId',NOW(),'$userid','$classification','$emergency_contact','$relationship','$emergency_contact_email')");
 				}
 			}
 // 		// add center 
 
-	public function addCenter($addStreet,$addCity,$addState,$addZip,$name,$centre_phone_number,$centre_mobile_number,$Centre_email,$userid){
+	public function addCenter($addStreet,$addCity,$addState,$addZip,$name,$centre_phone_number,$centre_mobile_number,$Centre_email,$userid,$uniqid ){
 		$this->load->database();
-		$uniqid = uniqid();
-		$query = $this->db->query("INSERT INTO centers (addStreet, addCity, addState, addZip, name, centre_phone_number, centre_mobile_number, centre_email,superadmin) VALUES ('$addStreet','$addCity','$addState','$addZip','$name','$centre_phone_number','$centre_mobile_number','$Centre_email',$uniqid'')");
+		$query = $this->db->query("INSERT INTO centers (addStreet, addCity, addState, addZip, name, centre_phone_number, centre_mobile_number, centre_email,superadmin) VALUES ('$addStreet','$addCity','$addState','$addZip','$name','$centre_phone_number','$centre_mobile_number','$Centre_email','$uniqid')");
 		$id = $this->db->query("SELECT centerid FROM centers ORDER BY centerid DESC LIMIT 1");
 		$centers = $this->db->query("SELECT center FROM users where id = '$userid'");
 		$centerId = strval(($id->row())->centerid);
 					$this->db->query("UPDATE users set center = CONCAT(center,'|$centerId') where id='$userid'");
 		return strval(($id->row())->centerid);
+	}
+
+	// Get Superadmin 
+
+	public function getSuperadmin($centerid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM centers where centerid = '$centerid'");
+		return $query->row();
+	}
+
+	public function getNotificationsForUser($userid,$start,$count){
+		$this->load->database();
+		$query = $this->db->query("SELECT title,intent,body,data,isReadYN,datetime FROM notifications where userid = '$userid' ORDER BY id DESC LIMIT $start , $count ");
+		return $query->result();
+	}
+
+	public function updateNotifications($userid){
+		$this->load->database();
+		$query = $this->db->query("UPDATE notifications SET isReadYN = 'Y' WHERE userid = '$userid'");
 	}
 
 	public function addRoom($centerid,$room_name,$capacity_,$minimum_age,$maximum_age){
@@ -530,6 +553,31 @@ class SettingsModel extends CI_Model {
 		$this->db->query("UPDATE users SET name = '$name' where id = '$userid'");
 		if($imageUrl != null && $imageUrl != ""){
 			$this->db->query("UPDATE users SET imageUrl = '$imageUrl' where id = '$userid'");
+		}
+	}
+
+	public function getXeroEmployeeId($empId){
+		$this->load->database();
+		$query = $this->db->query("SELECT xeroEmployeeId FROM employee where userid = '$empId'");
+		return $query->row() != null ? ($query->row())->xeroEmployeeId : null ;
+	}
+
+	public function fetchNotificationPermissions($userid){
+		$this->load->database();
+		$query = $this->db->query("SELECT np.typeid,np.appYN,np.emailYN,nt.notificationtype FROM notificationpermissions np INNER JOIN notificationtypes nt on np.typeid = nt.id  where np.userid ='$userid' ");
+		return $query->result();
+	}
+
+	public function postNotificationPermissions($userid,$notifications){
+		$this->load->database();
+		$query = $this->db->query("DELETE FROM notificationpermissions where userid = '$userid'");
+		foreach($notifications as $key=>$notification){
+			$values = array_values($notification);
+			$query = $this->db->query("SELECT id from notificationtypes where notificationtype ='$key' ");
+			$id = ($query->row() != null) ? ($query->row())->id : null;
+			if($id != null){
+				$this->db->query("INSERT INTO notificationpermissions (userid,typeid,appYN,emailYN) VALUES ('$userid','$id','$values[0]','$values[1]') ");
+			}
 		}
 	}
 

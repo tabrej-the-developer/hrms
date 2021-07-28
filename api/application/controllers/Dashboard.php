@@ -38,15 +38,15 @@ class Dashboard extends CI_Controller
 				$data['timesheetsCount'] = 0;
 				$data['payrollsCount'] =  0;
 				$data['leavesCount'] = 0;
-				foreach ($centers as $centerid) {
-					if (($centerid != null || $centerid != "") && $centerId == $centerid->centerid ) {
-						$data['rostersCount'] = $data['rostersCount'] + sizeof($this->dashboardModel->rosterCount($centerid->centerid, 'Published', $userid)) + sizeof($this->dashboardModel->rosterCount($centerid->centerid, 'Draft', $userid));
-						$data['timesheetsCount'] = $data['timesheetsCount'] + sizeof($this->dashboardModel->timesheetCount($centerid->centerid, 'Published', $userid)) + sizeof($this->dashboardModel->timesheetCount($centerid->centerid, 'Draft', $userid));
-						$data['payrollsCount'] = $data['payrollsCount'] + sizeof($this->dashboardModel->payrollCount($centerid->centerid));
-						$data['leavesCount'] = $data['leavesCount'] + sizeof($this->dashboardModel->leavesCount($centerid->centerid));
-						break;
-					}
-				}
+				// foreach ($centers as $centerid) {
+					// if ( $centerId == $centerid->centerid ) {
+						$data['rostersCount'] = $data['rostersCount'] + sizeof($this->dashboardModel->rosterCount($centerId, 'Published', $userid)) + sizeof($this->dashboardModel->rosterCount($centerId, 'Draft', $userid));
+						$data['timesheetsCount'] = $data['timesheetsCount'] + sizeof($this->dashboardModel->timesheetCount($centerId, 'Published', $userid)) + sizeof($this->dashboardModel->timesheetCount($centerId, 'Draft', $userid));
+						$data['payrollsCount'] = $data['payrollsCount'] + sizeof($this->dashboardModel->payrollCount($centerId));
+						$data['leavesCount'] = $data['leavesCount'] + sizeof($this->dashboardModel->leavesCount($centerId));
+						// break;
+					// }
+				// }
 				http_response_code(200);
 				echo json_encode($data);
 			} else {
@@ -143,6 +143,124 @@ class Dashboard extends CI_Controller
 							$madata['meetingId'] = $meeting->id;
 							$madata['meetingStatus'] = $meeting->status;
 							array_push($events, $madata);
+						}
+					}
+				}
+				array_push($event['event'], $events);
+				http_response_code(200);
+				echo json_encode($event);
+			} else {
+				http_response_code(401);
+			}
+		} else {
+			http_response_code(401);
+		}
+	}
+
+	public function getEventsByDate($date,$centerid,$userid){
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+			if ($res != null && $res->userid == $userid) {
+				$this->load->model('dashboardModel');
+				$this->load->model('rostersModel');
+				$this->load->model('leaveModel');
+				$this->load->model('utilModel');
+				$events = [];
+				$event['event'] = [];
+				$event['birthdays'] = [];
+				$event['anniversary'] = [];
+				$currentDate = $date;
+				$getShiftDetails = $this->dashboardModel->getShiftDetails($userid, $currentDate,$centerid);
+				if ($getShiftDetails != null) {
+					if ($getShiftDetails != "") {
+						$mdata['title'] = 'Shift - ' . $this->timex($getShiftDetails->startTime) . ' - ' . $this->timex($getShiftDetails->endTime);
+						$mdata['start'] = $currentDate;
+						$mdata['roster'] = $getShiftDetails->roasterId;
+						array_push($events, $mdata);
+					}
+				}
+				$getLeaveDetails = $this->leaveModel->getLeaveApplicationsForUser($userid, $currentDate, $centerid);
+				if ($getLeaveDetails != null) {
+					if ($getLeaveDetails != "") {
+						$mbdata['title'] = 'Leave Status - ' . $getLeaveDetails->status;
+						$mbdata['start'] = $currentDate;
+						array_push($events, $mbdata);
+					}
+				}
+				// $centers = ($this->utilModel->getAllCenters($userid));
+				$getBirthdays = $this->dashboardModel->getBirthdays($currentDate,$centerid);
+				if ($getBirthdays != null) {
+					if ($getBirthdays != "") {
+						$mxdata['date'] = $currentDate;
+						$mxdata['birthday'] = $getBirthdays;
+						array_push($event['birthdays'], $mxdata);
+					}
+				}
+				$getAnniversaries = $this->dashboardModel->getAnniversaries($currentDate,$centerid);
+				if ($getAnniversaries != null) {
+					if ($getAnniversaries != "") {
+						$mydata['date'] = $currentDate;
+						$mydata['anniversary'] =  $getAnniversaries;
+						array_push($event['anniversary'], $mydata);
+					}
+				}
+				$getMeetings = $this->dashboardModel->getAllMeetingsForUser($userid,$currentDate);
+				if ($getMeetings != null) {
+					if ($getMeetings != "") {
+						foreach ($getMeetings as $meeting) {
+							$madata['title'] = $meeting->title . '- Meeting';
+							$madata['start'] = $meeting->date;
+							$madata['meetingId'] = $meeting->id;
+							$madata['meetingStatus'] = $meeting->status;
+							array_push($events, $madata);
+						}
+					}
+				}
+				array_push($event['event'], $events);
+				http_response_code(200);
+				echo json_encode($event);
+			}
+		}
+	}
+
+	public function birthdaysAndAnniversariesByMonth($centerid,$date,$userid)
+	{
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+			if ($res != null && $res->userid == $userid) {
+				$this->load->model('dashboardModel');
+				$this->load->model('rostersModel');
+				$this->load->model('utilModel');
+				$totalDays = cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y'));
+				$events = [];
+				$event['birthdays'] = [];
+				$event['anniversary'] = [];
+				$y = date('Y',strtotime($date));
+				$m = date('m',strtotime($date));
+				$startDate = "$y-$m-01";
+				for ($i = 0; $i < $totalDays; $i++) {
+					$currentDate = date('Y-m-d', strtotime("+$i day", strtotime("$startDate")));
+					$getShiftDetails = $this->dashboardModel->getShiftDetails($userid, $currentDate,$centerid);
+					$getBirthdays = $this->dashboardModel->getBirthdays($currentDate,$centerid);
+					if ($getBirthdays != null) {
+						if ($getBirthdays != "") {
+							$mxdata['date'] = $currentDate;
+							$mxdata['birthday'] = $getBirthdays;
+							array_push($event['birthdays'], $mxdata);
+						}
+					}
+					$getAnniversaries = $this->dashboardModel->getAnniversaries($currentDate,$centerid);
+					if ($getAnniversaries != null) {
+						if ($getAnniversaries != "") {
+							$mydata['date'] = $currentDate;
+							$mydata['anniversary'] =  $getAnniversaries;
+							array_push($event['anniversary'], $mydata);
 						}
 					}
 				}

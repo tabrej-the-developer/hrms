@@ -422,9 +422,33 @@ p.ovrflowtext {
 .icon-parent{
   display: flex;
   align-content: center;
-  justify-content: center
-  padding:0;
+  justify-content: center;
+  padding: 0;
 }
+.loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #307bd3;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+    z-index: 9999;
+  }
+  .loading{
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    background: rgba(0,0,0,0.2)
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
 
 
 /*profile card*/
@@ -2156,7 +2180,11 @@ messaging.getToken().then((currentToken) => {
             <span class="groupMembers_userIcon">
               <span class=" icon" style="
                 <?php echo "background:".$colors_array[rand(0,5)]?>">
-                <?php echo isset($members->DisplayName) ? icon($members->DisplayName) : "";?>
+                <?php 
+                  if(isset($members->convoProfilePic)){
+                    echo "<img src=".base_url()."api/uploads/images/conversation/".$members->convoProfilePic.">";
+                  }{
+                echo isset($members->DisplayName) ? icon($members->DisplayName) : ""; }?>
               </span>
             </span>
             <span class="groupMembers_tile">
@@ -2205,9 +2233,9 @@ messaging.getToken().then((currentToken) => {
         <?php 
         foreach($getConversation->members as $mems){
         if((($mems->idUser) == ($this->session->userdata('LoginId'))) && ($mems->isAdminYN == 'Y') ){ ?>
-      <div>
+      <!-- <div>
         <span class="delete_group" groupId="<?php echo $getConversation->conversation->idConversation; ?>">Delete Group</span>
-      </div>
+      </div> -->
     <?php }  ?>
       <?php if((($mems->idUser) == ($this->session->userdata('LoginId'))) && ($mems->isAdminYN == 'N') ){ ?>
     <div>
@@ -2326,6 +2354,21 @@ messaging.getToken().then((currentToken) => {
 </div>
 <!-- Add User Modal -->
 
+<!-- Notification -->
+<div class="notify_">
+	<div class="note">
+		<div class="notify_body">
+			<span class="_notify_message"></span>
+			<span class="_notify_close" onclick="closeNotification()">&times;</span>
+    	</div>
+	</div>
+</div>
+<!-- Notification -->
+<!-- Loader -->
+<div class="loading">
+  <div class="loader"></div>
+</div>
+<!--  Loader -->
 </body>
 
 <script type="text/javascript">
@@ -2644,7 +2687,20 @@ $('.save').click(function(){
       })
     }
 
-
+// Notification //
+function showNotification(){
+      $('.notify_').css('visibility','visible');
+    }
+    function addMessageToNotification(message){
+    	if($('.notify_').css('visibility') == 'hidden'){
+     		$('._notify_message').append(`<li>${message}</li>`)
+    	}
+    }
+    function closeNotification(){
+      $('.notify_').css('visibility','hidden');
+      $('._notify_message').empty();
+    }
+  // Notification //
 
     $(document).ready(function(){
       setInterval(loadChatElements,5000)
@@ -2850,14 +2906,14 @@ else{
             var idUsers = [];
             $('.groupMembers_wrapper').each(function(){
               if($(this).attr('userid') != null && $(this).attr('userid') != ""){
-                idUsers.push($(this).attr('userid'))
+                // idUsers.push($(this).attr('userid'))
               }
             })
             var convoName = $('.editGroupName_input').val();
             var convoProfilePic = null
             var idConversation = $('#user_name_view').attr('conversationid');
             var isGroupYN = 'Y';
-            postConversation(idUsers,convoName,convoProfilePic,idConversation,isGroupYN);
+            postConversation(null,convoName,convoProfilePic,idConversation,isGroupYN);
               $('#user_name_view').empty();
               $('#user_name_view').append(convoName);
         })
@@ -2908,6 +2964,13 @@ else{
     })
 
 
+    function loader_icon(){
+            $('.loading').show();
+          }; 
+    remove_loader_icon();
+    function remove_loader_icon(){
+        $('.loading').hide();
+      };
 
     $(document).ready(function(){
 
@@ -2936,7 +2999,20 @@ else{
       })
       $(document).on('click','.createGroupClass_wrapper',function(){
         var groupName = $('.groupNameInput').val();
-        postConversation(arr,groupName,null,null,'Y');
+        if(arr.length == 0){
+		      addMessageToNotification('Add Members');
+		      showNotification();
+		      setTimeout(closeNotification,5000)
+        }
+        else if(groupName == null || groupName == ""){
+          console.log(arr)
+		      addMessageToNotification('Enter Group Name');
+		      showNotification();
+		      setTimeout(closeNotification,5000)
+        }else{
+          postConversation(arr,groupName,null,null,'Y');
+          loader_icon();
+        }
       })
 
       $(document).on('click','.addUser__save',function(){

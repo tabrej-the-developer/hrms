@@ -86,7 +86,7 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 
 
 //define('BASE_API_URL','http://localhost/PN101/api/');
-   define('BASE_API_URL','http://stage.todquest.com/HRMS101/api/');
+   define('BASE_API_URL','https://stage.todquest.com/HRMS101/api/');
 
 define('DOCUMENTS_PATH','../api/application/assets/uploads/documents/');
 

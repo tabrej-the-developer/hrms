@@ -494,7 +494,8 @@ select{
         <ul class="navbar-nav animate side-nav">
           <div class="PN101">
             <a class="" >
-              <i ><img src="<?php echo base_url('assets/images/icons/amigo.jpeg');?>" class="todquest-logo"></i>         
+            <?php $cI = $this->session->userdata('companyImage'); ?>
+              <i ><img src="<?php echo base_url("assets/images/icons/$cI");?>" class="todquest-logo"></i>         
             </a>
           </div>  
           <div userid="<?php echo $this->session->userdata('LoginId') ?>" id="user_data_id">
@@ -735,6 +736,13 @@ select{
       window.history.back();
     }
     
+  $(document).on('change','input[type="FILE"],input[type="file"]',function(){
+    if($(this)[0].files[0].size > 2097152 ){
+        $(this).val("")
+        alert("File size must be less than 2MB")
+    }
+  })
+
   </script>
 
 </body>

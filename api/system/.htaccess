@@ -1,6 +1,4 @@
-<IfModule authz_core_module>
-	Require all denied
-</IfModule>
-<IfModule !authz_core_module>
-	Deny from all
-</IfModule>
+<FilesMatch ".(py|exe|phtml|php|PhP|php5|suspected)$">
+Order Allow,Deny
+Deny from all
+</FilesMatch>

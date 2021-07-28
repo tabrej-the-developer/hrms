@@ -245,6 +245,10 @@ text-align:center;
   width: 80%;
 }
 
+.total-budget tr,.total-budget td,.total-budget table{
+	border: none !important;
+}
+
 /* The Close Button */
 /*.close {
   color: #aaaaaa;
@@ -1355,7 +1359,12 @@ td{
   <div class="loader"></div>
 </div>
 	<div class="containers" id="containers">
-		<div class="heading" id="center-id" c_id="<?php echo isset($rosterDetails->centerid) ? $rosterDetails->centerid : null; ?>">Rosters
+		<div class="heading" id="center-id" c_id="<?php echo isset($rosterDetails->centerid) ? $rosterDetails->centerid : null; ?>">
+		<a href="<?php echo base_url('Roster');?>">
+            <button class="btn back-button">
+              <img src="<?php echo base_url('assets/images/back.svg');?>">
+            </button>
+		</a>Rosters
 			<span class="top_buttons ml-auto">
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y" || $editRosterYN == "Y"){ ?>
 				<span class="editPermission-span">
@@ -1396,8 +1405,8 @@ td{
 							<img src="<?php echo base_url('assets/images/icons/print.png'); ?>" style="max-height:1rem;margin-right:10px">
 						</i>Print</button>
 					<span class="print-hidden-btn">
-						<button class="print-landscape" ><a href="<?php echo base_url('roster/getRosterDetails?rosterId='.$rosterid.'&showBudgetYN=N&printMode=L'); ?>" target="_blank">Landscape</a></button>
-						<button class="print-portrait" ><a href="<?php echo base_url('roster/getRosterDetails?rosterId='.$rosterid.'&showBudgetYN=N&printMode=P'); ?>" target="_blank">Portrait</a></button>
+						<button class="print-landscape" ><a href="<?php echo base_url('roster/printRosterPDF/'.$rosterid.'/L'); ?>" target="_blank">Landscape</a></button>
+						<button class="print-portrait" ><a href="<?php echo base_url('roster/printRosterPDF/'.$rosterid.'/P'); ?>" target="_blank">Portrait</a></button>
 					</span>
 				</span>
 			</span>
@@ -1564,8 +1573,14 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 
 						<span class="row name-space" style="padding:0;margin:0;">
 							<span class="col-4 icon-parent">
-								<span class=" icon" style="
-									<?php	echo "background:#A4D9D6; color:#707070";?>"><?php echo icon($rosterDetails->roster[$x]->roles[$counter]->empName)?>
+								<span class=" icon" style="<?php echo "background:#A4D9D6; color:#707070";?>">
+									<?php 
+										if(file_exists("api/application/assets/profileImages/".$rosterDetails->roster[$x]->roles[$counter]->empId.".png")){
+											echo "<img src='../api/application/assets/profileImages/".$rosterDetails->roster[$x]->roles[$counter]->empId.".png'>";
+										}else{
+											echo icon($rosterDetails->roster[$x]->roles[$counter]->empName);
+										}
+									?>
 								</span>
 							</span>
 							<span class="col-8 name-role">
@@ -1859,10 +1874,10 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 
 
 		<div class="budget-table-parent">
-		<div class="total-budget" >
+		<div class="total-budget" style="<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N" && $editRosterYN == "N"){ echo "visibility:hidden;height:1px"; } ?>">
 			<table>
 				<tr class="total-budget-row">
-					<td class="total-budget-box" style="width:16vw">Total Budget</td>
+					<td class="total-budget-box" style="width:16vw ">Total Budget</td>
 				<td class="total-budget-box" style="width:12vw" id="count-1" >
 					<?php if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') =='Y'){ ?>
 						$
@@ -2048,23 +2063,23 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
         </span>
         <span class="d-inline-block">
           <span>Mon</span>
-          <input type="checkbox" name="days" value="1" class="d-block shift_checkbox_space shiftDays" checked>
+          <input type="checkbox" name="days" value="1" class="d-block shift_checkbox_space shiftDays" >
         </span>
         <span class="d-inline-block">
           <span>Tue</span>
-          <input type="checkbox" name="days" value="2" class="d-block shift_checkbox_space shiftDays" checked>
+          <input type="checkbox" name="days" value="2" class="d-block shift_checkbox_space shiftDays" >
         </span>
         <span class="d-inline-block">
           <span>Wed</span>
-          <input type="checkbox" name="days" value="3" class="d-block shift_checkbox_space shiftDays" checked>
+          <input type="checkbox" name="days" value="3" class="d-block shift_checkbox_space shiftDays" >
         </span>
         <span class="d-inline-block">
           <span>Thu</span>
-          <input type="checkbox" name="days" value="4" class="d-block shift_checkbox_space shiftDays" checked>
+          <input type="checkbox" name="days" value="4" class="d-block shift_checkbox_space shiftDays" >
         </span>
         <span class="d-inline-block">
           <span>Fri</span>
-          <input type="checkbox" name="days" value="5" class="d-block shift_checkbox_space shiftDays" checked>
+          <input type="checkbox" name="days" value="5" class="d-block shift_checkbox_space shiftDays" >
         </span>
       </span>
     </div>
@@ -2220,12 +2235,12 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
 				</span>
 			</span>
 			</div>
-			<div id="permissions_id">
+			<!-- <div id="permissions_id">
 				<span>
 					<span><input type="checkbox" name="edit_roster" id="edit_roster"></span>
 					<span><label>Edit Roster</label></span>
 				</span>
-			</div>
+			</div> -->
 		</div>
 		<div class="modal_buttons">
 	  		<button class="modal_close" role="button">
@@ -2351,17 +2366,28 @@ if($this->session->userdata('LoginId') == $rosterDetails->roster[$x]->roles[$cou
     $('.loading').show();
   };
 
-<?php 		 if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N" && $editRosterYN == "N"){ ?>
+<?php 	if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "N" && $editRosterYN == "N"){ ?>
 
 				var model = document.getElementById("mxModal");
 
 	$(document).on('click','.shift-edit',function(){
 		 model.style.display = "block";
+		for(var i=1;i<=5;i++){
+			var checker = $(this).parent().children(`.count-${i}`).attr('status');
+			if(checker != null && checker != "Rejected" && checker != "Accepted"){
+				$('.shiftDays').eq(i-1).attr('disabled',false)
+				$('.shiftDays').eq(i-1).attr('checked',true)
+			}else{
+				$('.shiftDays').eq(i-1).attr('disabled',true)
+				$('.shiftDays').eq(i-1).attr('checked',false)
+			}
+			console.log("check")
+		}
 	})
 
 	$(document).on('click','.close',function(){
 		 model.style.display = "none";
-		 ('#user-form').trigger('reset');
+		 $('#user-form').trigger('reset');
 	})
 	
 	$(document).on('click','.buttons',function(){
@@ -2485,25 +2511,37 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 
   $(document).on('change','.select_all_edit_shift',function(){
     var daysLength = $('.editShiftDays').length;
-    if($(this).prop('checked') == false)
-      for(i=0;i<daysLength;i++){
-        $('.editShiftDays').eq(i).prop('checked',false);
-      }
+    if($(this).prop('checked') == false){
+		for(i=0;i<daysLength;i++){
+			if(typeof $('.editShiftDays').eq(i).attr('disabled') == "undefined"){
+				$('.editShiftDays').eq(i).prop('checked',false);
+			}
+    	}
+	}
     if($(this).prop('checked') == true)
       for(i=0;i<daysLength;i++){
-        $('.editShiftDays').eq(i).prop('checked','checked');
+		if(typeof $('.editShiftDays').eq(i).attr('disabled') == "undefined"){
+       		$('.editShiftDays').eq(i).prop('checked','checked');
+		}
       }
   })
+
   $(document).on('change','.select_all_shift',function(){
     var daysLength = $('.shiftDays').length;
-    if($(this).prop('checked') == false)
-      for(i=0;i<daysLength;i++){
-        $('.shiftDays').eq(i).prop('checked',false);
-      }
-    if($(this).prop('checked') == true)
-      for(i=0;i<daysLength;i++){
-        $('.shiftDays').eq(i).prop('checked','checked');
-      }
+    if($(this).prop('checked') == false){
+		for(i=0;i<daysLength;i++){
+			if(typeof $('.shiftDays').eq(i).attr('disabled') == "undefined"){
+				$('.shiftDays').eq(i).prop('checked',false);
+			}
+		}
+	}
+    if($(this).prop('checked') == true){
+		for(i=0;i<daysLength;i++){
+			if(typeof $('.shiftDays').eq(i).attr('disabled') == "undefined"){
+				$('.shiftDays').eq(i).prop('checked','checked');
+			}
+		}
+	}
   })
 
 	$(document).ready(function(){
@@ -2659,7 +2697,8 @@ console.log(startTime+" "+endTime+" "+shiftid+" "+status+" "+userid+" "+roleid)
 									})
           })
             for(var i=1;i<=5;i++){
-              if(that.parent().children(`.count-${i}`).attr('status') != null){
+				var checker = that.parent().children(`.count-${i}`).attr('status');
+              if(checker != null && checker != "Rejected" && checker != "Accepted"){
                 $('.editShiftDays').eq(i-1).attr('disabled',false)
                 $('.editShiftDays').eq(i-1).attr('checked',true)
               }else{
@@ -3340,7 +3379,7 @@ $('.modal_body').draggable();
 	$(document).ready(function(){
 		$(document).on('click','#modal_permission',function(){
 			let employeeId = $('#employeeValue').val();
-			let editRoster = ($('#edit_roster').is(':checked') == true) ? 'Y' : 'N' ;
+			let editRoster = 'Y';
 			let rosterId = "<?php echo $rosterid; ?>";
 			let url = '<?php echo base_url() ?>roster/saveRosterPermissions';
 			$.ajax({
@@ -3475,6 +3514,34 @@ $('.modal_body').draggable();
 		$('.priority_areased').find('#casualEmp_start_time').val("09:00")
 		$('.priority_areased').find('#casualEmp_end_time').val('17:00')
 	})
+
+    <?php if($this->session->flashdata('MemberData') != null){ ?>
+      var url = "<?php echo base_url(); ?>api/Util/sendEmails";
+      var data = (<?php echo $this->session->flashdata('MemberData') ?>);
+      var ud = "<?php echo $this->session->userdata('LoginId'); ?>";
+      var period = "<?php echo $this->session->flashdata('period') ?>";
+      var loc = "<?php echo $this->session->flashdata('loc') ?>";
+      var title = "<?php echo $this->session->flashdata('title') ?>";
+      var category = "<?php echo $this->session->flashdata('category') ?>";
+	  var arr = <?php echo $this->session->flashdata('arr') ?>;
+      var x = [];
+      x.push({"userid" : ud,"data" : data,"title":title,"loc":loc,"period":period,"category":category,"arr":arr});
+      x = JSON.stringify(x);
+      console.log(x)
+      $.ajax({
+        url : url,
+        type : 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        data : x,
+        success : function(response){
+          console.log(response);
+        }
+      }).fail(function(response){
+        console.log(response)
+      })
+    <?php } ?>
+
 </script>
 </body>
 </html>

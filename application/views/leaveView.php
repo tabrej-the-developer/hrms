@@ -684,7 +684,7 @@ input[type="date"],input[type=time]{
   }
 }
 tr td{
-  text-align: center !important;
+  text-align: left !important;
   vertical-align: middle !important;
 }
 	/*-------------------------
@@ -716,18 +716,17 @@ tr td{
         <span class=""><img src="../assets/images/filter-icon.png" height="20px"></span>
       </div> -->
         <span class="select_css">
-         <select class="center-list " id="center-list">
-          <?php $centers = json_decode($centers); 
-            for($i=0;$i<count($centers->centers);$i++){
-          ?>
-            <option href="javascript:void(0)"
-                    class="center-class"
-                    id="<?php echo $centers->centers[$i]->centerid ?>"
-                     value="<?php echo $centers->centers[$i]->centerid; ?>">
-                     <?php echo $centers->centers[$i]->name?>
-           </option>
-            <?php } ?>
-          </select> 
+          <select class="center-list " id="center-list">
+						<?php $centers = json_decode($centers);
+						
+						for($i=0;$i<count($centers->centers);$i++){
+							if($_SESSION['centerr'] == $centers->centers[$i]->centerid){
+					?>
+					<option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid; ?>" selected><?php echo $centers->centers[$i]->name?></option>
+				<?php }else{ ?>
+					<option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid; ?>"><?php echo $centers->centers[$i]->name?></option>
+				 <?php }}  ?>
+				</select>
         </span>
 <?php } ?>
           </div>
@@ -760,7 +759,7 @@ tr td{
               		$balance = json_decode($balance);
               		// print_r($balance);
                   if(count($balance->balance) > 0){
-                    $count = count($balance->balance) >0 ? count($balance->balance) : 1;
+                    $count = count($balance->balance) > 0 ? count($balance->balance) : 1;
                     $count = ceil($count/3);
                 		for($i=0; $i < $count; $i+=3){ ?>
                 <div class="carousel-item row no-gutters  <?php if($i == 0) echo 'active';?>">
@@ -858,21 +857,12 @@ tr td{
 										<td>
 		                  <p><?php echo $leave->notes;?></p>
 										</td>
-										<td style="text-align: center; vertical-align: center">
+										<td style="text-align: center; vertical-align: center" class="span__">
 										<?php 
-							if($leave->userid == $this->session->userdata('LoginId')){
-								echo $leave->status;
-							}else{
-											if($leave->status == "Applied"){ 
-
-												?>
-												<div onclick="updateLeaveApp('<?php echo $leave->id;?>','2')" class="pr-1">
-													<img src="<?php echo base_url("assets/images/accept.png"); ?>" style="max-width:1.3rem;cursor: pointer" />
-												</div>
-												<div onclick="updateLeaveApp('<?php echo $leave->id;?>','3')" class="pl-1">
-													<img src="<?php echo base_url("assets/images/deny.png"); ?>"  style="max-width:1.3rem;cursor: pointer">
-												</div>
-										<?php }
+							// if($leave->userid == $this->session->userdata('LoginId')){
+							// 	echo $leave->status;
+							// }else{
+								if($leave->status == "Applied"){ echo $leave->status; }
 											else{
 												$color = $leave->status == "Approved" ? '#4CAF50' : '#F44336'; 
                         $img = $leave->status == "Approved" ? 'accept' : 'deny'; ?>
@@ -880,7 +870,8 @@ tr td{
 													<span class="status__"><img style="max-width:1.3rem" src="<?php echo base_url('assets/images/'.$img.'.png'); ?>"></span><?php echo $leave->status;?>
 												</span>
 												<?php
-											}}
+											}
+                    // }
 										?>
 										</td>
 									</tr>
@@ -908,7 +899,7 @@ tr td{
             <div class="col-md-6"></div>
             <div class="col-md-6 text-right">
               <!-- Apply Leave Button -->
-          <?php if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "N"){?>
+          <?php if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "N"){ ?>
               <button type="button" name="apply_button" id="apply_button" class="button" data-toggle="modal" data-target="#exampleModal"> <i class="fas fa-plus-circle"></i> Apply Leave</button>
           <?php }?>
             </div>
@@ -970,7 +961,7 @@ tr td{
                       }else{
                         if($l->status == "Applied"){ 
                     ?>
-                   <td style="text-align: center; vertical-align: center" class="span__ "> 
+                   <td style="text-align: center; vertical-align: center;display:flex" class="span__ "> 
                     <div onclick="updateLeaveApp('<?php echo $l->id;?>','2')" class="pr-3">
                       <img src="<?php echo base_url("assets/images/accept.png"); ?>" style="max-width:1.3rem;cursor: pointer" />
                     </div>
@@ -983,9 +974,12 @@ tr td{
                     $color = $l->status == "Approved" ? '#4CAF50' : '#F44336'; 
                     $sta = $l->status == "Approved" ? 'appr' : 'reje'; 
                     $img = $l->status == "Approved" ? 'accept' : 'deny'; ?>
-                    <td style="text-align: center; vertical-align: center" class=" span__ <?php echo $sta; ?> ">
+                    <td style="text-align: left; vertical-align: center;display:flex" class=" span__ <?php echo $sta; ?> ">
                     <span style="color: <?php echo $color;?>; " class="status-<?php echo $sta; ?>">
-                      <span><img src="<?php echo base_url('assets/images/'.$img.'.png'); ?>" class="immg"></span><?php echo $l->status;?>
+                      <span>
+                        <img src="<?php echo base_url('assets/images/'.$img.'.png'); ?>" class="immg">
+                      </span>
+                      <?php echo $l->status;?>
                     </span>
                   </td>
                     <?php
@@ -1020,6 +1014,7 @@ tr td{
     </div>
   </div>
 </div>    
+<?php if((isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N") == "N"){ ?>
  <!-- apply leave modal start here -->
             <div class="modal fade" id="applyModal">
                 <div class="modal-dialog">
@@ -1114,7 +1109,8 @@ tr td{
 					</form>
                 </div>
             </div>
-            <!-- modal end here -->       
+            <!-- modal end here -->  
+<?php } ?>     
 
  <div class="modal-logout">
       <div class="modal-content-logout">
@@ -1437,14 +1433,14 @@ else{
                 parseFloat((parseFloat($('#applyLeaveId :selected').attr('balance')).toFixed(2)) - ($('#total-leave-hours').val())).toFixed(2)
               }`)
               console.log()
-            if($('#total-leave-hours').val() > (parseFloat($('#applyLeaveId :selected').attr('balance')).toFixed(2))){
+            if($('#total-leave-hours').val() > (parseFloat($('#applyLeaveId :selected').attr('balance')).toFixed(2)) ){
               $('.total-leave-hours').text('Exceeded Leaves Limit')
               $('.apply_leave').prop('disabled',true)
             }
-          else{
-            $('.total-leave-hours').empty()
-            $('.apply_leave').prop('disabled',false)
-          }
+            else{
+              $('.total-leave-hours').empty()
+              $('.apply_leave').prop('disabled',false)
+            }
           }
         })
         $(document).on('change','#total-leave-hours',function(){
@@ -1452,15 +1448,22 @@ else{
               $('.leave_balance').text(`${
                 parseFloat((parseFloat($('#applyLeaveId :selected').attr('balance')).toFixed(2)) - ($('#total-leave-hours').val())).toFixed(2)
               }`)
-              console.log()
             if($('#total-leave-hours').val() > (parseFloat($('#applyLeaveId :selected').attr('balance')).toFixed(2))){
               $('.total-leave-hours').text('Exceeded Leaves Limit')
               $('.apply_leave').prop('disabled',true)
             }
-          else{
-            $('.total-leave-hours').empty()
-            $('.apply_leave').prop('disabled',false)
-          }
+            else if($('#total-leave-hours').val() == null){
+              $('.total-leave-hours').text('Value Cannot Be Null')
+              $('.apply_leave').prop('disabled',true)
+            }
+            else if($('#total-leave-hours').val() <= 0){
+              $('.total-leave-hours').text('Value Must Be Greater Than 0')
+              $('.apply_leave').prop('disabled',true)
+            }
+            else{
+              $('.total-leave-hours').empty()
+              $('.apply_leave').prop('disabled',false)
+            }
           }
         })
       })

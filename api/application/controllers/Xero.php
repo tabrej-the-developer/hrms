@@ -232,7 +232,7 @@ class Xero extends CI_Controller
 							$LeaveTypeID = $leaveBalance->LeaveTypeID;
 							$leaveDets = $this->leaveModel->getLeaveTypeById($LeaveTypeID);
 							$NumberOfUnits = $leaveBalance->NumberOfUnits;
-							$this->leaveModel->insertIntoLeaveBalance($myUserid, $leaveDets->id, $NumberOfUnits);
+							$this->leaveModel->insertIntoLeaveBalance($myUserid, $leaveDets->leaveid, $NumberOfUnits);
 						}
 					}
 				}
@@ -363,7 +363,7 @@ class Xero extends CI_Controller
 							$leaveTypes = $val->PayItems->LeaveTypes;
 							// var_dump($leaveTypes);
 							// NOTICE -- need to get the centerid
-							// $this->leaveModel->deleteAllLeaveTypes($centerid);
+							$this->leaveModel->deleteAllLeaveTypes($centerid);
 							for ($i = 0; $i < count($leaveTypes); $i++) {
 								$LeaveTypeID = $leaveTypes[$i]->LeaveTypeID;
 								$Name = addslashes($leaveTypes[$i]->Name);
@@ -487,8 +487,11 @@ class Xero extends CI_Controller
 			if (!isset($json->centerid)) {
 				$employeeCenter = $this->settingsModel->getUserCenters($empId);
 				$centers = $employeeCenter;
-				foreach ($centers as $center) {
-					$this->xeroToken($res->userid,$center->centerid, $empId);
+				$employeeId = $this->settingsModel->getXeroEmployeeId($empId);
+				if($employeeId != null){
+					foreach ($centers as $center) {
+						$this->xeroToken($res->userid,$center->centerid, $employeeId);
+					}
 				}
 			}
 			if (isset($json->centerid) && ($json->centerid != null && $json->centerid != "")) {
@@ -497,6 +500,8 @@ class Xero extends CI_Controller
 			}
 		}
 	}
+
+
 	function xeroToken($userid,$centerid, $empId = null)
 	{
 		$xeroTokens = $this->xeroModel->getXeroToken($centerid);
@@ -521,7 +526,7 @@ class Xero extends CI_Controller
 			if ($val->Status == "OK") {
 				//employees
 				$employees = $this->getEmployees($access_token, $tenant_id, $empId);
-				// var_dump($employees);
+				print_r($employees);
 				$employees = json_decode($employees)->Employees;
 				for ($i = 0; $i < count($employees); $i++) {
 					$employeeId = $employees[$i]->EmployeeID;
@@ -564,6 +569,9 @@ class Xero extends CI_Controller
 					if ($myUser == null) {
 						$password = $FirstName . $LastName . "@123";
 						$myUserid = $this->authModel->insertUser($Email, $password, $FirstName . " " . $LastName, 4, $JobTitle, null, null, $userid, 0, 0, 0);
+
+						// Add to user center table
+						$this->authModel->addToUserCenters($myUserid,$centerid);
 					} else {
 						$myUserid = $myUser->id;
 					}

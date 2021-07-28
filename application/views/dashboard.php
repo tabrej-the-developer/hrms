@@ -1,4 +1,4 @@
-<?php // print_r(json_encode(json_decode($calendar)->event[0])); ?>
+<?php // print_r(json_encode(json_decode($calendar)->event[0]));die(); ?>
 <html>
 <head>
   <title>Dashboard</title>
@@ -16,7 +16,12 @@
   .containers{
 
   }
-
+  .fc-scroller{
+    overflow: hidden;
+  }
+  tbody{
+    height: 1px;
+  }
   .btn{
     display:  inherit;
     font-weight:  inherit;
@@ -595,6 +600,9 @@ table.dataTable thead th, table.dataTable thead td{
 .prevv,.futt{
   margin-bottom: 40px
 }
+.modal{
+  opacity : 1 !important;
+}
 .arrow::after{
   content: " ";
     /* background: red; */
@@ -741,6 +749,41 @@ color:#FFFFFF;
     #collab{
       padding-left: 1rem;
     }
+/* The modal background */
+.eventModal {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	background-color: rgba(0,0,0,0.1);
+}
+/* modal content box */
+.eventModalContent{
+  background-color: white;
+  padding: 20px;
+  border: 1px solid rgba(0,0,0,0.1);
+  width: 50%;
+  height: 60%;
+  top: 20%;
+  position: absolute;
+  left: 25%;
+}
+.eventModalHeader{
+  height: 20%;
+}
+.eventModalBody{
+  height:65%;
+}
+.eventModalFooter{
+  height: 15%;
+}
+.eventModalClose{
+  cursor: pointer;
+}
 @media only screen and (max-width: 780px ){
       #calendar{
         width: 100%;
@@ -781,7 +824,7 @@ color:#FFFFFF;
      ?>
      <!-- Top Tiles Start -->
     <div class="row mr-0 mb-5 mb-md-0 mt-3 cardContainer pl-0 pl-md-4 pr-0 pr-md-4">
-<?php if((isset($permissions->permissions) ? $permissions->permissions->viewTimesheetYN : "N") == "Y"){ ?>
+<?php // if((isset($permissions->permissions) ? $permissions->permissions->viewTimesheetYN : "N") == "Y"){ ?>
       <span class="col-3 cardItem " >
         <span class="row p-0 m-0 timesheets">
           <span class="col-6 dashboard-icons" style="background:rgba(0, 84, 254,0.07)">
@@ -795,8 +838,8 @@ color:#FFFFFF;
           </span>
         </span>
       </span>
-<?php } ?>
-<?php if((isset($permissions->permissions) ? $permissions->permissions->viewRosterYN : "N") == "Y"){ ?>
+<?php // } ?>
+<?php //if((isset($permissions->permissions) ? $permissions->permissions->viewRosterYN : "N") == "Y"){ ?>
       <span class="col-3 cardItem " >
         <span class="row p-0 m-0 roster">
           <span class="col-6 dashboard-icons" style="background:rgba(254, 237, 242)">
@@ -810,8 +853,8 @@ color:#FFFFFF;
           </span>
         </span>
       </span>
-<?php } ?>
-<?php if((isset($permissions->permissions) ? $permissions->permissions->viewPayrollYN : "N") == "Y"){ ?>
+<?php //} ?>
+<?php  // if((isset($permissions->permissions) ? $permissions->permissions->viewPayrollYN : "N") == "Y"){ ?>
       <span class="col-3 cardItem " >
         <span class="row p-0 m-0 payrolls">
           <span class="col-6 dashboard-icons" style="background:rgba(233, 255, 208)">
@@ -825,8 +868,8 @@ color:#FFFFFF;
           </span>
         </span>
       </span>
-<?php } ?>
-<?php if((isset($permissions->permissions) ? $permissions->permissions->viewLeaveTypeYN : "N") == "Y"){ ?>
+<?php // } ?>
+<?php // if((isset($permissions->permissions) ? $permissions->permissions->viewLeaveTypeYN : "N") == "Y"){ ?>
       <span class="col-3 cardItem " >
         <span class="row p-0 m-0 onLeave">
           <span class="col-6 dashboard-icons" style="background:rgba(253, 188, 0,0.18)">
@@ -840,7 +883,7 @@ color:#FFFFFF;
           </span>
         </span>
       </span>   
-<?php } ?>  
+<?php // } ?>  
     </div>
      <!-- Top Tiles End -->
     <div class="row mr-0 ml-3 mr-3 mt-3 ">
@@ -889,12 +932,14 @@ color:#FFFFFF;
               </select>
             </span>	
         <span class="ml-auto">
+        <?php  if((isset($permissions->permissions) ? $permissions->permissions->createMomYN : "N") == "Y"){ ?>
           <button id="mom_button" type="button"  class="button" data-toggle="modal" data-target="#myModal">
             <i style="padding-right:0.5rem;padding-left:0.5rem">
               <img src="<?php echo base_url('assets/images/icons/addEvent_calendar.png'); ?>" style="max-height:1rem">
             </i>
             <span style="padding-right:0.5rem">Add Event</span>
           </button>
+          <?php } ?>
         </span>
       </span>
     </div>
@@ -903,7 +948,7 @@ color:#FFFFFF;
       <div class="col-md-3 upcoming_events">
         <div class="upcoming_events_title text-center">Upcoming Events</div>
         <div class="upcomingEvents_birthday" style="height: 30%">
-          <div class="text-center">Birthdays</div>
+          <div class="text-center" style="background: #8D91AA;color: #F3F4F7;">Birthdays</div>
           <?php 
           $calendarBirthdays = isset($calendar) ? 
                                ( isset(json_decode($calendar)->birthdays) ?
@@ -937,7 +982,7 @@ color:#FFFFFF;
                 </div>        
         </div>
         <div class="upcomingEvents_anniversary" style="height: 30%">
-          <div class="text-center">Anniversaries</div>
+          <div class="text-center" style="background: #8D91AA;color: #F3F4F7;">Anniversaries</div>
           <?php 
           $calendarAnniversaries = isset($calendar) ?
                               (isset(json_decode($calendar)->anniversary) ? 
@@ -949,6 +994,7 @@ color:#FFFFFF;
               if(isset($calendarAnniversaries) && $calendarAnniversaries != null){
                 foreach($calendarAnniversaries as $ars){ 
                         foreach($ars->anniversary as $ar){
+                          $aCount++;
                   ?>
                       <?php if(date('m') == date('m',strtotime($ar->startDate))){
                         $eventType = 'Anniversary';
@@ -963,7 +1009,7 @@ color:#FFFFFF;
                     </span>
                   </div>
                 <?php } } }
-                  if($bCount == 0 ){
+                  if($aCount == 0 ){
                     echo "<h5 style='display:flex;justify-content:center;align-items:center;height:70%'>No Anniversaries</h5>";
                   } ?>
                 </div>        
@@ -1034,7 +1080,7 @@ color:#FFFFFF;
                          <span class=" label_text" id="basic-addon1">Start&nbsp;Time</span>
                       </span>
                       <span class="date_span_input">
-                        <input type="time" name="meetingTime" id="time" class="input_box__ dashboard_input" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" required>
+                        <input type="time" name="meetingTime" class="input_box__ dashboard_input" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" required>
                       </span>
                     </span>
                     <span class="col-md-6 ">
@@ -1042,7 +1088,7 @@ color:#FFFFFF;
                         <span class=" label_text" id="basic-addon1">End&nbsp;Time</span>
                       </span>
                       <span class="date_span_input">
-                        <input type="time" name="meetingEndTime" id="time" class="input_box__ dashboard_input" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                        <input type="time" name="meetingEndTime" class="input_box__ dashboard_input" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
                       </span>
                     </span>
                   </div>
@@ -1086,7 +1132,7 @@ color:#FFFFFF;
                   <div class="blocks_modal d-flex">
                     <span class="add_member_label">Add&nbsp;Member</span>
                     <span class="add_member_span">
-                      <select name="invites[]" class="demo" multiple  id="demo" required>
+                      <select name="invites[]" class="demo" multiple  id="demo" >
                       <?php 
                           foreach($users->users as $m):
                       ?>  
@@ -1143,7 +1189,7 @@ color:#FFFFFF;
           <i style="padding-right:0.5rem;padding-left:0.5rem">
             <img src="<?php echo base_url('assets/images/icons/close.png'); ?>" style="max-height:1rem">
           </i>Close</button>
-        <button class="btn button_form">
+        <button class="btn button_form submitForm">
           <i style="padding-right:0.5rem;padding-left:0.5rem">
             <img src="<?php echo base_url('assets/images/icons/send.png'); ?>" style="max-height:1rem">
           </i>Submit</button>
@@ -1151,7 +1197,115 @@ color:#FFFFFF;
       </div>
     </form>
   </div>
+</div>
+                          </div>
+                          </div>
 
+<!-- Notification -->
+<div class="notify_">
+	<div class="note">
+		<div class="notify_body">
+			<span class="_notify_message"></span>
+			<span class="_notify_close" onclick="closeNotification()">&times;</span>
+    	</div>
+	</div>
+</div>
+<!-- Notification -->
+
+
+<!-- ---------------------------------
+            Events Modal
+---------------------------------- -->
+
+<div id="eventModal" class="eventModal">
+    <div class="eventModalContent">
+      <div class="eventModalHeader">
+        <div>Events</div>
+        <div class="eventModalDate"></div>
+      </div>
+      <div class="eventModalBody">
+      </div>
+      <div class="eventModalFooter">
+        <button class="eventModalClose button">Close</button>
+      </div>
+    </div>
+</div>
+
+<!-- ---------------------------------
+            Events Modal
+---------------------------------- -->
+
+  <script type="text/javascript">
+
+  // Fetch events for a date
+
+  $(document).on('click','.modalOpen',function(){
+    var modal = document.getElementById("eventModal");
+    var date = $(this).closest('.fc-daygrid-day').attr('data-date');
+    var centerid = $('#center-list').val();
+    var url = '<?php echo base_url(); ?>dashboard/getEventsByDate/'+date+'/'+centerid;
+    $.ajax({
+      url : url,
+      success : function(response){
+        $('.eventModalDate').text(date)
+        try{
+          var json = JSON.parse(response);
+          console.log(json)
+          json.event[0].forEach(function(eve){
+            if((eve.title).includes('Shift ')){
+              $('.eventModalBody').append(`<div><span><a href="<?php echo base_url() ?>roster/getRosterDetails?rosterId=${eve.roster}&showBudgetYN=N">${eve.title}</a></span></div>`);
+            }
+            if((eve.title).includes('Leave ')){
+              $('.eventModalBody').append(`<div><span><a href="<?php echo base_url() ?>Leave">${eve.title}</a></span></div>`);
+            }
+            if((eve.title).includes('- Meeting')){
+              if((eve.meetingStatus).toLowerCase() == 'created'){
+                $('.eventModalBody').append(`<div><span><a href="<?php echo base_url() ?>mom/attendence/${eve.meetingId}" title="${eve.title}">${eve.title}</a></span></div>`);
+                }
+                if((eve.meetingStatus).toLowerCase() == 'attendence'){
+                  $('.eventModalBody').append(`<div><span><a href="<?php echo base_url() ?>mom/onBoard/${eve.meetingId}" title="${eve.title}">${eve.title}</a></span></div>`);
+                }
+                if((eve.meetingStatus).toLowerCase() == 'mom'){
+                  $('.eventModalBody').append(`<div><span><a href="<?php echo base_url() ?>mom/summary/${eve.meetingId}" title="${eve.title}">${eve.title}</a></span></div>`);
+                }
+                if((eve.meetingStatus).toLowerCase() == 'summary'){
+                  $('.eventModalBody').append(`<div><span><a href="<?php echo base_url() ?>mom/meetingInfo/${eve.meetingId}" title="${eve.title}">${eve.title}</a></span></div>`);
+                  }
+                }
+              })
+          modal.style.display = "block";
+        }catch(e){
+          addMessageToNotification('Error fetching events');
+          showNotification();
+          setTimeout(closeNotification,5000)
+        }
+      }
+    })
+  })
+
+  //  Events Modal
+    var modal = document.getElementById("eventModal");
+    document.getElementsByClassName("eventModalClose")[0].addEventListener("click", function(){
+        modal.style.display = "none";
+        $('.eventModalBody').empty();
+    })
+    //  Events Modal
+
+  // Notification //
+	function showNotification(){
+      $('.notify_').css('visibility','visible');
+    }
+    function addMessageToNotification(message){
+    	if($('.notify_').css('visibility') == 'hidden'){
+     		$('._notify_message').append(`<li>${message}</li>`)
+      }
+    }
+    function closeNotification(){
+      $('.notify_').css('visibility','hidden');
+      $('._notify_message').empty();
+    }
+  // Notification //
+  </script>
 
 <!-- ---------------------------
         Modal Schedule Event
@@ -1217,6 +1371,11 @@ color:#FFFFFF;
             var status = $('.fc-event-title').eq(increment).text();
               console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>Leave" title="${status}">${status}</a>`));
             }
+            
+            if(($('.fc-event-title').eq(increment).text()).includes('+')){
+            var status = $('.fc-event-title').eq(increment).text();
+              console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text modalOpen">${status}</a>`));
+            }
 
           if(($('.fc-event-title').eq(increment).text()).includes('Meeting')){
           meetingElement[meetingCount] = $('.fc-event-title').eq(increment).closest('td').attr('data-date');
@@ -1266,6 +1425,10 @@ color:#FFFFFF;
         }
         console.log(events)
 
+    $(document).on('click','.events_text',function(){
+      date = $(this).closest('.fc-daygrid-day').attr('data-date');
+    })
+
   $(document).on('click','.fc-button',function(){
     var d = new Date();
     var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -1293,8 +1456,13 @@ color:#FFFFFF;
           counter++;
           }
           if(($('.fc-event-title').eq(increment).text()).includes('Leave')){
-            // var status = $('.fc-event-title').eq(increment).text();
+            var status = $('.fc-event-title').eq(increment).text();
               console.log($('.fc-event-title').eq(increment).html(`<a class="calendar_text" href="<?php echo base_url() ?>Leave" title="${status}">${status}</a>`));
+            }
+
+            if(($('.fc-event-title').eq(increment).text()).includes('+')){
+              var status = $('.fc-event-title').eq(increment).text();
+              $('.fc-event-title').eq(increment).html(`<a style="cursor:pointer" class="events_text" title="${status}">${status}</a>`);
             }
 
           if(($('.fc-event-title').eq(increment).text()).includes('Meeting')){
@@ -1438,6 +1606,74 @@ $('#toggle').remove();
                 <img src="<?php echo base_url('assets/images/icons/plus.png'); ?>" style="max-height:1rem">
               </i>Add File`)
     })
+
+    $(document).on('click','.clos,#mom_button',function(){
+      if($('.agendaFile').val() != "" && $('.agendaFile').val() !=  null){
+        $('.add_agenda_button').click();
+      }
+      $('.dashboard_form')[0].reset();
+      $('.token').remove();
+    })
+
+    $(document).on('submit','form',function(e){
+      // e.preventDefault();
+      if($('#enddate').val() < $('#date').val()){
+        e.preventDefault();
+        addMessageToNotification('Invalid dates entered');
+        showNotification();
+        setTimeout(closeNotification,5000)
+      }
+      if($('.agenda').val() == null || $('.agenda').val() == ""){
+        e.preventDefault();
+        addMessageToNotification('Add Agenda');
+        showNotification();
+        setTimeout(closeNotification,5000)
+      }
+      if($('.token').length == 0){
+        e.preventDefault();
+        addMessageToNotification('Add Members');
+        showNotification();
+        setTimeout(closeNotification,5000)
+      }
+    })
+
+    <?php if($this->session->flashdata('MemberData') != null){ ?>
+      var url = "<?php echo base_url(); ?>api/Util/sendEmails";
+      var data = (<?php echo $this->session->flashdata('MemberData') ?>);
+      var ud = "<?php echo $this->session->userdata('LoginId'); ?>";
+      var period = "<?php echo $this->session->flashdata('period') ?>";
+      var loc = "<?php echo $this->session->flashdata('loc') ?>";
+      var title = "<?php echo $this->session->flashdata('title') ?>";
+      var category = "<?php echo $this->session->flashdata('category') ?>";
+      var x = [];
+      x.push({"userid" : ud,"data" : data,"title":title,"loc":loc,"period":period,"category":category});
+      x = JSON.stringify(x);
+      console.log(x)
+      $.ajax({
+        url : url,
+        type : 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        data : x,
+        success : function(response){
+          console.log(response);
+        }
+      }).fail(function(response){
+        console.log(response)
+      })
+    <?php } ?>
+
+    $(document).ready(function(){
+      <?php for($i=0;$i<3;$i++){ ?>
+      // var url = "<?php echo base_url(); ?>"+"email.php";
+      // $.ajax({
+      //   url : url,
+      //   success : function(response){
+      //   }
+      // })
+      <?php } ?>
+    })
+
   </script>
 
 <?php } ?>

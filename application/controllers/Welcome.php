@@ -34,6 +34,7 @@ class Welcome extends CI_Controller {
 
 	public function login(){
 		$this->load->helper('form');
+		unset($_SESSION['centerr']);
 		$form_data = $this->input->post();
 		$data['errorText'] = "";
 		$data['email'] = "";
@@ -63,7 +64,8 @@ class Welcome extends CI_Controller {
 						'UserType' => $jsonOutput->role,
 						'Name' => $jsonOutput->name,
 						'ImgUrl' => $jsonOutput->imageUrl,
-						'x-device-id' => $data['deviceid']
+						'x-device-id' => $data['deviceid'],
+						'companyImage' => $jsonOutput->companyImage
 					));
 					footprint(currentUrl(),' ',$this->session->userdata('LoginId'),'LogIn');
                		$this->session->set_userdata('current_url', currentUrl());
@@ -224,5 +226,31 @@ class Welcome extends CI_Controller {
 			$ip_address = $_SERVER['REMOTE_ADDR'];
 		}
 		return $ip_address;
+	}
+
+	public function sendEmail(){
+		$this->load->helper('form');
+		$form_data = $this->input->post();
+		if($form_data != null){
+			$data['userid'] = $this->session->userdata('LoginId');
+			$data['message'] = $form_data['message'];
+			$data['empId'] = $form_data['employeeId'];
+			$data['category'] = $form_data['num'];
+			$url = BASE_API_URL.'util/sendEmails';
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				return $server_output;
+				curl_close ($ch);
+			}
+			else if($httpcode == 401){
+
+			}
+		}
 	}
 }

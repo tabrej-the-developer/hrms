@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Settings extends CI_Controller
+class Settings extends MY_Controller
 {
 	function __construct()
 	{
@@ -362,6 +362,17 @@ class Settings extends CI_Controller
 				$user = $this->authModel->getUserDetails($userid);
 				if ($user != null) {
 					$user = $this->settingsModel->changePassword($userid, md5($password), md5($passcode));
+        // Email & Notification
+        $permissions = $this->getNotificationPermissions($userid,14);
+        foreach($permissions as $permission){
+          if($permission->appYN == 'Y'){
+			  // $this->firebase->sendMessage($title,$body,$payload,$employee->userid);
+		  }
+          if($permission->emailYN == 'Y'){
+            // $this->Emails($permission->email,$template,$subject,$arr);
+          }
+        }
+        // Email & Notification
 					$data['Status'] = "SUCCESS";
 				} else {
 					$data['Status'] = "ERROR";
@@ -430,7 +441,15 @@ class Settings extends CI_Controller
 				$minimum_age = $json->minimum_age;
 				$maximum_age = $json->maximum_age;
 				if ($center_name != null && $center_name != "") {
-					$centerid = $this->settingsModel->addCenter($center_street, $center_city, $center_state, $center_zip, $center_name, $center_phone, $center_mobile, $center_email, $json->userid);
+					$centers = $this->settingsModel->getUserCenters($json->userid);
+					if($centers != null){
+						$superadmin = $this->settingsModel->getSuperadmin($centers[0]->centerid);
+						$uniqid = $superadmin->superadmin;
+					}
+					else{
+						$uniqid = uniqid();
+					}
+					$centerid = $this->settingsModel->addCenter($center_street, $center_city, $center_state, $center_zip, $center_name, $center_phone, $center_mobile, $center_email, $json->userid,$uniqid);
 					$centerRecordUniqueId = uniqid();
 					$this->settingsModel->addCenterRecord($centerid, $centerRecordUniqueId, $center_abn, $center_acn, $center_se_no, $center_date_opened, $center_capacity, $center_approval_doc, $center_ccs_doc, $center_admin_name, $centre_nominated_supervisor);
 					$this->settingsModel->addToUserCenters($json->userid,$centerid);
@@ -444,7 +463,7 @@ class Settings extends CI_Controller
 				}
 				$data['Status'] = "SUCCESS";
 				http_response_code(200);
-				echo json_encode($room_name);
+				echo json_encode($data);
 			} else {
 				http_response_code(401);
 			}
@@ -647,7 +666,7 @@ class Settings extends CI_Controller
 			if ($res != null && $res->userid == $userid) {
 				$this->load->model('settingsModel');
 				$this->settingsModel->deleteRoom($roomid);
-				$data['status'] = 'SUCCESS';
+				$data['Status'] = 'SUCCESS';
 			}
 			http_response_code(200);
 			echo json_encode($data);
@@ -666,7 +685,7 @@ class Settings extends CI_Controller
 			if ($res != null && $res->userid == $userid) {
 				$this->load->model('settingsModel');
 				$this->settingsModel->deleteArea($areaid);
-				$data['status'] = 'SUCCESS';
+				$data['Status'] = 'SUCCESS';
 			}
 			http_response_code(200);
 			echo json_encode($data);
@@ -685,7 +704,7 @@ class Settings extends CI_Controller
 			if ($res != null && $res->userid == $userid) {
 				$this->load->model('settingsModel');
 				$this->settingsModel->deleteRole($roleid);
-				$data['status'] = 'SUCCESS';
+				$data['Status'] = 'SUCCESS';
 			}
 			http_response_code(200);
 			echo json_encode($data);
@@ -708,6 +727,18 @@ class Settings extends CI_Controller
 					$this->load->model('settingsModel');
 					foreach ($details as $employee) {
 						$this->settingsModel->updateEmployeeRole($employee->employeeId, $employee->roleId);
+        // Email & Notification
+        $permissions = $this->getNotificationPermissions($employee->employeeId,17);
+        foreach($permissions as $permission){
+          if($permission->appYN == 'Y'){
+			//   $this->utilModel->insertNotification($employee->employeeId, $intent, $title, $body, json_encode($payload));
+			  // $this->firebase->sendMessage($title,$body,$payload,$empId);
+		  }
+          if($permission->emailYN == 'Y'){
+            // $this->Emails($permission->email,$template,$subject,$arr);
+          }
+        }
+        // Email & Notification
 					}
 					$data['Status'] = "SUCCESS";
 					$data['Message'] = "Role Updated";
@@ -758,6 +789,7 @@ class Settings extends CI_Controller
 
 	public function addMultipleEmployees($userid)
 	{
+		set_time_limit(0);
 		$headers = $this->input->request_headers();
 		$headers = array_change_key_case($headers);
 		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
@@ -834,12 +866,12 @@ class Settings extends CI_Controller
 							'mailtype'  => 'html',
 							'charset'   => 'utf-8'
 						);
-						$to = $emails;
+						$to = $data['emails'];
 						$subject = 'Welcome to HRMS101';
 						$template = 'onboardingMailView';
 						$arr['name'] = $data['name'];
 						$arr['empCode'] = $data['employee_no'];
-						$arr['Password'] = $data['password'];
+						$arr['Password'] = (explode(" ", $data['name']))[0] . "@123";
 						if (!is_array($to)) {
 							$this->load->library('email', $config); // Load email template
 							$this->email->set_newline("\r\n");
@@ -869,7 +901,6 @@ class Settings extends CI_Controller
 			http_response_code(401);
 		}
 	}
-
 	public function editEmployeeEntitlements()
 	{
 		$headers = $this->input->request_headers();
@@ -883,6 +914,18 @@ class Settings extends CI_Controller
 				$empid = $json->empid;
 				$level = $json->level;
 				$this->settingsModel->editEmployeeEntitlement($level, $empid);
+        // Email & Notification
+        $permissions = $this->getNotificationPermissions($empid,16);
+        foreach($permissions as $permission){
+          if($permission->appYN == 'Y'){
+			//   $this->utilModel->insertNotification($empid, $intent, $title, $body, json_encode($payload));
+			  // $this->firebase->sendMessage($title,$body,$payload,$empId);
+		  }
+          if($permission->emailYN == 'Y'){
+            // $this->Emails($permission->email,$template,$subject,$arr);
+          }
+        }
+        // Email & Notification
 				$data['Status'] = 'SUCCESS';
 				$data['Message'] = 'Entitlement updated';
 			} else {
@@ -1104,12 +1147,12 @@ class Settings extends CI_Controller
 						// Employee superfunds	
 						if ($employee_no != null && $employee_no != "") {
 							if ($superFundId != "" && $superFundId != null) {
-								$this->settingsModel->addToEmployeeSuperfunds(
-									$employee_no,
-									$superFundId,
-									$superMembershipId,
-									$superfundEmployeeNumber
-								);
+								// $this->settingsModel->addToEmployeeSuperfunds(
+								// 	$employee_no,
+								// 	$superFundId,
+								// 	$superMembershipId,
+								// 	$superfundEmployeeNumber
+								// );
 							}
 						}
 						// Employee Tax Declaration
@@ -1123,7 +1166,7 @@ class Settings extends CI_Controller
 						if ($employee_no != null && $employee_no != "") {
 							$this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId, $title, $fname, $mname, $lname, $emails, $dateOfBirth, $gender, $homeAddLine1, $homeAddLine2, $homeAddCity, $homeAddRegion, $homeAddPostal, $homeAddCountry, $phone, $mobile, $startDate, $terminationDate, $ordinaryEarningRateId, $payroll_calendar, $userid, $classification, $emergency_contact, $relationship, $emergency_contact_email,$totalHours,$daysArr);
 						}
-						$data['status'] = 'SUCCESS';
+						$data['Status'] = 'SUCCESS';
 						http_response_code(200);
 						echo json_encode($data);
 					} else {
@@ -1157,7 +1200,7 @@ class Settings extends CI_Controller
 
 	// View Employee
 
-	public function getEmployeeProfile($userid, $employeeId)
+	public function getEmployeeProfile($userid, $employeeId, $centerid=null)
 	{
 		$headers = $this->input->request_headers();
 		$headers = array_change_key_case($headers);
@@ -1175,9 +1218,9 @@ class Settings extends CI_Controller
 				$data['employeeMedicalInfo']	= $this->settingsModel->getEmployeeMedicalInfo($employeeId);
 				$data['employeeMedicals']	= $this->settingsModel->getEmployeeMedicals($employeeId);
 				$data['employeeRecord']	= $this->settingsModel->getEmployeeRecord($employeeId);
-				$data['employeeSuperfunds']	= $this->settingsModel->getEmployeeSuperfunds($employeeId);
+				$data['employeeSuperfunds']	= $this->settingsModel->getEmployeeSuperfunds($employeeId,$centerid);
 				$data['employeeTaxDeclaration'] = $this->settingsModel->getEmployeeTaxDec($employeeId);
-				$data['status'] = 'SUCCESS';
+				$data['Status'] = 'SUCCESS';
 			}
 			http_response_code(200);
 			echo json_encode($data);
@@ -1188,7 +1231,7 @@ class Settings extends CI_Controller
 
 	// Edit Employee 
 
-	public function getEmployeeData($userid)
+	public function getEmployeeData($userid,$centerid=null)
 	{
 		$headers = $this->input->request_headers();
 		$headers = array_change_key_case($headers);
@@ -1199,20 +1242,64 @@ class Settings extends CI_Controller
 				$this->load->model('settingsModel');
 				$data['users'] = $this->settingsModel->getUserData($userid);
 				$data['employee']	= $this->settingsModel->getEmployeeData($userid);
-				$data['employeeBankAccount']	= $this->settingsModel->getEmployeeBankAccount($userid);
-				$data['employeeDocuments'] = $this->settingsModel->getEmployeeDocuments($userid);
-				$data['employeeCourses']	= $this->settingsModel->getEmployeeCourses($userid);
-				$data['employeeMedicalInfo']	= $this->settingsModel->getEmployeeMedicalInfo($userid);
-				$data['employeeMedicals']	= $this->settingsModel->getEmployeeMedicals($userid);
-				$data['employeeRecord']	= $this->settingsModel->getEmployeeRecord($userid);
-				$data['employeeSuperfunds']	= $this->settingsModel->getEmployeeSuperfunds($userid);
-				$data['employeeTaxDeclaration'] = $this->settingsModel->getEmployeeTaxDec($userid);
-				$data['status'] = 'SUCCESS';
+				if($centerid != null){
+					$data['employeeBankAccount']	= $this->settingsModel->getEmployeeBankAccount($userid);
+					$data['employeeDocuments'] = $this->settingsModel->getEmployeeDocuments($userid);
+					$data['employeeCourses']	= $this->settingsModel->getEmployeeCourses($userid);
+					$data['employeeMedicalInfo']	= $this->settingsModel->getEmployeeMedicalInfo($userid);
+					$data['employeeMedicals']	= $this->settingsModel->getEmployeeMedicals($userid);
+					$data['employeeRecord']	= $this->settingsModel->getEmployeeRecord($userid);
+					$data['employeeSuperfunds']	= $this->settingsModel->getEmployeeSuperfunds($userid,$centerid);
+					$data['employeeTaxDeclaration'] = $this->settingsModel->getEmployeeTaxDec($userid);
+				}
+				$data['Status'] = 'SUCCESS';
 			}
 			http_response_code(200);
 			echo json_encode($data);
 		} else {
 			http_response_code(401);
+		}
+	}
+
+	public function superfundsByCenter($centerid,$empId,$userid){
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			$this->load->model('authModel');
+			$this->load->model('settingsModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+			if ( $res != null && $res->userid == $userid) {
+				$data['empSuperfunds'] = $this->settingsModel->getEmployeeSuperfunds($empId,$centerid);
+				$data['superfunds'] = $this->settingsModel->getSuperfunds($centerid);
+				echo json_encode($data);
+			}
+		}
+	}
+
+	public function saveSuperfundByCenter(){
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			$this->load->model('authModel');
+			$this->load->model('settingsModel');
+			$json = json_decode(file_get_contents('php://input'));
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+			if ($json != null && $res != null && $res->userid == $json->userid) {
+				$values = $json->values;
+				$empId = $json->empId;
+				if($empId == null){
+					$empId = $json->userid;
+				}
+				$centerid = $json->centerid;
+				$this->settingsModel->deleteEmployeeSuperfunds($empId,$centerid);
+				foreach($values as $value){
+					$superfundId = $value->superfundId;
+					$superMembershipId = $value->superMembershipId;
+					$employeeNumber = $value->employeeNumber;
+					$this->settingsModel->addToEmployeeSuperfunds($empId,$superfundId,
+								$superMembershipId,$employeeNumber,$centerid);
+				}
+			}
 		}
 	}
 
@@ -1422,14 +1509,14 @@ class Settings extends CI_Controller
 
 				if ($employee_no != null && $employee_no != "") {
 					if ($superFunds != "" && $superFunds != null && isset($superFunds->Id)) {
-						$this->settingsModel->deleteEmployeeSuperfunds($employee_no);
+						// $this->settingsModel->deleteEmployeeSuperfunds($employee_no);
 						for($x=0;$x<count($superFunds->Id);$x++){
-							$this->settingsModel->addToEmployeeSuperfunds(
-								$employee_no,
-								$superFunds->Id[$x],
-								$superFunds->MembershipId[$x],
-								$superFunds->EmployeeNumber[$x]
-							);
+							// $this->settingsModel->addToEmployeeSuperfunds(
+							// 	$employee_no,
+							// 	$superFunds->Id[$x],
+							// 	$superFunds->MembershipId[$x],
+							// 	$superFunds->EmployeeNumber[$x]
+							// );
 						}	
 					}
 				}
@@ -1440,7 +1527,7 @@ class Settings extends CI_Controller
 
 				$this->settingsModel->updateEmployeeTable($employee_no, $title, $fname, $mname, $lname, $emails, $dateOfBirth, $gender, $homeAddLine1, $homeAddLine2, $homeAddCity, $homeAddRegion, $homeAddPostal, $homeAddCountry, $phone, $mobile, $terminationDate, $ordinaryEarningRateId, $userid, $classification, $emergency_contact, $relationship, $emergency_contact_email);
 
-				$data['status'] = 'SUCCESS';
+				$data['Status'] = 'SUCCESS';
 				http_response_code(200);
 				echo json_encode($data);
 			} else {
@@ -1568,7 +1655,7 @@ class Settings extends CI_Controller
 			if ($res != null && $res->userid == $userid) {
 				$this->load->model('settingsModel');
 				$this->settingsModel->deleteDocument($documentId);
-				$data['status'] = 'SUCCESS';
+				$data['Status'] = 'SUCCESS';
 			}
 			http_response_code(200);
 			echo json_encode($data);
@@ -1676,6 +1763,18 @@ class Settings extends CI_Controller
 						$this->settingsModel->editEmployeeCenter($center, $empId);
 					}
 					$this->settingsModel->updateEmployeeCenter($cent, $empId);
+        // Email & Notification
+        $permissions = $this->getNotificationPermissions($empId,15);
+        foreach($permissions as $permission){
+          if($permission->appYN == 'Y'){
+			//   $this->utilModel->insertNotification($empId, $intent, $title, $body, json_encode($payload));
+			  // $this->firebase->sendMessage($title,$body,$payload,$empId);
+		  }
+          if($permission->emailYN == 'Y'){
+            // $this->Emails($permission->email,$template,$subject,$arr);
+          }
+        }
+        // Email & Notification
 					$data['Status'] = 'SUCCESS';
 					$data['Message'] = 'Employee centers updated';
 				} else {
@@ -1743,8 +1842,8 @@ class Settings extends CI_Controller
 				$editOrgChartYN = $json->editOrgChartYN;
 				$viewCenterProfileYN = $json->viewCenterProfileYN;
 				$editCenterProfileYN = $json->editCenterProfileYN;
-				$viewRoomSettingsYN = $json->viewRoomSettingsYN;
-				$editRoomSettingsYN = $json->editRoomSettingsYN;
+				$viewRoomSettingsYN = isset($json->viewRoomSettingsYN) ? $json->viewRoomSettingsYN : 'N';
+				$editRoomSettingsYN = isset($json->editRoomSettingsYN) ? $json->editRoomSettingsYN : 'N';
 				$viewEntitlementsYN = $json->viewEntitlementsYN;
 				$editEntitlementsYN = $json->editEntitlementsYN;
 				$editEmployeeYN = $json->editEmployeeYN;
@@ -1822,12 +1921,66 @@ class Settings extends CI_Controller
 		$headers = array_change_key_case($headers);
 		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
 			$this->load->model('authModel');
-			$this->load->model('settingsModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
 			if ($res != null && $res->userid == $userid) {
 				$this->load->model('settingsModel');
 				$this->settingsModel->deletecourse($courseId);
-				$data['status'] = 'SUCCESS';
+				$data['Status'] = 'SUCCESS';
+			}
+			http_response_code(200);
+			echo json_encode($data);
+		} else {
+			http_response_code(401);
+		}
+	}
+
+	public function NotificationPermissions($userid){
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if ($res != null && $res->userid == $userid) {
+				$this->load->model('settingsModel');
+				if($_SERVER['REQUEST_METHOD'] == "GET"){
+					$notificationPermissions = $this->settingsModel->fetchNotificationPermissions($userid);
+					$data = [];
+					foreach($notificationPermissions as $np){
+						$data["$np->notificationtype"]["typeid"] = isset($np->typeid) ? $np->typeid : "N";
+						$data["$np->notificationtype"]["isAppYN"] = isset($np->appYN) ? $np->appYN : "N";
+						$data["$np->notificationtype"]["isEmailYN"] = isset($np->emailYN) ? $np->emailYN : "N";
+					}
+				}
+				if($_SERVER['REQUEST_METHOD'] == "POST"){
+					$types = ["App","Email"];
+					foreach($types as $type){
+					$post['Meeting_Created']["Meeting_Created_$type"] = isset($json->{"Meeting_Created_$type"}) ? "Y" : "N";
+					$post['Meeting_Ended']["Meeting_Ended_$type"] = isset($json->{"Meeting_Ended_$type"}) ? "Y" : "N";
+					$post['Birthday_Anniversary']["Birthday_Anniversary_$type"] = isset($json->{"Birthday_Anniversary_$type"}) ? "Y" : "N";
+					$post['Shift_Updated']["Shift_Updated_$type"] = isset($json->{"Shift_Updated_$type"}) ? "Y" : "N";
+					$post['Roster_Published']["Roster_Published_$type"] = isset($json->{"Roster_Published_$type"}) ? "Y" : "N";
+					$post['Shift_Status_Changed']["Shift_Status_Changed_$type"] = isset($json->{"Shift_Status_Changed_$type"}) ? "Y" : "N";
+					$post['Roster_Permission']["Roster_Permission_$type"] = isset($json->{"Roster_Permission_$type"}) ? "Y" : "N";
+					$post['Timesheet_Published']["Timesheet_Published_$type"] = isset($json->{"Timesheet_Published_$type"}) ? "Y" : "N";
+					$post['Payroll_Flagged']["Payroll_Flagged_$type"] = isset($json->{"Payroll_Flagged_$type"}) ? "Y" : "N";
+					$post['Payroll_Published']["Payroll_Published_$type"] = isset($json->{"Payroll_Published_$type"}) ? "Y" : "N";
+					$post['Notice_Created']["Notice_Created_$type"] = isset($json->{"Notice_Created_$type"}) ? "Y" : "N";
+					$post['Employee_Profile_Updated']["Employee_Profile_Updated_$type"] = isset($json->{"Employee_Profile_Updated_$type"}) ? "Y" : "N";
+					$post['Employee_Synced_With_Xero']["Employee_Synced_With_Xero_$type"] = isset($json->{"Employee_Synced_With_Xero_$type"}) ? "Y" : "N";
+					$post['Password_Updated']["Password_Updated_$type"] = isset($json->{"Password_Updated_$type"}) ? "Y" : "N";
+					$post['Center_Added_Removed']["Center_Added_Removed_$type"] = isset($json->{"Center_Added_Removed_$type"}) ? "Y" : "N";
+					$post['Level_Changed']["Level_Changed_$type"] = isset($json->{"Level_Changed_$type"}) ? "Y" : "N";
+					$post['Employee_Role_Changed']["Employee_Role_Changed_$type"] = isset($json->{"Employee_Role_Changed_$type"}) ? "Y" : "N";
+					$post['Employee_Area_Changed']["Employee_Area_Changed_$type"] = isset($json->{"Employee_Area_Changed_$type"}) ? "Y" : "N";
+					$post['Leave_Applied']["Leave_Applied_$type"] = isset($json->{"Leave_Applied_$type"}) ? "Y" : "N";
+					$post['Leave_Status_Changed']["Leave_Status_Changed_$type"] = isset($json->{"Leave_Status_Changed_$type"}) ? "Y" : "N";
+					$post['Xero_Token_Created']["Xero_Token_Created_$type"] = isset($json->{"Xero_Token_Created_$type"}) ? "Y" : "N";
+					$post['Kidsoft_Servicekey']["Kidsoft_Servicekey_$type"] = isset($json->{"Kidsoft_Servicekey_$type"}) ? "Y" : "N";
+					}
+					$this->settingsModel->postNotificationPermissions($userid,$post);
+				}
+				$data['Status'] = 'SUCCESS';
 			}
 			http_response_code(200);
 			echo json_encode($data);
@@ -1864,4 +2017,48 @@ class Settings extends CI_Controller
 			}
 		}
 	}
+
+	public function getAllNotifications(){
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			$this->load->model('authModel');
+			$this->load->model('settingsModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if ($res != null && $json != null && $res->userid == $json->userid) {
+				$userid = $json->userid;
+				$start = isset($json->start) ? $json->start : 0;
+				$count = isset($json->count) ? $json->count : 25; 
+				$notifications = $this->settingsModel->getNotificationsForUser($userid,$start,$count);
+				$data['Notifications'] = $notifications;
+				$data['Status'] = 'SUCCESS';
+			}else{
+				$data['Status'] = 'ERROR';
+				$data['Message'] = 'Invalid !';
+			}
+			echo json_encode($data);
+			http_response_code(200);
+		}
+	}
+
+	public function updateNotifications($userid){
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			$this->load->model('authModel');
+			$this->load->model('settingsModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+			if ($res != null && $res->userid == $userid) {
+				$this->settingsModel->updateNotifications($userid);
+				$data['Status'] = 'SUCCESS';
+			}else{
+				$data['Status'] = 'ERROR';
+				$data['Message'] = 'Invalid !';
+			}
+			echo json_encode($data);
+			http_response_code(200);
+		}
+	}
+
 }

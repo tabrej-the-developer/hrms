@@ -56,4 +56,16 @@ class Welcome extends CI_Controller {
 			//$this->email->send();
 		}
 	}
+
+	public function check(){
+		// exec('/usr/bin/nohup php script.php >/dev/null 2>&1 &');
+		try{
+			// exec('/PN101 nohup php email.php >/dev/null 2>&1 &');
+			$pid = shell_exec("sudo php /var/www/html/HRMS101/email.php  >/dev/null 2>&1 &");
+			var_dump($pid);
+		}catch(Exception $e){
+			var_dump($e);
+		}
+	}
+
 }

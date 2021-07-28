@@ -41,7 +41,7 @@ class LeaveModel extends CI_Model {
 
 	public function getLeaveType($leaveId){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM leaves WHERE id=$leaveId");
+		$query = $this->db->query("SELECT * FROM leaves WHERE leaveid='$leaveId'");
 		return $query->row();
 	}
 
@@ -64,11 +64,11 @@ class LeaveModel extends CI_Model {
 
 	public function getAllLeavesByCenter($centerid,$startDate = null,$endDate = null){
 		$this->load->database();
-		$queryTxt = "SELECT * FROM leaveapplication WHERE userid IN (SELECT id FROM users WHERE center LIKE '%$centerid|%' AND role != 1)";
+		$queryTxt = "SELECT * FROM leaveapplication WHERE userid IN (SELECT id FROM users WHERE id IN (SELECT userid FROM usercenters WHERE centerid = $centerid ))";
 		if($startDate != null)
 			$queryTxt .= " AND startDate <= $startDate";
 		if($endDate != null)
-			$queryTxt .= " ADN endDate >= $endDate";
+			$queryTxt .= " AND endDate >= $endDate";
 		$query = $this->db->query($queryTxt);
 		return $query->result();
 	}
@@ -86,7 +86,7 @@ class LeaveModel extends CI_Model {
 
 	public function applyLeave($userid,$leaveId,$noOfHours,$startDate,$endDate,$notes){
 		$this->load->database();
-		$query = $this->db->query("INSERT INTO leaveapplication (userid,appliedDate, leaveId, noOfHours, startDate,endDate,status,notes) VALUES('$userid',CURDATE(),$leaveId,$noOfHours,'$startDate','$endDate',1,'$notes')");
+		$query = $this->db->query("INSERT INTO leaveapplication (userid,appliedDate, leaveId, noOfHours, startDate,endDate,status,notes) VALUES('$userid',CURDATE(),'$leaveId',$noOfHours,'$startDate','$endDate',1,'$notes')");
 	}
 
 	public function getLeaveBalance($userid){
@@ -126,7 +126,7 @@ class LeaveModel extends CI_Model {
 
 	public function getSumOfLeave($userid,$leaveid,$startDate){
 		$this->load->database();
-		$query = $this->db->query("SELECT SUM(noOfHours) as sum FROM leaveapplication WHERE userid = '$userid' AND startDate >= '$startDate' AND leaveId = $leaveid");
+		$query = $this->db->query("SELECT SUM(noOfHours) as sum FROM leaveapplication WHERE userid = '$userid' AND startDate >= '$startDate' AND leaveId = '$leaveid'");
 		return $query->row();
 	}
 
@@ -137,7 +137,7 @@ class LeaveModel extends CI_Model {
 
 	public function updateLeaveBalance($userid,$leaveId,$toUpdate){
 		$this->load->database();
-		$this->db->query("UPDATE leavebalance SET leavebalance = leaveBalance + $toUpdate WHERE userid = '$userid' AND leaveId = $leaveId");
+		$this->db->query("UPDATE leavebalance SET leavebalance = leaveBalance + $toUpdate WHERE userid = '$userid' AND leaveId = '$leaveId'");
 	}
 
 	public function getLeaveApplicationForUser($userid,$currentDate){
@@ -156,5 +156,14 @@ class LeaveModel extends CI_Model {
 		$this->load->database();
 		$query = $this->db->query("SELECT * FROM `leaveapplication` INNER JOIN leaves on leaves.leaveid = leaveapplication.leaveId WHERE startDate<='$currentDate' and endDate >= '$currentDate' AND userid = '$userid'  and leaves.centerid = '$centerid' ");
 		return $query->row();
+	}
+
+	public function addLeaveBalanceOnReject($leaveApplication){
+		$this->load->database();
+		$leaveApp = $this->db->query("SELECT * FROM leaveapplication WHERE applicationId = '$leaveApplication'");
+		$userid = ($leaveApp->row() != null) ? ($leaveApp->row())->userid : null;
+		$hours = ($leaveApp->row() != null) ? ($leaveApp->row())->noOfHours : null;
+		$leaveid = ($leaveApp->row() != null) ? ($leaveApp->row())->leaveId : null;
+		$query = $this->db->query("UPDATE leavebalance SET leaveBalance = leaveBalance + $hours WHERE userid = '$userid' and leaveId = '$leaveid'");
 	}
 }
