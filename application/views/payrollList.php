@@ -1,296 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<?php $this->load->view('header'); ?>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Payroll</title>
+	<link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('assets/favicon_io/apple-touch-icon.png') ?>">
+  <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/favicon_io/favicon-32x32.png') ?>">
+  <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/favicon_io/favicon-16x16.png') ?>">
+  <link rel="manifest" href="<?= base_url('assets/favicon_io/site.webmanifest') ?>">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css">
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
-<style type="text/css">
-	*{
-		font-family: 'Open Sans', sans-serif;
-	}
-		.containers{
-		background:	rgb(243, 244, 247);
-		height: calc(100vh );
-	}
-		thead{
-			background:rgba(0,0,0,0.2);
-		}
-		tr:nth-child(even){
-			background:#D2D0D0 !important;
-		}
-		tr:nth-child(odd){
 
-			background: #F1EEEE !important;
-		}
-		th{
-			background: #8D91AA;
-			color: #F3F4F7;
-		}
-		    td:hover{
-    	cursor: pointer
-    }
-	.center-list {
-		width: 12rem ;
-		max-width: 12rem ;
-	}
-    #payroll-heading{
-    	font-size: 2rem;
-    	font-weight: bold
-    }
-		.table-div{
-			height:75vh;
-			overflow-y: auto;
-			padding: 0 20px;
-		}	
-		.table  td,.table th{
-			padding: 1rem;
-			border: none;
-		}
-		.sort-by{
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-		}
-		
+<link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+<link href="<?php echo base_url('assets/css/bootstrap.min.css');?>" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-		.filter-icon{
-			border:1px solid rgba(0,0,0,0.7);
-			padding:8px;
-			border-radius: 20px
-		}
-		.create{
-			border:3px solid rgb(242, 242, 242);
-			border-radius: 20px;
-			padding:8px;
-		}
-		.data-buttons{
-			padding:10px;
-		}
-		/* The Modal (background) */
-.modal {
-  display: none; 
-  position: fixed;
-  z-index: 1; 
-  padding-top: 100px;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgb(0,0,0); 
-  background-color: rgba(0,0,0,0.4); 
-}
 
-/* Modal Content */
-.modal-content {
-  background-color: #fefefe;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-}
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/layout.css?version='.VERSION);?>">
+ <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/container.css?version='.VERSION);?>">
 
-/* The Close Button */
-.close {
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
+<script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js');?>" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('assets/js/popper.min.js');?>" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('assets/js/bootstrap.min.js');?>" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+<style>
+.navbar-nav .nav-item-header:nth-of-type(4) {
+    background: var(--blue2) !important;
+    position: relative;
 }
-
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
+.navbar-nav .nav-item-header:nth-of-type(4)::after {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    bottom: 0;
+    content: "";
+    background: var(--orange1);
 }
-
-#ui-datepicker-div{
-	background:white;
-	color:black;
-	background: white;
-    padding: 50px;
-    border-radius: 30px;
-}
-.ui-state-default{
-	color:black;
-	font-size:20px;
-}
-.ui-datepicker-prev{
-margin:20px;
-padding:10px;
-background:#e0e0e0;
-border-top-left-radius: 20px;
-border-bottom-left-radius: 20px;
-}
-.ui-datepicker-next{
-	margin: 20px;
-	padding:10px;
-	background:#e0e0e0;
-border-top-right-radius: 20px;
-border-bottom-right-radius: 20px;
-}
-.ui-datepicker-title{
-	text-align: center;
-	margin:30px 30px 10px 30px;
-}
-#down-arrow::after{
-		position:relative;
-        content: " \2193";
-        top: 0px;
-        right: 20px;
-        height: 10px;
-        width: 20px;
-}
-.ui-datepicker-current-day{
-	background:green;
-}
-.ui-datepicker-today{
-	background:skyblue;
-}
-.ui-datepicker-calendar thead tr{
-	background: #80B9FF
-}
-.ui-datepicker-calendar thead th{
-	margin:5px;
-}
-.ui-datepicker-calendar tbody tr:nth-child(even){
-	background: white
-}
-	.button{
-		background-color: #9E9E9E;
-  border: none;
-  color: white;
-  padding: 10px 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 2px
-}
-.dataTables_info{
-	font-size:0.8rem;
-}
-.dataTables_paginate{
-	font-size:0.8rem;
-}
-.paginate_button{
-	background:transparent;
-}
-   .modal-logout {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        opacity: 0;
-        visibility: hidden;
-        transform: scale(1.1);
-        transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
-        text-align: center;
-        z-index:150;
-    }
-    .modal-content-logout {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: white;
-        padding: 1rem 1.5rem;
-        width: 50%;
-        border-radius: 0.5rem;
-    }
-    .show-modal {
-        opacity: 1;
-        visibility: visible;
-        transform: scale(1.0);
-        transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
-    }
-    select{
-	background: rgb(164, 217, 214);
-	font-weight: 700;
-	color: rgb(23, 29, 75);
-	border-radius: 20px;
-    padding: 5px;
-    padding-left: 20px;
-    border: 2px solid #e9e9e9 !important;
-		}
-	select:hover{
-		cursor: pointer;
-	}
-.dataTables_wrapper {
-	height:95%;
-	overflow-y: hidden;
-	background: white;
-	box-shadow: 0 0 4px 1px rgba(0,0,0,0.1);
-}
-table.dataTable tbody th, table.dataTable tbody td{
-	padding:1rem;
-	border-bottom: none;
-}
-table.dataTable thead th, table.dataTable thead td {
-    padding: 1rem;
-    border-bottom: none;
-}
-table.dataTable.no-footer{
-	border-bottom: none
-}
-table.dataTable{
-	margin-top: 0 !important;
-	margin-bottom: 0 !important;
-}
-	.dataTables_paginate span .paginate_button{
-		background:none !important;
-		border:none !important;
-		border-color: transparent;
-	}
-	.dataTables_paginate{
-		position: fixed;
-		bottom: 0;
-		right: 0
-	}
-@media only screen and (max-width:1024px) {
-.modal-content{
-	min-width:100vw;
-}
-.containers {
-     width: 100%;
-    margin: 0px;
-    padding:0;
-}
-.containers {
-     width: 100%;
-    margin: 0px;
-    padding:0;
-}
-		.create{
-			width: 150px;
-			overflow: hidden;
-		}
-		.center-list{
-			width: 100px
-		}
-		body{
-			max-width: 100vw;
-			overflow: hidden;
-		}
-		.table-div{
-			padding:0 !important;
-		}
-		.dataTables_wrapper {
-			height:100%;
-			overflow-y: scroll;
-			background: white;
-			box-shadow: 0 0 4px 1px rgba(0,0,0,0.1);
-		}
-
-    }
 </style>
 </head>
 <body>
+	
+<div class="wrapperContainer">
+  <?php include 'headerNew.php'; ?>
 	<?php
 		$permissions = json_decode($permissions);
 		function dateToDay($date){
@@ -302,80 +56,78 @@ table.dataTable{
 			return date("M d, Y",mktime(0,0,0,intval($date[1]),intval($date[2]),intval($date[0])));
 		}
 	?>
-<div class="containers">
-	<div class="d-flex">
-		<span class="m-3" style="font-size: 1.75rem;font-weight: bold">Payrolls</span>
-		<span class="btn sort-by m-3 ">
-			<?php if ((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN : "N") == "Y") { ?> 
-<!-- 			<div class="filter-icon row">
-				<span class="col">Sort&nbsp;by</span>
-				<span class="col"><img src="../assets/images/filter-icon.png" height="20px"></span>
-			</div> -->
-		<span class="select_css">
-				<select class="center-list " id="center-list">
-						<?php $centers = json_decode($centers);
-						
-						for($i=0;$i<count($centers->centers);$i++){
-							if($centers->centers[$i]->centerid == $id){
-					?>
-					<option selected href="javascript:void(0)" 
-									class="center-class" 
-									id="<?php echo $centers->centers[$i]->centerid ?>" 
-									value="<?php echo $centers->centers[$i]->centerid; ?>" >
-										<?php echo $centers->centers[$i]->name?></option>
-				<?php }
-				else{ ?>
-					<option href="javascript:void(0)" 
-									class="center-class" 
-									id="<?php echo $centers->centers[$i]->centerid ?>" 
-									value="<?php echo $centers->centers[$i]->centerid; ?>">
-									<?php echo $centers->centers[$i]->name?>
-					</option>
-		<?php		}
-			} ?>
-				</select>	
-			</span>
-		</span>
-		<?php } ?>
-	</div>
-	<div class="table-div">
-		<table class="table">
-			<thead>
-				<th>S.No</th>
-				<th>Payroll Name</th>
-				<th>Start Date</th>
-				<th>End Date</th>
-				<th>Status</th>
-			</thead>
+		<div class="containers scrollY">
+			<div class="payrollContainer">
+				<div class="d-flex pageHead heading-bar">
+					<span class="events_title" >Payrolls</span>
+					<span class="sort-by rightHeader">
+						<?php if ((isset($permissions->permissions) ? $permissions->permissions->editPayrollYN : "N") == "Y") { ?> 
+						<!--<div class="filter-icon row">
+							<span class="col">Sort&nbsp;by</span>
+							<span class="col"><img src="../assets/images/filter-icon.png" height="20px"></span>
+						</div> -->
+		
+							<select class="center-list " id="center-list">
+								<?php $centers = json_decode($centers);
+								
+								for($i=0;$i<count($centers->centers);$i++){
+									if($centers->centers[$i]->centerid == $id){ ?>
+										<option selected href="javascript:void(0)" 
+											class="center-class" 
+											id="<?php echo $centers->centers[$i]->centerid ?>" 
+											value="<?php echo $centers->centers[$i]->centerid; ?>" >
+												<?php echo $centers->centers[$i]->name?></option>
+									<?php } else{ ?>
+										<option href="javascript:void(0)" 
+											class="center-class" 
+											id="<?php echo $centers->centers[$i]->centerid ?>" 
+											value="<?php echo $centers->centers[$i]->centerid; ?>">
+											<?php echo $centers->centers[$i]->name?>
+										</option>
+									<?php	}
+								} ?>
+							</select>
+						<?php } ?>
+					</span>
+				</div>
+				<div class="table-div pageTableDiv">
+					<table class="table">
+						<thead>
+							<th>S.No</th>
+							<th>Payroll Name</th>
+							<th>Start Date</th>
+							<th>End Date</th>
+							<th>Status</th>
+						</thead>
 			
-			<tbody id="tbody">
+						<tbody id="tbody">
 
-				<?php 
-				$centerId; 
-				if(isset($payrolls)){
-					$payroll = json_decode($payrolls);
-					$payrollCount = 1;
-					for($i=0;$i<count($payroll->timesheets);$i++){
-					?>
-					<?php if( $payroll->timesheets[$i]->status == 'Published'){ ?>
-					<tr id="<?php echo $payroll->timesheets[$i]->id?>">
-						<td><?php echo $payrollCount;$payrollCount++; ?></td>
-						<td><?php echo 'Payroll | '.dateToDay($payroll->timesheets[$i]->startDate).'-'.dateToDay($payroll->timesheets[$i]->endDate) ?></td>
-						<td><?php echo dateToDayAndYear($payroll->timesheets[$i]->startDate) ?></td>
-						<td><?php echo dateToDayAndYear($payroll->timesheets[$i]->endDate) ?></td>
-						<td><?php echo $payroll->timesheets[$i]->payrollStatus ?></td>
-						</tr>
-					<?php }
-					} 
-				} ?>
-			</tbody>
+							<?php 
+							$centerId; 
+							if(isset($payrolls)){
+								$payroll = json_decode($payrolls);
+								$payrollCount = 1;
+								for($i=0;$i<count($payroll->timesheets);$i++){
+								?>
+								<?php if( $payroll->timesheets[$i]->status == 'Published'){ ?>
+								<tr id="<?php echo $payroll->timesheets[$i]->id?>">
+									<td><?php echo $payrollCount;$payrollCount++; ?></td>
+									<td><?php echo 'Payroll | '.dateToDay($payroll->timesheets[$i]->startDate).'-'.dateToDay($payroll->timesheets[$i]->endDate) ?></td>
+									<td><?php echo dateToDayAndYear($payroll->timesheets[$i]->startDate) ?></td>
+									<td><?php echo dateToDayAndYear($payroll->timesheets[$i]->endDate) ?></td>
+									<td class="text-center"><?php echo $payroll->timesheets[$i]->payrollStatus ?></td>
+									</tr>
+								<?php }
+								} 
+							} ?>
+						</tbody>
 		
-		</table>
+					</table>
 		
-	</div>
-	<div>
+				</div>
+			<div>
 	
-</div>
+		</div>
 </div>
 
 <div id="myModal" class="modal">

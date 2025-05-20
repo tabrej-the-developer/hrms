@@ -51,6 +51,40 @@ class LeaveModel extends CI_Model {
 		return $query->row();
 	}
 
+	//Get Time in Lieu LeaveType
+	public function getLeaveTypeByName($centerid,$superadminId){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM leaves WHERE name='Time in Lieu' and centerid='$centerid';");
+		if($query->row() == null){
+			//insert
+			$leaveId = uniqid()."-".uniqid()."-".uniqid()."-".uniqid()."-".uniqid();
+			$this->db->query("INSERT INTO leaves VALUES(0,$leaveId,'Time in Lieu','Y','TL','Y','Y',now(),'$superadminId',$centerid,'Y','Y')");
+			$selectquery = $this->db->query("SELECT * FROM leaves WHERE leaveid='$leaveId'");
+			return $selectquery->row();
+		}else{
+			return $query->row();
+		}
+	}
+	//Check each employee having leave type time in lieu or not
+	public function getTLTypeById($employeeId,$leaveId){
+		$query = $this->db->query("SELECT * FROM leavebalance where userid = '$employeeId' and leaveId = '$leaveId';");
+		if($query->row() == null){
+			//insert leavebalance to the user
+			$this->db->query("INSERT INTO leavebalance VALUES(0,'$employeeId','$leaveId',0)");
+		}
+	}
+
+	//Update Time in Lieu Balance
+	public function updateEmpTLLeaveBalance($TLleavebalance,$userid,$centerid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM leaves WHERE name='Time in Lieu' and centerid='$centerid';");
+		$result = $query->row();
+		if($result !== null){
+			//Check whether the employee having TL leave type
+			$this->db->query("UPDATE leavebalance set leaveBalance = '$TLleavebalance' where userid = '$userid' and leaveId = '$result->leaveid';");
+		}
+	}
+
 	public function getLeaveTypeBySuperadmin($userid){
 		$this->load->database();
 		$query = $this->db->query("SELECT * FROM leaves WHERE created_by = '$userid'");

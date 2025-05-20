@@ -53,7 +53,7 @@
             Follow us on : <a class="facebook" href="#"><span></span></a> <a class="twitter" href="#"><span></span></a>
         </div>
             <h1 data-aos="fade-up">Let us take care of your HRMS101</h1>
-            <h6 data-aos="fade-up">With HRMS101, managing the administrative roles in your organization becomes easier. We persevere to make your company’s HR services simple to handle. Contact us today for trial, it’s your key to success!!!</h6>
+            <h6 data-aos="fade-up">With HRMS101 management of your administrative roles in an organization becomes easy to manage. Our team makes your company’s HR services tech-friendly. It’s your key to success!</h6>
             <a class="button getStarted" data-aos="fade-up" href="#">Get Started Now</a>
             <img class="laptop" data-aos="zoom-in" src="<?php echo base_url(); ?>assets/images/landing/laptop.png">
         </div>

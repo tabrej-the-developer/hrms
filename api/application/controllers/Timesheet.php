@@ -83,7 +83,6 @@ $headers = array_change_key_case($headers);
 					}
 				}
 				else{
-
 					$data['Status'] = 'ERROR';
 					$data['Message'] = "You are not allowed";
 				}
@@ -103,13 +102,18 @@ $headers = array_change_key_case($headers);
 		$this->load->model('xeroModel');
 		$this->load->model('timesheetModel');
 		$centerid = ($this->timesheetModel->getTimesheet($timesheetId))->centerid;
+		// echo $centerid;
+		// die();
 		$xeroTokens = $this->xeroModel->getXeroToken($centerid);
 		// print_r($xeroTokens);
+		// die();
 		if($xeroTokens != null){
 			$access_token = $xeroTokens->access_token;
 			$tenant_id = $xeroTokens->tenant_id;
 			$refresh_token = $xeroTokens->refresh_token;
 			$val = $this->getAllPayruns($access_token,$tenant_id);
+			// print_r($val);
+			// die();
 			if($val != NULL){
 				$val = json_decode($val);
 				if($val->Status == 401){
@@ -123,13 +127,19 @@ $headers = array_change_key_case($headers);
 					$val = $this->getAllPayruns($access_token,$tenant_id);
 					$val = json_decode($val);
 				}
+				// echo $val->Status;
 				if($val->Status == "OK"){
 					// print_r();
-					if(count($val->PayRuns) > 0){
-						$startDate = $val->PayRuns[0]->PaymentDate;
-					$this->postTimesheetToXero($timesheetId,$userid,$centerid,$startDate);
+					// echo count($val->PayRuns);
+					// if(count($val->PayRuns) > 0){
+					// 	$startDate = $val->PayRuns[0]->PaymentDate;
+					// 	$this->postTimesheetToXero($timesheetId,$userid,$centerid,$startDate);
+					// 	http_response_code(200);
+					// }else{
+					// 	//We need to postPayrun, then only take
+					// }
+					$this->postTimesheetToXero($timesheetId,$userid,$centerid);
 					http_response_code(200);
-					}
 				}else{
 					http_response_code(401);
 				}
@@ -154,7 +164,63 @@ $headers = array_change_key_case($headers);
 		return $server_output;
 	}
 
-	function postTimesheetToXero($timesheetId,$userid,$centerid,$stDate){
+	public function  getPayrollCalendars($timesheetId){
+		$this->load->model('xeroModel');
+		$this->load->model('timesheetModel');
+		$centerid = ($this->timesheetModel->getTimesheet($timesheetId))->centerid;
+		$xeroTokens = $this->xeroModel->getXeroToken($centerid);
+		// print_r($xeroTokens);
+		if($xeroTokens != null){
+			$access_token = $xeroTokens->access_token;
+			$tenant_id = $xeroTokens->tenant_id;
+			$refresh_token = $xeroTokens->refresh_token;
+			$val = $this->getAllPayrollCalendars($access_token,$tenant_id);
+			if($val != NULL){
+				$val = json_decode($val);
+				if($val->Status == 401){
+					$refresh = $this->refreshXeroToken($refresh_token);
+					$refresh = json_decode($refresh);
+					// var_dump($refresh);
+					$access_token = $refresh->access_token;
+					$expires_in = $refresh->expires_in;
+					$refresh_token = $refresh->refresh_token;
+					$this->xeroModel->insertNewToken($access_token,$refresh_token,$tenant_id,$expires_in,$centerid);
+					$val = $this->getAllPayrollCalendars($access_token,$tenant_id);
+					$val = json_decode($val);
+				}
+				if($val->Status == "OK"){
+					// print_r();
+					if(count($val->PayrollCalendars) > 0){
+						return $val->PayrollCalendars;
+						http_response_code(200);
+					}
+				}else{
+					http_response_code(401);
+				}
+			}
+		}
+	}
+
+	//Get All Payroll Calendars
+	function getAllPayrollCalendars($access_token,$tenant_id){
+		$url = "https://api.xero.com/payroll.xro/1.0/PayrollCalendars";
+		$ch =  curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER,  array(
+			'Content-Type:application/json',
+			'Accept:application/json',
+			'Authorization:Bearer '.$access_token,
+			'Xero-tenant-id:'.$tenant_id
+		));
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		$server_output = curl_exec($ch);
+		// var_dump($server_output);
+		return $server_output;
+	}
+
+	function postTimesheetToXero($timesheetId,$userid,$centerid){
+	// function postTimesheetToXero($timesheetId,$userid,$centerid,$stDate){
 		// $headers = $this->input->request_headers();
 // $headers = array_change_key_case($headers);
 		// if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
@@ -171,27 +237,60 @@ $headers = array_change_key_case($headers);
 				// var_dump($userDetails);
 				$usersList = $this->timesheetModel->getUsersByTimesheetId($timesheetId);
 				// var_dump($usersList);
-				// $startDate = new DateTime($timesheet->startDate);
-				// $endDate = new DateTime($timesheet->endDate);
+				$startDate = new DateTime($timesheet->startDate,new DateTimeZone('GMT'));
+				$endDate = new DateTime($timesheet->endDate,new DateTimeZone('GMT'));
 				// $startDate = "/Date(1606521600000+0000)/";
 				// $endDate = "/Date(1605398400000+0000)/";
 
-				// $startDate = "/Date(".$startDate->format('Uv')."+0000)/";
-				// $endDate = "/Date(".$endDate->format('Uv')."+0000)/";
+				$startDate = "/Date(".$startDate->format('Uv')."+0000)/";
+				$endDate = "/Date(".$endDate->format('Uv')."+0000)/";
 
-				preg_match( '/([\d]{13})/', $stDate, $matches );
+				// echo $startDate."Rohit".$endDate;
+				// die();
+
+				// preg_match('/([\d]{13})/', $stDate, $matches);
 				// echo $matches[0];
 				// echo intval($matches[0])+1123200000;
-				$startDate = $stDate;
-				$endDate = "/Date(".(intval($matches[0])+1123200000)."+0000)/";
+
+				//get all calendars
+				$pcs = $this->getPayrollCalendars($timesheetId);
+				// print_r($pcs);
+				// die();
+
+				// $startDate = $stDate;
+				// $endDate = "/Date(".(intval($matches[0])+1123200000)."+0000)/";
+				// echo $startDate."<br>".$endDate;
 				$status = 'APPROVED';
 				$Timesheets['Timesheets'] = [];
 				// var_dump($usersList);
 				foreach ($usersList as $user) {
+					//get start date and end date based on caledar id
+					// $startDate = "";
+					// $endDate = "";
 					// var_dump($user);
 					$payrollTypes = $this->timesheetModel->getPayrollShiftTypesByUser($timesheetId,$user->userid);
 					$employeeDetails = $this->timesheetModel->getEmployeeDetails($user->userid);
+					// echo $user->userid;
+					// die();
 					// var_dump($employeeDetails);
+					// die();
+					// foreach($pcs as $pi=>$pv){
+					// 	if($pv->PayrollCalendarID == $employeeDetails->payrollCalendarId){
+					// 		$startDate = $pv->StartDate;
+					// 		// $endDate = $pv->PaymentDate;
+					// 		// echo $pv->PaymentDate;
+					// 		preg_match('/([\d]{13})/', $pv->PaymentDate, $matches);
+					// 		$unixEndDate = date('Y-m-d', $matches[0]/1000);
+					// 		$onedayminusDate = date('Y-m-d',(strtotime('-1 day',strtotime($unixEndDate))));
+					// 		//todo gmt date
+					// 		$uniqEndDate = new DateTime($onedayminusDate);
+					// 		$endDate = "/Date(".$uniqEndDate->format('Uv')."+0000)/";
+					// 	}
+					// }
+					// $startDate = "/Date(1632873600000+0000)/";
+					// $endDate =   "/Date(1633996800000+0000)/";
+					// echo $startDate."ROHIT".$endDate;
+					// die();
 					$sheet = [];
 					$sheet['StartDate'] = $startDate;
 					$sheet['EndDate'] = $endDate;
@@ -206,7 +305,7 @@ $headers = array_change_key_case($headers);
 					// $lines['EarningsRateID'] = isset($employeeDetails->ordinaryEarningEarningRateId) ? $employeeDetails->ordinaryEarningEarningRateId : null;
 						$_payroll = $this->timesheetModel->getEarningsRateFromId($payrollType->payrollType);
 						$lines['EarningsRateID'] = $_payroll->earningRateId;
-					$lines['NumberOfUnits'] = [];
+						$lines['NumberOfUnits'] = [];
 						while ($currentDay < 14) {
 							$unit = 0;
 							$currentDate = date( "Y-m-d", strtotime( "$timesheet->startDate +$currentDay day" ));
@@ -215,12 +314,12 @@ $headers = array_change_key_case($headers);
 								// var_dump($payrollShifts);
 								foreach ($payrollShifts as $payrollShift) {
 									$unit = (intval($payrollShift->clockedOutTime) - intval($payrollShift->clockedInTime))/100;
-								array_push($lines['NumberOfUnits'],$unit);
+									array_push($lines['NumberOfUnits'],$unit);
 								}
 							}
-								else{
-									array_push($lines['NumberOfUnits'],0);
-								}
+							else{
+								array_push($lines['NumberOfUnits'],0);
+							}
 							$currentDay++;
 						}
 						// var_dump($lines);
@@ -229,19 +328,22 @@ $headers = array_change_key_case($headers);
 						// var_dump($sheet);
 						array_push($Timesheets['Timesheets'],$sheet);
 					}
-					// print_r($Timesheets['Timesheets']);
+					// print_r($Timesheets);
+					// die();
 				$this->load->model('payrollModel');
 				$this->load->model('xeroModel');
 				$xeroTokens = $this->xeroModel->getXeroToken($centerid);
 				// var_dump($xeroTokens);
+				// die();
 					if($xeroTokens != null){
 						$access_token = $xeroTokens->access_token;
 						$tenant_id = $xeroTokens->tenant_id;
 						$refresh_token = $xeroTokens->refresh_token;
-					$val = $this->postTimesheetDataToXero($Timesheets,$access_token,$tenant_id);
-					$val = json_decode($val);
+						$val = $this->postTimesheetDataToXero($Timesheets,$access_token,$tenant_id);
+						$val = json_decode($val);
+						// var_dump($val);
+						// die();
 	 					if($val != NULL){
-	 						 var_dump($val);
 	 						if($val->Status == 401){
 	 							$refresh = $this->refreshXeroToken($refresh_token);
 	 							$refresh = json_decode($refresh);
@@ -252,8 +354,12 @@ $headers = array_change_key_case($headers);
 	 							$val = $this->postTimesheetDataToXero($Timesheets,$access_token,$tenant_id);
 								$val = json_decode($val);
 	 						}
+							//  else if($val->Status == "OK"){
+							// 	$this->postPayRun($timesheetId,$userid,$centerid);
+							//  }
 	 						 				// var_dump($val);
 	 						if($val->Status == "OK"){
+								//  echo "Rohit";
 								// print_r();
 								$this->postPayRun($timesheetId,$userid,$centerid);
 							}
@@ -303,7 +409,7 @@ $headers = array_change_key_case($headers);
 			$refresh_token = $xeroTokens->refresh_token;
 			// var_dump($payrollCalendar);
 			$createPayrun = $this->createPayrun($payrollCalendar,$access_token,$tenant_id);
-		  var_dump($createPayrun);
+		  	// var_dump($createPayrun);
 			$createPayrun = json_decode($createPayrun);
 			if($createPayrun != NULL){
 				if($createPayrun->Status == 401){
@@ -356,7 +462,7 @@ $headers = array_change_key_case($headers);
 										$pay['NetPay'] = $getPayruns->PayRuns[0]->NetPay;
 										preg_match( '/([\d]{10})/', $getPayruns->PayRuns[0]->PayRunPeriodStartDate, $matches );
 										$pay['StartDate']  = date( 'Y-m-d', $matches[0] );
-										echo $pay['StartDate'];
+										// echo $pay['StartDate'];
 										// $pay['StartDate'] = $getPayruns->PayRuns->PayRunPeriodStartDate;
 
 					 					foreach($getPayruns->PayRuns[0]->Payslips as $payslip){
@@ -582,7 +688,8 @@ function createPayrun($payrollCalendarId,$access_token,$tenant_id){
 							$var['empId'] = $userDetails->id;
 							$var['empName'] = $userDetails->name;
 							$var['level'] = $userDetails->level;
-							$var['hourlyRate'] = $this->rostersModel->getHourlyRate($var['level']);
+							$var['bonusRate'] = $userDetails->bonusRate;
+							$var['hourlyRate'] = $this->rostersModel->getHourlyRate($var['level']) + $userDetails->bonusRate;
 							$var['rosterShift'] = [];
 							$leaveApp = $this->leaveModel->getLeaveApplicationForUser($userDetails->id,$currentDate);
 							if($leaveApp != null){
@@ -734,7 +841,7 @@ function createPayrun($payrollCalendarId,$access_token,$tenant_id){
 
 	public function getRosterShifts($userid,$empId){
 		$headers = $this->input->request_headers();
-$headers = array_change_key_case($headers);
+		$headers = array_change_key_case($headers);
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
@@ -756,7 +863,7 @@ $headers = array_change_key_case($headers);
 
 	public function publishTimesheet($timesheetid,$userid){
 		$headers = $this->input->request_headers();
-$headers = array_change_key_case($headers);
+		$headers = array_change_key_case($headers);
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
@@ -829,31 +936,30 @@ $headers = array_change_key_case($headers);
 
 	public function createWeekPayrollEntry(){
 		$headers = $this->input->request_headers();
-		$headers = array_change_key_case($headers);
+$headers = array_change_key_case($headers);
 		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)){
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'],$headers['x-token']);
 			$json = json_decode(file_get_contents('php://input'));
 			if($json!= null && $res != null && $res->userid == $json->userid){
+				$centerId = $json->centerId;
 				$empId = $json->empId;
 				$userid = $json->userid;
 				$timesheetid = $json->timesheetid;
 				$visits = $json->visits;
+				$startDate = $json->startDate;
 				$this->load->model('timesheetModel');
-				$currDate = "";
+				//$this->timesheetModel->deletePayrollEntry($timesheetid,$empId,$startDate);
+				$totalTLbalance = 0;
 				foreach ($visits as $v) {
-					if($currDate == $v->shiftdate){
-						if(isset($v->check) && $v->check == "true"){
-							$this->timesheetModel->createPayrollShiftEntry($timesheetid,$empId,$v->shiftdate,$v->clockedInTime,$v->clockedOutTime,$v->startTime,$v->endTime,$userid,$v->payType,$v->visitid);
-						}
-					}else{
-						$currDate = $v->shiftdate;
-						$this->timesheetModel->deletePayrollEntry($timesheetid,$empId,$v->shiftdate);
-						if(isset($v->check) && $v->check == "true"){
-							$this->timesheetModel->createPayrollShiftEntry($timesheetid,$empId,$v->shiftdate,$v->clockedInTime,$v->clockedOutTime,$v->startTime,$v->endTime,$userid,$v->payType,$v->visitid);
-						}
+					$this->timesheetModel->createPayrollShiftEntry($timesheetid,$empId,$v->shiftdate,$v->clockedInTime,$v->clockedOutTime,$v->startTime,$v->endTime,$userid,$v->payType,$v->visitid,$v->status);
+					//If status is Added To TL, then update the employee leavebalance
+					if($v->status == "Added To TL"){
+						$totalTLbalance += $v->tlhours;
 					}
 				}
+				$this->load->model('LeaveModel');
+				$this->LeaveModel->updateEmpTLLeaveBalance($totalTLbalance,$empId,$centerId);
 				$data['Status'] = "SUCCESS";
 				http_response_code(200);
 				echo json_encode($data);

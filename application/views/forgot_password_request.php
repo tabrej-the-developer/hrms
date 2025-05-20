@@ -5,128 +5,49 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <title>Forgot Password</title> 
+  <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+      <link href="<?php echo base_url('assets/css/bootstrap.min.css');?>" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+
+      <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/layout.css?version='.VERSION);?>">
+ <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/container.css?version='.VERSION);?>">
+ 
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-<style type="text/css">
-    *{
-font-family: 'Open Sans', sans-serif;
-    }
-body{
-	background-color:#8D91AA;
-}
-.login-container{
-    margin-top: 10%;
-}
-.login-form-1{
-  border-radius: 1rem;
-  padding: 3% 5%;
-	background-color:#fff;
-}
-  .row{
-    margin-right: 0 !important;
-    margin-left:  0 !important;
-  }
-h3{
-    font-size: 1.25rem;
-    font-weight: 700;
-    color:  #171D4B !important;
-    padding: 3%;
-}
-.login-form-1 h3{
-    text-align: center;
-    color: #8D91AA;
-}
-.login-form-2{
-    padding: 3%;
-    background: #fff;
-	border-right: 1px solid #D2D2D2;
-}
 
-.login-container form{
-    padding: 7%;
-}
-.btnSubmit
-{
-  font-weight: 700;
-    font-size: 0.9rem;
-    width: 100%;
-    padding: 1.5%;
-    border: none;
-    cursor: pointer;
-	background-color: #A4D9D6;
-	color: #171D4B;
-}
-
-
-.login-form-1 small{
-    color: rgba(23, 31, 75,0.7);
-    font-weight: 700;
-    text-decoration: none;
-	font-size: 0.9rem;
-	text-align:center
-}
-.form-control:focus {
-   
-    box-shadow: none;
-}
-.btnSubmit{
-    border-radius: 20px;
-    padding-left: 2rem;
-}
-input[type="text"],input[type=email],select{
-    background: #f3f4f7;
-    border-radius: 5px;
-    padding: 5px;
-    padding-left: 1rem;
-    border: 1px solid #D2D0D0 !important;
-    border-radius: 20px;
-    line-height: 2rem;
-}
-input.form-control::placeholder{
-  text-align: center;
-}
-.back_to_sign_in a{
-  font-weight: 700;
-  font-size: 0.8rem;
-  color: #171D4B !important;
-}
-.back_to_sign_in{
-    display: flex;
-    justify-content: flex-start;
-        position: absolute;
-    bottom: 1rem;
-    left: 1rem;
-}
-</style>
 </head>
 <body>
-  <div class="container login-container">
-    <div class="row d-flex justify-content-center">
-      <div class="col-md-6 login-form-1 text-center">
+  <div class="login-container">
+    <div class="forgotPassInner">
+      <div class="col-md-12 login-form-1 text-center">
         <h3>Did you forget your password?</h3>
-				<small>Enter your email address you're using for your account below <br>and we will send you a password reset link.</small>
+				<small>Enter your email address you're using for your account below and we will send you a password reset link.</small>
         <form method="POST" action="<?php echo base_url().'Welcome/forgotPasswordRequest';?>"> 
-          <div class="form-group">
-            <input type="email" class="form-control" placeholder="Enter You Email" value="" name="email" required />
-          </div>
-					<div class="form-group">
-            <button type="submit" class="btnSubmit" value="Request Reset Link">
-            <i>
-              <img src="<?php echo base_url('assets/images/icons/link.png'); ?>" style="max-height:1rem;margin-right:10px">
-            </i>Request Reset Link</button>
-          </div>
-          <div class="back_to_sign_in">
-            <a href="<?php echo site_url('welcome/login') ?>" class="ForgetPwd">
-              <i>
-                <img src="<?php echo base_url('assets/images/icons/back.png'); ?>" style="max-height:1rem;margin-right:10px">
-              </i>Back to Sign in</a>
-          </div>
+
+        <div class="form-floating mb-1">
+            <input id="floatingInput" type="email" class="form-control" placeholder="Enter You Email" value="" name="email" required />
+          <label for="floatingInput">Email</label>
+        </div> 
+          <span class="error"><?php print_r(isset($message) ? $message : ""); ?></span>
+        <div class="form-group submit-block">
+          <button type="submit" class="btnSubmit" value="Request Reset Link">
+            Request Reset Link
+          </button>
+        </div>
+        <div class="forgotPass">
+          <a href="<?php echo site_url('welcome/login') ?>" class="ForgetPwd">
+            Back to Sign in</a>
+        </div>
         </form>
-          <div style="margin-top:10px;margin-bottom:20px;"><?php print_r(isset($message) ? $message : ""); ?></div>
       </div>
     </div>
   </div>
+  
+ 
+<script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js');?>" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('assets/js/popper.min.js');?>" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('assets/js/bootstrap.min.js');?>" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
 </body>
 </html>

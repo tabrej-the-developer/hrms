@@ -4,12 +4,12 @@
   @page { size: landscape; }
 </style>
 <head>
-	<title></title>
-
-		<?php $this->load->view('header'); ?>
-
+<title>Roster</title>
+<link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('assets/favicon_io/apple-touch-icon.png') ?>">
+<link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/favicon_io/favicon-32x32.png') ?>">
+<link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/favicon_io/favicon-16x16.png') ?>">
+<link rel="manifest" href="<?= base_url('assets/favicon_io/site.webmanifest') ?>">
 <meta content="width=device-width, initial-scale=1" name="viewport" />
-	<title>Roster</title>
 <!--	
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
@@ -17,1085 +17,100 @@
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
   <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+  <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+  <link href="<?php echo base_url('assets/css/bootstrap.min.css');?>" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-<style type="text/css">
-	*{
-font-family: 'Open Sans', sans-serif;
-text-align:center;
-	}
-	body{
-		background:#f3f4f7;
-	}
-.containers{/*
-	width:95%;
-	*/
-	margin-left:20px;
-}
-			/* The Modal (background) */
-.modal {
-  display: none; 
-  position: fixed;
-    padding-top: 100px;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgb(0,0,0); 
-  background-color: rgba(0,0,0,0.4); 
-}
 
-/* Modal Content */
-.modal-content {
-  background-color: #fefefe;
-  margin: auto;
-  border: 1px solid #888;
-  width: 80%;
-}
-
-/* The Close Button */
-/*.close {
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
-}*/
-	.close{
-			float: none; 
-	    font-size: inherit; 
-	    font-weight: inherit; 
-	    line-height: inherit; 
-	    color: inherit; 
-	    text-shadow: inherit; 
-	    opacity: inherit; 
-	    padding: 0; 
-    	background-color: transparent;
-	}
-	.close:hover{
-		background:#9E9E9E;
-	}
-input[type="text"],input[type=time],select,#casualEmp_date{
-	background: #ebebeb;
-	border-radius: 5px;
-    padding: 5px;
-    border: 1px solid #D2D0D0 !important;
-    border-radius: 20px;
-    padding-left: 50px !important;
-}
-
-table,tr,td{
-	border:1px solid rgba(0,0,0,0.1)
-}
-.heading{
-	text-align: left;
-	font-weight:bold;
-	font-size:2rem;
-	display: flex;
-}
-.roster-dates{
-	text-align:left;
-	/*background-color: #e3e9f5;*/
-	background-color:white;
-	/*color:#afb7cd;*/
-	color:#171D4B;
-	display: flex;
-	justify-content: center;
-	padding-bottom:10px;
-	padding-top:10px;
-	font-weight:bolder;
-}
-.table-div{
-	background:white;
-	margin-bottom: 200px
-}
-.area-name{
-	background:#A4D9D6;
-	color:#171D4B;
-	padding:0.25rem 0;
-	font-weight: 700;
-}
-.day{
-	background:transparent;
-}
-.day-row{
-	background: #8D91AA;
-}
-.total-budget{
-	padding-top:10px;
-}
-.hourly{
-	font-size:12px;
-	text-align: left;
-}
-.hourly::before{
-	content:'$';
-}
-.hourly::after{
-	content:'/hr';
-}
-.title{
-	font-size:12px;
-	padding-left: 1rem
-	
-}
-.icon{
-	font-size:1rem;
-	display:flex;
-	justify-content:center;
-	align-self: center;
-	border-radius: 50%;
-	padding:0.25rem 0;
-	color:white;
-	height: 2rem;
-	width: 2rem;
-}
-.empname{
-	font-size:15px;
-	display:flex;
-	justify-content:left;
-	padding: 0 1rem;
-	font-weight: 600;
-	color: #707070;
-}
-.modal-content{
-max-width:30vw;
-	}
-	.modal-content .titl{
-	width: 100%;
-    position: relative;
-    top: 0;
-    left: 0;
-    margin: 0;
-    padding: 0;
-    background:#8D91AA;
-    cursor: move;
-	}
-	.ui-timepicker-container{
-		z-index:999;
-	}
-	.buttons{
-		padding:10px 20px;
-		margin:2px;
-	}
-	.button,.changeRolePriority_save,.changeRolePriority_close{
-	  border: none;
-	  color: rgb(23, 29, 75);
-	  text-align: center;
-	  text-decoration: none;
-	  display: inline-block;
-	  font-weight: 700;
-	  margin: 2px;
-	  min-width:6rem;
-      border-radius: 20px;
-      padding: 8px;
-      background: rgb(164, 217, 214);
-      display: flex !important;
-}
-	.buttonn{
-		background-color: #9E9E9E;
-	  border: none;
-	  color: white;
-	  padding: 10px 10px;
-	  text-align: center;
-	  text-decoration: none;
-	  display: inline-block;
-	  margin: 2px;
-       float:none; 
-     font-size: 1rem; 
-     font-weight: bolder; 
-     line-height: inherit; 
-     text-shadow: none; 
-     opacity: 1;
-}
-.buttonn:hover{
-	background-color: #9E9E9E;
-	color: white;
-}
-.shift-edit{
-	padding:10px;
-}
-.cell-back-1{
-	margin:0 10px 0 10px;
-	font-size: 0.85rem;
-	padding:0.2rem;
-}
-.cell-boxes{
-	padding:0.5rem 0;
-}
-.name-role{
-	padding:0;
-	margin:0;
-}
-.left-most{
-	border-top:1px solid rgba(0,0,0,0.3);
-	border-bottom:1px solid rgba(0,0,0,0.3);
-}
-.day{
-	padding:10px;
-	color: #F3F4F7;
-}
-.icon-parent{
-	display: flex;
-	align-content: center;
-	justify-content: center
-	padding:0;
-}
-.box-name-space{
-	width:100%;
-}
-.box-name{
-	display: flex;
-    justify-content: center;
-    font-size:1.5rem;
-    color:#E7E7E7;
-}
-.box-space{
-	display: flex;
-    justify-content: center;
-    color:white;
-}
-.total-name{
-	display: flex;
-    justify-content: center;
-    font-size:30px;
-}
-.total-space{
-	display: flex;
-    justify-content: center;
-}
-#roster-form{
-	position: relative;
-}
-.total-budget-row {
-		background:#FFFCAD;
-		margin:10px;
-		color:#434040;
-}
-.total-budget .total-budget-row td{
-	background:#FFF1AE;
-	padding:10px;
-	font-weight: bolder;
-}
-#shift-submit,#user-submit{
-	background-color: #9E9E9E;
-  border: none;
-  color: white;
-  padding: 10px 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 2px
-}
-.Added{
-	background:#F3F4F7;
-	color: rgba(112, 112, 112, 1) ;
-	border-radius: 3px;
-	font-weight: 500;
-}
-/* rgb(112, 112, 112) */
-.Published{
-	background:rgba(219, 165, 245, 0.4);
-	color:rgba(112, 112, 112, 1) !important;
-	border-radius: 3px;
-	font-weight: 500;
-}
-/*rgba(219, 165, 245, 1)*/
-.Accepted{
-	background: rgba(175, 225, 159,0.4);
-	color:rgba(112, 112, 112, 1) !important;
-	border-radius: 3px;
-	font-weight: 500;
-}
-/* rgb(175, 225, 159) */
-.Rejected{
-	background: rgba(226, 90, 83, 0.4) ;
-	color:rgba(112, 112, 112, 1);
-	font-weight: 500;
-}
-.Added .cell-back-1::before{
-	border-left:0.25rem solid rgba(112, 112, 112,0.8);
-	content: ' ';
-	position: absolute;
-	height: 100%;
-	left: 0;
-	top: 0;	
-}
-/* rgb(112, 112, 112) */
-.Published .cell-back-1::before{
-	border-left:0.25rem solid rgba(219, 165, 245, 1);
-	content: ' ';
-	position: absolute;
-	height: 100%;
-	left: 0;
-	top: 0;	
-}
-/*rgba(219, 165, 245, 1)*/
-.Accepted .cell-back-1::before{
-	border-left: 0.25rem solid rgba(175, 225, 159,1);
-	content: ' ';
-	position: absolute;
-	height: 100%;
-	left: 0;
-	top: 0;	
-}
-/* rgb(175, 225, 159) */
-.Rejected .cell-back-1::before{
-	border-left: 0.25rem solid rgba(226, 90, 83, 1) ;
-	content: ' ';
-	position: absolute;
-	height: 100%;
-	left: 0;
-	top: 0;	
-}
-/* rgba(226, 90, 83, 1) */
-.nav-link{
-	text-align:left;
-}
-td{
-	position: relative;
-}
-.leave{
-	background: rgba(253, 179, 93, 0.3);
-	color:#707070 !important;
-	content: 'On Leave';
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-.budget-table-parent{
-	position: fixed;
-	bottom: 0;
-  background: #f3f4f7;
-}
-
-
-.mask {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(255,255,255,0.1);
-  z-index: 50;
-  visibility: hidden;
-  opacity: 0;
-  transition: 0.7s;
-}
-.modal_priority {
-  position: fixed;
-  top: 30%;
-  left: 50%;
-  width: 400px;
-  min-height: 400px;
-  margin-left: -200px;
-  margin-top: -150px;
-  background: #fff;
-  z-index: 100;
-  visibility: hidden;
-  opacity: 0;
-  transition: 0.5s ease-out;
-  transform: translateY(45px);
-}
-.active,.actived {
-  visibility: visible !important;
-  opacity: 1;
-}
-.active + .modal_priority {
-  visibility: visible !important;
-  opacity: 1;
-  transform: translateY(0);
-}
-.actived + .modal_priorityed {
-  visibility: visible !important;
-  opacity: 1;
-  transform: translateY(0);
-}
-.priority_areas  tr td{
-	width: 300px;
-	cursor: move;
-}
-.priority_buttons{
-	position:relative;
-	bottom: 10px;
-	width:100%;
-	justify-content: center;
-	display: flex;
-	padding: 20px 0 0 0;
-}
-.priority_areas {
-	display: flex;
-    text-align: center;
-    justify-content: center;
-    width: 100%;
-    flex-wrap: wrap;
-}
-
-
-.masks {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(255,255,255,0.1);
-  z-index: 50;
-  visibility: hidden;
-  opacity: 0;
-  transition: 0.7s;
-}
-.modal_prioritys {
-  position: fixed;
-  top: 30%;
-  left: 50%;
-  width: 400px;
-  height: 400px;
-  margin-left: -200px;
-  margin-top: -150px;
-  background: #fff;
-  z-index: 100;
-  visibility: hidden;
-  opacity: 0;
-  transition: 0.5s ease-out;
-  transform: translateY(45px);
-}
-.actives {
-  visibility: visible;
-  opacity: 1;
-}
-.actives + .modal_prioritys {
-  visibility: visible !important;
-  opacity: 1;
-  transform: translateY(0);
-}
-.masked {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(255,255,255,0.1);
-  z-index: 50;
-  visibility: hidden;
-  opacity: 0;
-  transition: 0.7s;
-}
-.modal_priorityed {
-  position: fixed;
-  top: 30%;
-  left: 50%;
-  width: 400px;
-  min-height: 450px;
-  margin-left: -200px;
-  margin-top: -150px;
-  background: #fff;
-  z-index: 100;
-  visibility: hidden;
-  opacity: 0;
-  transition: 0.5s ease-out;
-  transform: translateY(45px);
-}
-.priority_areass  tr td{
-	width: 300px;
-	cursor: move;
-}
-.priority_buttonss{
-	position:absolute;
-	bottom: 10px;
-	width:100%;
-	justify-content: center;
-	display: flex;
-	padding: 20px 0 0 0;
-}
-.priority_areass {
-	/*display: flex;*/
-    /*position: absolute;*/
-    text-align: center;
-    /*justify-content: center;*/
-    width: 100%;
-    flex-wrap: wrap;
-}
-.priority{
-	font-size:1rem;
-	width:100%;
-}
-
-.print-button,.priority,.casualEmploye-span,.showBudget,.editPermission-span{
-	display: flex;
-	align-items: center;
-}
-.top_buttons{
-	position: absolute;
-	right:0;
-	display: flex;
-	align-items: center;
-	margin-top:0.25rem;
-	/*width: 100%;*/
-}
-.hide_budget{
-	font-weight: 700;
-	font-size: 1rem;
-	padding: 1px 6px;
-}
-#shift-submit{
-	  border: none;
-	  color: rgb(23, 29, 75);
-	  text-align: center;
-	  text-decoration: none;
-	  display: inline-block;
-	  font-weight: 700;
-	  margin: 2px;
-	  width:8rem;
-      border-radius: 20px;
-      padding: 4px 8px;
-      background: rgb(164, 217, 214) !important;
-      font-size: 1rem;
-}
-
-.buttonn,
-.button{
-	/*position: absolute;*/
-/*	right: 0;*/
-	  border: none !important;
-	  color: rgb(23, 29, 75) !important;
-	  text-align: center !important;
-	  text-decoration: none !important;
-	  display: inline-block;
-	  font-weight: 700 !important;
-	  margin: 2px !important;
-	  min-width:6rem !important;
-      border-radius: 20px !important;
-      padding: 4px 8px !important;
-      background: rgb(164, 217, 214) !important;
-      font-size: 1rem !important;
-      margin-right:5px !important;
-      justify-content: center !important;
-}
-.roster_shift_message{
-	font-style: italic;
-	font-size: 0.75rem
-}
-.checkbox_space{
-	display: flex;
-	justify-content: center;
-}
-.casualEmploye-btn,
-.priority-btn,
-.print-btn,
-.showBudget,
-.priority_saveed,
-.add_shift,
-.editPermission-btn,
-#modal_permission{
-	/*position: absolute;*/
-/*	right: 0;*/
-	  border: none !important;
-	  color: rgb(23, 29, 75) !important;
-	  text-align: center !important;
-	  text-decoration: none !important;
-	  display: inline-block;
-	  font-weight: 700 !important;
-	  margin: 2px !important;
-	  width:8rem !important;
-      border-radius: 20px !important;
-      padding: 4px 8px !important;
-      background: rgb(164, 217, 214) !important;
-      font-size: 1rem !important;
-}
-.buttons_group{
-	padding-top: 1rem;
-	padding-bottom: 1rem;
-	display: flex !important;
-	justify-content: center !important;
-}
-.showBudget input{
-	margin-right:0.3rem;
-}
-.casualEmployee-span,.showBudget{
-	font-size:1rem;
-	width:100%;
-}
-.casualEmploye-btn{
-	width:8rem;
-}
-
-.close_priority,.priority_save{
-	  border: none;
-	  color: rgb(23, 29, 75);
-	  text-align: center;
-	  text-decoration: none;
-	  display: inline-block;
-	  font-weight: 700;
-	  margin: 2px;
-	  width:8rem;
-      border-radius: 20px;
-      padding: 4px 8px;
-      background: rgb(164, 217, 214);
-      font-size: 1rem;
-}
-.close_priority{
-	margin-right: 15px;
-}
-.close_priorityed{
-	  border: none;
-	  color: rgb(23, 29, 75);
-	  text-align: center;
-	  text-decoration: none;
-	  display: inline-block;
-	  font-weight: 700;
-	  margin: 2px;
-	  width:8rem;
-      border-radius: 20px;
-      padding: 4px 8px;
-      background: rgb(164, 217, 214);
-      font-size: 1rem;
-      margin-right:15px !important;
-}
-
-
-.edit_priority{
-	font-size: 1rem
-}
-   .modal-logout {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        opacity: 0;
-        visibility: hidden;
-        transform: scale(1.1);
-        transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
-        text-align: center;
-    }
-    .modal-content-logout {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: white;
-        padding: 1rem 1.5rem;
-        width: 50%;
-        border-radius: 0.5rem;
-    }
-    .show-modal {
-        opacity: 1;
-        visibility: visible;
-        transform: scale(1.0);
-        transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
-    }
-
-    .add_shift_span{
-    	padding: 0.5rem 1rem;
-
-    }
-  .priority_heading{
-		position: relative;
-    width: 100%;
-    display: block;
-    padding: 0;
-    cursor: move
-    }
-    .priority_buttonsed{
-    	padding: 1rem;
-    }
-    .edit_priority,.edit_prioritys,.edit_priorityed,.changeRolePriority_heading{
-    	padding: 0.5rem 0;
-	    position: relative;
-	    display: block;
-	    background: #8D91AA;
-	    color: #E7E7E7 !important;
-	    font-weight: 100
-    }
-    label{
-    	text-align: left;
-    padding: 0 0 0 1rem;
-    }
-    .modal_label{
-    	padding-left:3rem !important;
-    	font-weight: 700;
-    	color: #171D4B;
-    }
-    .casualEmployee_label{
-    	display: flex;
-    	width:100%;
-    	padding:10px;
-    }
-    .casualEmployee_label label{
-    	width:35%;
-    }
-    .casualEmployee_label select{
-    	padding-left:50px;
-    }
-    .casualEmployee_label select{
-    	width : 100%
-    }
-    .proper_width_select{
-    	width: 60%;
-    }
-    .casualEmployee_label input{
-    	width:60%;
-    }
-    #message{
-    	min-height: 4rem;
-    	max-height: 4rem;
-    	border-radius: .5rem;
-    	border: 1px solid #D2D0D0;
-    	background: #E7E7E7;
-    }
-		.print-landscape,.print-portrait{
-    	display: none;
-  	  border: none;
-		  color: rgb(23, 29, 75);
-		  text-align: center;
-		  text-decoration: none;
-		  font-weight: 700;
-		  margin: 2px;
-		  width:8rem;
-      font-size: 1rem;
-      border-radius: 20px;
-      padding: 4px 8px;
-      background: rgb(164, 217, 214);
-    }
-    .print-hidden-btn{
-    	position: absolute;
-    	margin-top:2rem;
-    }
-		.print-button{
-			font-size:1rem;
-			width:100%;
-			display: flex;
-			flex-direction: column;
-		}
-    .print-button .print-landscape:hover,.print-button .print-portrait:hover{
-    	display: block;
-
-    }
-    .print-button:hover button{
-    	display: block;
-    }
-    .modal_heading{
-    	cursor: move;
-    }
-    .priority_headinged{
-    	cursor: move;
-    }
-
-/*  -----------------------------
-			CHANGE ROLE PRIORITY	MODAL
-		------------------------------ */
-.changeRolePriority_mask {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(255,255,255,0.1);
-  z-index: 50;
-  visibility: hidden;
-  opacity: 0;
-  transition: 0.7s;
-}
-.changeRolePriority_modal {
-  position: fixed;
-  top: 30%;
-  left: 50vw;
-  width: 30vw;
-  min-height: 400px;
-  margin-left: -15%;
-  margin-top: -150px;
-  background: #fff;
-  z-index: 100;
-  visibility: hidden;
-  opacity: 0;
-  transition: 0.5s ease-out;
-  transform: translateY(45px);
-}
-
-.active,.actived {
-  visibility: visible !important;
-  opacity: 1;
-}
-.active + .changeRolePriority_modal {
-  visibility: visible !important;
-  opacity: 1;
-  transform: translateY(0);
-}
-.actived + .changeRolePriority_modaled {
-  visibility: visible !important;
-  opacity: 1;
-  transform: translateY(0);
-}
-.changeRolePriority_body  tr td{
-	width: 30vw;
-	cursor: move;
-}
-.changeRolePriority_buttons{
-	position:absolute;
-	bottom: 2rem;
-	width:100%;
-	justify-content: center;
-	display: flex;
-	padding: 20px 0 0 0;
-}
-.changeRolePriority_body {
-	display: flex;
-    text-align: center;
-    justify-content: center;
-    width: 100%;
-    flex-wrap: wrap;
-    flex-direction: column;
-
-}
-/*  ------------------------------
-			CHANGE ROLE PRIORITY	MODAL
-		------------------------------ */
-
-  /* Edit Permission Modal */
-  .modal_title{
-    	padding: 0.5rem 0;
-	    position: relative;
-	    display: block;
-	    background: #8D91AA;
-	    color: #E7E7E7 !important;
-	    font-weight: 100
-    }
-    .modal_close{
-		  border: none;
-		  color: rgb(23, 29, 75);
-		  text-align: center;
-		  text-decoration: none;
-		  display: inline-block;
-		  font-weight: 700;
-		  margin: 2px;
-		  width:8rem;
-	    border-radius: 20px;
-	    padding: 4px 8px;
-	    background: rgb(164, 217, 214);
-	    font-size: 1rem;
-	    margin-right:5px !important;
-		}
-		.modal_outer {
-		  position: fixed;
-		  top: 0;
-		  left: 0;
-		  width: 100%;
-		  height: 100%;
-		  background: rgba(255,255,255,0.1);
-		  z-index: 50;
-		  visibility: hidden;
-		  opacity: 0;
-		  transition: 0.7s;
-			}
-		.modal_body {
-		  position: fixed;
-		  top: 30%;
-		  left: 50%;
-		  width: 400px;
-		  min-height: 450px;
-		  margin-left: -200px;
-		  margin-top: -150px;
-		  background: #fff;
-		  z-index: 100;
-		  visibility: hidden;
-		  opacity: 0;
-		  transition: 0.5s ease-out;
-		  transform: translateY(45px);
-		}
-		.modal_active{
-		  visibility: visible;
-		  opacity: 1;
-		}
-		.modal_active + .modal_body{
-		  visibility: visible !important;
-		  opacity: 1;
-		  transform: translateY(0);
-		}
-		.modal_buttons{
-			position: absolute;
-	    bottom: 10%;
-	    display: flex;
-	    justify-content: center;
-	    left: 15%;
-		}
-		.modal_main{
-			margin-top: 10%;
-			margin-bottom:10%;
-		}
-		#permissions_id{
-			margin: 10%;
-		}
-  /* Edit Permission Modal */
-.employee-id-class > .tokenize{
-	width:100%;
-}
-.tokens-container{
-	width:100%;
-	border-radius: 20px;
-	background: #ebebeb;
-  border: 1px solid #D2D0D0 !important;
-  margin-bottom: 0;
-}
- .tokenize > .tokens-container > .token-search > input{
-  border: none !important;
- }
-  .tokenize > .tokens-container > .token-search{
-    border: none !important;
-    width: 100% !important;
-  }
-  .roster_dropdown_parent{
-  	padding: 0 !important;
-  }
-  .roster_dropdown{
-  	width: 100% !important;
-  }
-  .select_css.no_drop_icon{
-  	width: 60%;
-  }
-@media print{
-	td:nth-child(7),th:nth-child(7){
-		display: none;
-	}
-	.budget-table-parent{
-		display: none
-	}
-	.column_budget{
-		display: none
-	}
-	.priority{
-		display: none
-	}
-	.print-btn{
-		display: none;
-	}
-	.hourly{
-	display:none;
-	}
-	.hourly::before{
-			display:none;
-	}
-
-	nav{
-		display: none;
-	}
-
-	.containers{
-		padding-left: 0 !important;
-		width: 100vw !important;
-	}
-	table{
-		width: 100% !important;
-	}
-	body{
-		margin: 0;
-	}
-		.top_buttons{
-			display: none;
-		}
-}
-@media only screen and (max-width: 1050px) {
-			.header-top{
-			max-width: 100vw !important;
-		}
-		.table-div{
-			padding: 0;
-			position: relative;
-			max-width: 100vw !important;
-   			overflow-x: scroll !important;
-		}
-				.title{
-			display: flex;
-   			 justify-content: center;
-		}
-		.modal-content{
-			min-width:100vw;
-		}
-		.containers {
-		     width: 100%;
-		    margin: 0px;
-		}
-
-		.name-space{
-			display: block
-		}
-		.icon-parent{
-			max-width:100%;
-			justify-content: center
-		}
-
-}
-</style>
-
-</head>
-<body>
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/tokenize2.css">
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tokenize2.js"></script>
+
+
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/layout.css?version='.VERSION);?>">
+ <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/container.css?version='.VERSION);?>">
+
+  <script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js');?>" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('assets/js/popper.min.js');?>" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('assets/js/bootstrap.min.js');?>" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+<style>
+.navbar-nav .nav-item-header:nth-of-type(2) {
+    background: var(--blue2) !important;
+    position: relative;
+}
+.navbar-nav .nav-item-header:nth-of-type(2)::after {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    bottom: 0;
+    content: "";
+    background: var(--orange1);
+}
+</style>
+</head>
+<body>
+
+
+<div class="wrapperContainer">
+	<?php include 'headerNew.php'; ?>
 	<?php 
 		$rosterDetails = json_decode($rosterDetails); 
 		// $entitlement = json_decode($entitlements);
 		$permissions = json_decode($permissions);
 	?>
-	<div class="containers" id="containers">
-		<div class="heading" id="center-id" c_id="<?php echo isset($rosterDetails->centerid) ? $rosterDetails->centerid : null; ?>">
-			<a href="<?php echo base_url('Roster');?>">
-            	<button class="btn back-button">
-            	  <img src="<?php echo base_url('assets/images/back.svg');?>">
-            	</button>
-         	</a><?php echo $rosterDetails->templateName ?>
-			<span class="top_buttons ml-auto">
-<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
-				<!-- <span class="editPermission-span">
-					<button class="editPermission-btn">Permission</button>
-				</span> -->
+	<div class="containers scrollY" id="containers">
+			<div class="rosterContainer ">
+				<div class="d-flex pageHead heading-bar" id="center-id" c_id="<?php echo isset($rosterDetails->centerid) ? $rosterDetails->centerid : null; ?>">
+					<div class="withBackLink">
+						<a href="<?php echo base_url('Roster');?>">
+						<span class="material-icons-outlined">arrow_back</span>
+						</a>				
+						<span class="events_title"><?php echo $rosterDetails->templateName ?></span>
+					</div>
+					<span class="rightHeader">
+						<?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?>
+						<!-- <span class="editPermission-span">
+							<button class="editPermission-btn">Permission</button>
+						</span> -->
 
-				<span class="priority ">
-					<button class="priority-btn ">
-						<i>
-							<img src="<?php echo base_url('assets/images/icons/priority.png'); ?>" style="max-height:0.8rem;margin-right:10px">
-						</i>Priority</button>
-				</span>
-				<!-- <span class="showBudget d-flex ">
-					<span class="d-flex justify-content-center align-items-center hide_budget">Hide&nbsp;Budget</span> -->
-					<!-- Hide budget -->
-					<!-- <input type="checkbox" class="showBudget-btn"
-					 show-budget="<?php 
-					 	if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') == 'Y'){
-					 		echo 'N';
-					 	}
-					 	if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') == 'N'){
-					 		echo 'Y';
-					 	} ?>" <?php 
-					 	if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') == 'Y'){
-					 		echo '';
-					 	}
-					 	if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') == 'N'){
-					 		echo 'checked';
-					 	}
-					 	 ?>>
-				</span> -->
-	<?php } ?>  
-				<!-- <span class="print-button">
-					<button class="print-btn">
-						<i>
-							<img src="<?php echo base_url('assets/images/icons/print.png'); ?>" style="max-height:1rem;margin-right:10px">
-						</i>Print</button>
-					<span class="print-hidden-btn">
-						<button class="print-landscape" onclick="landscape()">Landscape</button>
-						<button class="print-portrait" onclick="portrait()">Portrait</button>
+						<button class="priority-btn btn btn-default btn-small">
+							<span class="material-icons-outlined">sort</span> Priority
+						</button>
+						<!-- <span class="showBudget d-flex ">
+							<span class="d-flex justify-content-center align-items-center hide_budget">Hide&nbsp;Budget</span> -->
+							<!-- Hide budget -->
+							<!-- <input type="checkbox" class="showBudget-btn"
+							show-budget="<?php 
+							if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') == 'Y'){
+								echo 'N';
+							}
+							if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') == 'N'){
+								echo 'Y';
+							} ?>" <?php 
+							if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') == 'Y'){
+								echo '';
+							}
+							if((isset($_GET['showBudgetYN']) ? $_GET['showBudgetYN'] : 'Y') == 'N'){
+								echo 'checked';
+							}
+							?>>
+							</span> -->
+						<?php } ?>  
+						<!-- <span class="print-button">
+							<button class="print-btn">
+								<i>
+									<img src="<?php echo base_url('assets/images/icons/print.png'); ?>" style="max-height:1rem;margin-right:10px">
+								</i>Print</button>
+							<span class="print-hidden-btn">
+								<button class="print-landscape" onclick="landscape()">Landscape</button>
+								<button class="print-portrait" onclick="portrait()">Portrait</button>
+							</span>
+						</span> -->
 					</span>
-				</span> -->
-			</span>
-		</div>
+				</div>
 		<?php 
 
 //PHP functions //
@@ -1160,7 +175,7 @@ function dateToDay($date){
 			 $v2 = explode("-",$str2);
     }
 		 ?> 
-		<div class="table-div" style="">
+		<div class="table-div pageTableDiv" style="">
 			<table>
 				<tr class="day-row">
 					<th id="table-id-1" class="day" style="width:18vw">Employees</th>	<?php $x=0;
@@ -1190,10 +205,8 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 					<tr>
 				<tr class="area_name_class">
 					<td colspan="6" class="area-name" area-value="<?php echo $rosterDetails->roster[$x]->areaId ?> " ><?php echo $rosterDetails->roster[$x]->areaName ?>
-						<span area_id="<?php echo $rosterDetails->roster[$x]->areaId; ?>" style="position: absolute;right: 3%;cursor:pointer;" class="changeRoleOrder">
-						<i>
-							<img src="<?php echo base_url('assets/images/icons/priority.png'); ?>" style="max-height:0.8rem;margin-right:10px">
-						</i>
+						<span class="changeRoleOrder" area_id="<?php echo $rosterDetails->roster[$x]->areaId; ?>" >
+							<span class="material-icons-outlined">sort</span>
 						</span>
 					</td>
 				</tr>
@@ -1333,89 +346,97 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 
 			</table>
 		</div>
+	</div>
+	</div>
 </div>
 <!--This is meant for admin-->
 <?php if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN : "N") == "Y"){ ?> 
-	<div id="myModal" class="modal">
+	<div id="myModal" class="modal templateModal modalNew">
 	  <!-- Modal content -->
-	  <div class="modal-content">
-	  	<span class="row titl">
-	  		<span style="" class="box-name-space col-12">
-	  			<span class="box-name row"></span>
-	  			<span class="box-space row"></span>
-	  		</span>
-	  		<!-- <span class="close col-2 d-flex align-items-center" >&times;</span> -->
-	  	</span>
-	    
-	    <!-- <form  id="roster-form"> -->
-			<div class="row p-2">
-				<label class="col-4 modal_label">Start Time</label>
-				<input class="col-7" type="time" name="startTime" id="startTime" >
+		<div class="modal-dialog mw-75">
+			<div class="modal-content NewFormDesign">
+				<div class="modal-header">
+					<h3 class="d-flex box-name-space modal-title col-12">
+						<span class="box-name row"> </span>	<span class="box-space row"></span>					
+					</h3>
+				</div>
+			<!-- <span class="close col-2 d-flex align-items-center" >&times;</span> -->
+			</span>
+
+			<div class="modal-body container">
+				<!-- <form  id="roster-form"> -->
+				<div class="col-md-12">
+					<div class="form-floating">
+						<input class="form-control" type="time" name="startTime" id="startTime" >
+						<label for="startTime" >Start Time</label>
+					</div> 
+				</div>
+				<div class="col-md-12">
+					<div class="form-floating">
+						<input class="form-control" type="time" name="endTime" id="endTime" >
+						<label for="endTime" >End Time</label>
+					</div> 
+				</div>
+				<div class="col-md-12">
+					<div class="form-floating">
+						<select  class="roster_dropdown form-control" name="areaId" id="areaId" >
+							<option >Change Area</option>
+						</select>
+						<label for="areaId" >Area</label>
+					</div> 
+				</div>
+				<div class="col-md-12">
+					<div class="form-floating">
+						<select class="form-control" name="role" id="role"></select>
+						<label for="role" >Role</label>
+					</div> 
+				</div>
+				<div class="col-md-12">
+					<div class="form-floating">
+						<textarea name="message" id="message" class="form-control" type="text"></textarea>
+						<label for="message" >Message</label>
+					</div> 
+				</div>
+				<input type="text" name="shiftId"  id="shiftId" style="display:none">
+				<input type="text" name="roleId" id="roleId" style="display:none">
+				<input type="text" name="status" value="2"  id="status" style="display:none">
+				<input type="text" name="userId"   id="userId" style="display:none">
+				<div class="col-md-12 mb30">
+					<label class="modal_label">Days</label>
+					<span class="col-md-12 edit_shift_modal">
+						<span class="d-inline-block">
+							<span>Mon</span>
+							<input type="checkbox" name="days" value="1" class="d-block edit_shift_checkbox_space" checked>
+						</span>
+						<span class="d-inline-block">
+							<span>Tue</span>
+							<input type="checkbox" name="days" value="2" class="d-block edit_shift_checkbox_space" checked>
+						</span>
+						<span class="d-inline-block">
+							<span>Wed</span>
+							<input type="checkbox" name="days" value="3" class="d-block edit_shift_checkbox_space" checked>
+						</span>
+						<span class="d-inline-block">
+							<span>Thu</span>
+							<input type="checkbox" name="days" value="4" class="d-block edit_shift_checkbox_space" checked>
+						</span>
+						<span class="d-inline-block">
+							<span>Fri</span>
+							<input type="checkbox" name="days" value="5" class="d-block edit_shift_checkbox_space" checked>
+						</span>
+					</span>
+				</div>
+				<div class="modal-footer">
+						<button type="button" name="modal-cancel"  value="Cancel"  class="close buttonn btn btn-default btn-small" >
+						<span class="material-icons-outlined">close</span> Close</button>
+						<button type="button" name="shift-submit" id="shift-submit" value="Save" class="button btn btn-default btn-small btnBlue">
+						<span class="material-icons-outlined">save</span> Save</button>
+						<button type="button" name="delete_shift" id="delete_shift" value="Delete" class="buttonn btn btn-default btn-small btnOrange">
+						<span class="material-icons-outlined">delete</span> Delete</button>
+				</div>
+				<div class="infoMessage">* Please select area to get roles</div>
 			</div>
-			<div class="row p-2">
-				<label class="col-4 modal_label">End Time</label>
-				<input class="col-7" type="time" name="endTime" id="endTime" >
-			</div>
-			<div class="row p-2">
-				<label class="col-4 modal_label">Area</label>
-				<span class="select_css roster_dropdown_parent col-7">
-					<select  class="roster_dropdown" name="areaId" id="areaId" style="padding-left:60px">
-						<option >Change Area</option>
-					</select>
-				</span>
-			</div>
-			<div class="row p-2">
-				<label class="col-4 modal_label">Role</label>
-				<select  name="role" id="role" class="col-7">				</select>
-			</div>
-			<div class="row p-2">
-				<label class="col-4 modal_label">Message</label>
-				<textarea name="message" id="message" class="col-7" type="text"></textarea>
-			</div>
-	 		<input type="text" name="shiftId"  id="shiftId" style="display:none">
-	 		<input type="text" name="roleId" id="roleId" style="display:none">
-	 		<input type="text" name="status" value="2"  id="status" style="display:none">
-	 		<input type="text" name="userId"   id="userId" style="display:none">
-    <div class="row p-2">
-      <label class="col-4 modal_label">Days</label>
-      <span class="col-7">
-        <span class="d-inline-block">
-          <span>Mon</span>
-          <input type="checkbox" name="days" value="1" class="d-block edit_shift_checkbox_space" checked>
-        </span>
-        <span class="d-inline-block">
-          <span>Tue</span>
-          <input type="checkbox" name="days" value="2" class="d-block edit_shift_checkbox_space" checked>
-        </span>
-        <span class="d-inline-block">
-          <span>Wed</span>
-          <input type="checkbox" name="days" value="3" class="d-block edit_shift_checkbox_space" checked>
-        </span>
-        <span class="d-inline-block">
-          <span>Thu</span>
-          <input type="checkbox" name="days" value="4" class="d-block edit_shift_checkbox_space" checked>
-        </span>
-        <span class="d-inline-block">
-          <span>Fri</span>
-          <input type="checkbox" name="days" value="5" class="d-block edit_shift_checkbox_space" checked>
-        </span>
-      </span>
-    </div>
-			<div class="buttons_group">
-				 		<button type="button" name="modal-cancel"  value="Cancel"  class="close buttonn" style="width:5rem">
-								<i>
-									<img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:0.8rem;margin-right:10px">
-								</i>Close</button>
-				 		<button type="button" name="shift-submit" id="shift-submit" value="Save" style="margin:30px;width:5rem;" class="button">
-								<i>
-									<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
-								</i>Save</button>
-				 		<button type="button" name="delete_shift" id="delete_shift" value="Delete" style="width:5rem" class="buttonn">
-								<i>
-									<img src="<?php echo base_url('assets/images/icons/delete.png'); ?>" style="max-height:0.8rem;margin-right:10px">
-								</i>Delete</button>
-			</div>
-			<div><i style="font-size: 0.9rem; color:#a2a2a2">* Please select area to get roles</i></div>
+		</div>
 	 	<!-- </form> -->
 	  </div>
 </div>
@@ -1427,7 +448,7 @@ if((isset($permissions->permissions) ? $permissions->permissions->editRosterYN :
 <div class="modal-logout">
     <div class="modal-content-logout">
         <h3>You have been logged out!!</h3>
-        <h4><a href="<?php echo base_url(); ?>">Click here</a> to login</h4>
+        <h4><a class="btn btn-default btn-small btnOrange" href="<?php echo base_url(); ?>">Click here</a> to login</h4>
         
     </div>
 </div>

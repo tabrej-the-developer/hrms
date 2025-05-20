@@ -52,6 +52,10 @@ $nth_child = 0;
       $selected = "MOM";
       $nth_child = 8;
       break;
+    case strtolower("Notifications"):
+      $selected = "Notifications";
+      $nth_child = 9;
+      break;
     // case strtolower("settings"):
     //     $selected = "settings";
     //     $nth_child = 8;
@@ -95,6 +99,10 @@ $nth_child = 0;
   <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/bootstrap.min.css');?>">
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="<?php echo base_url('assets/js/bootstrap.min.js');?>"></script>
+  <link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('assets/favicon_io/apple-touch-icon.png') ?>">
+  <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/favicon_io/favicon-32x32.png') ?>">
+  <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/favicon_io/favicon-16x16.png') ?>">
+  <link rel="manifest" href="<?= base_url('assets/favicon_io/site.webmanifest') ?>">
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
   <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
@@ -643,6 +651,19 @@ select{
           <span>Notices </span>
         </a>
       </li>
+      <!-- <li class="nav-item-header" onmouseover="hover('notices','<?php echo $selected;?>')" onmouseout="hoverOff('notices','<?php echo $selected;?>')">
+        <a class="nav-link d-flex justify-content-start" href="<?php echo site_url('notifications') ?>" title="Notice">
+        <?php
+              if($url_page_array[array_search("HRMS101",$url_page_array) + 1] == strtolower("Notice")){ ?>
+              <i class="mr-4 " ><img id = "notices" src="<?php echo base_url();?>assets/images/navbar-icons/notices.png" style="max-height: 1rem"></i>
+              <?php }
+              else{ ?>
+                <i class="mr-4 " ><img id = "notices" src="<?php echo base_url();?>assets/images/navbar-icons/notices_filled.png" style="max-height: 1rem"></i>
+              <?php } 
+          ?>
+          <span>Notifications </span>
+        </a>
+      </li> -->
               
 		  
 <!--       <li class="nav-item-header">

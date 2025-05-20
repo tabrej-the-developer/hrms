@@ -1,1225 +1,1164 @@
+<?php
+header("Expires: Tue, 01 Jan 2000 00:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+?>
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Edit Employee</title>
-	<style type="text/css">
-		label{
-			font-weight: bolder
-		}
-		h5{
-			padding-left: 10px
-		}
-		body{
-			background: #f2f2f2 !important;
-			font-size: 0.8rem;
-		}
-		input[type="text"],input[type=time],input[type=date],input[type=email],input[type=number]
-,textarea,select{
-			min-width: 12rem !important;
-			width: 12rem !important;
-			max-width: 12rem !important;
-		}
-		.employee-section{
-			padding-left: 10px;
-		}
-		.employee-bank-account-section{
-			display: none;
-			padding-left: 10px;
-			flex-wrap: wrap
-		}
-		.employee-superfund-section{
-			display: none;
-			padding-left: 10px;
-			flex-wrap: wrap
-		}
-		.employee-tax-declaration-section{
-			display: none;
-			padding-left: 10px;
-			flex-wrap: wrap
-		}
-		.employee-details{
-			display: none;
-			padding-left: 10px;
-			flex-wrap: wrap
-		}
-		.medical-info{
-			display: none;
-			padding-left: 10px;
-			flex-wrap: wrap
-		}
-		.documents-tab{
-			display: none;
-			padding-left: 10px;
-			padding-right: 10px;
-			flex-wrap: wrap
-		}
-		.courses-tab{
-			display: none;
-			padding-left: 10px;
-			padding-right: 10px;
-			flex-wrap: wrap
-		}
-		.tab-buttons{
-			margin-bottom:10px;
-			display: flex;
-			justify-content: center;
-			align-content: center;
-			color: white;
-			width:100%;
-		}
-		.tab-buttons-div{
-			border-radius: 4px;
-			display: flex;
+	<link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('assets/favicon_io/apple-touch-icon.png') ?>">
+  <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/favicon_io/favicon-32x32.png') ?>">
+  <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/favicon_io/favicon-16x16.png') ?>">
+  <link rel="manifest" href="<?= base_url('assets/favicon_io/site.webmanifest') ?>">
+	<link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+<link href="<?php echo base_url('assets/css/bootstrap.min.css');?>" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-			justify-content: center;
-			width: 100%;
-		}
-		.nav-button{
-			position: relative;
-			color: #171D4B;
-			background: #A4D9D6;
-			font-size:0.95rem;
-			flex: 1 1 0px;
-			display: flex;
-			justify-content: center;
-			font-weight: 700
-		}
-		.nav-button > span{
-/*			border:1px solid #307bd3;
-			background:  #307bd3;
-			color: white;
-			padding:5px;
-			border-radius: 3px*/
-			padding: 10px;
-		    width: 100%;
-		    display: flex;
-		    justify-content: center;
-		}
-		.nav-button > span:hover{
-			cursor: pointer;
-		}
-/*		input,select{
-			display: block;
-		    width: auto;
-		    height: 1.5rem;
-		    font-size: 0.8rem;
-		    font-weight: 400;
-		    line-height: 1.5;
-		    color: #495057;
-		    background-color: #fff;
-		    background-clip: padding-box;
-		    border: 1px solid #ced4da;
-		    border-radius: .25rem;
-		    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-		} */
-    input[type="text"],input[type=time],input[type=date],input[type=email],input[type=number],select,textarea{
-      background: #ebebeb !important;
-      border-radius: 5px !important;
-      padding: 5px !important;
-      border: 1px solid #D2D0D0 !important;
-      border-radius: 20px !important;
-      padding-left: 1rem;
-      font-size: 0.85rem !important;
-    }
-    select{
-      background: #E7E7E7 !important;
-      border: none !important;
-      height: 2rem !important;
-      border-radius: 20px !important;
-      border: 1px solid #D2D0D0 !important;
-      padding-left: 1rem !important;
-      font-size: 0.85rem !important;
-    }
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-		.span-class{
-			padding: 10px 0 10px 0;
-			display: inline-block;
-			/*width: 33%;*/
-		}
-		.span-class .col-3{
-			padding-left:0;
-		}
-		.name__{
-			width: 66%;
-		}
-		.contact__{
-			width: 66%;
-		}
-		label{
-			width:100%;
-			margin: 0 !important;
-		}
-	.add_remove_bank_account{
-		position: relative;
-	}
-	.add-remove-row,.add-remove-superfund{
-		position: absolute;
-		right: 1rem;
-	}
-	.add-row,#superfund-add,.add_course,.remove_course,.course_delete{
-		display: inline-flex;
-		justify-content: center;
-		align-items: center;
-		background: rgb(164, 217, 214);
-		padding : 0.25rem 0.75rem;
-		border-radius: 20px;
-		font-size: 1rem !important;
-		font-weight: 700;
-		cursor: pointer;
-	}
-	.remove-row,.superfund-remove{
-		display: inline-flex;
-		justify-content: center;
-		align-items: center;
-		background: rgb(164, 217, 214);
-		padding : 0.25rem 0.75rem;
-		border-radius: 20px;
-		font-size: 1rem !important;
-		font-weight: 700;
-		cursor: pointer;
-	}
-		#subm,
-		.addRemoveDocumentAdd,
-		.removeDocumentButton,
-		.singleDocDownload,
-		.deleteDocument{
-	  	border: none;
-	  	color: rgb(23, 29, 75);
-	  	text-align: center;
-	  	text-decoration: none;
-	  	display: inline-block;
-	  	font-weight: 700;
-	  	margin: 2px;
-	  	width:8rem;
-    	border-radius: 20px;
-    	padding: 8px;
-    	background: rgb(164, 217, 214);
-			}
-			.addRemoveDocumentAdd{
-				cursor: pointer;
-			}
-			.removeDocumentButton
-		.span-class.row{
-			margin:0;
-			width:100%;
-		}
-		.span-class.row span input{
-			padding:10px;
-			width:auto;
-		}
-		.yn-input{
-			width:auto;
-			display: inline;
-			height: auto
-		}
-		.yn-label{
-			display: inline;
-			font-weight: normal;
-		}
-		.submit-div{
-			display: flex;
-			justify-content: flex-end;
-			position: absolute;
-			bottom: 0;
-			width: 100%;
-			border-top:1px solid #979797;
-			padding: 0.5%;
-		}
-		.row.ml-1 > .span-class{
-			padding:0;
-			padding-left: 10px
-		}
-		.row.ml-1 > .span-class:nth-of-type(1){
-			padding-left: 0;
-		}
-		.row{
-			margin-left: 0 !important;
-			margin-right: 0 !important
-		}
-		.arrow{
-			border:1px solid #D2D0D0;
-		    background: #F3F4F7;
-		    color:  #171D4B;
-		    padding:3px;
-		    border-radius:;
-		}
-		table{
-			width: 100%;
-			text-align: center;
-		}
-	.addEmployee-container{
-		height:100vh;
-		padding:4rem 3rem 2rem 2rem;
-	}
-	.addEmployee-container-child{
-		height:100%;
-		background: white;
-		position: relative;
-	}
-	.employee-section,.employee-bank-account-section,.employee-superfund-section, 
-	.employee-tax-declaration-section,.employee-details,.medical-info,.courses-tab{
-		max-height: 80%;
-		height: 80%;
-		overflow: auto
-	}
-	.profileImage{
-/*		padding-left: 1rem;*/
-	}
-	.user_profileImage{
-		font-size: 2rem !important;
-	    height: 80px;
-	    width: 80px;
-	    border-radius: 50%;
-	    background: #e3e4e7;
-	}
-	.user_profileImage .icon{
-		font-size: 3rem;
-		height:4rem;
-		width: 4rem;
-	}
-	.profileImage_parent{
-		width: auto !important;
-	    align-items: center;
-	}
-	.labels__{
-		font-weight: bolder;
-		width:100%;
-		margin: 0 !important;
-	}
-	body{
-		font-size: 0.8rem !important;
-	}
-	.col-3{
-		padding-right: 0 !important;
-		padding-left: 0 !important;
-		width: 24% !important
-	}
-	input[type="FILE"]{
-	    margin-top: 10px;
-	    width: 10rem;
-	}
-	.add_remove_superfund{
-	    position: absolute;
-	    right: 0;
-	}
-	.icon{
-		margin-top: 0 !important;
-		vertical-align: middle !important;
-		padding: 0 !important
-	}
-	.addDocumentsDiv{
-		position: relative;
-	}
-	.addRemoveDocument{
-		display: flex;
-    justify-content: flex-end;
-   }
-   .singleDocBlock{
-   	line-height: 1.5rem;
-   }
-	.files__{
-		width: 70%;
-		display: flex;
-		justify-content: space-evenly;
-	}
-	.addFile{
-		margin-top: 0 !important;
-	}
-	.addSingleDocument{
-		background: rgba(0,0,0,0.1);
-		border-radius: 5px;
-		padding: 0.2rem;
-		align-items: center;
-	}
-	.course_delete{
-		margin-top: 2rem;
-    float: right;
-    margin-right: 8rem;
-	}
-	table td {
-		text-align: center;
-	}
-	th{
-		font-size: 0.95rem;
-	}
-	.col-9{
-		padding-left: 0 !important;
-	}
-	textarea[inputType="textarea"]{
-		min-width: 100% !important; 
-		max-width: 100% !important;
-		border-radius: 10px !important;
-	}
-	.courses_buttons{
-		text-align: right;
-	}
-	</style>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/layout.css?version='.VERSION);?>">
+ <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/container.css?version='.VERSION);?>">
+  
+<script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js');?>" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('assets/js/popper.min.js');?>" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('assets/js/bootstrap.min.js');?>" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+
+<style>
+.navbar-nav .nav-item-header:nth-of-type(9) {
+    background: var(--blue2) !important;
+    position: relative;
+}
+.navbar-nav .nav-item-header:nth-of-type(9)::after {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    bottom: 0;
+    content: "";
+    background: var(--orange1);
+}
+</style>	
 </head>
 <body>
-<?php $this->load->view('header'); ?>
+	<!-- <script>
+		$(document).ready(function(){
+			alert("Hello world");
+		});
+	</script> -->
+
+<div class="wrapperContainer">
+	<?php include 'headerNew.php'; ?>
 <?php 
 	$employeeData = json_decode($getEmployeeData);
 	$superfunds = json_decode($superfunds);
+	$entitlementsdetails = json_decode($entitlements);
 ?>
-<div class="containers">
-	<span style="position: absolute;top:20px;padding-left: 2rem" class="d-inline-flex align-items-center">
-      <a onclick="goBack()">
-        <button class="btn back-button">
-          <img src="<?php echo base_url('assets/images/back.svg');?>">
-        </button>
-      </a>
-	<span class="employeeNameView">Edit Employee</span>
-    </span>
-	<div class="addEmployee-container">
-	<div class="addEmployee-container-child">
-	<?php $permissions = json_decode($permissions); ?>
-<?php // if(isset($permissions->permissions) ? $permissions->permissions->editEmployeeYN : "N" == "N"){ ?>
-	<section class="tab-buttons">
-		<div class="tab-buttons-div">
-		<span class="nav-button e-s"><span>Personal</span></span>
-		<span class="nav-button e-b-a-s"><span>Bank Account</span></span>
-		<span class="nav-button e-s-s"><span> Superannuation </span></span>
-		<span class="nav-button e-t-d-s"><span>Tax Declaration </span></span>
-		<span class="nav-button e-u-s"><span>Employment</span></span>	
-		<span class="nav-button c-t"><span>Courses</span></span>
-		<span class="nav-button m-i"><span>Medical Info</span></span>
-		<span class="nav-button d-c"><span>Documents</span></span>
-		</div>	
-	</section>
-<form method="POST" action="<?php echo base_url('settings/updateEmployeeProfile/').$employeeId;?>" style="height: 100%" enctype="multipart/form-data" onsubmit="return onFormSubmit(event)" id="formSubmit">
-	<section class="employee-section">	
-		<!-- <h3>Personal</h3> -->
-		<span class="d-flex">
-		<span class="span-class col-3">
-			<label class="labels__">Title</label>
-			<span class="select_css">
-				<select placeholder="Title" id="title"  class="" type="text" name="title" value="<?php echo isset($employeeData->employee->title) ? $employeeData->employee->title : ''; ?>"> 
-					<option value="Ms">Ms</option> 
-					<option value="Mr">Mr</option>
-					<option value="Mrs">Mrs</option>
-				</select>
-			</span>
+<div class="containers scrollY">
+    <div class="settingsContainer">
+
+		<span class="d-flex pageHead heading-bar">
+			<div class="withBackLink">
+				<a onclick="goBack()" href="#">
+				<span class="material-icons-outlined">arrow_back</span>
+				</a>				
+				<span class="events_title">Edit Profile Details</span>
+			</div>
+			<div class="rightHeader">
+			</div>
 		</span>
-		<span class="span-class col-3 ">
-			<label class="labels__">First Name<sup>
-				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
-			</sup></label>
-			<input placeholder="First Name" id="fname"  class="" type="text" name="fname" value="<?php echo isset($employeeData->employee->fname) ? $employeeData->employee->fname : ''; ?>" >
-		</span>
-		<span class="span-class col-3 ">
-			<label class="labels__">Middle Name</label>
-			<input placeholder="Middle Name" id="mname"  class="" type="text" name="mname" value="<?php echo isset($employeeData->employee->mname) ? $employeeData->employee->mname : ''; ?>">
-		</span>
-		<span class="span-class col-3 ">
-			<label class="labels__">Last Name<sup>
-				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
-			</sup></label>
-			<input placeholder="Last Name" id="lname"  class="" type="text" name="lname" value="<?php echo isset($employeeData->employee->lname) ? $employeeData->employee->lname : ''; ?>">
-		</span>
-</span>
+		<div class="addEmployee-container">
+			<div class="addEmployee-container-child">
+				<!-- <pre>
+				<php print_r($employeeData) ?>
+				<php print_r($entitlementsdetails) ?>
+				</pre> -->
+				<?php $permissions = json_decode($permissions); ?>
+				<?php // if(isset($permissions->permissions) ? $permissions->permissions->editEmployeeYN : "N" == "N"){ ?>
+					<section class="tab-buttons">
+						<div class="tab-buttons-div">
+						<span class="nav-button e-s"><span>Personal</span></span>
+						<span class="nav-button e-b-a-s"><span>Bank Account</span></span>
+						<span class="nav-button e-s-s"><span> Superannuation </span></span>
+						<span class="nav-button e-t-d-s"><span>Tax Declaration </span></span>
+						<span class="nav-button e-u-s"><span>Employment</span></span>	
+						<span class="nav-button c-t"><span>Courses</span></span>
+						<span class="nav-button m-i"><span>Medical Info</span></span>
+						<span class="nav-button d-c"><span>Documents</span></span>
+						<span class="hover"></span>
+						</div>	
+					</section>
+					<form method="POST" action="<?php echo base_url('settings/updateEmployeeProfile/').$employeeId;?>" style="height: 100%" enctype="multipart/form-data" id="formSubmit">
+					<input type="hidden" name="center" value="<?= $centerid ?>">
+					<section class="employee-section">	
+							<!-- <h3>Personal</h3> -->
+
+							<?php /* 
+							<span class="span-class profileImage_parent col-3" style="width: auto !important">
+								<span style="height:100px;width:100px">
+
+									<?php if(file_exists('api/application/assets/profileImages/'.$employeeData->employee->userid.'.png') && filesize("api/application/assets/profileImages/".$employeeData->employee->userid.".png") > 0){
+									?>
+										<img src="<?php echo BASE_API_URL."application/assets/profileImages/".$employeeData->employee->userid.".png"?>" style="height:100px;width:100px;border-radius:0.5rem">
+										<?php
+									}else{
+
+										if($this->session->has_userdata('Name')){
+													$side_bar_name =  $this->session->userdata('Name');
+													$side_bar_name = explode(' ',$side_bar_name);
+													$userid = $this->session->userdata('LoginId');
+										}
+										?>
+
+										<span class="user_profileImage icon-parent">
+											<span class=" icon"><?php echo isset($side_bar_name[0]) ? icon($side_bar_name[0]) : ""; ?></span>
+										</span>
+									<?php } ?>
+								</span>
+								<span class="d-block">
+									<input id="profileImage" class="profileImage" type="FILE" name="profileImage">
+								</span>
+							</span> */ ?>
+
+							<span class="span-class profileImage_parent col-3" style="width: auto !important">
+								<span style="height:100px;width:100px">
+									<?php if(file_exists('api/application/assets/profileImages/'.$this->session->userdata('LoginId').'.png') && filesize("api/application/assets/profileImages/".$this->session->userdata('LoginId').".png") > 0){?>
+										<img src="<?php echo BASE_API_URL."application/assets/profileImages/".$this->session->userdata('LoginId').".png"?>" style="height:100px;width:100px;border-radius:0.5rem">
+										<?php }else{
+											if($this->session->has_userdata('Name')){
+												$side_bar_name =  $this->session->userdata('Name');
+												$side_bar_name = explode(' ',$side_bar_name);
+												$userid = $this->session->userdata('LoginId');
+											}
+										?>
+
+										<span class="user_profileImage icon-parent">
+											<span class=" icon"><?php echo isset($side_bar_name[0]) ? icon($side_bar_name[0]) : ""; ?></span>
+										</span>
+									<?php } ?>
+								</span>
+								<span class="d-block col-md-3 inputfile-box mb30">
+									<input id="profileImage" class="profileImage inputfile" type="FILE" name="profileImage" onchange="uploadFile(this)">
+									<label for="profileImage">
+										<span id="file-name" class="file-box"></span>
+										<span class="file-button">
+											<span class="material-icons-outlined">publish</span>
+										Select File
+										</span>
+									</label>
+								</span>
+							</span>
+
+
+							<span class="d-flex">							
+								<div class="col-md-3">
+									<div class="form-floating">
+										<select placeholder="Title" id="title"  class="form-control" type="text" name="title" value="<?php echo isset($employeeData->employee->title) ? $employeeData->employee->title : ''; ?>"> 
+											<option value="Ms">Ms</option> 
+											<option value="Mr">Mr</option>
+											<option value="Mrs">Mrs</option>
+										</select>
+										<label for="title" class="labels__">Title</label>
+									</div>
+								</div>			
+								<div class="col-md-3">
+									<div class="form-floating">
+										<input placeholder="First Name" id="fname"  class="form-control" type="text" name="fname" value="<?php echo isset($employeeData->employee->fname) ? $employeeData->employee->fname : ''; ?>" >
+										<label for="fname" class="labels__">First Name<sup><img src="<?php echo base_url('assets/images/icons/star.png'); ?>"></sup></label>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="form-floating">
+										<input placeholder="Middle Name" id="mname"  class="form-control" type="text" name="mname" value="<?php echo isset($employeeData->employee->mname) ? $employeeData->employee->mname : ''; ?>">
+										<label id="mname" class="labels__">Middle Name</label>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="form-floating">
+										<input placeholder="Last Name" id="lname"  class="form-control" type="text" name="lname" value="<?php echo isset($employeeData->employee->lname) ? $employeeData->employee->lname : ''; ?>">
+										<label for="lname" class="labels__">Last Name<sup><img src="<?php echo base_url('assets/images/icons/star.png'); ?>" ></sup></label>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="form-floating">
+										<input placeholder="Alias" id="alias"  class="form-control" type="text" name="alias" value="<?php echo isset($employeeData->users->alias) ? $employeeData->users->alias : ''; ?>">
+										<label for="alias" class="labels__">Alias</label>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="form-floating">
+										<input placeholder="Date Of Birth" id="dateOfBirth"  class="form-control" type="date" name="dateOfBirth" value="<?php echo isset($employeeData->employee->dateOfBirth) ? $employeeData->employee->dateOfBirth : ''; ?>">
+										<label for="dateOfBirth" class="labels__">Date Of Birth<sup><img src="<?php echo base_url('assets/images/icons/star.png'); ?>"></sup></label>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="form-floating">
+										<?php $gender = isset($employeeData->employee->gender) ? $employeeData->employee->gender : ''; ?>
+										<select placeholder="Gender" id="gender"  class="form-control" name="gender" value="<?php echo $gender ?>">
+											<option value="N" <?php echo ($gender == 'N') ? 'selected' : "" ?>>Not Given</option>
+											<option value="M" <?php echo ($gender == 'M') ? 'selected' : "" ?>>Male</option>
+											<option value="F" <?php echo ($gender == 'F') ? 'selected' : "" ?>>Female</option>
+											<option value="I" <?php echo ($gender == 'I') ? 'selected' : "" ?>>Non binary</option>
+										</select>	
+										<label for="gender" class="labels__">Gender</label>
+									</div>
+								</div>
+
+							</span>
+
+							<hr>
+			
+							<span class="d-flex">	
+								<div class="col-md-3">
+									<div class="form-floating">
+										<input placeholder="Home Address Line1" id="homeAddLine1"  class="form-control" type="text" name="homeAddLine1" value="<?php echo isset($employeeData->employee->homeAddLine1) ? $employeeData->employee->homeAddLine1 : ''; ?>">
+										<label for="homeAddLine1" class="labels__">Home Address Line1</label>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="form-floating">
+										<input placeholder="Home Address Line2" id="homeAddLine2"  class="form-control" type="text" name="homeAddLine2" value="<?php echo isset($employeeData->employee->homeAddLine2) ? $employeeData->employee->homeAddLine2 : ''; ?>">
+										<label for="homeAddLine2" class="labels__">Home Address Line2</label>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="form-floating">
+										<input  type="text" placeholder="City" id="homeAddCity"  class="form-control"  name="homeAddCity" value="<?php echo isset($employeeData->employee->homeAddCity) ? $employeeData->employee->homeAddCity : ''; ?>">
+										<label for="homeAddCity" class="labels__">City</label>
+									</div>
+								</div>	
+								<div class="col-md-3">
+									<div class="form-floating">
+										<select placeholder="Region" id="homeAddRegion"  class="form-control" type="text" name="homeAddRegion" value="<?php echo isset($employeeData->employee->homeAddRegion) ? $employeeData->employee->homeAddRegion : ''; ?>">
+											<option value="ACT">Australian Capital Territory</option>
+											<option value="NSW">New South Wales</option>
+											<option value="NT">Northern Territory</option>
+											<option value="QLD">Queensland </option>
+											<option value="SA">South Australia</option>
+											<option value="TAS">Tasmania </option>
+											<option value="VIC">Victoria</option>
+											<option value="WA">Western Australia</option>
+										</select>
+										<label for="homeAddRegion" class="labels__">Region</label>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="form-floating">
+										<input placeholder="Postal" id="homeAddPostal"  class="form-control" type="text" name="homeAddPostal" value="<?php echo isset($employeeData->employee->homeAddPostal) ? $employeeData->employee->homeAddPostal : ''; ?>">
+										<label for="homeAddPostal" class="labels__">Postal</label>
+									</div>
+								</div>
+								<script>
+									$('#homeAddPostal').keyup(function(e){
+										if (/\D/g.test(this.value))
+										{
+											// Filter non-digits from input value.
+											this.value = this.value.replace(/\D/g, '');
+										}
+									});
+								</script>
+								<div class="col-md-3">
+									<div class="form-floating">
+										<input placeholder="Country" id="homeAddCountry"  class="form-control" type="text" name="homeAddCountry" value="<?php echo isset($employeeData->employee->homeAddCountry) ? $employeeData->employee->homeAddCountry : ''; ?>">
+										<label for="homeAddCountry" class="labels__">Country</label>
+									</div>
+								</div>
+								<script>
+									$('#homeAddCountry').keydown(function(e) {
+										if (e.shiftKey || e.ctrlKey || e.altKey) {
+											e.preventDefault();
+										} else {
+											var key = e.keyCode;
+											if (!((key == 8) || (key == 32) || (key == 46) || (key >= 35 && key <= 40) || (key >= 65 && key <= 90))) {
+											e.preventDefault();
+											}
+										}
+									});
+								</script>
+							</span>
+							<hr>
+							<span class="d-flex">
+
+								<div class="col-md-3">
+									<div class="form-floating">
+										<input placeholder="Phone" id="phone" class="form-control" type="text" name="phone" value="<?php echo isset($employeeData->employee->phone) ? $employeeData->employee->phone : ''; ?>">
+										<label for="phone" class="labels__">Phone<sup><img src="<?php echo base_url('assets/images/icons/star.png'); ?>"></sup></label>
+									</div>
+								</div>		
+
+								<div class="col-md-3">
+									<div class="form-floating">
+										<input placeholder="Mobile" id="mobile" class="form-control" type="text" name="mobile" value="<?php echo isset($employeeData->employee->mobile) ? $employeeData->employee->mobile : ''; ?>">
+										<label for="mobile" class="labels__">Mobile</label>
+									</div>
+								</div>
+
+
+								<div class="col-md-3">
+									<div class="form-floating">
+										<input placeholder="Emails" id="emails" class="form-control" type="text" name="emails" readonly="readonly" value="<?php echo isset($employeeData->employee->emails) ? $employeeData->employee->emails : ''; ?>">
+										<label for="emails" class="labels__">Email</label>
+									</div>
+								</div>
+
+								<div class="col-md-3">
+									<div class="form-floating">
+										<input placeholder="Emergency Contact" id="emergency_contact" class="form-control" type="text" name="emergency_contact" value="<?php echo isset($employeeData->employee->emergency_contact) ? $employeeData->employee->emergency_contact : ''; ?>">
+										<label for="emergency_contact">Emergency Contact</label>
+									</div>
+								</div>
+
+
+
+								<div class="col-md-3">
+									<div class="form-floating">
+										<input placeholder="Relationship" id="relationship" class="form-control" type="text" name="relationship" value="<?php echo isset($employeeData->employee->relationship) ? $employeeData->employee->relationship : ''; ?>">
+										<label for="relationship">Relationship</label>
+									</div>
+								</div>
+
+								<div class="col-md-3">
+									<div class="form-floating">
+										<input placeholder="Emergency Contact Email" id="emergency_contact_email" class="form-control" type="email" name="emergency_contact_email" value="<?php echo isset($employeeData->employee->emergency_contact_email) ? $employeeData->employee->emergency_contact_email : ''; ?>">
+										<label for="emergency_contact_email">Emergency Contact Email</label>
+									</div>
+								</div>
+
+							</span>
+							<script>
+									jQuery("#phone").keypress(function (e) {
+										var length = jQuery(this).val().length;
+									if(length > 9) {
+											return false;
+									} else if(e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+											return false;
+									} else if((length == 0) && (e.which == 48)) {
+											return false;
+									}
+									});
+								</script>
+								<script>
+									jQuery("#mobile").keypress(function (e) {
+										var length = jQuery(this).val().length;
+									if(length > 9) {
+											return false;
+									} else if(e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+											return false;
+									} else if((length == 0) && (e.which == 48)) {
+											return false;
+									}
+									});
+								</script>
+								<script>
+									jQuery("#emergency_contact").keypress(function (e) {
+										var length = jQuery(this).val().length;
+									if(length > 9) {
+											return false;
+									} else if(e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+											return false;
+									} else if((length == 0) && (e.which == 48)) {
+											return false;
+									}
+									});
+								</script>
+						</section>
+
+						
+						<section class="employee-bank-account-section">
+							<h3 class="add_remove_bank_account">Bank Account 
+								<span class="add-remove-row">
+									<span class="remove-row btn btn-default btn-small pull-right"><span class="material-icons-outlined">highlight_off</span> Remove </span>
+									<span class="add-row btn btn-default btn-small btnBlue pull-right"><span class="material-icons-outlined">add_circle_outline</span> Add </span>
+								</span>
+							</h3>
+
+							<div class="parent-child">
+								<?php 
+								$eba = $employeeData->employeeBankAccount;
+								for($i=0;$i<count($employeeData->employeeBankAccount);$i++){ ?>
+									<div class="child">
+										<div class="statement"></div>
+									
+										<div class="d-flex">
+											<div class="col-md-3">
+												<div class="form-floating">
+													<input placeholder="Account Name" type="text" id="accountName" class="accountName form-control" name="accountName[]" value="<?php echo isset($eba[$i]->accountName) ? $eba[$i]->accountName : ''; ?>">
+													<label for="accountName">Account Name</label>
+												</div>
+												<script>
+													$( ".accountName" ).keypress(function(e) {
+														var key = e.keyCode;
+														if (key >= 48 && key <= 57) {
+															e.preventDefault();
+														}
+													});
+												</script>
+											</div>
+
+											<div class="col-md-3">
+												<div class="form-floating">
+													<input placeholder="BSB" id="bsb" type="text" class="bsb form-control" name="bsb[]" value="<?php echo isset($eba[$i]->bsb) ? $eba[$i]->bsb : ''; ?>">
+													<label for="bsb">BSB</label>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-floating">
+													<input placeholder="Account Number" id="accountNumber" type="text" class="accountNumber form-control" name="accountNumber[]" value="<?php echo isset($eba[$i]->accountNumber) ? $eba[$i]->accountNumber : ''; ?>">
+													<label for="accountNumber">Account Number</label>
+												</div>
+												<script>
+													$(document).on("input", ".accountNumber", function() {
+														this.value = this.value.replace(/\D/g,'');
+													});
+												</script>
+											</div>
+											<div class="amount-class-parent col-md-3">
+												<div class="form-floating">
+													<input placeholder="Amount" id="amount" type="text" class="amount form-control" name="amount[]" value="<?php echo isset($eba[$i]->amount) ? $eba[$i]->amount : ''; ?>">
+													<label for="amount">Amount</label>
+												</div>
+											</div>
+											<?php if($i ==  0){ ?>
+												<span class="col-md-3 radioFlex remainder_parent">
+													<label>Remainder</label>
+													<div class="d-flex">
+														<span>
+															<label class="yn-label">Yes</label>
+															<input value="Y" class="remainderYN yn-input" type="radio" name="remainderYN[]" <?php echo isset($eba[$i]->remainderYN) ? ($eba[$i]->remainderYN == 'Y' ? 'checked' : '') : ''; ?>>
+														</span>
+														<span>
+															<label class="yn-label">No</label>
+															<input value="N" class="remainderYN yn-input" type="radio" name="remainderYN[]" <?php echo isset($eba[$i]->remainderYN) ? (($eba[$i]->remainderYN == 'Y') ? 'checked' : '') : ''; ?>>
+														</span>
+													</div>
+												</span>
+											<?php   } ?>
+
+
+										</div>
+									</div>
+								<?php }
+								if(count($eba) == 0){ ?>
+									<div class="child">
+										<div class="statement"></div>
+				
+										<div class="d-flex">
+											<div class="col-md-3">
+												<div class="form-floating">
+													<input placeholder="Account Name" type="text" id="accountName" class="accountName form-control" name="accountName[]" >
+													<label for="accountName">Account Name</label>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-floating">
+													<input placeholder="BSB" id="bsb" type="text" class="bsb form-control" name="bsb[]">
+													<label for="bsb">BSB</label>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-floating">
+													<input placeholder="Account Number" type="text" id="accountNumber" class="accountNumber form-control" name="accountNumber[]">
+													<label for="accountNumber">Account Number</label>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-floating">
+													<input placeholder="Amount" id="amount" type="text" class="amount form-control" name="amount[]">
+													<label for="amount">Amount</label>
+												</div>
+											</div>
+											<?php if($i ==  0){ ?>
+												<span class="span-class col-3 radioFlex remainder_parent">
+													<label>Remainder</label>
+													<div class="d-flex">
+														<span>
+															<label class="yn-label">Yes</label>
+															<input value="Y" class="remainderYN yn-input" type="radio" name="remainderYN[]" >
+														</span>
+														<span>
+															<label class="yn-label">No</label>
+															<input value="N" class="remainderYN yn-input" type="radio" name="remainderYN[]" >
+														</span>
+													</div>
+												</span>
+											<?php   } ?>
+									</div>
+								<?php } ?>
+							</div>
+						</section>
+						
+						
+						<section class="employee-superfund-section">
+							<div class="superAnnoucement"> 
+								<div class="form-floating">
+									<?php 
+										$centers = json_decode($centers); 
+										if(isset($centers->centers) && count($centers->centers) > 0){
+									?>
+									<select name="" id="Superannuation" class="center-select form-control">
+										<?php foreach($centers->centers as $center){ ?>
+										<option value="<?php echo $center->centerid; ?>"><?php echo $center->name; ?></option>
+										<?php } ?>
+									</select>
+									<?php } ?>
+									<label for="Superannuation">Superannuation</label>
+								</div>
+								<span class="add_remove_superfund">
+									<span class="superfund-remove btn btn-default btn-small pull-right"><span class="material-icons-outlined">highlight_off</span> Remove </span>
+									<span id="superfund-add" class="btn btn-default btn-small btnBlue pull-right"><span class="material-icons-outlined">add_circle_outline</span> Add </span>
+								</span>
+							</div>
 		
-		<span class="span-class col-3">
-			<label class="labels__">Alias</label>
-			<input placeholder="Alias" id="alias"  class="" type="text" name="alias" value="<?php echo isset($employeeData->users->alias) ? $employeeData->users->alias : ''; ?>">
-		</span>
-		<span class="span-class col-3">
-			<label class="labels__">Date Of Birth<sup>
-				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
-			</sup></label>
-			<input placeholder="Date Of Birth" id="dateOfBirth"  class="" type="date" name="dateOfBirth" value="<?php echo isset($employeeData->employee->dateOfBirth) ? $employeeData->employee->dateOfBirth : ''; ?>">
-		</span>
-		<span class="span-class col-3">
-			<label class="labels__">Gender</label>
-			<span class="select_css">
-			<?php $gender = isset($employeeData->employee->gender) ? $employeeData->employee->gender : ''; ?>
-				<select placeholder="Gender" id="gender"  class="" name="gender" value="<?php echo $gender ?>">
-					<option value="N" <?php echo ($gender == 'N') ? 'selected' : "" ?>>Not Given</option>
-					<option value="M" <?php echo ($gender == 'M') ? 'selected' : "" ?>>Male</option>
-					<option value="F" <?php echo ($gender == 'F') ? 'selected' : "" ?>>Female</option>
-					<option value="I" <?php echo ($gender == 'I') ? 'selected' : "" ?>>Non binary</option>
-				</select>				
-			</span>
-		</span>
+							<div class="superfund-parent">
+								<?php 
+								$checkSuperfund = count($employeeData->employeeSuperfunds);
+								foreach($employeeData->employeeSuperfunds as $supFund){ ?>
+									<div class="superfund-child row">
+										<span class="col-md-4">						
+											<div class="form-floating">
+												<select placeholder="Super Fund Id" id="superFundId" class="superFundId form-control" name="superFund[Id][]" value="<?php echo isset($supFund->superFundId) ? $supFund->superFundId : ''; ?>">
+												<?php 
+												$superFundValue = isset($supFund->superFundId) ? $supFund->superFundId : '';
+												foreach($superfunds->superfunds as $superfund){
+													if($superFundValue == $superfund->superFundId){
+														echo "<option value='$superfund->superFundId' selected>$superfund->name</option>";
+													}else{
+														echo "<option value='$superfund->superFundId'>$superfund->name</option>";
+													}
+												}
+												?>
+												</select>
+												<label for="superFundId">Super Fund Id</label>
+											</div>
+										</span>
+										<span class="col-md-4">						
+											<div class="form-floating">
+												<input placeholder="Super Membership Id" id="superMembership" class="superMembershipId form-control" type="text" name="superFund[MembershipId][]" value="<?php echo isset($supFund->superMembershipId) ? $supFund->superMembershipId : ''; ?>">
+												<label for="superMembership">Super Membership Id</label>
+											</div>
+										</span>
+										<span class="col-md-4">						
+											<div class="form-floating">
+												<input class="employeeNumber form-control" id="superEmpNum" type="text" name="superFund[EmployeeNumber][]" value="<?php echo isset($supFund->employeeNumber) ? $supFund->employeeNumber : ''; ?>">
+												<label for="superEmpNum" class="labels__">Employee Number</label>
+											</div>
+										</span>
+									</div>
+								<?php }
+								if($checkSuperfund == 0){ ?>
+									<div class="superfund-child row">
+										<span class="col-md-4">
+											<div class="form-floating">
+												<select placeholder="Super Fund Id" id="superFundId" class="superFundId form-control" name="superFund[Id][]">
+												<?php 
+												foreach($superfunds->superfunds as $superfund){
+														echo "<option value='$superfund->superFundId'>$superfund->name</option>";
+												}
+												?>
+												</select>
+												<label for="superFundId">Super Fund Id</label>
+											</div>
+										</span>
+										<span class="col-md-4">
+											<div class="form-floating">
+												<input placeholder="Super Membership Id" id="superMembershipId" class="superMembershipId form-control" type="text" name="superFund[MembershipId][]" >
+												<label for="superMembershipId">Super Membership Id</label>
+											</div>
+										</span>
+										<span class="col-md-4">
+											<div class="form-floating">
+												<input class="employeeNumber form-control" id="employeeNumber" type="text" name="superFund[EmployeeNumber][]" >
+												<label for="employeeNumber" class="labels__">Employee Number</label>
+											</div>
+										</span>
+									</div>
+								<?php } ?>
 
-		<span class="span-class profileImage_parent col-3" style="width: auto !important">
-			<span style="height:100px;width:100px">
-				<?php if(file_exists('api/application/assets/profileImages/'.$this->session->userdata('LoginId').'.png') && filesize("api/application/assets/profileImages/".$this->session->userdata('LoginId').".png") > 0){ 
-					?>
-				<img src="<?php echo BASE_API_URL."application/assets/profileImages/".$this->session->userdata("LoginId").".png"?>" style="height:100px;width:100px;border-radius:0.5rem">
-			<?php 
-					}else{ 
-					if($this->session->has_userdata('Name')){
-		              $side_bar_name =  $this->session->userdata('Name');
-		              $side_bar_name = explode(' ',$side_bar_name);
-		              $userid = $this->session->userdata('LoginId');
-		            }
-				?>
-				<span class="user_profileImage icon-parent">
-					<span class=" icon"><?php echo isset($side_bar_name[0]) ? icon($side_bar_name[0]) : ""; ?></span>
-				</span>
-			<?php } ?>
-			</span>
-			<span class="d-block">
-				<input id="profileImage"  class="profileImage" type="FILE" name="profileImage">
-			</span>
-		</span>
-		<hr>
-<!-- 		<span class="span-class col-3">
-			<label>Job Title</label>
-			<input placeholder="Job Title" id="jobTitle"  class="" type="text" name="jobTitle" value="<?php //echo isset($employeeData->users->title) ? $employeeData->users->title : ''; ?>">
-		</span> -->
-	
-		<span class="span-class row">
-			<span class="span-class  col-3">
-				<label class="labels__">Home Address Line1</label>
-	<input placeholder="Home Address Line1" id="homeAddLine1"  class="" type="text" name="homeAddLine1"
-	value="<?php echo isset($employeeData->employee->homeAddLine1) ? $employeeData->employee->homeAddLine1 : ''; ?>">
-			</span>
-			<span class="span-class col-3">
-				<label class="labels__">Home Address Line2</label>
-	<input placeholder="Home Address Line2" id="homeAddLine2"  class="" type="text" name="homeAddLine2"
-	value="<?php echo isset($employeeData->employee->homeAddLine2) ? $employeeData->employee->homeAddLine2 : ''; ?>">
-			</span>
-			<span class="span-class col-3">
-				<label class="labels__">City</label>
-	<input  type="text" placeholder="City" id="homeAddCity"  class=""  name="homeAddCity"
-	value="<?php echo isset($employeeData->employee->homeAddCity) ? $employeeData->employee->homeAddCity : ''; ?>">
-			</span>				
-			<span class="span-class col-3">
-				<label class="labels__">Region</label>
-				<span class="select_css">
-		<select placeholder="Region" id="homeAddRegion"  class="" type="text" name="homeAddRegion" value="<?php echo isset($employeeData->employee->homeAddRegion) ? $employeeData->employee->homeAddRegion : ''; ?>">
-						<option value="ACT">Australian Capital Territory</option>
-						<option value="NSW">New South Wales</option>
-						<option value="NT">Northern Territory</option>
-						<option value="QLD">Queensland </option>
-						<option value="SA">South Australia</option>
-						<option value="TAS">Tasmania </option>
-						<option value="VIC">Victoria</option>
-						<option value="WA">Western Australia</option>
-					</select>
-				</span>
-			</span>
-			<span class="span-class col-3">
-				<label class="labels__">Postal</label>
-				<input placeholder="Postal" id="homeAddPostal"  class="" type="text" name="homeAddPostal" value="<?php echo isset($employeeData->employee->homeAddPostal) ? $employeeData->employee->homeAddPostal : ''; ?>">
-			</span>
-			<span class="span-class col-3">
-				<label class="labels__">Country</label>
-				<input placeholder="Country" id="homeAddCountry"  class="" type="text" name="homeAddCountry" value="<?php echo isset($employeeData->employee->homeAddCountry) ? $employeeData->employee->homeAddCountry : ''; ?>">
-			</span>
-		</span>
-		<hr>
-			<span class="span-class col-3">
-				<label class="labels__">Phone<sup>
-				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
-			</sup></label>
-				<input placeholder="Phone" id="phone"  class="" type="text" name="phone" value="<?php echo isset($employeeData->employee->phone) ? $employeeData->employee->phone : ''; ?>">
-			</span>
-			<span class="span-class col-3">
-				<label class="labels__">Mobile</label>
-				<input placeholder="Mobile" id="mobile"  class="" type="text" name="mobile" value="<?php echo isset($employeeData->employee->mobile) ? $employeeData->employee->mobile : ''; ?>">
-			</span>
-			<span class="span-class col-3" >
-				<label class="labels__">Email</label>
-				<input style="cursor: not-allowed" placeholder="Emails" id="emails"  class="" type="text" name="emails" readonly="readonly" value="<?php echo isset($employeeData->employee->emails) ? $employeeData->employee->emails : ''; ?>">
-			</span>
-			<hr>
-	<span class="d-block">
-<!-- 		<span class="span-class col-3">
-			<label>Start Date</label>
-		<input placeholder="Start Date" id="startDate"  class="" type="date" name="startDate" value="<?php // echo isset($employeeData->employee->startDate) ? $employeeData->employee->startDate : ''; ?>">
-		</span> -->
-	</span>
-<!-- 		<span class="span-class col-3">
-			<label>created_at</label>
-			<input placeholder="created_at" id="created_at"  class="" type="text">
-		</span>
-		<span class="span-class col-3">
-			<label>created_by</label>
-			<input placeholder="created_by" id="created_by"  class="" type="text">
-		</span> -->
-		<span class="span-class col-3">
-			<label>Emergency Contact</label>
-		<input placeholder="Emergency Contact" id="emergency_contact"  class="" type="text" name="emergency_contact" value="<?php echo isset($employeeData->employee->emergency_contact) ? $employeeData->employee->emergency_contact : ''; ?>">
-		</span>
-		<span class="span-class col-3">
-			<label>Relationship</label>
-		<input placeholder="Relationship" id="relationship"  class="" type="text" name="relationship" value="<?php echo isset($employeeData->employee->relationship) ? $employeeData->employee->relationship : ''; ?>">
-		</span>
-		<span class="span-class col-3">
-			<label>Emergency Contact Email</label>
-			<input placeholder="Emergency Contact Email" id="emergency_contact_email"  class="" type="email" name="emergency_contact_email" value="<?php echo isset($employeeData->employee->emergency_contact_email) ? $employeeData->employee->emergency_contact_email : ''; ?>">
-		</span>
-		<hr>
-	</section>
-
-	<section class="employee-bank-account-section">
-    <h3 class="add_remove_bank_account">Bank Account 
-      <span class="add-remove-row">
-        <span class="add-row"> Add </span>
-        <span class="remove-row"> Remove </span>
-      </span>
-    </h3>
-		<div class="parent-child">
-			<?php 
-				$eba = $employeeData->employeeBankAccount;
-				for($i=0;$i<count($employeeData->employeeBankAccount);$i++){ ?>
-			<div class="child">
-				<div class="statement"></div>
-<!-- 			<div class="row">
- --><!-- 		<span class="span-class col-3">
-			<label>Statement Text</label>
-			<input placeholder="Statement Text" type="text" class="statementText" >
-		</span> -->
-		<span class="span-class col-3">
-			<label>Account Name</label>
-			<input placeholder="Account Name" type="text" class="accountName" name="accountName[]" value="<?php echo isset($eba[$i]->accountName) ? $eba[$i]->accountName : ''; ?>">
-		</span>
-		<span class="span-class col-3">
-			<label>BSB</label>
-			<input placeholder="BSB" type="text" class="bsb" name="bsb[]" value="<?php echo isset($eba[$i]->bsb) ? $eba[$i]->bsb : ''; ?>">
-		</span>
-<!-- 	</div>
- -->		
-<!-- 	<span class="row">
- -->		<span class="span-class col-3">
-			<label>Account Number</label>
-			<input placeholder="Account Number" type="text" class="accountNumber" name="accountNumber[]" value="<?php echo isset($eba[$i]->accountNumber) ? $eba[$i]->accountNumber : ''; ?>">
-		</span>
-		<?php if($i ==  0){ ?>
-		<span class="span-class col-3 remainder_parent">
-			<label>Remainder</label>
-				<span>
-					<label class="yn-label">Yes</label>
-					<input value="Y" class="remainderYN yn-input" type="radio" name="remainderYN[]" <?php echo isset($eba[$i]->remainderYN) ? ($eba[$i]->remainderYN == 'Y' ? 'checked' : '') : ''; ?>>
-				</span>
-				<span>
-					<label class="yn-label">No</label>
-					<input value="N" class="remainderYN yn-input" type="radio" name="remainderYN[]" <?php echo isset($eba[$i]->remainderYN) ? (($eba[$i]->remainderYN == 'Y') ? 'checked' : '') : ''; ?>>
-				</span>
-		</span>
-		<?php   } ?>
-		<span class="span-class amount-class-parent col-3">
-			<div class="amount-class">
-				<label>Amount</label>
-				<input placeholder="Amount" type="text" class="amount" name="amount[]" value="<?php echo isset($eba[$i]->amount) ? $eba[$i]->amount : ''; ?>">
-			</div>
-		</span>
-<!-- 	</span>
- -->			</div>
-				<?php }if(count($eba) == 0){ ?>
-			<div class="child">
-				<div class="statement"></div>
-<!-- 			<div class="row">
- --><!-- 		<span class="span-class col-3">
-			<label>Statement Text</label>
-			<input placeholder="Statement Text" type="text" class="statementText" >
-		</span> -->
-		<span class="span-class col-3">
-			<label>Account Name</label>
-			<input placeholder="Account Name" type="text" class="accountName" name="accountName[]" >
-		</span>
-		<span class="span-class col-3">
-			<label>BSB</label>
-			<input placeholder="BSB" type="text" class="bsb" name="bsb[]" >
-		</span>
-<!-- 	</div>
- -->		
-<!-- 	<span class="row">
- -->		<span class="span-class col-3">
-			<label>Account Number</label>
-			<input placeholder="Account Number" type="text" class="accountNumber" name="accountNumber[]" >
-		</span>
-		<?php if($i ==  0){ ?>
-		<span class="span-class col-3 remainder_parent">
-			<label>Remainder</label>
-				<span>
-					<label class="yn-label">Yes</label>
-					<input value="Y" class="remainderYN yn-input" type="radio" name="remainderYN[]" >
-				</span>
-				<span>
-					<label class="yn-label">No</label>
-					<input value="N" class="remainderYN yn-input" type="radio" name="remainderYN[]" >
-				</span>
-		</span>
-		<?php   } ?>
-		<span class="span-class amount-class-parent col-3">
-			<div class="amount-class">
-				<label>Amount</label>
-				<input placeholder="Amount" type="text" class="amount" name="amount[]" >
-			</div>
-		</span>
-<!-- 	</span>
- -->			</div>
-				<?php } ?>
-		</div>
-	</section>
+							</div>
+						
+							<span id="subm" class="saveSuperfund btn btn-default btnOrange btn-small pull-right">SAVE</span>
+				
+						</section>
+						
+						<section class="employee-tax-declaration-section">
+							<!-- <h3>Employee Tax Declaration Section</h3> -->
 
 
+							<div class="form-floating">
+								<select placeholder="tfnExemptionType" id="tfnExemptionType" class="form-control" name="tfnExemptionType" select="<?php echo isset($employeeData->employeeTaxDeclaration->tfnExemptionType) ? $employeeData->employeeTaxDeclaration->tfnExemptionType : ''; ?>">
+									<!-- <option value="NONE">NONE</option> -->
+									<option value="NOTQUOTED">NOTQUOTED</option>
+									<option value="PENDING">PENDING</option>
+									<option value="PENSIONER">PENSIONER</option>
+									<option value="UNDER18">UNDER18</option>
+								</select>
+								<label for="tfnExemptionType">TFN Exemption Type</label>
+							</div> 
+							<div class="tax-declaration-class col-lg-12">
+								<div class="d-flex">
+									<span class="span-class col-md-4">
+										<div class="form-floating">
+											<input placeholder="Tax File Number" class="form-control" id="taxFileNumber" name="taxFileNumber" type="text" value="<?php echo isset($employeeData->employeeTaxDeclaration->taxFileNumber) ? $employeeData->employeeTaxDeclaration->taxFileNumber : ''; ?>">
+											<label for="taxFileNumber">Tax File Number</label>
+										</div>
+									</span>
+									<span class="span-class radioFlex col-md-4">
+										<label>Australian Resident For TaxPurpose</label>
+										<div class="d-flex">
+											<span>
+												<label class="yn-label">Yes</label>
+												<input placeholder="Australian Resident For TaxPurpose" type="radio"  name="australiantResidentForTaxPurposeYN" class="australiantResidentForTaxPurposeYN yn-input" value="Y" <?php echo isset($employeeData->employeeTaxDeclaration->australiantResidentForTaxPurposeYN) ? (($employeeData->employeeTaxDeclaration->australiantResidentForTaxPurposeYN == 'Y') ? 'checked' : '') : ''; ?>>
+											</span>
+											<span>
+												<label class="yn-label">No</label>
+												<input type="radio" name="australiantResidentForTaxPurposeYN" class="australiantResidentForTaxPurposeYN yn-input" value="N" <?php echo isset($employeeData->employeeTaxDeclaration->australiantResidentForTaxPurposeYN) ? (($employeeData->employeeTaxDeclaration->australiantResidentForTaxPurposeYN == 'N') ? 'checked' : '') : ''; ?>>
+											</span>
+										</div>
+									</span>
+									<span class="span-class col-md-4">
+										<div class="form-floating">
+											<select placeholder="residencyStatue" class="form-control" id="residencyStatue" name="residencyStatue" value="<?php echo isset($employeeData->employeeTaxDeclaration->residencyStatue) ? $employeeData->employeeTaxDeclaration->residencyStatue : ''; ?>">
+												<option value="AUSTRALIANRESIDENT">Australian Resident</option>
+												<option value="FOREIGNRESIDENT">Foreign Resident</option>
+												<option value="WORKINGHOLIDAY">Working Holiday</option>
+											</select>
+											<label for="residencyStatue">Residency Status</label>
+										</div>
+									</span>
+									<span class="span-class radioFlex col-md-4">
+										<label>Tax Free Threshold Claimed</label>
+										<div class="d-flex">
+											<span>
+												<label class="yn-label">Yes</label>
+												<input placeholder="taxFreeThresholdClaimedYN" type="radio" name="taxFreeThresholdClaimedYN" class="taxFreeThresholdClaimedYN yn-input" value="Y" <?php echo isset($employeeData->employeeTaxDeclaration->taxFreeThresholdClaimedYN) ? (($employeeData->employeeTaxDeclaration->taxFreeThresholdClaimedYN == 'Y') ? 'checked' : '') : ''; ?>>
+											</span>
+											<span>
+												<label class="yn-label">No</label>
+												<input type="radio" name="taxFreeThresholdClaimedYN" class="taxFreeThresholdClaimedYN yn-input" value="N" <?php echo isset($employeeData->employeeTaxDeclaration->taxFreeThresholdClaimedYN) ? (($employeeData->employeeTaxDeclaration->taxFreeThresholdClaimedYN == 'N') ? 'checked' : '') : ''; ?>>
+											</span>
+										</div>
+									</span>
+									<span class="span-class col-md-4">
+										<div class="form-floating">
+											<input placeholder="Tax Offset Estimated Amount" class="form-control" id="taxOffsetEstimatedAmount" type="number" name="taxOffsetEstimatedAmount" value="<?php echo isset($employeeData->employeeTaxDeclaration->taxOffsetEstimatedAmount) ? $employeeData->employeeTaxDeclaration->taxOffsetEstimatedAmount : ''; ?>">
+											<label for="taxOffsetEstimatedAmount">Tax Offset Estimated Amount</label>
+										</div>
+									</span>
+									<span class="span-class radioFlex col-md-4">
+										<label>Has HELP Debt</label>
+										<div class="d-flex">
+											<span>
+												<label class="yn-label">Yes</label>
+												<input placeholder="hasHELPDebtYN" name="hasHELPDebtYN" class="hasHELPDebtYN yn-input" value="Y" type="radio" <?php echo isset($employeeData->employeeTaxDeclaration->hasHELPDebtYN) ? (($employeeData->employeeTaxDeclaration->hasHELPDebtYN == 'Y') ? 'checked' : '') : ''; ?>>
+											</span>
+											<span>
+												<label class="yn-label">No</label>
+												<input type="radio" name="hasHELPDebtYN" class="hasHELPDebtYN yn-input" value="N" <?php echo isset($employeeData->employeeTaxDeclaration->hasHELPDebtYN) ? (($employeeData->employeeTaxDeclaration->hasHELPDebtYN == 'N') ? 'checked' : '') : ''; ?>>	
+											</span>
+										</div>
+									</span>
+									<span class="span-class radioFlex col-md-4">
+										<label>Has SFSS Debt</label>
+										<div class="d-flex">
+											<span>
+												<label class="yn-label">Yes</label>
+												<input placeholder="hasSFSSDebtYN" type="radio" name="hasSFSSDebtYN" class="hasSFSSDebtYN yn-input" value="Y" <?php echo isset($employeeData->employeeTaxDeclaration->hasSFSSDebtYN) ? (($employeeData->employeeTaxDeclaration->hasSFSSDebtYN == 'Y') ? 'checked' : '') : ''; ?>>
+											</span>
+											<span>
+												<label class="yn-label">No</label>
+												<input type="radio" name="hasSFSSDebtYN" class="hasSFSSDebtYN yn-input" value="N" <?php echo isset($employeeData->employeeTaxDeclaration->hasSFSSDebtYN) ? (($employeeData->employeeTaxDeclaration->hasSFSSDebtYN == 'N') ? 'checked' : '') : ''; ?>>
+											</span>
+										</div>
+									</span>
+									<span class="span-class radioFlex col-md-4">
+										<label>Has Trade Support Loan Debt</label>
+										<div class="d-flex">
+											<span>
+												<label class="yn-label">Yes</label>
+												<input placeholder="hasTradeSupportLoanDebtYN" type="radio" name="hasTradeSupportLoanDebtYN " class="hasTradeSupportLoanDebtYN yn-input" value="Y" <?php echo isset($employeeData->employeeTaxDeclaration->hasTradeSupportLoanDebtYN) ? (($employeeData->employeeTaxDeclaration->hasTradeSupportLoanDebtYN == 'Y') ? 'checked' : '') : ''; ?>>
+											</span>
+											<span>
+												<label class="yn-label">No</label>
+												<input type="radio" name="hasTradeSupportLoanDebtYN " class="hasTradeSupportLoanDebtYN yn-input" value="N" <?php echo isset($employeeData->employeeTaxDeclaration->hasTradeSupportLoanDebtYN) ? (($employeeData->employeeTaxDeclaration->hasTradeSupportLoanDebtYN == 'N') ? 'checked' : '') : ''; ?>>
+											</span>
+										</div>
+									</span>
+									<span class="span-class col-md-4">
+										<div class="form-floating">
+											<input placeholder="Upward Variation Tax Witholding Amount" class="form-control" id="upwardVariationTaxWitholdingAmount" name="upwardVariationTaxWitholdingAmount" type="number" value="<?php echo isset($employeeData->employeeTaxDeclaration->upwardVariationTaxWitholdingAmount) ? $employeeData->employeeTaxDeclaration->upwardVariationTaxWitholdingAmount : ''; ?>">
+											<label for="upwardVariationTaxWitholdingAmount">Upward Variation Tax Witholding Amount</label>
+										</div>
+									</span>
+									<span class="span-class radioFlex col-md-4">
+										<label>Eligible To Receive Leave Loading</label>
+										<div class="d-flex">
+											<span>
+												<label class="yn-label">Yes</label>
+												<input placeholder="eligibleToReceiveLeaveLoadingYN" type="radio" class="eligibleToReceiveLeaveLoadingYN yn-input" name="eligibleToReceiveLeaveLoadingYN" value="Y" <?php echo isset($employeeData->employeeTaxDeclaration->eligibleToReceiveLeaveLoadingYN) ? (($employeeData->employeeTaxDeclaration->eligibleToReceiveLeaveLoadingYN == 'Y') ? 'checked' : '') : ''; ?>>
+											</span>
+											<span>
+												<label class="yn-label">No</label>
+												<input type="radio" name="eligibleToReceiveLeaveLoadingYN" class="eligibleToReceiveLeaveLoadingYN yn-input" value="N" <?php echo isset($employeeData->employeeTaxDeclaration->eligibleToReceiveLeaveLoadingYN) ? (($employeeData->employeeTaxDeclaration->eligibleToReceiveLeaveLoadingYN == 'N') ? 'checked' : '') : ''; ?>>
+											<span>
+										</div>
+									</span>
+									<span class="span-class col-md-4">
+										<div class="form-floating">
+											<input placeholder="Approved Witholding Variation Percentage" class="form-control" id="approvedWitholdingVariationPercentage" name="approvedWitholdingVariationPercentage" type="number" value="<?php echo isset($employeeData->employeeTaxDeclaration->approvedWitholdingVariationPercentage) ? $employeeData->employeeTaxDeclaration->approvedWitholdingVariationPercentage : ''; ?>">
+											<label for="approvedWitholdingVariationPercentage">Approved Witholding Variation Percentage</label>
+										</div>
+									</span>
+									
+								</div>
+							</div>
+						</section>
 
-	<section class="employee-superfund-section">
-	<div> 
-			<span>
-				<span>Superannuation</span> 
-				<span>
-					<span class="select_css">
-						<?php 
-							$centers = json_decode($centers); 
-							if(isset($centers->centers) && count($centers->centers) > 0){
-						?>
-						<select name="" id="" class="center-select">
-							<?php foreach($centers->centers as $center){ ?>
-							<option value="<?php echo $center->centerid; ?>"><?php echo $center->name; ?></option>
+						<section class="employee-details">
+							<div class="d-flex">
+								<span class="span-class col-md-4" style="display:none">
+									<div class="form-floating">
+										<input placeholder="Employee Number" class="form-control" id="employee_no" type="text" name="employee_no" value="<?php echo isset($employeeData->employee->userid) ? $employeeData->employee->userid : ''; ?>">
+										<label for="employee_no">Employee Number</label>
+									</div>
+								</span>
+								<span class="span-class col-md-4" style="display:none">
+									<div class="form-floating">
+										<input placeholder="Xero Employee Id" class="form-control" id="xeroEmployeeId" type="text" name="xeroEmployeeId" value="<?php echo isset($employeeData->employee->xeroEmployeeId) ? $employeeData->employee->xeroEmployeeId : ''; ?>">
+										<label for="xeroEmployeeId">Xero Employee Id</label>
+									</div>
+								</span>
+							</div>
+
+
+							<div class="d-flex">
+								<span class="span-class col-md-4">
+									<div class="form-floating">
+										<input placeholder="Highest-qual-held" class="form-control" id="highest_qual_held" name="highest_qual_held" type="text"  value="<?php echo isset($employeeData->employeeRecord->highestQualHeld) ? $employeeData->employeeRecord->highestQualHeld : ''; ?>">
+										<label for="highest_qual_held">Highest qual held</label>
+									</div>
+								</span>
+								<span class="span-class col-md-4">
+									<div class="form-floating">
+										<input placeholder="Date Obtained" class="form-control" id="highest_qual_date_obtained" name="highest_qual_date_obtained" type="date"  value="<?php echo isset($employeeData->employeeRecord->highestQualDateObtained) ? $employeeData->employeeRecord->highestQualDateObtained : ''; ?>">
+										<label for="highest_qual_date_obtained">Date Obtained</label>
+									</div>
+								</span>
+								<!-- <span class="span-class col-md-4">
+									<div class="form-floating">
+										<input placeholder="Date Obtained" class="form-control" id="highest_qual_cert" name="highest_qual_cert" type="text" value=" ">
+										<label for="highest_qual_cert">Highest Qualification Certificate</label>
+									</div>
+								</span> -->
+								<!-- 		<span class="span-class col-3">
+											<label>Highest-qual-type	 </label>
+											<input placeholder="Highest-qual-type" id="highest_qual_type" type="text">
+										</span>
+								-->		
+								<span class="span-class col-md-4">
+									<div class="form-floating">
+										<input placeholder="Qual-towards-desc" class="form-control" id="qual_towards_desc" name="qual_towards_desc" type="text" value="<?php echo isset($employeeData->employeeRecord->qualWorkingTowards) ? $employeeData->employeeRecord->qualWorkingTowards : ''; ?>">
+										<label for="qual_towards_desc">Qualification working Toward</label>
+									</div>
+								</span>
+								<span class="span-class col-md-4">
+									<div class="form-floating">
+										<input placeholder="Qual towards % comp" class="form-control" id="qual_towards_percent_comp" name="qual_towards_percent_comp" type="number" value="<?php echo isset($employeeData->employeeRecord->qualTowardsPercentcomp) ? $employeeData->employeeRecord->qualTowardsPercentcomp : ''; ?>">
+										<label for="qual_towards_percent_comp">Qual towards % comp</label>
+									</div>
+								</span>
+
+								<!-- 		<span class="span-class col-3">
+											<label>	Workcover</label>
+											<input placeholder="Workcover" id="workcover" type="text">
+										</span>
+										<span class="span-class col-3">
+											<label>	PIAWE</label>
+											<input placeholder="PIAWE" id="piawe" type="text">
+										</span>
+										<span class="span-class col-3">
+											<label>	Annual-leave-in-contract</label>
+											<input placeholder="Annual-leave-in-contract" id="annual_leave_in_contract" type="text">
+										</span> -->
+								<span class="span-class col-md-4">
+									<div class="form-floating">
+										<input placeholder="Classification" id="classification" class="form-control" name="classification" type="text" value="<?php echo isset($employeeData->employee->classification) ? $employeeData->employee->classification : ''; ?>">
+										<label for="classification">Classification</label>
+									</div>
+								</span>
+								<span class="span-class col-md-4">
+									<div class="form-floating">
+									<!-- <php echo isset($employeeData->employee->ordinaryEarningRateId) ? $employeeData->employee->ordinaryEarningRateId : ''; ?> -->
+										<select placeholder="Ordinary Earning Rate Id" class="form-control" id="ordinaryEarningRateId" name="ordinaryEarningRateId">
+											<?php $awardsdata = json_decode($ordinaryEarningRate);
+												foreach($awardsdata->awards as $award){
+												?>
+											<option value="<?php echo $award->earningRateId; ?>" <?php if($employeeData->employee->ordinaryEarningRateId == $award->earningRateId){ echo "selected"; }else{ echo "";} ?>><?php echo $award->name; ?></option>
+											<?php } ?>
+										</select>
+										<label for="ordinaryEarningRateId">Ordinary Earning Rate Id</label>
+									</div>
+								</span>
+
+										<!-- <span class="span-class col-3">
+											<label>Payroll Calendar</label>
+											<input placeholder="Payroll Calendar" id="payroll_calendar" name="payroll_calendar" type="text" value="<php echo isset($employeeData->employee->payrollCalendarId) ? $employeeData->employee->payrollCalendarId : ''; ?>">
+										</span> -->
+									<input type="hidden" name="payroll_calendar" id="payroll_calendar" value="<?php echo isset($employeeData->employee->payrollCalendarId) ? $employeeData->employee->payrollCalendarId : ''; ?>">
+
+								<span class="span-class radioFlex col-md-4">
+									<label>Visa Holder</label>
+									<div class="d-flex">
+										<span>
+											<label class="yn-label">Yes</label>
+											<input  type="radio" name="visa_holder" class="visa_holder yn-input" value="Y" <?php echo isset($employeeData->employeeRecord->visaHolderYN) ? (($employeeData->employeeRecord->visaHolderYN == 'Y') ? 'checked' : '') : ''; ?>>
+										</span>
+										<span>
+											<label class="yn-label">No</label>
+											<input type="radio" name="visa_holder" class="visa_holder yn-input" value="N" <?php echo isset($employeeData->employeeRecord->visaHolderYN) ? (($employeeData->employeeRecord->visaHolderYN == 'N') ? 'checked' : '') : ''; ?>>
+										</span>
+									</div>
+								</span>
+								<span class="span-class col-md-4">
+									<div class="form-floating">
+										<input placeholder="Visa-type" id="visa_type" class="form-control" name="visa_type" type="text" value="<?php echo isset($employeeData->employeeRecord->visaType) ? $employeeData->employeeRecord->visaType : ''; ?>">
+										<label for="visa_type">Visa type</label>
+									</div>
+								</span>
+								<span class="span-class col-md-4">
+									<div class="form-floating">
+										<input placeholder="Visa-grant-date" id="visa_grant_date" class="form-control" name="visa_grant_date" type="date" value="<?php echo isset($employeeData->employeeRecord->visaGrantDate) ? $employeeData->employeeRecord->visaGrantDate : ''; ?>">
+										<label for="visa_grant_date">Visa Grant Date</label>
+									</div>
+								</span>
+								<span class="span-class col-md-4">
+									<div class="form-floating">
+										<input placeholder="Visa-end-date" class="form-control" id="visa_end_date" name="visa_end_date" type="date" value="<?php echo isset($employeeData->employeeRecord->visaEndDate) ? $employeeData->employeeRecord->visaEndDate : ''; ?>">
+										<label for="visa_end_date">Visa End Date</label>
+									</div>
+								</span>
+								<span class="span-class col-md-4">
+									<div class="form-floating">
+										<input placeholder="Visa-conditions" class="form-control" id="visa_conditions" name="visa_conditions" type="text" value="<?php echo isset($employeeData->employee->visaConditions) ? $employeeData->employee->visaConditions : ''; ?>">
+										<label for="visa_conditions">Visa Conditions</label>
+									</div>
+								</span>
+								<span class="span-class col-md-4">
+									<div class="form-floating">
+										<input placeholder="Termination Date" id="terminationDate"  class="form-control" type="date" name="terminationDate" value="<?php echo isset($employeeData->employee->terminationDate) ? $employeeData->employee->terminationDate : ''; ?>">
+										<label for="terminationDate">Termination Date</label>
+									</div>
+								</span>
+
+
+								<!-- NEW ADDED -->
+								<span class="span-class col-md-4">
+									<div class="form-floating">
+										<!-- <input placeholder="Level/Classification" class="form-control" id="level_classification" name="level_classification" type="text" value="<php echo isset($employeeData->employee->enName) ? $employeeData->employee->enName : ''; ?>">
+										<label for="level_classification">Level/Classification</label> -->
+										<select name="level" id="level" class="form-control">
+											<option value="">--SELECT LEVEL--</option>
+											<?php foreach($entitlementsdetails->entitlements as $ei=>$ev){ ?>
+												<?php
+													if(!empty($employeeData->employee->enName)){ ?>
+														<?php if($employeeData->employee->level = $ev->id){ ?>
+															<option value="<?= $ev->id ?>,<?= $ev->hourlyRate ?>" selected><?= $ev->name ?>(<?= $ev->hourlyRate ?>)</option>
+														<?php }else{ ?> 
+															<option value="<?= $ev->id ?>,<?= $ev->hourlyRate ?>"><?= $ev->name ?>(<?= $ev->hourlyRate ?>)</option>
+														<?php } ?>
+												<?php }else{ ?> 
+													<option value="<?= $ev->id ?>,<?= $ev->hourlyRate ?>"><?= $ev->name ?>(<?= $ev->hourlyRate ?>)</option>
+												<?php } ?>
+											<?php } ?>
+										</select>
+										<script>
+											$('#level').change(function(){
+												var level = $(this).val();
+												// alert(level);
+												var exploede = level.split(",");
+												$("#bp").val(exploede[1]);
+											});
+										</script>
+										<label for="level_classification">Level/Classification</label>
+										<!-- <select id="level_classification" class="form-control" name="level_classification" required>
+											<php $levels = json_decode($levels);
+												foreach($levels->entitlements as $level){
+												?>
+											<option value="<php echo $level->id; ?>">//<php echo $level->name." (".$level->hourlyRate.")"; ?></option>
+											<php } ?>
+										</select>
+										<label for="level_classification">Level/Classification</label> -->
+									</div>
+								</span>
+								<span class="span-class col-md-4">
+									<div class="form-floating">
+										<!-- <label for="employment_type">Employment Type</label> -->
+										<select name="employment_type" id="employment_type" class="form-control">
+											<option value="FT" <?php if(isset($employeeData->employeeRecord->employmentType) == "FT"){ echo "selected";}else{ echo "";}?>>Full Time</option>
+											<option value="PT" <?php if(isset($employeeData->employeeRecord->employmentType) == "PT"){ echo "selected";}else{ echo "";}?>>Part Time</option>
+											<option value="C" <?php if(isset($employeeData->employeeRecord->employmentType) == "C"){ echo "selected";}else{ echo "";}?>>Casual</option>
+										</select>
+										<label for="employment_type">Employment Type</label>
+										<!-- <input placeholder="Employment Type" class="form-control" id="employment_type" name="employment_type" type="text" value="<php echo isset($employeeData->employeeRecord->employmentType) ? $employeeData->employeeRecord->employmentType : ''; ?>">
+										<label for="employment_type">Employment Type</label> -->
+									</div>
+								</span>
+								<span class="span-class col-md-4">
+									<div class="form-floating">
+										<input type="hidden" name="role" id="role" value="<?= $employeeData->users->roleid ?>">
+										<input placeholder="Contracted Role" class="form-control" id="contracted_role" name="contracted_role" type="text" value="<?php echo isset($employeeData->employee->roleName) ? $employeeData->employee->roleName : ''; ?>">
+										<label for="contracted_role">Contracted Role</label>
+									</div>
+								</span>
+								<span class="span-class col-md-4">
+									<div class="form-floating">
+										<input placeholder="Usual Hours" class="form-control" id="usual_hours" name="usual_hours" type="text" value="<?php echo isset($employeeData->employee->maxhours) ? $employeeData->employee->maxhours : '38.00'; ?>">
+										<label for="usual_hours">Usual Hours</label>
+									</div>
+								</span>
+								<span class="span-class col-md-4">
+									<div class="form-floating">
+										<input placeholder="Base Pay" id="bp" class="form-control" type="text" name="bp" value="<?php echo isset($employeeData->employee->hourlyRate) ? $employeeData->employee->hourlyRate : ''; ?>">
+										<label for="bp">Base Pay (in Dollars)</label>
+									</div>
+								</span>
+								<span class="span-class col-md-4">
+									<div class="form-floating">
+										<input placeholder="Increase of base pay" id="iobp" class="form-control" type="text" name="iobp" value="<?php echo isset($employeeData->employee->bonusRate) ? $employeeData->employee->bonusRate : ''; ?>">
+										<label for="iobp">Increase of base pay (in Dollars)</label>
+									</div>
+								</span>
+								<!-- NEW ADDED -->
+
+							</div>
+						</section>
+						<section class="courses-tab">
+							<?php $toCount = isset($employeeData->employeeCourses) ? $employeeData->employeeCourses : ''; 
+								// count($toCount)
+								for($i=0;$i<count($toCount);$i++){ ?>
+									<div class="courses_div">
+										<input type="text" name="course_id[]" style="display:none" value="<?php echo isset($employeeData->employeeCourses[$i]->id) ? $employeeData->employeeCourses[$i]->id : ''; ?>">
+						
+										<div class="d-flex">
+											<span class="span-class col-md-3">
+												<div class="form-floating">
+													<input placeholder="Course Name" id="course_Name" class="course_name form-control" name="course_name[]" type="text" value="<?php echo isset($employeeData->employeeCourses[$i]->courseName) ? $employeeData->employeeCourses[$i]->courseName : ''; ?>">
+													<label for="course_Name">Course Name</label>
+												</div>
+											</span>
+											<span class="span-class col-md-3">
+												<div class="form-floating">
+													<input placeholder="Date Obtained" id="date_obtained" class="date_obtained form-control" name="date_obtained[]" type="date" value="<?php echo isset($employeeData->employeeCourses[$i]->dateObtained) ? $employeeData->employeeCourses[$i]->dateObtained : ''; ?>">
+													<label for="date_obtained">Date Obtained</label>
+												</div>
+											</span>
+											<?php
+												if(isset($employeeData->employeeCourses[$i]->courseCertificate) !== ""){ ?>
+													<span class="span-class col-md-3">
+														<div class="form-floating" style="background: #f3f3f3;padding: 10px;">
+															<center><a href="<?= base_url('api/application/assets/uploads/documents/'.$employeeData->employeeCourses[$i]->courseCertificate) ?>" target="_blank">VIEW FILE</a></center>
+														</div>
+													</span>
+												<?php }else{ ?>
+													<span class="span-class col-md-3">
+														<div class="form-floating">
+															<input placeholder="Certificate" id="Certificate" class="certificate form-control" name="certificate[]" type="FILE">
+															<label for="Certificate">Certificate </label>
+														</div>
+													</span>
+												<?php }
+											?>
+
+
+											<span class="span-class col-md-3">
+												<div class="form-floating">
+													<input placeholder="Expiry Date" id="expiry_date" class="expiry_date form-control" name="expiry_date[]" type="date" value="<?php echo isset($employeeData->employeeCourses[$i]->courseExpiryDate) ? date('Y-m-d',strtotime($employeeData->employeeCourses[$i]->courseExpiryDate)) : ''; ?>">
+													<label for="expiry_date">Expiry Date</label>
+												</div>
+											</span>
+											<span class="span-class col-md-12">
+												<div class="form-floating">
+													<textarea placeholder="Course Description" id="course_description" class="course_description form-control" name="course_description[]" type="text" value="" inputType="textarea"><?php echo isset($employeeData->employeeCourses[$i]->courseDescription) ? $employeeData->employeeCourses[$i]->courseDescription : ''; ?></textarea>
+													<label for="course_description">Course Description</label>
+												</div>
+											</span>
+											<?php if( isset($employeeData->employeeCourses[$i]->id) ){ ?>
+												<span class="course_delete bg-danger text-white mb-4 p-2" courseId="<?php echo isset($employeeData->employeeCourses[$i]->id) ? $employeeData->employeeCourses[$i]->id : ''; ?>">Delete</span>
+											<?php } ?>
+										</div>
+									</div>
+								<?php } ?>
+								<!-- <div class="courses_buttons">
+									<span class="remove_course btn btn-default btn-small pull-right"><span class="material-icons-outlined">highlight_off</span> Remove</span>
+									<span class="add_course btn btn-default btn-small btnBlue pull-right"><span class="material-icons-outlined">add_circle_outline</span> Add</span>
+								</div> -->
+
+								<div class="courses_div_new">
+									<input type="text" name="course_id[]" style="display:none" value="">
+									<div class="d-flex">
+										<span class="span-class col-md-3">
+											<div class="form-floating">
+												<input placeholder="Course Name" id="course_name" class="course_name form-control" name="course_name[]" type="text" value="">
+												<label for="course_name">Course Name</label>
+											</div>
+										</span>
+										<span class="span-class col-md-3">
+											<div class="form-floating">
+												<input placeholder="Date Obtained" id="date_obtained" class="date_obtained form-control" name="date_obtained[]" type="date" value="">
+												<label for="date_obtained">Date Obtained</label>
+											</div>
+										</span>
+										<span class="col-md-3 inputfile-box">
+											<input placeholder="Certificate" id="certificate" class="certificate form-control inputfile" name="certificate[]" type="file" accept="application/pdf" onchange="uploadFile2(this)">
+											<!-- <input placeholder="Certificate" id="certificate" class="certificate form-control inputfile" name="certificate[]" type="file" accept="application/pdf"> -->
+											<label for="certificate">
+												<span id="file-name2" class="file-box file-name2"></span>
+												<span class="file-button">
+													<span class="material-icons-outlined">publish</span>
+													Select File
+												</span>
+											</label>
+										</span>
+										<span class="span-class col-md-3">
+											<div class="form-floating">
+												<input placeholder="Expiry Date" id="expiry_date" class="expiry_date form-control" name="expiry_date[]" type="date" value="">
+												<label for="expiry_date">Expiry Date</label>
+											</div>
+										</span>
+										<span class="span-class col-md-12">
+											<div class="form-floating">
+												<textarea placeholder="Course Description" id="course_description" class="course_description form-control" name="course_description[]" type="text" value="" inputType="textarea"></textarea>
+												<label for="course_description">Course Description</label>
+											</div>
+										</span>
+									</div>
+								</div>
+						</section>
+
+						<section class="medical-info">
+							<div class="d-flex">
+								<span class="span-class col-md-3">
+									<div class="form-floating">
+										<input  type="text" id="medicareNo" name="medicareNo" class="medicareNo form-control" value="<?php echo isset($employeeData->employeeMedicalInfo->medicareNo) ? $employeeData->employeeMedicalInfo->medicareNo : ''; ?>">
+										<label for="medicareNo">Medicare Number</label>
+									</div>
+								</span>
+								<span class="span-class col-md-3">
+									<div class="form-floating">
+										<input  type="text" id="medicareRefNo" name="medicareRefNo" class="medicareRefNo form-control" value="<?php echo isset($employeeData->employeeMedicalInfo->medicareRefNo) ? $employeeData->employeeMedicalInfo->medicareRefNo : ''; ?>">
+										<label for="medicareRefNo">Medicare Reference Number</label>
+									</div>
+								</span>
+								<span class="span-class col-md-3">
+									<div class="form-floating">
+										<input  type="text" id="healthInsuranceFund" name="healthInsuranceFund" class="healthInsuranceFund form-control" value="<?php echo isset($employeeData->employeeMedicalInfo->healthInsuranceFund) ? $employeeData->employeeMedicalInfo->healthInsuranceFund : ''; ?>">
+										<label for="healthInsuranceFund">Health Insurance Fund</label>
+									</div>
+								</span>
+								<span class="span-class col-md-3">
+									<div class="form-floating">
+										<input  type="text" id="healthInsuranceNo" name="healthInsuranceNo" class="healthInsuranceNo form-control" value="<?php echo isset($employeeData->employeeMedicalInfo->healthInsuranceNo) ? $employeeData->employeeMedicalInfo->healthInsuranceNo : ''; ?>">
+										<label for="healthInsuranceNo">Health Insurance Number</label>
+									</div>
+								</span>
+								<span class="span-class col-md-3">
+									<div class="form-floating">
+										<input  type="text" id="ambulanceSubscriptionNo" name="ambulanceSubscriptionNo" class="ambulanceSubscriptionNo form-control"  value="<?php echo isset($employeeData->employeeMedicalInfo->ambulanceSubscriptionNo) ? $employeeData->employeeMedicalInfo->ambulanceSubscriptionNo : ''; ?>">
+										<label for="ambulanceSubscriptionNo">Ambulance Subscription Number</label>
+									</div>
+								</span>
+							</div>
+							<?php $toSize = isset($employeeData->employeeMedicals) ? $employeeData->employeeMedicals : ''; ?>
+							<?php for($i=0;$i<count($toSize);$i++){ ?>
+							<input type="text" name="medicals_id[]" style="display:none" value="<?php echo isset($employeeData->employeeMedicals[$i]->id) ? $employeeData->employeeMedicals[$i]->id : ''; ?>">
+			
+								<div class="d-flex">
+									<span class="span-class col-md-3">
+										<div class="form-floating">
+											<input id="medicalConditions" type="text"  name="medicalConditions[]" class="medicalConditions form-contol" value="<?php echo isset($employeeData->employeeMedicals[$i]->medicalConditions) ? $employeeData->employeeMedicals[$i]->medicalConditions : ''; ?>">
+											<label for="medicalConditions">Medical Conditions</label>
+										</div>
+									</span>
+									<span class="span-class col-md-3">
+										<div class="form-floating">
+											<input  type="text" id="medicalAllergies"  name="medicalAllergies[]" class="medicalAllergies form-contol" value="<?php echo isset($employeeData->employeeMedicals[$i]->medicalAllergies) ? $employeeData->employeeMedicals[$i]->medicalAllergies : ''; ?>">
+											<label for="medicalAllergies">Medical Allergies</label>
+										</div>
+									</span>
+									<span class="span-class col-md-3">
+										<div class="form-floating">
+											<input  type="text" id="medication" name="medication[]" class="medication form-contol" value="<?php echo isset($employeeData->employeeMedicals[$i]->medication) ? $employeeData->employeeMedicals[$i]->medication : ''; ?>">
+											<label for="medication">Medication</label>
+										</div>
+									</span>
+									<span class="span-class col-md-3">
+										<div class="form-floating">
+											<input  type="text" id="dietaryPreferences" name="dietaryPreferences[]" class="dietaryPreferences form-contol" value="<?php echo isset($employeeData->employeeMedicals[$i]->dietaryPreferences) ? $employeeData->employeeMedicals[$i]->dietaryPreferences : ''; ?>">
+											<label for="dietaryPreferences">Dietary Preferences</label>
+										</div>
+									</span>
+								</div>
+
 							<?php } ?>
-						</select>
-						<?php } ?>
-					</span>
-				</span>
-			</span>
-			<span class="add_remove_superfund">
-				<span id="superfund-add"> Add </span>
-				<span class="superfund-remove"> Remove </span>
-			</span>
-		</div>
-<!-- 		<span class="span-class col-3">
-			<label>Employee Id</label>
-			<input placeholder="Employee Id" id="employeeId" >
-		</span> -->
-			<div class="superfund-parent">
-			<?php 
-			$checkSuperfund = count($employeeData->employeeSuperfunds);
-			foreach($employeeData->employeeSuperfunds as $supFund){ ?>
-				<div class="superfund-child row">
-					<span class="span-class col-3">
-						<label>Super Fund Id</label>
-						<span class="select_css">
-							<select placeholder="Super Fund Id" class="superFundId" name="superFund[Id][]" value="<?php echo isset($supFund->superFundId) ? $supFund->superFundId : ''; ?>">
-							<?php 
-							$superFundValue = isset($supFund->superFundId) ? $supFund->superFundId : '';
-							foreach($superfunds->superfunds as $superfund){
-								if($superFundValue == $superfund->superFundId){
-									echo "<option value='$superfund->superFundId' selected>$superfund->name</option>";
-								}else{
-									echo "<option value='$superfund->superFundId'>$superfund->name</option>";
-								}
-							}
-							?>
-							</select>
-						</span>
-					</span>
-					<span class="span-class col-3">
-						<label>Super Membership Id</label>
-						<input placeholder="Super Membership Id" class="superMembershipId" type="text" name="superFund[MembershipId][]" value="<?php echo isset($supFund->superMembershipId) ? $supFund->superMembershipId : ''; ?>">
-					</span>
-					<span class="span-class col-3">
-						<label class="labels__">Employee Number</label>
-						<input class="employeeNumber" type="text" name="superFund[EmployeeNumber][]" value="<?php echo isset($supFund->employeeNumber) ? $supFund->employeeNumber : ''; ?>">
-					</span>
-				</div>
-				<?php }if($checkSuperfund == 0){ ?>
-				<div class="superfund-child row">
-					<span class="span-class col-3">
-						<label>Super Fund Id</label>
-						<span class="select_css">
-							<select placeholder="Super Fund Id" class="superFundId" name="superFund[Id][]">
-							<?php 
-							foreach($superfunds->superfunds as $superfund){
-									echo "<option value='$superfund->superFundId'>$superfund->name</option>";
-							}
-							?>
-							</select>
-						</span>
-					</span>
-					<span class="span-class col-3">
-						<label>Super Membership Id</label>
-						<input placeholder="Super Membership Id" class="superMembershipId" type="text" name="superFund[MembershipId][]" >
-					</span>
-					<span class="span-class col-3">
-						<label class="labels__">Employee Number</label>
-						<input class="employeeNumber" type="text" name="superFund[EmployeeNumber][]" >
-					</span>
-				</div>
-				<?php } ?>
+						</section>
 
+
+						<section class="documents-tab">
+							<div class="addRemoveDocument">
+								<span class="addRemoveDocumentSpan btn btn-default btn-small btnBlue pull-right">
+									<span class="material-icons-outlined">add_circle_outline</span> Add
+								</span>
+							</div>
+			
+							<div class="addDocumentsDiv template_table">
+
+								<table class="documentsTable">
+									<tr style="text-align:center">
+										<th>Document Name</th>
+										<th>Download</th>
+										<th>Delete</th>
+									</tr>
+									<tr>
+										<td>Resume Document </td>
+										<td class="singleDocDownload"><span class="btn btn-default btn-small btn-diable">Download</span></td>
+										<td><input  id="resume_doc" name="resume_doc" type="file" value=""></td>
+									</tr>
+									<tr>
+										<td>Contract Document</td>
+										<td class="singleDocDownload"><span class="btn btn-default btn-small btn-diable">Download</span></td>
+										<td><input  id="contract_doc" name="contract_doc" type="file" value=""></td>
+									</tr>
+									<?php foreach($employeeData->employeeDocuments as $docs){ ?>
+										<tr class="singleDocBlock">
+											<td class="singleDocName"><?php echo $docs->name ?></td>
+											<td class="singleDocDownload">
+												<a class="btn btn-default btn-small btnBlue" href="<?php echo DOCUMENTS_PATH.($docs->document) ?>" download>Download</a>
+											</td>
+											<td><button class="deleteDocument btn btn-default btn-small btnOrange" docId="<?php echo $docs->id ?>">Delete</button></td>
+										</tr>
+									<?php } ?>
+									<tr class="addSingleDocument">
+										<td><input type="text" name="addFileName[]"></td>
+										<td><input type="file" name="addFile[]" class="addFile"></td>
+										<td><span class="removeDocumentButton btn btn-default btn-small btnOrange">Remove</span></td>
+									</tr>
+								</table>
+							</div>
+						</section>
+
+						<div class="submit-div editEmpSubmit">
+							<button id="subm" class="btn btn-deault btn-small btnOrange pull-right" type="submit">
+								<span class="material-icons-outlined">send</span> Submit
+							</button>
+						</div>
+					</form>
+	<?php // } ?>
 			</div>
-			<div>
-					<span id="subm" class="saveSuperfund">SAVE</span>
-			</div>
-	</section>
-
-
-
-
-
-	<section class="employee-tax-declaration-section">
-		<!-- <h3>Employee Tax Declaration Section</h3> -->
-
-
-		<span class="span-class col-3 pl-4">
-			<label>TFN Exemption Type</label>
-			<span class="select_css">
-				<select placeholder="tfnExemptionType" id="tfnExemptionType" name="tfnExemptionType" select="<?php echo isset($employeeData->employeeTaxDeclaration->tfnExemptionType) ? $employeeData->employeeTaxDeclaration->tfnExemptionType : ''; ?>">
-					<option value="NONE">NONE</option>
-					<option value="NOTQUOTED">NOTQUOTED</option>
-					<option value="PENDING">PENDING</option>
-					<option value="PENSIONER">PENSIONER</option>
-					<option value="UNDER18">UNDER18</option>
-				</select>
-			</span>
-		</span> 
-		<div class="tax-declaration-class col-lg-12">
-		<span class="span-class col-3">
-			<label>Tax File Number</label>
-			<input placeholder="Tax File Number" id="taxFileNumber" name="taxFileNumber" type="text" value="<?php echo isset($employeeData->employeeTaxDeclaration->taxFileNumber) ? $employeeData->employeeTaxDeclaration->taxFileNumber : ''; ?>">
-		</span>
-		<span class="span-class col-3">
-			<label>Australian Resident For TaxPurpose</label>
-			<label class="yn-label">Yes</label>
-				<input placeholder="Australian Resident For TaxPurpose" type="radio"  name="australiantResidentForTaxPurposeYN" class="australiantResidentForTaxPurposeYN yn-input" value="Y" <?php echo isset($employeeData->employeeTaxDeclaration->australiantResidentForTaxPurposeYN) ? (($employeeData->employeeTaxDeclaration->australiantResidentForTaxPurposeYN == 'Y') ? 'checked' : '') : ''; ?>>
-			<label class="yn-label">No</label>
-				<input type="radio" name="australiantResidentForTaxPurposeYN" class="australiantResidentForTaxPurposeYN yn-input" value="N" <?php echo isset($employeeData->employeeTaxDeclaration->australiantResidentForTaxPurposeYN) ? (($employeeData->employeeTaxDeclaration->australiantResidentForTaxPurposeYN == 'N') ? 'checked' : '') : ''; ?>>
-		</span>
-		<span class="span-class col-3">
-			<label>Residency Status</label>
-			<span class="select_css">
-				<select placeholder="residencyStatue" id="residencyStatue" name="residencyStatue" value="<?php echo isset($employeeData->employeeTaxDeclaration->residencyStatue) ? $employeeData->employeeTaxDeclaration->residencyStatue : ''; ?>">
-					<option value="AUSTRALIANRESIDENT">Australian Resident</option>
-					<option value="FOREIGNRESIDENT">Foreign Resident</option>
-					<option value="WORKINGHOLIDAY">Working Holiday</option>
-				</select>
-			</span>
-		</span>
-		<span class="span-class col-3">
-			<label>Tax Free Threshold Claimed</label>
-			<label class="yn-label">Yes</label>
-				<input placeholder="taxFreeThresholdClaimedYN" type="radio" name="taxFreeThresholdClaimedYN" class="taxFreeThresholdClaimedYN yn-input" value="Y" <?php echo isset($employeeData->employeeTaxDeclaration->taxFreeThresholdClaimedYN) ? (($employeeData->employeeTaxDeclaration->taxFreeThresholdClaimedYN == 'Y') ? 'checked' : '') : ''; ?>>
-			<label class="yn-label">No</label>
-				<input type="radio" name="taxFreeThresholdClaimedYN" class="taxFreeThresholdClaimedYN yn-input" value="N" <?php echo isset($employeeData->employeeTaxDeclaration->taxFreeThresholdClaimedYN) ? (($employeeData->employeeTaxDeclaration->taxFreeThresholdClaimedYN == 'N') ? 'checked' : '') : ''; ?>>
-		</span>
-		<span class="span-class col-3">
-			<label>Tax Offset Estimated Amount</label>
-			<input placeholder="Tax Offset Estimated Amount" id="taxOffsetEstimatedAmount" type="number" name="taxOffsetEstimatedAmount" value="<?php echo isset($employeeData->employeeTaxDeclaration->taxOffsetEstimatedAmount) ? $employeeData->employeeTaxDeclaration->taxOffsetEstimatedAmount : ''; ?>">
-		</span>
-		<span class="span-class col-3">
-			<label>Has HELP Debt</label>
-			<label class="yn-label">Yes</label>
-			<input placeholder="hasHELPDebtYN" name="hasHELPDebtYN" class="hasHELPDebtYN yn-input" value="Y" type="radio" <?php echo isset($employeeData->employeeTaxDeclaration->hasHELPDebtYN) ? (($employeeData->employeeTaxDeclaration->hasHELPDebtYN == 'Y') ? 'checked' : '') : ''; ?>>
-			<label class="yn-label">No</label>
-			<input type="radio" name="hasHELPDebtYN" class="hasHELPDebtYN yn-input" value="N" <?php echo isset($employeeData->employeeTaxDeclaration->hasHELPDebtYN) ? (($employeeData->employeeTaxDeclaration->hasHELPDebtYN == 'N') ? 'checked' : '') : ''; ?>>	
-		</span>
-		<span class="span-class col-3">
-			<label>Has SFSS Debt</label>
-			<label class="yn-label">Yes</label>
-			<input placeholder="hasSFSSDebtYN" type="radio" name="hasSFSSDebtYN" class="hasSFSSDebtYN yn-input" value="Y" <?php echo isset($employeeData->employeeTaxDeclaration->hasSFSSDebtYN) ? (($employeeData->employeeTaxDeclaration->hasSFSSDebtYN == 'Y') ? 'checked' : '') : ''; ?>>
-			<label class="yn-label">No</label>
-			<input type="radio" name="hasSFSSDebtYN" class="hasSFSSDebtYN yn-input" value="N" <?php echo isset($employeeData->employeeTaxDeclaration->hasSFSSDebtYN) ? (($employeeData->employeeTaxDeclaration->hasSFSSDebtYN == 'N') ? 'checked' : '') : ''; ?>>
-		</span>
-		<span class="span-class col-3">
-			<label>Has Trade Support Loan Debt</label>
-			<label class="yn-label">Yes</label>
-			<input placeholder="hasTradeSupportLoanDebtYN" type="radio" name="hasTradeSupportLoanDebtYN " class="hasTradeSupportLoanDebtYN yn-input" value="Y" <?php echo isset($employeeData->employeeTaxDeclaration->hasTradeSupportLoanDebtYN) ? (($employeeData->employeeTaxDeclaration->hasTradeSupportLoanDebtYN == 'Y') ? 'checked' : '') : ''; ?>>
-			<label class="yn-label">No</label>
-			<input type="radio" name="hasTradeSupportLoanDebtYN " class="hasTradeSupportLoanDebtYN yn-input" value="N" <?php echo isset($employeeData->employeeTaxDeclaration->hasTradeSupportLoanDebtYN) ? (($employeeData->employeeTaxDeclaration->hasTradeSupportLoanDebtYN == 'N') ? 'checked' : '') : ''; ?>>
-		</span>
-		<span class="span-class col-3">
-			<label>Upward Variation Tax Witholding Amount</label>
-			<input placeholder="Upward Variation Tax Witholding Amount" id="upwardVariationTaxWitholdingAmount" name="upwardVariationTaxWitholdingAmount" type="number" value="<?php echo isset($employeeData->employeeTaxDeclaration->upwardVariationTaxWitholdingAmount) ? $employeeData->employeeTaxDeclaration->upwardVariationTaxWitholdingAmount : ''; ?>">
-		</span>
-		<span class="span-class col-3">
-			<label>Eligible To Receive Leave Loading</label>
-			<label class="yn-label">Yes</label>
-			<input placeholder="eligibleToReceiveLeaveLoadingYN" type="radio" class="eligibleToReceiveLeaveLoadingYN yn-input" name="eligibleToReceiveLeaveLoadingYN" value="Y" <?php echo isset($employeeData->employeeTaxDeclaration->eligibleToReceiveLeaveLoadingYN) ? (($employeeData->employeeTaxDeclaration->eligibleToReceiveLeaveLoadingYN == 'Y') ? 'checked' : '') : ''; ?>>
-			<label class="yn-label">No</label>
-			<input type="radio" name="eligibleToReceiveLeaveLoadingYN" class="eligibleToReceiveLeaveLoadingYN yn-input" value="N" <?php echo isset($employeeData->employeeTaxDeclaration->eligibleToReceiveLeaveLoadingYN) ? (($employeeData->employeeTaxDeclaration->eligibleToReceiveLeaveLoadingYN == 'N') ? 'checked' : '') : ''; ?>>
-		</span>
-		<span class="span-class col-3">
-			<label>Approved Witholding Variation Percentage</label>
-			<input placeholder="Approved Witholding Variation Percentage" id="approvedWitholdingVariationPercentage" name="approvedWitholdingVariationPercentage" type="number" value="<?php echo isset($employeeData->employeeTaxDeclaration->approvedWitholdingVariationPercentage) ? $employeeData->employeeTaxDeclaration->approvedWitholdingVariationPercentage : ''; ?>">
-		</span>
-		
-	</div>
-	</section>
-
-
-	<section class="employee-details">
-		<span class="span-class col-3" style="display:none">
-			<label>Employee Number</label>
-			<input placeholder="Employee Number" id="employee_no" type="text" name="employee_no" value="<?php echo isset($employeeData->employee->userid) ? $employeeData->employee->userid : ''; ?>">
-		</span>
-		<span class="span-class col-3" style="display:none">
-			<label>Xero Employee Id</label>
-			<input placeholder="Xero Employee Id" id="xeroEmployeeId" type="text" name="xeroEmployeeId" value="<?php echo isset($employeeData->employee->xeroEmployeeId) ? $employeeData->employee->xeroEmployeeId : ''; ?>">
-		</span>
-
-<!-- 		<span class="span-class col-3">
-			<label>	Currently-employed</label>
-			<label class="yn-label">Yes</label>
-			<input  type="radio" name="currently_employed " class="currently_employed yn-input" value="Y">
-			<label class="yn-label">No</label>
-			<input type="radio" name="currently_employed " class="currently_employed yn-input" value="N">
-		</span>
-		<span class="span-class col-3">
-			<label>	Commencement-date</label>
-			<input placeholder="Commencement-date" id="commencement_date" type="date">
-		</span> -->
-<!-- 
-		<span class="span-class col-3">
-			<label>Contract-position	</label>
-			<input placeholder="Contract-position	" id=" " type="text">
-		</span> -->
-<!-- 		<span class="span-class col-3">
-			<label>Resume-supplied</label>
-			<label class="yn-label">Yes</label>
-			<input  type="radio" name="resume_supplied" class="resume_supplied yn-input" value="Y">
-			<label class="yn-label">No</label>
-			<input type="radio" name="resume_supplied" class="resume_supplied yn-input" value="N">
-		</span>
- -->
-
-
-<!-- 		<span class="span-class col-3">
-			<label>Employment-type</label>
-			<span class="select_css">
-				<select id="employement_type" name="employement_type" value="<?php echo isset($employeeData->employeeRecord->employmentType) ? $employeeData->employeeRecord->employmentType : ''; ?>">
-					<option value="FT">Full Time</option>
-					<option value="PT">Part Time</option>
-					<option value="Casual">Casual</option>
-				</select>
-			</span>
-		</span>
- --><!-- 		<span class="span-class col-3">
-			<label>Current-contract-notes</label>
-			<input placeholder="Current-contract-notes" id="current_contract_notes" type="date">
-		</span>
-		<span class="span-class col-3">
-			<label>Current-contract-signature-date 	</label>
-			<input placeholder="Current-contract-signature-date" id="current_contract_signature_date" type="date">
-		</span>
-		<span class="span-class col-3">
-			<label>Current-contract-commencement-date </label>
-			<input placeholder="Current-contract-commencement-date" id="current_contract_commencement_date" type="date">
-		</span>
-		<span class="span-class col-3">
-			<label>Current-contract-end-date	</label>
-			<input placeholder="Current-contract-end-date" id="current_contract_end_date" type="date">
-		</span>
-		<span class="span-class col-3">
-			<label>Current-contract-paid-start-date </label>
-			<input placeholder="Current-contract-paid-start-date" id="current_contract_paid_start_date" type="date">
-		</span>
-		<span class="span-class col-3">
-			<label>Probation-end-date 	</label>
-			<input placeholder="Probation end date" id="probation_end_date" type="date">
-		</span> -->
-<!-- 		<span class="span-class col-3">
-			<label>Industry-years-exp-as-nov19	</label>
-			<input placeholder="Industry-years-exp-as-nov19	" id="industry_years_exp_as_nov19" type="text">
-		</span> -->
-
-		<span class="span-class col-3">
-			<label>Highest qual held</label>
-		<input placeholder="Highest-qual-held" id="highest_qual_held" name="highest_qual_held" type="text"  value="<?php echo isset($employeeData->employeeRecord->highestQualHeld) ? $employeeData->employeeRecord->highestQualHeld : ''; ?>">
-		</span>
-		<span class="span-class col-3">
-			<label>Date Obtained</label>
-		<input placeholder="Date Obtained" id="highest_qual_date_obtained" name="highest_qual_date_obtained" type="date"  value="<?php echo isset($employeeData->employeeRecord->highestQualDateObtained) ? $employeeData->employeeRecord->highestQualDateObtained : ''; ?>">
-		</span>
-		<span class="span-class col-3">
-			<label>Highest Qualification Certificate</label>
-		<input placeholder="Date Obtained" id="highest_qual_cert" name="highest_qual_cert" type="text" value=" ">
-		</span>
-<!-- 		<span class="span-class col-3">
-			<label>Highest-qual-type	 </label>
-			<input placeholder="Highest-qual-type" id="highest_qual_type" type="text">
-		</span>
- -->		<span class="span-class col-3">
-			<label>Qualification working Toward</label>
-		<input placeholder="Qual-towards-desc" id="qual_towards_desc" name="qual_towards_desc" type="text" value="<?php echo isset($employeeData->employeeRecord->qualWorkingTowards) ? $employeeData->employeeRecord->qualWorkingTowards : ''; ?>">
-		</span>
-		<span class="span-class col-3">
-			<label>Qual towards % comp</label>
-		<input placeholder="Qual towards % comp" id="qual_towards_percent_comp" name="qual_towards_percent_comp" type="number" value="<?php echo isset($employeeData->employeeRecord->qualTowardsPercentcomp) ? $employeeData->employeeRecord->qualTowardsPercentcomp : ''; ?>">
-		</span>
-
-<!-- 		<span class="span-class col-3">
-			<label>	Workcover</label>
-			<input placeholder="Workcover" id="workcover" type="text">
-		</span>
-		<span class="span-class col-3">
-			<label>	PIAWE</label>
-			<input placeholder="PIAWE" id="piawe" type="text">
-		</span>
-		<span class="span-class col-3">
-			<label>	Annual-leave-in-contract</label>
-			<input placeholder="Annual-leave-in-contract" id="annual_leave_in_contract" type="text">
-		</span> -->
-		<span class="span-class col-3">
-			<label>Classification</label>
-			<input placeholder="Classification" id="classification" name="classification" type="text" value="<?php echo isset($employeeData->employee->classification) ? $employeeData->employee->classification : ''; ?>">
-		</span>
-		<span class="span-class col-3">
-			<label>Ordinary Earning Rate Id</label>
-			<span class="select_css">
-				<select placeholder="Ordinary Earning Rate Id" id="ordinaryEarningRateId" name="ordinaryEarningRateId"  class="" type="text" value="<?php echo isset($employeeData->employee->ordinaryEarningRateId) ? $employeeData->employee->ordinaryEarningRateId : ''; ?>">
-
-				</select>
-			</span>
-		</span>
-
-<!-- 		<span class="span-class col-3">
-			<label>Payroll Calendar</label>
-			<input placeholder="Payroll Calendar" id="payroll_calendar" name="payroll_calendar" type="text" value="<?php echo isset($employeeData->employee->payrollCalendarId) ? $employeeData->employee->payrollCalendarId : ''; ?>">
-		</span> -->
-
-		<span class="span-class col-3">
-			<label>Visa Holder</label>
-			<label class="yn-label">Yes</label>
-			<input  type="radio" name="visa_holder" class="visa_holder yn-input" value="Y" <?php echo isset($employeeData->employeeRecord->visaHolderYN) ? (($employeeData->employeeRecord->visaHolderYN == 'Y') ? 'checked' : '') : ''; ?>>
-			<label class="yn-label">No</label>
-			<input type="radio" name="visa_holder" class="visa_holder yn-input" value="N" <?php echo isset($employeeData->employeeRecord->visaHolderYN) ? (($employeeData->employeeRecord->visaHolderYN == 'N') ? 'checked' : '') : ''; ?>>
-		</span>
-		<span class="span-class col-3">
-			<label>	Visa type		</label>
-			<input placeholder="Visa-type" id="visa_type" name="visa_type" type="text" value="<?php echo isset($employeeData->employeeRecord->visaType) ? $employeeData->employeeRecord->visaType : ''; ?>">
-		</span>
-		<span class="span-class col-3">
-			<label>	Visa Grant Date	</label>
-			<input placeholder="Visa-grant-date" id="visa_grant_date" name="visa_grant_date" type="date" value="<?php echo isset($employeeData->employeeRecord->visaGrantDate) ? $employeeData->employeeRecord->visaGrantDate : ''; ?>">
-		</span>
-		<span class="span-class col-3">
-			<label>	Visa End Date	</label>
-			<input placeholder="Visa-end-date" id="visa_end_date" name="visa_end_date" type="date" value="<?php echo isset($employeeData->employeeRecord->visaEndDate) ? $employeeData->employeeRecord->visaEndDate : ''; ?>">
-		</span>
-		<span class="span-class col-3">
-			<label>	Visa Conditions</label>
-			<input placeholder="Visa-conditions" id="visa_conditions" name="visa_conditions" type="text" value="<?php echo isset($employeeData->employee->visaConditions) ? $employeeData->employee->visaConditions : ''; ?>">
-		</span>
-		<span class="span-class col-3">
-			<label>Termination Date</label>
-		<input placeholder="Termination Date" id="terminationDate"  class="" type="date" name="terminationDate" value="<?php echo isset($employeeData->employee->terminationDate) ? $employeeData->employee->terminationDate : ''; ?>">
-		</span>
-
-<!-- 		<span class="span-class col-3">
-			<label>CPR-expiry</label>
-			<input placeholder="CPR-expiry" id="cpr_expiry" type="text">
-		</span>
-		<span class="span-class col-3">
-			<label>Prohibition-Notice-Declaration</label>
-			<input placeholder="Prohibition-Notice-Declaration" id="prohibition_notice_declaration" type="date">
-		</span>
-		<span class="span-class col-3">
-			<label>VIT-card-no</label>
-			<input placeholder="VIT-card-no" id="vit_card_no" type="text">
-		</span>
-		<span class="span-class col-3">
-			<label>VIT-expiry</label>
-			<input placeholder="VIT-expiry" id="vit_expiry" type="text">
-		</span>
-		<span class="span-class col-3">
-			<label>WWCC-card-no	</label>
-			<input placeholder="WWCC-card-no" id="wwcc_card_no" type="text">
-		</span>
-		<span class="span-class col-3">
-			<label>WWCC-expiry</label>
-			<input placeholder="WWCC-expiry" id="wwcc_expiry" type="text">
-		</span>
-		<span class="span-class col-3">
-			<label>Food-handling-safety</label>
-			<input placeholder="Food-handling-safety" id="food_handling_safety" type="date">
-		</span>
-		<span class="span-class col-3">
-			<label>Last-police-check</label>
-			<input placeholder="Last-police-check" id="last_police_check" type="date">
-		</span>
-		<span class="span-class col-3">
-			<label>Child-protection-check</label>
-			<input placeholder="Child-protection-check" id="child_protection_check" type="date">
-		</span>
-		<span class="span-class col-3">
-			<label>Nominated-supervisor</label>
-			<label class="yn-label">Yes</label>
-				<input  type="radio"  name="nominated_supervisor" class="nominated_supervisor yn-input" value="Y">
-			<label class="yn-label">No</label>
-				<input type="radio" name="nominated_supervisor" class="nominated_supervisor yn-input" value="N">
-		</span> -->
-	</section>
-	<section class="courses-tab">
-	<?php $toCount = isset($employeeData->employeeCourses) ? $employeeData->employeeCourses : ''; 
-		// count($toCount)
-	for($i=0;$i<count($toCount);$i++){ ?>
-			<div class="courses_div">
-					<input type="text" name="course_id[]" style="display:none" value="<?php echo isset($employeeData->employeeCourses[$i]->id) ? $employeeData->employeeCourses[$i]->id : ''; ?>">
-					<span class="span-class col-3">
-						<label>Course Name</label>
-						<input placeholder="Course Name" class="course_name" name="course_name[]" type="text" value="<?php echo isset($employeeData->employeeCourses[$i]->courseName) ? $employeeData->employeeCourses[$i]->courseName : ''; ?>">
-					</span>
-					<span class="span-class col-3">
-						<label>Date Obtained</label>
-						<input placeholder="Date Obtained" class="date_obtained" name="date_obtained[]" type="date" value="<?php echo isset($employeeData->employeeCourses[$i]->dateObtained) ? $employeeData->employeeCourses[$i]->dateObtained : ''; ?>">
-					</span>
-					<span class="span-class col-3">
-						<label>Certificate </label>
-						<input placeholder="Certificate" class="certificate" name="certificate[]" type="FILE">
-					</span>
-					<span class="span-class col-3">
-						<label>Expiry Date</label>
-						<input placeholder="Expiry Date" class="expiry_date" name="expiry_date[]" type="date" value="<?php echo isset($employeeData->employeeCourses[$i]->courseExpiryDate) ? date('Y-m-d',strtotime($employeeData->employeeCourses[$i]->courseExpiryDate)) : ''; ?>">
-					</span>
-					<span class="span-class col-9">
-						<label>Course Description</label>
-						<textarea placeholder="Course Description" class="course_description" name="course_description[]" type="text" value="" inputType="textarea"><?php echo isset($employeeData->employeeCourses[$i]->courseDescription) ? $employeeData->employeeCourses[$i]->courseDescription : ''; ?></textarea>
-					</span>
-					<?php if( isset($employeeData->employeeCourses[$i]->id) ){ ?>
-					<span class="course_delete" courseId="<?php echo isset($employeeData->employeeCourses[$i]->id) ? $employeeData->employeeCourses[$i]->id : ''; ?>">Delete</span>
-				<?php } ?>
-			</div>
-		<?php } ?>
-	<div class="courses_buttons">
-		<span><span class="add_course">Add</span></span>
-		<span><span class="remove_course">Remove</span></span>
-	</div>
-				<div class="courses_div_new">
-					<input type="text" name="course_id[]" style="display:none" value="">
-					<span class="span-class col-3">
-						<label>Course Name</label>
-						<input placeholder="Course Name" class="course_name" name="course_name[]" type="text" value="">
-					</span>
-					<span class="span-class col-3">
-						<label>Date Obtained</label>
-						<input placeholder="Date Obtained" class="date_obtained" name="date_obtained[]" type="date" value="">
-					</span>
-					<span class="span-class col-3">
-						<label>Certificate </label>
-						<input placeholder="Certificate" class="certificate" name="certificate[]" type="FILE">
-					</span>
-					<span class="span-class col-3">
-						<label>Expiry Date</label>
-						<input placeholder="Expiry Date" class="expiry_date" name="expiry_date[]" type="date" value="">
-					</span>
-					<span class="span-class col-9">
-						<label>Course Description</label>
-						<textarea placeholder="Course Description" class="course_description" name="course_description[]" type="text" value="" inputType="textarea"></textarea>
-					</span>
-				</div>
-	</section>
-	<section class="medical-info">
-		<span class="span-class col-3">
-			<label>Medicare Number</label>
-				<input  type="text"  name="medicareNo" class="medicareNo" value="<?php echo isset($employeeData->employeeMedicalInfo->medicareNo) ? $employeeData->employeeMedicalInfo->medicareNo : ''; ?>">
-		</span>
-		<span class="span-class col-3">
-			<label>Medicare Reference Number</label>
-				<input  type="text"  name="medicareRefNo" class="medicareRefNo" value="<?php echo isset($employeeData->employeeMedicalInfo->medicareRefNo) ? $employeeData->employeeMedicalInfo->medicareRefNo : ''; ?>">
-		</span>
-		<span class="span-class col-3">
-			<label>Health Insurance Fund</label>
-				<input  type="text"  name="healthInsuranceFund" class="healthInsuranceFund" value="<?php echo isset($employeeData->employeeMedicalInfo->healthInsuranceFund) ? $employeeData->employeeMedicalInfo->healthInsuranceFund : ''; ?>">
-		</span>
-		<span class="span-class col-3">
-			<label>Health Insurance Number</label>
-				<input  type="text"  name="healthInsuranceNo" class="healthInsuranceNo" value="<?php echo isset($employeeData->employeeMedicalInfo->healthInsuranceNo) ? $employeeData->employeeMedicalInfo->healthInsuranceNo : ''; ?>">
-		</span>
-		<span class="span-class col-3">
-			<label>Ambulance Subscription Number</label>
-				<input  type="text"  name="ambulanceSubscriptionNo" class="ambulanceSubscriptionNo"  value="<?php echo isset($employeeData->employeeMedicalInfo->ambulanceSubscriptionNo) ? $employeeData->employeeMedicalInfo->ambulanceSubscriptionNo : ''; ?>">
-		</span>
-<?php $toSize = isset($employeeData->employeeMedicals) ? $employeeData->employeeMedicals : ''; ?>
-		<?php for($i=0;$i<count($toSize);$i++){ ?>
-			<input type="text" name="medicals_id[]" style="display:none" value="<?php echo isset($employeeData->employeeMedicals[$i]->id) ? $employeeData->employeeMedicals[$i]->id : ''; ?>">
-		<span class="span-class col-3">
-			<label>Medical Conditions</label>
-				<input  type="text"  name="medicalConditions[]" class="medicalConditions" value="<?php echo isset($employeeData->employeeMedicals[$i]->medicalConditions) ? $employeeData->employeeMedicals[$i]->medicalConditions : ''; ?>">
-		</span>
-		<span class="span-class col-3">
-			<label>Medical Allergies</label>
-				<input  type="text"  name="medicalAllergies[]" class="medicalAllergies" value="<?php echo isset($employeeData->employeeMedicals[$i]->medicalAllergies) ? $employeeData->employeeMedicals[$i]->medicalAllergies : ''; ?>">
-		</span>
-		<span class="span-class col-3">
-			<label>Medication</label>
-				<input  type="text"  name="medication[]" class="medication" value="<?php echo isset($employeeData->employeeMedicals[$i]->medication) ? $employeeData->employeeMedicals[$i]->medication : ''; ?>">
-		</span>
-		<span class="span-class col-3">
-			<label>Dietary Preferences</label>
-				<input  type="text"  name="dietaryPreferences[]" class="dietaryPreferences" value="<?php echo isset($employeeData->employeeMedicals[$i]->dietaryPreferences) ? $employeeData->employeeMedicals[$i]->dietaryPreferences : ''; ?>">
-		</span>
-	<?php } ?>
-<!-- 		<span class="span-class col-3">
-			<label>Anaphylaxis</label>
-				<input  type="date"  name="anaphylaxis" class="anaphylaxis">
-		</span>
-		<span class="span-class col-3">
-			<label>Asthma</label>
-				<input  type="date"  name="asthma" class="asthma">
-		</span>
-		<span class="span-class col-3">
-			<label>Maternity Start Date</label>
-				<input  type="date"  name="maternityStartDate" class="maternityStartDate">
-		</span>
-		<span class="span-class col-3">
-			<label>Maternity End Date</label>
-				<input  type="date"  name="maternityEndDate" class="maternityEndDate">
-		</span> -->
-	</section>
-	<section class="documents-tab">
-		<div class="addRemoveDocument">
-			<span class="addRemoveDocumentSpan">
-				<span class="addRemoveDocumentAdd">Add</span>
-			</span>
-		</div>
-		<div class="addDocumentsDiv">
-<!-- 			<span class="span-class col-3">
-				<label>Resume Document </label>
-				<input  id="resume_doc" name="resume_doc" type="file" value=" ">
-			</span>
-			<span class="span-class col-3">
-				<label>Contract Document </label>
-				<input  id="contract_doc" name="contract_doc" type="file" value=" ">
-			</span> -->
-			<table class="documentsTable">
-				<tr style="text-align:center">
-					<th>Document Name</th>
-					<th>Download</th>
-					<th>Delete</th>
-				</tr>
-				<tr>
-					<td>Resume Document </td>
-					<td class="singleDocDownload">Download</td>
-					<td><input  id="resume_doc" name="resume_doc" type="file" value=" "></td>
-				</tr>
-				<tr>
-					<td>Contract Document</td>
-					<td class="singleDocDownload">Download</td>
-					<td><input  id="contract_doc" name="contract_doc" type="file" value=" "></td>
-				</tr>
-				<?php foreach($employeeData->employeeDocuments as $docs){ ?>
-					<tr class="singleDocBlock">
-						<td class="singleDocName"><?php echo $docs->name ?></td>
-						<td class="singleDocDownload">
-							<a href="<?php echo DOCUMENTS_PATH.($docs->document) ?>" download>Download</a>
-						</td>
-						<td><button class="deleteDocument" docId="<?php echo $docs->id ?>">Delete</button></td>
-					</tr>
-				<?php } ?>
-				<tr class="addSingleDocument">
-					<td><input type="text" name="addFileName[]"></td>
-					<td><input type="FILE" name="addFile[]" class="addFile"></td>
-					<td><span class="removeDocumentButton">Remove</span></td>
-				</tr>
-			</table>
-		</div>
-	</section>
-	<div class="submit-div">
-		<button id="subm">
-			<i>
-				<img src="<?php echo base_url('assets/images/icons/send.png'); ?>" style="max-height:1rem;margin-right:10px">
-			</i>Submit</button>
-	</div>
-</form>
-<?php // } ?>
 		</div>
 	</div>
 </div>
+
 <!-- Notification -->
 <div class="notify_">
 	<div class="note">
@@ -1382,20 +1321,20 @@
 </script>
 <script type="text/javascript">
 	
-$(document).ready(function(){
-	var saved = $('.tax-declaration-class').html();
-	$(document).on('change','#tfnExemptionType',function(){
-		if($('#tfnExemptionType').val() == 'NONE'){
-			$('.tax-declaration-class').append(saved);
-		}
-		else{
-			$('.tax-declaration-class').empty();
-		}
-	})
-	if($('#tfnExemptionType').val() != 'NONE'){
-		$('.tax-declaration-class').empty();
-	}
-})
+// $(document).ready(function(){
+// 	var saved = $('.tax-declaration-class').html();
+// 	$(document).on('change','#tfnExemptionType',function(){
+// 		if($('#tfnExemptionType').val() == 'NONE'){
+// 			$('.tax-declaration-class').append(saved);
+// 		}
+// 		else{
+// 			$('.tax-declaration-class').empty();
+// 		}
+// 	})
+// 	if($('#tfnExemptionType').val() != 'NONE'){
+// 		$('.tax-declaration-class').empty();
+// 	}
+// })
 </script>
 
 <script type="text/javascript">
@@ -1530,86 +1469,86 @@ $(document).ready(function(){
 
 <script type="text/javascript">
 	$(document).ready(()=>{
-			$('.e-s span').addClass('arrow');
+			$('.e-s').addClass('arrow');
         $('.e-s').click(function(){
-        	$('.e-s span').addClass('arrow');
-					$('.e-b-a-s span').removeClass('arrow');
-					$('.e-s-s span').removeClass('arrow');
-					$('.e-t-d-s span').removeClass('arrow');
-					$('.e-u-s span').removeClass('arrow');
-					$('.m-i span').removeClass('arrow');
-					$('.d-c span').removeClass('arrow');
-					$('.c-t span').removeClass('arrow');
+        	$('.e-s').addClass('arrow');
+					$('.e-b-a-s').removeClass('arrow');
+					$('.e-s-s').removeClass('arrow');
+					$('.e-t-d-s').removeClass('arrow');
+					$('.e-u-s').removeClass('arrow');
+					$('.m-i').removeClass('arrow');
+					$('.d-c').removeClass('arrow');
+					$('.c-t').removeClass('arrow');
         })
         $('.e-b-a-s').click(function(){
-        	$('.e-s span').removeClass('arrow');
-					$('.e-b-a-s span').addClass('arrow');
-					$('.e-s-s span').removeClass('arrow');
-					$('.e-t-d-s span').removeClass('arrow');
-					$('.e-u-s span').removeClass('arrow');
-					$('.m-i span').removeClass('arrow');
-					$('.d-c span').removeClass('arrow');
-					$('.c-t span').removeClass('arrow');
+        	$('.e-s ').removeClass('arrow');
+					$('.e-b-a-s').addClass('arrow');
+					$('.e-s-s').removeClass('arrow');
+					$('.e-t-d-s').removeClass('arrow');
+					$('.e-u-s').removeClass('arrow');
+					$('.m-i').removeClass('arrow');
+					$('.d-c').removeClass('arrow');
+					$('.c-t').removeClass('arrow');
         })
         $('.e-s-s').click(function(){
-        	$('.e-s span').removeClass('arrow');
-					$('.e-b-a-s span').removeClass('arrow');
-					$('.e-s-s span').addClass('arrow');
-					$('.e-t-d-s span').removeClass('arrow');
-					$('.e-u-s span').removeClass('arrow');
-					$('.m-i span').removeClass('arrow');
-					$('.d-c span').removeClass('arrow');
-					$('.c-t span').removeClass('arrow');
+        	$('.e-s ').removeClass('arrow');
+					$('.e-b-a-s').removeClass('arrow');
+					$('.e-s-s').addClass('arrow');
+					$('.e-t-d-s').removeClass('arrow');
+					$('.e-u-s').removeClass('arrow');
+					$('.m-i').removeClass('arrow');
+					$('.d-c').removeClass('arrow');
+					$('.c-t').removeClass('arrow');
         })
         $('.e-t-d-s').click(function(){
-        	$('.e-s span').removeClass('arrow');
-					$('.e-b-a-s span').removeClass('arrow');
-					$('.e-s-s span').removeClass('arrow');
-					$('.e-t-d-s span').addClass('arrow');
-					$('.e-u-s span').removeClass('arrow');
-					$('.m-i span').removeClass('arrow');
-					$('.d-c span').removeClass('arrow');
-					$('.c-t span').removeClass('arrow');
+        	$('.e-s ').removeClass('arrow');
+					$('.e-b-a-s ').removeClass('arrow');
+					$('.e-s-s ').removeClass('arrow');
+					$('.e-t-d-s ').addClass('arrow');
+					$('.e-u-s ').removeClass('arrow');
+					$('.m-i ').removeClass('arrow');
+					$('.d-c ').removeClass('arrow');
+					$('.c-t ').removeClass('arrow');
         })
         $('.e-u-s').click(function(){
-        	$('.e-s span').removeClass('arrow');
-					$('.e-b-a-s span').removeClass('arrow');
-					$('.e-s-s span').removeClass('arrow');
-					$('.e-t-d-s span').removeClass('arrow');
-					$('.e-u-s span').addClass('arrow');
-					$('.m-i span').removeClass('arrow');
-					$('.d-c span').removeClass('arrow');
-					$('.c-t span').removeClass('arrow');
+        	$('.e-s ').removeClass('arrow');
+					$('.e-b-a-s ').removeClass('arrow');
+					$('.e-s-s ').removeClass('arrow');
+					$('.e-t-d-s ').removeClass('arrow');
+					$('.e-u-s ').addClass('arrow');
+					$('.m-i ').removeClass('arrow');
+					$('.d-c ').removeClass('arrow');
+					$('.c-t ').removeClass('arrow');
         })
         $('.m-i').click(function(){
-        	$('.e-s span').removeClass('arrow');
-					$('.e-b-a-s span').removeClass('arrow');
-					$('.e-s-s span').removeClass('arrow');
-					$('.e-t-d-s span').removeClass('arrow');
-					$('.e-u-s span').removeClass('arrow');
-					$('.m-i span').addClass('arrow');
-					$('.d-c span').removeClass('arrow');
-					$('.c-t span').removeClass('arrow');
+        	$('.e-s ').removeClass('arrow');
+					$('.e-b-a-s ').removeClass('arrow');
+					$('.e-s-s ').removeClass('arrow');
+					$('.e-t-d-s ').removeClass('arrow');
+					$('.e-u-s ').removeClass('arrow');
+					$('.m-i ').addClass('arrow');
+					$('.d-c ').removeClass('arrow');
+					$('.c-t ').removeClass('arrow');
         })
         $('.d-c').click(function(){
-        	$('.e-s span').removeClass('arrow');
-					$('.e-b-a-s span').removeClass('arrow');
-					$('.e-s-s span').removeClass('arrow');
-					$('.e-t-d-s span').removeClass('arrow');
-					$('.e-u-s span').removeClass('arrow');
-					$('.m-i span').removeClass('arrow');
-					$('.d-c span').addClass('arrow');
-					$('.c-t span').removeClass('arrow');
+        	$('.e-s ').removeClass('arrow');
+					$('.e-b-a-s ').removeClass('arrow');
+					$('.e-s-s ').removeClass('arrow');
+					$('.e-t-d-s ').removeClass('arrow');
+					$('.e-u-s ').removeClass('arrow');
+					$('.m-i ').removeClass('arrow');
+					$('.d-c ').addClass('arrow');
+					$('.c-t ').removeClass('arrow');
         })
         $('.c-t').click(function(){
-        	$('.e-s span').removeClass('arrow');
-					$('.e-b-a-s span').removeClass('arrow');
-					$('.e-s-s span').removeClass('arrow');
-					$('.e-t-d-s span').removeClass('arrow');
-					$('.e-u-s span').removeClass('arrow');
-					$('.m-i span').removeClass('arrow');
-					$('.d-c span').removeClass('arrow');
-					$('.c-t span').addClass('arrow');
+        	$('.e-s ').removeClass('arrow');
+					$('.e-b-a-s ').removeClass('arrow');
+					$('.e-s-s ').removeClass('arrow');
+					$('.e-t-d-s ').removeClass('arrow');
+					$('.e-u-s ').removeClass('arrow');
+					$('.m-i ').removeClass('arrow');
+					$('.d-c ').removeClass('arrow');
+					$('.c-t ').addClass('arrow');
         })
     });
 
@@ -1655,7 +1594,7 @@ $(document).ready(function(){
 	    	if(len < 0)
 	    		$('.courses_buttons').after(course)
 	    	else
-					$('.courses_div_new').eq(len).after(course);
+				$('.courses_div_new').eq(len).after(course);
 	    })
 	    $(document).on('click','.remove_course',function(){
 	    	var len = ($('.courses_div_new').length)-1;
@@ -1724,36 +1663,36 @@ function showNotification(){
 		        setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 			}
-			if( !( (/\b^[a-zA-Z]+[\s]*[a-zA-Z]+$\b/).test($('#homeAddCity').val())) ){
-		        addMessageToNotification('Invalid City');
-		      	showNotification();
-		        setTimeout(closeNotification,5000)
-					falseOrTrue = false;
-			}
+			// if( !( (/\b^[a-zA-Z]+[\s]*[a-zA-Z]+$\b/).test($('#homeAddCity').val())) ){
+		    //     addMessageToNotification('Invalid City');
+		    //   	showNotification();
+		    //     setTimeout(closeNotification,5000)
+			// 		falseOrTrue = false;
+			// }
 			if( $('#homeAddPostal').val() == null || !(  $('#homeAddPostal').val() == ""  || (/^[0-9]+$/).test($('#homeAddPostal').val() ) ) ){
 		        addMessageToNotification('Invalid Postal Code');
 		      	showNotification();
 		        setTimeout(closeNotification,5000)
 					falseOrTrue = false;
 			}
-			if( $('#homeAddCountry').val() == null || !(  $('#homeAddCountry').val() == ""  || (/^[0-9]+$/).test($('#homeAddCountry').val() ) ) ){
-		        addMessageToNotification('Invalid Country');
-		      	showNotification();
-		        setTimeout(closeNotification,5000)
-					falseOrTrue = false;
-			}
-			if( $('#phone').val() == null || !( $('#phone').val() == "" || (/^[0-9]{6,}$/).test($('#phone').val() ) )  ){
-		        addMessageToNotification('Invalid Phone');
-		      	showNotification();
-		        setTimeout(closeNotification,5000)
-					falseOrTrue = false;
-			}
-			if( $('#mobile').val() == null || $('#mobile').val() == "" || !((/^[0-9]{6,}$/).test($('#mobile').val() ) )  ){
-		        addMessageToNotification('Invalid mobile');
-		      	showNotification();
-		        setTimeout(closeNotification,5000)
-					falseOrTrue = false;
-			}
+			// if( $('#homeAddCountry').val() == null || !(  $('#homeAddCountry').val() == ""  || (/^[0-9]+$/).test($('#homeAddCountry').val() ) ) ){
+		    //     addMessageToNotification('Invalid Country');
+		    //   	showNotification();
+		    //     setTimeout(closeNotification,5000)
+			// 		falseOrTrue = false;
+			// }
+			// if( $('#phone').val() == null || !( $('#phone').val() == "" || (/^[0-9]{6,}$/).test($('#phone').val() ) )  ){
+		    //     addMessageToNotification('Invalid Phone');
+		    //   	showNotification();
+		    //     setTimeout(closeNotification,5000)
+			// 		falseOrTrue = false;
+			// }
+			// if( $('#mobile').val() == null || $('#mobile').val() == "" || !((/^[0-9]{6,}$/).test($('#mobile').val() ) )  ){
+		    //     addMessageToNotification('Invalid mobile');
+		    //   	showNotification();
+		    //     setTimeout(closeNotification,5000)
+			// 		falseOrTrue = false;
+			// }
 			if( $('#emergency_contact').val() == null || $('#emergency_contact').val() == "" || !(  (/^[0-9]{6,}$/).test($('#emergency_contact').val() ) )  ){
 		        addMessageToNotification('Invalid Emergency Contact');
 		      	showNotification();
@@ -1765,6 +1704,22 @@ function showNotification(){
 			}
 			return falseOrTrue;
 		}
+
+		function uploadFile(target) {
+			document.getElementById("file-name").innerHTML = target.files[0].name;
+		}
+		function uploadFile2(target) {
+			// $('.file-name2').text(target.files[0].name);
+			document.getElementById("file-name2").innerHTML = target.files[0].name;
+		}
+		// $(document).on('change', '.certificate', (function() {
+		// 	var file = this.files[0];
+		// 	// alert(file);
+		// 	var fileName = file.name;
+		// 	// $(this).closest('tr').find('input[name="certificate"]').val(fileName);
+		// 	$(this).closest('span').text(fileName);
+		// 	$(this).val(fileName);
+		// }));
 
 </script>
 </body>

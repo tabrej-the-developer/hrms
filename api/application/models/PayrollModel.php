@@ -15,19 +15,20 @@ class PayrollModel extends CI_Model {
 		$query = $this->db->query("SELECT * FROM payrollshifttype_v1");
 		return $query->result();
 	}
-// Original
+
+	// Original
 	public function getAllEntitlements($userid){
 		$this->load->database();
 		$query = $this->db->query("SELECT * FROM entitlements where superadmin IN (SELECT superadmin FROM centers WHERE centerid IN (SELECT centerid FROM usercenters where userid = '$userid' GROUP BY userid)GROUP BY superadmin)");
 		return $query->result();
 	}
 
-// Version
-public function getAllEntitlementsV1($centerid){
-	$this->load->database();
-	$query = $this->db->query("SELECT * FROM entitlements where centerid = $centerid");
-	return $query->result();
-}
+	// Version
+	public function getAllEntitlementsV1($centerid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM entitlements where centerid = $centerid");
+		return $query->result();
+	}
 
 	public function addEntitlement($name,$rate,$userid){
 		$this->load->database();

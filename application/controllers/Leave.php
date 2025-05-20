@@ -277,12 +277,12 @@ class Leave extends CI_Controller {
 		$this->load->helper('form');
 		$form_data = $this->input->post();
 		if($form_data != null){
-	//footprint start
-	if($this->session->has_userdata('current_url')){
-		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-		$this->session->set_userdata('current_url',currentUrl());
-	}
-	// footprint end
+			//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+				$this->session->set_userdata('current_url',currentUrl());
+			}
+			// footprint end
 			$data['leaveTypeId'] = $form_data['applyLeaveId'];
 			$data['startDate'] = $form_data['applyLeaveFromDate'];
 			$data['endDate'] = $form_data['applyLeaveToDate'];
@@ -290,7 +290,11 @@ class Leave extends CI_Controller {
 			$data['userid'] = $this->session->userdata('LoginId');
 			$data['hours'] = $form_data['total_leave_hours'];
 
-			$url = BASE_API_URL."leave/ApplyLeave";
+
+			// echo json_encode($data);
+			// die();
+
+			$url = BASE_API_URL."leave/ApplyLeaveV1";
 
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
@@ -305,15 +309,19 @@ class Leave extends CI_Controller {
 			$server_output = curl_exec($ch);
 			//var_dump($server_output);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			print_r($httpcode);
-			print_r($server_output);
+			// echo $httpcode;
+			// print_r($httpcode);
+			// print_r($server_output);
 			if($httpcode == 200){
-				$jsonOutput = json_decode($server_output);
-				curl_close ($ch);
-				redirect(base_url().'leave');
+				// $jsonOutput = json_decode($server_output);
+				// return $jsonOutput;
+				// // curl_close ($ch);
+				// redirect(base_url().'leave');
+				echo $server_output;
+				// return $server_output;
 			}
 			else if($httpcode == 401){
-
+				echo $server_output;
 			}
 		}
 	}

@@ -107,13 +107,16 @@ class Payroll extends CI_Controller {
 				$data['payrollTypes'] = $this->getAllPayrollTypes($data['userId']);
 				// $data['entitlements'] = $this->getAllEntitlements($data['userId']);
 			}
-	//footprint start
-	if($this->session->has_userdata('current_url')){
-		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-		$this->session->set_userdata('current_url',currentUrl());
-	}
-	// footprint end
+			//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+				$this->session->set_userdata('current_url',currentUrl());
+			}
+			// footprint end
 			$this->load->view('payrollData',$data);
+			// echo "<pre>";
+			// print_r($data);
+			// echo "</pre>";
 				}
 		else{
 			$this->load->view('redirectToLogin');
@@ -164,7 +167,7 @@ class Payroll extends CI_Controller {
 				// footprint end
 				$url = BASE_API_URL."payroll/updateToPublished/".$this->session->userdata('LoginId');
 				if($form_data != null){
-					$data['array'] = $this->input->post('array');
+						$data['array'] = $this->input->post('array');
 						$ch = curl_init($url);
 						curl_setopt($ch, CURLOPT_URL,$url);
 						curl_setopt($ch, CURLOPT_POST, 1);
@@ -197,13 +200,16 @@ class Payroll extends CI_Controller {
 					$data['payrollTypes'] = $this->getAllPayrollTypes($data['userId']);
 					$data['entitlements'] = $this->getAllEntitlements($data['userId']);
 				}
-	//footprint start
-	if($this->session->has_userdata('current_url')){
-		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-		$this->session->set_userdata('current_url',currentUrl());
-	}
-	// footprint end
+			//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+				$this->session->set_userdata('current_url',currentUrl());
+			}
+			// footprint end
 			$this->load->view('payrollModal',$data);
+			// echo '<pre>';
+			// print_r($data);
+			// echo '</pre>';
 				}
 		else{
 			$this->load->view('redirectToLogin');
@@ -222,8 +228,11 @@ class Payroll extends CI_Controller {
 			));
 			$server_output = curl_exec($ch);
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			// echo $httpcode;
+			// print_r($server_output);
+			// die();
 			if($httpcode == 200){
-				return $server_output;
+				echo json_encode($server_output);
 				curl_close ($ch);
 			}
 			else if($httpcode == 401){

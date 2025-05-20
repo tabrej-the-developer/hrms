@@ -2,254 +2,38 @@
 <html>
 <head>
 	<title>View Employee Table</title>
-		<?php $this->load->view('header'); ?>
+  <link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('assets/favicon_io/apple-touch-icon.png') ?>">
+  <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/favicon_io/favicon-32x32.png') ?>">
+  <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/favicon_io/favicon-16x16.png') ?>">
+  <link rel="manifest" href="<?= base_url('assets/favicon_io/site.webmanifest') ?>">
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-<style type="text/css">
-    *{
-  font-family: 'Open Sans', sans-serif;
-    }
-    body{
-      background: #f2f2f2;
-    }
-    .xero_settings_title{
-      font-size:1.75rem;
-      color: #171D4B;
-      font-weight: 700;
-    }
-      .heading{
-      position: relative;
-      padding-left: 2rem;
-      width: 100%;
-      height: 4rem;
-    }
-    .heading > span{
-      display: flex;
-      align-items: center;
-    }
-    #wrappers{
-      padding:0;
-      height:100vh;
-    }
-    .modal {
-      display: none; 
-      position: fixed;
-      padding-top: 100px;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgb(0,0,0); 
-      background-color: rgba(0,0,0,0.4); 
-    }
-    input[type="text"],input[type=time],select,#casualEmp_date,#filter{
-      background: #ebebeb;
-      border-radius: 5px;
-      padding: 5px;
-      border: 1px solid #D2D0D0 !important;
-      border-radius: 20px;
-    }
-    /* Modal Content */
-    .modal-content {
-      background-color: #fefefe;
-      margin: auto;
-      border: 1px solid #888;
-      width: 80%;
-    }
+	 
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+<link href="<?php echo base_url('assets/css/bootstrap.min.css');?>" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    /* The Close Button */
-    .close {
-      color: #aaaaaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-    }
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/layout.css');?>">
+ <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/container.css');?>">
+  
+<script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js');?>" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('assets/js/popper.min.js');?>" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('assets/js/bootstrap.min.js');?>" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
 
-    .close:hover,
-    .close:focus {
-      color: #000;
-      text-decoration: none;
-      cursor: pointer;
-    }
-    .ent-btn{
-      background: #ebebeb;
-      border-radius: 5px;
-      padding: 5px;
-      border: 1px solid #D2D0D0 !important;
-      border-radius: 20px;
-      text-align: center;
-    }   
-    #wrappers{
-      height:100vh;
-      overflow-y: hidden;
-    }
-    #content-wrappers{
-        padding: 2rem 2rem 2rem 3rem;
-        height:calc(100vh - 4rem);
-    }
-    .content-wrappers-child{
-        background: white;
-        height: 100%;
-        overflow-y: auto;
-    }
-    .row{
-      display: block !important;
-    }
-    .table td, .table th {
-        padding: 1rem !important;
-        vertical-align: top;
-         border-top: 0px !important; 
-    }
-    .table thead th {
-        vertical-align: bottom;
-        border-bottom: 0 !important;
-        text-align: left;
-        padding-left: 4rem !important;
-    }
-    .submit-edit,.cancel-edit{
-
-    }
-    .submit-edit,
-    .cancel-edit,
-    .button,
-    #create_new_entitlements,
-    #cancel_new_entitlements{
-      border: none;
-      color: rgb(23, 29, 75);
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-weight: 700;
-      margin: 2px;
-      width:auto;
-      border-radius: 20px;
-      padding: 8px;
-      background: rgb(164, 217, 214);
-    }
-    .fa-pencil-alt,.fa-trash-alt{
-      color: #171D4B !important;
-      font-weight: 700;
-      font-style: normal;
-    }
-  .create-ent{
-    display: flex;
-    margin-right:2rem;
-    justify-content: center;
-    align-items: center;
-  }
-  .row{
-    margin: 0 !important;
-  }
-  .table{
-    font-size: 1rem;
-    background-color: white;
-    width: 100%;
-    margin: auto;
-    text-align: center;
-   }
-    thead tr{
-      background-color: #8D91AA;
-      color: #F3F4F7;
-    }
-    tr{
-      border-top:  1px solid #d2d0d0;
-      border-bottom: 1px solid #d2d0d0;
-    }
-    tbody tr{
-      background: white !important;
-    }
-.button{
-  /*position: absolute;*/
-/*  right: 0;*/
-    border: none !important;
-    color: rgb(23, 29, 75) !important;
-    text-align: center !important;
-    text-decoration: none !important;
-    display: inline-block;
-    font-weight: 700 !important;
-    margin: 2px !important;
-    min-width:6rem !important;
-    border-radius: 20px !important;
-    padding: 4px 8px !important;
-    background: rgb(164, 217, 214) !important;
-    font-size: 1rem !important;
-    margin-right:5px !important;
-    justify-content: center !important;
-    align-items: center;
-    }
-    .button a{
-      text-decoration: none;
-      font-size: 1rem;
-      color: #171d4b;
-    }
-    .viewEmployeeTable{
-      display: flex;
-      justify-content: center;
-    }
-    #filter{
-      padding-left:1rem;
-    }
-    .changeCenterModal{
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: transparent;
-      display: none;
-    }
-    .changeCenterModal_title{
-      display: block;
-      width: 100%;
-      text-align: center;
-      font-size: 1rem;
-    }
-    .changeCenterModal_name{
-      display: block;
-      width: 100%;
-      text-align: center;
-      font-size: 1.5rem;
-    }
-    .changeCenterModalBody{
-      position: absolute;
-      left: 40%;
-      top: 20%;
-      z-index: 10;
-      width: 30%;
-      background: white;
-      height: 60%;
-      box-shadow: 0 0 0.1rem 0.1rem rgba(0,0,0,0.1);
-    }
-    .changeCenterModal_header{
-      height: 20%;
-      width: 100%;
-      background-color: #8D91AA;
-      color: #F3F4F7;
-    }
-    .changeCenterModal_centers{
-      padding-left: 3rem;
-    }
-    .changeCenterModal_buttons{
-      height: 20%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: white;
-    }
-    #centerValue{
-      background: rgb(164, 217, 214) !important;
-    }
-    .viewEmployeeTable_row{
-      text-align: left;
-    }
-    .viewEmployeeTable_row td{
-      padding-left: 4rem !important;
-    }
-    .viewEmployeeTable_centerName_parent{
-      cursor: pointer;
-    }
-    </style>
+<style>
+.navbar-nav .nav-item-header:nth-of-type(9) {
+    background: var(--blue2) !important;
+    position: relative;
+}
+.navbar-nav .nav-item-header:nth-of-type(9)::after {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    bottom: 0;
+    content: "";
+    background: var(--orange1);
+}
+</style>
   </head>
 
   <body id="page-top"> 
@@ -257,76 +41,81 @@
       $centers = json_decode($centers);
       // print_r(json_encode($xeroTokens));
 ?>  
-    <div id="wrappers">
-      <span class="d-flex heading justify-content-between align-items-baseline">
-        <span>
-          <a href="<?php echo base_url('settings');?>">
-            <button class="btn back-button">
-              <img src="<?php echo base_url('assets/images/back.svg');?>">
-            </button>
-          </a>
-        <span class="view_employee_title">View Employee Table</span>
-        </span>
-        <div class="d-flex pr-4">
-          <div class="d-flex flex-column w-100">
-            <span class="viewEmployeeTable_center w-100">
-              <span class="select_css w-100">
+    <div class="wrapperContainer">
+        <?php include 'headerNew.php'; ?>
+      
+		    <div class="containers scrollY">
+			    <div class="settingsContainer ">
+            <input type="hidden" id="loginId" value="<?php echo $this->session->userdata('LoginId') ?>">
+            <span class="d-flex pageHead heading-bar">
+              <div class="withBackLink">
+                <a href="<?php echo base_url('settings');?>">
+                <span class="material-icons-outlined">arrow_back</span>
+                </a>				
+                <span class="events_title">View Employee Table</span>
+              </div>
+              <div class="rightHeader">					
                 <select placehdr="Center" id="centerValue" name="centerValue" class="w-100" style="margin-top:2px !important;">
-                  <?php 
-                  foreach($centers->centers as $center){ 
-                    if($_SESSION['centerr'] == $center->centerid){
-                    ?> 
-                    <option value="<?php echo $center->centerid;?>" selected><?php echo $center->name;?></option>
-                  <?php }else{ ?>
-                    <option value="<?php echo $center->centerid;?>"><?php echo $center->name;?></option>
-                <?php  }
-                } 
-                  $centerId = "";
-                  foreach($centers->centers as $center){ 
-                      $centerId = $centerId . $center->centerid . "|";
-                  } ?>
-                  <option value="<?php echo $centerId?>"><?php echo "All Centers";?></option>
+                    <?php 
+                    foreach($centers->centers as $center){ 
+                      if($_SESSION['centerr'] == $center->centerid){
+                      ?> 
+                      <option value="<?php echo $center->centerid;?>" selected><?php echo $center->name;?></option>
+                    <?php }else{ ?>
+                      <option value="<?php echo $center->centerid;?>"><?php echo $center->name;?></option>
+                  <?php  }
+                  } 
+                    $centerId = "";
+                    foreach($centers->centers as $center){ 
+                        $centerId = $centerId . $center->centerid . "|";
+                    } ?>
+                    <option value="<?php echo $centerId?>"><?php echo "All Centers";?></option>
                 </select>
-              </span>
+                <!-- <span class="syncXeroEmployees w-100 btn btn-default btnOrange btn-small pull-right" id="XeroEmployees"> -->
+                <span class="syncXeroEmployees w-100 btn btnOrange btn-small pull-right" id="XeroEmployees">
+                    <img src="<?php echo base_url('assets/images/icons/xero.png'); ?>" style="max-height:2rem;margin-right:10px">
+                    Sync&nbsp;Xero&nbsp;Employees
+                </span>
+              </div>
             </span>
-            <span class="viewEmployeeTable_search w-100">
-              <input type="" name="" class="w-100" onkeyup="searchBy()" id="filter" placeholder="Search" style="margin-top:5px !important;">
-            </span>
-          </div>
-          <div class="d-flex flex-column w-100">
-            <span class="syncXeroEmployees w-100">
-              <button class="button d-inline-flex w-100 p-1" id="XeroEmployees" style="padding:2px !important">
-                <i>
-                  <img src="<?php echo base_url('assets/images/icons/xero.png'); ?>" style="max-height:2rem;margin-right:10px">
-                </i>Sync&nbsp;Xero&nbsp;Employees</button>
-            </span>
-            <span class="viewEmployeeTable_roles w-100 " style="padding-top: 0.15rem !important;">
-              <span class="select_css w-100">
-                <select placehdr="Center" id="roleValue" name="roleValue" class="w-100"> 
+
+            <div class="filterSearch">
+							<div class="form-floating">
+                <input type="" name="" class="form-control" onkeyup="searchBy()" id="filter" placeholder="Search">
+                <label for="filter">Search Here(Name/Alias)</label>
+              </div>
+							<div class="form-floating">
+                <select placeholder="Center" id="roleValue" name="roleValue" class="form-control"> 
                     <option value="">Role Value</option>
                 </select>
-              </span>
-            </span>
-          </div>
-        </div>
-      </span>
-      <div id="content-wrappers" class="containers">
+                <label for="roleValue">Role Value</label>
+              </div>
+            </div>
+
+            
+      <div id="content-wrappers">
         <div class="row content-wrappers-child">
-          <div class="">
+          <div class="table-div pageTableDiv">
             <table class="table ">
               <thead>
                 <tr>
                   <th>Name</th>
+                  <th>Alias</th>
                   <th>Id</th>
                   <th>Role</th>
                   <th>Action</th>
                 </tr>
               </thead>
-              <tbody id="filterList" > 
+              <tbody id="filterList"> 
                 <tr class="viewEmployeeTable_row">
                   <td class="viewEmployeeTable_centerName_parent">
                     <span id="viewEmployeeTable_centerName" class="viewEmployeeTable_centerName">
 
+                    </span>
+                   </td>
+                   <td class="viewEmployeeTable_memberId_alias">
+                    <span id="viewEmployeeTable_memberalias" class="viewEmployeeTable_memberalias">
+                      
                     </span>
                    </td> 
                   <td class="viewEmployeeTable_memberId_parent">
@@ -340,7 +129,7 @@
                       </span>
                     </td>
                     <td class="">
-                      <span id="" class="viewEmployeeTable_action">
+                      <span id="" class="viewEmployeeTable_action d-flex justify-content-center">
                         
                       </span>
                     </td>
@@ -351,16 +140,32 @@
         </div>
       </div>
 
-    <div class="changeCenterModal">
-      <div class="changeCenterModalBody">
-        <div class="changeCenterModal_header">
-          <span class="changeCenterModal_name">Name</span>
-          <span class="changeCenterModal_title">Title</span>
-        </div>
-        <div class="changeCenterModal_centers"></div>
-        <div class="changeCenterModal_buttons">
-          <button class="changeCenterModal_close button">Close</button>
-          <button class="changeCenterModal_save button">Save</button>
+    <div class="changeCenterModal templateModal modalNew">
+      <div class="modal-dialog mw-75">
+        <div class="changeCenterModalBody modal-content NewFormDesign">
+          <div class="changeCenterModal_header modal-header">
+            <span class="changeCenterModal_name">Name</span>
+            <span class="changeCenterModal_title">Title</span>
+          </div>
+          <div class="modal-body container">
+            <section class="tab-buttons">
+              <div class="tab-buttons-div">
+                <span class="nav-button centers active"><span>Centers</span></span>
+                <span class="nav-button awards"><span>Awards</span></span>
+                <span class="hover" style="width: 50% !important;"></span>
+              </div>
+            </section>
+            <section class="tabContent1">
+              <div class="changeCenterModal_centers"></div>
+            </section>
+            <section class="tabContent2" style="display:none;">
+              <div class="changeCenterModal_awards"></div>
+            </section>            
+            <div class="changeCenterModal_buttons modal-footer">
+              <button class="changeCenterModal_close button btn btn-default btn-small">Close</button>
+              <button class="changeCenterModal_save button btn btn-default btn-small btnOrange">Save</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -379,9 +184,16 @@
 });
 
   $(document).ready(function(){
+    var centerid = $('#centerValue').val();
+    var userid = $('#loginId').val();
     var url = '<?php echo base_url() ?>settings/centersBySuperAdmin';
+    var awardsurl = '<?php echo base_url() ?>api/settings/getAwardSettings'+'/'+userid+'/'+centerid;
+    // alert(awardsurl);
     var type = 'CENTER';
-    var id = "1";
+    // var id = "1";
+    var id = centerid;
+
+    // Centers
     $.ajax({
       url : url,
       type : 'POST',
@@ -392,6 +204,23 @@
       success : function(response){
         try{
           localStorage.setItem('centers',response);
+        }
+        catch{}
+      }
+    })
+
+    // Awards
+    $.ajax({
+      url : awardsurl,
+      type : 'GET',
+      headers:{
+        "x-device-id":'<?= $this->session->userdata('x-device-id') ?>',
+        "x-token":'<?= $this->session->userdata('AuthToken') ?>'
+      },
+      success : function(awardresponse){
+        try{
+          // alert(awardresponse);
+          localStorage.setItem('awards',awardresponse);
         }
         catch{}
       }
@@ -408,26 +237,36 @@
     function viewEmployeeTable(){
       var centerid = $('#centerValue').val();
       var counter = 0;
-        var url = "<?php echo base_url() ?>settings/getEmployeesByCenter/"+centerid; 
+        var url = "<?php echo base_url() ?>settings/getEmployeesByCenter/"+centerid;
+        // var url = "<php echo base_url() ?>settings/getEmployeesByCenter/6|12|25|28|"; 
+        console.log(url);
+        // alert(centerid);
       $.ajax({
         url: url,
         method: 'GET',
         success: function(response){
-           $('.viewEmployeeTable_row').empty()
+          console.log(response);
+          // alert(response);
+           $('.viewEmployeeTable_row,#filterList').empty();
           var employees = JSON.parse(response);
+          // alert(JSON.stringify(employees));
           employees.employees.forEach(function(employee){
-            $('#filterList').append(code);
-            //  viewEmployeeTable_centerName -- emp name
-            //  viewEmployeeTable_memberName -- role name
-            $('.viewEmployeeTable_centerName').eq(counter).text(employee.name);
-            $('.viewEmployeeTable_centerName').eq(counter).attr('empid',employee.id);
-            $('.viewEmployeeTable_memberId').eq(counter).text(employee.id);
-            $('.viewEmployeeTable_memberName').eq(counter).text(employee.roleName);
-            $('.viewEmployeeTable_action').eq(counter).html(`
-                <button class="button"><a href="${'<?php echo base_url() ?>settings/viewEmployee/'+employee.id}">View</a></button>
-                <button class="button"><a href="${'<?php echo base_url() ?>settings/editEmployeeProfile/'+employee.id}">Edit</a></button>
-              `)
-            counter++;
+            if(employee.role != 1){
+              // console.log(code);
+              $('#filterList').append(code);
+              //  viewEmployeeTable_centerName -- emp name
+              //  viewEmployeeTable_memberName -- role name
+              $('.viewEmployeeTable_centerName').eq(counter).text(employee.name);
+              $('.viewEmployeeTable_centerName').eq(counter).attr('empid',employee.id);
+              $('.viewEmployeeTable_memberId').eq(counter).text(employee.id);
+              $('.viewEmployeeTable_memberalias').eq(counter).text(employee.alias);
+              $('.viewEmployeeTable_memberName').eq(counter).text(employee.roleName);
+              $('.viewEmployeeTable_action').eq(counter).html(`
+                  <button class="btn-none"><a href="${'<?php echo base_url() ?>settings/viewEmployee/'+employee.id}"><span class="material-icons-outlined">visibility</span></a></button>
+                  <button class="btn-none"><a href="${'<?php echo base_url() ?>settings/editEmployeeProfile/'+employee.id}"><span class="material-icons-outlined">edit</span></a></button>
+                `)
+              counter++;
+            }
           })
           // <button class="button editEmployeeCenter">Center</button>
           // console.log(employees);
@@ -446,6 +285,7 @@
       success : function(response){
         try{
           var centers = (JSON.parse(response)).userCenters;
+          console.log(centers);
           centers.forEach(center => {
             $('.centerIdCheckbox_parent').each(function(c){
               if(center.centerid == $(this).attr('centerid')){
@@ -458,6 +298,31 @@
       }
     })
   }
+  
+  function getEmployeeAwards(empid){
+    var url = '<?php echo base_url() ?>settings/getEmployeeAwardDetails/'+empid;
+    $.ajax({
+      url : url,
+      type : 'GET',
+      success : function(response){
+        try{
+          // alert(JSON.stringify(response));
+          var awarddetails = (JSON.parse(response)).awards;
+          // alert(JSON.stringify(awarddetails));
+          awarddetails.forEach(award => {
+            $('.awardIdCheckbox_parent').each(function(c){
+              if(award.earningRateId == $(this).attr('earningRateId')){
+                $(this).children('.awardIdCheckbox').prop('checked',true)
+              }
+            })
+          })
+        }
+        catch{}
+      }
+    })
+  }
+
+
 
   // GET CENTERS //
 
@@ -469,24 +334,35 @@
     $('.changeCenterModalBody').attr('empId',empid)
     $('.changeCenterModal_title').html($(this).parent().parent().children('td').eq(2).children('.viewEmployeeTable_memberName').text())
     try{
-      $('.changeCenterModal_centers').empty();
+      $('.changeCenterModal_centers,.changeCenterModal_awards').empty();
       var centers = JSON.parse(localStorage.getItem('centers'));
+      var awarddetails = JSON.parse(localStorage.getItem('awards'));
+      //Centers Printing
       centers.CenterDetails.forEach(center => {
         var code = `<div class="centerIdCheckbox_parent" centerid="${center.centerid}">
                       <input class="centerIdCheckbox" type="checkbox"> 
                       <span>${center.name}</span>
                     </div>`;
-            $('.changeCenterModal_centers').append(code)
+            $('.changeCenterModal_centers').append(code);
+      })
+      awarddetails.awards.forEach(award => {
+        var awardcode = `<div class="awardIdCheckbox_parent" earningRateId="${award.earningRateId}">
+                      <input class="awardIdCheckbox" type="checkbox"> 
+                      <span>${award.name}</span>
+                    </div>`;
+            $('.changeCenterModal_awards').append(awardcode);
       })
       getEmployeeCenters(empid);
+      getEmployeeAwards(empid);
     }
     catch{
-      console.log(localStorage.getItem('centers'))
+      console.log(localStorage.getItem('centers'));
+      console.log(localStorage.getItem('awards'));
      }
   })
 
   $(document).on('click','.changeCenterModal_close',function(){
-    $('.changeCenterModal_centers').empty();
+    $('.changeCenterModal_centers,.changeCenterModal_awards').empty();
     $('.changeCenterModalBody').removeAttr('empId');
     $('.changeCenterModal').css('display','none');
   })
@@ -509,13 +385,45 @@
           centers : centers
         },
         success :function(response){
-            console.log(response)
+            // console.log(response)
+            alert("Centers updated successful");
+            location.reload();
         }
       })
     }else{
       alert('Total assigned centers cannot be 0');
     }
   })
+
+  $(document).on('click','.changeAwardModal_save',function(){
+    var aurl = '<?php echo base_url() ?>settings/changeEmployeeAward';
+    var empId = $('.changeCenterModalBody').attr('empId');
+    var awards = [];
+    $('.awardIdCheckbox_parent').each(function(){
+      if($(this).children('.awardIdCheckbox').prop('checked') == true){
+        awards.push($(this).attr('earningRateId'));
+      }  
+    })
+    if(awards.length > 0){
+      $.ajax({
+        url : aurl,
+        type : 'POST',
+        data : {
+          empId : empId,
+          awards : awards
+        },
+        success :function(response){
+            // console.log(response)
+            alert("Awards updated successful");
+            location.reload();
+        }
+      })
+      // alert(JSON.stringify(awards));
+    }else{
+      alert('Total assigned awards cannot be 0');
+    }
+  })
+
 
 /* -------------------------------
         GET ALL CENTERS
@@ -588,10 +496,11 @@
         var filter = $('#filter').val();
         var i = 0;
         var name = $(".viewEmployeeTable_row td #viewEmployeeTable_centerName");
+        var alias = $(".viewEmployeeTable_row td #viewEmployeeTable_memberalias");
         var role = $(".viewEmployeeTable_row td #viewEmployeeTable_memberName");
         var id = $(".viewEmployeeTable_row td #viewEmployeeTable_memberId");
          $(".viewEmployeeTable_row td #viewEmployeeTable_centerName").each(function(){
-             if ((name.eq(i).text().search(new RegExp(filter, "i")) < 0) && (role.eq(i).text().search(new RegExp(filter, "i")) < 0) && (id.eq(i).text().search(new RegExp(filter, "i")) < 0)) {
+             if ((name.eq(i).text().search(new RegExp(filter, "i")) < 0) && (role.eq(i).text().search(new RegExp(filter, "i")) < 0) && (id.eq(i).text().search(new RegExp(filter, "i")) < 0) && (alias.eq(i).text().search(new RegExp(filter, "i")) < 0)) {
                 $(this).parent().parent().fadeOut();
              } else {
                 $(this).parent().parent().show();
@@ -611,11 +520,26 @@
           centerid : centerid
         },
         success : function(response){
-          console.log(response)
-          // window.location.href = window.location.href;
+          console.log(response);
+          window.location.href = window.location.href;
         }
       }) 
     })
+
+    $(document).on("click", ".centers", function(){
+      $(".awards").removeClass("active");
+      $(this).addClass("active");      
+      $(".tabContent1").show();
+      $(".tabContent2").hide();
+      $(".changeAwardModal_save").toggleClass('changeAwardModal_save changeCenterModal_save');
+    });
+    $(document).on("click", ".awards", function(){
+      $(".centers").removeClass("active");
+      $(this).addClass("active");
+      $(".tabContent1").hide();
+      $(".tabContent2").show();
+      $(".changeCenterModal_save").toggleClass('changeCenterModal_save changeAwardModal_save');
+    });
 </script>
 
 </body>

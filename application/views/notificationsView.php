@@ -4,10 +4,28 @@
 	<?php $this->load->view('header'); ?>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Superannuation Settings</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('assets/favicon_io/apple-touch-icon.png') ?>">
+  <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/favicon_io/favicon-32x32.png') ?>">
+  <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/favicon_io/favicon-16x16.png') ?>">
+  <link rel="manifest" href="<?= base_url('assets/favicon_io/site.webmanifest') ?>">
 	
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <style type="text/css">
+.navbar-nav .nav-item-header:nth-of-type(9) {
+    background: var(--blue2) !important;
+    position: relative;
+}
+.navbar-nav .nav-item-header:nth-of-type(9)::after {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    bottom: 0;
+    content: "";
+    background: var(--orange1);
+}
 	*{
 		font-family: 'Open Sans', sans-serif;
 	}
@@ -259,6 +277,14 @@ border-radius: 10px;
 .disabled{
   background: rgb(235, 235, 228) !important;
 }
+.viewMore{
+    text-align: center;
+    color: #0000FF;
+}
+.viewMore:hover{
+    text-decoration : underline;
+    cursor: pointer;
+}
 @media only screen and (max-width:1024px) {
 .modal-content{
 	min-width:100vw;
@@ -321,10 +347,12 @@ border-radius: 10px;
                     for($i=$point;$i<count($notfs);$i++) {
                         if($notfs[$i]->isReadYN == 'Y'){
                        ?>
-                    <div class="notification_body" style="border-bottom: 0.5px solid #C4C4C4;display:flex;border-radius:0.5rem;margin-bottom:1rem">
-                        <div style="width:10%;"></div>
+                    <div class="notification_body" style="background:#E5E5E5;display:flex;border-radius:0.5rem;margin-bottom:1rem">
+                        <div style="width:10%;display:flex;align-items:center;justify-content:center">
+                            <img src="<?php echo base_url('assets/images/defaultUser.png') ?>" height="25px">
+                        </div>
                         <div style="width:90%;">
-                            <div style="width:10%;display:flex;align-items:center;justify-content:center"><?php echo $notfs[$i]->title ?></div>
+                            <div><?php echo $notfs[$i]->title ?></div>
                             <div><?php echo $notfs[$i]->body ?></div>
                         </div>
                     </div>
@@ -333,6 +361,9 @@ border-radius: 10px;
                    }
                 }
             ?>
+                <div class="viewMore">
+                    View More
+                </div>
             </div>
         </div>
 	</div>
@@ -352,6 +383,33 @@ border-radius: 10px;
 		    $('.containers').css('paddingLeft',$('.side-nav').width());
 		}
 });
+
+window.history.replaceState(null, 'WONDERFUL', `Notifications?count=0`);
+
+$(document).on('click','.viewMore',function() {
+    let searchParams = new URLSearchParams(window.location.search);
+    let start = searchParams.get('count');
+    var url = "<?php echo base_url(); ?>Notifications/getNotifications/"+start;
+    $('.viewMore').remove();
+    $.ajax({
+        url : url,
+        type : 'GET',
+        success : function(response){
+            var parsed = JSON.parse(response);
+            console.log(parsed.Notifications)
+            if(parsed.Notifications.length != 0){
+                parsed.Notifications.forEach(function(notf){
+                    var code = `<div class="notification_body" style="background:#E5E5E5;display:flex;border-radius:0.5rem;margin-bottom:1rem"><div style="width:10%;display:flex;align-items:center;justify-content:center"><img src="<?php echo base_url('assets/images/defaultUser.png') ?>" height="25px"></div><div style="width:90%;"><div>${notf.title} </div><div>${notf.body} </div></div></div>`;
+                        if(notf.isReadYN == 'Y')
+                            $('.notifications_read').append(code);
+                })
+                $('.notifications_read').append('<div class="viewMore">View More</div>')
+            }
+            window.history.replaceState(null, 'WONDERFUL', `Notifications?count=${parseInt(start)+25}`);
+        } 
+    })
+});
+
 </script>
 
 <?php if( isset($error) ){ ?>
@@ -367,11 +425,5 @@ border-radius: 10px;
 	<?php }
 ?>
 
-<script type="text/javascript">
-	$(document).ready(function(){
-        var x = 0
-            window.history.replaceState(null, 'WONDERFUL', `Notifications?count=${x}`);
-	})
-</script>
 </body>
 </html>

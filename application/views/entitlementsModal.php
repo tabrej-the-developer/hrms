@@ -45,7 +45,7 @@ font-family: 'Open Sans', sans-serif;
   crossorigin="anonymous"></script>
 <div>
 
-<div>
+<div class="template_table">
 
 	<div class="d-flex w-100">
 		<span class="head head-th col-4">Name</span>
@@ -63,8 +63,8 @@ font-family: 'Open Sans', sans-serif;
 		<div class="d-flex  m-0">
 			<span class="head col-4"><?php echo $users->users[$x]->name?></span>
 			<span class="head col-4">
-				<span class="select_css">
-					<select class="level_select" userid="<?php echo $users->users[$x]->id; ?>">
+				<div class="form-floating">
+					<select class="level_select form-control" id="<?php echo $users->users[$x]->id; ?>" userid="<?php echo $users->users[$x]->id; ?>">
 					<?php foreach($entitlements->entitlements as $e ){ 
 						if($e->id == $users->users[$x]->level){ ?>
 							<option value="<?php echo $e->id ?>"  selected><?php echo $e->name; ?></option>
@@ -73,7 +73,8 @@ font-family: 'Open Sans', sans-serif;
 					<?php } 
 							} ?>
 					</select>
-				</span>
+					<label for="<?php echo $users->users[$x]->id; ?>">Level Name</label>
+				</div> 
 			</span>
 			<!-- <span class="head col-3"><?php echo $users->users[$x]->center; ?></span> -->
 			<span class="head col-4"><?php echo $users->users[$x]->roleName; ?></span>

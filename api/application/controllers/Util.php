@@ -71,24 +71,31 @@ class Util extends MY_Controller
 
 	public function GetAllEmployeesByCenter($centerid, $userid)
 	{
+		if(!strpos($centerid,'%7C')){
+			$centerid = urlencode($centerid);
+		}
 		$headers = $this->input->request_headers();
 		$headers = array_change_key_case($headers);
 		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
 			$this->load->model('authModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+			// var_dump($res);
 			if ($res != null && $res->userid == $userid) {
 				$this->load->model('utilModel');
 				$mdata['employees'] = [];
+				// echo strpos($centerid, '%7C');
 				if (strpos($centerid, '%7C') == null || strpos($centerid, '%7C') == "") {
 					$mdata['employees'] = $this->utilModel->getEmployessByCenter($centerid);
 				} else {
 					$arrayElements = explode('%7C', $centerid);
+					// var_dump($arrayElements);
 					foreach ($arrayElements as $center) {
 						if ($center != "" && $center != null) {
 							$mdata['employees'] = array_merge($mdata['employees'], $this->utilModel->getEmployessByCenter($center));
 						}
 					}
 				}
+				// var_dump($mdata);
 				http_response_code(200);
 				echo json_encode($mdata);
 			} else {

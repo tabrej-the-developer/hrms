@@ -18,7 +18,7 @@ class AuthModel extends CI_Model {
 
 	public function getUserDetails($userid){
 		$this->load->database();
-		$query = $this->db->query("SELECT users.id, users.email, users.name, users.imageUrl, users.role, users.manager, users.isVerified, users.created_at, users.created_by, users.roleid, ocr.roleName as title, users.level , e.hourlyRate,e.name as levelTitle FROM users LEFT JOIN entitlements e on e.id = users.level LEFT JOIN orgchartroles ocr ON ocr.roleid = users.roleid WHERE users.id='$userid'");
+		$query = $this->db->query("SELECT users.id, users.bonusRate, users.email, users.name, users.imageUrl, users.role, users.manager, users.isVerified, users.created_at, users.created_by, users.roleid, ocr.roleName as title, users.level , e.hourlyRate,e.name as levelTitle FROM users LEFT JOIN entitlements e on e.id = users.level LEFT JOIN orgchartroles ocr ON ocr.roleid = users.roleid WHERE users.id='$userid'");
 		return $query->row();
 	}
 
@@ -33,7 +33,14 @@ class AuthModel extends CI_Model {
 		$query = $this->db->query("SELECT * FROM users where email = '$email'");
 		return $query->row();
 	}
-		public function getUserFromId($email){
+
+	public function getUserFromEmailV1($email,$userid){
+		$this->load->database();
+		$query = $this->db->query("SELECT * FROM users where email='$email' and created_by='$userid';");
+		return $query->row();
+	}
+
+	public function getUserFromId($email){
 		$this->load->database();
 		$query = $this->db->query("SELECT * FROM users where id = '$email'");
 		return $query->row();
@@ -42,8 +49,13 @@ class AuthModel extends CI_Model {
 	public function insertUser($email,$password,$name,$role,$title,$center,$manager,$createdBy,$roleid,$level,$bonusRate){
 		$this->load->database();
 		$uid = uniqid();
-		$query = $this->db->query("INSERT INTO users  VALUES('$uid','$email','$password','$name',null,$role,'$title','$center|','$manager','N',now(),'$createdBy',$roleid,$level,$bonusRate,null)");
+		$query = $this->db->query("INSERT INTO users VALUES('$uid','$email','$password','$name',null,$role,'$title',null,'$center|','$manager','N',now(),'$createdBy',$roleid,$level,$bonusRate,null)");
 		return $uid;
+	}
+	public function insertUserV1($empid,$email,$password,$name,$role,$title,$center,$manager,$createdBy,$roleid,$level,$bonusRate){
+		$this->load->database();
+		$this->db->query("INSERT INTO users VALUES('$empid','$email','$password','$name',null,$role,'$title',null,'$center|','$manager','N',now(),'$createdBy',$roleid,$level,$bonusRate,null)");
+		return $empid;
 	}
 
 	public function verifyUser($userid){

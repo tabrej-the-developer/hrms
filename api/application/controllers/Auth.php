@@ -15,7 +15,42 @@ class Auth extends CI_Controller
 			die();
 		}
 		parent::__construct();
+		// $this->load->helper('errorHelper');
 	}
+
+	// public function exceptionHandler(){
+	// 	try{
+	// 		// $email = "someone.com";
+	// 		$email = "someone@example.com";
+	// 		if(strpos($email,'example')){
+	// 			echo "Good";
+	// 		}elseif(strpos($email,'someone')){
+	// 			throw new customException('Email should contain someone.');
+	// 		}elseif(strpos($email,'example')){
+	// 			throw new Exception('Email should contain example.');
+	// 		}
+	// 	}catch(customException $e){
+	// 		log_message('error',$e->getMessage());
+	// 	}catch(Exception $e){
+	// 		log_message('error',$e->getMessage());
+	// 	}
+	// }
+
+
+	function custom_calculate(){
+		try{
+			$num = $this->input->get("num");
+			if($num == 0){
+				throw new Exception();
+			}
+			echo 20/$num;
+		}
+		catch(Exception $e){
+			custom_error_log("zero is not allowed".__FILE__.__CLASS__.__FUNCTION__);
+		}
+	}
+
+
 
 	public function login()
 	{
@@ -68,6 +103,7 @@ class Auth extends CI_Controller
 				$data['Message'] = "Invalid parameters";
 			}
 			http_response_code(200);
+			log_message('info','Authentication Successful For User -> '.$email);
 			echo json_encode($data);
 		} else {
 			http_response_code(401);

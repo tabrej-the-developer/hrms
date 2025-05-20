@@ -1,357 +1,315 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Settings</title>
+<title>Settings</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script
-  src="https://code.jquery.com/jquery-3.4.1.js"
-  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-  crossorigin="anonymous"></script>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-<style type="text/css">
-	*{
-font-family: 'Open Sans', sans-serif;
-	}
-	body{
-		background: #F2F2F2 !important;
-	}
-	a{
-		text-decoration: none;
-	}
-	.top-box{
-		width: 100%;
-	}
-	.top-box-bottom{
-		width:100%;
-		display: flex;
-		flex-wrap: wrap;
-	}
-	.containers{
-		width:100%;
-		height: 100%;
-		background: #F2F2F2;
-	}
-	.ps-os-view{
-		background:transparent;
-		display: flex;
-	    width: 100%;
-	    height: 33%;
-	    flex-wrap: wrap;
-	    justify-content: start;
+<link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('assets/favicon_io/apple-touch-icon.png') ?>">
+  <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/favicon_io/favicon-32x32.png') ?>">
+  <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/favicon_io/favicon-16x16.png') ?>">
+  <link rel="manifest" href="<?= base_url('assets/favicon_io/site.webmanifest') ?>">
+<link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+<link href="<?php echo base_url('assets/css/bootstrap.min.css');?>" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-	}
-	.tile-box{
-		border-radius: 5px;
-    background: white;
-    padding: 2rem 3rem;
-    margin-left: 1.5rem;
-    box-shadow: 0px 3px 5px -3px #979797;
-	}
-	.tile-box:hover{
-		    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.3);
-	}
-	.cp-rs-view{
-		background:transparent;
-		margin-top:10px;
-	}
-	.p-s{
-		width: 100%;
-	    display: flex;
-	    justify-content: center;
-    	}
-  .top-box-bottom .tile-box{
-  		margin-top: 1rem;
-    	}
+<script src="https://code.jquery.com/jquery-3.4.1.js"  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="  crossorigin="anonymous"></script>
 
-.modal-logout {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    visibility: hidden;
-    transform: scale(1.1);
-    transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
-    text-align: center;
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/layout.css?version='.VERSION);?>">
+ <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/container.css?version='.VERSION);?>">
+
+<script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js');?>" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('assets/js/popper.min.js');?>" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('assets/js/bootstrap.min.js');?>" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+<style>
+.navbar-nav .nav-item-header:nth-of-type(9) {
+    background: var(--blue2) !important;
+    position: relative;
 }
-.modal-content-logout {
+.navbar-nav .nav-item-header:nth-of-type(9)::after {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 1rem 1.5rem;
-    width: 50%;
-    border-radius: 0.5rem;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    bottom: 0;
+    content: "";
+    background: var(--orange1);
 }
-.show-modal {
-    opacity: 1;
-    visibility: visible;
-    transform: scale(1.0);
-    transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
-}
-.heading{
-	text-align: left;
-	font-weight:bold;
-	font-size:2rem;
-	display: flex; 
-	padding-left: 3rem;
-	color: #171D4B;
-}
-a[href*="settings"],.xero_settings a{
-	font-weight: 700 !important;
-	font-style: normal;
-	color: rgba(0,0,0,0.6);
-}
-.top-box-bottom {
-	padding-bottom: 2rem;
-}
-.col-3{
-    flex: 0 0 22% !important;
-    max-width: 22% !important;
-}
-.col-6{
-  padding-right: 0 !important;
-  padding-left: 0 !important;
-	display: flex;
-  align-items: center;
-}
-	@media only screen and (max-width: 600px) {
-		.title-box{
-			display:block;
-		}
-	}
 </style>
 </head>
 <body>
+
+<body>
 <?php
-	$this->load->view('header');
 	if(isset($permissions)){
 		$permissions = json_decode($permissions);
 	}
  ?>
-<div class="containers ">
-		<div class="heading" id="center-id" >Settings</div>
-	<div class="ps-os-view" style="position: relative;">
-		<div style="font-size: 1rem;font-weight: 700;margin: 1.5rem 3rem">Personal Settings</div>
-		<div class="top-box d-flex">
-			<div class="tile-box col-3 d-md-flex">
-				<div class=" col-5">
-				<a href="<?php echo base_url('settings/editPassword')?>">
-					<img src="<?php echo site_url()?>/assets/images/settings-icons/password.png">
-				</a>
-				</div>
-				<div class="p-s col-6">
-					<a href="<?php echo base_url()?>settings/editPassword">Password Settings</a>
-				</div>
+<div class="wrapperContainer">
+	<?php include 'headerNew.php'; ?>
+	<div class="containers scrollY ">
+		<div class="settingsContainer ">
+			<div class="d-flex pageHead heading-bar" id="center-id" >
+				<h3 class="events_title">Settings</h3>
 			</div>
-			
-		<?php // if(isset($permissions->permissions) && $permissions->permissions->viewOrgChartYN == "Y"){ ?>
-			<div class="tile-box col-3 d-md-flex">
-				<div class=" col-5">
-					<a href="<?php echo base_url()?>settings/orgChart">
-						<img src="<?php echo site_url()?>/assets/images/settings-icons/organization-chart.png">
-					</a>
-				</div>
-				<div class="p-s col-6">
-					<a href="<?php echo base_url()?>settings/notificationSettings">Notification Settings</a>
-				</div>
-			</div>
-		<?php // } ?>
-		</div>
-		<span style="width: 100%;text-align: center;">
-			<span style="border:1px solid rgba(151, 151, 151,0.3);bottom: 0;width: 95%;display: inline-block;"></span>
-		</span>
-	</div>
-	<div class="ps-os-view" style="position: relative;">
-		<div style="font-size: 1rem;font-weight: 700;margin: 1.5rem 3rem">Organizational Settings</div>
-		<div class="top-box d-flex">
-		
-			<?php if(isset($permissions->permissions) && $permissions->permissions->viewOrgChartYN == "Y"){ ?>
-			<div class="tile-box col-3 d-md-flex">
-				<div class=" col-5">
-					<a href="<?php echo base_url()?>settings/orgChart">
-						<img src="<?php echo site_url()?>/assets/images/settings-icons/organization-chart.png">
-					</a>
-				</div>
-				<div class="p-s col-6">
-					<a href="<?php echo base_url()?>settings/orgChart">Organizational Settings</a>
-				</div>
-			</div>
-		<?php } ?>
-		</div>
-		<span style="width: 100%;text-align: center;">
-			<span style="border:1px solid rgba(151, 151, 151,0.3);bottom: 0;width: 95%;display: inline-block;"></span>
-		</span>
-	</div>
-	<div class="cp-rs-view">
-		<div style="font-size: 1rem;font-weight: 700;margin-left: 3rem">Center Level Settings</div>
-		<div class="top-box top-box-bottom justify-content-right">
-			<?php if(isset($permissions->permissions) && $permissions->permissions->viewCenterProfileYN == "Y"){ ?>
-			<div class="tile-box d-md-flex col-3">
-				<div class="col-5">
-					<a href="<?php echo base_url('settings/centerProfile')?>">
-						<img src="<?php echo site_url('assets/images/settings-icons/center-profile.png') ?>">
-					</a>
-				</div>
-					<div class="col-6">
-						<a href="<?php echo base_url('settings/centerProfile')?>">Center Profile</a>
+			<div class="settingViewIcon ps-os-view" style="position: relative;">
+				<div class="head">Personal Settings</div>
+				<div class="top-box d-flex">
+					<div class="tile-box d-md-flex">
+						<a href="<?php echo base_url()?>settings/editPassword">
+							<div class=" col-12">
+							<!-- <a href="<?php // echo base_url('settings/editPassword')?>"> -->
+								<img src="<?php echo site_url()?>/assets/images/settings-icons/password.png">
+							<!-- </a> -->
+							</div>
+							<div class="p-s name col-12">
+								Password Settings
+							</div>
+						</a>
 					</div>
+					
+				<?php // if(isset($permissions->permissions) && $permissions->permissions->viewOrgChartYN == "Y"){ ?>
+					<div class="tile-box d-md-flex">
+						<a href="<?php echo base_url()?>settings/notificationSettings">
+							<div class=" col-12">
+								<!-- <a href="<?php// echo base_url()?>settings/orgChart"> -->
+									<img src="<?php echo site_url()?>/assets/images/settings-icons/notification.png">
+								<!-- </a> -->
+							</div>
+							<div class="p-s name col-12">
+								Notification Settings
+							</div>
+						</a>
+					</div>
+				<?php // } ?>
+				</div>
+				<!-- <span style="width: 100%;text-align: center;">
+					<span style="border:1px solid rgba(151, 151, 151,0.3);bottom: 0;width: 95%;display: inline-block;"></span>
+				</span> -->
 			</div>
-		<?php } ?>
-			<?php if(isset($permissions->permissions) && $permissions->permissions->viewRoomSettingsYN == "Y"){ ?>
-			<!-- <div class="tile-box d-md-flex col-3">
-				<div class="col-5">
-					<a href="<?php echo base_url()?>settings/editRooms">
-						<img src="<?php echo site_url('assets/images/settings-icons/room-settings.png') ?>">
-					</a>
-				</div>
-				<div class="col-6">
-					<a href="<?php echo base_url()?>settings/editRooms">Room Settings</a>
-				</div>
-			</div> -->
-		<?php } ?>
-			<?php if(isset($permissions->permissions) && $permissions->permissions->viewEntitlementsYN == "Y"){ ?>
-			<div class="tile-box d-md-flex col-3">
-				<div class="col-5">
-					<a href="<?php echo base_url('settings/viewEntitlements')?>">
-						<img src="<?php echo site_url('assets/images/settings-icons/entitlement-settings.png') ?>">
-					</a>
-				</div>
-				<div class="col-6">
-					<a href="<?php echo base_url()?>settings/viewEntitlements">Entitlement Settings</a>
-				</div>
-			</div>
-		<?php } ?>
-			<?php if(isset($permissions->permissions) && $permissions->permissions->editEmployeeYN == "Y"){ ?>
-			<div class="tile-box  d-md-flex col-3">
-				<div class="col-5">
-					<a href="<?php echo base_url('settings/addEmployee')?>">
-						<img src="<?php echo site_url('assets/images/settings-icons/addemployee.png'); ?>"></div>
-					</a>
-				<div class="col-6">
-					<a href="<?php echo base_url()?>settings/addEmployee">Add Employee</a>
-				</div>
-			</div>
-		<?php } ?>
-<?php //if((isset($permissions->permissions->editEmployeeYN) ? $permissions->permissions->editEmployeeYN : "N") == "N"){ ?>			
-			<div class="tile-box  d-md-flex col-3">
-				<div class="col-5">
-					<a href="<?php echo base_url('settings/editEmployee')?>">
-						<img src="<?php echo site_url('assets/images/settings-icons/edit-employee.png'); ?>">
-					</a>	
-				</div>
-				<div class="col-6">
-					<a href="<?php echo base_url()?>settings/editEmployee">Edit Profile</a>
-				</div>
-			</div>
-		<?php //} ?>
-			<?php if(isset($permissions->permissions) && $permissions->permissions->editEmployeeYN == "Y"){ ?>			
-			<div class="tile-box  d-md-flex col-3">
-				<div class="col-5">
-					<a href="<?php echo base_url('settings/viewEmployeeTable')?>">
-						<img src="<?php echo site_url('assets/images/settings-icons/view-employee.png'); ?>"></div>
-					</a>
-				<div class="col-6">
-					<a href="<?php echo base_url()?>settings/viewEmployeeTable">View Employee</a>
-				</div>
-			</div>
+			<div class="settingViewIcon ps-os-view" style="position: relative;">
+				<div class="head">Organizational Settings</div>
+				<div class="top-box d-flex">
+				
+					<?php if(isset($permissions->permissions) && $permissions->permissions->viewOrgChartYN == "Y"){ ?>
+					<div class="tile-box d-md-flex">
+						<a href="<?php echo base_url()?>settings/orgChart">
+							<div class=" col-12">
+								<!-- <a href="<?php // echo base_url()?>settings/orgChart"> -->
+									<img src="<?php echo site_url()?>/assets/images/settings-icons/organization-chart.png">
+								<!-- </a> -->
+							</div>
+							<div class="p-s name col-12">
+								Organizational Settings
+							</div>
+						</a>
+					</div>
+				<?php } ?>
 
-
-		<?php } ?>
-			<!-- <button class="add-employee">Add Employee</button></div> -->
-			<?php if(isset($permissions->permissions) && $permissions->permissions->xeroYN == "Y"){ ?>
-			<div class="tile-box d-md-flex col-3">
-				<div class="col-5">
-					<a href="<?php echo base_url('settings/xeroSettings')?>">
-						<img src="<?php echo site_url('assets/images/settings-icons/xero.png'); ?>">
-					</a>
+					<div class="tile-box d-md-flex">
+						<a href="<?php echo base_url()?>settings/companySettings">
+							<div class=" col-12">
+								<!-- <a href="<?php // echo base_url()?>settings/orgChart"> -->
+									<img src="<?php echo site_url()?>/assets/images/settings-icons/company-settings.png">
+								<!-- </a> -->
+							</div>
+							<div class="p-s name col-12">
+								Company Settings
+							</div>
+						</a>
+					</div>
 				</div>
-				<div class="col-6 xero_settings">
-					<a href="<?php echo base_url().'settings/xeroSettings';?>" >Xero Settings</a>
+				<!-- <span style="width: 100%;text-align: center;">
+					<span style="border:1px solid rgba(151, 151, 151,0.3);bottom: 0;width: 95%;display: inline-block;"></span>
+				</span> -->
+			</div>
+			<div class="settingViewIcon cp-rs-view">
+				<div class="head">Center Level Settings</div>
+				<div class="top-box d-flex">
+					<?php if(isset($permissions->permissions) && $permissions->permissions->viewCenterProfileYN == "Y"){ ?>
+					<div class="tile-box d-md-flex">
+						<a href="<?php echo base_url('settings/centerProfile')?>">
+							<div class="col-12">
+								<!-- <a href="<?php // echo base_url('settings/centerProfile')?>"> -->
+									<img src="<?php echo site_url('assets/images/settings-icons/center-profile.png') ?>">
+								<!-- </a> -->
+							</div>
+							<div class="name col-12">
+								Center Profile
+							</div>
+						</a>
+					</div>
+					<?php } ?>
+					<?php if(isset($permissions->permissions) && $permissions->permissions->viewRoomSettingsYN == "Y"){ ?>
+					<!-- <div class="tile-box d-md-flex col-3">
+						<div class="col-5">
+							<a href="<?php echo base_url()?>settings/editRooms">
+								<img src="<?php echo site_url('assets/images/settings-icons/room-settings.png') ?>">
+							</a>
+						</div>
+						<div class="col-6">
+							<a href="<?php echo base_url()?>settings/editRooms">Room Settings</a>
+						</div>
+					</div> -->
+					<?php } ?>
+					<?php if(isset($permissions->permissions) && $permissions->permissions->viewEntitlementsYN == "Y"){ ?>
+					<div class="tile-box d-md-flex col-3">
+						<a href="<?php echo base_url()?>settings/viewEntitlements">
+							<div class="col-12">
+								<!-- <a href="<?php echo base_url('settings/viewEntitlements')?>"> -->
+									<img src="<?php echo site_url('assets/images/settings-icons/entitlement-settings.png') ?>">
+								<!-- </a> -->
+							</div>
+							<div class="col-12 name">
+								Entitlement Settings
+							</div>
+						</a>
+					</div>
+					<?php } ?>
+					<?php if(isset($permissions->permissions) && $permissions->permissions->editEmployeeYN == "Y"){ ?>
+					<div class="tile-box  d-md-flex col-3">
+						<a href="<?php echo base_url()?>settings/addEmployee">
+							<div class="col-12">
+								<!-- <a href="<?php echo base_url('settings/addEmployee')?>"> -->
+									<img src="<?php echo site_url('assets/images/settings-icons/addemployee.png'); ?>"></div>
+								<!-- </a> -->
+							<div class="col-12 name">
+								Add Employee
+							</div>
+						</a>
+					</div>
+					<?php } ?>
+					<?php //if((isset($permissions->permissions->editEmployeeYN) ? $permissions->permissions->editEmployeeYN : "N") == "N"){ ?>			
+					<div class="tile-box  d-md-flex col-3">
+						<a href="<?php echo base_url('settings/editEmployeeProfile/'.$this->session->userdata('LoginId'))?>">
+							<div class="col-12">
+								<!-- <a href="<?php echo base_url('settings/editEmployeeProfile/'.$this->session->userdata('LoginId'))?>"> -->
+									<img src="<?php echo site_url('assets/images/settings-icons/edit-employee.png'); ?>">
+								<!-- </a>	 -->
+							</div>
+							<div class="col-12 name">
+								Edit Profile
+							</div>
+						</a>
+					</div>
+					<?php //} ?>
+					<?php if(isset($permissions->permissions) && $permissions->permissions->editEmployeeYN == "Y"){ ?>			
+					<div class="tile-box  d-md-flex col-3">
+						<a href="<?php echo base_url()?>settings/viewEmployeeTable">
+							<div class="col-12">
+								<!-- <a href="<?php echo base_url('settings/viewEmployeeTable')?>"> -->
+									<img src="<?php echo site_url('assets/images/settings-icons/view-employee.png'); ?>"></div>
+								<!-- </a> -->
+							<div class="col-12 name">
+								View Employee
+							</div>
+						</a>
+					</div>
+					<?php } ?>
+					<!-- <button class="add-employee">Add Employee</button></div> -->
+					<?php if(isset($permissions->permissions) && $permissions->permissions->xeroYN == "Y"){ ?>
+					<div class="tile-box d-md-flex col-3">
+						<a href="<?php echo base_url().'settings/xeroSettings';?>" >
+							<div class="col-12">
+								<!-- <a href="<?php echo base_url('settings/xeroSettings')?>"> -->
+									<img src="<?php echo site_url('assets/images/settings-icons/xero.png'); ?>">
+								<!-- </a> -->
+							</div>
+							<div class="col-12 name xero_settings">
+								Xero Settings
+							</div>
+						</a>
+					</div>
+					<?php } ?>
+					<?php if(isset($permissions->permissions) && $permissions->permissions->viewAwardsYN == "Y"){ ?>
+					<div class="tile-box d-md-flex col-3">
+						<a href="<?php echo base_url()?>settings/awardSettings">
+							<div class="col-12">
+								<!-- <a href="<?php echo base_url('settings/awardSettings')?>"> -->
+									<img src="<?php echo site_url('assets/images/settings-icons/award-settings.png'); ?>">
+								<!-- </a> -->
+							</div>
+							<div class="col-12 name">
+								Award Settings
+							</div>
+						</a>
+					</div>
+					<?php } ?>
+					<?php if(isset($permissions->permissions) && $permissions->permissions->viewSuperfundsYN == "Y"){ ?>
+					<div class="tile-box d-md-flex col-3">
+						<a href="<?php echo base_url()?>settings/superfundsSettings">
+							<div class="col-12">
+								<!-- <a href="<?php echo base_url('settings/superfundsSettings')?>"> -->
+									<img src="<?php echo site_url('assets/images/settings-icons/superfund-settings.png'); ?>">
+								<!-- </a> -->
+							</div>
+							<div class="col-12 name">
+								Superannuation Settings
+							</div>
+						</a>
+					</div>
+					<?php } ?>
+					<?php if(isset($permissions->permissions) && $permissions->permissions->viewPermissionYN == "Y"){ ?>
+					<div class="tile-box d-md-flex col-3">
+						<a href="<?php echo base_url()?>settings/permissionSettings">
+							<div class="col-12">
+								<!-- <a href="<?php echo base_url('settings/permissionSettings')?>"> -->
+									<img src="<?php echo site_url('assets/images/settings-icons/permission-settings.png'); ?>">
+								<!-- </a> -->
+							</div>
+							<div class="col-12 name">
+								Permission Settings
+							</div>
+						</a>
+					</div>
+					<?php } ?>
+					<?php if(isset($permissions->permissions) && $permissions->permissions->viewLeaveTypeYN == "Y"){ ?>
+					<div class="tile-box d-md-flex col-3">
+						<a href="<?php echo base_url()?>settings/leaveSettings">
+							<div class="col-12">
+								<!-- <a href="<?php echo base_url('settings/leaveSettings')?>"> -->
+									<img src="<?php echo site_url('assets/images/settings-icons/leave-settings.png'); ?>">
+								<!-- </a> -->
+							</div>
+							<div class="col-12 name">
+								Leave Settings
+							</div>
+						</a>
+					</div>
+					<?php } ?>
+					<?php if(isset($permissions->permissions) && $permissions->permissions->kidsoftYN == "Y"){ ?>
+					<div class="tile-box d-md-flex col-3">
+						<a href="<?php echo base_url()?>settings/kidsoftSettings">
+							<div class="col-12">
+								<!-- <a href="<?php echo base_url('settings/kidsoftSettings')?>"> -->
+									<img src="<?php echo site_url('assets/images/settings-icons/kidsoft_icon.png'); ?>">
+								<!-- </a> -->
+							</div>
+							<div class="col-12 name">
+								Kidsoft Settings
+							</div>
+						</a>
+					</div>
+					<?php } ?>
+					<!-- <div class="tile-box d-md-flex col-3">
+						<div class="col-5">
+							<a href="<?php echo base_url('settings/activityLog')?>">
+								<img src="<?php echo site_url('assets/images/settings-icons/leave-settings.png'); ?>">
+							</a>
+						</div>
+						<div class="col-6">
+							<a href="<?php echo base_url()?>settings/activityLog">Activity Log</a>
+						</div>
+					</div> -->
 				</div>
 			</div>
-		<?php } ?>
-			<?php if(isset($permissions->permissions) && $permissions->permissions->viewAwardsYN == "Y"){ ?>
-			<div class="tile-box d-md-flex col-3">
-				<div class="col-5">
-					<a href="<?php echo base_url('settings/awardSettings')?>">
-						<img src="<?php echo site_url('assets/images/settings-icons/award-settings.png'); ?>">
-					</a>
-				</div>
-				<div class="col-6">
-					<a href="<?php echo base_url()?>settings/awardSettings">Award Settings</a>
-				</div>
-			</div>
-		<?php } ?>
-			<?php if(isset($permissions->permissions) && $permissions->permissions->viewSuperfundsYN == "Y"){ ?>
-			<div class="tile-box d-md-flex col-3">
-				<div class="col-5">
-					<a href="<?php echo base_url('settings/superfundsSettings')?>">
-						<img src="<?php echo site_url('assets/images/settings-icons/superfund-settings.png'); ?>">
-					</a>
-				</div>
-				<div class="col-6">
-					<a href="<?php echo base_url()?>settings/superfundsSettings">Superannuation Settings</a>
-				</div>
-			</div>
-		<?php } ?>
-			<?php if(isset($permissions->permissions) && $permissions->permissions->viewPermissionYN == "Y"){ ?>
-			<div class="tile-box d-md-flex col-3">
-				<div class="col-5">
-					<a href="<?php echo base_url('settings/permissionSettings')?>">
-						<img src="<?php echo site_url('assets/images/settings-icons/permission-settings.png'); ?>">
-					</a>
-				</div>
-				<div class="col-6">
-					<a href="<?php echo base_url()?>settings/permissionSettings">Permission Settings</a>
-				</div>
-			</div>
-		<?php } ?>
-			<?php if(isset($permissions->permissions) && $permissions->permissions->viewLeaveTypeYN == "Y"){ ?>
-			<div class="tile-box d-md-flex col-3">
-				<div class="col-5">
-					<a href="<?php echo base_url('settings/leaveSettings')?>">
-						<img src="<?php echo site_url('assets/images/settings-icons/leave-settings.png'); ?>">
-					</a>
-				</div>
-				<div class="col-6">
-					<a href="<?php echo base_url()?>settings/leaveSettings">Leave Settings</a>
-				</div>
-			</div>
-		<?php } ?>
-			<?php if(isset($permissions->permissions) && $permissions->permissions->kidsoftYN == "Y"){ ?>
-			<div class="tile-box d-md-flex col-3">
-				<div class="col-5">
-					<a href="<?php echo base_url('settings/kidsoftSettings')?>">
-						<img src="<?php echo site_url('assets/images/settings-icons/leave-settings.png'); ?>">
-					</a>
-				</div>
-				<div class="col-6">
-					<a href="<?php echo base_url()?>settings/kidsoftSettings">Kidsoft Settings</a>
-				</div>
-			</div>
-		<?php } ?>
-			<!-- <div class="tile-box d-md-flex col-3">
-				<div class="col-5">
-					<a href="<?php echo base_url('settings/activityLog')?>">
-						<img src="<?php echo site_url('assets/images/settings-icons/leave-settings.png'); ?>">
-					</a>
-				</div>
-				<div class="col-6">
-					<a href="<?php echo base_url()?>settings/activityLog">Activity Log</a>
-				</div>
-			</div> -->
 		</div>
 	</div>
-
 </div>
+
+
 <div class="modal-logout">
     <div class="modal-content-logout">
         <h3>You have been logged out!!</h3>
-        <h4><a href="<?php echo base_url(); ?>">Click here</a> to login</h4>
+        <h4><a class="btn btn-default btn-small btnOrange" href="<?php echo base_url(); ?>">Click here</a>&nbsp; &nbsp;to login</h4>
     </div>
 </div>
 <!-- Notification -->

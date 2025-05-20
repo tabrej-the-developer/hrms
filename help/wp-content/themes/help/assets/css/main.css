@@ -196,11 +196,19 @@ div#comments {
     max-width: 1280px;
 }
 textarea#comment {
+    padding: 10px;
     border: 1px solid #ddd;
     border-radius: 10px;
     -o-border-radius: 10px;
     -webkit-border-radius: 10px;
     resize: none;
+}
+input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    -o-border-radius: 10px;
+    -webkit-border-radius: 10px;
 }
 .form-submit input#submit {
     border-radius: 10px;
@@ -311,4 +319,13 @@ article.entry ul li a {
 .flexCol a img {
     outline: none;
     margin: 0 0 20px;
+}
+
+.flexLink {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1280px;
+    margin: 0 auto 100px !important;
+    width: 90%;
 }

@@ -18,7 +18,7 @@ class RostersModel extends CI_Model {
 
 	public function getAllAreas($centerid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * FROM orgchartareas WHERE centerid = '$centerid'   order by rosterPriority ASC");
+		$query = $this->db->query("SELECT * FROM orgchartareas WHERE centerid = '$centerid'  order by rosterPriority ASC");
 		return $query->result();
 	}
 	public function getAllRosterTemplates($centerid){
@@ -114,15 +114,14 @@ class RostersModel extends CI_Model {
 	public function createNewRoster($userid,$startDate,$endDate,$centerid){
 		$this->load->database();
 		$rosterid = uniqid();
-		$this->db->query("INSERT INTO rosters VALUES('$rosterid','$userid','$startDate','$endDate','$centerid','Draft')");
+		$this->db->query("INSERT INTO rosters VALUES('$rosterid','$userid','$startDate','$endDate','$centerid','Draft',0)");
 		return $rosterid;
 	}
 
 	public function createNewRosterTemplate($userid,$rosterid,$templateName,$centerid){
 		$this->load->database();
 		
-		$this->db->query("INSERT INTO rostertemplates (id,name,centerid,status,createdBy
-) VALUES('$rosterid','$templateName','$centerid','Draft','$userid')");
+		$this->db->query("INSERT INTO rostertemplates (id,name,centerid,status,createdBy) VALUES('$rosterid','$templateName','$centerid','Draft','$userid')");
 		return $rosterid;
 	} // DB change
 

@@ -55,5 +55,11 @@ class Firebase{
         // ]);
 
         $messaging->send($message);
+        // if($messaging->send($message)){
+        //     $st =  "message sent";
+        // }else{
+        //     $st =  "message not sent";
+        // }
+        // echo $st;
     }
 }

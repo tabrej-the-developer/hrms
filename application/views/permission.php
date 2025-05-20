@@ -1,645 +1,299 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<?php $this->load->view('header'); ?>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Permission Settings</title>
-	
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-<style type="text/css">
-	*{
-		font-family: 'Open Sans', sans-serif;
-		max-height: 100vw;
-	}
-	body{
-		background: #f2f2f2;
-	}
-		thead tr{
-			background:rgba(255,255,255,1) !important;
-		}
-		tr:nth-child(even){
-			background:rgb(255,255,255);
-		}
-		tr:nth-child(odd){
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Permission Settings</title>
+<link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('assets/favicon_io/apple-touch-icon.png') ?>">
+  <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/favicon_io/favicon-32x32.png') ?>">
+  <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/favicon_io/favicon-16x16.png') ?>">
+  <link rel="manifest" href="<?= base_url('assets/favicon_io/site.webmanifest') ?>">
+<link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+<link href="<?php echo base_url('assets/css/bootstrap.min.css');?>" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-			background:rgb(243, 244, 247);
-		}
-<?php  if((isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N") == "Y"){ ?>
-		.table-div{
-			overflow-y: auto;
-			height: 75%;
-			padding: 0;
-		}	
-<?php } ?>
-<?php  if((isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N") == "N"){ ?>
-	.table-div{
-			overflow-y: auto;
-			height: 100%;
-			padding: 0;
-		}	
-<?php } ?>
-		.table  td,.table th{
-			padding: 0.25rem;
-			padding-left: 4rem;
-			border: none;
-		}
-		.sort-by{
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-		}
-		table{
-			box-shadow: 0 0 20px 2px #eeeff2;
-		}
-		.center-list{
-			display:none;
-			box-shadow:0 0 1px 1px rgb(242, 242, 242) ;
-		}
-		.center-list a{
-			display:block;
-			position: relative;
-			text-decoration: none;
-			color:black;			
-		}
-		.sort-by:hover .center-list{
-			display:block;
-			background:white;
-			position:absolute;
-			margin-top:5px;
-			margin-left:-15px;
-			padding:10px;
-		}
-		.sort-by:hover::after{
-			position:absolute;
-						
-		}
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/layout.css?version='.VERSION);?>">
+ <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/container.css?version='.VERSION);?>">
+  
+<script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js');?>" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('assets/js/popper.min.js');?>" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('assets/js/bootstrap.min.js');?>" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
 
-		.filter-icon{
-			border:1px solid rgba(0,0,0,0.7);
-			padding:8px;
-			border-radius: 20px
-		}
-		.create{
-			border:3px solid rgb(242, 242, 242);
-			border-radius: 20px;
-			padding:8px;
-		}
-		.data-buttons{
-			padding:10px;
-		}
-		/* The Modal (background) */
-.modal {
-  display: none; 
-  position: fixed;
-  z-index: 1; 
-  padding-top: 100px;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgb(0,0,0); 
-  background-color: rgba(0,0,0,0.4); 
+<style>
+.navbar-nav .nav-item-header:nth-of-type(9) {
+    background: var(--blue2) !important;
+    position: relative;
 }
-
-/* Modal Content */
-.modal-content {
-  background-color: #fefefe;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-}
-
-/* The Close Button */
-.close {
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-#ui-datepicker-div{
-	background:white;
-	color:black;
-	background: white;
-    padding: 50px;
-    border-radius: 30px;
-}
-.ui-state-default{
-	color:black;
-	font-size:20px;
-}
-.ui-datepicker-prev{
-margin:20px;
-padding:10px;
-background:#e0e0e0;
-border-top-left-radius: 20px;
-border-bottom-left-radius: 20px;
-}
-.ui-datepicker-next{
-	margin: 20px;
-	padding:10px;
-	background:#e0e0e0;
-border-top-right-radius: 20px;
-border-bottom-right-radius: 20px;
-}
-.ui-datepicker-title{
-	text-align: center;
-	margin:30px 30px 10px 30px;
-}
-/*#down-arrow::after{
-		position:relative;
-        content: " \2193";
-        top: 0px;
-        right: 20px;
-        height: 10px;
-        width: 20px;
-}*/
-.ui-datepicker-current-day{
-	background:green;
-}
-.ui-datepicker-today{
-	background:skyblue;
-}
-.ui-datepicker-calendar thead tr{
-	background: #80B9FF
-}
-.ui-datepicker-calendar thead th{
-	margin:5px;
-}
-.ui-datepicker-calendar tbody tr:nth-child(even){
-	background: white
-}
-	.button{
-		background-color: #9E9E9E;
-  border: none;
-  color: white;
-  padding: 10px 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 2px
-}
-.dataTables_info{
-	font-size:0.8rem;
-}
-.dataTables_paginate{
-	font-size:0.8rem;
-}
-.paginate_button{
-	background:transparent;
-}
-   .modal-logout {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        opacity: 0;
-        visibility: hidden;
-        transform: scale(1.1);
-        transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
-        text-align: center;
-        z-index:150;
-    }
-    .modal-content-logout {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: white;
-        padding: 1rem 1.5rem;
-        width: 50%;
-        border-radius: 0.5rem;
-    }
-    .show-modal {
-        opacity: 1;
-        visibility: visible;
-        transform: scale(1.0);
-        transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
-    }
-    .button{
-    	background-color: #9E9E9E;
-  		border: none;
-  		color: white;
-  		padding: 5px 10px;
-  		text-align: center;
-  		text-decoration: none;
-  		display: inline-block;
-  		margin: 2px
-    }
-    .button-class{
-    	display: flex;
-    	justify-content: flex-end;
-    	right:5%;
-    	bottom: 5px;
-    }
-    .select-class{
-    	display: flex;
-    	justify-content: flex-end;
-    	padding: 1rem
-    }
-    .center-class{
-    	padding-right: 2%;
-    	position: relative;
-    	margin-left: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    }
-/*    .center-class:after{
-    	background: url("../assets/images/dropdown.png");
-    	padding:10px;
-    	position:absolute;
-    	right:25px;
-    	content: " "
-    }*/
-    .employee-id-class{
-    	padding-right: 2%;
-    	position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    }
-/*    .employee-id-class:after{
-    	background: url("../assets/images/dropdown.png");
-    	padding:10px;
-    	position:absolute;
-    	right:25px;
-    	content: " "
-    }*/
-
-	.loader {
-	  border: 16px solid #f3f3f3;
-	  border-radius: 50%;
-	  border-top: 16px solid #307bd3;
-	  width: 120px;
-	  height: 120px;
-	  animation: spin 2s linear infinite;
-	}
-	.loading{
-		position: fixed;
-		height: 100vh;
-		width: 100vw;
-		top: 0;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		background: rgba(255,255,255);
-	}
-
-	@keyframes spin {
-	  0% { transform: rotate(0deg); }
-	  100% { transform: rotate(360deg); }
-	}
-    #centerValue{
-    	border-radius: 3px;
-    	background-color:#F0F0F0; 
-    }
-    #employeeValue{
-    	border-radius: 3px;
-    	background-color:#F0F0F0; 
-    }
-select::-ms-expand {
-    display: none;
-}
-input[type=checkbox] + label {
-  display: block;
-  margin: 0.2em;
-  cursor: pointer;
-  padding: 0.2em;
-}
-
-input[type=checkbox] {
-  display: none;
-}
-
-input[type=checkbox] + label:before {
-  content: "\2714";
-  border: 0.1em solid #000;
-  border-radius: 0.2em;
-  display: inline-block;
-  width: 1em;
-  height: 1.3em;
-  vertical-align: bottom;
-  color: transparent;
-  transition: .2s;
-}
-
-input[type=checkbox] + label:active:before {
-  transform: scale(0);
-}
-
-input[type=checkbox]:checked + label:before {
-  background-color: #307bd3 ;
-  border-color: #307bd3 ;
-  color: #fff;
-}
-
-.permission-container{
-	padding: 1rem 3rem 2rem 2rem;
-	height:calc(100vh - 9rem);
-}
-.permission-container-child{
-	background: white;
-	height: 100%;
-}
-tbody{
-	padding-bottom: 16rem;
-}
-.buttonn,
-.button,
-button[type=button]{
-  /*position: absolute;*/
-/*  right: 0;*/
-    border: none !important;
-    color: rgb(23, 29, 75) !important;
-    text-align: center !important;
-    text-decoration: none !important;
-    display: inline-block;
-    font-weight: 700 !important;
-    margin: 2px !important;
-    min-width:6rem !important;
-      border-radius: 20px !important;
-      padding: 4px 8px !important;
-      background: rgb(164, 217, 214) !important;
-      font-size: 1rem !important;
-      margin-right:5px !important;
-      justify-content: center !important;
-}
-    select{
-	background: rgb(164, 217, 214) !important;
-	font-weight: 700 !important;
-	color: rgb(23, 29, 75) !important;
-	border-radius: 20px !important;
-    padding: 5px !important;
-    padding-left: 20px !important;
-    border: 2px solid #e9e9e9 !important;
-    padding-right: 2rem !important;
-		}
-@media only screen and (max-width:1024px) {
-.modal-content{
-	min-width:100vw;
-}
-.containers {
-     width: 100%;
-    margin: 0px;
-    padding:0;
-}
-.containers {
-     width: 100%;
-    margin: 0px;
-    padding:0;
-}
+.navbar-nav .nav-item-header:nth-of-type(9)::after {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    bottom: 0;
+    content: "";
+    background: var(--orange1);
 }
 </style>
+	
 </head>
 <body>
-<?php $permissions = json_decode($permissions); ?>
-<input type="text" id="emplId" value="<?php echo $this->session->userdata('LoginId'); ?>" style="display:none">
-<div class="containers">
-	<div class="permission-container">
-		<span  class="d-inline-flex">
-			<a href="<?php echo base_url();?>/settings">
-				<button class="btn back-button">
-				<img src="<?php echo base_url('assets/images/back.svg');?>">
-				</button>
-			</a>
-			<span class="settings_title">Edit Permissions</span>
-		</span>
-		<div class="permission-container-child">
-			<div class="d-flex">
+<div class="wrapperContainer">
+	<?php include 'headerNew.php'; ?>
+	<?php $permissions = json_decode($permissions); ?>
+	<input type="text" id="emplId" value="<?php echo $this->session->userdata('LoginId'); ?>" style="display:none">
 
+		<div class="containers scrollY">
+			<div class="settingsContainer">
 
-	<div class="select-class">
-	<h4 style="font-weight: 700;
-                      padding: 1rem 0 0 2rem;
-                      margin: 0 !important;
-                      color: rgba(11, 36, 107);width: 100%"
-                class="text-left">Permissions</h4>
-				<!-- <span class="d-flex align-items-center"><button id="superfunds">Sync Xero Superfunds</button></span> -->
-			</div>
+				<span class="d-flex pageHead heading-bar">
+					<div class="withBackLink">
+						<a href="<?php echo base_url();?>/settings">
+							<span class="material-icons-outlined">arrow_back</span>
+						</a>				
+						<span class="events_title">Edit Permissions</span>
+					</div>
+					<div class="rightHeader">
+						<select placeholder="Select Center" id="centerValue" onchange="getEmployees()">
+							<?php
+								$centers = json_decode($centers);
+								foreach($centers->centers as $center){
+							?>
+								<option value="<?php echo $center->centerid?>"><?php echo $center->name; ?></option>
+							<?php }?>
+						</select>
+						<?php  if((isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N") == "Y"){ ?>
+							<span class="span-class employee-id-class">
+								<span class="select_css">
+									<select placeholder="Select Center" id="employeeValue" onchange="getPermissions()">
 
-		<span class="span-class center-class">
-			<span class="select_css">
-				<select placeholder="Select Center" id="centerValue" onchange="getEmployees()">
-				<?php
-					$centers = json_decode($centers);
-					foreach($centers->centers as $center){
-				?>
-					<option value="<?php echo $center->centerid?>"><?php echo $center->name; ?></option>
-				<?php }?>
-				</select>
-			</span>
-		</span>
-<?php  if((isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N") == "Y"){ ?>
-		<span class="span-class employee-id-class">
-			<span class="select_css">
-				<select placeholder="Select Center" id="employeeValue" onchange="getPermissions()">
+									</select>
+								</span>
+							</span>
+						<?php  } ?>
+					</div>
+				</span>
 
-				</select>
-			</span>
-		</span>
-	<?php  } ?>
-	</div>
-
-	<div class="table-div">
-		<table class="table">
-			<thead>
-				<th></th>
-				<th></th>
-			</thead>
-			
-			<tbody id="tbody">
-				<tr>
-					<td>QR Reader</td>
-					<td>
-						<input type="checkbox" id="isQrReaderYN" checked><label for="isQrReaderYN"></label>
-					</td>
-				</tr>
-				<tr>
-					<td>View Roster</td>
-					<td>
-						<input type="checkbox" id="viewRosterYN" checked><label for="viewRosterYN"></label>
-					</td>
-				</tr>
-				<tr>
-					<td>Edit Roster</td>
-					<td>
-						<input type="checkbox" id="editRosterYN" checked><label for="editRosterYN"></label>
-					</td>
-				</tr>
-				<tr>
-					<td>View Timesheet</td>
-					<td>
-						<input type="checkbox" id="viewTimesheetYN" checked><label for="viewTimesheetYN"></label>
-					</td>
-				</tr>
-				<tr>
-					<td>Edit Timesheet</td>
-					<td>
-						<input type="checkbox" id="editTimesheetYN" checked><label for="editTimesheetYN"></label>
-					</td>
-				</tr>
-				<tr>
-					<td>View Payroll</td>
-					<td>
-						<input type="checkbox" id="viewPayrollYN" checked><label for="viewPayrollYN"></label>
-					</td>
-				</tr>
-				<tr>
-					<td>Edit Payroll</td>
-					<td>
-						<input type="checkbox" id="editPayrollYN" checked><label for="editPayrollYN"></label>
-					</td>
-				</tr>
-				<tr>
-					<td>Edit Leave Types</td>
-					<td>
-						<input type="checkbox" id="editLeaveTypeYN" checked><label for="editLeaveTypeYN"></label>
-					</td>
-				</tr>
-				<tr>
-					<td>View Leave Type</td>
-					<td>
-						<input type="checkbox" id="viewLeaveTypeYN" checked><label for="viewLeaveTypeYN"></label>
-					</td>
-				</tr>
-				<tr>
-					<td>Create Notice</td>
-					<td>
-						<input type="checkbox" id="createNoticeYN" checked><label for="createNoticeYN"></label>
-					</td>
-				</tr>
-				<tr>
-					<td>View Org Chart</td>
-					<td>
-						<input type="checkbox" id="viewOrgChartYN" checked><label for="viewOrgChartYN"></label>
-					</td>
-				</tr>
-				<tr>
-					<td>Edit OrgChart</td>
-					<td>
-						<input type="checkbox" id="editOrgChartYN" checked><label for="editOrgChartYN"></label>
-					</td>
-				</tr>
-				<tr>
-					<td>View Center Profile</td>
-					<td>
-						<input type="checkbox" id="viewCenterProfileYN" checked><label for="viewCenterProfileYN"></label>
-					</td>
-				</tr>
-				<tr>
-					<td>Edit Center Profile</td>
-					<td>
-						<input type="checkbox" id="editCenterProfileYN" checked><label for="editCenterProfileYN"></label>
-					</td>
-				</tr>
-				<!-- <tr>
-					<td>View Room Settings</td>
-					<td>
-						<input type="checkbox" id="viewRoomSettingsYN" checked><label for="viewRoomSettingsYN"></label>
-					</td>
-				</tr>
-				<tr>
-					<td>Edit Room Settings</td>
-					<td>
-						<input type="checkbox" id="editRoomSettingsYN" checked><label for="editRoomSettingsYN"></label>
-					</td>
-				</tr> -->
-				<tr>
-					<td>View Entitlements</td>
-					<td>
-						<input type="checkbox" id="viewEntitlementsYN" checked><label for="viewEntitlementsYN"></label>
-					</td>
-				</tr>
-				<tr>
-					<td>Edit Entitlements</td>
-					<td>
-						<input type="checkbox" id="editEntitlementsYN" checked><label for="editEntitlementsYN"></label>
-					</td>
-				</tr>
-				<tr>
-					<td>Edit Employees</td>
-					<td>
-						<input type="checkbox" id="editEmployeeYN" checked><label for="editEmployeeYN"></label>
-					</td>
-				</tr>
-				<tr>
-					<td>Xero Settings</td>
-					<td>
-						<input type="checkbox" id="xeroYN" checked><label for="xeroYN"></label>
-					</td>
-				</tr>
-				<tr>
-					<td>View Awards</td>
-					<td>
-						<input type="checkbox" id="viewAwardsYN" checked><label for="viewAwardsYN"></label>
-					</td>
-				</tr>
-				<tr>
-					<td>Edit Awards</td>
-					<td>
-						<input type="checkbox" id="editAwardsYN" checked><label for="editAwardsYN"></label>
-					</td>
-				</tr>
-				<tr>
-					<td>View Superfunds</td>
-					<td>
-						<input type="checkbox" id="viewSuperfundsYN" checked><label for="viewSuperfundsYN"></label>
-					</td>
-				</tr>
-				<tr>
-					<td>Edit Superfunds</td>
-					<td>
-						<input type="checkbox" id="editSuperfundsYN" checked><label for="editSuperfundsYN"></label>
-					</td>
-				</tr>
-				<tr>
-					<td>Create MOM</td>
-					<td>
-						<input type="checkbox" id="createMomYN" checked><label for="createMomYN"></label>
-					</td>
-				</tr>
-				<tr>
-					<td>Edit Permissions</td>
-					<td>
-						<input type="checkbox" id="editPermissionYN" checked><label for="editPermissionYN"></label>
-					</td>
-				</tr>
-				<tr>
-					<td>View Permissions</td>
-					<td>
-						<input type="checkbox" id="viewPermissionYN" checked><label for="viewPermissionYN"></label>
-					</td>
-				</tr>
-				<tr>
-					<td>Kidsoft Permissions</td>
-					<td>
-						<input type="checkbox" id="kidsoftYN" checked><label for="kidsoftYN"></label>
-					</td>
-				</tr>
-			</tbody>
+				<div class="d-flex justify-content-end">
+					<div class="form-check" style="margin-right:1.2rem;">
+						<input class="form-check-input" type="checkbox" value="" id="centerManagerSelect">
+						<label class="form-check-label" for="centerManagerSelect">
+							Center Manager
+						</label>
+					</div>
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" value="" id="selectAll">
+						<label class="form-check-label" for="selectAll">
+							Select All
+						</label>
+					</div>
+				</div>
+							<script>
+								$('#selectAll').click(function(){
+									$('.pc').prop('checked', this.checked); 
+									$('#centerManagerSelect').prop('checked', false);
+								});
+								$('#centerManagerSelect').click(function(){
+									$('#selectAll').prop('checked', false);
+									$('.pc').prop('checked', false);
+									$('#viewRosterYN,#editRosterYN,#viewTimesheetYN,#editTimesheetYN,#viewPayrollYN,#editLeaveTypeYN,#viewLeaveTypeYN,#viewOrgChartYN,#editOrgChartYN,#viewCenterProfileYN,#editCenterProfileYN,#editEmployeeYN,#createMomYN,#editPermissionYN,#viewPermissionYN').prop('checked', this.checked);
+								});
+							</script>
+				<div class="table-div pageTableDiv">
+					<table class="table">
+						<!-- <thead>
+							<th></th>
+							<th></th>
+						</thead> -->
+						<style>
+							.pc{
+								float:right;
+								margin-top:5px;
+							}
+						</style>
+						<tbody id="tbody">
+							<tr>
+								<td>QR Reader</td>
+								<td>
+									<input type="checkbox" class="pc" id="isQrReaderYN" checked><label for="isQrReaderYN"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>View Roster</td>
+								<td>
+									<input type="checkbox" class="pc" id="viewRosterYN" checked><label for="viewRosterYN"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>Edit Roster</td>
+								<td>
+									<input type="checkbox" class="pc" id="editRosterYN" checked><label for="editRosterYN"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>View Timesheet</td>
+								<td>
+									<input type="checkbox" class="pc" id="viewTimesheetYN" checked><label for="viewTimesheetYN"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>Edit Timesheet</td>
+								<td>
+									<input type="checkbox" class="pc" id="editTimesheetYN" checked><label for="editTimesheetYN"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>View Payroll</td>
+								<td>
+									<input type="checkbox" class="pc" id="viewPayrollYN" checked><label for="viewPayrollYN"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>Edit Payroll</td>
+								<td>
+									<input type="checkbox" class="pc" id="editPayrollYN" checked><label for="editPayrollYN"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>Edit Leave Types</td>
+								<td>
+									<input type="checkbox" class="pc" id="editLeaveTypeYN" checked><label for="editLeaveTypeYN"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>View Leave Type</td>
+								<td>
+									<input type="checkbox" class="pc" id="viewLeaveTypeYN" checked><label for="viewLeaveTypeYN"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>Create Notice</td>
+								<td>
+									<input type="checkbox" class="pc" id="createNoticeYN" checked><label for="createNoticeYN"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>View Org Chart</td>
+								<td>
+									<input type="checkbox" class="pc" id="viewOrgChartYN" checked><label for="viewOrgChartYN"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>Edit OrgChart</td>
+								<td>
+									<input type="checkbox" class="pc" id="editOrgChartYN" checked><label for="editOrgChartYN"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>View Center Profile</td>
+								<td>
+									<input type="checkbox" class="pc" id="viewCenterProfileYN" checked><label for="viewCenterProfileYN"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>Edit Center Profile</td>
+								<td>
+									<input type="checkbox" class="pc" id="editCenterProfileYN" checked><label for="editCenterProfileYN"></label>
+								</td>
+							</tr>
+							<!-- <tr>
+								<td>View Room Settings</td>
+								<td>
+									<input type="checkbox" id="viewRoomSettingsYN" checked><label for="viewRoomSettingsYN"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>Edit Room Settings</td>
+								<td>
+									<input type="checkbox" id="editRoomSettingsYN" checked><label for="editRoomSettingsYN"></label>
+								</td>
+							</tr> -->
+							<tr>
+								<td>View Entitlements</td>
+								<td>
+									<input type="checkbox" class="pc" id="viewEntitlementsYN" checked><label for="viewEntitlementsYN"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>Edit Entitlements</td>
+								<td>
+									<input type="checkbox" class="pc" id="editEntitlementsYN" checked><label for="editEntitlementsYN"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>Edit Employees</td>
+								<td>
+									<input type="checkbox" class="pc" id="editEmployeeYN" checked><label for="editEmployeeYN"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>Xero Settings</td>
+								<td>
+									<input type="checkbox" class="pc" id="xeroYN" checked><label for="xeroYN"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>View Awards</td>
+								<td>
+									<input type="checkbox" class="pc" id="viewAwardsYN" checked><label for="viewAwardsYN"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>Edit Awards</td>
+								<td>
+									<input type="checkbox" class="pc" id="editAwardsYN" checked><label for="editAwardsYN"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>View Superfunds</td>
+								<td>
+									<input type="checkbox" class="pc" id="viewSuperfundsYN" checked><label for="viewSuperfundsYN"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>Edit Superfunds</td>
+								<td>
+									<input type="checkbox" class="pc" id="editSuperfundsYN" checked><label for="editSuperfundsYN"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>Create MOM</td>
+								<td>
+									<input type="checkbox" class="pc" id="createMomYN" checked><label for="createMomYN"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>Edit Permissions</td>
+								<td>
+									<input type="checkbox" class="pc" id="editPermissionYN" checked><label for="editPermissionYN"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>View Permissions</td>
+								<td>
+									<input type="checkbox" class="pc" id="viewPermissionYN" checked><label for="viewPermissionYN"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>Kidsoft Permissions</td>
+								<td>
+									<input type="checkbox" class="pc" id="kidsoftYN" checked><label for="kidsoftYN"></label>
+								</td>
+							</tr>
+						</tbody>
 		
-		</table>
+					</table>
 		
-	</div>
-<?php  if((isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N") == "Y"){ ?>
-<div class="button-class" style="">
-	<button onclick="savePermission()" class="button savePermissionButton">
-            <i>
-              <img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
-            </i>Save</button>
-</div>
-<?php  } ?>
+				</div>
+
+				<?php  if((isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N") == "Y"){ ?>
+				<div class="formSubmit" >
+					<button onclick="savePermission()" class="btn btn-default btn-small btnOrange pull-right savePermissionButton">
+						<span class="material-icons-outlined">save</span>
+						Save
+					</button>
+				</div>
+				<?php  } ?>
 		</div>
 	</div>
 </div>
@@ -651,7 +305,7 @@ button[type=button]{
 <div class="modal-logout">
     <div class="modal-content-logout">
         <h3>You have been logged out!!</h3>
-        <h4><a href="<?php echo base_url(); ?>">Click here</a> to login</h4>
+        <h4><a class="btn btn-default btn-small btnOrange" href="<?php echo base_url(); ?>">Click here</a> to login</h4>
     </div>
 </div>
 
@@ -673,6 +327,10 @@ button[type=button]{
 	};
 	var base_url = "<?php echo base_url();?>";
 	function getEmployees(){
+
+		$('#selectAll').removeAttr('checked');
+		$('#centerManagerSelect').removeAttr('checked');
+
 		var xhttp = new XMLHttpRequest();
 		var centerId = document.getElementById("centerValue").value;
 		xhttp.onreadystatechange = function() {
@@ -696,6 +354,10 @@ button[type=button]{
 	}
 
 	function getPermissions(){
+		
+		$('#selectAll').removeAttr('checked');
+		$('#centerManagerSelect').removeAttr('checked');
+
 		var xhttp = new XMLHttpRequest();
 <?php  if((isset($permissions->permissions) ? $permissions->permissions->editPermissionYN : "N") == "Y"){ ?>
 		var empId = document.getElementById("employeeValue").value;

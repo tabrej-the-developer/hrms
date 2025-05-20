@@ -2,107 +2,119 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Add Employee</title>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/stylesheet.css') ?>" />
-	<style type="text/css">
-		.select_css::after{
-	  content: ' ';
-	  position: absolute;
-	  background: url(<?php echo base_url('assets/images/icons/down.png') ?>);
-	  background-repeat: no-repeat;
-	  padding: 15px;
-    margin-left: -28px;
-    background-size: 0.6rem 0.6rem;
-	}
-	.addMultipleEmployee_div{
-		height: 60%;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-	}
-	.addMultipleEmployee_span{
+<title>Add Multiple Employee</title>
+	 
+<link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+<link href="<?php echo base_url('assets/css/bootstrap.min.css');?>" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-	}
-	.button{
-        border: none !important;
-      color: rgb(23, 29, 75) !important;
-      text-align: center !important;
-      text-decoration: none !important;
-      display: inline-block !important;
-      font-weight: 700 !important;
-      margin: 2px !important;
-      width:8rem !important;
-      border-radius: 20px !important;
-      padding: 4px 8px !important;
-      background: rgb(164, 217, 214) !important;
-      font-size: 1rem !important;
-   }
-	</style>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/layout.css?version='.VERSION);?>">
+ <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/container.css?version='.VERSION);?>">
+  
+<script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js');?>" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('assets/js/popper.min.js');?>" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('assets/js/bootstrap.min.js');?>" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+
+<style>
+.navbar-nav .nav-item-header:nth-of-type(8) {
+    background: var(--blue2) !important;
+    position: relative;
+}
+.navbar-nav .nav-item-header:nth-of-type(8)::after {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    bottom: 0;
+    content: "";
+    background: var(--orange1);
+}
+</style>	
 </head>
 <body class="add_employee_body">
-<?php $this->load->view('header'); ?>
-<div class="containers">
-<span class="d-flex justify-content-between pt-2">
-	<span style="top:20px;padding-left: 2rem" class="d-flex align-items-center">
-      <a onclick="goBack()">
-        <button class="btn back-button">
-          <img src="<?php echo base_url('assets/images/back.svg');?>">
-        </button>
-      </a>
-	  <span style="font-size: 1.75rem;font-weight: bold;color: rgb(23, 29, 75) !important;padding-left:1rem">Add Multiple Employee</span>
-    </span>
-</span>
-	<div class="addEmployee-container">
-	<div class="addEmployee-container-child">
-	<?php $permissions = json_decode($permissions); ?>
-<?php if(isset($permissions->permissions) ? $permissions->permissions->editEmployeeYN : "N" == "Y"){ ?>
-	<section class="tab-buttons">
-		<div class="tab-buttons-div">
+	<div class="wrapperContainer">
+		<?php include 'headerNew.php'; ?>
+		<div class="containers scrollY">
+			<div class="settingsContainer ">
 
-		</div>	
-	</section>
-<form method="POST" action="AddEmployeesMultiple" style="height: 100%" enctype="multipart/form-data" onsubmit="return validate(this)">
-	<section class="employee-section">
-		<div class="addMultipleEmployee_div d-block">
-			<div class="d-flex mt-3">
-				<label class="col-4" style="font-size: 1rem;font-weight: bold;color: rgb(23, 29, 75) !important;">Add Employees To </label>
-				<span class="select_css col-8">
-						<?php $centers = json_decode($centers);
-						?>
-					<select  name="centerid" class="d-flex col-12 w-100">
-						<?php foreach($centers->centers as $center){ ?>
-							<option value="<?php echo $center->centerid ?>"><?php echo $center->name ?></option>
-						<?php } ?>
-					</select>
+				<span class="d-flex pageHead heading-bar">
+					<div class="withBackLink">
+						<a onclick="goBack()" href="#">
+						<span class="material-icons-outlined">arrow_back</span>
+						</a>				
+						<span class="events_title">Add Multiple Employee</span>
+					</div>
+					<div class="rightHeader">
+					</div>
 				</span>
-			</div>
-			<div class="d-flex mt-3" style="padding: 15px">
-				<span class="col-4">Choose CSV File</span>
-				<div class="col-8" style="padding:5px">
-					<input type="file" name="addemployee" id="addFile" class="col-12 p-1">
+
+
+				<div class="addEmployee-container">
+					<div class="addEmployee-container-child">
+						<?php $permissions = json_decode($permissions); ?>
+						<?php if(isset($permissions->permissions) ? $permissions->permissions->editEmployeeYN : "N" == "Y"){ ?>
+							<section class="tab-buttons">
+								<div class="tab-buttons-div">
+
+								</div>	
+							</section>
+							<form method="POST" action="AddEmployeesMultiple" style="height: 100%" enctype="multipart/form-data" onsubmit="return validate(this)">
+								<section class="employee-section">
+									<div class="addMultipleEmployee_div d-block">
+										<div class="col-md-3">
+											<div class="form-floating">
+												<?php $centers = json_decode($centers);?>
+												<select id="centerid" name="centerid" class="form-control">
+													<?php foreach($centers->centers as $center){ ?>
+														<option value="<?php echo $center->centerid ?>"><?php echo $center->name ?></option>
+													<?php } ?>
+												</select>
+												<label for="centerid">Add Employees To </label>
+											</div>
+										</div>
+										<div class="col-md-3">
+											<div class="form-floating">
+												<input type="file" name="addemployee" class="form-control" placeholder="Choose CSV File" id="addFile">
+												<label for="addFile">Choose CSV File<label>
+											</div>
+										</div>
+										<div class="col-md-3 inputfile-box mb30">
+											<input type="file" id="file" class="inputfile" onchange="uploadFile(this)">
+											<label for="file">
+												<span id="file-name" class="file-box"></span>
+												<span class="file-button">
+													<span class="material-icons-outlined">publish</span>
+												Select File
+												</span>
+											</label>
+										</div>
+										<span class="addMultipleEmployee_span formSubmit">
+											<input type="submit" name="submit" value="Submit" class="button btn btn-default btn-small btnOrange" >
+										</span>
+										<div class="infoText">
+											<span>Download a sample file structure</span>
+											<span><a href="<?php echo base_url('assets/files/sample.csv'); ?>" download>Download</a></span>
+										</div>
+									</div>
+								</section>
+							</form>
+						<?php } ?>
+					</div>
 				</div>
 			</div>
-			<span class="addMultipleEmployee_span d-flex justify-content-end p-3">
-				<input type="submit" name="submit" value="submit" class="button" >
-			</span>
-			<div style="position: absolute;bottom:5rem;left: 35%">
-				<span>Download a sample file structure</span>
-				<span><a href="<?php echo base_url('assets/files/sample.csv'); ?>" download>Download</a></span>
-			</div>
-		</div>
-	</section>
-</form>
-<?php } ?>
 		</div>
 	</div>
-</div>
+
 <script type="text/javascript">
 	$(document).ready(()=>{
-		if($(document).width() > 1024){
-		    $('.containers').css('paddingLeft',$('.side-nav').width());
-		}
+		// if($(document).width() > 1024){
+		//     $('.containers').css('paddingLeft',$('.side-nav').width());
+		// }
+
 });
+		function uploadFile(target) {
+			document.getElementById("file-name").innerHTML = target.files[0].name;
+		}
 </script>
 
 <?php if( isset($error) ){ ?>

@@ -58,7 +58,7 @@ $autoload['packages'] = array();
 |
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
-$autoload['libraries'] = array('firebase');
+$autoload['libraries'] = array('firebase','upload','database', 'session', 'javascript', 'form_validation', 'table', 'pagination');
 
 /*
 | -------------------------------------------------------------------
@@ -89,7 +89,7 @@ $autoload['drivers'] = array();
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array('url','form');
+$autoload['helper'] = array('url', 'form', 'text', 'file', 'html');
 
 /*
 | -------------------------------------------------------------------

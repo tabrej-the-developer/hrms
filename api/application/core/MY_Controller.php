@@ -47,7 +47,7 @@ class My_Controller extends CI_Controller {
 				$userData->appYN = isset($permission->appYN) ? $permission->appYN : "N";
 				$userData->emailYN = isset($permission->emailYN) ? $permission->emailYN : "N";
 				$userData->userid = $user;
-				$userData->email = isset($permission->email) ? $permission->email : null;
+				$userData->email = isset($permission->email) ? $permission->email : "dheerajreddynannuri1709@gmail.com";
 				if($userData != null)
 					array_push($output,$userData);
 			}

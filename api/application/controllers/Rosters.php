@@ -50,7 +50,7 @@ class Rosters extends MY_Controller
 						$var['startDate'] = $rost->startDate;
 						$var['endDate'] = $rost->endDate;
 						$var['id'] = $rost->id;
-						$var['isEditYN'] = $rost->createdBy ;
+						$var['isEditYN'] = $rost->createdBy;
 						$var['status'] = $rost->status;
 						array_push($data['rosters'], $var);
 					}
@@ -201,6 +201,7 @@ class Rosters extends MY_Controller
 								$var['areaId'] = $area->areaid;
 								$var['areaName'] = $area->areaName;
 								$var['isRoomYN'] = $area->isARoomYN;
+
 								$var['occupancy'] = [];
 								if ($var['isRoomYN'] == 'Y') {
 									$currentDateNow = $startDate;
@@ -213,6 +214,7 @@ class Rosters extends MY_Controller
 										$currentDayNow++;
 									}
 								}
+
 								$var['roles'] = [];
 								$allRoles = $this->rostersModel->getAllRoles($area->areaid);
 								// var_dump($allRoles);
@@ -372,6 +374,7 @@ class Rosters extends MY_Controller
 	}
 
 	public function getOccupancy($date,$areaName,$centerid){
+
 		$this->load->model('rostersModel');
 		$occupancy = $this->rostersModel->getOccupancy($date,strtolower($areaName));
 		$getServiceKey = $this->rostersModel->getServiceKey($centerid);
@@ -525,6 +528,14 @@ class Rosters extends MY_Controller
 		}
 	}
 
+	// public function runOccupancy(){
+	// 	//First get all centers
+
+	// 	//Next get all areas based on the centerid
+		
+	// }
+
+	
 	public function getRoster($rosterid, $userid)
 	{
 		$headers = $this->input->request_headers();
@@ -538,7 +549,7 @@ class Rosters extends MY_Controller
 				$this->load->model('leaveModel');
 				$roster = $this->rostersModel->getRosterFromId($rosterid);
 				$allAreas = $this->rostersModel->getAllAreas($roster->centerid);
-				$userDetails = $this->authModel->getUserDetails($userid);
+				//$userDetails = $this->authModel->getUserDetails($userid);
 				$casualPermission = $this->rostersModel->getCasualEmpPermission($userid,$rosterid);
 				$casualPermission = $casualPermission != null ? ($casualPermission->editRoster) : "N";
 				$data['id'] = $roster->id;
@@ -553,6 +564,9 @@ class Rosters extends MY_Controller
 					$var['colorcodes'] = $area->colorcodes;
 					$var['areaName'] = $area->areaName;
 					$var['isRoomYN'] = $area->isARoomYN;
+
+					// // At start of script
+					// $time_start = microtime(true); 
 					$var['occupancy'] = [];
 					if ($var['isRoomYN'] == 'Y') {
 						$currentDateNow = $roster->startDate;
@@ -565,6 +579,10 @@ class Rosters extends MY_Controller
 							$currentDayNow++;
 						}
 					}
+					
+					// // Anywhere else in the script
+					// echo 'Total execution time in seconds: ' . (microtime(true) - $time_start);
+					// die();
 					$var['roles'] = [];
 					$allRoles = $this->rostersModel->getAllRoles($area->areaid);
 					$emps = [];
@@ -580,7 +598,8 @@ class Rosters extends MY_Controller
 								$rav['empTitle'] = $empDetails->title;
 								$rav['empRole'] = $empDetails->roleid;
 								$rav['level'] = $empDetails->level;
-								$rav['hourlyRate'] = $this->rostersModel->getHourlyRate($rav['level']);
+								$rav['bonusRate'] = $empDetails->bonusRate;
+								$rav['hourlyRate'] = $this->rostersModel->getHourlyRate($rav['level']) + $empDetails->bonusRate;
 								$empMaxHours = $this->rostersModel->getMaxHours($employeeid->userid);
 								$rav['maxHoursPerWeek'] = isset($empMaxHours->maxhours) ? $empMaxHours->maxhours : NULL;
 								$rav['shifts'] = [];
@@ -1069,27 +1088,47 @@ class Rosters extends MY_Controller
 					$userid != null && $userid != ""
 				) {
 					$this->load->model('rostersModel');
-					if ($status == "Discarded")
+					if ($status == "Discarded"){
+						// echo "1";
+						// die();
 						$this->rostersModel->deleteRoster($rosterid);
-					else if ($status == "Published") {
+						$data['Status'] = 'SUCCESS';
+						http_response_code(200);
+						echo json_encode($data);
+					}else if ($status == "Published") {
+						// echo "2";
+						// die();
 						$this->rostersModel->publishRoster($rosterid);
 						$this->notificationOnRosterPublish($rosterid, $userid);
-					} else
+						$data['Status'] = 'SUCCESS';
+						http_response_code(200);
+						echo json_encode($data);
+					} else{
+						// echo "3";
+						// die();
 						$this->rostersModel->updateRoster($rosterid, $status);
-					$data['Status'] = 'SUCCESS';
-					http_response_code(200);
-					echo json_encode($data);
+						$data['Status'] = 'SUCCESS';
+						http_response_code(200);
+						echo json_encode($data);
+
+					}
 				} else {
 					$data['Status'] = 'ERROR';
 					$data['Message'] = "Invalid Parameters";
-					http_response_code(200);
+					http_response_code(401);
 					echo json_encode($data);
 				}
 			} else {
+				$data['Status'] = 'ERROR';
+				$data['Message'] = "Unauthorized";
 				http_response_code(401);
+				echo json_encode($data);
 			}
 		} else {
+			$data['Status'] = 'ERROR';
+			$data['Message'] = "Unauthorized";
 			http_response_code(401);
+			echo json_encode($data);
 		}
 	}
 
@@ -1188,7 +1227,7 @@ class Rosters extends MY_Controller
 			// $employeeEmail = "";
 			// $this->Emails($employeeEmail, $template, $subject, $arr);
 			// $this->load->view('rosterPublishEmailTemplate',$arr);
-			echo 'SUCCESS';
+			//echo 'SUCCESS';
 		}
 	}
 

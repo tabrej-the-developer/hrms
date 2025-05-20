@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-
+error_reporting(E_ALL); ini_set('display_errors', 1);
 class Settings extends MY_Controller
 {
 	function __construct()
@@ -449,7 +449,7 @@ class Settings extends MY_Controller
 					else{
 						$uniqid = uniqid();
 					}
-					$centerid = $this->settingsModel->addCenter($center_street, $center_city, $center_state, $center_zip, $center_name, $center_phone, $center_mobile, $center_email, $json->userid,$uniqid);
+					$centerid = $this->settingsModel->addCenter($center_street, $center_city, $center_state, $center_zip, $center_name, $center_phone, $center_mobile, $center_email, $json->userid, $uniqid);
 					$centerRecordUniqueId = uniqid();
 					$this->settingsModel->addCenterRecord($centerid, $centerRecordUniqueId, $center_abn, $center_acn, $center_se_no, $center_date_opened, $center_capacity, $center_approval_doc, $center_ccs_doc, $center_admin_name, $centre_nominated_supervisor);
 					$this->settingsModel->addToUserCenters($json->userid,$centerid);
@@ -471,6 +471,75 @@ class Settings extends MY_Controller
 			http_response_code(401);
 		}
 	}
+
+	//Add Awards
+	public function addXeroAwards(){
+
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+
+		if($this->session->has_userdata('LoginId')){
+			$this->load->helper('form');
+			$json = json_decode(file_get_contents('php://input'));
+			//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+				$this->session->set_userdata('current_url',currentUrl());
+			}
+			// footprint end
+			if($json != null){
+				//here comes the json data
+				// $data['earningRateId'] = $this->input->post('earningRateId');
+				$data['Name'] = $json->Name;
+				$data['EarningsType'] = $json->EarningsType;
+				$data['RateType'] = $json->RateType;
+				$data['IsExemptFromTax'] = $json->IsExemptFromTax;
+				$data['IsExemptFromSuper'] = $json->IsExemptFromSuper;
+				$data['IsReportableAsW1'] = $json->IsReportableAsW1;
+				$data['CurrentRecord'] = $json->CurrentRecord;
+				$data['multiplier_amount'] = $json->multiplier_amount;
+				$data['created_by'] = $json->created_by;
+				$data['created_at'] = date('d-m-Y H:i:s');
+				$data['centerid'] = $json->centerid;
+				//access_token & tenant_id needed
+				$this->postAwardsToXero($access_token,$tenant_id,$data);
+				//In response we will get EarningsRateID, take that id and insert into the payrollshifts
+
+
+			}else{
+				$response = ['status'=>true,'message'=>'JSON data needs to be passed','data'=>[]];
+			}
+		}
+	}
+
+	function postAwardsToXero($access_token, $tenant_id, $data)
+	{
+		$url = "https://api.xero.com/payroll.xro/1.0/PayItems";
+		$ch =  curl_init($url);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+		curl_setopt($ch, CURLOPT_HTTPHEADER,  array(
+			'Content-Type:application/json',
+			'Authorization:Bearer ' . $access_token,
+			'Xero-tenant-id:' . $tenant_id
+		));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$server_output = curl_exec($ch);
+		return $server_output;
+	}
+	//Add Awards 
+
+
+
+
+
+
+
+
+
+
+
 
 	public function editCenter($centerid, $userid)
 	{
@@ -789,7 +858,6 @@ class Settings extends MY_Controller
 
 	public function addMultipleEmployees($userid)
 	{
-		set_time_limit(0);
 		$headers = $this->input->request_headers();
 		$headers = array_change_key_case($headers);
 		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
@@ -866,12 +934,12 @@ class Settings extends MY_Controller
 							'mailtype'  => 'html',
 							'charset'   => 'utf-8'
 						);
-						$to = $data['emails'];
+						$to = $emails;
 						$subject = 'Welcome to HRMS101';
 						$template = 'onboardingMailView';
 						$arr['name'] = $data['name'];
 						$arr['empCode'] = $data['employee_no'];
-						$arr['Password'] = (explode(" ", $data['name']))[0] . "@123";
+						$arr['Password'] = $data['password'];
 						if (!is_array($to)) {
 							$this->load->library('email', $config); // Load email template
 							$this->email->set_newline("\r\n");
@@ -901,6 +969,7 @@ class Settings extends MY_Controller
 			http_response_code(401);
 		}
 	}
+
 	public function editEmployeeEntitlements()
 	{
 		$headers = $this->input->request_headers();
@@ -939,6 +1008,90 @@ class Settings extends MY_Controller
 		}
 	}
 
+
+	//XERO THINGS ADDED FOR THE SAKE OF EMPLOYEE
+	function getPayItems($access_token, $tenant_id)
+	{
+		$url = "https://api.xero.com/payroll.xro/1.0/PayItems";
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'Accept:application/json',
+			'Authorization:Bearer ' . $access_token,
+			'Xero-tenant-id:' . $tenant_id
+		));
+		$server_output = curl_exec($ch);
+		return $server_output;
+	}
+	function refreshXeroToken($access_token)
+	{
+
+		$postData = "grant_type=refresh_token";
+		$postData .= "&refresh_token=" . $access_token;
+
+		$url = "https://identity.xero.com/connect/token";
+		$ch =  curl_init($url);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+		curl_setopt($ch, CURLOPT_HTTPHEADER,  array(
+			'Content-Type:application/x-www-form-urlencoded',
+			'Authorization:Basic ' . base64_encode(XERO_CLIENT_ID . ":" . XERO_CLIENT_SECRET)
+		));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$server_output = curl_exec($ch);
+		return $server_output;
+	}
+	function getEmployees($access_token, $tenant_id, $employeeId = null)
+	{
+		if ($employeeId == null || $employeeId == "") {
+			$url = "https://api.xero.com/payroll.xro/1.0/Employees";
+		}
+		if ($employeeId != null && $employeeId != "") {
+			$url = "https://api.xero.com/payroll.xro/1.0/Employees/" . $employeeId;
+		}
+		// var_dump($url);
+
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'Accept:application/json',
+			'Authorization:Bearer ' . $access_token,
+			'Xero-tenant-id:' . $tenant_id
+		));
+		$server_output = curl_exec($ch);
+		// var_dump($server_output);
+		return $server_output;
+	}
+	public function postEmployeeToXero($access_token, $tenant_id, $data)
+	{
+		$url = "https://api.xero.com/payroll.xro/1.0/Employees/";
+		$ch =  curl_init($url);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+		curl_setopt($ch, CURLOPT_HTTPHEADER,  array(
+			'Content-Type:application/json',
+			'Authorization:Bearer ' . $access_token,
+			'Xero-tenant-id:' . $tenant_id
+		));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$server_output = curl_exec($ch);
+		// print_r($server_output);
+		// die();
+		// curl_close($ch);
+		$xml = simplexml_load_string($server_output);
+		$json = json_encode($xml);
+		echo $json;
+		// exit();
+		// $json = json_encode(simplexml_load_string($server_output));
+		// $array = json_decode($json,true);
+		// return $array;
+
+	}
+	//XERO THINGS ADDED FOR THE SAKE OF EMPLOYEE
 	public function createEmployeeProfile()
 	{
 		$headers = $this->input->request_headers();
@@ -946,12 +1099,14 @@ class Settings extends MY_Controller
 		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
 			$this->load->model('authModel');
 			$this->load->model('settingsModel');
+			$this->load->model('xeroModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
 			$json = json_decode(file_get_contents('php://input'));
 			if ($json != null && $res != null && $res->userid == $json->userid) {
 				$employee_no = isset($json->employee_no) ? $json->employee_no : null;
 				$employeeEnrolled = $this->settingsModel->getUserData($employee_no);
 				if ($employee_no != null && $employeeEnrolled == null) {
+					//BLOCK CODE
 					$userid = $json->userid;
 					$title = $json->title;
 					$fname = $json->fname;
@@ -1018,6 +1173,9 @@ class Settings extends MY_Controller
 					$fileNameLoc = $target_dir . $profileImageName;
 					$totalHours = $json->totalHours;
 					$daysArr = $json->daysArr;
+					$iopb = $json->iobp;
+					$rateperunit = $json->RatePerUnit;
+
 					// var_dump((base64_decode($profileImage)));
 					if ($profileImage != null && $profileImage != "") {
 						file_put_contents($target_dir . $profileImageName, (base64_decode($profileImage)));
@@ -1048,10 +1206,19 @@ class Settings extends MY_Controller
 					$password = strtolower($fname) . "@123";
 					if ($employee_no != null && $employee_no != "") {
 						if ($emails != "" && $emails != null) {
-
-							$this->settingsModel->addToUsers($employee_no, md5($password), $emails, $name, $center, $userid, $role, $level, $alias, $profileImageName);
+							$this->settingsModel->addToUsers($employee_no, md5($password), $emails, $name, $center, $userid, $role, $level, $alias, $profileImageName, $iopb);
 							// Add user to usercenters
-							$this->settingsModel->addToUserCenters($employee_no, $center);
+							if (strpos($center, '|') == null || strpos($center, '|') == "") {
+								$this->settingsModel->addToUserCenters($employee_no, $center);
+							}else{
+								$arrayElements = explode('|', $center);
+								foreach ($arrayElements as $ce) {
+									if ($ce != "" && $ce != null) {
+										$this->settingsModel->addToUserCenters($employee_no, $ce);
+									}
+								}
+							}
+
 							$config = array(
 								'protocol'  => 'smtp',
 								'smtp_host' => 'ssl://smtp.zoho.com',
@@ -1166,9 +1333,95 @@ class Settings extends MY_Controller
 						if ($employee_no != null && $employee_no != "") {
 							$this->settingsModel->addToEmployeeTable($employee_no, $xeroEmployeeId, $title, $fname, $mname, $lname, $emails, $dateOfBirth, $gender, $homeAddLine1, $homeAddLine2, $homeAddCity, $homeAddRegion, $homeAddPostal, $homeAddCountry, $phone, $mobile, $startDate, $terminationDate, $ordinaryEarningRateId, $payroll_calendar, $userid, $classification, $emergency_contact, $relationship, $emergency_contact_email,$totalHours,$daysArr);
 						}
-						$data['Status'] = 'SUCCESS';
-						http_response_code(200);
-						echo json_encode($data);
+						// Insert Awards(Ordinary & Overtime) to this employee
+						//-// First of all get awards
+						$awardsdetails = $this->settingsModel->getAwards($center);
+						$earningRateId = "";
+						foreach($awardsdetails as $ai=>$av){
+							if($av->name == "Ordinary Hours"){
+								$earningRateId .= $av->earningRateId."|";
+								$this->settingsModel->editEmployeeAwards($av->earningRateId,$employee_no);
+							}else if($av->name == "Overtime Hours (exempt from super)"){
+								$earningRateId .= $av->earningRateId."|";
+								$this->settingsModel->editEmployeeAwards($av->earningRateId,$employee_no);
+							}
+						}
+						//-// First of all get awards
+						$this->settingsModel->updateEmployeeAward($earningRateId,$employee_no);
+						// Insert Awards(Ordinary & Overtime) to this employee
+					// POST EMPLOYEE TO XERO WITH BASIC DETAILS
+					//BLOCK CODE
+
+					$centerid = $json->center;
+					$xeroTokens = $this->xeroModel->getXeroToken($centerid);
+					if ($xeroTokens != null) {
+						$access_token = $xeroTokens->access_token;
+						$tenant_id = $xeroTokens->tenant_id;
+						$refresh_token = $xeroTokens->refresh_token;
+						$val = $this->getPayItems($access_token, $tenant_id);
+						$val = json_decode($val);
+						if ($val->Status == 401) {
+							$refresh = $this->refreshXeroToken($refresh_token);
+							$refresh = json_decode($refresh);
+							$access_token = $refresh->access_token;
+							$expires_in = $refresh->expires_in;
+							$refresh_token = $refresh->refresh_token;
+							$this->xeroModel->insertNewToken($access_token, $refresh_token, $tenant_id, $expires_in, $centerid);
+							$val = $this->getPayItems($access_token, $tenant_id);
+							$val = json_decode($val);
+						}
+						if ($val->Status == "OK") {
+							//BASIC INFORMATION
+							//employees
+							$employees = $this->getEmployees($access_token, $tenant_id, $empId=NULL);
+							// print_r($employees);
+							$employees = json_decode($employees)->Employees;
+							$fer = json_encode($employees);
+							$rfer = str_replace(array( '[', ']' ), '', $fer);
+
+							$newEmployeeData = array(
+								"FirstName"=>$json->fname,
+								"LastName"=>$json->lname,
+								"Email"=>$json->emails,
+								"DateOfBirth"=>$json->dateOfBirth,
+								"HomeAddress"=>array(
+									"AddressLine1"=>$json->homeAddLine1,
+									"City"=>$json->homeAddCity,
+									"Region"=>$json->homeAddRegion,
+									"PostalCode"=>$json->homeAddPostal,
+									"Country"=>$json->homeAddCountry
+								),
+								"PayTemplate"=>array(
+									"EarningsLines"=>array((object)[
+										"EarningsRateID"=>$ordinaryEarningRateId,
+										"CalculationType"=>'ENTEREARNINGSRATE',
+										"NormalNumberOfUnits"=>1.0000,
+										"RatePerUnit"=>$rateperunit
+									])
+								)															
+							);
+
+							$encodedne = json_encode($newEmployeeData);						
+							if($rfer == ""){
+								$fstring = '['.$encodedne.']';
+								$fr = json_decode($fstring,true);
+							}else{
+								$fstring = '['.$rfer.','.$encodedne.']';
+								$fr = json_decode($fstring,true);
+							}
+							$this->postEmployeeToXero($access_token,$tenant_id,$fr);
+							// $data['Status'] = 'SUCCESS';
+							// http_response_code(200);
+							// echo json_encode($data);
+							// $finalval = $this->postEmployeeToXero($access_token,$tenant_id,$fr);
+							// echo json_decode($finalval);
+							// echo gettype($finalval);
+							// die();
+
+						}
+					}else{
+						http_response_code(401);
+					}
 					} else {
 						http_response_code(401);
 					}
@@ -1180,24 +1433,7 @@ class Settings extends MY_Controller
 			}
 		}
 	}
-
-	function postToXero($access_token, $tenant_id, $data)
-	{
-		$url = "https://api.xero.com/payroll.xro/1.0/Employees/";
-		$ch =  curl_init($url);
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-		curl_setopt($ch, CURLOPT_HTTPHEADER,  array(
-			'Content-Type:application/json',
-			'Authorization:Bearer ' . $access_token,
-			'Xero-tenant-id:' . $tenant_id
-		));
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		$server_output = curl_exec($ch);
-		return $server_output;
-	}
-
+	
 	// View Employee
 
 	public function getEmployeeProfile($userid, $employeeId, $centerid=null)
@@ -1229,9 +1465,28 @@ class Settings extends MY_Controller
 		}
 	}
 
+	public function getEmployeeAwardsData($userid, $employeeId, $centerid=null)
+	{
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+			if ($res != null && $res->userid == $userid) {
+				$this->load->model('settingsModel');
+				$data['awards'] = $this->settingsModel->getUserAwardsData($employeeId);
+				$data['Status'] = 'SUCCESS';
+			}
+			http_response_code(200);
+			echo json_encode($data);
+		} else {
+			http_response_code(401);
+		}
+	}
+
 	// Edit Employee 
 
-	public function getEmployeeData($userid,$centerid=null)
+	public function getEmployeeData($userid,$centerid)
 	{
 		$headers = $this->input->request_headers();
 		$headers = array_change_key_case($headers);
@@ -1242,16 +1497,14 @@ class Settings extends MY_Controller
 				$this->load->model('settingsModel');
 				$data['users'] = $this->settingsModel->getUserData($userid);
 				$data['employee']	= $this->settingsModel->getEmployeeData($userid);
-				if($centerid != null){
-					$data['employeeBankAccount']	= $this->settingsModel->getEmployeeBankAccount($userid);
-					$data['employeeDocuments'] = $this->settingsModel->getEmployeeDocuments($userid);
-					$data['employeeCourses']	= $this->settingsModel->getEmployeeCourses($userid);
-					$data['employeeMedicalInfo']	= $this->settingsModel->getEmployeeMedicalInfo($userid);
-					$data['employeeMedicals']	= $this->settingsModel->getEmployeeMedicals($userid);
-					$data['employeeRecord']	= $this->settingsModel->getEmployeeRecord($userid);
-					$data['employeeSuperfunds']	= $this->settingsModel->getEmployeeSuperfunds($userid,$centerid);
-					$data['employeeTaxDeclaration'] = $this->settingsModel->getEmployeeTaxDec($userid);
-				}
+				$data['employeeBankAccount']	= $this->settingsModel->getEmployeeBankAccount($userid);
+				$data['employeeDocuments'] = $this->settingsModel->getEmployeeDocuments($userid);
+				$data['employeeCourses']	= $this->settingsModel->getEmployeeCourses($userid);
+				$data['employeeMedicalInfo']	= $this->settingsModel->getEmployeeMedicalInfo($userid);
+				$data['employeeMedicals']	= $this->settingsModel->getEmployeeMedicals($userid);
+				$data['employeeRecord']	= $this->settingsModel->getEmployeeRecord($userid);
+				$data['employeeSuperfunds']	= $this->settingsModel->getEmployeeSuperfunds($userid,$centerid);
+				$data['employeeTaxDeclaration'] = $this->settingsModel->getEmployeeTaxDec($userid);
 				$data['Status'] = 'SUCCESS';
 			}
 			http_response_code(200);
@@ -1348,9 +1601,16 @@ class Settings extends MY_Controller
 		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
 			$this->load->model('authModel');
 			$this->load->model('settingsModel');
+			$this->load->model('xeroModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
 			$json = json_decode(file_get_contents('php://input'));
 			if ($json != null && $res != null && $res->userid == $json->userid) {
+				$centerid = $json->center;
+				// $xeroEmployeeId = $json->xeroemployeeid;
+				$level = $json->level;
+				$iopb = $json->iobp;
+				$rateperunit = $json->RatePerUnit;
+				$maxhours = $json->usual_hours;
 				$userid = $json->userid;
 				$title = $json->title;
 				$fname = $json->fname;
@@ -1393,6 +1653,7 @@ class Settings extends MY_Controller
 				$approvedWitholdingVariationPercentage = $json->approvedWitholdingVariationPercentage;
 				$employee_no = $json->employee_no;
 				$resume_doc = $json->resume_doc;
+				$maxhours = $json->usual_hours;
 				$resume_doc_ = "";
 				if ($resume_doc != null) {
 					file_put_contents('application/assets/uploads/documents/' . $employee_no . '_resume.pdf', base64_decode($resume_doc));
@@ -1429,11 +1690,13 @@ class Settings extends MY_Controller
 				/*Employee Documents*/
 
 				// Employee Courses	
+
 				$course_name = $json->course_name;
 				$course_description = $json->course_description;
 				$date_obtained = $json->date_obtained;
 				$expiry_date = $json->expiry_date;
 				$certificate = $json->certificate;
+				
 				$course_id = $json->course_id;
 				for ($i = 0; $i < count($course_name); $i++) {
 					$course_nme = $course_name[$i];
@@ -1441,11 +1704,25 @@ class Settings extends MY_Controller
 					$date_obt = $date_obtained[$i];
 					$exp_date = $expiry_date[$i];
 					$id = $course_id[$i];
-					$cert = isset($certificate[$i]) ? $certificate[$i] : "";
+					// $cert = isset($certificate[$i]) ? $certificate[$i] : "";
+					$cert = isset($certificate) ? $certificate : "";
+					// echo '<pre>';
+					// var_dump($certificate);
+					// echo '</pre>';
+					// exit();
 					$certName = "";
 					if($cert != null && $cert != ""){
 						$certName = uniqid().".pdf";
+						// var_dump(base64_decode($cert));
+
 						file_put_contents("application/assets/uploads/documents/$certName",base64_decode($cert));
+						// if (strpos($bin, '%PDF') !== 0){
+						// 	throw new Exception('Missing the PDF file signature');
+						// 	// exit();
+						// }
+						  
+						  # Write the PDF contents to a local file
+						//   file_put_contents(DOCUMENTS_PATH.$certName, $bin);
 					}
 					// get employee Id
 					if ($id != "" && $id != null) {
@@ -1525,8 +1802,118 @@ class Settings extends MY_Controller
 				$this->settingsModel->updateEmployeeTaxDeclaration($employee_no, $tfnExemptionType, $taxFileNumber, $australiantResidentForTaxPurposeYN, $residencyStatue, $taxFreeThresholdClaimedYN, $taxOffsetEstimatedAmount, $hasHELPDebtYN, $hasSFSSDebtYN, $hasTradeSupportLoanDebtYN_, $upwardVariationTaxWitholdingAmount, $eligibleToReceiveLeaveLoadingYN, $approvedWitholdingVariationPercentage);
 				// Employee Table
 
-				$this->settingsModel->updateEmployeeTable($employee_no, $title, $fname, $mname, $lname, $emails, $dateOfBirth, $gender, $homeAddLine1, $homeAddLine2, $homeAddCity, $homeAddRegion, $homeAddPostal, $homeAddCountry, $phone, $mobile, $terminationDate, $ordinaryEarningRateId, $userid, $classification, $emergency_contact, $relationship, $emergency_contact_email);
+				$this->settingsModel->updateEmployeeTable($employee_no, $title, $fname, $mname, $lname, $emails, $dateOfBirth, $gender, $homeAddLine1, $homeAddLine2, $homeAddCity, $homeAddRegion, $homeAddPostal, $homeAddCountry, $phone, $mobile, $terminationDate, $ordinaryEarningRateId, $userid, $classification, $emergency_contact, $relationship, $emergency_contact_email,$maxhours);
+				$this->settingsModel->editEmployeeLBDetails($level,$iopb,$employee_no);
+				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				// BLOCK CODE
+				//FOR UPDATING EMPLOYEE DETAILS IN XERO
+				// $centerid = $json->center;
+				$xeroTokens = $this->xeroModel->getXeroToken($centerid);
+				if ($xeroTokens != null) {
+					$access_token = $xeroTokens->access_token;
+					$tenant_id = $xeroTokens->tenant_id;
+					$refresh_token = $xeroTokens->refresh_token;
+					$val = $this->getPayItems($access_token, $tenant_id);
+					$val = json_decode($val);
+					if ($val->Status == 401) {
+						$refresh = $this->refreshXeroToken($refresh_token);
+						$refresh = json_decode($refresh);
+						$access_token = $refresh->access_token;
+						$expires_in = $refresh->expires_in;
+						$refresh_token = $refresh->refresh_token;
+						$this->xeroModel->insertNewToken($access_token, $refresh_token, $tenant_id, $expires_in, $centerid);
+						$val = $this->getPayItems($access_token, $tenant_id);
+						$val = json_decode($val);
+					}
+					if ($val->Status == "OK") {
+						//BASIC INFORMATION
+						//employees
+						// $employees = $this->getEmployees($access_token, $tenant_id, $empId=NULL);
+						// // print_r($employees);
+						// $employees = json_decode($employees)->Employees;
+						// $fer = json_encode($employees);
+						// $rfer = str_replace(array( '[', ']' ), '', $fer);
 
+						$updatingEmployeeData = array(
+							"EmployeeID"=>$xeroEmployeeId,
+							"Title"=>$title,
+							"FirstName"=>$fname,
+							"MiddleNames"=>empty($mname) ? NULL : $mname,
+							"LastName"=>$lname,
+							"DateOfBirth"=>$dateOfBirth,
+							"HomeAddress"=>array(
+								"AddressLine1"=>$homeAddLine1,
+								"AddressLine2"=>empty($homeAddLine2) ? NULL : $homeAddLine2,
+								"City"=>$homeAddCity,
+								"Region"=>$homeAddRegion,
+								"PostalCode"=>$homeAddPostal,
+								"Country"=>$homeAddCountry
+							),
+							"PayTemplate"=>array(
+								"EarningsLines"=>array((object)[
+									"EarningsRateID"=>$ordinaryEarningRateId,
+									"CalculationType"=>'ENTEREARNINGSRATE',
+									"NormalNumberOfUnits"=>1.0000,
+									"RatePerUnit"=>$rateperunit
+								])
+								),
+							"Mobile"=>empty($mobile) ? NULL : $mobile,
+							"Phone"=>$phone,
+							"Email"=>$emails,
+							"Gender"=>$gender,
+							"Classification"=>empty($classification) ? NULL : $classification,
+							"OrdinaryEarningsRateID"=>empty($ordinaryEarningRateId) ? NULL : $ordinaryEarningRateId,
+							"TaxDeclaration"=>array(
+								"TaxFileNumber"=>$taxFileNumber,
+								"EmploymentBasis"=>"FULLTIME",
+								"TFNExemptionType"=>$tfnExemptionType,
+								"AustralianResidentForTaxPurposes"=>$australiantResidentForTaxPurposeYN == "Y" ? "true" : "false",
+								"TaxFreeThresholdClaimed"=>$taxFreeThresholdClaimedYN == "Y" ? "true" : "false",
+								"HasHELPDebt"=>$hasHELPDebtYN == "Y" ? "true" : "false",
+								"HasSFSSDebt"=>$hasSFSSDebtYN == "Y" ? "true" : "false",
+								"EligibleToReceiveLeaveLoading"=>$eligibleToReceiveLeaveLoadingYN == "Y" ? "true" : "false",
+								"HasStudentStartupLoan"=>"",
+								"ResidencyStatus"=>$residencyStatue,
+								"TaxOffsetEstimatedAmount"=>$taxOffsetEstimatedAmount,
+								"UpwardVariationTaxWithholdingAmount"=>$upwardVariationTaxWitholdingAmount,
+								"ApprovedWithholdingVariationPercentage"=>$approvedWitholdingVariationPercentage
+							)
+						);
+						/*
+						$updatingEmployeeBankAccountData = array();
+						for($i = 0;$i<count($accountName);$i++){	
+							$bd = array(
+								"StatementText"=>"Pay Cheque",
+								"AccountName"=>$accountName[$i],
+								"BSB"=>$bsb[$i],
+								"AccountNumber"=>$accountNumber[$i],
+								"Remainder"=>isset($remainderYN[$i]) ? ($remainderYN[$i] == "Y" ? "true" : "false") : "false"
+								// "Remainder"=>empty($remainderYN[$i]) ? NULL : ($remainderYN[$i] == "Y" ? "true" : "false"),
+								// "Amount"=>isset($amount[$i -1]) ? $amount[$i-1] : 0
+							);
+							array_push($updatingEmployeeBankAccountData,$bd);
+							//$this->settingsModel->updateEmployeeBankAccount($employee_no, $accountName[$i], $bsb[$i], 	$accountNumber[$i], count($accountName) > 1 ? ($i == 0 ? 'Y' : 'N') : 'Y', isset($amount[$i -1]) ? $amount[$i-1] : 0);
+						}
+						
+						$aa = array_merge($updatingEmployeeData,array("BankAccounts"=>$updatingEmployeeBankAccountData));
+						$finalstring = '['.stripslashes(json_encode($aa)).']';
+
+						*/
+
+						$finalstring = '['.stripslashes(json_encode($updatingEmployeeData)).']';
+						$fr = json_decode($finalstring);
+						// print_r($fr);
+						// die();
+						$this->postEmployeeToXero($access_token,$tenant_id,$fr);
+					}
+				}else{
+					http_response_code(401);
+				}
+				//FOR UPDATING EMPLOYEE DETAILS IN XERO
+				// BLOCK CODE
+				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				$data['Status'] = 'SUCCESS';
 				http_response_code(200);
 				echo json_encode($data);
@@ -1783,6 +2170,57 @@ class Settings extends MY_Controller
 				}
 				http_response_code(200);
 				echo json_encode($data);
+			} else {
+				http_response_code(401);
+			}
+		} else {
+			http_response_code(401);
+		}
+	}
+
+
+	public function changeEmployeeAward()
+	{
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			$this->load->model('authModel');
+			$this->load->model('settingsModel');
+			$this->load->model('utilModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if ($json != null && $res != null && $res->userid == $json->userid) {
+				$userid = $json->userid;
+				$empId = $json->empId;
+				$awards = $json->awards;
+				// echo json_encode($awards);
+				if (count($awards) > 0) {
+					$this->settingsModel->deleteEmployeeAwards($empId);
+					$awar = "";
+					foreach ($awards as $award) {
+						// TODO
+						$awar = $awar . $award . '|';
+						$this->settingsModel->editEmployeeAwards($award, $empId);
+					}
+					$this->settingsModel->updateEmployeeAward($awar, $empId);
+					// // Email & Notification
+					// $permissions = $this->getNotificationPermissions($empId,15);
+					// foreach($permissions as $permission){
+					// if($permission->appYN == 'Y'){
+					// 	//   $this->utilModel->insertNotification($empId, $intent, $title, $body, json_encode($payload));
+					// 	// $this->firebase->sendMessage($title,$body,$payload,$empId);
+					// }
+					// if($permission->emailYN == 'Y'){
+					// 	// $this->Emails($permission->email,$template,$subject,$arr);
+					// }
+					// }
+					// // Email & Notification
+					$data['Status'] = 'SUCCESS';
+					$data['Message'] = 'Employee awards updated';
+				} else {
+					$data['Status'] = 'FAILED';
+					$data['Message'] = 'Employee awards not updated';
+				}
 			} else {
 				http_response_code(401);
 			}
@@ -2060,5 +2498,421 @@ class Settings extends MY_Controller
 			http_response_code(200);
 		}
 	}
+
+	public function getCompanySettingsData($userid){
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+			// $json = json_decode(file_get_contents('php://input'));
+			// if ($res != null && $json != null && $res->userid == $userid) {
+			if ($res != null && $res->userid == $userid) {
+				$companydata = $this->authModel->getCompanyDetails($userid);
+				$data['companydata'] = $companydata;
+				$data['Status'] = 'SUCCESS';
+			}else{
+				$data['Status'] = 'ERROR';
+				$data['Message'] = 'Invalid !';
+			}
+			echo json_encode($data);
+			http_response_code(200);
+		}
+	}
+
+	public function postCompanySettings()
+	{
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			$this->load->model('authModel');
+			$this->load->model('settingsModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+
+			if ($res != null && $res->userid == $_POST['userid']) {
+				$userid = $_POST['userid'];
+				$companyId = $_POST['companyId'];
+				$emp_id_prefix = $_POST['emp_id_prefix'];
+				// var_dump($_POST);
+				// die();
+				if(!empty($_FILES['companyImage']['name'])){
+					$data['companyImage'] = uniqid();
+					$config['upload_path'] = '../assets/images/icons/';
+					$config['allowed_types'] = 'jpg|png|jpeg';
+					$config['max_size'] = '2000';
+					$config['file_name'] = $data['companyImage'];
+					$this->load->library('upload', $config);
+					$this->upload->initialize($config);
+					if($this->upload->do_upload('companyImage'))
+					{
+						$data['upload_data'] = array('upload_data' => $this->upload->data());
+						$data['companyImage'] = $data['companyImage'].$data['upload_data']['upload_data']['file_ext'];	
+						$this->settingsModel->postCompanySettings($companyId,$data['companyImage'],$emp_id_prefix);
+						$this->session->unset_userdata('companyImage');
+						$this->session->set_userdata('companyImage',$data['companyImage']);
+						$data['Status'] = "SUCCESS";
+						$data['Message'] = "COMPANY SETTINGS UPDATED";
+						echo json_encode($data);
+					}
+					else
+					{
+						// echo $this->upload->display_errors(); die();
+						$data['Status'] = "ERROR";
+						$data['Message'] = "File format of .jpg,.png,.jpeg supported. Max size 2mb";
+						echo json_encode($data);
+					}
+				}
+				else{
+					$companydata = $this->authModel->getCompanyDetails($userid);
+					// print_r($companydata);
+					// die();
+					$this->settingsModel->postCompanySettings($companyId,$companydata->companyLogo,$emp_id_prefix);
+					$this->session->unset_userdata('companyImage');
+					$this->session->set_userdata('companyImage',$companydata->companyLogo);
+					$data['Status'] = "SUCCESS";
+					$data['Message'] = "COMPANY SETTINGS UPDATED";
+					echo json_encode($data);
+				}
+
+			} else {
+				$data['Status'] = "ERROR";
+				$data['Message'] = "UNAUTHORIZED2";
+				http_response_code(401);
+				echo json_encode($data);
+			}
+		} else {
+			$data['Status'] = "ERROR";
+			$data['Message'] = "UNAUTHORIZED1";
+			http_response_code(401);
+			echo json_encode($data);
+		}
+	}
+
+	public function getEmployeeId(){
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			$this->load->model('authModel');
+			$this->load->model('settingsModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			if ($res != null && $res->userid == $json->userid && $json != null) {
+				$userid = $json->userid;
+				//From the db we can get the role
+				$ud = $this->authModel->getUserDetails($userid);
+				// $role = $json->role;
+				$role = $ud->role;
+				$res = $this->settingsModel->getFullEmployeeId($userid,$role);
+				// print_r($res);
+				// die();
+				//OP:
+				// 	stdClass Object
+				// (
+				//     [lastuserid] => 
+				//     [companyIdPrefix] => CM
+				// )
+				$re=preg_replace('~\D~', '', $res->lastuserid);
+				$prefix = preg_replace('/[0-9]+/', '', $res->lastuserid);
+				if($re == ""){
+					$finalempno = sprintf('%05d',1);
+					$data['Data'] = $res->companyIdPrefix.$finalempno;
+				}else{
+					$finalempno = sprintf('%05d',$re+1);
+					$data['Data'] = $prefix.$finalempno;
+				}
+				$data['Status'] = "SUCCESS";
+				$data['Message'] = "EMPLOYEE NO GENERATED";
+				http_response_code(200);
+				echo json_encode($data);
+			} else {
+				$data['Status'] = "ERROR";
+				$data['Message'] = "UNAUTHORIZED2";
+				$data['Data'] = "";
+				http_response_code(401);
+				echo json_encode($data);
+			}
+		} else {
+			$data['Status'] = "ERROR";
+			$data['Message'] = "UNAUTHORIZED1";
+			$data['Data'] = "";
+			http_response_code(401);
+			echo json_encode($data);
+		}
+
+	}
+
+
+	// public function geid(){
+	// 	$this->load->model('settingsModel');
+	// 	$res = $this->settingsModel->getFullEmployeeId('andrew',1);
+	// 	$re=preg_replace('~\D~', '', $res->lastuserid);
+	// 	// echo $re."<br>";
+	// 	$finalempno = sprintf('%05d',$re+1);
+	// 	// echo $finalempno;
+	// }
+
+	// GET VISITS
+	public function getEmployeeVisits($centerid,$userid){
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			$this->load->model('authModel');
+			$this->load->model('settingsModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+
+			if ($res != null && $res->userid == $userid) {
+				$res = $this->settingsModel->getempVisits($centerid);
+				$data['Status'] = "SUCCESS";
+				$data['Message'] = "VISITS GENERATED";
+				if(empty($res)){
+					$data['Data'] = [];
+				}else{
+					$data['Data'] = $res;
+				}
+				http_response_code(200);
+				echo json_encode($data);
+			} else {
+				$data['Status'] = "ERROR";
+				$data['Message'] = "UNAUTHORIZED2";
+				$data['Data'] = "";
+				http_response_code(401);
+				echo json_encode($data);
+			}
+		} else {
+			$data['Status'] = "ERROR";
+			$data['Message'] = "UNAUTHORIZED1";
+			$data['Data'] = "";
+			http_response_code(401);
+			echo json_encode($data);
+		}
+
+	}
+	// GET VISITS
+
+	//CHECK UNIQUENESS FOR SUPERADMIN FORM
+	public function uniqueChecks(){
+		$this->load->model('settingsModel');
+		if(!empty($_POST['companyName'])){
+			//check company unique
+			$r = $this->settingsModel->companyNameUnique($_POST['companyName']);
+			if($r){
+				$response = ['status'=>'SUCCESS','message'=>'NO COMPANY NAME EXISTS','data'=>$r];
+			}else{
+				$response = ['status'=>'FAILURE','message'=>'COMPANY NAME EXISTS','data'=>$r];
+			}
+			echo json_encode($response);
+		}else if(!empty($_POST['empidprefix'])){
+			//check emp id prefix
+			$r = $this->settingsModel->empidprefixUnique($_POST['empidprefix']);
+			if($r){
+				$response = ['status'=>'SUCCESS','message'=>'NO EMP ID PREFIX EXISTS','data'=>$r];
+			}else{
+				$response = ['status'=>'FAILURE','message'=>'EMP ID PREFIX EXISTS','data'=>$r];
+			}
+			echo json_encode($response);
+		}else if(!empty($_POST['name'])){
+			//check name
+			$r = $this->settingsModel->usernameUnique($_POST['name']);
+			if($r){
+				$response = ['status'=>'SUCCESS','message'=>'NO USER NAME EXISTS','data'=>$r];
+			}else{
+				$response = ['status'=>'FAILURE','message'=>'USER NAME EXISTS','data'=>$r];
+			}
+			echo json_encode($response);
+		}else if(!empty($_POST['email'])){
+			//check email
+			$r = $this->settingsModel->useremailUnique($_POST['email']);
+			if($r){
+				$response = ['status'=>'SUCCESS','message'=>'NO USER EMAIL EXISTS','data'=>$r];
+			}else{
+				$response = ['status'=>'FAILURE','message'=>'USER EMAIL EXISTS','data'=>$r];
+			}
+			echo json_encode($response);
+		}else if(!empty($_POST['alias'])){
+			$r = $this->settingsModel->useraliasUnique($_POST['alias']);
+			if($r){
+				$response = ['status'=>'SUCCESS','message'=>'NO USER ALIAS EXISTS','data'=>$r];
+			}else{
+				$response = ['status'=>'FAILURE','message'=>'USER ALIAS EXISTS','data'=>$r];
+			}
+			echo json_encode($response);
+		}
+	}
+	//CHECK UNIQUENESS FOR SUPERADMIN FORM
+
+	// SUPER ADMIN FORM POST
+	public function postSuperadmin(){
+
+		$this->load->model('settingsModel');
+		//$this->load->model('payrollModel');
+
+		//Company Information - superadmin tbl
+		$companyId = uniqid();
+		$companyName = $_POST['companyName'];
+		$empIdPrefix = $_POST['empIdPrefix'];
+		if(!empty($_FILES['companyImage']['name'])){
+			$details['companyImage'] = uniqid();
+			$config['upload_path'] = '../assets/images/icons/';
+			$config['allowed_types'] = 'jpg|png|jpeg';
+			$config['max_size'] = '2000';
+			$config['file_name'] = $details['companyImage'];
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);
+			if($this->upload->do_upload('companyImage'))
+			{
+				$details['upload_data'] = array('upload_data' => $this->upload->data());
+				$details['companyImage'] = $details['companyImage'].$details['upload_data']['upload_data']['file_ext'];	
+				$cores = $this->settingsModel->insertCompany(array('companyid'=>$companyId,'companyName'=>$companyName,'companyLogo'=>$details['companyImage'],'emp_id_prefix'=>$empIdPrefix));
+				// print_r(array('companyid'=>$companyId,'companyName'=>$companyName,'companyLogo'=>$data['companyImage'],'emp_id_prefix'=>$empIdPrefix));
+				// die();
+				// $cores = true;
+				if($cores){
+					//Basic User Information - users tbl
+					$userfirstName = $_POST['userfirstName'];
+					$userlastName = $_POST['userlastName'];
+					$userEmail = $_POST['userEmail'];
+					$userPassword = $_POST['userPassword'];
+					$userAlias = $_POST['userAlias'];
+					$role = 1;
+					$sres = $this->settingsModel->insertSuperadmin(array('id'=>strtolower($userfirstName),'email'=>$userEmail,'password'=>md5($userPassword),'name'=>$userfirstName." ".$userlastName,'role'=>$role,'title'=>'Superadmin','manager'=>$userfirstName,'isVerified'=>'Y','created_at'=>date('Y-m-d H:i:s'),'created_by'=>strtolower($userfirstName),'alias'=>$userAlias));
+					// print_r(array('id'=>$userfirstName,'email'=>$userEmail,'password'=>md5($userPassword),'name'=>$userfirstName." ".$userlastName,'role'=>$role,'title'=>'Superadmin','manager'=>$userfirstName,'isVerified'=>'Y','created_at'=>date('Y-m-d H:i:s'),'alias'=>$userAlias));
+					// die();
+					// $sres = true;
+					if($sres){
+						//Center Information - center,usercenter tbl
+						$centerName = $_POST['centerName'];
+						$centerStreet  = $_POST['centerStreet'];
+						$centerCity = $_POST['centerCity'];
+						$centerState = $_POST['centerState'];
+						$centerZip = $_POST['centerZip'];
+						$centerTelephone = $_POST['centerTelephone'];
+						$centerMobile = $_POST['centerMobile'];
+						$centerEmail = $_POST['centerEmail'];
+						$cres = $this->settingsModel->insertSuperAdminFirstCenter($centerStreet,$centerCity,$centerState,$centerZip,$centerName,$centerTelephone,$centerMobile,$centerEmail,$userfirstName,$companyId);
+						// echo $centerStreet,$centerCity,$centerState,$centerZip,$centerName,$centerTelephone,$centerMobile,$centerEmail,$userfirstName,$companyId;
+						// die();
+						// $cres = true;
+						if($cres){
+							//Permission Information - permission tbl
+							$permissions = $_POST['permissions'];
+							// print_r($permissions);
+							// die();
+							foreach($permissions as $i=>$v){
+								if(strpos($v,'QR READER') !== false || strpos($v,'XERO SETTINGS') !== false || strpos($v,'VIEW ROOM SETTINGS') !== false || strpos($v,'EDIT ROOM SETTINGS') !== false || strpos($v,'VIEW ROSTER') !== false || strpos($v,'EDIT ROSTER') !== false || strpos($v,'VIEW TIMESHEET') !== false || strpos($v, 'CREATE NOTICE') !== false || strpos($v,'VIEW ORG CHART') !== false || strpos($v,'EDIT EMPLOYEES') !== false || strpos($v,'EDIT ORG CHART') !== false || strpos($v,'EDIT TIMESHEET') !== false || strpos($v,'VIEW CENTER PROFILE') !== false || strpos($v,'EDIT CENTER PROFILE') !== false || strpos($v,'EDIT ENTITLEMENTS') !== false || strpos($v,'VIEW ENTITLEMENTS') !== false || strpos($v,'VIEW PAYROLL') !== false || strpos($v,'EDIT PAYROLL') !== false  || strpos($v,'EDIT LEAVE TYPES') !== false || strpos($v,'VIEW LEAVE TYPES') !== false || strpos($v,'KIDSOFT PERMISSIONS') !== false || strpos($v,'VIEW PERMISSIONS') !== false || strpos($v,'EDIT PERMISSIONS') !== false || strpos($v,'CREATE MOM') !== false || strpos($v,'EDIT SUPERFUNDS') !== false || strpos($v,'VIEW SUPERFUNDS') !== false || strpos($v,'EDIT AWARDS') !== false || strpos($v,'VIEW AWARDS') !== false){
+									$viewRosterYN = "Y";
+									$editRosterYN = "Y";
+									$viewTimesheetYN = "Y";
+									$editTimesheetYN = "Y";
+									$viewPayrollYN = "Y";
+									$editLeaveTypeYN = "Y";
+									$isQrReaderYN = "Y";
+									$viewLeaveTypeYN = "Y";
+									$editPayrollYN = "Y";
+									$viewOrgChartYN = "Y";
+									$createNoticeYN = "Y";
+									$editOrgChartYN = "Y";
+									$viewCenterProfileYN = "Y";
+									$editEmployeeYN = "Y";
+									$kidsoftYN = "Y";
+									$viewPermissionYN = "Y";
+									$editPermissionYN = "Y";
+									$createMomYN = "Y";
+									$viewSuperfundsYN = "Y";
+									$editSuperfundsYN = "Y";
+									$viewAwardsYN = "Y";
+									$editAwardsYN = "Y";
+									$xeroYN = "Y";
+									$viewEntitlementsYN = "Y";
+									$editEntitlementsYN = "Y";
+									$editCenterProfileYN = "Y";
+									$viewRoomSettingsYN = "Y";
+									$editRoomSettingsYN = "Y";
+								}else{
+									$viewRosterYN = "N";
+									$editRosterYN = "N";
+									$viewTimesheetYN = "N";
+									$editTimesheetYN = "N";
+									$viewPayrollYN = "N";
+									$editLeaveTypeYN = "N";
+									$isQrReaderYN = "N";
+									$viewLeaveTypeYN = "N";
+									$editPayrollYN = "N";
+									$viewOrgChartYN = "N";
+									$createNoticeYN = "N";
+									$editOrgChartYN = "N";
+									$viewCenterProfileYN = "N";
+									$editEmployeeYN = "N";
+									$kidsoftYN = "N";
+									$viewPermissionYN = "N";
+									$editPermissionYN = "N";
+									$createMomYN = "N";
+									$viewSuperfundsYN = "N";
+									$editSuperfundsYN = "N";
+									$viewAwardsYN = "N";
+									$editAwardsYN = "N";
+									$xeroYN = "N";
+									$viewEntitlementsYN = "N";
+									$editEntitlementsYN = "N";
+									$editCenterProfileYN = "N";
+									$viewRoomSettingsYN = "N";
+									$editRoomSettingsYN = "N";
+								}
+							}
+							$this->settingsModel->insertPermission($userfirstName,$isQrReaderYN,$viewRosterYN,$editRosterYN,$viewTimesheetYN,$editTimesheetYN,$viewPayrollYN,$editPayrollYN,$editLeaveTypeYN,$viewLeaveTypeYN,$createNoticeYN,$viewOrgChartYN,$editOrgChartYN,$viewCenterProfileYN,$editCenterProfileYN,$viewRoomSettingsYN,$editRoomSettingsYN,$viewEntitlementsYN,$editEntitlementsYN,$editEmployeeYN,$xeroYN,$viewAwardsYN,$editAwardsYN,$viewSuperfundsYN,$editSuperfundsYN,$createMomYN,$editPermissionYN,$viewPermissionYN,$kidsoftYN);
+							// echo $userfirstName,$isQrReaderYN,$viewRosterYN,$editRosterYN,$viewTimesheetYN,$editTimesheetYN,$viewPayrollYN,$editPayrollYN,$editLeaveTypeYN,$viewLeaveTypeYN,$createNoticeYN,$viewOrgChartYN,$editOrgChartYN,$viewCenterProfileYN,$editCenterProfileYN,$viewRoomSettingsYN,$editRoomSettingsYN,$viewEntitlementsYN,$editEntitlementsYN,$editEmployeeYN,$xeroYN,$viewAwardsYN,$editAwardsYN,$viewSuperfundsYN,$editSuperfundsYN,$createMomYN,$editPermissionYN,$viewPermissionYN,$kidsoftYN;
+							// die();
+							// $rres = true;
+							// if($rres){
+								//Entitlements Information - entitlements tbl
+								$entitlements = $_POST['entitlements'];
+								foreach($entitlements as $index=>$value){
+									$classificationdata = explode(',',$value);
+								}
+								foreach($classificationdata as $in=>$va){
+									$classfidata = explode('||',$va);
+									$this->settingsModel->insertSuperAdminEntitlements($classfidata[0], $classfidata[1], $userfirstName, $companyId);
+
+								}
+								$data['Status'] = "SUCCESS";
+								$data['Message'] = "ALL OPERATIONS SUCCESS";
+								echo json_encode($data);
+							// }else{
+							// 	$data['Status'] = "ERROR";
+							// 	$data['Message'] = "FAILED TO INSERT PERMISSIONS";
+							// 	echo json_encode($data);
+							// }
+						}else{
+							$data['Status'] = "ERROR";
+							$data['Message'] = "FAILED TO INSERT CENTER";
+							echo json_encode($data);
+						}
+					}else{
+						$data['Status'] = "ERROR";
+						$data['Message'] = "FAILED TO INSERT SUPER ADMIN";
+						echo json_encode($data);
+					}
+
+				}else{
+					$data['Status'] = "ERROR";
+					$data['Message'] = "FAILED TO INSERT COMPANY";
+					echo json_encode($data);
+				}
+			}
+			else
+			{
+				// echo $this->upload->display_errors(); die();
+				$data['Status'] = "ERROR";
+				$data['Message'] = "File format of .jpg,.png,.jpeg supported. Max size 2mb";
+				echo json_encode($data);
+			}
+		}
+
+		// var_dump($_POST);
+		// die();
+
+
+
+	}
+	// SUPER ADMIN FORM POST
 
 }

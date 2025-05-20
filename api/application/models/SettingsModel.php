@@ -194,15 +194,20 @@ class SettingsModel extends CI_Model {
 			return $query->row();
 		}
 
-		public function addToUsers($employee_no,$password, $emails,$name,$center,$userid,$role,$level,$alias,$fileNameLoc=null){
+		public function addToUsers($employee_no,$password, $emails,$name,$center,$userid,$role,$level,$alias,$fileNameLoc=null,$bonusRate=null){
 			$this->load->database();
-			$query = $this->db->query("INSERT INTO users (id,password, email, name,created_at, created_by,roleid,level,alias,isVerified,imageUrl) VALUES ('$employee_no','$password','$emails','$name',NOW(),'$userid',$role,'$level','$alias','N','$fileNameLoc')");
+			if($center == ""){
+				$query = $this->db->query("INSERT INTO users (id,password, email, name,created_at, created_by,roleid,level,alias,isVerified,imageUrl,bonusRate) VALUES ('$employee_no','$password','$emails','$name',NOW(),'$userid',$role,'$level','$alias','N','$fileNameLoc','$bonusRate')");
+			}else{
+				$query = $this->db->query("INSERT INTO users (id,password, email, name,created_at, created_by,roleid,level,alias,isVerified,imageUrl,center,bonusRate) VALUES ('$employee_no','$password','$emails','$name',NOW(),'$userid',$role,'$level','$alias','N','$fileNameLoc','$center','$bonusRate')");
+
+			}
 		}
 
 		public function addToUsersME($employee_no,$password, $emails,$name,$center,$userid,$role,$level,$alias){
 			$this->load->database();
 			$query = $this->db->query("INSERT INTO users (id,password, email, name,created_at, created_by,roleid,level,alias,isVerified) VALUES ('$employee_no','$password','$emails','$name',NOW(),'$userid',$role,'$level','$alias','N')");
-			$this->db->query("INSERT INTO usercenters (userid,centerid) VALUES ('$employee_no',$center)");
+			$this->db->query("INSERT INTO usercenters (userid,centerid) VALUES ('$userid',$center)");
 		}
 
 		public function addToUserCenters($userid,$centerid){
@@ -253,11 +258,18 @@ class SettingsModel extends CI_Model {
 			$this->load->database();
 			$query = $this->db->query("SELECT * FROM users where id = '$userid'");
 			return $query->row();
-		} 
+		}
+		
+		public function getUserAwardsData($userid){
+			$this->load->database();
+			$query = $this->db->query("SELECT ea.*,ps.name FROM employee_awards ea JOIN payrollshifttype_v1 ps ON ea.earningRateId = ps.earningRateId where ea.userid = '$userid' GROUP BY id;");
+			return $query->result();
+		}
 
 		public function getEmployeeData($userid){
 			$this->load->database();
-			$query = $this->db->query("SELECT * FROM employee as e LEFT JOIN payrollshifttype_v1 as ps on e.ordinaryEarningRateId = ps.earningRateId  where e.userid = '$userid'");
+			// $query = $this->db->query("SELECT * FROM employee as e LEFT JOIN payrollshifttype_v1 as ps on e.ordinaryEarningRateId = ps.earningRateId  where e.userid = '$userid'");
+			$query = $this->db->query("SELECT e.*,ps.*,u.level,u.roleid,u.bonusRate,en.name as enName,en.hourlyRate,ocr.roleName FROM employee as e LEFT JOIN payrollshifttype_v1 as ps on e.ordinaryEarningRateId = ps.earningRateId LEFT JOIN users as u on u.id=e.userid LEFT JOIN entitlements as en ON en.id=u.level LEFT JOIN orgchartroles as ocr on ocr.roleid=u.roleid where e.userid = '$userid'; ");
 			return $query->row();
 		}
 		public function getEmployeeBankAccount($userid){
@@ -316,7 +328,7 @@ class SettingsModel extends CI_Model {
 		}
 		public function updateUsers($employee_no,$emails,$name,$title,$userid,$alias){
 			$this->load->database();
-			$query = $this->db->query("UPDATE  users SET 	email = '$emails', name = '$name', created_at = NOW(), created_by = '$userid', alias = '$alias' where id = '$employee_no'");
+			$query = $this->db->query("UPDATE  users SET email = '$emails', name = '$name', created_at = NOW(), created_by = '$userid', alias = '$alias' where id = '$employee_no'");
 		}
 		public function updateEmployeeBankAccount( $employeeNo,$accountName,$bsb,$accountNumber,$remainderYN,$amount){
 			$this->load->database();
@@ -393,7 +405,7 @@ class SettingsModel extends CI_Model {
 				tfnExemptionType = '$tfnExemptionType', taxFileNumber = '$taxFileNumber', australiantResidentForTaxPurposeYN = '$australiantResidentForTaxPurposeYN', residencyStatue = '$residencyStatue', taxFreeThresholdClaimedYN = '$taxFreeThresholdClaimedYN', taxOffsetEstimatedAmount = '$taxOffsetEstimatedAmount', hasHELPDebtYN = '$hasHELPDebtYN', hasSFSSDebtYN = '$hasSFSSDebtYN', hasTradeSupportLoanDebtYN = '$hasTradeSupportLoanDebtYN_', upwardVariationTaxWitholdingAmount = '$upwardVariationTaxWitholdingAmount', eligibleToReceiveLeaveLoadingYN = '$eligibleToReceiveLeaveLoadingYN', approvedWitholdingVariationPercentage = '$approvedWitholdingVariationPercentage' where employeeId  = '$employee_no'");
 			}
 		}
-		public function updateEmployeeTable($employee_no, $title,$fname,$mname,$lname,$emails,$dateOfBirth,$gender,$homeAddLine1,$homeAddLine2,$homeAddCity,$homeAddRegion,$homeAddPostal,$homeAddCountry,$phone,$mobile,$terminationDate,$ordinaryEarningRateId,$userid,$classification,$emergency_contact,$relationship,$emergency_contact_email){
+		public function updateEmployeeTable($employee_no, $title,$fname,$mname,$lname,$emails,$dateOfBirth,$gender,$homeAddLine1,$homeAddLine2,$homeAddCity,$homeAddRegion,$homeAddPostal,$homeAddCountry,$phone,$mobile,$terminationDate,$ordinaryEarningRateId,$userid,$classification,$emergency_contact,$relationship,$emergency_contact_email,$maxhours){
 			$this->load->database();
 			$check = $this->db->query("SELECT * from employee where userid = '$employee_no'");
 			$check = $check->row();
@@ -402,15 +414,15 @@ class SettingsModel extends CI_Model {
 				if($userid == $employee_no){
 					$ordinaryEarningRate = ", ordinaryEarningRateId = '\"$ordinaryEarningRateId\"'";
 				}
-			$query = $this->db->query("UPDATE employee SET 	title = '$title', fname = '$fname', mname = '$mname', lname = '$lname', emails = '$emails', dateOfBirth = '$dateOfBirth', gender = '$gender', homeAddLine1 = '$homeAddLine1', homeAddLine2 = '$homeAddLine2', homeAddCity = '$homeAddCity', homeAddRegion = '$homeAddRegion', homeAddPostal = '$homeAddPostal', homeAddCountry = '$homeAddCountry' $ordinaryEarningRate, phone = '$phone', mobile = '$mobile', terminationDate = '$terminationDate', classification = '$classification',  emergency_contact = '$emergency_contact', relationship = '$relationship', emergency_contact_email = '$emergency_contact_email' where userid = '$employee_no'");
+			$query = $this->db->query("UPDATE employee SET 	title = '$title', fname = '$fname', mname = '$mname', lname = '$lname', emails = '$emails', dateOfBirth = '$dateOfBirth', gender = '$gender', homeAddLine1 = '$homeAddLine1', homeAddLine2 = '$homeAddLine2', homeAddCity = '$homeAddCity', homeAddRegion = '$homeAddRegion', homeAddPostal = '$homeAddPostal', homeAddCountry = '$homeAddCountry' $ordinaryEarningRate, phone = '$phone', mobile = '$mobile', terminationDate = '$terminationDate', classification = '$classification',  emergency_contact = '$emergency_contact', relationship = '$relationship', emergency_contact_email = '$emergency_contact_email', maxhours = '$maxhours', days='00000' where userid = '$employee_no'");
 				}
 				else{
-			$query = $this->db->query("INSERT INTO employee (userid,  title, fname, mname, lname, emails, dateOfBirth,  gender, homeAddLine1, homeAddLine2, homeAddCity, homeAddRegion, homeAddPostal, homeAddCountry, phone, mobile,  terminationDate, ordinaryEarningRateId,  created_at, created_by, classification,  emergency_contact, relationship, emergency_contact_email) VALUES ('$employee_no', '$title','$fname','$mname','$lname','$emails','$dateOfBirth','$gender','$homeAddLine1','$homeAddLine2','$homeAddCity','$homeAddRegion','$homeAddPostal','$homeAddCountry','$phone','$mobile','$terminationDate','$ordinaryEarningRateId',NOW(),'$userid','$classification','$emergency_contact','$relationship','$emergency_contact_email')");
+			$query = $this->db->query("INSERT INTO employee (userid,  title, fname, mname, lname, emails, dateOfBirth,  gender, homeAddLine1, homeAddLine2, homeAddCity, homeAddRegion, homeAddPostal, homeAddCountry, phone, mobile,  terminationDate, ordinaryEarningRateId,  created_at, created_by, classification,  emergency_contact, relationship, emergency_contact_email, maxhours, days) VALUES ('$employee_no', '$title','$fname','$mname','$lname','$emails','$dateOfBirth','$gender','$homeAddLine1','$homeAddLine2','$homeAddCity','$homeAddRegion','$homeAddPostal','$homeAddCountry','$phone','$mobile','$terminationDate','$ordinaryEarningRateId',NOW(),'$userid','$classification','$emergency_contact','$relationship','$emergency_contact_email', '$maxhours', '00000')");
 				}
 			}
 // 		// add center 
 
-	public function addCenter($addStreet,$addCity,$addState,$addZip,$name,$centre_phone_number,$centre_mobile_number,$Centre_email,$userid,$uniqid ){
+	public function addCenter($addStreet,$addCity,$addState,$addZip,$name,$centre_phone_number,$centre_mobile_number,$Centre_email,$userid,$uniqid){
 		$this->load->database();
 		$query = $this->db->query("INSERT INTO centers (addStreet, addCity, addState, addZip, name, centre_phone_number, centre_mobile_number, centre_email,superadmin) VALUES ('$addStreet','$addCity','$addState','$addZip','$name','$centre_phone_number','$centre_mobile_number','$Centre_email','$uniqid')");
 		$id = $this->db->query("SELECT centerid FROM centers ORDER BY centerid DESC LIMIT 1");
@@ -497,6 +509,27 @@ class SettingsModel extends CI_Model {
 			$query =  $this->db->query("UPDATE users SET center = '$center' where id='$empId'");
 		}
 
+
+		public function deleteEmployeeAwards($empId){
+			$this->load->database();
+			$query = $this->db->query("DELETE from employee_awards where userid = '$empId'");
+			// echo "DELETE from employee_awards where userid = '$empId'";
+		}
+
+		public function editEmployeeAwards($earningRateId,$empId){
+			$this->load->database();
+			$query = $this->db->query("INSERT INTO employee_awards (userid,earningRateId) VALUES ('$empId','$earningRateId')");
+			// echo "INSERT INTO employee_awards (userid,earningRateId) VALUES ('$empId','$earningRateId')";
+		}
+
+		public function updateEmployeeAward($earningRateId,$empId){
+			$this->load->database();
+			$query =  $this->db->query("UPDATE users SET awards = '$earningRateId' where id='$empId'");
+			// echo "UPDATE users SET awards = '$earningRateId' where userid='$empId'";
+		}
+
+
+
 	public function deleteDocument($documentId){
 		$this->load->database();
 		$query = $this->db->query("DELETE from employeedocuments where id = '$documentId'");
@@ -581,6 +614,41 @@ class SettingsModel extends CI_Model {
 		}
 	}
 
+
+	public function postCompanySettings($companyId,$companyImage,$emp_id_prefix){
+		$this->load->database();
+		$uquery = $this->db->query("UPDATE superadmin SET emp_id_prefix='$emp_id_prefix',companyLogo='$companyImage' WHERE companyid='$companyId';");
+		if($uquery){
+			return true;
+		}else{
+			return false;
+		}
+		// echo "UPDATE superadmin SET emp_id_prefix='$emp_id_prefix',companyLogo='$companyImage' WHERE companyid='$companyId';";
+	}
+
+	public function getFullEmployeeId($userid,$role){
+		$this->load->database();
+		if($role == 1){
+			//get company id based on the userid
+			$query = $this->db->query("SELECT * FROM superadmin WHERE companyid IN (SELECT superadmin FROM centers WHERE centerid IN (SELECT centerid from usercenters where userid = '$userid'))");
+			$result = $query->row();
+			$getlastEmp = $this->db->query("SELECT MAX(userid) as lastuserid FROM employee WHERE userid LIKE '%$result->emp_id_prefix%';")->row();
+			$getlastEmp->companyIdPrefix = $result->emp_id_prefix;
+			return $getlastEmp;
+		}else{
+			//get created by so based on that created by get company id
+			$query = $this->db->query("SELECT companyid FROM superadmin WHERE companyid IN (SELECT superadmin FROM centers WHERE centerid IN (SELECT centerid from usercenters where userid = (SELECT created_by FROM users WHERE id='$userid') ));");
+			return $query->row();
+		}
+	}
+
+	public function getempVisits($centerid){
+		$this->load->database();
+		$query = $this->db->query('SELECT userid,name,imageUrl,signInDate,signInTime,signOutTime,message,status FROM `visitis` JOIN users ON visitis.userid=users.id WHERE centerid='.$centerid.' and leftCampusYN = "N" and signInDate='.date('Y-m-d').';');
+		// $query = $this->db->query('SELECT userid,name,imageUrl,signInDate,signInTime,signOutTime,message,status FROM `visitis` JOIN users ON visitis.userid=users.id WHERE centerid='.$centerid.' and leftCampusYN = "N" and signInDate="2021-08-04";');
+		return $query->result_array();
+	}
+
 	// public function employeeRecordMigration(){
 	// 	$this->load->database();
 	// 	$query = $this->db->query("SELECT * from employeetaxdeclaration");
@@ -596,4 +664,105 @@ class SettingsModel extends CI_Model {
 	// 		$this->db->query("UPDATE employeetaxdeclaration SET employeeId = '$uid' where employeeId = '$xeroEmpId'");
 	// 	}
 	// }
+
+	public function companyNameUnique($cn){
+		$this->load->database();
+		$query = $this->db->query("SELECT companyName FROM superadmin WHERE companyName='$cn';");
+		$result = $query->result_array();
+		if(empty($result)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public function empidprefixUnique($eip){
+		$this->load->database();
+		$query = $this->db->query("SELECT emp_id_prefix FROM superadmin WHERE emp_id_prefix='$eip'");
+		$result = $query->result_array();
+		if(empty($result)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public function usernameUnique($un){
+		$this->load->database();
+		$query = $this->db->query("SELECT name FROM users WHERE name='$un'");
+		$result = $query->result_array();
+		if(empty($result)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public function useremailUnique($ue){
+		$this->load->database();
+		$query = $this->db->query("SELECT email FROM users WHERE email='$ue'");
+		$result = $query->result_array();
+		if(empty($result)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public function useraliasUnique($ua){
+		$this->load->database();
+		$query = $this->db->query("SELECT alias FROM users WHERE alias='$ua'");
+		$result = $query->result_array();
+		if(empty($result)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public function insertCompany($data){
+		$this->load->database();
+		$query = $this->db->insert('superadmin',$data);
+		if($query){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	public function insertSuperadmin($data){
+		$this->load->database();
+		$query = $this->db->insert('users',$data);
+		if($query){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	public function insertSuperAdminFirstCenter($addStreet,$addCity,$addState,$addZip,$name,$centre_phone_number,$centre_mobile_number,$Centre_email,$userid,$uniqid){
+		$this->load->database();
+		$query = $this->db->query("INSERT INTO centers (addStreet, addCity, addState, addZip, name, centre_phone_number, centre_mobile_number, centre_email,superadmin) VALUES ('$addStreet','$addCity','$addState','$addZip','$name','$centre_phone_number','$centre_mobile_number','$Centre_email','$uniqid')");
+		$id = $this->db->query("SELECT centerid FROM centers ORDER BY centerid DESC LIMIT 1");
+		$centers = $this->db->query("SELECT center FROM users where id = '$userid'");
+		$centerId = strval(($id->row())->centerid);
+		$this->db->query("INSERT INTO usercenters (userid,centerid) VALUES ('$userid',$centerId)");
+		$this->db->query("UPDATE users set center = $centerId where id='$userid'");
+		return strval(($id->row())->centerid);
+	}
+
+	public function insertSuperAdminEntitlements($name,$rate,$userid,$superadmin){
+		$this->load->database();
+		$this->db->query("INSERT INTO entitlements (name,hourlyRate,createdBy,superadmin) VALUES('$name',$rate,'$userid','$superadmin')");
+	}
+	
+	public function getUsersDetailedData($employeeId,$created_by){
+		$this->load->database();
+		$query = $this->db->query("SELECT awards FROM users WHERE created_by='$created_by' and id='$employeeId' and title != 'Superadmin';");
+		return $query->row();
+	}
+	
+	public function editEmployeeLBDetails($level,$bonusRate,$userid){
+		$this->load->database();
+		$this->db->query("UPDATE users SET level='$level',bonusRate='$bonusRate' where id='$userid'");
+	}
+
 }

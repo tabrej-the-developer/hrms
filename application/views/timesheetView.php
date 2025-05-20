@@ -5,663 +5,54 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 <html>
 
 <head>
-	<title></title>
-	<?php $this->load->view('header'); ?>
 	<meta content="width=device-width, initial-scale=1" name="viewport" />
 	<title>Timesheet</title>
-	<!--	
-	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
--->
+	<link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('assets/favicon_io/apple-touch-icon.png') ?>">
+  <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/favicon_io/favicon-32x32.png') ?>">
+  <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/favicon_io/favicon-16x16.png') ?>">
+  <link rel="manifest" href="<?= base_url('assets/favicon_io/site.webmanifest') ?>">
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> -->
 
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css">
-	<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.js"></script>
-
-	<style type="text/css">
-		* {
-			font-family: 'Open Sans', sans-serif;
-		}
-
-		body {
-			background: #f3f4f7;
-		}
-
-		.containers {
-			margin-left: 2%;
-		}
-
-		/* The Modal (background) */
-		.modal {
-			display: none;
-			position: fixed;
-			padding-top: 100px;
-			left: 0;
-			top: 0;
-			width: 100%;
-			height: 100%;
-			overflow: auto;
-			background-color: rgb(0, 0, 0);
-			background-color: rgba(0, 0, 0, 0.4);
-		}
-
-		/* Modal Content */
-		.modal-content {
-			background-color: #fefefe;
-			margin: auto;
-			border: 1px solid #888;
-			width: 80%;
-		}
-
-		/* The Close Button */
-		table,
-		tr,
-		td {
-			border: 1px solid rgba(0, 0, 0, 0.1)
-		}
-
-		.heading {
-			text-align: left;
-			font-size: 2rem;
-			font-weight: bold;
-		}
-
-		.timesheet-dates {
-			text-align: left;
-			background-color: white;
-			padding-left: 50px;
-			padding-bottom: 10px;
-			padding-top: 10px;
-			font-weight: bolder;
-			color: black;
-			/*margin-left:2%;*/
-		}
-
-		.table-div>table {
-			background: white;
-			/*margin-left:2%;*/
-		}
-
-		.area-name {
-			background: #307bd3;
-			color: white;
-		}
-
-		.day {
-			background: #8D91AA;
-			color: #F3F4F7;
-		}
-
-		.total-budget {
-			padding-top: 10px;
-
-
-		}
-
-		.hourly {
-			font-size: 12px;
-			text-align: left;
-		}
-
-		.hourly::before {
-			content: '$';
-		}
-
-		.hourly::after {
-			content: '/hr';
-		}
-
-		.title {
-			font-size: 12px;
-			padding-left: 1rem;
-			color: #707070;
-		}
-
-		@media only screen and (min-width:1024px) {
-
-			table td:nth-child(1),
-			table th:nth-child(1) {
-				min-width: 18vw !important;
-				max-width: 18vw !important;
-			}
-
-			table th:nth-child(7),
-			table td:nth-child(7) {
-				min-width: 10vw;
-				max-width: 10vw;
-			}
-
-			table td:nth-child(2),
-			table td:nth-child(3),
-			table td:nth-child(4),
-			table td:nth-child(5),
-			table td:nth-child(6),
-			table th:nth-child(2),
-			table th:nth-child(3),
-			table th:nth-child(4),
-			table th:nth-child(5),
-			table th:nth-child(6) {
-				min-width: 10vw !important;
-				max-width: 10vw !important;
-			}
-		}
-
-		@media only screen and (min-width:1200px) {
-			table td:nth-child(1) {
-				min-width: 18vw !important;
-				max-width: 18vw !important;
-			}
-
-			table th:nth-child(7),
-			table td:nth-child(7) {
-				min-width: 10vw;
-				max-width: 10vw;
-			}
-
-			table td:nth-child(2),
-			table td:nth-child(3),
-			table td:nth-child(4),
-			table td:nth-child(5),
-			table td:nth-child(6),
-			table th:nth-child(2),
-			table th:nth-child(3),
-			table th:nth-child(4),
-			table th:nth-child(5),
-			table th:nth-child(6) {
-				min-width: 11vw !important;
-				max-width: 11vw !important;
-			}
-		}
-
-		a[href="#week1"] button,
-		a[href="#week2"] button {
-			border: none;
-			color: rgb(23, 29, 75);
-			text-align: center;
-			text-decoration: none;
-			display: inline-block;
-			font-weight: 700;
-			margin: 2px;
-			width: 8rem;
-			border-radius: 20px;
-			padding: 4px 8px;
-			background: rgb(164, 217, 214) !important;
-			font-size: 1rem;
-		}
-
-		.icon {
-			font-size: 1rem;
-			display: flex;
-			justify-content: center;
-			align-self: center;
-			border-radius: 50%;
-			padding: 0.25rem 0;
-			color: #707070;
-			height: 2rem;
-			width: 2rem;
-		}
-
-		.empname {
-			font-size: 15px;
-			display: flex;
-			color: #707070;
-			justify-content: left;
-			padding: 0 1rem;
-			font-weight: 600;
-		}
-
-		.modal-content {
-			max-width: 45vw;
-		}
-
-		.modal-content .titl {
-			width: 100%;
-			position: relative;
-			top: 0;
-			left: 0;
-			margin: 0;
-			padding: 0;
-			background: linear-gradient(270deg, #297DB6 0%, #1B2E4B 100%);
-			color: #E7E7E7;
-		}
-
-		.ui-timepicker-container {
-			z-index: 999;
-		}
-
-		.buttons {
-			padding: 20px;
-			margin: 2px;
-		}
-
-		.button {
-			border: none !important;
-			color: rgb(23, 29, 75) !important;
-			text-align: center !important;
-			text-decoration: none !important;
-			display: inline-block;
-			font-weight: 700 !important;
-			margin: 2px !important;
-			width: 8rem !important;
-			border-radius: 20px !important;
-			padding: 4px 8px !important;
-			background: rgb(164, 217, 214) !important;
-			font-size: 1rem !important;
-		}
-
-		.cell-back-1 {
-			margin: 0 10px 0 10px;
-		}
-
-		.cell-back-2 {
-			margin: 0 10px 0 10px;
-		}
-
-		.cell-back-3 {
-			margin: 0 10px 0 10px;
-		}
-
-		.cell-back-4 {
-			margin: 0 10px 0 10px;
-		}
-
-		.cell-back-5 {
-			margin: 0 10px 0 10px;
-		}
-
-		.cell-boxes {
-			padding: 0;
-		}
-
-		.name-role {
-			padding: 0;
-			margin: 0;
-		}
-
-		.left-most {
-			border-top: 1px solid rgba(0, 0, 0, 0.3);
-			border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-		}
-
-		.day {
-			padding: 10px;
-		}
-
-		.icon-parent {
-			display: flex;
-			align-content: center;
-			justify-content: center;
-			padding: 0;
-		}
-
-		.box-name-space {
-			width: 100%;
-		}
-
-		.box-name {
-			display: flex;
-			justify-content: center;
-			font-size: 1.5rem;
-			color: #E7E7E7;
-		}
-
-		.box-space {
-			display: flex;
-			justify-content: center;
-			color: #E7E7E7;
-		}
-
-		.total-name {
-			display: flex;
-			justify-content: center;
-			font-size: 30px;
-		}
-
-		.total-space {
-			display: flex;
-			justify-content: center;
-		}
-
-		#timesheet-form {
-			position: relative;
-			overflow-y: hidden;
-		}
-
-		.total-budget-row {
-			background: #FFFCAD;
-			margin: 10px;
-		}
-
-		.total-budget .total-budget-row td {
-			background: #FFFCAD;
-			padding: 10px;
-			font-weight: bolder
-		}
-
-		#shift-submit,
-		#user-submit {
-			background-color: #9E9E9E;
-			border: none;
-			color: white;
-			padding: 10px 10px;
-			text-align: center;
-			text-decoration: none;
-			display: inline-block;
-			margin: 2px
-		}
-
-		.Added {
-			background: #9E9E9E
-		}
-
-		.nav-link {
-			text-align: left;
-		}
-
-		.Published {
-			background: #9C27B0;
-		}
-
-		.Accepted {
-			background: #4CAF50;
-		}
-
-		.owl-item {
-			width: 100 !important;
-		}
-
-		.owl-carousel.owl-loaded {
-			display: flex !important;
-		}
-
-		/* --------------------------
-			On Logout
-	 ------------------------- */
-		.modal-logout {
-			position: fixed;
-			left: 0;
-			top: 0;
-			width: 100%;
-			height: 100%;
-			background-color: rgba(0, 0, 0, 0.5);
-			opacity: 0;
-			visibility: hidden;
-			transform: scale(1.1);
-			transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
-			text-align: center;
-		}
-
-		.modal-content-logout {
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			background-color: white;
-			padding: 1rem 1.5rem;
-			width: 50%;
-			border-radius: 0.5rem;
-		}
-
-		.show-modal {
-			opacity: 1;
-			visibility: visible;
-			transform: scale(1.0);
-			transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
-		}
-
-		/* --------------------------
-			On Logout
-	 ------------------------- */
-		.leave {
-			background: orange;
-			padding: 3px;
-			display: flex;
-			flex-direction: column;
-			color: white;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-		}
-
-		.div-box {
-			padding: 3px;
-			display: flex;
-			flex-direction: column;
-
-			color: black;
-		}
-
-		.shift-edit {
-			min-width: 8vw;
-			font-size: 0.75rem
-		}
-
-		.full_box {
-			background: #e7e7e7;
-		}
-
-		.PUBLISHED,.Added {
-			background: rgba(175, 225, 159, 0.8);
-		}
-		.FLAGGED{
-			background: orange;
-		}
-
-		/*		------------------------
-					Weekly Timesheet Modal
-   			------------------------ 	*/
-		/*  .weekTimesheetModalHeader{
-  	height: 3rem;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    background: linear-gradient(270deg, #297DB6 0%, #1B2E4B 100%);
-    color: #000000, 100%;
-    font-size:1rem;
-    padding-left: 1rem;
-  }*/
-		.modalHeaderTimesheet {
-			height: 3rem;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			/*background: linear-gradient(270deg, #297DB6 0%, #1B2E4B 100%);*/
-			color: #000000, 100%;
-			font-size: 1rem;
-			padding-left: 1rem;
-			padding-right: 2rem;
-		}
-
-		.weekTimesheetModalSubmit {
-			position: absolute;
-			bottom: 0;
-			right: 0;
-			height: 4rem;
-			display: flex;
-			align-items: center;
-			padding-right: 2rem;
-		}
-
-		.weekTimesheetBody {
-			position: absolute;
-			left: 15%;
-			width: 70%;
-			top: 10%;
-			height: 80%;
-			background: white;
-		}
-
-		.weekTimesheetModal {
-			display: none;
-			top: 0;
-			left: 0;
-			position: fixed;
-			z-index: 3;
-			height: 100%;
-			width: 100%;
-			background: rgba(0, 0, 0, 0.5);
-		}
-
-		.weekTimesheetModalVisits {
-			/*display: flex;*/
-			/*	    align-items: center;
-	    justify-content: center;*/
-			height: 100%;
-			overflow-y: scroll;
-		}
-
-		.weekTimesheetModalData {
-			height: calc(100% - 8rem);
-			padding: 0 1rem;
-		}
-
-		.weekTimesheetModalTabs {
-			height: 2.5rem;
-			display: flex;
-			width: 100%;
-		}
-
-		.weekTimesheetModalTabs span {
-			flex: 1 1 0px;
-			background: white;
-			color: #136DF6;
-			text-align: center;
-			cursor: pointer;
-			border: 1px solid #D8D8D8;
-			display: inline-flex;
-			align-items: center;
-			justify-content: center;
-		}
-
-		.week_div_0 {
-			display: block;
-		}
-
-		.weekTimesheetModalTabsMon,
-		.weekTimesheetModalTabs span:nth-child(1) {
-			background: rgb(227, 228, 231);
-			color: rgba(0, 0, 0, 0.8);
-		}
-
-		/*  .week_div_1{display: none;}
-  .week_div_2{display: none;}
-  .week_div_3{display: none;}
-  .week_div_4{display: none;}*/
-		.visit__ {
-			display: flex;
-		}
-
-		.visit__ span {
-			padding-left: 0.5rem;
-			padding-right: 0.5rem;
-		}
-
-		.display_flex_visits {
-			display: flex;
-			width: 100%;
-			justify-content: space-evenly;
-			border-bottom: 1px solid #D8D8D8;
-		}
-
-		.display_flex_visits td {
-			border: none !important;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			padding: 0.1rem 0;
-		}
-
-		.display_flex_visits td.select__ {
-			display: block !important;
-		}
-
-		.weekTable {
-			background: #F5F5F5;
-			width: 100%;
-		}
-
-		.weekTableHead {
-			width: 100%;
-		}
-
-		.weekTable th {
-			text-align: center;
-			padding: 0.5rem;
-			background: #8D91AA;
-			color: #F3F4F7;
-		}
-
-		.addVisit {
-			cursor: pointer;
-		}
-
-		div[class^="week_div_"] {
-			width: 100%;
-			background: #F5F5F5;
-		}
-
-		select {
-			background: #E7E7E7;
-			border: none !important;
-			height: 2.5rem;
-			border-radius: 20px;
-			border: 1px solid #D2D0D0;
-			padding-left: 0.5rem;
-		}
-
-		span[class^="sameAsRosterBlock_"] {
-			width: 100%;
-			display: flex;
-			justify-content: center;
-			margin-bottom: 1rem;
-		}
-
-		@media only screen and (max-width: 600px) {
-			.modal-content {
-				min-width: 100vw;
-			}
-
-			.containers {
-				width: 100%;
-				margin: 0px;
-			}
-
-			.name-space {
-				display: block;
-				width: 100%;
-				justify-content: center;
-			}
-
-			.day {
-				padding: 0;
-				font-size: 0.8rem
-			}
-
-			.div-box {
-				padding: 0;
-			}
-
-			.shift-edit>div {
-				padding: 0;
-				border-radius: 0 !important;
-			}
-
-			td.shift-edit {
-				padding: 0;
-			}
-
-			.table-div>table {
-				background: white;
-				margin-left: 0;
-			}
-		}
-	</style>
+	<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.js"></script> -->
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+	<link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+  <link href="<?php echo base_url('assets/css/bootstrap.min.css');?>" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/layout.css?version='.VERSION);?>">
+ <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/container.css?version='.VERSION);?>">
+
+  <script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js');?>" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('assets/js/popper.min.js');?>" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('assets/js/bootstrap.min.js');?>" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+<style>
+.navbar-nav .nav-item-header:nth-of-type(3) {
+    background: var(--blue2) !important;
+    position: relative;
+}
+.navbar-nav .nav-item-header:nth-of-type(3)::after {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    bottom: 0;
+    content: "";
+    background: var(--orange1);
+}
+</style>
 </head>
 
 <body>
+
+
+<div class="wrapperContainer">
+  <?php include 'headerNew.php'; ?>
 
 	<?php
 	$permissions = json_decode($permissions);
@@ -670,199 +61,214 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 	// 	$entitlements = json_decode($entitlements);
 	// }
 	?>
-	<div class="containers" id="containers" style="overflow-x:scroll">
-		<div class="heading ">
-		<a href="<?php echo base_url('Timesheet');?>">
-            <button class="btn back-button">
-              <img src="<?php echo base_url('assets/images/back.svg');?>">
-            </button>
-          </a>Timesheets</div>
-		<div class="timesheet-dates">
-			<?php
-			if (isset($timesheetDetails->timesheet[0]->currentDate)) {
-				$str1 = $timesheetDetails->timesheet[0]->currentDate;
-				$str2 = $timesheetDetails->timesheet[13]->currentDate;
-				$v1 = explode("-", $str1);
-				$v2 = explode("-", $str2);
-				echo date("M d", mktime(0, 0, 0, $v1[1], intval($v1[2]), (intval($v1[0])))) . " to " .
-					date("M d , Y", mktime(0, 0, 0, $v2[1], intval($v2[2]), (intval($v2[0]))));
-			} else {
-				echo "No Dates Available";
-			}
-			?>
-			<span>
-				<a href="#week1">
-					<button>week 1</button>
-				</a>
-				<a href="#week2">
-					<button>week 2</button>
-				</a>
-			</span>
-		</div>
-		<div class="owl-carousel">
-			<div class="table-div item" data-hash="week1">
-				<table>
-					<tr>
-						<?php if (isset($timesheetDetails->timesheet)) { ?>
-							<th id="table-id-1" class="day">Employees</th>
-							<?php $x = 0;
-							$incrementer = 0;
-							foreach ($timesheetDetails->timesheet as $timesheet) {
-								if ($incrementer < 5) {
-									$original = explode('-', $timesheet->currentDate);
-									$datts = $original[2] . "." . $original[1] . "." . $original[0];
-							?>
-									<th class="day" date="<?php echo $timesheet->currentDate; ?>">
-										<?php echo date("D", strtotime($datts));
-										echo " " . dateToDay($timesheet->currentDate);
-										?>
-									</th>
-						<?php
-								} //end of if block
-								$incrementer++;
-							} //end of foreach
-						} // end of isset(timesheet) if block
-						?>
-						<th></th>
-					</tr>
+	<div class="containers scrollY" id="containers" >
+		<div class="timesheetContainer ">
+			<div class="heading pageHead heading-bar">
+				<div class="withBackLink">
+					<a href="<?php echo base_url('Timesheet');?>">
+					<span class="material-icons-outlined">arrow_back</span>
+					</a>				
+					<span class="events_title">Timesheets</span>
+				</div>
+			</div>
+				<div class="timesheet-dates">
 					<?php
-					if (isset($timesheetDetails->timesheet[0])) {
-						$count = count($timesheetDetails->timesheet[0]->rosteredEmployees);
-						if ((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y") {
-							// $x is the total number of employees loop value;
-							$rosteredEmployees = $timesheetDetails->timesheet[0]->rosteredEmployees;
-							$x = 0;
-							foreach ($rosteredEmployees as $rosteredEmployee) {
-								if ((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y") {
-									$value = count($timesheetDetails->timesheet);
-								} else {
-									$value = 1;
-								}
-								// This value should be changed to $value;
-								// Counter is the total number of days;
-								//for($counter=0;$counter<1;$counter++){ 
+					if (isset($timesheetDetails->timesheet[0]->currentDate)) {
+						$str1 = $timesheetDetails->timesheet[0]->currentDate;
+						$str2 = $timesheetDetails->timesheet[13]->currentDate;
+						$v1 = explode("-", $str1);
+						$v2 = explode("-", $str2);
+						echo date("M d", mktime(0, 0, 0, $v1[1], intval($v1[2]), (intval($v1[0])))) . " to " .
+							date("M d , Y", mktime(0, 0, 0, $v2[1], intval($v2[2]), (intval($v2[0]))));
+					} else {
+						echo "No Dates Available";
+					}
 					?>
-								<tr class="table-row">
-									<td style="min-width:14vw" class=" cell-boxes left-most">
-										<?php if ((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y") { ?>
-											<span class="row name-space m-0 p-0" style="padding:0;margin:0;margin-left: 0;margin-right: 0">
-												<span class="col-12 col-md-4 icon-parent">
-													<span class=" icon" style="<?php echo "background:" . $colors_array[rand(0, 5)] . ";"; ?>">
-														<?php echo icon($timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName) ?>
-													</span>
-												</span>
-												<span class=" col-12 col-md-8 name-role">
-													<span class="empname row">
-														<?php
-														echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName;
-														?>
-													</span>
-													<?php
-													$variable = 0;
-													$userLevel = $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->level;
-													$variable = isset($timesheetDetails->timesheet[0]->rosteredEmployees[$x]->hourlyRate) ? $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->hourlyRate : 0;
-													// foreach ($entitlements as $e) {
-													// 	if($e[0]->id == $userLevel){
-													// 		$variable = $e[0]->hourlyRate;
-													// 	}
-													// }
-													?>
-													<span class="hourly title row ">
-														<?php
-														echo  $variable;
-														?>
-													</span>
-												</span>
-											</span>
-										<?php } ?>
-									</td>
-
-									<?php $weeklyTotal = 0;
-									// to be changed to $value
-									?>
-
-									<?php
-									$totalTimeForWeek = 0;
-									for ($p = 0; $p < 5; $p++) {
-										if ($timesheetDetails->timesheet[$p]->rosteredEmployees != null) { 
-												$timesheetDetailRosteredEmps = $timesheetDetails->timesheet[$p]->rosteredEmployees[$x];
+					<span class="d-flex weekDay">
+						<a class="btn btn-default btn-small" href="#week1">
+							week 1
+						</a>
+						<a class="btn btn-default btn-small" href="#week2">
+							week 2
+						</a>
+					</span>
+				</div>
+				<div class="owl-carousel">
+					<div class="table-div pageTableDiv item" data-hash="week1">
+					<table>
+						<tr>
+							<?php if (isset($timesheetDetails->timesheet)) { ?>
+								<th id="table-id-1" class="day"><div class="col-md-12">Employees</div></th>
+								<?php $x = 0;
+								$incrementer = 0;
+								foreach ($timesheetDetails->timesheet as $timesheet) {
+									if ($incrementer < 5) {
+										$original = explode('-', $timesheet->currentDate);
+										$datts = $original[2] . "." . $original[1] . "." . $original[0];
+								?>
+										<th class="day" date="<?php echo $timesheet->currentDate; ?>">
+											<?php echo date("D", strtotime($datts));
+											echo " " . dateToDay($timesheet->currentDate);
 											?>
-											<td class="<?php echo (count($timesheetDetailRosteredEmps->clockedTimes) || (count($timesheetDetailRosteredEmps->payrollShifts))) > 0 ? 'shift-edit' : '' ?> " name="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName ?>" cal-x="<?php echo $x; ?>" cal-p="<?php echo $p; ?>" array-type="rosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empId ?>" curr-date="<?php echo $timesheetDetails->timesheet[$p]->currentDate ?>" timesheet-id="<?php echo $timesheetDetails->id; ?>" payrollShifts="<?php echo (count($timesheetDetailRosteredEmps->clockedTimes) || (count($timesheetDetailRosteredEmps->payrollShifts))) > 0 ? 'shift-edit' : '' ?>">
+										</th>
+							<?php
+									} //end of if block
+									$incrementer++;
+								} //end of foreach
+							} // end of isset(timesheet) if block
+							?>
+							<th>Action</th>
+						</tr>
+						<?php
+						if (isset($timesheetDetails->timesheet[0])) {
+							$count = count($timesheetDetails->timesheet[0]->rosteredEmployees);
+							if ((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y") {
+								// $x is the total number of employees loop value;
+								$rosteredEmployees = $timesheetDetails->timesheet[0]->rosteredEmployees;
+								$x = 0;
+								foreach ($rosteredEmployees as $rosteredEmployee) {
+									if ((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y") {
+										$value = count($timesheetDetails->timesheet);
+									} else {
+										$value = 1;
+									}
+									// This value should be changed to $value;
+									// Counter is the total number of days;
+									//for($counter=0;$counter<1;$counter++){ 
+						?>
+						<tr class="table-row">
+							<td style="min-width:14vw" class=" cell-boxes left-most">
+								<?php if ((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y") { ?>
+									<span class="row name-space m-0 p-0" >
+										<span class="col-12 col-md-4 icon-parent">
+											<span class=" icon" style="<?php echo "background:" . $colors_array[rand(0, 5)] . ";"; ?>">
+												
+												<?php echo icon($timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName) ?>
+
+											</span>
+										</span>
+										<span class=" col-12 col-md-8 name-role">
+											<span class="empname row">
 												<?php
-
-												if ($timesheetDetailRosteredEmps->isOnLeave == "N") {
-													if (count($timesheetDetailRosteredEmps->clockedTimes) > 0 || count($timesheetDetailRosteredEmps->payrollShifts) > 0) {
-														// $timesheetDetails->timesheet[$p]->employees[$x];
-														if (count($timesheetDetailRosteredEmps->payrollShifts) > 0) {
-															$times = $timesheetDetailRosteredEmps->payrollShifts;
-														} else {
-															$times = $timesheetDetailRosteredEmps->clockedTimes;
-														}
-														$totalTime = 0;
-
+												echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName;
 												?>
-														<div style="padding:3px;" class="full_box <?php echo isset($times[0]->status) ? $times[0]->status : "" ?>">
-															<div class="<?php if ($timesheetDetailRosteredEmps->isOnLeave == "Y") {
-																			echo "leave";
-																		} else {
-																			echo 'div-box';
-																		} ?>">
-																<?php
-																foreach ($times as $time) {
-																	$end = intval(($time->endTime) / 100) * 60 + (intval($time->endTime)) % 100;
-																	$start = intval(($time->startTime) / 100) * 60 + ($time->startTime) % 100;
-																	// echo $end ."......".$start;
-																	$totalTime = $totalTime + $end - $start;
+											</span>
+											<?php
+											$variable = 0;
+											$userLevel = $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->level;
+											$variable = isset($timesheetDetails->timesheet[0]->rosteredEmployees[$x]->hourlyRate) ? $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->hourlyRate : 0;
+											// foreach ($entitlements as $e) {
+											// 	if($e[0]->id == $userLevel){
+											// 		$variable = $e[0]->hourlyRate;
+											// 	}
+											// }
+											?>
+											<span class="hourly title row ">
+												<?php
+												echo  $variable;
+												?>
+											</span>
+										</span>
+									</span>
+								<?php } ?>
+							</td>
+
+							<?php $weeklyTotal = 0;
+							// to be changed to $value
+							?>
+
+							<?php
+							$totalTimeForWeek = 0;
+							$finalTime = 0;
+							for ($p = 0; $p < 5; $p++) {
+								if ($timesheetDetails->timesheet[$p]->rosteredEmployees != null) { 
+										$timesheetDetailRosteredEmps = $timesheetDetails->timesheet[$p]->rosteredEmployees[$x];
+							?>
+							<td class="<?php echo (count($timesheetDetailRosteredEmps->clockedTimes) || (count($timesheetDetailRosteredEmps->payrollShifts))) > 0 ? 'shift-edit' : '' ?> " name="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName ?>" cal-x="<?php echo $x; ?>" cal-p="<?php echo $p; ?>" array-type="rosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empId ?>" curr-date="<?php echo $timesheetDetails->timesheet[$p]->currentDate ?>" timesheet-id="<?php echo $timesheetDetails->id; ?>" payrollShifts="<?php echo (count($timesheetDetailRosteredEmps->clockedTimes) || (count($timesheetDetailRosteredEmps->payrollShifts))) > 0 ? 'shift-edit' : '' ?>">
+								<?php
+									if ($timesheetDetailRosteredEmps->isOnLeave == "N") {
+										if (count($timesheetDetailRosteredEmps->clockedTimes) > 0 || count($timesheetDetailRosteredEmps->payrollShifts) > 0) {
+											// $timesheetDetails->timesheet[$p]->employees[$x];
+											// print_r($timesheetDetails->timesheet[$p]->employees[$x]);
+											if (count($timesheetDetailRosteredEmps->payrollShifts) > 0) {
+												$times = $timesheetDetailRosteredEmps->payrollShifts;
+											} else {
+												$times = $timesheetDetailRosteredEmps->clockedTimes;
+											}
+											$totalTime = 0;
+
+								?>
+									<div class="full_box <?php echo isset($times[0]->status) ? $times[0]->status : "" ?>">
+										<div class="<?php if ($timesheetDetailRosteredEmps->isOnLeave == "Y") {
+														echo "leave";
+													} else {
+														echo 'div-box';
+													} ?>">
+											<?php
+											foreach ($times as $time) {
+												$end = intval(($time->endTime) / 100) * 60 + (intval($time->endTime)) % 100;
+												$start = intval(($time->startTime) / 100) * 60 + ($time->startTime) % 100;
+												// echo $end ."......".$start;
+												$totalTime = $totalTime + $end - $start;
+											}
+											$number = 0;
+											if (count($timesheetDetailRosteredEmps->payrollShifts) > 0) {
+												foreach ($timesheetDetailRosteredEmps->payrollShifts as $visits) {
+													$number++;
+												}
+											} else {
+												foreach ($timesheetDetailRosteredEmps->clockedTimes as $visits) {
+													$number++;
+												}
+											}
+											$totalVisits = $number;
+											?>
+											<span><?php echo isset($timesheetDetailRosteredEmps->rosterShift->roleName->roleName) ? $timesheetDetailRosteredEmps->rosterShift->roleName->roleName : ""; ?></span>
+											<span><?php echo isset($timesheetDetailRosteredEmps->rosterShift->startTime) ? timex($timesheetDetailRosteredEmps->rosterShift->startTime) : "Empty"; ?> - <?php echo isset($timesheetDetailRosteredEmps->rosterShift->endTime) ? timex($timesheetDetailRosteredEmps->rosterShift->endTime) : "Empty"; ?></span>
+											<span>Total Hours : <?php
+																$totalTimeForWeek = $totalTimeForWeek + $totalTime;
+																echo  intVal($totalTime / 60) . "." . sprintf("%02d", $totalTime % 60);
+																?></span>
+											<span>Total visits : <?php echo $totalVisits; ?></span>
+											<span>Status : <?php
+															foreach ($timesheetDetailRosteredEmps->payrollShifts as $visits) {
+																echo $visits->status;
+																if($visits->status == "Added"){
+																	$finalTime += intVal($totalTime);
 																}
-																$number = 0;
-																if (count($timesheetDetailRosteredEmps->payrollShifts) > 0) {
-																	foreach ($timesheetDetailRosteredEmps->payrollShifts as $visits) {
-																		$number++;
-																	}
-																} else {
-																	foreach ($timesheetDetailRosteredEmps->clockedTimes as $visits) {
-																		$number++;
-																	}
-																}
-																$totalVisits = $number;
-																?>
-																<span><?php echo isset($timesheetDetailRosteredEmps->rosterShift->roleName->roleName) ? $timesheetDetailRosteredEmps->rosterShift->roleName->roleName : ""; ?></span>
-																<span><?php echo isset($timesheetDetailRosteredEmps->rosterShift->startTime) ? timex($timesheetDetailRosteredEmps->rosterShift->startTime) : "Empty"; ?> - <?php echo isset($timesheetDetailRosteredEmps->rosterShift->endTime) ? timex($timesheetDetailRosteredEmps->rosterShift->endTime) : "Empty"; ?></span>
-																<span>Total Hours : <?php
-																					$totalTimeForWeek = $totalTimeForWeek + $totalTime;
-																					echo  intVal($totalTime / 60) . "." . sprintf("%02d", $totalTime % 60);
-																					?></span>
-																<span>Total visits : <?php echo $totalVisits; ?></span>
-															</div>
-														</div>
-												<?php }
-												} else {
-													echo "On Leave";
-												} ?>
-											</td>
-										<?php } else { ?>
-											<td style="min-width:8vw;" class="shift-edit ">
-												<div style="padding:3px">
-													<div class="div-box">
-														<span>Role : - </span>
-														<span>Total Hours : 0</span>
-														<span>Total visits : 0</span>
-													</div>
-												</div>
-											</td>
-									<?php	 }
-									} ?>
-									<td><?php echo isset($totalTimeForWeek) ? intval(($totalTimeForWeek) / 60) . "." . sprintf("%02d", intval(($totalTimeForWeek) % 60)) : ""; ?>
-										<img src="<?php echo base_url('assets/images/icons/pencil.png'); ?>" pay="<?php echo $variable; ?>" onclick="getEmployeeTimesheet(this)" height="25px" width="25px" style="height:20px;width:20px;cursor: pointer;" class="weekModal" userid="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empId; ?>" date="<?php echo $timesheetDetails->startDate; ?>" tsid="<?php echo $timesheetDetails->id ?>" centerid="<?php echo $timesheetDetails->centerid ?>">
-									</td>
-									</td>
+															}
+															?></span>
+										</div>
+									</div>
+										<?php }
+										} else {
+											echo "On Leave";
+										} ?>
+							</td>
+								<?php } else { ?>
+							<td style="min-width:8vw;" class="shift-edit ">
+								<div style="padding:3px">
+									<div class="div-box">
+										<span>Role : - </span>
+										<span>Total Hours : 0</span>
+										<span>Total visits : 0</span>
+									</div>
+								</div>
+							</td>
+							<?php   }
+							} ?>
+							<td>
+								<!-- <span class="actionTime"><php echo isset($totalTimeForWeek) ? intval(($totalTimeForWeek) / 60) . "." . sprintf("%02d", intval(($totalTimeForWeek) % 60)) : ""; ?></span> -->
+								<span class="actionTime"><?php echo isset($finalTime) ? intval(($finalTime) / 60) . "." . sprintf("%02d", intval(($finalTime) % 60)) : ""; ?></span>
+								<span class="material-icons-outlined weekModal" pay="<?php echo $variable; ?>" onclick="getEmployeeTimesheet(this)" userid="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empId; ?>" date="<?php echo $timesheetDetails->startDate; ?>" tsid="<?php echo $timesheetDetails->id ?>" centerid="<?php echo $timesheetDetails->centerid ?>">edit</span>
+							</td>
+							
 									<!-- 			<td class=" " style="min-width:14vw;font-weight:bolder"><?php //echo "$".$weeklyTotal;
 																												?></td>
  -->
-								</tr>
+						</tr>
 
-							<?php $x = $x + 1;
-							}
+						<?php $x = $x + 1; }
 							$count = count($timesheetDetails->timesheet[0]->unrosteredEmployees);
 							for ($x = 0; $x < $count; $x++) {
 								$userLevel = $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->level;
@@ -882,361 +288,378 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 								//for($counter=0;$counter<1;$counter++){ 
 							?>
 								<!-- 				 <tr  class="table-row">
-					<td   style="min-width:14vw" class=" cell-boxes left-most">
-						<?php if ((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y") { ?>
+							<td   style="min-width:14vw" class=" cell-boxes left-most">
+								<?php if ((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y") { ?>
 
-						<span class="row" style="padding:0;margin:0;">
-							<span class="col-md-3 col-12 icon-parent"><span class=" icon" style="<?php echo "background:" . $colors_array[rand(0, 5)] . ";"; ?>"><?php echo icon($timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName) ?></span></span>
-							<span class="col-9 name-role">
-								<span class="empname row"><?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName ?></span>
-								<span class="hourly title row"><?php echo  $variable ?></span>
-							</span>
-							<span class=" "></span>
-						</span>
-					<?php } ?>
-					</td>
+								<span class="row" style="padding:0;margin:0;">
+									<span class="col-md-3 col-12 icon-parent"><span class=" icon" style="<?php echo "background:" . $colors_array[rand(0, 5)] . ";"; ?>"><?php echo icon($timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName) ?></span></span>
+									<span class="col-9 name-role">
+										<span class="empname row"><?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName ?></span>
+										<span class="hourly title row"><?php echo  $variable ?></span>
+									</span>
+									<span class=" "></span>
+								</span>
+								<?php } ?>
+							</td>
 				
-					<?php $weeklyTotal = 0;
-								// to be changed to $value
-					?>
-
-				<?php for ($p = 0; $p < 1; $p++) { ?>
-	<td 
-		style="min-width:8vw;padding:7px" 
-		class="<?php echo count($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes) > 0 ? 'shift-edit' : '' ?>" 
-		name="<?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName ?>"  
-		cal-x="<?php echo $x; ?>"
-		cal-p="<?php echo $p; ?>" 
-		array-type="unrosteredEmployees" 
-		emp-id="<?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empId ?>"  
-		timesheet-id="<?php echo $timesheetDetails->id; ?>">
-		<?php if ($timesheetDetails->timesheet[0]->unrosteredEmployees[$p]->isOnLeave == "N") {
-
-										if ($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave != 'Y') {
-											if (count($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes) > 0) {
-												// $timesheetDetails->timesheet[$p]->employees[$x];
-												$times = $timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes;
-												$totalTime = 0;
-		?>
-					<div style="padding:3px">
-						<div  class=" <?php if ($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave == "Y") {
-													echo "leave";
-												} else {
-													echo 'div-box';
-												} ?>">
-				<?php
-
-												foreach ($times as $time) {
-													$totalTime = $totalTime + $time->endTime - $time->startTime;
-												}
-												$number = 0;
-												foreach ($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes as $visits) {
-													$number++;
-												}
-
-												$totalVisits = $number;
-
-				?>
-							<span><?php echo isset($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->rosterShift->roleName->roleName) ? $timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->rosterShift->roleName->roleName : ""; ?></span>
-							<span>Total Hours : <?php echo  $totalTime / 100 . "." . $totalTime % 100; ?></span>
-							<span>Total visits : <?php echo $totalVisits; ?></span>
-
-						</div>
-				<?php
-											}
-										} else {
-											echo " On Leave";
-										}
-				?>
-					</div>
-				<?php } else {
-										echo "On leave";
-									} ?>
-				</td>
-
-				  <?php } ?>
-
-				</tr> -->
-					<?php
-								//$x++; 
-							}
-						}
-					} ?>
-				</table>
-			</div>
-
-
-			<div class="table-div item" data-hash="week2">
-				<table>
-					<tr>
-						<?php if (isset($timesheetDetails->timesheet)) { ?>
-							<th id="table-id-1" class="day">Employees</th>
-							<?php
-							$x = 0;
-							$incrementer = 0;
+							<?php $weeklyTotal = 0;
+										// to be changed to $value
 							?>
-							<?php foreach ($timesheetDetails->timesheet as $timesheet) {
-								if ($incrementer >= 7 && $incrementer < 12) {
-									//$p++;
-									$original = explode('-', $timesheet->currentDate);
-									$datts = $original[2] . "." . $original[1] . "." . $original[0];
-							?>
-									<th class="day"><?php echo date("D", strtotime($datts));
-													echo " " . dateToDay($timesheet->currentDate) ?></th>
-						<?php }
-								$incrementer++;
-							}
-						} ?>
-						<th></th>
-					</tr>
 
-					<?php
-					if (isset($timesheetDetails->timesheet[0])) {
-						$count = count($timesheetDetails->timesheet[0]->rosteredEmployees);
-						if ((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y") {
-							// $x is the total number of employees loop value;
-							$rosteredEmployees = $timesheetDetails->timesheet[0]->rosteredEmployees;
-							$x = 0;
-							foreach ($rosteredEmployees as $rosteredEmployee) {
+							<?php for ($p = 0; $p < 1; $p++) { ?>
+							<td 
+								style="min-width:8vw;padding:7px" 
+								class="<?php echo count($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes) > 0 ? 'shift-edit' : '' ?>" 
+								name="<?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName ?>"  
+								cal-x="<?php echo $x; ?>"
+								cal-p="<?php echo $p; ?>" 
+								array-type="unrosteredEmployees" 
+								emp-id="<?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empId ?>"  
+								timesheet-id="<?php echo $timesheetDetails->id; ?>">
+								<?php if ($timesheetDetails->timesheet[0]->unrosteredEmployees[$p]->isOnLeave == "N") {
 
-								if ((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y") {
-									$value = count($timesheetDetails->timesheet);
-								} else {
-									$value = 1;
-								}
-								// This value should be changed to $value;
-								// Counter is the total number of days;
-								//for($counter=0;$counter<1;$counter++){ 
-					?>
-								<tr class="table-row">
-									<td style="min-width:14vw" class=" cell-boxes left-most">
-										<?php if ((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y") { ?>
-											<span class="row name-space" style="padding:0;margin:0;">
-												<span class="col-md-3 col-12 icon-parent"><span class=" icon" style="<?php echo "background:" . $colors_array[rand(0, 5)] . ";"; ?>"><?php echo icon($timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName) ?></span></span>
-												<span class="col-9 name-role">
-													<span class="empname row"><?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName ?></span>
-													<?php
-													$variable = 0;
-													$userLevel = $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->level;
-													$variable = isset($timesheetDetails->timesheet[0]->rosteredEmployees[$x]->hourlyRate) ? $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->hourlyRate : 0;
-													// foreach ($entitlements as $e) {
-													// 	if($e[0]->id == $userLevel){
-													// 		$variable = $e[0]->hourlyRate;
-													// 	}
-													// }
-
-													?>
-													<span class="hourly title row "><?php echo  $variable; ?></span>
-												</span>
-											</span>
-										<?php } ?>
-									</td>
-
-									<?php $weeklyTotal = 0;
-									// to be changed to $value
-									?>
-
-									<?php
-
-									$totalTimeForWeek = 0;
-									for ($p = 7; $p < 12; $p++) {
-										$totalTime = 0;
-										if ($timesheetDetails->timesheet[$p]->rosteredEmployees != null) { ?>
-											<td style="min-width:8vw;" class="<?php echo count($timesheetDetailRosteredEmps->clockedTimes) > 0 ?  'shift-edit' : '' ?> " name="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName ?>" cal-x="<?php echo $x; ?>" cal-p="<?php echo $p; ?>" array-type="rosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empId ?>" curr-date="<?php echo $timesheetDetails->timesheet[$p]->currentDate ?>" timesheet-id="<?php echo $timesheetDetails->id; ?>">
-												<?php
-												if ($timesheetDetailRosteredEmps->isOnLeave == "N") {
-													// $timesheetDetails->timesheet[$p]->employees[$x];
-													if (count($timesheetDetailRosteredEmps->clockedTimes) > 0) {
-														if (count($timesheetDetailRosteredEmps->payrollShifts) > 0) {
-															$times = $timesheetDetailRosteredEmps->payrollShifts;
-														} else {
-															$times = $timesheetDetailRosteredEmps->clockedTimes;
-														}
-
-												?>
-														<div style="padding:3px" class="full_box <?php echo isset($times[0]->status) ? $times[0]->status : "" ?>">
-															<div class="<?php if ($timesheetDetailRosteredEmps->isOnLeave == "Y") {
+																if ($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave != 'Y') {
+																	if (count($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes) > 0) {
+																		// $timesheetDetails->timesheet[$p]->employees[$x];
+																		$times = $timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes;
+																		$totalTime = 0;
+								?>
+											<div style="padding:3px">
+												<div  class=" <?php if ($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave == "Y") {
 																			echo "leave";
 																		} else {
 																			echo 'div-box';
 																		} ?>">
-																<?php
-																foreach ($times as $time) {
-																	$end = intval(($time->endTime) / 100) * 60 + (intval($time->endTime)) % 100;
-																	$start = intval(($time->startTime) / 100) * 60 + ($time->startTime) % 100;
-																	// echo $end ."......".$start;
-																	$totalTime = $totalTime + $end - $start;
-																}
-																$number = 0;
-																if (count($timesheetDetailRosteredEmps->payrollShifts) > 0) {
-																	foreach ($timesheetDetailRosteredEmps->payrollShifts as $visits) {
-																		$number++;
+										<?php
+
+																		foreach ($times as $time) {
+																			$totalTime = $totalTime + $time->endTime - $time->startTime;
+																		}
+																		$number = 0;
+																		foreach ($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes as $visits) {
+																			$number++;
+																		}
+
+																		$totalVisits = $number;
+
+										?>
+													<span><?php echo isset($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->rosterShift->roleName->roleName) ? $timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->rosterShift->roleName->roleName : ""; ?></span>
+													<span>Total Hours : <?php echo  $totalTime / 100 . "." . $totalTime % 100; ?></span>
+													<span>Total visits : <?php echo $totalVisits; ?></span>
+
+												</div>
+										<?php
 																	}
 																} else {
-																	foreach ($timesheetDetailRosteredEmps->clockedTimes as $visits) {
-																		$number++;
-																	}
+																	echo " On Leave";
 																}
-																$totalVisits = $number;
-																?>
-																<span><?php echo isset($timesheetDetailRosteredEmps->rosterShift->roleName->roleName) ? $timesheetDetailRosteredEmps->rosterShift->roleName->roleName : ""; ?></span>
-																<span><?php echo isset($timesheetDetailRosteredEmps->rosterShift->startTime) ? timex($timesheetDetailRosteredEmps->rosterShift->startTime) : "Empty"; ?> - <?php echo isset($timesheetDetailRosteredEmps->rosterShift->endTime) ? timex($timesheetDetailRosteredEmps->rosterShift->endTime) : "Empty"; ?></span>
-																<span></span>
-																<span>Total Hours : <?php $totalTimeForWeek = $totalTimeForWeek + $totalTime;
-																					echo  intVal($totalTime / 60) . "." . sprintf("%02d", $totalTime % 60);  ?></span>
-																<span>Total visits : <?php echo $totalVisits; ?></span>
-															</div>
-														</div>
-												<?php }
-												} else {
-													echo "On Leave";
-												} ?>
-											</td>
+										?>
+											</div>
+										<?php } else {
+																echo "On leave";
+															} ?>
+										</td>
 
-										<?php } else { ?>
-											<td style="min-width:8vw" class="shift-edit ">
-												<div style="border-radius: 5px;padding:3px">
-													<div class="div-box">
-														<span>Role : - </span>
-														<span>Total Hours : 0</span>
-														<span>Total visits : 0</span>
-													</div>
-												</div>
-											</td>
-									<?php	 }
-									} ?>
-									<td><?php echo isset($totalTimeForWeek) ? intval(($totalTimeForWeek) / 60) . "." . sprintf("%02d", intval(($totalTimeForWeek) % 60)) : ""; ?>
-										<img src="<?php echo base_url('assets/images/icons/pencil.png'); ?>" pay="<?php echo $variable; ?>" onclick="getEmployeeTimesheet(this)" height="25px" width="25px" style="height:20px;width:20px;cursor: pointer;" class="weekModal" userid="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empId; ?>" date="<?php echo date("Y-m-d", strtotime("+7 day", strtotime($timesheetDetails->startDate))); ?>">
-									</td>
-									<!-- 			<td class=" " style="min-width:14vw;font-weight:bolder"><?php echo "$" . $weeklyTotal; ?></td>
- -->
-								</tr>
+				  					<?php } ?>
 
-							<?php $x = $x + 1;
-							}
-							$count = count($timesheetDetails->timesheet[0]->unrosteredEmployees);
-							for ($x = 0; $x < $count; $x++) {
-								$userLevel = $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->level;
-								$variable = isset($timesheetDetails->timesheet[0]->rosteredEmployees[$x]->hourlyRate) ? $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->hourlyRate : 0;
-								// foreach ($entitlements as $e) {
-								// 	if($e[0]->id == $userLevel){
-								// 		$variable = $e[0]->hourlyRate;
-								// 	}
-								// }
-								if ((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y") {
-									$value = count($timesheetDetails->timesheet);
-								} else {
-									$value = 1;
-								}
-								// This value should be changed to $value;
-								// Counter is the total number of days;
-								//for($counter=0;$counter<1;$counter++){ 
-							?>
-								<!-- 				<tr  class="table-row">
-					<td   style="min-width:14vw" class=" cell-boxes left-most">
-						<?php if ((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y") { ?>
-
-						<span class="row" style="padding:0;margin:0;">
-							<span class="col-md-3 col-12 icon-parent"><span class=" icon" style="<?php echo "background:" . $colors_array[rand(0, 5)] . ";"; ?>"><?php echo icon($timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName) ?></span></span>
-							<span class="col-9 name-role">
-								<span class="empname row"><?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName ?></span>
-								<span class="hourly title row "><?php echo  $variable; ?></span>
-							</span>
-						</span>
-					<?php } ?>
-					</td>
-				
-					<?php $weeklyTotal = 0;
-								// to be changed to $value
-					?>
-
-				<?php for ($p = 0; $p < 1; $p++) { ?>
-	<td style="min-width:8vw;padding:7px" 
-			class="<?php count($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes) > 0 ? 									'shift-edit' : '' ?>" 
-			name="<?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName ?>"  
-			cal-x="<?php echo $x; ?>"
-			cal-p="<?php echo $p; ?>" 
-			array-type="unrosteredEmployees" 
-			emp-id="<?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empId ?>"  
-			timesheet-id="<?php echo $timesheetDetails->id; ?>">
-		<?php if ($timesheetDetails->timesheet[0]->unrosteredEmployees[$p]->isOnLeave == "N") {
-										if ($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave != 'Y') {
-											if (count($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes) > 0) {
-												// $timesheetDetails->timesheet[$p]->employees[$x];
-												$times = $timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes;
-												$totalTime = 0;
-
-		?>
-					<div style="padding:3px">
-						<div  class=" <?php if ($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave == "Y") {
-													echo "leave";
-												} else {
-													echo 'div-box';
-												} ?>">
-				<?php
-												foreach ($times as $time) {
-													$totalTime = $totalTime + $time->endTime - $time->startTime;
-												}
-												$number = 0;
-												foreach ($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes as $visits) {
-													$number++;
-												}
-
-												$totalVisits = $number;
-
-				?>
-				<span><?php echo isset($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->rosterShift->roleName->roleName) ? $timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->rosterShift->roleName->roleName : ""; ?></span>
-							<span>Total Hours : <?php echo  $totalTime / 100 . "." . $totalTime % 100; ?></span>
-							<span>Total visits : <?php echo $totalVisits; ?></span>
-				<?php	 }
-										} else {
-											echo " On Leave";
-										} ?>
-						</div>
-						
-					</div>
-				<?php } else {
-										echo "On leave";
-									} ?>
-				</td>
-
-				  <?php } ?>
-
-				</tr> -->
-					<?php
+								</tr> -->
+							<?php
 								//$x++; 
 							}
 						}
-					} ?>
+						} ?>
+					</table>
+				</div>
+
+
+				<div class="table-div pageTableDiv item" data-hash="week2">
+					<table>
+						<tr>
+							<?php if (isset($timesheetDetails->timesheet)) { ?>
+								<th id="table-id-1" class="day"><div class="col-md-12">Employees</div></th>
+								<?php
+								$x = 0;
+								$incrementer = 0;
+								?>
+								<?php foreach ($timesheetDetails->timesheet as $timesheet) {
+									// print_r($timesheet);
+									if ($incrementer >= 7 && $incrementer < 12) {
+										//$p++;
+										$original = explode('-', $timesheet->currentDate);
+										$datts = $original[2] . "." . $original[1] . "." . $original[0];
+								?>
+										<th class="day"><?php echo date("D", strtotime($datts));
+														echo " " . dateToDay($timesheet->currentDate) ?></th>
+							<?php }
+									$incrementer++;
+								}
+							} ?>
+							<th>Action</th>
+						</tr>
+
+						<?php
+						if (isset($timesheetDetails->timesheet[0])) {
+							$count = count($timesheetDetails->timesheet[0]->rosteredEmployees);
+							if ((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y") {
+								// $x is the total number of employees loop value;
+								$rosteredEmployees = $timesheetDetails->timesheet[0]->rosteredEmployees;
+								$x = 0;
+								foreach ($rosteredEmployees as $rosteredEmployee) {
+
+									if ((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y") {
+										$value = count($timesheetDetails->timesheet);
+									} else {
+										$value = 1;
+									}
+									// This value should be changed to $value;
+									// Counter is the total number of days;
+									//for($counter=0;$counter<1;$counter++){ 
+						?>
+									<tr class="table-row">
+										<td style="min-width:14vw" class=" cell-boxes left-most">
+											<?php if ((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y") { ?>
+												<span class="row name-space" style="padding:0;margin:0;">
+													<span class="col-md-3 col-12 icon-parent"><span class=" icon" style="<?php echo "background:" . $colors_array[rand(0, 5)] . ";"; ?>"><?php echo icon($timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName) ?></span></span>
+													<span class="col-9 name-role">
+														<span class="empname row"><?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName ?></span>
+														<?php
+														$variable = 0;
+														$userLevel = $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->level;
+														$variable = isset($timesheetDetails->timesheet[0]->rosteredEmployees[$x]->hourlyRate) ? $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->hourlyRate : 0;
+														// foreach ($entitlements as $e) {
+														// 	if($e[0]->id == $userLevel){
+														// 		$variable = $e[0]->hourlyRate;
+														// 	}
+														// }
+
+														?>
+														<span class="hourly title row "><?php echo  $variable; ?></span>
+													</span>
+												</span>
+											<?php } ?>
+										</td>
+
+										<?php $weeklyTotal = 0;
+										// to be changed to $value
+										?>
+
+										<?php
+
+										$totalTimeForWeek = 0;
+										$finalTime = 0;
+										for ($p = 7; $p < 12; $p++) {
+											if ($timesheetDetails->timesheet[$p]->rosteredEmployees != null) { 
+												$timesheetDetailRosteredEmps = $timesheetDetails->timesheet[$p]->rosteredEmployees[$x];
+										?>
+											<td style="min-width:8vw;" class="<?php echo count($timesheetDetailRosteredEmps->clockedTimes) > 0 ?  'shift-edit' : '' ?> " name="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empName ?>" cal-x="<?php echo $x; ?>" cal-p="<?php echo $p; ?>" array-type="rosteredEmployees" emp-id="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empId ?>" curr-date="<?php echo $timesheetDetails->timesheet[$p]->currentDate ?>" timesheet-id="<?php echo $timesheetDetails->id; ?>">
+													<?php
+													if ($timesheetDetailRosteredEmps->isOnLeave == "N") {
+														// $timesheetDetails->timesheet[$p]->employees[$x];
+														// print_r($timesheetDetailRosteredEmps->clockedTimes);
+														// print_r($timesheetDetailRosteredEmps->payrollShifts);
+														// if (count($timesheetDetailRosteredEmps->clockedTimes) > 0) {
+														if (count($timesheetDetailRosteredEmps->clockedTimes) > 0 || count($timesheetDetailRosteredEmps->payrollShifts) > 0) {
+															if (count($timesheetDetailRosteredEmps->payrollShifts) > 0) {
+																$times = $timesheetDetailRosteredEmps->payrollShifts;
+															} else {
+																$times = $timesheetDetailRosteredEmps->clockedTimes;
+															}
+															$totalTime = 0;
+
+													?>
+															<div class="full_box <?php echo isset($times[0]->status) ? $times[0]->status : "" ?>">
+																<div class="<?php if ($timesheetDetailRosteredEmps->isOnLeave == "Y") {
+																				echo "leave";
+																			} else {
+																				echo 'div-box';
+																			} ?>">
+																	<?php
+																	foreach ($times as $time) {
+																		$end = intval(($time->endTime) / 100) * 60 + (intval($time->endTime)) % 100;
+																		$start = intval(($time->startTime) / 100) * 60 + ($time->startTime) % 100;
+																		// echo $end ."......".$start;
+																		$totalTime = $totalTime + $end - $start;
+																	}
+																	$number = 0;
+																	if (count($timesheetDetailRosteredEmps->payrollShifts) > 0) {
+																		foreach ($timesheetDetailRosteredEmps->payrollShifts as $visits) {
+																			$number++;
+																		}
+																	} else {
+																		foreach ($timesheetDetailRosteredEmps->clockedTimes as $visits) {
+																			$number++;
+																		}
+																	}
+																	$totalVisits = $number;
+																	?>
+																	<span><?php echo isset($timesheetDetailRosteredEmps->rosterShift->roleName->roleName) ? $timesheetDetailRosteredEmps->rosterShift->roleName->roleName : ""; ?></span>
+																	<span><?php echo isset($timesheetDetailRosteredEmps->rosterShift->startTime) ? timex($timesheetDetailRosteredEmps->rosterShift->startTime) : "Empty"; ?> - <?php echo isset($timesheetDetailRosteredEmps->rosterShift->endTime) ? timex($timesheetDetailRosteredEmps->rosterShift->endTime) : "Empty"; ?></span>
+																	<span></span>
+																	<span>Total Hours : <?php $totalTimeForWeek = $totalTimeForWeek + $totalTime;
+																						echo  intVal($totalTime / 60) . "." . sprintf("%02d", $totalTime % 60);  ?></span>
+																	<span>Total visits : <?php echo $totalVisits; ?></span>
+																	<span>Status : <?php
+																						foreach ($timesheetDetailRosteredEmps->payrollShifts as $visits) {
+																							echo $visits->status;
+																							if($visits->status == "Added"){
+																								$finalTime += intVal($totalTime);
+																							}
+																						}
+																						?></span>
+																</div>
+															</div>
+													<?php }
+													} else {
+														echo "On Leave";
+													} ?>
+												</td>
+
+											<?php } else { ?>
+												<td style="min-width:8vw" class="shift-edit ">
+													<div style="border-radius: 5px;padding:3px">
+														<div class="div-box">
+															<span>Role : - </span>
+															<span>Total Hours : 0</span>
+															<span>Total visits : 0</span>
+														</div>
+													</div>
+												</td>
+										<?php	 }
+										} ?>
+										<td>
+											<!-- <span class="actionTime"><php echo isset($totalTimeForWeek) ? intval(($totalTimeForWeek) / 60) . "." . sprintf("%02d", intval(($totalTimeForWeek) % 60)) : ""; ?></span> -->
+											<span class="actionTime"><?php echo isset($finalTime) ? intval(($finalTime) / 60) . "." . sprintf("%02d", intval(($finalTime) % 60)) : ""; ?></span>
+											<span class="material-icons-outlined weekModal" pay="<?php echo $variable; ?>" onclick="getEmployeeTimesheet(this)" userid="<?php echo $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->empId; ?>" date="<?php echo date("Y-m-d", strtotime("+7 day", strtotime($timesheetDetails->startDate))); ?>">edit</span>
+										</td>
+										<!-- 			<td class=" " style="min-width:14vw;font-weight:bolder"><?php echo "$" . $weeklyTotal; ?></td>
+	-->
+									</tr>
+
+								<?php $x = $x + 1;
+								}
+								$count = count($timesheetDetails->timesheet[0]->unrosteredEmployees);
+								for ($x = 0; $x < $count; $x++) {
+									$userLevel = $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->level;
+									$variable = isset($timesheetDetails->timesheet[0]->rosteredEmployees[$x]->hourlyRate) ? $timesheetDetails->timesheet[0]->rosteredEmployees[$x]->hourlyRate : 0;
+									// foreach ($entitlements as $e) {
+									// 	if($e[0]->id == $userLevel){
+									// 		$variable = $e[0]->hourlyRate;
+									// 	}
+									// }
+									if ((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y") {
+										$value = count($timesheetDetails->timesheet);
+									} else {
+										$value = 1;
+									}
+									// This value should be changed to $value;
+									// Counter is the total number of days;
+									//for($counter=0;$counter<1;$counter++){ 
+								?>
+									<!-- 				<tr  class="table-row">
+						<td   style="min-width:14vw" class=" cell-boxes left-most">
+							<?php if ((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y") { ?>
+
+							<span class="row" style="padding:0;margin:0;">
+								<span class="col-md-3 col-12 icon-parent"><span class=" icon" style="<?php echo "background:" . $colors_array[rand(0, 5)] . ";"; ?>"><?php echo icon($timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName) ?></span></span>
+								<span class="col-9 name-role">
+									<span class="empname row"><?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName ?></span>
+									<span class="hourly title row "><?php echo  $variable; ?></span>
+								</span>
+							</span>
+						<?php } ?>
+						</td>
+					
+						<?php $weeklyTotal = 0;
+									// to be changed to $value
+						?>
+
+					<?php for ($p = 0; $p < 1; $p++) { ?>
+		<td style="min-width:8vw;padding:7px" 
+				class="<?php count($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes) > 0 ? 									'shift-edit' : '' ?>" 
+				name="<?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empName ?>"  
+				cal-x="<?php echo $x; ?>"
+				cal-p="<?php echo $p; ?>" 
+				array-type="unrosteredEmployees" 
+				emp-id="<?php echo $timesheetDetails->timesheet[0]->unrosteredEmployees[$x]->empId ?>"  
+				timesheet-id="<?php echo $timesheetDetails->id; ?>">
+			<?php if ($timesheetDetails->timesheet[0]->unrosteredEmployees[$p]->isOnLeave == "N") {
+											if ($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave != 'Y') {
+												if (count($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes) > 0) {
+													// $timesheetDetails->timesheet[$p]->employees[$x];
+													$times = $timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes;
+													$totalTime = 0;
+
+			?>
+						<div style="padding:3px">
+							<div  class=" <?php if ($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->isOnLeave == "Y") {
+														echo "leave";
+													} else {
+														echo 'div-box';
+													} ?>">
+					<?php
+													foreach ($times as $time) {
+														$totalTime = $totalTime + $time->endTime - $time->startTime;
+													}
+													$number = 0;
+													foreach ($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->clockedTimes as $visits) {
+														$number++;
+													}
+
+													$totalVisits = $number;
+
+					?>
+					<span><?php echo isset($timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->rosterShift->roleName->roleName) ? $timesheetDetails->timesheet[$p]->unrosteredEmployees[$x]->rosterShift->roleName->roleName : ""; ?></span>
+								<span>Total Hours : <?php echo  $totalTime / 100 . "." . $totalTime % 100; ?></span>
+								<span>Total visits : <?php echo $totalVisits; ?></span>
+					<?php	 }
+											} else {
+												echo " On Leave";
+											} ?>
+							</div>
+							
+						</div>
+					<?php } else {
+											echo "On leave";
+										} ?>
+					</td>
+
+					<?php } ?>
+
+					</tr> -->
+						<?php
+									//$x++; 
+								}
+							}
+						} ?>
 				</table>
 			</div>
 		</div>
+	</div>
 
-		<div class="total-budget">
-			<table>
-				<tr class="total-budget-row">
+	<div class="total-budget">
+		<table>
+			<tr class="total-budget-row">
 
-				</tr>
-			</table>
+			</tr>
+		</table>
+	</div>
+
+	<div class="modal-logout">
+		<div class="modal-content-logout">
+			<h3>You have been logged out!!</h3>
+			<h4><a class="btn btn-default btnOrange" href="<?php echo base_url(); ?>">Click here</a> to login</h4>			
 		</div>
+	</div>
 
-		<div class="modal-logout">
-			<div class="modal-content-logout">
-				<h3>You have been logged out!!</h3>
-				<h4><a href="<?php echo base_url(); ?>">Click here</a> to login</h4>
-
-			</div>
-		</div>
-
-		<div class="weekTimesheetModal">
+		<div class="weekTimesheetModal" style="display: none">
 			<div class="weekTimesheetBody">
 				<div class="modalHeaderTimesheet">
 					<div class="weekTimesheetModalHeader">NAME</div>
 					<div class="weekTimesheetModalEdit d-inline-flex align-items-center">
 						<div>
-							<input type="checkbox" class="weekSameAsRoster" name="">Same as roster &nbsp;
+							<!-- <input type="checkbox" class="weekSameAsRoster" name="">Same as roster &nbsp; -->
 						</div>
-						<img class="addVisit" src="<?php echo base_url('assets/images/icons/plus.png'); ?>" height="20px" width="20px">
+						<span class="material-icons-outlined addVisit" style="cursor:pointer;">add_circle_outline</span>
 					</div>
 				</div>
 				<div class="weekTimesheetModalData">
@@ -1247,10 +670,10 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 				<span class="weekTimesheetModalTabsThu">THU</span>
 				<span class="weekTimesheetModalTabsFri">FRI</span>
 			</div> -->
-					<div class="weekTimesheetModalVisits">
-						<table class="weekTable">
-							<thead style="display: table" class="weekTableHead">
-								<th style="min-width:5vw !important;max-width:5vw !important">Input</th>
+					<div class="weekTimesheetModalVisits timesheetTemplateTable">
+						<table class="weekTable template_table">
+							<thead class="weekTableHead">
+								<th>Input</th>
 								<th>Date</th>
 								<th>In Time</th>
 								<th>Out Time</th>
@@ -1262,56 +685,55 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 					</div>
 				</div>
 				<div class="weekTimesheetModalSubmit">
-					<span>
-						<button class="button cancelWeekModel">Cancel</button>
-					</span>
-					<span>
-						<button class="button submit_weekModal">Submit</button>
-					</span>
+						<button class="button btn btn-default btn-small pull-right cancelWeekModel">Cancel</button>
+						<button class="button btn btn-default btn-small btnOrange pull-right submit_weekModal">Submit</button>
 				</div>
 			</div>
 		</div>
 
 		<?php if ((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y") { ?>
 
-			<?php
-			if (isset($timesheetDetails->status)) {
-				if ($timesheetDetails->status == 'Draft') { ?>
-					<div class="buttons d-flex justify-content-end">
-						<button id="discard-timesheet" class="button">
-							<i>
-								<img src="<?php echo base_url('assets/images/icons/delete.png'); ?>" style="max-height:0.8rem;margin-right:10px">
-							</i>Discard</button>
-						<button id="publish-timesheet" class="button publish_timesheet">
-							<i>
-								<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
-							</i>Save</button>
-					</div>
+		<?php
+		if (isset($timesheetDetails->status)) {
+			if ($timesheetDetails->status == 'Draft') { ?>
+				<div class="buttons d-flex justify-content-end">
+					<button id="discard-timesheet" class="button btn btn-default btn-small pull-right">						
+						<span class="material-icons-outlined">delete</span>
+						Discard
+					</button>
+					<button id="publish-timesheet" class="button btn btn-default btnOrange btn-small pull-right publish_timesheet">
+						<span class="material-icons-outlined">save</span>Save
+					</button>
+				</div>
 
-				<?php
-				} else { ?>
-					<div class="buttons d-flex justify-content-end">
-						<button id="discard-timesheet" class="button">
-							<i>
-								<img src="<?php echo base_url('assets/images/icons/delete.png'); ?>" style="max-height:0.8rem;margin-right:10px">
-							</i>Discard</button>
-						<button id="publish-timesheet" class="button">
-							<i>
-								<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
-							</i>Save</button>
-					</div>
-			<?php }
-			} ?>
+			<?php
+			} else { ?>
+				<div class="buttons d-flex justify-content-end">
+					<button id="discard-timesheet" class="button btn btn-default btn-small pull-right">				
+						<span class="material-icons-outlined">delete</span>
+						Discard
+					</button>
+					<button id="publish-timesheet" class="button btn btn-default btnOrange btn-small pull-right">
+						<span class="material-icons-outlined">save</span>
+						Save
+					</button>
+				</div>
+		<?php }
+		} ?>
 
 		<?php } ?>
 		<?php if ((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "N") { ?>
-			<div class="buttons d-flex justify-content-end">
-				<button id="publish-timesheet" class="button">
-					<i>
-						<img src="<?php echo base_url('assets/images/icons/save.png'); ?>" style="max-height:0.8rem;margin-right:10px">
-					</i>Save</button>
-			</div>
+		<div class="buttons d-flex justify-content-end">
+			<button id="publish-timesheet" class="button btn btn-default btnOrange btn-small pull-right">
+				<span class="material-icons-outlined">save</span> Save
+			</button>
+		</div>
 		<?php } ?>
+</div>
+
+	
+
+		
 	</div>
 	<!--This is meant for admin-->
 	<?php if ((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y") { ?>
@@ -1350,9 +772,9 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 	<!-- Logout Modal -->
 
 	<?php if ((isset($permissions->permissions) ? $permissions->permissions->editTimesheetYN : "N") == "Y") { ?>
-		<script>
+		<!-- <script>
 			$(".modal-content").draggable();
-		</script>
+		</script> -->
 		<script type="text/javascript">
 			var modal = document.getElementById("myModal");
 			var htmlVal = $('#timesheet-form').html()
@@ -1750,10 +1172,10 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 		};
 
 
-		$(document).ready(() => {
-			$('.containers').css('paddingLeft', $('.side-nav').width());
-			// margin_auto();
-		});
+		// $(document).ready(() => {
+		// 	$('.containers').css('paddingLeft', $('.side-nav').width());
+		// 	// margin_auto();
+		// });
 	</script>
 	<?php if (isset($error)) { ?>
 		<script type="text/javascript">
@@ -1769,11 +1191,13 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 	<?php }
 	?>
 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 	<script type="text/javascript">
 		$('.owl-carousel').owlCarousel({
 			items: 1,
 			loop: false,
 			center: true,
+			navigation : true,
 			margin: 10,
 			autoplay: false,
 			URLhashListener: true,
@@ -1864,7 +1288,7 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 		})
 
 		$(document).on('click', '.weekModal', function() {
-			$('.weekTimesheetModal').css('display', 'block');
+			$('.weekTimesheetModal').css('display', 'flex');
 			$('.weekTimesheetModalTabs span').each(function() {
 				if ($(this).index() != 0) {
 					$(this).css('background', '#fff');
@@ -1986,8 +1410,8 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 							var dateWithHiphen = (visit.signInDate).split("-");
 							var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
 							var code = `<tr class="display_flex_visits">
-														<td class="time_visits"  style="min-width:5vw !important;max-width:5vw !important"><input type="checkbox" ${(visit.payrollType == null) ? '' : 'checked'}></td>
-														<td visitid='${visit.id}' ${checkShiftLength(inTime,outTime,day.length,dayLoopCounter)} startTime='${visit.signInTime}' endTime='${visit.signOutTime}' class="visit__" style="" dateAttr = "${visit.signInDate}">
+														<td class="time_visits"  ><input type="checkbox" ${(visit.payrollType == null) ? '' : 'checked'}></td>
+														<td visitid='${visit.id != undefined ? visit.id : '' }' ${checkShiftLength(inTime,outTime,day.length,dayLoopCounter)} startTime='${visit.signInTime}' endTime='${visit.signOutTime}' class="visit__" style="" dateAttr = "${visit.signInDate}">
 														${dateWithHiphen[2]} ${month[dateWithHiphen[1]-1]} ${dateWithHiphen[0]}
 													</td>
 														<td class="time_visits_child oldtime newStartTime" style="">
@@ -1998,13 +1422,14 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 															</td>
 														<td class="select__" style="">
 															<span class="select_css" style="display:flex">
-																<select class="modalSelectType" >
+																<select class="modalSelectType">
 
 																</select>
 															</span>
 														</td>
 														<td class="totalHoursCount">${getHoursAndMinutes(visit.signInTime,visit.signOutTime)}</td>
-													</tr><tr class="text-center"><td colspan="6">${visit.message}</td></tr>`
+													</tr>
+													<tr class="text-center"><td colspan="6">${visit.message}</td></tr>`
 							$('.weekTableBody').append(code);
 							selectOptions = "";
 							select.payrollTypes.forEach(type => {
@@ -2026,38 +1451,85 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 
 		/* Add new visit in timesheets */
 		// Adding new visits field
+		function getEmployeeAwards(empid){
+			var url = '<?php echo base_url() ?>settings/getEmployeeAwardDetails/'+empid;
+			$.ajax({
+			url : url,
+			type : 'GET',
+			success : function(response){
+				try{
+				// alert(JSON.stringify(response));
+				var awarddetails = (JSON.parse(response)).awards;
+				// alert(JSON.stringify(awarddetails));
+				awarddetails.forEach(award => {
+					$('.awardIdCheckbox_parent').each(function(c){
+					if(award.earningRateId == $(this).attr('earningRateId')){
+						$(this).children('.awardIdCheckbox').prop('checked',true)
+					}
+					})
+				})
+				}
+				catch{}
+			}
+			})
+		}
+
 		$(document).on('click', '.addVisit', function() {
+			var empId = $('.weekTimesheetModalHeader').attr('userid');
+			// alert(empId);
 			var startDate = $('.weekTimesheetModalHeader').attr('date');
 			var date = new Date(startDate);
 			var endDate = new Date(date.getTime() + 4 * 24 * 60 * 60 * 1000);
 			var types = "";
-			var payrollTypes = JSON.parse(localStorage.getItem('payrollTypes'))
-			payrollTypes.payrollTypes.forEach((val) => {
-				if (val.centerid == '<?php echo $timesheetDetails->centerid ?>') {
-					types += `<option value="${val.earningRateId}">${val.name}</option>`
+			// var payrollTypes = JSON.parse(localStorage.getItem('payrollTypes'));
+			// console.log(payrollTypes);
+			// payrollTypes.payrollTypes.forEach((val) => {
+			// 	if (val.centerid == '<php echo $timesheetDetails->centerid ?>') {
+			// 		types += `<option value="${val.earningRateId}">${val.name}</option>`
+			// 	}
+			// })
+
+			//Here comes the show, employee awards
+			var awardsurl = '<?php echo base_url() ?>settings/getEmployeeAwardDetails/'+empId;
+			$.ajax({
+			url : awardsurl,
+			type : 'GET',
+			success : function(response){
+				try{
+					// console.log(response);
+				var awarddetails = (JSON.parse(response)).awards;
+				console.log(awarddetails);
+				awarddetails.forEach(award => {
+					types += `<option value="${award.earningRateId}">${award.name}</option>`;
+				})
+				// alert(types);
+					var code = `<tr class="display_flex_visits">
+												<td class="time_visits"  ><input type="checkbox" checked></td>
+												<td visitid='' startTime='' endTime='' class="visit__" style="">
+													<input type="date" min="${date.toISOString().slice(0,10)}" max="${endDate.toISOString().slice(0,10)}">
+												</td>
+													<td class="time_visits_child oldtime newStartTime" index style="">
+														<input type="time" value=""> 
+													</td>
+													<td class="time_visits_child oldtime newEndTime" index style="">
+														<input type="time" value="">
+													</td>
+												<td class="select__" style="">
+													<span class="select_css" style="display:flex">
+														<select class="modalSelectType" style="width:100%">
+														${types}
+														</select>
+													</span>
+													<span class="orSpan">or</span>
+													<label for="addToTime" class="attil"><input type="checkbox" id="addToTime" checked> Add to Time in Lieu</label>
+												</td>
+												<td class="totalHoursCount"></td>
+											</tr>`;
+					$('.weekTableBody').append(code);
 				}
+				catch{}
+			}
 			})
-			var code = `<tr class="display_flex_visits">
-											<td class="time_visits"  style="min-width:5vw !important;max-width:5vw !important"><input type="checkbox" checked></td>
-											<td visitid='' startTime='' endTime='' class="visit__" style="">
-												<input type="date" min="${date.toISOString().slice(0,10)}" max="${endDate.toISOString().slice(0,10)}">
-											</td>
-												<td class="time_visits_child oldtime newStartTime" index style="">
-													<input type="time" value=""> 
-												</td>
-												<td class="time_visits_child oldtime newEndTime" index style="">
-													<input type="time" value="">
-												</td>
-											<td class="select__" style="">
-												<span class="select_css" style="display:flex">
-													<select class="modalSelectType" style="width:100%">
-													${types}
-													</select>
-												</span>
-											</td>
-											<td class="totalHoursCount"></td>
-										</tr>`
-			$('.weekTableBody').append(code);
 		})
 
 		// Changing time, must reflect hours in hours field
@@ -2132,6 +1604,7 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 		$(document).on('click', '.submit_weekModal', function() {
 			var values = [];
 			var timesheetId = "<?php echo $timesheetid; ?>";
+			var centerid = "<?php echo $timesheetDetails->centerid ?>";
 			var userid = "<?php echo $this->session->userdata('LoginId'); ?>";
 			var startDate = new Date($('.weekTimesheetModalHeader').attr('date'));
 			startDate = startDate.toISOString().slice(0, 10);
@@ -2140,7 +1613,9 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 			$(`.display_flex_visits`).each(function() {
 				var obj = {};
 				var d = new Date();
-				if ($(this).children('.time_visits').children('input').prop('checked') == true) {
+				// if ($(this).children('.time_visits').children('input').prop('checked') == true) {
+					var is = $(this).children('.time_visits').children('input').prop('checked');
+					obj.check = (is == true) ? true : false;
 					obj.visitid = $(this).children('.visit__').attr('visitid');
 					obj.startTime = ($(this).children('.time_visits_child').eq(0).children('input').val()).replace(":", "").toString();
 					obj.endTime = ($(this).children('.time_visits_child').eq(1).children('input').val()).replace(":", "").toString();
@@ -2152,8 +1627,12 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 					} else {
 						obj.shiftdate = $(this).children('.visit__').children().val();
 					}
+					var isatil = $(this).children('.select__').children('.attil').children('input').prop('checked');
+					// alert(isatil);
+					obj.status = (isatil == true) ? "Added To TL" : "Added";
+					obj.tlhours = (isatil == true) ? parseFloat($(this).children('.totalHoursCount').text()) : 0.00;
 					values.push(obj)
-				}
+				// }
 				// if($(this).children('.visit__').children('.time_visits_child').hasClass('oldtime'))
 				// {
 				// 	if($(this).children('.visit__').children().children('input').prop('checked') == true){
@@ -2172,6 +1651,7 @@ $colors_array = ['#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6', '#A4D9D6
 				url: url,
 				type: 'POST',
 				data: {
+					centerId:centerid,
 					empId: empId,
 					userid: userid,
 					timesheetid: timesheetId,

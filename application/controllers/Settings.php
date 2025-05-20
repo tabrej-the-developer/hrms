@@ -319,6 +319,8 @@ public function editRooms(){
 			// 	$data['centerid'] = (json_decode($this->getAllCenters())->centers[0])->centerid;
 			// 	$data['centerData'] = $this->editCenterProfile($data['centerid']);
 			// }
+			// echo '<pre>';
+			// print_r($data);
 				$this->load->view('editCenterProfile',$data);
 		}
 		else{
@@ -412,7 +414,7 @@ public function editRooms(){
 			$data['permissions'] = $this->fetchPermissions();
 			$data['centers'] = $this->getAllCenters();
 			$data['orgChart'] = $this->getOrgChart($data['centerid']);
-		//footprint start
+			// footprint start
 			if($this->session->has_userdata('current_url')){
 				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
 				$this->session->set_userdata('current_url',currentUrl());
@@ -753,8 +755,8 @@ $server_output = curl_exec($ch);
 
 	function getAreas($centerid=null){
 		if($centerid == null){
-		$centerid = (json_decode($this->getAllCenters())->centers[0])->centerid;
-			}
+			$centerid = (json_decode($this->getAllCenters())->centers[0])->centerid;
+		}
 		$url = BASE_API_URL."settings/getAreas/".$centerid."/".$this->session->userdata('LoginId');
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
@@ -1220,7 +1222,7 @@ $server_output = curl_exec($ch);
 							$_SESSION['centerr'] = $centerid;
 						}else{
 							$centerid = $_SESSION['centerr'];
-					}
+						}
 					$data['employeeId'] = $employeeId;
 					if($employeeId != null){
 						$data['getEmployeeData'] = $this->getEmployeeProfile($employeeId,$centerid);
@@ -1269,6 +1271,10 @@ $server_output = curl_exec($ch);
 				$data['superfunds'] = $this->getSuperfunds($data['userid'],$centerid);
 				$data['permissions'] = $this->fetchPermissions();
 				$data['getEmployeeData'] = $this->getEmployeeData($employeeId,$centerid);
+				// echo '<pre>';
+				// print_r($data['getEmployeeData']);
+				// echo '</pre>';
+				// exit();
 				$data['entitlements'] = $this->getAllEntitlements($data['userid']);
 				$this->load->view('editEmployeeProfile',$data);
 			}
@@ -1356,7 +1362,6 @@ $server_output = curl_exec($ch);
 			$data['permissions'] = $this->fetchPermissions();
 			$data['getEmployeeData'] = $this->getEmployeeData($data['userid'],$centerid);
 			$data['entitlements'] = $this->getAllEntitlements($data['userid']);
-			// var_dump($data);
 			$this->load->view('editEmployee',$data);
 		}
 		else{
@@ -1364,7 +1369,45 @@ $server_output = curl_exec($ch);
 		}
 	}
 
-// Update employee profile
+		// New add Employee
+		public function addEmployee($centerid=null){
+			if($this->session->has_userdata('LoginId')){
+				//footprint start
+				if($this->session->has_userdata('current_url')){
+					footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+					$this->session->set_userdata('current_url',currentUrl());
+				}
+				// footprint end
+				// if($centerid == null){
+				// 	$centerid = (json_decode($this->getAllCenters())->centers[0])->centerid;
+				// }
+				if($centerid == null){
+					if(!isset($_SESSION['centerr'])){
+						$centerid = (json_decode($this->getAllCenters())->centers[0])->centerid;
+						$_SESSION['centerr'] = $centerid;
+					}else{
+						$centerid = $_SESSION['centerr'];
+					}
+				}else{
+					$centerid = $centerid;
+					$_SESSION['centerr'] = $centerid;
+				}
+				$data['centerid'] = $centerid;
+				$data['userid'] = $this->session->userdata('LoginId');
+				$data['centers'] = $this->getAllCenters();
+				$data['areas'] = $this->getAreas($data['centerid']);
+				$data['ordinaryEarningRate'] = $this->getAwardSettings($data['userid'],$centerid);
+				$data['levels'] = $this->getAllEntitlements($data['userid']);
+				$data['superfunds'] = $this->getSuperfunds($data['userid'],$centerid);
+				$data['permissions'] = $this->fetchPermissions();
+				// var_dump($data['areas']);
+				$this->load->view('addEmployee',$data);
+			}
+			else{
+				$this->load->view('redirectToLogin');
+			}
+		}
+	// Update employee profile
 	public function updateEmployeeProfile($employeeNo = null){
 		$form_data = $this->input->post();	
 		if($form_data != null){
@@ -1374,6 +1417,8 @@ $server_output = curl_exec($ch);
 		$this->session->set_userdata('current_url',currentUrl());
 	}
 	// footprint end
+
+		$data['center'] = isset($_POST['center']) ? $_POST['center']: "";
 		$data['title'] = isset($_POST['title']) ? $_POST['title']: "";
 		$data['fname'] = isset($_POST['fname']) ? $_POST['fname']: "";
 		$data['mname'] = isset($_POST['mname']) ? $_POST['mname']: "";
@@ -1414,6 +1459,11 @@ $server_output = curl_exec($ch);
 		$data['eligibleToReceiveLeaveLoadingYN'] = isset($_POST['eligibleToReceiveLeaveLoadingYN']) ? $_POST['eligibleToReceiveLeaveLoadingYN']: "";
 		$data['approvedWitholdingVariationPercentage'] = isset($_POST['approvedWitholdingVariationPercentage']) ? $_POST['approvedWitholdingVariationPercentage']: "";
 		$data['xeroEmployeeId'] = isset($_POST['xeroEmployeeId']) ? $_POST['xeroEmployeeId']: "";
+		$explodedLevel = isset($_POST['level']) ? explode(',',$_POST['level']) : "";
+		$data['level'] = $explodedLevel[0];
+		$data['iobp'] = isset($_POST['iobp']) ? $_POST['iobp']: "";
+		$data['RatePerUnit'] = $explodedLevel[1] + $data['iobp'];
+		$data['usual_hours'] = isset($_POST['usual_hours']) ? $_POST['usual_hours'] : "38.00";
 		if($employeeNo != null){
 			$data['employee_no'] = $employeeNo;
 		}
@@ -1446,7 +1496,7 @@ $server_output = curl_exec($ch);
 		$data['qual_towards_percent_comp'] = isset($_POST['qual_towards_percent_comp']) ? $_POST['qual_towards_percent_comp']: "";
 		$data['classification'] = isset($_POST['classification']) ? $_POST['classification']: "";
 		$data['ordinaryEarningRateId'] = isset($_POST['ordinaryEarningRateId']) ? $_POST['ordinaryEarningRateId']: "";
-		// $data['payroll_calendar'] = isset($_POST['payroll_calendar']) ? $_POST['payroll_calendar']: "";
+		$data['payroll_calendar'] = isset($_POST['payroll_calendar']) ? $_POST['payroll_calendar']: "";
 		$data['employee_group'] = isset($_POST['employee_group']) ? $_POST['employee_group']: "";
 		$data['holiday_group'] = isset($_POST['holiday_group']) ? $_POST['holiday_group']: "";
 		$data['visa_holder'] = isset($_POST['visa_holder']) ? $_POST['visa_holder']: "";
@@ -1460,6 +1510,11 @@ $server_output = curl_exec($ch);
 		$data['date_obtained'] = isset($_POST['date_obtained']) ? $_POST['date_obtained']: "";
 		$data['expiry_date'] = isset($_POST['expiry_date']) ? $_POST['expiry_date']: "";
 		$data['certificate'] = isset($_FILES['certificate']['tmp_name'][0]) && $_FILES['certificate']['tmp_name'][0] != null ? base64_encode(file_get_contents($_FILES['certificate']['tmp_name'][0])) : "";
+		// foreach($_FILES['certificate'] as $file){
+		// 	//do stuff with $file
+		// 	print_r($file);
+		//   }
+		//   exit();
 		$data['medicareNo'] = isset($_POST['medicareNo']) ? $_POST['medicareNo']: "";
 		$data['medicareRefNo'] = isset($_POST['medicareRefNo']) ? $_POST['medicareRefNo']: "";
 		$data['healthInsuranceFund'] = isset($_POST['healthInsuranceFund']) ? $_POST['healthInsuranceFund']: "";
@@ -1472,185 +1527,193 @@ $server_output = curl_exec($ch);
 		$documents = isset($_POST['addFileName']) ? $_POST['addFileName'] : null;
 
 		if($documents != null && $documents != ""){
-				$data['documentNames'] = $_POST['addFileName'];
-				$data['docNames'] = $_FILES['addFile']['name'];
-				$data['documents'] = []; 
+			$data['documentNames'] = $_POST['addFileName'];
+			$data['docNames'] = $_FILES['addFile']['name'];
+			$data['documents'] = []; 
 			for($i=0;$i<count($_FILES['addFile']['name']);$i++){
 				if(isset($_FILES['addFile']['tmp_name'][$i]) && $_FILES['addFile']['tmp_name'][$i] != "" && $_FILES['addFile']['tmp_name'][$i] != null){
 				array_push($data['documents'],base64_encode(file_get_contents($_FILES['addFile']['tmp_name'][$i]))); 
 				}
 			}	
 		}
-			$data['userid'] = $this->session->userdata('LoginId');
-			$url = BASE_API_URL."settings/updateEmployeeProfile";
-			$ch = curl_init($url);
-			curl_setopt($ch, CURLOPT_URL,$url);
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-					'x-device-id: '.$this->session->userdata('x-device-id'),
-					'x-token: '.$this->session->userdata('AuthToken')
-				));
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			$server_output = curl_exec($ch);
-			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			if($httpcode == 200){
-				$this->session->set_flashdata('editEmployee','Profile Updated');
+
+		// if(isset($_POST['course_name'])){
+		// 	$data['course_name'] = isset($_POST['course_name']) ? $_POST['course_name']: "";
+		// 	$data['course_description'] = isset($_POST['course_description']) ? $_POST['course_description']: "";
+		// 	$data['course_id'] = isset($_POST['course_id']) ? $_POST['course_id']: "";
+		// 	$data['date_obtained'] = isset($_POST['date_obtained']) ? $_POST['date_obtained']: "";
+		// 	$data['expiry_date'] = isset($_POST['expiry_date']) ? $_POST['expiry_date']: "";
+		// 	// $data['certificate'] = isset($_FILES['certificate']['tmp_name']) && $_FILES['certificate']['tmp_name'] != null ? base64_encode(file_get_contents($_FILES['certificate']['tmp_name'])) : "";
+		// 	$data['courses'] = []; 
+		// 	for($i=0;$i<count($_FILES['certificate']['name']);$i++){
+		// 		if(isset($_FILES['certificate']['tmp_name'][$i]) && $_FILES['certificate']['tmp_name'][$i] != "" && $_FILES['certificate']['tmp_name'][$i] != null){
+		// 			array_push($data['courses'],array("certificates"=>base64_encode(file_get_contents($_FILES['certificate']['tmp_name'][$i])),"course_name"=>$data['course_name'],"course_description"=>$data['course_description'],"course_id"=>$data['course_id'],"date_obtained"=>$data['date_obtained'],"expiry_date"=>$data['expiry_date'])); 
+		// 		}
+		// 	}	
+		// }
+
+		$data['userid'] = $this->session->userdata('LoginId');
+		$url = BASE_API_URL."settings/updateEmployeeProfile";
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'x-device-id: '.$this->session->userdata('x-device-id'),
+				'x-token: '.$this->session->userdata('AuthToken')
+			));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			$this->session->set_flashdata('editEmployee','Profile Updated');
+			$url = $_SERVER['REQUEST_URI'];
+			// echo $url;
+			if(strpos($url,"updateEmployeeProfile") !== false){
+				// echo $server_output;
+				// print_r($server_output);
+				redirect(base_url('settings/editEmployeeProfile/'.$employeeNo));
+			}else{
+				// print_r($server_output);
 				redirect(base_url('settings'));
-				curl_close ($ch);
-
 			}
-			else if($httpcode == 401){
 
-			}
+			curl_close ($ch);
+
+		}
+		else if($httpcode == 401){
+
+		}
+		// echo '<pre>';
+		// print_r($data);
+		// echo '</pre>';
 		}  
 	}
-	// New add Employee
-
-		public function addEmployee($centerid=null){
-			if($this->session->has_userdata('LoginId')){
-				//footprint start
-				if($this->session->has_userdata('current_url')){
-					footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-					$this->session->set_userdata('current_url',currentUrl());
-				}
-				// footprint end
-				if($centerid == null){
-					$centerid = (json_decode($this->getAllCenters())->centers[0])->centerid;
-				}
-				$data['centerid'] = $centerid;
-				$data['userid'] = $this->session->userdata('LoginId');
-				$data['centers'] = $this->getAllCenters();
-				$data['areas'] = $this->getAreas($data['centerid']);
-				$data['ordinaryEarningRate'] = $this->getAwardSettings($data['userid'],$centerid);
-				$data['levels'] = $this->getAllEntitlements($data['userid']);
-				$data['superfunds'] = $this->getSuperfunds($data['userid'],$centerid);
-				$data['permissions'] = $this->fetchPermissions();
-				// var_dump($data['areas']);
-				$this->load->view('addEmployee',$data);
-			}
-			else{
-				$this->load->view('redirectToLogin');
-			}
-		}
-
 	public function createEmployeeProfile(){
+		$this->load->model('User_model');
 		$form_data = $this->input->post();
+		// print_r($form_data);
+		// die();
 		if($form_data != null){
-		//footprint start
-		if($this->session->has_userdata('current_url')){
-			footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-			$this->session->set_userdata('current_url',currentUrl());
-		}
-		// footprint end
-		$data['title'] = isset($_POST['title']) ? $_POST['title']: "";
-		$data['fname'] = isset($_POST['fname']) ? $_POST['fname']: "";
-		$data['mname'] = isset($_POST['mname']) ? $_POST['mname']: "";
-		$data['lname'] = isset($_POST['lname']) ? $_POST['lname']: "";
-		$data['emails'] = isset($_POST['emails']) ? $_POST['emails']: "";
-		$data['alias'] = isset($_POST['alias']) ? $_POST['alias']: "";
-		$data['dateOfBirth'] = isset($_POST['dateOfBirth']) ? $_POST['dateOfBirth']: "";
-		$data['gender'] = isset($_POST['gender']) ? $_POST['gender']: "";
-		// $data['jobTitle'] = isset($_POST['jobTitle']) ? $_POST['jobTitle']: "";
-		$data['homeAddLine1'] = isset($_POST['homeAddLine1']) ? $_POST['homeAddLine1']: "";
-		$data['homeAddLine2'] = isset($_POST['homeAddLine2']) ? $_POST['homeAddLine2']: "";
-		$data['homeAddCity'] = isset($_POST['homeAddCity']) ? $_POST['homeAddCity']: "";
-		$data['homeAddRegion'] = isset($_POST['homeAddRegion']) ? $_POST['homeAddRegion']: "";
-		$data['homeAddPostal'] = isset($_POST['homeAddPostal']) ? $_POST['homeAddPostal']: "";
-		$data['homeAddCountry'] = isset($_POST['homeAddCountry']) ? $_POST['homeAddCountry']: "";
-		$data['phone'] = isset($_POST['phone']) ? $_POST['phone']: "";
-		$data['mobile'] = isset($_POST['mobile']) ? $_POST['mobile']: "";
-		$data['startDate'] = isset($_POST['startDate']) ? $_POST['startDate']: "";
-		$data['terminationDate'] = isset($_POST['terminationDate']) ? $_POST['terminationDate']: "";
-		$data['emergency_contact'] = isset($_POST['emergency_contact']) ? $_POST['emergency_contact']: "";
-		$data['relationship'] = isset($_POST['relationship']) ? $_POST['relationship']: "";
-		$data['emergency_contact_email'] = isset($_POST['emergency_contact_email']) ? $_POST['emergency_contact_email']: "";
-		$data['accountName'] = isset($_POST['accountName']) ? $_POST['accountName']: "";
-		$data['bsb'] = isset($_POST['bsb']) ? $_POST['bsb']: "";
-		$data['accountNumber'] = isset($_POST['accountNumber']) ? $_POST['accountNumber']: "";
-		$data['remainderYN'] = isset($_POST['remainderYN']) ? $_POST['remainderYN']: "";
-		$data['amount'] = isset($_POST['amount']) ? $_POST['amount']: "";
-		$data['superFundId'] = isset($_POST['superFundId']) ? $_POST['superFundId']: "";
-		$data['superMembershipId'] = isset($_POST['superMembershipId']) ? $_POST['superMembershipId']: "";
-		$data['superfundEmployeeNumber'] = isset($_POST['superfundEmployeeNumber']) ? $_POST['superfundEmployeeNumber'] : "";
-		$data['employmentBasis'] = isset($_POST['employmentBasis']) ? $_POST['employmentBasis']: "";
-		$data['tfnExemptionType'] = isset($_POST['tfnExemptionType']) ? $_POST['tfnExemptionType']: "";
-		$data['taxFileNumber'] = isset($_POST['taxFileNumber']) ? $_POST['taxFileNumber']: "";
-		$data['australiantResidentForTaxPurposeYN'] = isset($_POST['australiantResidentForTaxPurposeYN']) ? $_POST['australiantResidentForTaxPurposeYN']: "";
-		$data['residencyStatue'] = isset($_POST['residencyStatue']) ? $_POST['residencyStatue']: "";
-		$data['taxFreeThresholdClaimedYN'] = isset($_POST['taxFreeThresholdClaimedYN']) ? $_POST['taxFreeThresholdClaimedYN']: "";
-		$data['taxOffsetEstimatedAmount'] = isset($_POST['taxOffsetEstimatedAmount']) ? $_POST['taxOffsetEstimatedAmount']: "";
-		$data['hasHELPDebtYN'] = isset($_POST['hasHELPDebtYN']) ? $_POST['hasHELPDebtYN']: "";
-		$data['hasSFSSDebtYN'] = isset($_POST['hasSFSSDebtYN']) ? $_POST['hasSFSSDebtYN']: "";
-		$data['hasTradeSupportLoanDebtYN_'] = isset($_POST['hasTradeSupportLoanDebtYN_']) ? $_POST['hasTradeSupportLoanDebtYN_']: "";
-		$data['upwardVariationTaxWitholdingAmount'] = isset($_POST['upwardVariationTaxWitholdingAmount']) ? $_POST['upwardVariationTaxWitholdingAmount']: "";
-		$data['eligibleToReceiveLeaveLoadingYN'] = isset($_POST['eligibleToReceiveLeaveLoadingYN']) ? $_POST['eligibleToReceiveLeaveLoadingYN']: "";
-		$data['approvedWitholdingVariationPercentage'] = isset($_POST['approvedWitholdingVariationPercentage']) ? $_POST['approvedWitholdingVariationPercentage']: "";
-		$data['xeroEmployeeId'] = isset($_POST['xeroEmployeeId']) ? $_POST['xeroEmployeeId']: "";
-		$data['employee_no'] = isset($_POST['employee_no']) ? $_POST['employee_no']: "";
-		$data['center'] = isset($_POST['center']) ? $_POST['center']: "";
-		$data['area'] = isset($_POST['area']) ? $_POST['area']: "";
-		$data['role'] = isset($_POST['role']) ? $_POST['role']: "";
-		$data['manager'] = isset($_POST['manager']) ? $_POST['manager']: "";
-		$data['level'] = isset($_POST['level']) ? $_POST['level']: "";
-		$data['bonusRates'] = isset($_POST['bonusRates']) ? $_POST['bonusRates']: "";
-		$res_doc = isset($_FILES['resume_doc']['name']) ? $_FILES['resume_doc']['name']: "";
-		if($res_doc != ""){
-			$data['resume_doc'] = base64_encode(file_get_contents($_FILES['resume_doc']['tmp_name']));
-		}else{
-			$data['resume_doc'] = "";
-		}
-		$cont_doc = isset($_FILES['contract_doc']['name']) ? $_FILES['contract_doc']['name']: "";
-		if($cont_doc != ""){
-			$data['contract_doc'] = base64_encode(file_get_contents($_FILES['contract_doc']['tmp_name']));
-		}else{
-			$data['contract_doc'] = "";
-		}
-		$prof_img = isset($_FILES['profileImage']['name']) ? $_FILES['profileImage']['name'] : "";
-		if($prof_img != ""){
-			$data['profileImage'] = base64_encode(file_get_contents($_FILES['profileImage']['tmp_name']));
-		}else{
-			$data['profileImage'] = "";
-		}		
-		$data['employement_type'] = isset($_POST['employement_type']) ? $_POST['employement_type']: "";
-		$data['totalHours'] = isset($_POST['totalHours']) ? $_POST['totalHours'] : 1;
-		$daysArr["CT__1"] =	isset($_POST['CT_1']) ? 1 : 0; 
-		$daysArr["CT__2"] =	isset($_POST['CT_2']) ? 1 : 0; 
-		$daysArr["CT__3"] =	isset($_POST['CT_3']) ? 1 : 0;
-		$daysArr["CT__4"] =	isset($_POST['CT_4']) ? 1 : 0;
-		$daysArr["CT__5"] =	isset($_POST['CT_5']) ? 1 : 0;
-		$data['daysArr'] = $daysArr["CT__1"].$daysArr["CT__2"].$daysArr["CT__3"].$daysArr["CT__4"].$daysArr["CT__5"];
-		$data['highest_qual_held'] = isset($_POST['highest_qual_held']) ? $_POST['highest_qual_held']: "";
-		$data['highest_qual_date_obtained'] = isset($_POST['highest_qual_date_obtained']) ? $_POST['highest_qual_date_obtained']: "";
-		$data['highest_qual_cert'] = isset($_POST['highest_qual_cert']) ? $_POST['highest_qual_cert']: "";
-		$data['qual_towards_desc'] = isset($_POST['qual_towards_desc']) ? $_POST['qual_towards_desc']: "";
-		$data['qual_towards_percent_comp'] = isset($_POST['qual_towards_percent_comp']) ? $_POST['qual_towards_percent_comp']: "";
-		$data['classification'] = isset($_POST['classification']) ? $_POST['classification']: "";
-		$data['ordinaryEarningRateId'] = isset($_POST['ordinaryEarningRateId']) ? $_POST['ordinaryEarningRateId']: "";
-		$data['payroll_calendar'] = isset($_POST['payroll_calendar']) ? $_POST['payroll_calendar']: "";
-		$data['visa_holder'] = isset($_POST['visa_holder']) ? $_POST['visa_holder']: "";
-		$data['visa_type'] = isset($_POST['visa_type']) ? $_POST['visa_type']: "";
-		$data['visa_grant_date'] = isset($_POST['visa_grant_date']) ? $_POST['visa_grant_date']: "";
-		$data['visa_end_date'] = isset($_POST['visa_end_date']) ? $_POST['visa_end_date']: "";
-		$data['visa_conditions'] = isset($_POST['visa_conditions']) ? $_POST['visa_conditions']: "";
-		if(isset($_POST['course_name'])){
-			$data['course_name'] = isset($_POST['course_name']) ? $_POST['course_name'] : "";
-			$data['course_description'] = $_POST['course_description'];
-			$data['date_obtained'] = $_POST['date_obtained'];
-			$data['expiry_date'] = $_POST['expiry_date'];
-			$data['certificate'] = base64_encode(file_get_contents($_FILES['certificate']['tmp_name']));
-		}
-		$data['medicareNo'] = isset($_POST['medicareNo']) ? $_POST['medicareNo']: "";
-		$data['medicareRefNo'] = isset($_POST['medicareRefNo']) ? $_POST['medicareRefNo']: "";
-		$data['healthInsuranceFund'] = isset($_POST['healthInsuranceFund']) ? $_POST['healthInsuranceFund']: "";
-		$data['healthInsuranceNo'] = isset($_POST['healthInsuranceNo']) ? $_POST['healthInsuranceNo']: "";
-		$data['ambulanceSubscriptionNo'] = isset($_POST['ambulanceSubscriptionNo']) ? $_POST['ambulanceSubscriptionNo']: "";
-		$data['medicalConditions'] = isset($_POST['medicalConditions']) ? $_POST['medicalConditions']: "";
-		$data['medicalAllergies'] = isset($_POST['medicalAllergies']) ? $_POST['medicalAllergies']: "";
-		$data['medication'] = isset($_POST['medication']) ? $_POST['medication']: "";
-		$data['medicals_id'] = isset($_POST['medicals_id']) ? $_POST['medicals_id']: "";
-	$data['dietaryPreferences'] = isset($_POST['dietaryPreferences']) ? $_POST['dietaryPreferences']: "";
+			//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+				$this->session->set_userdata('current_url',currentUrl());
+			}
+			// footprint end
+			$data['title'] = isset($_POST['title']) ? $_POST['title']: "";
+			$data['fname'] = isset($_POST['fname']) ? $_POST['fname']: "";
+			$data['mname'] = isset($_POST['mname']) ? $_POST['mname']: "";
+			$data['lname'] = isset($_POST['lname']) ? $_POST['lname']: "";
+			$data['emails'] = isset($_POST['emails']) ? $_POST['emails']: "";
+			$data['alias'] = isset($_POST['alias']) ? $_POST['alias']: "";
+			$data['dateOfBirth'] = isset($_POST['dateOfBirth']) ? $_POST['dateOfBirth']: "";
+			$data['gender'] = isset($_POST['gender']) ? $_POST['gender']: "";
+			// $data['jobTitle'] = isset($_POST['jobTitle']) ? $_POST['jobTitle']: "";
+			$data['homeAddLine1'] = isset($_POST['homeAddLine1']) ? $_POST['homeAddLine1']: "";
+			$data['homeAddLine2'] = isset($_POST['homeAddLine2']) ? $_POST['homeAddLine2']: "";
+			$data['homeAddCity'] = isset($_POST['homeAddCity']) ? $_POST['homeAddCity']: "";
+			$data['homeAddRegion'] = isset($_POST['homeAddRegion']) ? $_POST['homeAddRegion']: "";
+			$data['homeAddPostal'] = isset($_POST['homeAddPostal']) ? $_POST['homeAddPostal']: "";
+			$data['homeAddCountry'] = isset($_POST['homeAddCountry']) ? $_POST['homeAddCountry']: "";
+			$data['phone'] = isset($_POST['phone']) ? $_POST['phone']: "";
+			$data['mobile'] = isset($_POST['mobile']) ? $_POST['mobile']: "";
+			$data['startDate'] = isset($_POST['startDate']) ? $_POST['startDate']: "";
+			$data['terminationDate'] = isset($_POST['terminationDate']) ? $_POST['terminationDate']: "";
+			$data['emergency_contact'] = isset($_POST['emergency_contact']) ? $_POST['emergency_contact']: "";
+			$data['relationship'] = isset($_POST['relationship']) ? $_POST['relationship']: "";
+			$data['emergency_contact_email'] = isset($_POST['emergency_contact_email']) ? $_POST['emergency_contact_email']: "";
+			$data['accountName'] = isset($_POST['accountName']) ? $_POST['accountName']: "";
+			$data['bsb'] = isset($_POST['bsb']) ? $_POST['bsb']: "";
+			$data['accountNumber'] = isset($_POST['accountNumber']) ? $_POST['accountNumber']: "";
+			$data['remainderYN'] = isset($_POST['remainderYN']) ? $_POST['remainderYN']: "";
+			$data['amount'] = isset($_POST['amount']) ? $_POST['amount']: "";
+			$data['superFundId'] = isset($_POST['superFundId']) ? $_POST['superFundId']: "";
+			$data['superMembershipId'] = isset($_POST['superMembershipId']) ? $_POST['superMembershipId']: "";
+			$data['superfundEmployeeNumber'] = isset($_POST['superfundEmployeeNumber']) ? $_POST['superfundEmployeeNumber'] : "";
+			$data['employmentBasis'] = isset($_POST['employmentBasis']) ? $_POST['employmentBasis']: "";
+			$data['tfnExemptionType'] = isset($_POST['tfnExemptionType']) ? $_POST['tfnExemptionType']: "";
+			$data['taxFileNumber'] = isset($_POST['taxFileNumber']) ? $_POST['taxFileNumber']: "";
+			$data['australiantResidentForTaxPurposeYN'] = isset($_POST['australiantResidentForTaxPurposeYN']) ? $_POST['australiantResidentForTaxPurposeYN']: "";
+			$data['residencyStatue'] = isset($_POST['residencyStatue']) ? $_POST['residencyStatue']: "";
+			$data['taxFreeThresholdClaimedYN'] = isset($_POST['taxFreeThresholdClaimedYN']) ? $_POST['taxFreeThresholdClaimedYN']: "";
+			$data['taxOffsetEstimatedAmount'] = isset($_POST['taxOffsetEstimatedAmount']) ? $_POST['taxOffsetEstimatedAmount']: "";
+			$data['hasHELPDebtYN'] = isset($_POST['hasHELPDebtYN']) ? $_POST['hasHELPDebtYN']: "";
+			$data['hasSFSSDebtYN'] = isset($_POST['hasSFSSDebtYN']) ? $_POST['hasSFSSDebtYN']: "";
+			$data['hasTradeSupportLoanDebtYN_'] = isset($_POST['hasTradeSupportLoanDebtYN_']) ? $_POST['hasTradeSupportLoanDebtYN_']: "";
+			$data['upwardVariationTaxWitholdingAmount'] = isset($_POST['upwardVariationTaxWitholdingAmount']) ? $_POST['upwardVariationTaxWitholdingAmount']: "";
+			$data['eligibleToReceiveLeaveLoadingYN'] = isset($_POST['eligibleToReceiveLeaveLoadingYN']) ? $_POST['eligibleToReceiveLeaveLoadingYN']: "";
+			$data['approvedWitholdingVariationPercentage'] = isset($_POST['approvedWitholdingVariationPercentage']) ? $_POST['approvedWitholdingVariationPercentage']: "";
+			$data['xeroEmployeeId'] = isset($_POST['xeroEmployeeId']) ? $_POST['xeroEmployeeId']: "";
+			$data['employee_no'] = isset($_POST['employee_no']) ? $_POST['employee_no']: "";
+			$data['center'] = isset($_POST['center']) ? $_POST['center']: "";
+			$data['area'] = isset($_POST['area']) ? $_POST['area']: "";
+			$data['role'] = isset($_POST['role']) ? $_POST['role']: "";
+			$data['manager'] = isset($_POST['manager']) ? $_POST['manager']: "";
+
+			$explodedLevel = isset($_POST['level']) ? explode(',',$_POST['level']) : "";
+			$data['level'] = $explodedLevel[0];
+
+			$data['bonusRates'] = isset($_POST['bonusRates']) ? $_POST['bonusRates']: "";
+			$res_doc = isset($_FILES['resume_doc']['name']) ? $_FILES['resume_doc']['name']: "";
+			if($res_doc != ""){
+				$data['resume_doc'] = base64_encode(file_get_contents($_FILES['resume_doc']['tmp_name']));
+			}else{
+				$data['resume_doc'] = "";
+			}
+			$cont_doc = isset($_FILES['contract_doc']['name']) ? $_FILES['contract_doc']['name']: "";
+			if($cont_doc != ""){
+				$data['contract_doc'] = base64_encode(file_get_contents($_FILES['contract_doc']['tmp_name']));
+			}else{
+				$data['contract_doc'] = "";
+			}
+			$prof_img = isset($_FILES['profileImage']['name']) ? $_FILES['profileImage']['name'] : "";
+			if($prof_img != ""){
+				$data['profileImage'] = base64_encode(file_get_contents($_FILES['profileImage']['tmp_name']));
+			}else{
+				$data['profileImage'] = "";
+			}		
+			$data['employement_type'] = isset($_POST['employement_type']) ? $_POST['employement_type']: "";
+			$data['totalHours'] = isset($_POST['totalHours']) ? $_POST['totalHours'] : 1;
+			$daysArr["CT__1"] =	isset($_POST['CT_1']) ? 1 : 0; 
+			$daysArr["CT__2"] =	isset($_POST['CT_2']) ? 1 : 0; 
+			$daysArr["CT__3"] =	isset($_POST['CT_3']) ? 1 : 0;
+			$daysArr["CT__4"] =	isset($_POST['CT_4']) ? 1 : 0;
+			$daysArr["CT__5"] =	isset($_POST['CT_5']) ? 1 : 0;
+			$data['daysArr'] = $daysArr["CT__1"].$daysArr["CT__2"].$daysArr["CT__3"].$daysArr["CT__4"].$daysArr["CT__5"];
+			$data['highest_qual_held'] = isset($_POST['highest_qual_held']) ? $_POST['highest_qual_held']: "";
+			$data['highest_qual_date_obtained'] = isset($_POST['highest_qual_date_obtained']) ? $_POST['highest_qual_date_obtained']: "";
+			$data['highest_qual_cert'] = isset($_POST['highest_qual_cert']) ? $_POST['highest_qual_cert']: "";
+			$data['qual_towards_desc'] = isset($_POST['qual_towards_desc']) ? $_POST['qual_towards_desc']: "";
+			$data['qual_towards_percent_comp'] = isset($_POST['qual_towards_percent_comp']) ? $_POST['qual_towards_percent_comp']: "";
+			$data['classification'] = isset($_POST['classification']) ? $_POST['classification']: "";
+			$data['ordinaryEarningRateId'] = isset($_POST['ordinaryEarningRateId']) ? $_POST['ordinaryEarningRateId']: "";
+			$data['payroll_calendar'] = isset($_POST['payroll_calendar']) ? $_POST['payroll_calendar']: "";
+			$data['visa_holder'] = isset($_POST['visa_holder']) ? $_POST['visa_holder']: "";
+			$data['visa_type'] = isset($_POST['visa_type']) ? $_POST['visa_type']: "";
+			$data['visa_grant_date'] = isset($_POST['visa_grant_date']) ? $_POST['visa_grant_date']: "";
+			$data['visa_end_date'] = isset($_POST['visa_end_date']) ? $_POST['visa_end_date']: "";
+			$data['visa_conditions'] = isset($_POST['visa_conditions']) ? $_POST['visa_conditions']: "";
+			if(isset($_POST['course_name'])){
+				$data['course_name'] = isset($_POST['course_name']) ? $_POST['course_name'] : "";
+				$data['course_description'] = $_POST['course_description'];
+				$data['date_obtained'] = $_POST['date_obtained'];
+				$data['expiry_date'] = $_POST['expiry_date'];
+				$data['certificate'] = base64_encode(file_get_contents($_FILES['certificate']['tmp_name']));
+			}
+			$data['medicareNo'] = isset($_POST['medicareNo']) ? $_POST['medicareNo']: "";
+			$data['medicareRefNo'] = isset($_POST['medicareRefNo']) ? $_POST['medicareRefNo']: "";
+			$data['healthInsuranceFund'] = isset($_POST['healthInsuranceFund']) ? $_POST['healthInsuranceFund']: "";
+			$data['healthInsuranceNo'] = isset($_POST['healthInsuranceNo']) ? $_POST['healthInsuranceNo']: "";
+			$data['ambulanceSubscriptionNo'] = isset($_POST['ambulanceSubscriptionNo']) ? $_POST['ambulanceSubscriptionNo']: "";
+			$data['medicalConditions'] = isset($_POST['medicalConditions']) ? $_POST['medicalConditions']: "";
+			$data['medicalAllergies'] = isset($_POST['medicalAllergies']) ? $_POST['medicalAllergies']: "";
+			$data['medication'] = isset($_POST['medication']) ? $_POST['medication']: "";
+			$data['medicals_id'] = isset($_POST['medicals_id']) ? $_POST['medicals_id']: "";
+			$data['dietaryPreferences'] = isset($_POST['dietaryPreferences']) ? $_POST['dietaryPreferences']: "";
 			$data['userid'] = $this->session->userdata('LoginId');
+			$data['iobp'] = isset($_POST['iobp']) ? $_POST['iobp']: "";
+			$data['RatePerUnit'] = $explodedLevel[1] + $data['iobp'];
 		}
 			$url = BASE_API_URL."settings/createEmployeeProfile";
 			$ch = curl_init($url);
@@ -1663,15 +1726,38 @@ $server_output = curl_exec($ch);
 				));
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			$server_output = curl_exec($ch);
+			// print_r($server_output);
+			// die();
 			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			// curl_close ($ch);
 			if($httpcode == 200){
-				$this->session->set_flashdata('employeeAdded', 'Employee Added');
-				redirect(base_url('settings'));
-				curl_close ($ch);
+				// print_r($server_output);
+				$response = json_decode($server_output);
+				// print_r($response);
+				if($response->Status == "OK"){
+					foreach($response->Employees->Employee as $i=>$v){
+						if($v === end($response->Employees->Employee)){
+							// echo $v->EmployeeID;
+							$this->User_model->insertXeroEmployeeId($_POST['employee_no'],$v->EmployeeID);
+						}
+					}
+					redirect(base_url('settings'));
+					// curl_close ($ch);
+
+				}elseif($response->Status == 401){
+					//print_r($server_output);
+					redirect(base_url('settings'));
+				}
+				//Here i need to update the xeroemployeeid to that particular user based on user id
+				// $this->session->set_flashdata('employeeAdded', 'Employee Added Successfully');
+				// redirect(base_url('settings'));
+				// curl_close ($ch);
 			}
 			else if($httpcode == 401){
+				// print_r($server_output);
 				redirect(base_url('settings'));
 			}
+			// var_dump($data);
 		}
 
 	public function AddMultipleEmployees(){
@@ -1848,7 +1934,7 @@ $server_output = curl_exec($ch);
 		$input = $this->input->post();
 		$data['userid'] = $this->session->userdata('LoginId');
 		if(isset($input['centerid']) && $input['centerid'] != null && $input['centerid'] != "")
-			$data['centerid'] = $input['centerid'];
+		$data['centerid'] = $input['centerid'];
 		$url = BASE_API_URL."xero/syncXeroEmployees/".$employeeId;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
@@ -1866,10 +1952,8 @@ $server_output = curl_exec($ch);
 		if($httpcode == 200){
 			echo $server_output;
 			curl_close ($ch);
-
 		}
 		else if($httpcode == 401){
-
 		}
 	}
 
@@ -1882,6 +1966,35 @@ $server_output = curl_exec($ch);
 			}
 			// footprint end
 			$url = BASE_API_URL."settings/getEmployeeProfile/".$this->session->userdata('LoginId')."/$employeeId/$centerid";
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'x-device-id: '.$this->session->userdata('x-device-id'),
+					'x-token: '.$this->session->userdata('AuthToken')
+				));
+			$server_output = curl_exec($ch);
+			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($httpcode == 200){
+				print_r($server_output);
+				curl_close ($ch);
+
+			}
+			else if($httpcode == 401){
+
+			}
+		}
+	}
+
+	public function getEmployeeAwardDetails($employeeId,$centerid=null){
+		if($employeeId != null && $employeeId != ""){
+			//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+				$this->session->set_userdata('current_url',currentUrl());
+			}
+			// footprint end
+			$url = BASE_API_URL."settings/getEmployeeAwardsData/".$this->session->userdata('LoginId')."/$employeeId/$centerid";
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -1915,6 +2028,41 @@ $server_output = curl_exec($ch);
 			$data['empId'] = $input['empId'];
 			$data['centers'] = $input['centers'];
 			$url = BASE_API_URL."settings/changeEmployeeCenter";
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'x-device-id: '.$this->session->userdata('x-device-id'),
+					'x-token: '.$this->session->userdata('AuthToken')
+				));
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				$server_output = curl_exec($ch);
+				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				print_r($server_output);
+				if($httpcode == 200){
+					print_r($server_output);
+					curl_close ($ch);
+				}
+				else if($httpcode == 401){
+
+				}
+		}
+	}
+
+	public function changeEmployeeAward(){
+		$input = $this->input->post();
+		if($input != null){
+			//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+				$this->session->set_userdata('current_url',currentUrl());
+			}
+			// footprint end
+			$data['userid'] = $this->session->userdata('LoginId');
+			$data['empId'] = $input['empId'];
+			$data['awards'] = $input['awards'];
+			$url = BASE_API_URL."settings/changeEmployeeAward";
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_URL,$url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -2097,6 +2245,22 @@ $server_output = curl_exec($ch);
 		}
 	}
 
+	function postAwardsToXero($access_token, $tenant_id, $data)
+	{
+		$url = "https://api.xero.com/payroll.xro/1.0/PayItems";
+		$ch =  curl_init($url);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+		curl_setopt($ch, CURLOPT_HTTPHEADER,  array(
+			'Content-Type:application/json',
+			'Authorization:Bearer ' . $access_token,
+			'Xero-tenant-id:' . $tenant_id
+		));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$server_output = curl_exec($ch);
+		return $server_output;
+	}
 
 	public function kidsoftSettings(){
 		if($this->session->has_userdata('LoginId')){
@@ -2211,8 +2375,9 @@ $server_output = curl_exec($ch);
 
 
 	public function getEmployeesByCenter($centerid){
-		$_SESSION['centerr'] = $centerid;
+		$_SESSION['centerr'] = urlencode($centerid);
 		$url = BASE_API_URL."util/GetAllEmployeesByCenter/".$centerid.'/'.$this->session->userdata('LoginId');
+		// echo $url;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -2221,6 +2386,7 @@ $server_output = curl_exec($ch);
 			'x-token: '.$this->session->userdata('AuthToken')
 		));
 		$server_output = curl_exec($ch);
+		// var_dump($server_output);
 		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		if($httpcode == 200){
 			echo $server_output;
@@ -2444,12 +2610,12 @@ $server_output = curl_exec($ch);
 		$this->load->helper('form');
 		$form_data = $this->input->post();
 		if($form_data != null){
-	//footprint start
-	if($this->session->has_userdata('current_url')){
-		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-		$this->session->set_userdata('current_url',currentUrl());
-	}
-	// footprint end
+			//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+				$this->session->set_userdata('current_url',currentUrl());
+			}
+			// footprint end
 			//var_dump($form_data);
 			$data['leaveApplication'] = $form_data['leaveId'];
 			$data['status'] = $form_data['status'];
@@ -2520,16 +2686,17 @@ $server_output = curl_exec($ch);
 				'x-token: '.$this->session->userdata('AuthToken')
 			));
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			$server_output = curl_exec($ch);
-			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			if($httpcode == 200){
-				return $server_output;
-				curl_close ($ch);
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		// if($httpcode == 200){
+		// 	return $server_output;
+		// 	curl_close ($ch);
+		// }
+		// else if($httpcode == 401){
 
-			}
-			else if($httpcode == 401){
-
-		}
+		// }
+		print_r($server_output);
+		die();
 	}
 
 	public function checkUserid($userid){
@@ -2632,4 +2799,51 @@ $server_output = curl_exec($ch);
 	// public function testRun(){
 	// 	file_put_contents('application/file.png',base64_decode(base64_encode(file_get_contents("https://openthread.google.cn/images/ot-contrib-google.png"))));
 	// 	}
+
+	public function getCompanySettingsData($userid){
+		$url = BASE_API_URL."settings/getCompanySettingsData/".$userid;
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'x-device-id: '.$this->session->userdata('x-device-id'),
+			'x-token: '.$this->session->userdata('AuthToken')
+		));
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			return $server_output;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+			return 'failed';
+		}
+	}
+
+	public function companySettings(){
+		if($this->session->has_userdata('LoginId')){
+
+			//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+				$this->session->set_userdata('current_url',currentUrl());
+			}
+			// footprint end
+
+			//Here i need to get data from company settings table
+			$data['companydata'] = $this->getCompanySettingsData($this->session->userdata('LoginId'));
+			// print_r($data['companydata']);
+			$this->load->view('companySettings',$data);
+		}
+		else{
+			$this->load->view('redirectToLogin');
+		}
+	}
+
+	//SUPER ADMIN REGISTRATION
+	public function sareg(){
+		$this->load->view('superAdminRegistration');
+	}
+	//SUPER ADMIN REGISTRATION
 }
+?>

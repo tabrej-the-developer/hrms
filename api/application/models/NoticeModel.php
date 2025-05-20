@@ -26,7 +26,7 @@ class NoticeModel extends CI_Model {
 
 	public function getAllNoticesForGroupId($groupid){
 		$this->load->database();
-		$query = $this->db->query("SELECT * from notices where receiverId = '$groupid'  and isGroup = 'Y'");
+		$query = $this->db->query("SELECT * from notices where receiverId = '$groupid' and isGroup = 'Y'");
 		return $query->result();
 	}
 

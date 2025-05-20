@@ -2,338 +2,363 @@
 <html>
 <head>
 	<title>Add Employee</title>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/stylesheet.css') ?>" />
-	<style type="text/css">
-		.select_css::after{
-	  content: ' ';
-	  position: absolute;
-	  background: url(<?php echo base_url('assets/images/icons/down.png') ?>);
-	  background-repeat: no-repeat;
-	  padding: 15px;
-	    margin-left: -28px;
-	    margin-top: 10px !important;
-	    background-size: 0.6rem 0.6rem;
-	    top:0 !important;
-	}
-	.employee-section{
-		height: 90% !important;
-	}
-	.profileImage_input{
-		width: 20%;
-	}
-	.profileImage{
-		width: 20%;
-	}
-	.employee-details .span-class,.medical-info .span-class,.tax-declaration-class .span-class,.employee-bank-account-section_row .span-class{
-		width: 25%;
-	}
-	.col-3{
-		width: 25% !important;
-	}
-	</style>
+	<link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('assets/favicon_io/apple-touch-icon.png') ?>">
+  <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/favicon_io/favicon-32x32.png') ?>">
+  <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/favicon_io/favicon-16x16.png') ?>">
+  <link rel="manifest" href="<?= base_url('assets/favicon_io/site.webmanifest') ?>">
+<link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+<link href="<?php echo base_url('assets/css/bootstrap.min.css');?>" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/layout.css');?>">
+ <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/container.css');?>">
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js');?>" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('assets/js/popper.min.js');?>" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('assets/js/bootstrap.min.js');?>" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+
+<style>
+.navbar-nav .nav-item-header:nth-of-type(9) {
+    background: var(--blue2) !important;
+    position: relative;
+}
+.navbar-nav .nav-item-header:nth-of-type(9)::after {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    bottom: 0;
+    content: "";
+    background: var(--orange1);
+}
+</style>
 </head>
 <body class="add_employee_body">
-<?php $this->load->view('header'); ?>
-<div class="containers">
-<span class="d-flex justify-content-between pt-2">
-	<span style="top:20px;padding-left: 2rem;display: inline-flex;">
-      <a onclick="goBack()">
-        <button class="btn back-button">
-          <img src="<?php echo base_url('assets/images/back.svg');?>">
-        </button>
-      </a>
-	  <span class="settings_title">Add Employee</span>
-    </span>
-    <span class="addEmployee_top_select">
-    	<a href="<?php echo base_url('settings/AddMultipleEmployees');?>">
-    		<button id="addEmployee_multipleEmployees">Add Multiple Employees</button>
-    	</a>
-    </span>
-</span>
-	<div class="addEmployee-container">
-	<div class="addEmployee-container-child">
-	<?php $permissions = json_decode($permissions); ?>
-<?php if(isset($permissions->permissions) ? $permissions->permissions->editEmployeeYN : "N" == "Y"){ ?>
-	<!-- <section class="tab-buttons">
-		<div class="tab-buttons-div">
-		<span class="nav-button e-s"><span>Personal</span></span> -->
-		<!-- <span class="nav-button e-b-a-s"><span>Bank Account</span></span> -->
-		<!-- <span class="nav-button e-s-s"><span> Superannuation </span></span> -->
-		<!-- <span class="nav-button e-t-d-s"><span>Tax Declaration </span></span> -->
-		<!-- <span class="nav-button e-u-s"><span>Employment</span></span>	 -->
-		<!-- <span class="nav-button m-i"><span>Medical Info</span></span> -->
-		<!-- </div>	
-	</section> -->
-<form method="POST" action="createEmployeeProfile" id="myForm" style="height: 100%" onsubmit="return onFormSubmit(event)" enctype="multipart/form-data">
-	<section class="employee-section">	
-		<!-- <h3>Personal</h3> -->
-		<span class="d-flex">
-		<span class="span-class col-3">
-			<label class="labels__">Title</label>
-			<span class="select_css">
-				<select  id="title"  class="" type="text" name="title"> 
-					<option value="Ms">Ms</option> 
-					<option value="Mr">Mr</option>
-					<option value="Mrs">Mrs</option>
-				</select>
+	<div class="wrapperContainer">
+		<?php include 'headerNew.php'; ?>
+		<div class="containers scrollY">
+			<div class="settingsContainer ">
+
+			<span class="d-flex pageHead heading-bar">
+				<div class="withBackLink">
+					<a onclick="goBack()" href="#">
+					<span class="material-icons-outlined">arrow_back</span>
+					</a>				
+					<span class="events_title">Add Employee</span>
+				</div>
+				<div class="rightHeader">					
+					<a class="btn btn-default btn-small btnBlue pull-right" href="<?php echo base_url('settings/AddMultipleEmployees');?>">
+						Add Multiple Employees
+					</a>
+				</div>
 			</span>
-		</span>
-	<!-- <span class="span-class name__"> -->
+		
+			<div class="addEmployee-container">
+				<div class="addEmployee-container-child">
+					<?php $permissions = json_decode($permissions); ?>
+					<?php if(isset($permissions->permissions) ? $permissions->permissions->editEmployeeYN : "N" == "Y"){ ?>
+					<!-- <section class="tab-buttons">
+						<div class="tab-buttons-div">
+						<span class="nav-button e-s"><span>Personal</span></span> -->
+						<!-- <span class="nav-button e-b-a-s"><span>Bank Account</span></span> -->
+						<!-- <span class="nav-button e-s-s"><span> Superannuation </span></span> -->
+						<!-- <span class="nav-button e-t-d-s"><span>Tax Declaration </span></span> -->
+						<!-- <span class="nav-button e-u-s"><span>Employment</span></span>	 -->
+						<!-- <span class="nav-button m-i"><span>Medical Info</span></span> -->
+						<!-- </div>	
+					</section> -->
+					<form method="POST" action="createEmployeeProfile" id="myForm" onsubmit="return onFormSubmit(event)" enctype="multipart/form-data">
+						<section class="employee-section">	
+							<!-- <h3>Personal</h3> -->
+							<span class="d-flex addEmpFlex">
+								
 
-		<!-- <span class=" row row_addEmployee ml-1 "> -->
+								<span class="col-md-3">
+									<div class="form-floating">
+										<select  id="title"  class="form-control" type="text" name="title"> 
+											<option value="Ms">Ms</option> 
+											<option value="Mr">Mr</option>
+											<option value="Mrs">Mrs</option>
+										</select>
+										<label  for="title" class="labels__">Title</label>
+									</div>
+								</span>
 
-		<span class="span-class col-3 ">
-		<label class="labels__">First Name<sup>
-				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
-			</sup></label>
-			<input id="fname"  class="" type="text" name="fname" >
-		</span>
+						<!-- <span class="span-class name__"> -->
 
-		<span class="span-class col-3 ">
-		<label class="labels__">Middle Name</label>
-			<input id="mname"  class="" value="" type="text" name="mname" >
-		</span>
+						<!-- <span class=" row row_addEmployee ml-1 "> -->
 
-		<span class="span-class col-3 ">
-		<label class="labels__">Last Name<sup>
-				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
-			</sup></label>
-			<input id="lname"  class="" type="text" name="lname" >
-		</span>
-	<!-- </span> -->
-	<!-- </span> -->
-</span>
+								<span class="col-md-3 ">
+									<div class="form-floating">
+										<input id="fname"  class="form-control" placeholder="First Name" type="text" name="fname" required>
+										<label class="fname">First Name<sup><img src="<?php echo base_url('assets/images/icons/star.png'); ?>"></sup></label>
+									</div>
+								</span>
+
+								<span class="col-md-3">
+									<div class="form-floating">
+										<input id="mname"  class="form-control" value="" type="text" name="mname" placeholder="Middle Name" >
+										<label for="mname" class="labels__">Middle Name</label>
+									</div>
+								</span>
+
+								<span class="col-md-3 ">
+									<div class="form-floating">
+										<input id="lname"  class="form-control" type="text" name="lname" placeholder="Last Name" required>
+										<label for="lname" class="labels__">Last Name<sup><img src="<?php echo base_url('assets/images/icons/star.png'); ?>"></sup></label>
+									</div>
+								</span>
+								<!-- </span> -->
+								<!-- </span> -->
+							</span>
 		
 
-		<span class="span-class col-3">
-			<label class="labels__">Alias<sup>
-				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
-			</sup></label>
-			<input id="alias"  class="" type="text" name="alias">
-		</span>
-<!-- 		<span class="span-class col-3">
-			<label class="labels__">Date Of Birth</label>
-			<input id="dateOfBirth"  class="" type="date" name="dateOfBirth">
-		</span> -->
-		<span class="span-class col-3">
-			<label class="labels__">Gender<sup>
-				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
-			</sup></label>
-			<span class="select_css">
-				<select id="gender"  class="" name="gender">
-					<option value="N">Not Given</option>
-					<option value="M">Male</option>
-					<option value="F">Female</option>
-					<option value="I">Non binary</option>
-				</select>				
-			</span>
-		</span>
-<!-- 		<span class="span-class profileImage_input">
-			<label class="labels__">Profile Image</label>
-			<input id="profileImage"  class="profileImage" type="FILE" name="profileImage">
-		</span> -->
-			<hr>	
-<!-- 		<span class="span-class col-3">
-			<label class="labels__">Job Title<sup>
-				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
-			</sup></label>
-			<input id="jobTitle"  class="" type="text" name="jobTitle">
-		</span> -->
-	
-		<!-- <span class="span-class row row_addEmployee "> -->
-		<!-- <label class="labels__">Address</label>	 -->
-<!-- 			<span class="span-class  col-3">
-				<label class="labels__">Home Address Line1</label>
-				<input id="homeAddLine1"  class="" type="text" name="homeAddLine1">
-			</span>
-			<span class="span-class col-3">
-				<label class="labels__">Home Address Line2</label>
-				<input id="homeAddLine2"  class="" type="text" name="homeAddLine2">
-			</span>
-			<span class="span-class col-3">
-				<label class="labels__">City</label>
-				<input  type="text" id="homeAddCity"  class=""  name="homeAddCity">
-			</span>				
-			<span class="span-class col-3">
-				<label class="labels__">Region</label>
-				<span class="select_css">
-					<select id="homeAddRegion"  class="" type="text" name="homeAddRegion">
-						<option value="ACT">Australian Capital Territory</option>
-						<option value="NSW">New South Wales</option>
-						<option value="NT">Northern Territory</option>
-						<option value="QLD">Queensland </option>
-						<option value="SA">South Australia</option>
-						<option value="TAS">Tasmania </option>
-						<option value="VIC">Victoria</option>
-						<option value="WA">Western Australia</option>
-					</select>
-				</span>
-			</span>
-			<span class="span-class col-3">
-				<label class="labels__">Postal</label>
-				<input id="homeAddPostal"  class="" type="text" name="homeAddPostal">
-			</span>
-			<span class="span-class col-3">
-				<label class="labels__">Country</label>
-				<input id="homeAddCountry"  class="" type="text" name="homeAddCountry">
-			</span>
-		</span> -->
-		<!-- <hr> -->
-<!-- 		<span class="span-class col-3">
-			<label class="labels__">Phone</label>
-			<input id="phone"  class="" type="text" name="phone">
-		</span>
-		<span class="span-class col-3">
-			<label class="labels__">Mobile</label>
-			<input id="mobile"  class="" type="text" name="mobile">
-		</span> -->
-		<span class="span-class col-3">
-			<label class="labels__">Email<sup>
-				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
-			</sup></label>
-			<input id="emails"  class="" type="text" name="emails">
-		</span>
-
-		<hr> 
-		<span class="span-class col-3">
-			<label class="labels__">Employee Id<sup>
-				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
-			</sup></label>
-			<input id="employee_no" type="text" name="employee_no">
-		</span>
-<!-- 		<span class="span-class col-3">
-			<label class="labels__">Xero Employee Id</label>
-			<input id="xeroEmployeeId" type="text" name="xeroEmployeeId">
-		</span> -->
-		<span class="span-class col-3">
-			<label class="labels__">Center<sup>
-				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
-			</sup></label>
-			<span class="select_css">
-				<select id="center" name="center">
-					<option value="0">--Center--</option>
-					<?php 
-						$centers = json_decode($centers);
-					foreach($centers->centers as $center){ ?> 
-						<option value="<?php echo $center->centerid;?>"><?php echo $center->name;?></option>
-					<?php } 
-					$centerId = "";
-					foreach($centers->centers as $center){ 
-							$centerId = $centerId . $center->centerid . "|";
-					 } ?>
-					<option value="<?php echo $centerId; ?>">All Centers</option>
-				</select>
-			</span>
-		</span>
-
-		<span class="span-class col-3">
-			<label class="labels__">Area<sup>
-				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
-			</sup></label>
-
-				<span class="" id="area-select">
-					<span class="select_css">
-						<select id="area" name="area">
-							<option value="0">--select--</option>
-						<?php 
-						$areas = json_decode($areas);
-						foreach($areas->areas as $area){
-						?>
-						<option value="<?php echo $area->areaId; ?>" ><?php echo $area->areaName; ?></option>
-						<?php } ?>
-					</select>
-				</span>
-			</span>
-		</span>
-
-		<span class="span-class col-3">
-			<label class="labels__">Role<sup>
-				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
-			</sup></label>
-			<span id="role-select">
-				<span class="select_css">
-					<select id="role" name="role">
-						<option value="0">--select--</option>
-
-						<?php foreach($areas->areas as $roles){?>
-							<?php foreach($roles->roles as $role){?>
-						<option area-id="<?php print_r($role->areaid); ?>" value="<?php echo $role->roleid ?>"><?php print_r($role->roleName) ?></option>
-						<?php } } ?>
-					</select>
-				</span>
-		</span>
-		</span>
-
-<!-- 		<span class="span-class col-3">
-			<label class="labels__">Manager</label>
-			<input id="manager" type="text" name="manager">
-		</span>
- -->
-
-		<span class="span-class col-3">
-			<label class="labels__">Level<sup>
-				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
-			</sup></label>
-			<span class="select_css">
-				<select id="level" name="level">
-					<?php $levels = json_decode($levels);
-						foreach($levels->entitlements as $level){
-						?>
-					<option value="<?php echo $level->id; ?>"><?php echo $level->name." (".$level->hourlyRate.")"; ?></option>
-					<?php } ?>
-				</select>
-			</span>
-		</span>
-
-		<span class="span-class col-3">
-			<label class="labels__">Employment type<sup>
-				<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
-			</sup></label>
-			<span class="select_css">
-				<select id="employement_type" name="employement_type" >
-					<option value="FT">Full Time</option>
-					<option value="PT">Part Time</option>
-					<option value="CT">Casual</option>
-				</select>
-			</span>
-		</span>
-
-			<span class="span-class col-3">
-				<label class="labels__">Total Hours<sup>
-					<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
-				</sup></label>
-				<span>
-					<input id="totalHours" type="number" name="totalHours">
-				</span>
-			</span>
-
-			<span class="span-class col-3 daysOpen">
-				<label class="labels__">Days<sup>
-					<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
-				</sup></label>
-				<span class="d-flex">
-					<span>
-						<label class="labels__">Mon</label>
-						<input id="CT_1" type="checkbox" name="CT_1">
+						<span class="d-flex addEmpFlex">
+							<span class="col-md-3">
+								<div class="form-floating">
+									<input id="alias"  class="form-control" type="text" placeholder="Enter Alias" name="alias" required>
+									<label for="alias" class="labels__">Alias<sup><img src="<?php echo base_url('assets/images/icons/star.png'); ?>" ></sup></label>
+								</div>
+							</span>
+				<!-- 		<span class="span-class col-3">
+							<label class="labels__">Date Of Birth</label>
+							<input id="dateOfBirth"  class="" type="date" name="dateOfBirth">
+						</span> -->
+						<span class="col-md-3">
+							<div class="form-floating">
+								<select id="gender"  class="form-control" name="gender" required>
+									<option value="N">Not Given</option>
+									<option value="M">Male</option>
+									<option value="F">Female</option>
+									<option value="I">Non binary</option>
+								</select>
+								<label for="gender" class="labels__">Gender<sup><img src="<?php echo base_url('assets/images/icons/star.png'); ?>"></sup></label>
+							</div>	
+						</span>
+						<span class="col-md-3">
+							<div class="form-floating">
+								<input class="form-control" type="date" name="dateOfBirth" required>
+								<label for="dob" class="labels__">DOB<sup><img src="<?php echo base_url('assets/images/icons/star.png'); ?>"></sup></label>
+							</div>	
+						</span>
+						</span>
+						<!-- 		<span class="span-class profileImage_input">
+									<label class="labels__">Profile Image</label>
+									<input id="profileImage"  class="profileImage" type="FILE" name="profileImage">
+								</span> -->
+									<hr>	
+						<!-- 		<span class="span-class col-3">
+									<label class="labels__">Job Title<sup>
+										<img src="<?php echo base_url('assets/images/icons/star.png'); ?>" style="max-height:0.5rem;margin-right:10px">
+									</sup></label>
+									<input id="jobTitle"  class="" type="text" name="jobTitle">
+								</span> -->
+							
+								<span class="span-class row row_addEmployee ">
+								<label class="labels__">Address</label>	
+									<span class="span-class col">
+										<div class="form-floating">
+											<input id="homeAddLine1" class="form-control" type="text" name="homeAddLine1" required>
+											<label class="labels__">Home Address Line1<sup><img src="<?php echo base_url('assets/images/icons/star.png'); ?>"></sup></label>
+										</div>
+									</span>
+									<span class="span-class col">
+										<div class="form-floating">
+											<input  type="text" id="homeAddCity" class="form-control"  name="homeAddCity" required>
+											<label class="labels__">City<sup><img src="<?php echo base_url('assets/images/icons/star.png'); ?>"></sup></label>
+										</div>
+									</span>				
+									<span class="span-class col">
+										<div class="form-floating">
+												<select id="homeAddRegion" class="form-control" type="text" name="homeAddRegion" required>
+													<option value="ACT">Australian Capital Territory</option>
+													<option value="NSW">New South Wales</option>
+													<option value="NT">Northern Territory</option>
+													<option value="QLD">Queensland </option>
+													<option value="SA">South Australia</option>
+													<option value="TAS">Tasmania </option>
+													<option value="VIC">Victoria</option>
+													<option value="WA">Western Australia</option>
+												</select>
+											<label class="labels__">Region<sup><img src="<?php echo base_url('assets/images/icons/star.png'); ?>"></sup></label>
+										</div>
+									</span>
+									<span class="span-class col">
+										<div class="form-floating">
+											<input id="homeAddPostal" class="form-control" type="text" name="homeAddPostal" required>
+											<label class="labels__">Postal<sup><img src="<?php echo base_url('assets/images/icons/star.png'); ?>"></sup></label>
+										</div>
+									</span>
+									<span class="span-class col">
+										<div class="form-floating">
+											<input id="homeAddCountry" class="form-control" type="text" name="homeAddCountry" required>
+											<label class="labels__">Country<sup><img src="<?php echo base_url('assets/images/icons/star.png'); ?>"></sup></label>
+										</div>
+									</span>
 					</span>
-					<span>
-						<label class="labels__">Tue</label>
-						<input id="CT_2" type="checkbox" name="CT_2">
+								<!-- <hr> -->
+						<!-- 		<span class="span-class col-3">
+									<label class="labels__">Phone</label>
+									<input id="phone"  class="" type="text" name="phone">
+								</span>
+								<span class="span-class col-3">
+									<label class="labels__">Mobile</label>
+									<input id="mobile"  class="" type="text" name="mobile">
+								</span> -->
+						<span class="d-flex addEmpFlex">
+						<span class="col-md-3">
+							<div class="form-floating">
+								<input id="emails"  class="form-control" type="text" name="emails" required>
+								<label for="emails" class="labels__">Email<sup><img src="<?php echo base_url('assets/images/icons/star.png'); ?>"></sup></label>
+							</div>
+						</span>
+
+						<span class="col-md-3">
+							<div class="form-floating">
+								<input id="employee_no" class="form-control" type="text" name="employee_no" required>
+								<label for="employee_no" class="labels__">Employee Id<sup><img src="<?php echo base_url('assets/images/icons/star.png'); ?>"></sup></label>
+							</div>
+						</span>
+
+						<!-- 		<span class="span-class col-3">
+									<label class="labels__">Xero Employee Id</label>
+									<input id="xeroEmployeeId" type="text" name="xeroEmployeeId">
+								</span> -->
+						<span class="col-md-3">
+							<div class="form-floating">
+								<select id="center" class="form-control" name="center" required>
+									<option value="0">--Center--</option>
+									<?php 
+										$centers = json_decode($centers);
+									foreach($centers->centers as $center){ ?> 
+										<option value="<?php echo $center->centerid;?>" <?php if($_SESSION['centerr'] == $center->centerid){ echo "selected";}?>><?php echo strtoupper($center->name); ?></option>
+									<?php } 
+									$centerId = "";
+									foreach($centers->centers as $center){ 
+											$centerId = $centerId . $center->centerid . "|";
+									} ?>
+									<option value="<?php echo $centerId; ?>">All Centers</option>
+								</select>
+								<label for="center" class="labels__">Center<sup><img src="<?php echo base_url('assets/images/icons/star.png'); ?>"></sup></label>
+							</div>
+						</span>
+
+						<span class="col-md-3">
+							<div class="form-floating">
+								<select id="area" class="form-control" name="area" required>
+									<option value="0">--select--</option>
+								<?php 
+								$areas = json_decode($areas);
+								foreach($areas->areas as $area){
+								?>
+								<option value="<?php echo $area->areaId; ?>" ><?php echo $area->areaName; ?></option>
+								<?php } ?>
+								</select>
+								<label for="area" class="labels__">Area<sup><img src="<?php echo base_url('assets/images/icons/star.png'); ?>"></sup></label>
+							</div>
+						</span>
+
 					</span>
-					<span>
-						<label class="labels__">Wed</label>
-						<input id="CT_3" type="checkbox" name="CT_3">
+
+					<span class="d-flex addEmpFlex">
+
+					<span class="col-md-3">
+						<div class="form-floating">
+							<select id="role" class="form-control" name="role" required>
+								<option value="0">--select--</option>
+
+								<?php foreach($areas->areas as $roles){?>
+									<?php foreach($roles->roles as $role){?>
+								<option area-id="<?php print_r($role->areaid); ?>" value="<?php echo $role->roleid ?>"><?php print_r($role->roleName) ?></option>
+								<?php } } ?>
+							</select>
+							<label for="role" class="labels__">Role<sup><img src="<?php echo base_url('assets/images/icons/star.png'); ?>"></sup></label>
+						</div>
 					</span>
-					<span>
-						<label class="labels__">Thu</label>
-						<input id="CT_4" type="checkbox" name="CT_4">
+
+					<!-- 		<span class="span-class col-3">
+								<label class="labels__">Manager</label>
+								<input id="manager" type="text" name="manager">
+							</span>
+					-->
+
+					<span class="col-md-3">
+						<div class="form-floating">
+							<select id="level" class="form-control" name="level" required>
+								<?php $levels = json_decode($levels);
+									foreach($levels->entitlements as $level){
+									?>
+								<option value="<?php echo $level->id; ?>,<?php echo $level->hourlyRate; ?>"><?php echo $level->name." (".$level->hourlyRate.")"; ?></option>
+								<?php } ?>
+							</select>
+							<label for="level" class="labels__">Level<sup><img src="<?php echo base_url('assets/images/icons/star.png'); ?>"></sup></label>
+						</div>
 					</span>
-					<span>
-						<label class="labels__">Fri</label>
-						<input id="CT_5" type="checkbox" name="CT_5">
+
+					<span class="span-class col-md-3">
+						<div class="form-floating">
+							<select placeholder="Ordinary Earning Rate Id" class="form-control" id="ordinaryEarningRateId" name="ordinaryEarningRateId" required>
+									<?php $awardsdata = json_decode($ordinaryEarningRate);
+										foreach($awardsdata->awards as $award){
+										?>
+									<option value="<?php echo $award->earningRateId; ?>"><?php echo $award->name; ?></option>
+									<?php } ?>
+							</select>
+							<label for="ordinaryEarningRateId">Ordinary Earning Rate Id</label>
+						</div>
 					</span>
-				</span>
-			</span>
+
+					<span class="col-md-3">
+						<div class="form-floating">
+							<select id="employement_type" class="form-control" name="employement_type" required>
+								<option value="FT">Full Time</option>
+								<option value="PT">Part Time</option>
+								<option value="CT">Casual</option>
+							</select>
+							<label for="employement_type" class="labels__">Employment type<sup><img src="<?php echo base_url('assets/images/icons/star.png'); ?>"></sup></label>
+						</div>
+					</span>
+
+					<span class="span-class col-md-3">
+						<div class="form-floating">
+							<input placeholder="Increase of base pay" id="iobp" class="form-control" type="text" name="iobp" value="0">
+							<label for="iobp">Increase of base pay (in Dollars)</label>
+						</div>
+					</span>
+
+					<span class="col-md-3">
+						<div class="form-floating">
+							<input id="totalHours" class="form-control" placeholder="Total Hours" type="number" name="totalHours" required>
+							<label class="labels__">Total Hours<sup><img src="<?php echo base_url('assets/images/icons/star.png'); ?>"></sup></label>
+						</div>
+					</span>
+					</span>
+
+					<span class="col-md-12 daysOpen">
+						<label class="labels__">Days<sup><img src="<?php echo base_url('assets/images/icons/star.png'); ?>"></sup></label>
+						<span class="d-flex checkDay">
+							<span>
+								<label for="CT_1" class="labels__">Mon</label>
+								<input id="CT_1" type="checkbox" name="CT_1">
+							</span>
+							<span>
+								<label for="CT_2" class="labels__">Tue</label>
+								<input id="CT_2" type="checkbox" name="CT_2">
+							</span>
+							<span>
+								<label for="CT_3" class="labels__">Wed</label>
+								<input id="CT_3" type="checkbox" name="CT_3">
+							</span>
+							<span>
+								<label for="CT_4" class="labels__">Thu</label>
+								<input id="CT_4" type="checkbox" name="CT_4">
+							</span>
+							<span>
+								<label for="CT_5" class="labels__">Fri</label>
+								<input id="CT_5" type="checkbox" name="CT_5">
+							</span>
+						</span>
+					</span>
 
 	</section>
 <!-- 		<span class="span-class col-3">
@@ -368,16 +393,17 @@
 
 
 
-	<div class="submit_addEmployee">
-		<button type="submit" id="subm">
-			<i>
-				<img src="<?php echo base_url('assets/images/icons/send.png'); ?>" style="max-height:1rem;margin-right:10px">
-			</i>Submit</button>
+	<div class="formSubmit submit_addEmployee">
+		<button type="submit" id="subm" class="btn button_submit btn btn-default btn-small btnOrange pull-right">
+			<span class="material-icons-outlined">send</span> Submit
+		</button>
 	</div>
+
 </form>
 <?php } ?>
 		</div>
 	</div>
+</div>
 </div>
 <!-- Notification -->
 <div class="notify_">
@@ -414,7 +440,44 @@
 
 <script type="text/javascript">
 
-// Notification //
+		function empNo(){
+			var finalurl = '<?= base_url('api/Settings/getEmployeeId') ?>';
+			var xdeviceid = '<?= $this->session->userdata('x-device-id') ?>';
+			var xtoken = '<?= $this->session->userdata('AuthToken') ?>';
+			var userid = '<?= $this->session->userdata('LoginId') ?>';
+			$.ajax({
+				url:finalurl,
+				type:"POST",
+                headers:{
+                    "x-device-id":xdeviceid,
+                    "x-token":xtoken
+                },
+				data:JSON.stringify({
+					"userid":userid
+				}),
+				success:function(result,status,xhr){
+					console.log(result);
+					var da = jQuery.parseJSON(result);
+					if(da.Status == "SUCCESS"){
+						// alert(da.Data);
+						$("#employee_no").val(da.Data);
+						// location.reload();
+					}else if(da.Status == "ERROR"){
+						alert(da.Message);
+						location.reload();
+					}else{
+						alert(da.Message);
+						location.reload();
+					}
+				}
+			});
+		}
+		setInterval(function() {
+		// method to be executed;
+		empNo();
+		}, 500);
+
+	// Notification //
     function showNotification(){
       $('.notify_').css('visibility','visible');
     }
@@ -503,19 +566,18 @@
 				$('.amount-class-parent').eq(0).empty();
 				$('.remainderYN[value="Y"]').eq(0).prop('checked',true);
 				for(i = 1 ; i < count ; i++){
-					$('.remainder_parent').eq(i).css('display','none')
-					$('.remainderYN[value="Y"]').eq(i).attr('name','remaindeYN-'+i);
-					$('.remainderYN[value="N"]').eq(i).attr('name','remaindeYN-'+i);
-					$('.remainderYN[value="N"]').eq(i).prop('checked',true);
-					$('.remainderYN[value="Y"]').eq(i).attr('disabled',true);
-					$('.remainderYN[value="N"]').eq(i).attr('disabled',true);
-
-					}
+						$('.remainder_parent').eq(i).css('display','none')
+						$('.remainderYN[value="Y"]').eq(i).attr('name','remaindeYN-'+i);
+						$('.remainderYN[value="N"]').eq(i).attr('name','remaindeYN-'+i);
+						$('.remainderYN[value="N"]').eq(i).prop('checked',true);
+						$('.remainderYN[value="Y"]').eq(i).attr('disabled',true);
+						$('.remainderYN[value="N"]').eq(i).attr('disabled',true);
+				}
 					
 				}
 			});
-					$('.amount-class').eq(0).css('display','none')
-					$('.remainderYN[value="Y"]').eq(0).prop('checked',true);
+				$('.amount-class').eq(0).css('display','none')
+				$('.remainderYN[value="Y"]').eq(0).prop('checked',true);
 		});
 
 	
@@ -536,26 +598,28 @@ $(document).ready(function(){
 
 	$(document).ready(function(){
 		$('#center').change(function(){
-	var id = this.value;
-	var url = "<?php echo base_url('settings/addEmployee/'); ?>"+id;
-	console.log(url)
-	$.ajax({
-		url:url,
-		type:'GET',
-		success:function(response){
-			// $('body').html($(response).find('#area'))
-			console.log($(response).find('#area').html())
-			$('#area-select').html($(response).find('#area'))
-			$('#role-select').html($(response).find('#role'))
-			for(x=0;x<$('#role').children().length;x++){
+		var id = this.value;
+		var url = "<?php echo base_url('settings/addEmployee/'); ?>"+id;
+		console.log(url);
+		$.ajax({
+			url:url,
+			type:'GET',
+			success:function(response){
+				// alert(response);
+				//console.log(response);
+				// $('body').html($(response).find('#area'))
+				//console.log($(response).find('#area').html())
+				$('#area-select').html($(response).find('#area'))
+				$('#role-select').html($(response).find('#role'))
+				for(x=0;x<$('#role').children().length;x++){
 					$('#role').children('option').eq(x).css('display','none')
-			}
 				}
+					}
+				})
 			})
-		})
 	});
 
-		for(x=0;x<$('#role').children().length;x++){
+	for(x=0;x<$('#role').children().length;x++){
 		if($('#role').children('option').eq(x).attr('area-id') == 1){
 			
 		}
@@ -563,8 +627,6 @@ $(document).ready(function(){
 			$('#role').children('option').eq(x).css('display','none')
 		}
 	}
-
-
 
 	$(document).on('change','#area',function(){
 	var areaId = this.value;
@@ -578,9 +640,8 @@ $(document).ready(function(){
 		}
 
 		console.log($('#role').children('option').eq(x).attr('area-id'))
-			}
-		});
-
+		}
+	});
 
 	function onFormSubmit(e){
 		e.preventDefault();
@@ -596,7 +657,7 @@ $(document).ready(function(){
 					if(response.Status == 'EXISTS'){
 						localStorage.setItem('checkEnrolled','true');
 				      addMessageToNotification('Employee Id Already Exists');
-				      				      showNotification();
+				    showNotification();
 				      setTimeout(closeNotification,5000)
 				      falseOrTrue = false;
 					}
@@ -699,7 +760,7 @@ $(document).ready(function(){
 				}
 
 				if(falseOrTrue == true){
-					console.log(falseOrTrue)
+					// console.log(falseOrTrue)
 					document.getElementById("myForm").submit();
 				}
 			})

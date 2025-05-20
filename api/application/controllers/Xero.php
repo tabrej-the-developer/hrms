@@ -45,17 +45,41 @@ class Xero extends CI_Controller
 
 				$server_output = $this->postToken($postData);
 				$json = json_decode($server_output);
-
+				// echo '<pre>';
+				// var_dump($json);
+				// echo "-----------------";
 				$access_token = $json->access_token;
 				$id_token = $json->id_token;
 				$refresh_token = $json->refresh_token;
 				$expires_in = $json->expires_in;
 
 				$tenant = $this->getTenant($access_token);
+				// echo '<pre>';
 				// var_dump($tenant);
+				// echo "-----------------";
 				$tjson = json_decode($tenant);
-				$tenant_id = $tjson[0]->tenantId;
-
+				// echo '<pre>';
+				// print_r($tjson);
+				// echo "-----------------";
+				// So i need to search throught the database to find the tenants check generated tenat present in db or not. If present take the 0 index tenant id but If not present take new tenant id
+				$dbxtenants = $this->xeroModel->getXTenants();
+				// echo '<pre>';
+				// print_r($dbxtenants);
+				// echo "-----------------";
+				// die();
+				$tenant_id = "";
+				if(sizeof($tjson) == 1){
+					$tenant_id = $tjson[0]->tenantId;
+				}else{
+					foreach($tjson as $key=>$val){
+						$needle = $val->tenantId;
+						if(!array_search($needle ,array_column($dbxtenants, 'tenant_id'))){
+							$tenant_id = $needle;
+						}
+					}
+				}
+				echo $tenant_id;
+				// die();
 				$this->xeroModel->insertNewToken($access_token, $refresh_token, $tenant_id, $expires_in, $centerid);
 
 				$payItems = $this->getPayItems($access_token, $tenant_id);
@@ -266,6 +290,7 @@ class Xero extends CI_Controller
 					//xero 
 					$xeroTokens = $this->xeroModel->getXeroToken($centerid);
 					// var_dump($xeroTokens);
+					// die();
 					if ($xeroTokens != null) {
 						$access_token = $xeroTokens->access_token;
 						$tenant_id = $xeroTokens->tenant_id;
@@ -286,6 +311,8 @@ class Xero extends CI_Controller
 							// NOTICE -- need to get the centerid
 							$this->payrollModel->deleteAllPayrollShiftTypes($centerid);
 							$earningRates = $val->PayItems->EarningsRates;
+							// var_dump($earningRates);
+							// die();
 							for ($i = 0; $i < count($earningRates); $i++) {
 								$RateType = $earningRates[$i]->RateType;
 								$EarningsRateID = $earningRates[$i]->EarningsRateID;
@@ -325,6 +352,315 @@ class Xero extends CI_Controller
 		}
 	}
 
+	public function addXeroAwards(){
+		$headers = $this->input->request_headers();
+		$headers = array_change_key_case($headers);
+		// print_r($headers);
+		// die();
+		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+			$this->load->model('authModel');
+			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
+			$json = json_decode(file_get_contents('php://input'));
+			// var_dump($json);
+			// die();
+			if ($json != null && $res != null && $res->userid == $json->userid) {
+				$userid = $json->userid;
+				$userDetails = $this->authModel->getUserDetails($userid);
+				if($userDetails != null){
+					$this->load->model('xeroModel');
+					$this->load->model('payrollModel');
+					//xero 
+					$xeroTokens = $this->xeroModel->getXeroToken($json->centerid);
+					// echo sizeof($xeroTokens);
+					// die();
+					if ($xeroTokens != null) {
+						$access_token = $xeroTokens->access_token;
+						$tenant_id = $xeroTokens->tenant_id;
+						$refresh_token = $xeroTokens->refresh_token;
+
+						$val = $this->getPayItems($access_token, $tenant_id);
+						$val = json_decode($val);
+
+						// print_r($val);
+						// die();
+						if ($val->Status == 401) {
+							$refresh = $this->refreshXeroToken($refresh_token);
+							$refresh = json_decode($refresh);
+							$access_token = $refresh->access_token;
+							$expires_in = $refresh->expires_in;
+							$refresh_token = $refresh->refresh_token;
+							$this->xeroModel->insertNewToken($access_token, $refresh_token, $tenant_id, $expires_in, $json->centerid);
+							$val = $this->getPayItems($access_token, $tenant_id);
+							$val = json_decode($val);
+						}
+						if ($val->Status == "OK") {
+							//attach past earning rates to the newly added earning rates
+							if($json->type == "ADD"){
+								// NOTICE -- need to get the centerid
+								$this->payrollModel->deleteAllPayrollShiftTypes($json->centerid);
+								$earningRates = $val->PayItems->EarningsRates;
+								// print_r($earningRates);
+								// die();
+								//attach this array and newly added array and push to new array
+								$fer = json_encode($earningRates);
+								$rfer = str_replace(array( '[', ']' ), '', $fer);
+								// echo $rfer;
+								// die();
+								
+								
+								if ($json->RateType == "FIXEDAMOUNT"){
+									$Multiplier_Amount = $json->Amount;
+									$newEarningRates = array(
+										"Name"=>$json->Name,
+										"AccountCode"=>"477",
+										"RateType"=>$json->RateType,
+										"Amount"=>$Multiplier_Amount,	
+										"TypeOfUnits"=>$json->TypeOfUnits,
+										"IsExemptFromTax"=>$json->IsExemptFromTax,
+										"IsExemptFromSuper"=>$json->IsExemptFromSuper,
+										"EarningsType"=>$json->EarningsType,
+										"IsReportableAsW1"=>$json->IsReportableAsW1,
+										"CurrentRecord"=>$json->CurrentRecord
+									);
+								}else if ($json->RateType == "MULTIPLE"){
+									$Multiplier_Amount = $json->Multiplier;
+									$newEarningRates = array(
+										"Name"=>$json->Name,
+										"AccountCode"=>"477",
+										"RateType"=>$json->RateType,
+										"Multiplier"=>$Multiplier_Amount,
+										"AccrueLeave"=>false,	
+										"TypeOfUnits"=>$json->TypeOfUnits,
+										"IsExemptFromTax"=>$json->IsExemptFromTax,
+										"IsExemptFromSuper"=>$json->IsExemptFromSuper,
+										"EarningsType"=>$json->EarningsType,
+										"IsReportableAsW1"=>$json->IsReportableAsW1,
+										"CurrentRecord"=>$json->CurrentRecord
+									);
+								}else if($json->RateType == "RATEPERUNIT"){
+									$Multiplier_Amount = $json->RatePerUnit;
+									$newEarningRates = array(
+										"Name"=>$json->Name,
+										"AccountCode"=>"477",
+										"RateType"=>$json->RateType,
+										"RatePerUnit"=>$Multiplier_Amount,
+										"TypeOfUnits"=>$json->TypeOfUnits,
+										"IsExemptFromTax"=>$json->IsExemptFromTax,
+										"IsExemptFromSuper"=>$json->IsExemptFromSuper,
+										"EarningsType"=>$json->EarningsType,
+										"IsReportableAsW1"=>$json->IsReportableAsW1,
+										"CurrentRecord"=>$json->CurrentRecord
+									);
+								}
+
+								if($json->EarningsType == "ALLOWANCE"){
+									$newEarningRates['AllowanceType'] = $json->AllowanceType;
+								}
+								
+
+								$encodedne = json_encode($newEarningRates);
+
+								$fstring = '{ "EarningsRates" : ['.$rfer.','.$encodedne.']}';
+								$fr = json_decode($fstring,true);
+								// print_r($fr);
+								// die();
+
+							}else if($json->type == "DEL"){
+
+								$deletedAwardDataArray = array();
+								for ($i = 0; $i < count($json->fidaafdel); $i++) {
+									$RateType = $json->fidaafdel[$i]->rateType;
+									$EarningsRateID = $json->fidaafdel[$i]->earningRateId;
+									$Name = $json->fidaafdel[$i]->name;
+									$EarningsType = $json->fidaafdel[$i]->earningType;
+									$IsExemptFromTax = $json->fidaafdel[$i]->isExemptFromTaxYN == "Y" ? true : false;
+									$IsExemptFromSuper = $json->fidaafdel[$i]->isExemptFromSuperYN == "Y" ? true : false;
+									$IsReportableAsW1 = $json->fidaafdel[$i]->isReportableAsW1 == "Y" ? true : false;
+									$CurrentRecord = isset($json->fidaafdel[$i]->currentRecordYN) ? true : false;
+									$Multiplier_Amount = $json->fidaafdel[$i]->multiplier_amount;
+
+									$deletedAwardDataArray[] = array(
+										"EarningsRateID"=>$EarningsRateID,
+										"Name"=>$Name,
+										"EarningsType"=>$EarningsType,
+										"IsExemptFromTax"=>$IsExemptFromTax,
+										"IsExemptFromSuper"=>$IsExemptFromSuper,
+										"IsReportableAsW1"=>$IsReportableAsW1,
+										"RateType"=>$RateType,
+										"CurrentRecord"=>$CurrentRecord,
+										"Multiplier"=>$Multiplier_Amount
+									);
+
+								}
+								$encodedne = json_encode($deletedAwardDataArray);
+
+								$fstring = '{ "EarningsRates" : '.$encodedne.' }';
+								$fr = json_decode($fstring,true);
+
+							}else if($json->type == "EDI"){
+
+								$updatedAwardDataArray = array();
+								for ($i = 0; $i < count($json->existeddata); $i++) {
+									$RateType = $json->existeddata[$i]->rateType;
+									$EarningsRateID = $json->existeddata[$i]->earningRateId;
+									$Name = $json->existeddata[$i]->name;
+									$EarningsType = $json->existeddata[$i]->earningType;
+									$IsExemptFromTax = $json->existeddata[$i]->isExemptFromTaxYN == "Y" ? "true" : "false";
+									$IsExemptFromSuper = $json->existeddata[$i]->isExemptFromSuperYN == "Y" ?  "true" : "false";
+									$IsReportableAsW1 = $json->existeddata[$i]->isReportableAsW1 == "Y" ?  "true" : "false";
+									$CurrentRecord = $json->existeddata[$i]->currentRecordYN == "Y" ?  "true" : "false";
+									$TypeofUnits = $json->existeddata[$i]->TypeOfUnits == "" ? "Hours" : $json->existeddata[$i]->TypeOfUnits;
+
+									if ($RateType == "FIXEDAMOUNT"){
+										$Multiplier_Amount = isset($json->existeddata[$i]->Amount) ? $json->existeddata[$i]->Amount : 0;
+									}else if ($RateType == "MULTIPLE"){
+										$Multiplier_Amount = isset($json->existeddata[$i]->Multiplier) ? $json->existeddata[$i]->Multiplier : 0;
+									}else if($RateType == "RATEPERUNIT"){
+										$Multiplier_Amount = isset($json->existeddata[$i]->RatePerUnit) ? $json->existeddata[$i]->RatePerUnit : 0;
+									}
+
+									$updatedAwardDataArray[] = array(
+										"EarningsRateID"=>$EarningsRateID,
+										"Name"=>$Name,
+										"AccountCode"=>"477",
+										"RateType"=>$RateType,
+
+										"Amount"=>$Multiplier_Amount,
+										"Multiplier"=>$Multiplier_Amount,
+										"RatePerUnit"=>$Multiplier_Amount,
+
+										"TypeOfUnits"=>$TypeofUnits,
+										"EarningsType"=>$EarningsType,
+										"IsExemptFromTax"=>$IsExemptFromTax,
+										"IsExemptFromSuper"=>$IsExemptFromSuper,
+										"IsReportableAsW1"=>$IsReportableAsW1,
+										"CurrentRecord"=>$CurrentRecord
+
+									);
+
+								}
+								// $encodedne = json_encode($updatedAwardDataArray);
+								$fer = json_encode($updatedAwardDataArray);
+								$rfer = str_replace(array( '[', ']' ), '', $fer);
+
+								// echo gettype($existeddata);
+								// exit();
+								// print_r($existeddata);
+								
+
+								if ($json->RateType == "FIXEDAMOUNT"){
+									$Multiplier_Amount = isset($json->Amount) ? $json->Amount : 0;
+								}else if ($json->RateType == "MULTIPLE"){
+									$Multiplier_Amount = $json->Multiplier;
+								}else if($json->RateType == "RATEPERUNIT"){
+									$Multiplier_Amount = $json->RatePerUnit;
+								}
+								
+								$updatedNewAwardDataArray = array(
+									"EarningsRateID"=>$json->EarningsRateID,
+									"Name"=>$json->Name,
+									"AccountCode"=>"477",
+									"RateType"=>$json->RateType,
+
+									"Amount"=>$Multiplier_Amount,
+									"Multiplier"=>$Multiplier_Amount,
+									"RatePerUnit"=>$Multiplier_Amount,
+
+									"TypeOfUnits"=>$json->TypeOfUnits,
+									"IsExemptFromTax"=>$json->IsExemptFromTax,
+									"IsExemptFromSuper"=>$json->IsExemptFromSuper,
+									"EarningsType"=>$json->EarningsType,
+									"IsReportableAsW1"=>$json->IsReportableAsW1,
+									"CurrentRecord"=>$json->CurrentRecord
+								);
+
+								$newencodedne = json_encode($updatedNewAwardDataArray);
+								// echo $newencodedne;
+								// exit();
+
+								$fstring = '{ "EarningsRates" : ['.$rfer.','.$newencodedne.']}';
+								// echo $fstring;
+								$fr = json_decode($fstring,true);
+								
+
+								// print_r($fr);
+								// die();
+
+								// echo $rfer;
+
+
+							}
+
+							$finalval = $this->postAwardsToXero($access_token,$tenant_id,$fr);
+							echo json_decode($finalval);
+
+							// echo '<pre>';
+							// echo $fstring;
+							// echo '</pre>';
+
+						} else {
+							$data['Status'] = "ERROR";
+							$data['Message'] = "An unknown error occured";
+							http_response_code(403);
+							echo json_encode($data);
+						}
+
+
+					}else{
+						$data['Status'] = 'ERROR';
+						$data['Message'] = "You are not allowed. No Xero Token Available";
+						http_response_code(403);
+						echo json_encode($data);
+					}
+				}else{
+					$data['Status'] = 'ERROR';
+					$data['Message'] = "You are not allowed3";
+					http_response_code(403);
+					echo json_encode($data);
+				}
+			}else{
+				$data['Status'] = 'ERROR';
+				$data['Message'] = "You are not allowed2";
+				http_response_code(401);
+				echo json_encode($data);
+			}
+		}else{
+			$data['Status'] = 'ERROR';
+			$data['Message'] = "You are not allowed1";
+			http_response_code(401);
+			echo json_encode($data);
+		}
+
+	}
+	function postAwardsToXero($access_token, $tenant_id, $data)
+	{
+		// echo json_encode($data);
+		// die();
+		$url = "https://api.xero.com/payroll.xro/1.0/PayItems";
+		$ch =  curl_init($url);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+		curl_setopt($ch, CURLOPT_HTTPHEADER,  array(
+			'Content-Type:application/json',
+			'Authorization:Bearer ' . $access_token,
+			'Xero-tenant-id:' . $tenant_id
+		));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$server_output = curl_exec($ch);
+		// print_r($server_output);
+		// die();
+		// header('Content-Type: application/json');
+		// echo json_encode($server_output);
+		$xml = simplexml_load_string($server_output);
+		$json = json_encode($xml);
+		// $array = json_decode($json,TRUE);
+		// echo $arra
+		echo $json;
+		exit();
+
+	}
+
 	public function syncXeroLeaves($centerid)
 	{
 		$headers = $this->input->request_headers();
@@ -341,6 +677,8 @@ class Xero extends CI_Controller
 					$this->load->model('leaveModel');
 					//xero 
 					$xeroTokens = $this->xeroModel->getXeroToken($centerid);
+					// var_dump($xeroTokens);
+					// die();
 					if ($xeroTokens != null) {
 						$access_token = $xeroTokens->access_token;
 						$tenant_id = $xeroTokens->tenant_id;
@@ -359,34 +697,40 @@ class Xero extends CI_Controller
 							$val = json_decode($val);
 						}
 						// var_dump($val);
+						// die();
 						if ($val->Status == "OK") {
 							$leaveTypes = $val->PayItems->LeaveTypes;
 							// var_dump($leaveTypes);
+							// die();
 							// NOTICE -- need to get the centerid
 							$this->leaveModel->deleteAllLeaveTypes($centerid);
 							for ($i = 0; $i < count($leaveTypes); $i++) {
 								$LeaveTypeID = $leaveTypes[$i]->LeaveTypeID;
 								$Name = addslashes($leaveTypes[$i]->Name);
-								$IsPaidLeave = $leaveTypes[$i]->IsPaidLeave ? "Y" : "N";
-								$ShowOnPayslip = $leaveTypes[$i]->ShowOnPayslip ? "Y" : "N";
-								$CurrentRecord = $leaveTypes[$i]->CurrentRecord ? "Y" : "N";
+								$IsPaidLeave = $leaveTypes[$i]->IsPaidLeave == true ? "Y" : "N";
+								$ShowOnPayslip = $leaveTypes[$i]->ShowOnPayslip == true ? "Y" : "N";
+								$CurrentRecord = $leaveTypes[$i]->CurrentRecord == true ? "Y" : "N";
 								$slug = $Name[0];
 								// NOTICE -- need to get the centerid
 								$this->leaveModel->createLeaveType($LeaveTypeID, $Name, $IsPaidLeave, $slug, $ShowOnPayslip, $CurrentRecord, $userid, $centerid);
 							}
 							$data['Status'] = 'SUCCESS';
+							http_response_code(200);
+							echo json_encode($data);
 						} else {
 							$data['Status'] = "ERROR";
 							$data['Message'] = "An unknown error occured";
+							http_response_code(401);
+							echo json_encode($data);
 						}
 					}
 				} else {
 
 					$data['Status'] = 'ERROR';
 					$data['Message'] = "You are not allowed";
+					http_response_code(401);
+					echo json_encode($data);
 				}
-				http_response_code(200);
-				echo json_encode($data);
 			} else {
 				http_response_code(401);
 			}
@@ -506,6 +850,7 @@ class Xero extends CI_Controller
 	{
 		$xeroTokens = $this->xeroModel->getXeroToken($centerid);
 		// var_dump($xeroTokens);
+		// die();
 		if ($xeroTokens != null) {
 			$access_token = $xeroTokens->access_token;
 			$tenant_id = $xeroTokens->tenant_id;
@@ -523,15 +868,25 @@ class Xero extends CI_Controller
 				$val = json_decode($val);
 			}
 			// var_dump($val);
+			// die();
 			if ($val->Status == "OK") {
 				//employees
 				$employees = $this->getEmployees($access_token, $tenant_id, $empId);
-				print_r($employees);
+				// print_r($employees);
+				// die();
 				$employees = json_decode($employees)->Employees;
+				// print_r($employees);
+				// die();
+				$earningRateId = "";
 				for ($i = 0; $i < count($employees); $i++) {
 					$employeeId = $employees[$i]->EmployeeID;
+
 					$empDetails = $this->getCompleteEmployeeInfo($access_token, $tenant_id, $employeeId);
+
 					$empDetails = json_decode($empDetails)->Employees[0];
+
+					// print_r($empDetails);
+		
 					$Title = isset($empDetails->Title) ? $empDetails->Title : "";
 					$FirstName = $empDetails->FirstName;
 					$MiddleNames = isset($empDetails->MiddleNames) ? $empDetails->MiddleNames : "";
@@ -565,29 +920,55 @@ class Xero extends CI_Controller
 					}
 					$OrdinaryEarningsRateID = isset($empDetails->OrdinaryEarningsRateID) ? $empDetails->OrdinaryEarningsRateID : "";
 					$PayrollCalendarID = isset($empDetails->PayrollCalendarID) ? $empDetails->PayrollCalendarID : "";
-					$myUser = $this->authModel->getUserFromEmail($Email);
+					$myUser = $this->authModel->getUserFromEmailV1($Email,$userid);
+					// if(empty($myUser)){
+					// 	echo "I can insert";
+					// }else{
+					// 	echo "I cannot insert";
+					// }
+					// die();
+					// echo $myUser."RohitU";
+					// die();
 					if ($myUser == null) {
-						$password = $FirstName . $LastName . "@123";
-						$myUserid = $this->authModel->insertUser($Email, $password, $FirstName . " " . $LastName, 4, $JobTitle, null, null, $userid, 0, 0, 0);
 
+						$password = $FirstName . $LastName . "@123";
+
+						//From the db we can get the role
+						$ud = $this->authModel->getUserDetails($userid);
+						// $role = $json->role;
+						$role = $ud->role;
+						$res = $this->settingsModel->getFullEmployeeId($userid,$role);
+						$re=preg_replace('~\D~', '', $res->lastuserid);
+						$prefix = preg_replace('/[0-9]+/', '', $res->lastuserid);
+						if($re == ""){
+							$finalempno = sprintf('%05d',1);
+							$empnowithprefix= $res->companyIdPrefix.$finalempno;
+						}else{
+							$finalempno = sprintf('%05d',$re+1);
+							$empnowithprefix = $prefix.$finalempno;
+						}
+
+						$myUserid = $this->authModel->insertUserV1($empnowithprefix,$Email, md5($password), $FirstName . " " . $LastName, 4, $JobTitle, $centerid, null, $userid, 0, 0, 0);
 						// Add to user center table
-						$this->authModel->addToUserCenters($myUserid,$centerid);
+						$this->settingsModel->addToUserCenters($myUserid,$centerid);
+
 					} else {
 						$myUserid = $myUser->id;
 					}
 					$myEmployee = $this->employeeModel->getUserFromId($myUserid);
+					// echo $myEmployee."RohitE";
+					// die();
 					if ($myEmployee == null) {
 						//insert 
 						$this->employeeModel->insertEmployee($myUserid, $employeeId, $Title, $FirstName, $MiddleNames, $LastName, $Status, $Email, $DateOfBirth, $JobTitle, $Gender, $AddressLine1, $AddressLine2, $City, $Region, $PostalCode, $Country, $Phone, $Mobile, $StartDate, $TerminationDate, $OrdinaryEarningsRateID, $PayrollCalendarID, $userid, '');
 					} else {
 						//update
 						$this->employeeModel->updateEmployee($employeeId, $Title, $FirstName, $MiddleNames, $LastName, $Status, $Email, $DateOfBirth, $JobTitle, $Gender, $AddressLine1, $AddressLine2, $City, $Region, $PostalCode, $Country, $Phone, $Mobile, $StartDate, $TerminationDate, $OrdinaryEarningsRateID, $PayrollCalendarID, $myUserid);
-						$this->employeeModel->deleteAllDetailsForUser($employeeId);
+						$this->employeeModel->deleteAllDetailsForUser($myUserid);
 					}
 
 
 					//taxes
-
 					$TaxFileNumber = isset($empDetails->TaxDeclaration->TaxFileNumber) ? $empDetails->TaxDeclaration->TaxFileNumber : "";
 					$EmploymentBasis = $empDetails->TaxDeclaration->EmploymentBasis;
 					$TFNExemptionType = isset($empDetails->TaxDeclaration->TFNExemptionType) ? $empDetails->TaxDeclaration->TFNExemptionType : "";
@@ -602,7 +983,7 @@ class Xero extends CI_Controller
 					$UpwardVariationTaxWithholdingAmount = isset($empDetails->TaxDeclaration->UpwardVariationTaxWithholdingAmount) ? $empDetails->TaxDeclaration->UpwardVariationTaxWithholdingAmount : 0;
 					$ApprovedWithholdingVariationPercentage = isset($empDetails->TaxDeclaration->ApprovedWithholdingVariationPercentage) ? $empDetails->TaxDeclaration->ApprovedWithholdingVariationPercentage : 0;
 
-					$this->employeeModel->insertIntoTaxDeclaration($employeeId, $EmploymentBasis, $TFNExemptionType, $TaxFileNumber, $AustralianResidentForTaxPurposes, $ResidencyStatus, $TaxFreeThresholdClaimed, $TaxOffsetEstimatedAmount, $HasHELPDebt, $HasSFSSDebt, $HasStudentStartupLoan, $UpwardVariationTaxWithholdingAmount, $EligibleToReceiveLeaveLoading, $ApprovedWithholdingVariationPercentage);
+					$this->employeeModel->insertIntoTaxDeclaration($myUserid, $EmploymentBasis, $TFNExemptionType, $TaxFileNumber, $AustralianResidentForTaxPurposes, $ResidencyStatus, $TaxFreeThresholdClaimed, $TaxOffsetEstimatedAmount, $HasHELPDebt, $HasSFSSDebt, $HasStudentStartupLoan, $UpwardVariationTaxWithholdingAmount, $EligibleToReceiveLeaveLoading, $ApprovedWithholdingVariationPercentage);
 
 					//bank accounts
 					foreach ($empDetails->BankAccounts as $bankAccount) {
@@ -612,7 +993,7 @@ class Xero extends CI_Controller
 						$AccountNumber = $bankAccount->AccountNumber;
 						$Remainder = $bankAccount->Remainder ? "Y" : "N";
 						$Amount = isset($bankAccount->Amount) ? $bankAccount->Amount : 0;
-						$this->employeeModel->insertIntoBankAccount($employeeId, $StatementText, $AccountName, $BSB, $AccountNumber, $Remainder, $Amount);
+						$this->employeeModel->insertIntoBankAccount($myUserid, $StatementText, $AccountName, $BSB, $AccountNumber, $Remainder, $Amount);
 					}
 
 					//super fund memberships
@@ -620,7 +1001,8 @@ class Xero extends CI_Controller
 						$SuperMembershipID = $superMembership->SuperMembershipID;
 						$SuperFundID = $superMembership->SuperFundID;
 						$EmployeeNumber = $superMembership->EmployeeNumber;
-						$this->employeeModel->insertIntoSuperMembership($employeeId, $SuperFundID, $EmployeeNumber, $SuperMembershipID);
+						// $this->employeeModel->insertIntoSuperMembership($employeeId, $SuperFundID, $EmployeeNumber, $SuperMembershipID);
+						$this->employeeModel->insertIntoSuperMembership($myUserid, $SuperFundID, $EmployeeNumber, $SuperMembershipID);
 					}
 
 					//leave balance
@@ -631,16 +1013,97 @@ class Xero extends CI_Controller
 						$NumberOfUnits = $leaveBalance->NumberOfUnits;
 						$this->leaveModel->insertIntoLeaveBalance($myUserid, $LeaveTypeID, $NumberOfUnits);
 					}
+
+					//Check whether having LeaveType Time in Lieu
+					$ltieu = $this->leaveModel->getLeaveTypeByName($centerid,$userid);
+					//Check each employee whether having lieu or not, if not insert else leave
+					$this->leaveModel->getTLTypeById($myUserid,$ltieu->leaveid);
+
+					$udd = $this->settingsModel->getUsersDetailedData($myUserid,$userid);
+					$awardsdetails = $this->settingsModel->getAwards($centerid);
+					if(empty($udd)){
+						foreach($awardsdetails as $ai=>$av){
+							if($av->name == "Ordinary Hours"){
+								$earningRateId .= $av->earningRateId."|";
+								$this->settingsModel->editEmployeeAwards($av->earningRateId,$myUserid);
+							}else if($av->name == "Overtime Hours (exempt from super)"){
+								$earningRateId .= $av->earningRateId."|";
+								$this->settingsModel->editEmployeeAwards($av->earningRateId,$myUserid);
+							}
+						}
+						$this->settingsModel->updateEmployeeAward($earningRateId,$myUserid);
+					}else{
+						foreach($awardsdetails as $ai=>$av){
+							if($av->name == "Ordinary Hours"){
+								$earningRateId .= $av->earningRateId."|";				
+							}else if($av->name == "Overtime Hours (exempt from super)"){
+								$earningRateId .= $av->earningRateId."|";
+							}
+						}
+						if(strpos($earningRateId,$udd->awards) == false){
+							$this->settingsModel->updateEmployeeAward($udd->awards.$earningRateId,$myUserid);
+						}
+					}
 				}
 			}
 		}
 	}
+	public function demo(){
+		$this->load->model('settingsModel');
+		$earningRateId = "";
+		$myUserid = ['FM00001','FM00002','FM00003'];
+		$udd = $this->settingsModel->getUsersDetailedData("FM00001","shannu");
+		// print_r($udd);
+		// die();
+		if(!empty($udd)){
+			// echo "Im working";
+			// Insert Awards(Ordinary & Overtime) to this employee
+			//-// First of all get awards
+			$awardsdetails = $this->settingsModel->getAwards(27);
+			foreach($awardsdetails as $ai=>$av){
+				if($av->name == "Ordinary Hours"){
+					// echo $av->name;
+					$earningRateId .= $av->earningRateId."|";
+					// $this->settingsModel->editEmployeeAwards($av->earningRateId,$myUserid);
+					// $this->settingsModel->updateEmployeeAward($av->earningRateId."|",$myUserid);
+				}else if($av->name == "Overtime Hours (exempt from super)"){
+					// echo $av->name;
+					$earningRateId .= $av->earningRateId."|";
+					// $this->settingsModel->editEmployeeAwards($av->earningRateId,$myUserid);
+					// $this->settingsModel->updateEmployeeAward($udd->awards.$av->earningRateId."|",$myUserid);
+				}
+			}
+			echo $earningRateId."<br>"."\r\n";
+			//-// First of all get awards
+			// $this->settingsModel->updateEmployeeAward($earningRateId,$myUserid);
+			// Insert Awards(Ordinary & Overtime) to this employee
+		}else{
+			// echo "Im next conditiomn";
+			// echo "Im not working";
+			//Check whether awards are there are not, if already there(strpos check) no need to insert/ update, if not there update the awards
+			$awardsdetails = $this->settingsModel->getAwards(27);
+			// $earningRateId = "";
+			foreach($awardsdetails as $ai=>$av){
+				if($av->name == "Ordinary Hours"){
+					$earningRateId .= $av->earningRateId."|";				
+				}else if($av->name == "Overtime Hours (exempt from super)"){
+					$earningRateId .= $av->earningRateId."|";
+				}
+			}
+			if(strpos($earningRateId,$udd->awards) == false){
+				echo $udd->awards.$earningRateId."\r\n";
+			}
+			// echo $earningRateId."<br>"."\r\n";
+			// //-// First of all get awards
+			// $this->settingsModel->updateEmployeeAward($udd->awards.$earningRateId,$myUserid);
+		}
 
+	}
 	public function fetchXeroToken($userid)
 	{
 		$headers = $this->input->request_headers();
 		$headers = array_change_key_case($headers);
-		if ($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
+		if($headers != null && array_key_exists('x-device-id', $headers) && array_key_exists('x-token', $headers)) {
 			$this->load->model('authModel');
 			$this->load->model('settingsModel');
 			$res = $this->authModel->getAuthUserId($headers['x-device-id'], $headers['x-token']);
@@ -764,7 +1227,7 @@ class Xero extends CI_Controller
 			'Authorization:Bearer ' . $access_token,
 			'Xero-tenant-id:' . $tenant_id
 		));
-		set_time_limit(60);
+		// set_time_limit(60);
 		$server_output = curl_exec($ch);
 		return $server_output;
 	}
@@ -792,10 +1255,14 @@ class Xero extends CI_Controller
 	public function startOauth($userid, $centerid)
 	{
 		$client_id = XERO_CLIENT_ID;
+	
 		$redirect_uri = base_url() . "xero/oauth";
+	
 		$this->load->library('session');
 		$this->session->set_userdata('centerid', $centerid);
 		$this->session->set_userdata('LoginId', $userid);
+		// print_r($userid);
+		// exit;
 		//$userid = $this->session->userdata('LoginId');
 		// $userid = "123";
 

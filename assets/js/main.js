@@ -21,7 +21,8 @@ $(document).ready(function(){
     });
 
     $(".mobileMenu").on("click", function(){
-        $(".toggleMenu").toggle();
+        $('.header').addClass('fixed');
+        $(".toggleMenu").toggle();   
     });
 
 

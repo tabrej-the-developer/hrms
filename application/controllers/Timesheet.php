@@ -31,20 +31,20 @@ class Timesheet extends CI_Controller {
 				$var['id'] = $id;
 				$var['centerId'] = $id;
 				$var['userId'] 	= $this->session->userdata('LoginId');
-		$var['permissions'] = $this->fetchPermissions();
-		$var['centers'] = $this->getAllCenters();
-		$var['center__'] = $id;
-		$var['timesheets'] = $this->getPasttimesheets($id);
+				$var['permissions'] = $this->fetchPermissions();
+				$var['centers'] = $this->getAllCenters();
+				$var['center__'] = $id;
+				$var['timesheets'] = $this->getPasttimesheets($id);
 			}
-		else{
-			$var['error'] = 'error';
-		}
-	//footprint start
-	if($this->session->has_userdata('current_url')){
-		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-		$this->session->set_userdata('current_url',currentUrl());
-	}
-	// footprint end
+			else{
+				$var['error'] = 'error';
+			}
+			//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+				$this->session->set_userdata('current_url',currentUrl());
+			}
+			// footprint end
 			$this->load->view('getPastTimesheetsView',$var);
 		}
 		else{
@@ -66,12 +66,12 @@ class Timesheet extends CI_Controller {
 		}else{
 			$data['error'] = 'error';
 		}
-	//footprint start
-	if($this->session->has_userdata('current_url')){
-		footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
-		$this->session->set_userdata('current_url',currentUrl());
-	}
-	// footprint end
+			//footprint start
+			if($this->session->has_userdata('current_url')){
+				footprint(currentUrl(),$this->session->userdata('current_url'),$this->session->userdata('LoginId'),'LoggedIn');
+				$this->session->set_userdata('current_url',currentUrl());
+			}
+			// footprint end
 			$this->load->view('timesheetView',$data);
 			}
 		else{
@@ -265,17 +265,17 @@ class Timesheet extends CI_Controller {
 				'x-device-id: '.$this->session->userdata('x-device-id'),
 				'x-token: '.$this->session->userdata('AuthToken')
 			));
-					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-$server_output = curl_exec($ch);
-			$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			if($httpcode == 200){
-				$jsonOutput = json_decode($server_output);
-				curl_close ($ch);
-				redirect(base_url()."timesheet/TimesheetDashboard");
-			}
-			else if($httpcode == 401){
-				redirect(base_url()."roster/roster_dashboard");
-			}
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$server_output = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			$jsonOutput = json_decode($server_output);
+			curl_close ($ch);
+			redirect(base_url()."timesheet/TimesheetDashboard");
+		}
+		else if($httpcode == 401){
+			redirect(base_url()."roster/roster_dashboard");
+		}
 
 	}
 }
@@ -358,6 +358,7 @@ $server_output = curl_exec($ch);
 		$form_data = $this->input->post();
 		if($form_data != null){
 			$data['userid'] = $this->session->userdata('LoginId');
+			$data['centerId'] = $this->input->post('centerId');
 			$data['empId'] = $this->input->post('empId');
 			$data['timesheetid'] = $this->input->post('timesheetid');
 			$data['visits'] = $this->input->post('visits');

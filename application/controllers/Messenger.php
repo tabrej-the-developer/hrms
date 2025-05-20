@@ -28,8 +28,8 @@ class Messenger extends CI_Controller {
 			$data['allUsers'] = $this->getUsers();
 			$userid = $this->session->userdata('LoginId');
 			if(isset($idConversation) && $idConversation != null){
-			$data['getChat'] = $this->getChat($idConversation);
-			$data['getConversation'] = $this->getConversation($idConversation);
+				$data['getChat'] = $this->getChat($idConversation);
+				$data['getConversation'] = $this->getConversation($idConversation);
 			}
 			// print_r($data['recentConversations']);die();
 			$this->load->view('mView_temp',$data);

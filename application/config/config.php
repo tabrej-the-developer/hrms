@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+date_default_timezone_set('Asia/Kolkata');
 
 /*
 |--------------------------------------------------------------------------
@@ -23,8 +24,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-//$config['base_url'] = 'http://localhost/PN101/';
-  $config['base_url'] = "https://stage.todquest.com/HRMS101/";
+$config['base_url'] = 'http://localhost/hrms/';
+  // $config['base_url'] = "https://stage.todquest.com/HRMS101/";
 /*
 |--------------------------------------------------------------------------
 | Index File
@@ -158,7 +159,7 @@ $config['composer_autoload'] = FALSE;
 | DO NOT CHANGE THIS UNLESS YOU FULLY UNDERSTAND THE REPERCUSSIONS!!
 |
 */
-$config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-';
+$config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-|';
 
 /*
 |--------------------------------------------------------------------------
@@ -223,7 +224,7 @@ $config['allow_get_array'] = TRUE;
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 0;
+$config['log_threshold'] = 1;
 
 /*
 |--------------------------------------------------------------------------
@@ -260,7 +261,7 @@ $config['log_file_extension'] = '';
 | IMPORTANT: This MUST be an integer (no quotes) and you MUST use octal
 |            integer notation (i.e. 0700, 0644, etc.)
 */
-$config['log_file_permissions'] = 0644;
+$config['log_file_permissions'] = 0777;
 
 /*
 |--------------------------------------------------------------------------

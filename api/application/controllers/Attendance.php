@@ -71,8 +71,8 @@ class Attendance extends CI_Controller
 				$data['Status'] = "SUCCESS";
 				if ($sendNotificationYN == "Y")
 					$this->firebase->sendMessage('New Login', 'You were logged in', $data, $memberId);
-				http_response_code(200);
-				echo json_encode($data);
+					http_response_code(200);
+					echo json_encode($data);
 			} else {
 				http_response_code(401);
 			}

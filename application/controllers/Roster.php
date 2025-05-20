@@ -5,7 +5,8 @@ class Roster extends CI_Controller {
 
 	public function index(){
 		if($this->session->has_userdata('LoginId')){
-			redirect('roster/roster_dashboard');
+			// redirect('roster/roster_dashboard');
+			echo "Rohit";
 				}
 		else{
 			$this->load->view('redirectToLogin');
@@ -104,18 +105,18 @@ public function roster_dashboard(){
 		if($form_data != null){
 			$data['areaid'] = $this->input->post('areaid');
 			$data['newid'] = $this->input->post('priority');
-		 		$url = BASE_API_URL."/Rosters/changePriority/".$this->session->userdata('LoginId');
-				$ch = curl_init($url);
-				curl_setopt($ch, CURLOPT_URL,$url);
-				curl_setopt($ch, CURLOPT_POST, 1);
-				curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
-				curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-						'x-device-id: '.$this->session->userdata('x-device-id'),
-						'x-token: '.$this->session->userdata('AuthToken')
-					));
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-					$server_output = curl_exec($ch);
-					$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			$url = BASE_API_URL."/Rosters/changePriority/".$this->session->userdata('LoginId');
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_URL,$url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($data));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'x-device-id: '.$this->session->userdata('x-device-id'),
+					'x-token: '.$this->session->userdata('AuthToken')
+				));
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				$server_output = curl_exec($ch);
+				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			if($httpcode == 200){
 				$jsonOutput = json_decode($server_output);
 				curl_close ($ch);
@@ -154,11 +155,20 @@ public function roster_dashboard(){
 
 public function getRosterDetails(){
 	if($this->session->has_userdata('LoginId')){
+		$this->load->model('User_model');
 		$data['rosterid'] = $this->input->get('rosterId');
 		$data['userid'] = $this->session->userdata('LoginId');
+		// echo $data['userid'];
+		// die();
 		$data['centers'] = $this->getAllCenters();
 		// $data['entitlements'] = $this->getAllEntitlements($data['userid']);
+		//problem is with below statement
 		$data['rosterDetails'] = $this->getRoster($data['rosterid'],$data['userid']);
+		$rosterPN = $this->User_model->getRosterDetailsPN($data['rosterid'],$data['userid']);
+		$data['previousRecord'] = $rosterPN->previousRecord;
+		$data['nextRecord'] = $rosterPN->nextRecord;
+		//problem is with above statement
+		
 		$data['permissions'] = $this->fetchPermissions();
 		$data['casualEmployees'] = $this->getCasualEmployees($data['rosterid']);
 		$data['roles'] = $this->getRoles();
@@ -174,7 +184,13 @@ public function getRosterDetails(){
 			else{
 				$data['error'] = 'error';
 			}
+
+			// print_r($data);
+			// die();
+
 			$this->load->view('rosterData',$data);
+	
+
 		}
 		else{
 			$this->load->view('redirectToLogin');
@@ -766,6 +782,8 @@ public function updateRoster(){
 		$data['userid'] = $this->input->post('userid');
 		$data['rosterid'] = $this->input->post('rosterid');
 		$data['status'] = $this->input->post('status');	
+		// echo json_encode($data);
+		// die();
 		$url = BASE_API_URL."rosters/updateRoster";
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
@@ -784,15 +802,17 @@ public function updateRoster(){
 	    curl_setopt($ch, CURLOPT_DNS_CACHE_TIMEOUT, 10); 
 	    curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
 		$server_output = curl_exec($ch);
-		// $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		// if($httpcode == 200){
-		// 	// $jsonOutput = json_decode($server_output);
-		// 	return 'SUCCESS';
-		// 	curl_close ($ch);
-		// }
-		// else if($httpcode == 401){
-	
-		// }
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpcode == 200){
+			$jsonOutput = json_decode($server_output);
+			return $jsonOutput;
+			curl_close ($ch);
+		}
+		else if($httpcode == 401){
+			$jsonOutput = json_decode($server_output);
+			return $jsonOutput;
+			curl_close ($ch);
+		}
 	}
 		else{
 			$this->load->view('redirectToLogin');

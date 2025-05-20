@@ -1,5 +1,6 @@
 <?php
-$colors_array = ['#A4D9D6','#A4D9D6','#A4D9D6','#A4D9D6','#A4D9D6','#A4D9D6'];
+ini_set('display_errors',0);
+$colors_array = ['#ff7c10','#ff7c10','#ff7c10','#ff7c10','#ff7c10','#ff7c10'];
 $this->load->library('Crypt_RSA');
    $rsa = new Crypt_RSA();
    // echo extract($rsa->createKey());
@@ -20,1536 +21,39 @@ $rsa->loadKey($publickey);
 ?>
 <html>
 <head>
-<?php $this->load->view('header'); ?>
     <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-messaging.js"></script>
 
 <meta charset="UTF-8">	
   <meta name="keywords" content="HTML,CSS,XML,JavaScript">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-<style type="text/css">
-  *{
-font-family: 'Open Sans', sans-serif;
-  }
-body {
 
-  min-height: 100vh;
-}
+  <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+<link href="<?php echo base_url('assets/css/bootstrap.min.css');?>" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-::-webkit-scrollbar {
-  width: 5px;
-  border: none;
-}
+<script src="https://code.jquery.com/jquery-3.4.1.js"  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="  crossorigin="anonymous"></script>
 
-::-webkit-scrollbar-track {
-  width: 5px;
-  background: #f5f5f5;
-}
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/layout.css?version='.VERSION);?>">
+ <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/container.css?version='.VERSION);?>">
 
-::-webkit-scrollbar-thumb {
-  width: 1em;
-  background-color: #ddd;
-  
-  border-radius: 1rem;
-}
-
-.text-small {
-  font-size: 0.9rem;
-}
-
-.members-box{
-  height: 165px;
-  overflow-y: scroll;
-    background-color:#fff;
-}
-
-.individual-box{
-  min-height: 25vh;
-  max-height: 25vh;
-  overflow-y: scroll;
-    background-color:#fff;
-    padding-left: 1.5rem
-}
-.messages-box{
-  height: 25vh;
-  overflow-y: auto;
-  background-color:#fff;
-  padding-left: 1.5rem 
-}
-.chat-box {
-  height: calc(100vh - 7rem);
-  overflow-y: scroll;
-  background-color:#fff;
-}
-.row.rounded-lg.overflow-hidden.shadow{
-  max-height: 100vh
-}
-.rounded-lg {
-  border-radius: 0 !important;
-  margin-left: 0;
-  margin-right: 0;
-}
-
-input::placeholder {
-  font-size: 0.9rem;
-  color: #999;
-}
-.headind_srchs{ 
-  height: 3.5rem;
-  overflow:hidden;
-  display: flex;
-  align-items: center;
-  background: var(--header-color)
- }
- .headind_srch{ 
-	padding:0.75rem 0.5rem 0.75rem 1rem;
-	overflow:hidden;
-	background-color:#9e9e9e33; 
-	box-shadow: none;
- }
-.has-search .form-control {
-    padding-left: 2.375rem;
-}
-
-.has-search .feedback {
-    position: absolute;
-    z-index: 2;
-    display: block;
-    width: 1.375rem;
-    height: 2.375rem;
-    line-height: 2.375rem;
-    text-align: center;
-    pointer-events: none;
-    color: #aaa;
-	margin: 0 0 0 10px;
-	
-}
-.form-control:focus {
-    box-shadow: none;
-}
-.search-bar{
-	border-radius:15px;
-	border:none;
-	box-shadow: none;
-}
-.form-control-sm {
-    height: calc(1.5em + 0.5rem + 2px);
-    padding: 1.1rem 2rem;
-    font-size: .875rem;
-    
-}
-.list-group-item-light {
-    color: #818182;
-    background-color: transparent;
-    padding: 5px;
-	border:none;
-}
-.list-group-item-light.list-group-item-action.active_chat {
-    color: #818182;
-    background-color: #f9f9f9;
-    border-color: #f9f9f9;
-}
-.msg_send_btn{
-	border: none;
-    color: #25C14A;
-    font-weight: 500;
-    background-color: transparent;
-    margin: 10px;
-}
-.icon-container {
-  width: 35px;
-  height: 30px;
-  position: relative;
-}
-
-.status-circle {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background-color: grey;
-  border: 2px solid white;
-  bottom: 0;
-  right: 0;
-  position: absolute;
-}
-.status-circle-online {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background-color: #3CE77E;
-  border: 2px solid white;
-  bottom: 0;
-  right: 0;
-  position: absolute;
-}
-.separator {
-    display: flex;
-    align-items: center;
-    text-align: center;
-	margin-bottom:20px;
-}
-.separator::before, .separator::after {
-    content: '';
-    flex: 1;
-    border-bottom: 1px solid #ccc;
-}
-.separator::before {
-    margin-right: .25em;
-}
-.separator::after {
-    margin-left: .25em;
-}
-tbody {
-    display:block;
-    height:205px;
-    overflow:auto;
-}
-thead, tbody tr {
-    display:table;
-    table-layout:fixed;
-}
-thead {
-    width: calc( 100% - 1em )
-}
-table {
-    width:400px;
-}
-.table td, .table th {
-    padding: .75rem;
-    vertical-align: top;
-    border-top:0;
-}
-p.ovrflowtext {
-  white-space: nowrap; 
-  width: 100%; 
-  overflow: hidden;
-  text-overflow: ellipsis; 
-  border: 1px solid #000000;
-  border:none;
-}
-  .checkbox{background-color:#fff;display:inline-block;height:18px;margin:0.6em 0 0 0;width:18px;border-radius:0;border:1px solid #ccc;float:right}
-  .checkbox span{display:block;height:20px;position:relative;width:20px;padding:0}
-  .checkbox span:after{-moz-transform:scaleX(-1) rotate(135deg);-ms-transform:scaleX(-1) rotate(135deg);-webkit-transform:scaleX(-1) rotate(135deg);transform:scaleX(-1) rotate(135deg);-moz-transform-origin:left top;-ms-transform-origin:left top;-webkit-transform-origin:left top;transform-origin:left top;border-right:3px solid #fff;border-top:3px solid #fff;content:'';display:block;height:13px;left:0;position:absolute;top:8px;width:8px}
-  
-  .checkbox input{display:none}
-.checkbox input:checked + .default:after{border-color:#242121ad}
-.avatar {
-    font-size: 1rem;
-    display: inline-flex;
-    width: 48px;
-    height: 48px;
-    color: #fff;
-    border-radius: 50%;
-    background-color: #adb5bd;
-    align-items: center;
-    justify-content: center;
-}
-
-.avatar img {
-    width: 100%;
-    border-radius: 50%;
-}
-
-.avatar-sm {
-    font-size: .675rem;
-    width: 26px;
-    height: 26px;
-}
-
-.avatar-group .avatar {
+<script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js');?>" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('assets/js/popper.min.js');?>" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('assets/js/bootstrap.min.js');?>" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+<style>
+.navbar-nav .nav-item-header:nth-of-type(6) {
+    background: var(--blue2) !important;
     position: relative;
-    z-index: 2;
-    border: 2px solid #fff;
 }
-
-.avatar-group .avatar:hover {
-    z-index: 3;
-}
-
-.avatar-group .avatar + .avatar {
-    margin-left: -1rem;
-}
-.list-group-item-light.list-group-item-action:focus, .list-group-item-light.list-group-item-action:hover {
-    color: #818182;
-    background-color: #f9f9f9;
-}
-
-
-/*sidebar*/
-.sidebar{
-	position:fixed;
-	top:58%;
-	right:-100%;
-	transform:translateY(-50%);
-	width:350px;
-	height:100vh;
-	min-height:50%;
-	padding:40px;
-	background:#f9f9f9;
-	overflow-y: scroll;
-	box-sizing:border-box;
-	transition:0.5s;
-	z-index: 9999;
-}
-.sidebar.active{
-	right:0;
-}
-.sidebar input{
-	width:100%;
-	height:100%;
-	padding:5px;
-	margin-bottom:10px;
-	box-sizing:border-box;
-	border:none;
-	outline:none;
-}
-.sidebar h2{
-	margin:0 0 20px;
-	padding:0;
-}
-
-.sidebar input[type="submit"]{
-	background:#00bcd4;
-	color:#fff;
-	cursor:pointer;
-	border:none;
-	font-size:18px;
-}
-.toggle {
+.navbar-nav .nav-item-header:nth-of-type(6)::after {
     position: absolute;
-    height: 15px;
-    width: 15px;
-    text-align: center;
-    cursor: pointer;
-    background: #111010;
-    top: 1%;
-    left: 2px;
-    line-height: 15px;
-}
-.toggle:before{
-	content:'\f003';
-	font-family:fontAwesome;
-	font-size:18px;
-	color:#fff;
-}
-.toggle.active:before{
-	content:'\f00d';
-}
-
-.left-bar-heading{
-  font-size:0.9rem;
-  color: black;
-  font-weight: 500
-}
-.text-small{
-  font-size: 0.75rem
-}
-.text-small-chat{
-  font-size: 0.9rem;
-  color: rgba(0,0,0,1);
-}
-.text-small-chat-message{
-  font-size: 0.8rem;
-  color: rgba(0,0,0,1);
-  padding: 0 0.4rem
-}
-.left-bar{
-  border-right: 1px solid rgba(0,0,0,0.2);
-}
-.right_box{
-  border-left: 1px solid rgba(0,0,0,0.2);
-}
-.left-bar-title{
-  color: #084183 !important;
-  font-size: 0.9rem;
-  font-weight: 700;
-}
-.attach_file{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-left: 1rem
-}
-.attach_file > img{
-  height: 1.5rem;
-}
-.circle_plus{
-  display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-left: 0.75rem
-}
-.circle_plus > img{
-  height: 1.5rem
-}
-.name-chat-box{
-  font-weight: 700;
-  color: #3D3C40 !important;
-}
-.chat-message-time{
-  color: rgba(0,0,0,0.6);
-  font-size: 0.6rem;
-  display: flex;
-  justify-content: flex-end;
-  padding: 0 0.2rem
-}
-.bg-light{
-  background: #f2f2f2 !important;
-}
-.left_icon{
-  display:flex;
-  justify-content:center;
-  align-self: center;
-  border-radius: 50%;
-  color:#707070;
-  font-weight: 700;
-  height: 1.5rem;
-  width: 1.5rem;
-}
-.icon{
-  font-size:0.75rem;
-  display:flex;
-  justify-content:center;
-  align-self: center;
-  border-radius: 50%;
-  padding:0.25rem 0;
-  color:#707070;
-  font-weight: 700;
-  height: 1.5rem;
-  width: 1.5rem;
-}
-.icon-parent{
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  padding: 0;
-}
-.loader {
-    border: 16px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 16px solid #307bd3;
-    width: 120px;
-    height: 120px;
-    animation: spin 2s linear infinite;
-    z-index: 9999;
-  }
-  .loading{
-    position: fixed;
-    height: 100vh;
-    width: 100vw;
+    right: 0;
     top: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    background: rgba(0,0,0,0.2)
-  }
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-
-
-/*profile card*/
-.card {
-        top:50%;
-        left:50%;
-        transform:translate(-50%,-50%);
-        width:310px;
-        min-height:200px;
-        background:#fff;
-        transition:0.5s;
-    }
-    
-    .card .box {
-        position:absolute;
-        top:50%;
-        left:0;
-        transform:translateY(-50%);
-        text-align:center;
-        padding:20px;
-        box-sizing:border-box;
-        width:100%;
-    }
-    .card .box .imgs {
-        width:120px;
-        height:120px;
-        margin:0 auto;
-        border-radius:50%;
-        overflow:hidden;
-    }
-    .card .box .imgs img {
-        width:100%;
-        height:100%;
-    }
-    .card .box h2 {
-        font-size:20px;
-        color:#262626;
-        margin:20px auto;
-    }
-    .card .box h2 span {
-        font-size:14px;
-        
-        color:#212529;
-        
-    }
-    .card .box p {
-        color:#262626;
-    }
-    .card .box span {
-	/*  display:inline-flex;*/    
-	}
-    .card .box ul {
-        margin:0;
-        padding:0;
-    }
-    .card .box ul li {
-        list-style:none;
-        float:left;
-    }
-    .card .box ul li a {
-        display:block;
-        color:#aaa;
-        margin:0 10px;
-        font-size:20px;
-        transition:0.5s;
-        text-align:center;
-    }
-    .card .box ul li:hover a {
-        color:#e91e63;
-        transform:rotateY(360deg);
-    }
-	.card2 {
-        top:50%;
-        left:50%;
-        transform:translate(-9%,-2%);
-        width:310px;
-        min-height:60px;
-        background:#fff;
-        transition:0.5s;
-    }
-	.card2 {
-    margin-bottom: 15px;
-    border-radius: 0;
-    box-shadow: 0 3px 5px rgba(0,0,0,.1);
-}
-    
-    .card2 .box2 {
-        position:absolute;
-        top:50%;
-        left:0;
-        transform:translateY(-50%);
-        text-align:center;
-        padding:20px;
-        box-sizing:border-box;
-        width:100%;
-    }
-    .card2 .box2 .imgs {
-        width:120px;
-        height:120px;
-        margin:0 auto;
-        border-radius:50%;
-        overflow:hidden;
-    }
-    .card2 .box2 .imgs img {
-        width:100%;
-        height:100%;
-    }
-    .card2 .box2 h2 {
-        font-size:20px;
-        color:#262626;
-        margin:20px auto;
-    }
-    
-    .card2 .box2 p {
-        color:#262626;
-		text-align: left;
-    font-size: 17px;
-    font-weight: 500;
-    }
-    
-    .card2 .box2 ul {
-        margin:0;
-        padding:0;
-    }
-    .card2 .box2 ul li {
-        list-style:none;
-        float:left;
-    }
-    .card2 .box2 ul li a {
-        display:block;
-        color:#aaa;
-        margin:0 10px;
-        font-size:20px;
-        transition:0.5s;
-        text-align:center;
-    }
-    .card2 .box2 ul li:hover a {
-        color:#e91e63;
-        transform:rotateY(360deg);
-    }
-/*sidebar end*/
-
-/* inline edit group NAME */
-.editbox {
-  position: relative;
-  margin:0 auto;
-  padding:0;
-  width:250px;
-  min-height: 15px;
-  border: 0;
-  border-radius: 0;
-  background: #fff;
-}
-
-.editable {
-  border-color: #bd0f18;
-  background: #f9f9f9;
-}
-
-.text {
-  outline: none;
-  font-size:18px;
-  font-weight: 500;
-    padding: 7px;
-
-}
-
-.edit, .save {
-  width: 35px;
-  display: block;
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  padding: 4px 10px;
-  /*border-top-right-radius: 2px;
-  border-bottom-left-radius: 10px; */
-  text-align: center;
-  cursor: pointer;
-  /* box-shadow: -1px 1px 4px rgba(0,0,0,0.5); */
-}
-
-.edit { 
-  color: green;
-  transition: opacity .2s ease-in-out;
-}
-
-.save {
-  display: none;
-  color: green;
-  font-size:18px;
-  margin-top: 7px;
-
-}
-
-.editbox:hover .edit {
-  opacity: 1;
-}
-
-/* inline edit group NAME END */
-
-.chat_ib h5{ font-size:15px; color:#464646; margin:6px 0 0 0;}
-.chat_ib h5 span{ font-size:13px; float:right;}
-.chat_ib p{ font-size:14px; color:#989898; margin:auto}
-.chat_img {
-  float: left;
-  width: 11%;
-}
-.chat_ib {
-  float: left;
-  padding: 0 0 0 15px;
-  width: 88%;
-}
-.pointer {cursor: pointer;}
-.container{
-  max-width:100%;
-}
-   .modal-logout {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        opacity: 0;
-        visibility: hidden;
-        transform: scale(1.1);
-        transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
-        text-align: center;
-    }
-    .modal-content-logout {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: white;
-        padding: 1rem 1.5rem;
-        width: 50%;
-        border-radius: 0.5rem;
-    }
-    .show-modal {
-        opacity: 1;
-        visibility: visible;
-        transform: scale(1.0);
-        transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
-    }
-    .chat-box{
-      min-height:0;
-    }
-    #chatForm{
-          border-top: 1px solid rgba(0,0,0,.2);
-          height: 3.5rem
-    }
-
-    /*-------------------*/
-    /*Left bar heights and styles*/
-    /*-------------------*/
-
-.headind_srch{
-  height:9vh;
-}
-#upload_image{
-  display: none;
-}
-.attach_file:hover #upload_image{
-  display: block !important;
-  right:50%;
-  top:0;
-}
-.general_heading{
-  height:5.33vh;
-}
-.modal-header{
-  background: #8D91AA;
-  display: flex;
-    justify-content: center;
-}
-.modal-header h5{
-  font-size: 1rem;
-  color: #F3F4F7 !important;
-}
-.button{
-  /*position: absolute;*/
-/*  right: 0;*/
-    border: none !important;
-    color: rgb(23, 29, 75) !important;
-    text-align: center !important;
-    text-decoration: none !important;
-    display: inline-block;
-    font-weight: 700 !important;
-    margin: 2px !important;
-    min-width:6rem !important;
-      border-radius: 20px !important;
-      padding: 4px 8px !important;
-      background: rgb(164, 217, 214) !important;
-      font-size: 1rem !important;
-      margin-right:5px !important;
-      justify-content: center !important;
-}
-
-#recipient-name{
-        background: #ebebeb !important;
-      border-radius: 5px !important;
-      padding: 5px !important;
-      border: 1px solid #D2D0D0 !important;
-      border-radius: 20px !important;
-      padding-left: 1rem;
-      font-size: 0.85rem !important;
-}
-.tokens-container.form-control{
-  padding-left: 2rem !important;
-}
-
-
-/* New UI code from here */
-:root{
-  --header-color: #e6e6e6;
-}
-.left_topbar{
-  height: 3.5rem;
-  background: var(--header-color);
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 0 0.5rem;
-}
-.left_topbar_wrapper{
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-}
-.searchbar{
-  height: 3.5rem;
-  background: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.searchinput{
-  border-radius: 1rem;
-  height: 2rem;
-  border: 1px solid white;
-  padding-left: 2rem;
-  width: 100%;
-}
-.searchbar_wrapper{
-  width: 85%;
-}
-.searchbar{
-  background: var(--header-color);
-}
-/* Recent Chats List */
-.recentchat{
-  height: 4rem;
-  width: 100%;
-  background: white;
-  display: block;
-  height: calc(100vh - 3.5rem);
-  overflow: auto;
-}
-.recentchat_icon{
-  width: 60px;
-  height: 100%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-.recentchat_text_top{
-  display: flex;
-  justify-content: space-between;
-  padding: 0 0.25rem;
-}
-.recentchat_text_bottom{
-  padding: 0 0.25rem;
-}
-.recentchat_text{
-  display: inline-block;
-  width: 100%;
-  vertical-align: middle;
-}
-.commonGroups_text{
-  display: inline-block;
-  width: 100%;
-  vertical-align: middle;
-}
-.commonGroups_text_top{
-    display: flex;
-  justify-content: space-between;
-  padding: 0 0.25rem;
-}
-.commonGroups_text_bottom{
-    padding: 0 0.25rem;
-}
-.recentchat_tile{
-  width: calc(100% - 65px);
-  display: inline-block;
-}
-.commonGroups_tile{
-  width: calc(100% - 65px);
-  display: inline-block;
-}
-.recentchat_wrapper{
-  width: 100%;
-  display: block;
-  position: relative;
-  height: 4rem;
-}
-.recentchat_wrapper:hover{
-  background: #f7f5f5;
-  cursor: pointer;
-}
-.recentchat_wrapper:after{
-      content: ' ';
-    /* padding: 1px; */
-    border-bottom: 1px solid #f0f0f0;
-    width: 75%;
-    display: block;
-    text-align: right;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-}
-.recentchat_message{
-  font-size: 0.8rem;
-}
-.recentchat_date_time{
-  font-size: 0.8rem;
-  color: #cccccc;
-}
-.left_topbar_righticon{
-  cursor: pointer;
-}
-.left_topbar_righticon_click{
-  position: relative;
-}
-.left_topbar_righticon_click:focus > .left_topbar_righticon_dropdown{
-  display: block;
-  position: absolute;
-  right: 0;
-  background: white;
-  border-radius: 5px;
-  padding: 0.5rem;
-}
-.left_topbar_righticon_dropdown{
-  display: none;
-min-width: 10rem;
-    padding: .5rem 0;
-    padding-left: 2rem !important;
-    margin: .125rem 0 0;
-    font-size: 1rem;
-    color: #212529;
-    text-align: left;
-    list-style: none;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid rgba(0,0,0,.15);
-    border-radius: .25rem;
-}
-.left_topbar_righticon_dropdown > span{
-  display: block;
-}
-/* Recent Chats List */
-
-/* All Users List */
-.allUsersList{
-  height: 4rem;
-  width: 100%;
-  background: white;
-  display: none;
-  height: calc(100vh - 3.5rem);
-  overflow: auto;
-}
-.createGroupUsersList{
-  height: 4rem;
-  width: 100%;
-  background: white;
-  display: block;
-  height: calc(100vh - 9.5rem);
-  overflow: auto;
-}
-.createGroupUsersList_wrapper{
-  width: 100%;
-  display: block;
-  position: relative;
-  height: 4rem;
-}
-.createGroupUsersList_wrapper:hover{
-  background: #f7f5f5;
-  cursor: pointer;
-}
-.createGroupUsersList_wrapper:after{
-      content: ' ';
-    /* padding: 1px; */
-    border-bottom: 1px solid #f0f0f0;
-    width: 75%;
-    display: block;
-    text-align: right;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-}
-.allUsersList_userIcon{
-  width: 60px;
-  height: 4rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-.recentchat_text_top{
-  display: flex;
-  justify-content: space-between;
-  padding: 0 0.25rem;
-}
-.recentchat_text_bottom{
-  padding: 0 0.25rem;
-}
-.recentchat_text{
-  display: inline-block;
-  width: 100%;
-}
-.recentchat_tile{
-  width: calc(100% - 65px);
-}
-.recentchat_tile{
-  display: inline-block;
-  height: 100%;
-  vertical-align: center;
-}
-.allUsersList_wrapper{
-  width: 100%;
-  display: block;
-  position: relative;
-  height: 4rem;
-}
-.allUsersList_wrapper:hover{
-  background: #f7f5f5;
-  cursor: pointer;
-}
-.allUsersList_wrapper:after{
-      content: ' ';
-    /* padding: 1px; */
-    border-bottom: 1px solid #f0f0f0;
-    width: 75%;
-    display: block;
-    text-align: right;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-}
-.groupMembers_wrapper{
-  width: 100%;
-    display: flex;
-    align-items: center;
-  position: relative;
-  height: 3rem;
-}
-.groupMembers_wrapper:after{
-      content: ' ';
-    /* padding: 1px; */
-    border-bottom: 1px solid #f0f0f0;
-    width: 75%;
-    display: block;
-    text-align: right;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-}
-.groupMembers_wrapper:hover{
-  background: #f7f5f5;
-  cursor: pointer;
-}
-.groupMembers_userIcon{
-  width: 60px;
-  height: 4rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-.groupMembers_text{
-  display: inline-block;
-  width: 100%;
-  vertical-align: middle;
-}
-.commonGroups_wrapper{
-  width: 100%;
-  display: block;
-  position: relative;
-  height: 4rem;
-}
-.commonGroups_wrapper:hover{
-  background: #f7f5f5;
-  cursor: pointer;
-}
-.commonGroups_wrapper:after{
-      content: ' ';
-    /* padding: 1px; */
-    border-bottom: 1px solid #f0f0f0;
-    width: 75%;
-    display: block;
-    text-align: right;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-}
-.commonGroups_userIcon{
-  width: 60px;
-  height: 4rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-.recentchat_message{
-  font-size: 0.8rem;
-}
-.recentchat_date_time{
-  font-size: 0.8rem;
-  color: #cccccc;
-}
-.left_topbar_righticon{
-  cursor: pointer;
-}
-.left_topbar_righticon_click{
-  position: relative;
-}
-.left_topbar_righticon_click:focus > .left_topbar_righticon_dropdown{
-  display: block;
-  position: absolute;
-  right: 0;
-  background: white;
-  border-radius: 5px;
-  padding: 0.5rem;
-}
-.left_topbar_righticon_dropdown{
-  display: none;
-min-width: 10rem;
-    padding: .5rem 0;
-    padding-left: 2rem !important;
-    margin: .125rem 0 0;
-    font-size: 1rem;
-    color: #212529;
-    text-align: left;
-    list-style: none;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid rgba(0,0,0,.15);
-    border-radius: .25rem;
-    z-index: 2;
-}
-.left_topbar_righticon_dropdown > span{
-  display: block;
-}
-/* All Users List */
-
-#contact_us{
-  padding-left: 1rem;
-}
-.sender-rightalign{
-  display: flex;
-  justify-content: flex-end;
-  /* display: flex; */
-  width: 100%;
-  margin: 0.4rem 0;
-  position: relative;
-}
-.sender-leftalign{
-  position: relative;
-  margin: 0.25rem 0;
-}
-.sender-right,.sender-left{
-  background: white;
-  min-width: 10%;
-  max-width: 40%;
-  border-radius: 5px;
-  border-bottom: 1px solid rgba(0,0,0,0.1);
-  background: #c7cdff;
-  color: white !important;
-}
-.sender-right::after{
-    content: ' ';
-    border-top: 10px solid #c7cdff;
-    border-right: 10px solid transparent;
-    /* padding: 1rem; */
-    position: absolute;
-    right: -7px;
-    top: 0;
-
-}
-.sender-left::before{
-    content: ' ';
-    border-top: 10px solid #c7cdff;
-    border-left: 10px solid transparent;
-    /* padding: 1rem; */
-    position: absolute;
-    left: -7px;
-}
-.right_top_tab{
-  height: 3.5rem;
-  display: flex;
-  align-items: center;
-  background: var(--header-color);
-}
-.right_user_icon{
-  height: 40vh;
-  width: 100%;
-}
-.user_icon_wrapper{
-    height: 80%;
-    width: 100%;
-}
-.user_icon_view{
     height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
+    width: 3px;
+    bottom: 0;
+    content: "";
+    background: var(--orange1);
 }
-.user_icon_view > img{
-    height: 10rem;
-    width: 10rem;
-    /*width: auto;*/
-    border-radius: 50%;
-    position: relative;
-}
-.user_title_view{
-  font-size: 0.8rem;
-  /*padding-left: 0.5rem;*/
-}
-.user_name_wrapper{
-  display: flex;
-  flex-direction: column;
-}
-.right_top_tab_close{
-    position: relative;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-left: 1rem;
-    cursor: pointer;
-}
-.right_top_tab_close img{
-  height: 30%
-}
-.right_top_tab_info{
-width: 100%;
-    display: flex;
-    align-items: center;
-    padding-right: 4rem;
-    justify-content: center;
-}
-.text-capitalize,.contact_us{
-    cursor: pointer;
-}
-.text-capitalize{
-  width: 100%;
-}
-.right_box{
-  padding: 0 !important;
-  display: none;
-  height: 100vh;
-}
-.input-group{
-  height: 3.5rem;
-  display: flex;
-  align-items: center;
-}
-#chatText{
-  margin-left: 1rem;
-  border-radius: 2rem !important;
-}
-.currentTextDate_center{
-  font-size: 0.85rem;
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  margin-top: 0.35rem;
-}
-.currentTextDate_centerbox{
-  background: #dcf8c6;
-  padding: 0.25rem;
-  border-radius: 0.25rem;
-  box-shadow: 0 -1px 3px 1px rgba(0,0,0,0.1);
-}
-.alphabetIcon{
-height: 10rem;
-    width: 10rem;
-    background: #A4D9D6;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-    color:#707070;
-}
-.user_name_view{
-  display: flex;
-  justify-content: center;
-}
-.user_title_view{
-  display: flex;
-  justify-content: center;
-}
-.boxcategory{
-  height: 15rem;
-  overflow: hidden;
-}
-.boxcategoryTitle{
-    height: 3rem;
-    display: flex;
-    background: #171d4b;
-    justify-content: center;
-    align-items: center;
-    color: white;
-}
-.elementOfCategory{
-  display: block;
-}
-.boxcategory_wrapper{
-  text-align: center;
-  overflow: auto;
-  height: 12rem;
-}
-/*User modal*/
-.usersModal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgb(0, 0, 0);
-  background-color: rgba(0, 0, 0, 0.4);
-}
-.usersModalContent {
-  color: #414242;
-  margin: 15% auto;
-  padding: 30px 60px;
-  width: 500px;
-  font-size: 16px;
-  line-height: 28px;
-  letter-spacing: 0.5px;
-  -webkit-font-smoothing: antialiased;
-  background: #FFFFFF;
-  border: 1px solid #9B9C9D;
-  box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.20);
-  border-radius: 6px;
-}
-
-.usersModalContent a {
-  color: #636464;
-}
-
-.usersModalContent > h1 {
-  display: block;
-  width: 100%;
-  text-align: center;
-}
-
-.addUsersModal{
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgb(0, 0, 0);
-  background-color: rgba(0, 0, 0, 0.4);
-}
-
-.addUsersModalContent{
-  color: #414242;
-  margin: 15% auto;
-  width: 500px;
-  font-size: 16px;
-  line-height: 28px;
-  letter-spacing: 0.5px;
-  -webkit-font-smoothing: antialiased;
-  background: #FFFFFF;
-  border: 1px solid #9B9C9D;
-  box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.20);
-  border-radius: 6px;
-
-}
-
-.user__#accept {
-  margin: 30px auto;
-  display: block;
-  border: 1px solid #fc4c02;
-  border-radius: 3px;
-  background: #fff;
-  color: #fc4c02;
-  font-size: 16px;
-  height: 48px;
-  padding: 0 20px;
-  cursor: pointer;
-}
-/*User modal*/
-.groupOptions{
-  position: absolute;
-  bottom: 0;
-  cursor: pointer;
-  height: 3.5rem;
-  width: 100%;
-  background: rgba(226, 90, 83);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.searchbar_back{
-  cursor: pointer;
-  display: none;
-}
-.createGroupClass_wrapper > img:hover{
-  animation:spin 0.25s linear ;
-  cursor: pointer;
-}
-div.createGroupClass{
-  border-top:1px solid rgba(0,0,0,0.2);
-height: 3.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.groupNameClass{
-  width: 100%;
-  background: #edeff2;
-}
-.groupNameClass span{
-display: flex;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    height: 2.5rem;
-}
-.groupNameClass input{
-  border: none;
-  border-radius: 20px;
-  padding-left: 1rem !important;
-  background: #fff;
-  padding: 0.25rem;
-  width: 90%;
-}
-.searchbar_wrapper::before{
-    content: ' ';
-    position: absolute;
-    background-image: url(<?php echo base_url() ?>assets/images/icons/search.png);
-    height: 25px;
-    width: 25px;
-    background-repeat: no-repeat;
-    background-size: 15px 15px;
-    margin-top: 0.5rem;
-    margin-left: 0.5rem;
-}
-.user_group_options_icons{
-    position: absolute;
-    right: 1rem;
-}
-.editGroupName_tick{
-  cursor: pointer;
-  padding: 0.25rem 
-}
-.editGroupName_close{
-  cursor: pointer;
-  padding: 0.25rem 
-}
-.editGroupName_input{
-  background: #ebebeb;
-  border-radius: 5px;
-    padding: 5px;
-    border: 1px solid #D2D0D0 !important;
-    border-radius: 20px;
-    padding-left: 50px !important;
-    width: 70%;
-}
-@keyframes spin { 
-  100% { -webkit-transform: rotate(360deg); transform:rotate(360deg) } }
-.angle_downward{
-  opacity: 0;
-  transition-duration: 0.5s;
-}
-.angle_downward:hover{
-  cursor: pointer;
-  opacity: 1;
-}
-.remove_user_block{
-  display: none;
-}
-.no_messages_wrapper{
-height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-}
-.wrapper_on_hover{
-  display: none;
-}
-
-.user_icon_view:hover .wrapper_on_hover{
-    display: block;
-    position: absolute;
-    background: rgba(0,0,0,0.2);
-    height: 10rem;
-    width: 10rem;
-    z-index: 2;
-    border-radius: 50%;
-}
-.wrapper_on_hover>i>img{
-  position: absolute;
-    left: 40%;
-    top: 40%;
-}
-.wrapper_on_hover img:hover{
-  cursor: pointer;
-}
-.dynamic_icons{
-    position: absolute;
-    top: 40%;
-    left: 25%;
-}
-.dynamic_icons img{
-  margin-left: 0.75rem;
-}
-.members_title{
-      width: 80%;
-    display: flex;
-    justify-content: center;
-}
-.members_add{
-  width: 20%;
-  cursor: pointer;
-}
-.members_add img{
-  display: flex;
-  justify-content: center;
-}
-.addUsersModalContent_addMember{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #8D91AA;
-  color: #F3F4F7;
-  padding: 1rem
-}
-.addUsersModule_div{
-  width: 60%;
-  margin: auto;
-}
-.addUsersModule_div .tokenize .tokens-container{
-  margin-top: 2rem !important;
-}
-.addUsersModal_buttons{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 1rem 0;
-}
-#accept,#reject{
-    border: none !important;
-    color: rgb(23, 29, 75) !important;
-    text-align: center !important;
-    text-decoration: none !important;
-    display: inline-block;
-    font-weight: 700 !important;
-    margin: 2px !important;
-    min-width:6rem !important;
-    border-radius: 20px !important;
-    padding: 4px 8px !important;
-    background: rgb(164, 217, 214) !important;
-    font-size: 1rem !important;
-    margin-right:5px !important;
-    justify-content: center !important;
-}
-.rounded span{
-  color: rgba(0,0,0,0.8);
-  font-size: 0.75rem;
-  padding-left: 0.4rem;
-}
-/* New UI code ends here */
-    @media only screen and (max-width: 600px){
-      .left-bar{
-        max-width:auto;
-        width: 100vw;
-      }
-      .message-back{
-        padding:0 20px !important;
-
-      }
-      .container{
-        max-width:100%;
-        padding-right: 0 !important;
-      }
-      .lefbar-sm{
-        width: 100vw;
-      }
-    }
 </style>
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/tokenize2.css">
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tokenize2.js"></script>
@@ -1612,225 +116,228 @@ messaging.getToken().then((currentToken) => {
 </head>
 
 <body>
-<div class="container mr-0 pr-0">
- <?php 
-      // $recentChats = json_decode($recentChats);
-    $allUsers = json_decode($allUsers);
-    // $currentChat;
-    // $currentUserInfo;
-    // $groups                
-    function sortChat($my_array)
-             {
-              $c = $my_array->chats;
-            for($i=0;$i<count($c);$i++){
-              $val = $c[$i];
-              $j = $i-1;
-              while($j >= 0 && ($c[$j]->createdAt > $val->createdAt)){
-                $c[$j+1] = $c[$j];
-                $j--;
+<div class="wrapperContainer">
+	<?php include 'headerNew.php'; ?>
+    <div class="containers noScroll">
+		  <div class="chatContainer ">
+      <?php 
+        // $recentChats = json_decode($recentChats);
+        $allUsers = json_decode($allUsers);
+        // $currentChat;
+        // $currentUserInfo;
+        // $groups                
+        function sortChat($my_array)
+                {
+                $c = $my_array->chats;
+              for($i=0;$i<count($c);$i++){
+                $val = $c[$i];
+                $j = $i-1;
+                while($j >= 0 && ($c[$j]->createdAt > $val->createdAt)){
+                  $c[$j+1] = $c[$j];
+                  $j--;
+                }
+                $c[$j+1] = $val;
               }
-              $c[$j+1] = $val;
+              return $c;
             }
-            return $c;
-          }
-  
-  ?>
+        ?>
 
-  <div class="row rounded-lg overflow-hidden shadow">
-    <!-- Users box-->
-    <div class="col-md-3 col-sm-12 px-0 left-bar" style="">
-<!--       <div class="left_topbar">
-        <span class="left_topbar_wrapper">
-          <span class="left_topbar_lefticon">
-            <img src="<?php echo base_url('assets/images/icons/user.png') ?>" alt="user image" style="border-radius: 50%" height="32px" width="32px">
-          </span>
-          <span class="left_topbar_righticon_wrapper">
-            <span class="left_topbar_righticon">
-              <a href="javascript:void(0)" class="left_topbar_righticon_click">
-                <img src="<?php echo base_url('assets/images/icons/more.png') ?>" alt="raindrop icon">
-                <div class="left_topbar_righticon_dropdown">
-                  <span id="myBtn" class="user__"> Users</span>
-                  <span class="addgroup" >
-                    New&nbsp;Group  
+        <div class="chatMain">
+        <!-- Users box-->
+          <div class="chatLeft" style="">
+            <!--<div class="left_topbar">
+              <span class="left_topbar_wrapper">
+                <span class="left_topbar_lefticon">
+                  <img src="<?php echo base_url('assets/images/icons/user.png') ?>" alt="user image" style="border-radius: 50%" height="32px" width="32px">
+                </span>
+                <span class="left_topbar_righticon_wrapper">
+                  <span class="left_topbar_righticon">
+                    <a href="javascript:void(0)" class="left_topbar_righticon_click">
+                      <img src="<?php echo base_url('assets/images/icons/more.png') ?>" alt="raindrop icon">
+                      <div class="left_topbar_righticon_dropdown">
+                        <span id="myBtn" class="user__"> Users</span>
+                        <span class="addgroup" >
+                          New&nbsp;Group  
+                        </span>
+                      </div>
+                    </a>
                   </span>
-                </div>
-              </a>
-            </span>
-          </span>
-        </span>
-      </div> -->
-      <div class="searchbar">
-        <span class="searchbar_back">
-          <i>
-            <img src="<?php echo base_url('assets/images/icons/back.png'); ?>">
-          </i>
-        </span>
-        <span class="searchbar_wrapper">
-          <span class="searchinput_wrapper">
-            <input type="" name="" class="searchinput">
-          </span>
-        </span>
-          <span class="left_topbar_righticon_wrapper">
-            <span class="left_topbar_righticon">
-              <a href="javascript:void(0)" class="left_topbar_righticon_click">
-                <img src="<?php echo base_url('assets/images/icons/more.png') ?>" alt="raindrop icon">
-                <div class="left_topbar_righticon_dropdown">
-                  <span id="myBtn" class="user__"> Users</span>
-                  <span class="addgroup" >
-                    New&nbsp;Group  
+                </span>
+              </span>
+            </div> -->
+            <div class="searchbar">
+              <span class="searchbar_back">
+                <i>
+                  <span class="material-icons-outlined">arrow_back</span>
+                </i>
+              </span>
+              <span class="searchbar_wrapper">
+                <span class="searchinput_wrapper">
+                  <input type="" name="" class="searchinput">
+                </span>
+              </span>
+                <span class="left_topbar_righticon_wrapper">
+                  <span class="left_topbar_righticon">
+                    <a href="javascript:void(0)" class="left_topbar_righticon_click">
+                      <img src="<?php echo base_url('assets/images/icons/more.png') ?>" alt="raindrop icon">
+                      <div class="left_topbar_righticon_dropdown">
+                        <span id="myBtn" class="user__"> Users</span>
+                        <span class="addgroup" >
+                          New&nbsp;Group  
+                        </span>
+                      </div>
+                    </a>
                   </span>
-                </div>
-              </a>
-            </span>
-          </span>
-      </div>
-      <!-- Recent Chat  -->
-      <div class="recentchat">
-        <?php 
-        if(isset($recentConversations) && $recentConversations != null && $recentConversations != "" ){
-          if(count($recentConversations) > 0){
-        foreach($recentConversations as $chat){ ?>
-        <span class="recentchat_wrapper"  chatid="<?php echo $chat->idConversation; ?>" memberid="<?php echo $chat->recentChat[0]->idMember ?>">
-          <span class="recentchat_icon">
-            <?php // if($isGroupYN == 'Y'){ ?>
-              <?php if($chat->convoProfilePic != null && $chat->convoProfilePic != "" ){ ?>
-                <img src="<?php echo base_url('api/uploads/images/conversation/').$chat->convoProfilePic; ?>" height="25px" width="25px" class="left_icon">
-             <?php } ?>
-             <?php if($chat->convoProfilePic == null || $chat->convoProfilePic == "" ){ ?>
-              <span class=" icon" style="
-                <?php echo "background:".$colors_array[rand(0,5)]?>">
-                <?php echo isset($chat->convoName) ? icon($chat->convoName) : "";?>
+                </span>
+            </div>
+            <!-- Recent Chat  -->
+            <div class="recentchat">
+              <?php 
+              if(isset($recentConversations) && $recentConversations != null && $recentConversations != "" ){
+                if(count($recentConversations) > 0){
+              foreach($recentConversations as $chat){ ?>
+              <span class="recentchat_wrapper"  chatid="<?php echo $chat->idConversation; ?>" memberid="<?php echo $chat->recentChat[0]->idMember ?>" style="cursor:pointer;">
+                <span class="recentchat_icon">
+                  <?php // if($isGroupYN == 'Y'){ ?>
+                    <?php if($chat->convoProfilePic != null && $chat->convoProfilePic != "" ){ ?>
+                      <img src="<?php echo base_url('api/uploads/images/conversation/').$chat->convoProfilePic; ?>" height="50px" width="50px" class="left_icon">
+                  <?php } ?>
+                  <?php if($chat->convoProfilePic == null || $chat->convoProfilePic == "" ){ ?>
+                    <span class="icon" style="cursor:pointer;
+                      <?php echo "background:".$colors_array[rand(0,5)]?>">
+                      <?php echo isset($chat->convoName) ? icon($chat->convoName) : "";?>
+                    </span>
+                    <?php } ?>
+                  <?php // } ?>
+
+                </span>
+                <span class="recentchat_tile">
+                  <span class="recentchat_text">
+                    <div class="recentchat_text_top">
+                      <span class="recentchat_title"><?php 
+                        if(strlen($chat->convoName) > 13){
+                            echo  substr($chat->convoName,0,14)."...";
+                        }else{
+                          echo $chat->convoName;
+                        }
+                      ?></span>
+                      <?php foreach($chat->recentChat as $rChat){ ?>
+                      <span class="recentchat_date_time">
+                        <?php
+                        if(date('d-m-Y',strtotime($rChat->createdAt)) == date('d-m-Y',strtotime('today'))){
+                          $myDateTime = new DateTime(date('Y-m-d h:i:s a',strtotime($rChat->createdAt)), new DateTimeZone('GMT'));
+                          // print_r($myDateTime);
+                          // $loc = $_SERVER['REMOTE_ADDR'];
+                          // $ipInfo = file_get_contents('http://ip-api.com/json/' . $loc);
+                          $myDateTime->setTimezone(new DateTimeZone('Asia/Kolkata'));                    
+                          // uncomment this
+                          // $myDateTime->setTimezone(new DateTimeZone($ipInfo->timezone));
+                          echo $myDateTime->format('h:i a');
+                          // echo $ipInfo;
+                          // echo date('h:i a',strtotime($chat->time));
+                        }
+                        else
+                          echo date('d/m/Y',strtotime($rChat->createdAt));
+                      }
+                        ?>
+                      </span>
+                    </div>
+                    <div class="recentchat_text_bottom">
+                      <?php   ?>
+                      <?php  // if($chat->isGroupYN == 'N'){ ?>
+                      <span class="recentchat_message"><?php echo ((strlen($rChat->chatText)) <= 25 ? $rChat->chatText : substr($rChat->chatText,0,25)."..."); ?></span>
+                    <?php  // }
+                    // if($chat->isGroupYN == 'Y'){  ?>
+                      <!-- <span class="recentchat_message"><?php //echo array_slice(explode(" ",$chat->senderName),0,1)[0].": ".((strlen($chat->chatText)) <= 15 ? $chat->chatText : substr($chat->chatText,0,15)."..."); ?></span> -->
+                    <?php // } ?>
+                    </div>
+                  </span>
+                </span>
+              </span>
+              <?php } }else{ ?>
+                <div class="no_messages_wrapper">
+                  <span class="no_messages">No Recent Chats</span>
+                </div>;
+              <?php } } ?>
+            </div>
+            <!-- Recent Chat -->
+
+            <!-- All Users List -->
+            <div class="allUsersList"><!-- class="recentchat" -->
+              <?php 
+              foreach ($allUsers->users as $user) { ?>
+                <!-- onclick="createNewChat('<?php echo $user->userid ?>','<?php echo $user->username ?>')" -->
+              <span class="allUsersList_wrapper" repeat-check="<?php echo $user->userid ?>" group="N" onclick="getConversation('<?php echo $user->userid ?>','<?php echo $user->username ?>')">
+                <span class="allUsersList_userIcon">
+                  <span class="icon" style="
+                    <?php echo "background:".$colors_array[rand(0,5)]?>">
+                    <?php echo isset($user->username) ? icon($user->username) : "";?>
+                  </span>
+                </span>
+                <span class="recentchat_tile">
+                  <span class="recentchat_text">
+                    <div class="recentchat_text_top">
+                      <span class="recentchat_title allUsersList_title"><?php 
+                        if(strlen($user->username) > 16){
+                          echo substr($user->username,0,17)."..";
+                        }
+                        else{
+                          echo $user->username;
+                        }
+                          ?></span>
+                    </div>
+                  </span>
+                </span>
               </span>
               <?php } ?>
-            <?php // } ?>
+            </div>
+            <!-- All Users List -->
 
-          </span>
-          <span class="recentchat_tile">
-            <span class="recentchat_text">
-              <div class="recentchat_text_top">
-                <span class="recentchat_title"><?php 
-                  if(strlen($chat->convoName) > 13){
-                      echo  substr($chat->convoName,0,14)."...";
-                  }else{
-                    echo $chat->convoName;
-                  }
-                 ?></span>
-                 <?php foreach($chat->recentChat as $rChat){ ?>
-                <span class="recentchat_date_time">
-                  <?php
-                  if(date('d-m-Y',strtotime($rChat->createdAt)) == date('d-m-Y',strtotime('today'))){
-                    $myDateTime = new DateTime(date('Y-m-d h:i:s a',strtotime($rChat->createdAt)), new DateTimeZone('GMT'));
-                    // print_r($myDateTime);
-                    // $loc = $_SERVER['REMOTE_ADDR'];
-                    // $ipInfo = file_get_contents('http://ip-api.com/json/' . $loc);
-                    $myDateTime->setTimezone(new DateTimeZone('Asia/Kolkata'));                    
-                    // uncomment this
-                    // $myDateTime->setTimezone(new DateTimeZone($ipInfo->timezone));
-                    echo $myDateTime->format('h:i a');
-                    // echo $ipInfo;
-                    // echo date('h:i a',strtotime($chat->time));
-                  }
-                  else
-                    echo date('d/m/Y',strtotime($rChat->createdAt));
-                }
-                  ?>
+            <!-- Create group user list -->
+            <div class="groupNameClass">
+              <span><input type="text" name="" placeholder="Enter Group Name" class="groupNameInput"></span>
+            </div>
+            <div class="createGroupUsersList"><!-- class="recentchat" -->
+              <?php foreach ($allUsers->users as $user) { ?>
+              <span class="createGroupUsersList_wrapper" userId="<?php echo $user->userid; ?>">
+                <span class="allUsersList_userIcon">
+                  <span class=" icon" style="
+                    <?php echo "background:".$colors_array[rand(0,5)]?>">
+                    <?php echo isset($user->username) ? icon($user->username) : "";?>
+                  </span>
                 </span>
-              </div>
-              <div class="recentchat_text_bottom">
-                <?php   ?>
-                <?php  // if($chat->isGroupYN == 'N'){ ?>
-                <span class="recentchat_message"><?php echo ((strlen($rChat->chatText)) <= 25 ? $rChat->chatText : substr($rChat->chatText,0,25)."..."); ?></span>
-              <?php  // }
-              // if($chat->isGroupYN == 'Y'){  ?>
-                <!-- <span class="recentchat_message"><?php //echo array_slice(explode(" ",$chat->senderName),0,1)[0].": ".((strlen($chat->chatText)) <= 15 ? $chat->chatText : substr($chat->chatText,0,15)."..."); ?></span> -->
-              <?php // } ?>
-              </div>
-            </span>
-          </span>
-        </span>
-        <?php } }else{ ?>
-          <div class="no_messages_wrapper">
-            <span class="no_messages">No Recent Chats</span>
-          </div>;
-        <?php } } ?>
-      </div>
-      <!-- Recent Chat -->
+                <span class="recentchat_tile">
+                  <span class="recentchat_text">
+                    <div class="recentchat_text_top">
+                      <span class="recentchat_title createGroupUsersList_title"><?php echo $user->username; ?></span>
+                    </div>
+                  </span>
+                </span>
+              </span>
+              <?php } ?>
+            </div>
+            <div class="createGroupClass">
+              <span class="createGroupClass">
+                <i class="createGroupClass_wrapper" style="border-radius: 50%;background:rgba(0,200,0,0.2);padding:0.35rem;">
+                  <img src="<?php echo base_url('assets/images/icons/right-arrow.png'); ?>" width="32px" height="32px">
+                </i>
+              </span>
+            </div>
+            <!-- Create group user list -->
 
-      <!-- All Users List -->
-      <div class="allUsersList"><!-- class="recentchat" -->
-        <?php 
-        foreach ($allUsers->users as $user) { ?>
-          <!-- onclick="createNewChat('<?php echo $user->userid ?>','<?php echo $user->username ?>')" -->
-        <span class="allUsersList_wrapper" repeat-check="<?php echo $user->userid ?>" group="N" onclick="getConversation('<?php echo $user->userid ?>','<?php echo $user->username ?>')">
-          <span class="allUsersList_userIcon">
-            <span class=" icon" style="
-              <?php echo "background:".$colors_array[rand(0,5)]?>">
-              <?php echo isset($user->username) ? icon($user->username) : "";?>
-            </span>
-          </span>
-          <span class="recentchat_tile">
-            <span class="recentchat_text">
-              <div class="recentchat_text_top">
-                <span class="recentchat_title allUsersList_title"><?php 
-                  if( strlen($user->username) > 16){
-                    echo substr($user->username,0,17)."..";
-                  }
-                  else{
-                   echo $user->username;
-                  }
-                     ?></span>
-              </div>
-            </span>
-          </span>
-        </span>
-        <?php } ?>
-      </div>
-      <!-- All Users List -->
+          </div>
 
-      <!-- Create group user list -->
-      <div class="groupNameClass">
-        <span><input type="text" name="" placeholder="Enter Group Name" class="groupNameInput"></span>
-      </div>
-      <div class="createGroupUsersList"><!-- class="recentchat" -->
-        <?php foreach ($allUsers->users as $user) { ?>
-        <span class="createGroupUsersList_wrapper" userId="<?php echo $user->userid; ?>">
-          <span class="allUsersList_userIcon">
-            <span class=" icon" style="
-              <?php echo "background:".$colors_array[rand(0,5)]?>">
-              <?php echo isset($user->username) ? icon($user->username) : "";?>
-            </span>
-          </span>
-          <span class="recentchat_tile">
-            <span class="recentchat_text">
-              <div class="recentchat_text_top">
-                <span class="recentchat_title createGroupUsersList_title"><?php echo $user->username; ?></span>
-              </div>
-            </span>
-          </span>
-        </span>
-        <?php } ?>
-      </div>
-      <div class="createGroupClass">
-        <span class="createGroupClass">
-          <i class="createGroupClass_wrapper" style="border-radius: 50%;background:rgba(0,200,0,0.2);padding:0.35rem;">
-            <img src="<?php echo base_url('assets/images/icons/right-arrow.png'); ?>" width="32px" height="32px">
-          </i>
-        </span>
-      </div>
-      <!-- Create group user list -->
-
-    </div>
-
-<!-- 
-  <div class="group-box col-sm-12 col-md-7"></div> -->
-    <!--  -------------------------
-                Chat Box
+      <!-- 
+        <div class="group-box col-sm-12 col-md-7"></div> -->
+          <!--  -------------------------
+                      Chat Box
           ---------------------------   -->	
     <div class="px-0 col-sm-12 col-md-9 messenger_center_box" style="min-height:100vh;word-break: break-word">
-<?php   
-      $getChat = isset($getChat) ? json_decode($getChat) : "";
-      $getConversation = isset($getConversation) ? json_decode($getConversation) : ""; 
- ?>
+    <div class="messageLeft">
+      <?php   
+            $getChat = isset($getChat) ? json_decode($getChat) : "";
+            $getConversation = isset($getConversation) ? json_decode($getConversation) : ""; 
+      ?>
   <div  class="media headind_srchs" 
         user_id="<?php echo isset($getConversation->conversation->idConversation) ? $getConversation->conversation->idConversation : "" ; ?>" 
         group="<?php echo isset($getConversation->conversation->isGroupYN) ? $getConversation->conversation->isGroupYN : "" ; ?>" idMember="<?php 
@@ -1841,7 +348,8 @@ messaging.getToken().then((currentToken) => {
             }
           }
         } ?>">
-    <i class="message-back"></i>
+    <!-- <i class="message-back"></i> -->
+    <span>
     <a href="javascript:void(0);" id="contact_us">
   	<?php
       if(isset($getConversation->conversation->convoProfilePic)){
@@ -1869,7 +377,7 @@ messaging.getToken().then((currentToken) => {
             ?>
     	</a>
   	  <p class="text-capitalize"
-         style="margin:0; font-size:18px; font-weight:500; padding:3px 0 0 10px; color: #707070;"
+         style="margin:0; font-size:18px; font-weight:500; padding:0 0 0 10px; color: #000;"
          user_id="<?php echo isset($getConversation->conversation->idConversation) ? $getConversation->conversation->idConversation : "" ; ?>" 
          group="<?php echo isset($getConversation->conversation->isGroupYN) ? $getConversation->conversation->isGroupYN : "" ; ?>">
   		<?php 
@@ -1886,7 +394,8 @@ messaging.getToken().then((currentToken) => {
           } 
         ?>
     	</p>
-    <i style="padding-right:1rem;cursor: pointer;" class="info_icon"><img src="<?php echo base_url('assets/images/icons/info.png'); ?>" height="25px" width="25px"></i>
+        </span>
+    <i style="padding-right:1rem;cursor: pointer;" class="info_icon"><span class="material-icons-outlined">info</span></i>
     </div>
 
     <div class="px-4 py-5 chat-box bg-light">
@@ -1903,7 +412,7 @@ messaging.getToken().then((currentToken) => {
           }else{
             $currentTextDate = date('Y-m-d',strtotime($chats->createdAt));
             $dateNeedeFormat = date('d M Y',strtotime($currentTextDate));
-            echo "<div class='currentTextDate_center'><span class='currentTextDate_centerbox'>$dateNeedeFormat</span></div>";
+            echo "<div class='currentTextDate_center'><span class='currentTextDate_centerbox'><strong>$dateNeedeFormat</strong></span></div>";
           }
         if($chats->chatType == 'TRANSACTION'){
           echo "<div class='currentTextDate_center'><span class='currentTextDate_centerbox'>$chats->chatText</span></div>";
@@ -2032,19 +541,19 @@ messaging.getToken().then((currentToken) => {
                 }
               } 
             }?>">
-            <img src="<?php echo base_url('assets/images/icons/send.png') ?>" width="20px">   
+            <span class="material-icons-outlined">send</span>
           </button>
         </div>
       </div>
     <!-- </form> -->
-
     </div>
+
 <!-- side nav start-->
 
   <div class="col-sm-12 col-md-3 right_box">
     <div class="right_top_tab">
       <span class="right_top_tab_close">
-        <img src="<?php echo base_url('assets/images/icons/x.png') ?>" alt="Close Icon">
+      <span class="material-icons-outlined">highlight_off</span>
       </span>
       <span class="right_top_tab_info"></span>
     </div>
@@ -2055,7 +564,7 @@ messaging.getToken().then((currentToken) => {
           <span class="wrapper_on_hover">
           <?php } ?>
             <i class="wrapper_image_wrapper">
-              <img src="<?php echo base_url('assets/images/icons/camera_white.png') ?>" height="25px" width="25px" class="wrapper_image">
+            <span class="material-icons-outlined wrapper_image">photo_camera</span>
             </i>
             <?php if(isset($getConversation->conversation->isGroupYN) && ($getConversation->conversation->isGroupYN == 'Y')){ ?>
           </span>
@@ -2090,7 +599,7 @@ messaging.getToken().then((currentToken) => {
                     }
                   else{
                     if(isset($getConversation->conversation->convoName)){
-                       echo ($getConversation->conversation->convoName."<i onclick='groupName(this)' id='groupIdI' groupId=".$getConversation->conversation->convoName.">&nbsp;<img height='15px' width='15px' src=".base_url('assets/images/icons/pencil.png')."></i>");
+                       echo ($getConversation->conversation->convoName."<i onclick='groupName(this)' id='groupIdI' groupId=".$getConversation->conversation->convoName.">&nbsp;<span class='material-icons-outlined'>edit</span></i>");
                     }
                   } ?>
         </span>
@@ -2120,7 +629,7 @@ messaging.getToken().then((currentToken) => {
               echo "Common Groups";
             }
             if(isset($getConversation->members) && (count($getConversation->members) > 0 ) && $getConversation->conversation->isGroupYN == 'Y'){
-            echo "<span class='members_title'>Members</span>"; 
+            echo "<span class='members_title'>Members"; 
         $AdminId = "";
         foreach($getConversation->members as $members){
           if($this->session->userdata('LoginId') == $members->idUser && $members->isAdminYN == 'Y'){
@@ -2129,7 +638,7 @@ messaging.getToken().then((currentToken) => {
         }
         if($AdminId == $this->session->userdata('LoginId')){
             ?>
-            <span class="members_add"><img src="<?php echo base_url('assets/images/icons/plus_white.png') ?>" height="25px" idConvo="<?php echo $getConversation->conversation->idConversation; ?>"></span>
+            <span class="members_add"><span class="material-icons-outlined" style="cursor:pointer;">add_circle_outline</span></span>
         <?php }
             }
           }        
@@ -2177,28 +686,30 @@ messaging.getToken().then((currentToken) => {
           if($members->deletedDate == null){
          ?>
           <span class="groupMembers_wrapper" userid="<?php echo $members->idUser ?>">
-            <span class="groupMembers_userIcon">
-              <span class=" icon" style="
-                <?php echo "background:".$colors_array[rand(0,5)]?>">
-                <?php 
-                  if(isset($members->convoProfilePic)){
-                    echo "<img src=".base_url()."api/uploads/images/conversation/".$members->convoProfilePic.">";
-                  }{
-                echo isset($members->DisplayName) ? icon($members->DisplayName) : ""; }?>
+            <span>
+              <span class="groupMembers_userIcon">
+                <span class=" icon" style="
+                  <?php echo "background:".$colors_array[rand(0,5)]?>">
+                  <?php 
+                    if(isset($members->convoProfilePic)){
+                      echo "<img src=".base_url()."api/uploads/images/conversation/".$members->convoProfilePic.">";
+                    }{
+                  echo isset($members->DisplayName) ? icon($members->DisplayName) : ""; }?>
+                </span>
               </span>
-            </span>
-            <span class="groupMembers_tile">
-              <span class="groupMembers_text">
-                <div class="groupMembers_text_top">
-                  <span class="groupMembers_title"><?php 
-                    if( strlen($members->DisplayName) > 16){
-                      echo substr($members->DisplayName,0,17)."..";
-                    }
-                    else{
-                     echo $members->DisplayName;
-                    }
-                       ?></span>
-                </div>
+              <span class="groupMembers_tile">
+                <span class="groupMembers_text">
+                  <div class="groupMembers_text_top">
+                    <span class="groupMembers_title"><?php 
+                      if( strlen($members->DisplayName) > 16){
+                        echo substr($members->DisplayName,0,17)."..";
+                      }
+                      else{
+                      echo $members->DisplayName;
+                      }
+                        ?></span>
+                  </div>
+                </span>
               </span>
             </span>
             <?php if($this->session->has_userdata('LoginId')){
@@ -2207,8 +718,8 @@ messaging.getToken().then((currentToken) => {
               if($this->session->userdata('LoginId') == $AdminId && $this->session->userdata('LoginId') != $members->idUser && $members->isAdminYN == 'N'){ 
                 ?>
                 <span class="user_group_options_icons" >
-                  <i class="deleteUserFromGroup" memberid="<?php echo $members->idUser ?>" idMember="<?php echo $members->idMember ?>" groupid="<?php echo $getConversation->conversation->idConversation ?>" >
-                    <img src="<?php echo base_url('assets/images/icons/delete.png') ?>" height="15px" width="15px">
+                  <i class="deleteUserFromGroup" memberid="<?php echo $members->idUser ?>" idMember="<?php echo $members->idMember ?>" groupid="<?php echo $getConversation->conversation->idConversation ?>" style="cursor:pointer;">
+                  <span class="material-icons-outlined">delete</span>
                   </i>
                 </span>
             <?php  }
@@ -2246,6 +757,7 @@ messaging.getToken().then((currentToken) => {
   <?php } ?>
   </div>
 
+  </div>
 <!-- side nav end-->
   </div>
 </div>
@@ -2318,7 +830,7 @@ messaging.getToken().then((currentToken) => {
     </div>
   </div>
 <!-- User Modal -->
-<div id="usersModal" class="usersModal">
+<div id="usersModal" class="usersModal modalNew">
   <div class="usersModalContent">
     <h1>Users</h1>
     <div>
@@ -2334,20 +846,24 @@ messaging.getToken().then((currentToken) => {
 <!-- User Modal -->
 
 <!-- Add User Modal -->
-<div id="addUsersModal" class="addUsersModal">
-  <div class="addUsersModalContent">
-    <div class="addUsersModalContent_addMember">Add Member</div>
-    <div class="">
-      <div class="addUsersModule_div">
-        <select  class="addMember" name="addMember[]" multiple>
-        <?php foreach($allUsers->users as $user__){ ?>
-          <option class="d-block" value="<?php echo $user__->userid ?>"><?php echo $user__->username; ?></option>
-        <?php } ?>
-        </select>
+<div id="addUsersModal" class="addUsersModal modalNew">
+  <div class="modal-dialog mw-40">
+    <div class="addUsersModalContent modal-content NewFormDesign">
+      <div class="addUsersModalContent_addMember modal-header ">
+        <h3 class="modal-title ">Add Member</h3>
       </div>
-      <div class="addUsersModal_buttons">
-        <button id="reject" class="addUser__close">Close</button>
-        <button id="accept" class="addUser__save">Save</button>
+      <div class="modal-body">
+        <div class="addUsersModule_div form-floating">
+          <select  class="addMember form-control" name="addMember[]" multiple>
+          <?php foreach($allUsers->users as $user__){ ?>
+            <option class="d-block" value="<?php echo $user__->userid ?>"><?php echo $user__->username; ?></option>
+          <?php } ?>
+          </select>
+        </div>
+        <div class="addUsersModal_buttons modal-footer">
+          <button id="reject" class="addUser__close btn btn-default btn-small">Close</button>
+          <button id="accept" class="addUser__save btn btn-default btn-small btnOrange">Save</button>
+        </div>
       </div>
     </div>
   </div>
@@ -2368,6 +884,10 @@ messaging.getToken().then((currentToken) => {
 <div class="loading">
   <div class="loader"></div>
 </div>
+
+</div>
+
+</div>
 <!--  Loader -->
 </body>
 
@@ -2384,7 +904,7 @@ btn.onclick = function() {
   $('.groupNameClass').css('display','none')
   $('.createGroupUsersList').css('display','none')
   $('.createGroupClass').css('display','none')
-  $('.allUsersList').css('display','block')
+  $('.allUsersList').css('display','flex')
 }
 accept.onclick = function() {
   usersModal.style.display = "block";
@@ -2517,8 +1037,9 @@ $('.save').click(function(){
           contentType: false,
           processData: false,
           success :  function(response){
-            console.log(response);
-            window.location.reload()
+            alert(response);
+            // console.log(response);
+            // window.location.reload()
           }
         })
       })
@@ -2528,12 +1049,14 @@ $('.save').click(function(){
           doc.click()
         var wrapper_image = $('.wrapper_image_wrapper').html();
         var OkAndCancel = `<div class="dynamic_icons"><img src="<?php echo base_url('assets/images/icons/tick_white.png') ?>" height="32px" width="25px" class="dynamic_icons_save editGroupImageSave"><img src="<?php echo base_url('assets/images/icons/x_white.png'); ?>" height="26px" width="25px" class="dynamic_icons_cancel"></div>`;
+        $(".user_icon_view").addClass("edit");
         $('.wrapper_image_wrapper').empty();
         $('.wrapper_image_wrapper').html(OkAndCancel);
         
         $(document).on('click','.dynamic_icons_cancel',function(){
             $('.wrapper_image_wrapper').empty();
-            $('.wrapper_image_wrapper').html(wrapper_image)
+            $(".user_icon_view").removeClass("edit");
+            $('.wrapper_image_wrapper').html(wrapper_image);
           })
       })
 
@@ -2545,7 +1068,7 @@ $('.save').click(function(){
 
     $(document).on('click','.text-capitalize, .contact_us, .info_icon',function(){
       $('.messenger_center_box')[0].classList.remove('col-md-9');
-      $('.right_box').css('display','block');
+      $('.right_box').css('display','flex');
       $('.messenger_center_box')[0].classList.add('col-md-6');
     })
 
@@ -2899,7 +1422,7 @@ else{
       while(wrapper.firstChild){
         wrapper.removeChild(wrapper.firstChild);
       }
-        $('#user_name_view').append(`<input type="text" class="editGroupName_input"><i class="editGroupName_tick"><img height="25px" width="22px" src="<?php echo base_url('assets/images/icons/tick.png'); ?>"></i><i class="editGroupName_close"><img height="20px" width="20px" src="<?php echo base_url('assets/images/icons/x.png'); ?>"></i>`)
+        $('#user_name_view').append(`<input type="text" class="editGroupName_input"><i class="editGroupName_tick"><span class="material-icons-outlined">check_circle</span></i><i class="editGroupName_close"><span class="material-icons-outlined">highlight_off</span></i>`)
           console.log(groupName);
         $('.editGroupName_input').val(groupName)
         $(document).on('click','.editGroupName_tick',function(){
@@ -2959,7 +1482,8 @@ else{
       var bool = confirm('Are you sure you want to remove a user from the group?')
       if(bool == true){
           lastSeen('Y',memberId,groupId)
-        console.log(memberId)
+        // console.log(memberId)
+        $(this).closest('.groupMembers_wrapper').remove();
       }
     })
 
@@ -3033,7 +1557,9 @@ else{
     })
 
     $(document).on('click','.members_add',function(){
-      var id = $(this).children('img').attr('idConvo')
+      // var id = $(this).children('img').attr('idConvo')
+      var id = $('body').find('.user_name_view').attr('conversationid');
+      // alert(id);
       $('.addUser__save').attr('idConversation',id)
       $('.addUsersModal').css('display','block')
     })

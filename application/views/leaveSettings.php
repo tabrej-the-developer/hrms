@@ -1,471 +1,98 @@
  <!DOCTYPE html>
  <html>
- <head>
- 	<?php $this->load->view('header'); ?>
- 	<style type="text/css">
-	*{
-font-family: 'Open Sans', sans-serif;
-	}
-  body{
-  	background: #f2f2f2;
-  }
-  .tab-pane-child{
-  	background: white;
-  	height: 100%;
-  }
-  .tab-pane{
-  	padding: 2rem 3rem 2rem 2rem;
-  	height: calc(100vh - 4rem);
-  }
-   .heading{
-      position: relative;
-      top:20px;
-      padding-left: 2rem;
-      width: 100%;
-    }
-    .back-button span{
-      font-size:1.75rem;
-      color: #171D4B;
-      font-weight: 700;
-      margin-top: 20px;
-    }
-		#centerValue{
-			background: rgb(164, 217, 214);
-		}
-  .close{
-    float: none; 
-      font-size: inherit; 
-      font-weight: inherit; 
-      line-height: inherit; 
-      color: inherit; 
-      text-shadow: inherit; 
-      opacity: inherit; 
-      background: #6c757d !important;
-      color:white !important;
-      width: 5rem;margin-right: 20px
-  }
-  .btn-secondary{
-    float: none; 
-      font-size: inherit; 
-      font-weight: inherit; 
-      line-height: inherit; 
-      color: inherit; 
-      text-shadow: inherit; 
-      opacity: inherit; 
-      background: #6c757d !important;
-      color:white !important;
-      width: 5rem;
-  }
-  .button{
-      border: none;
-      color: rgb(23, 29, 75);
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-weight: 700;
-      margin: 2px;
-      width:auto;
-      border-radius: 20px;
-      padding: 4px 8px;
-      background: rgb(164, 217, 214);
-      font-size: 1rem;
-  }
-  .close:hover{
-    background:#6c757d;
-  }
-        .card-header {
-            padding: 0.2rem 1.25rem;
-            /* margin-bottom: 0; */
-            background-color: #ffffff;
-            border-bottom: 0px;
-        }
-        
-        .card-body {
-            padding: 0;
-            height: 100%;
-            overflow-y: auto;
-            width: 100%;
-            overflow-x: auto !important;
-        }
-        
-        p {
-            margin-top: 0;
-            margin-bottom: 10px;
-        }
-        
-        .card {
-            border-radius: 0px;
-            padding-top: 15px;
-            padding-bottom: 15px;
-			border:none;
-			box-shadow: none;
-        }
-        
-        .flex-wrap {
-            margin-bottom: -35px;
-        }
-        
-        div.dataTables_wrapper div.dataTables_paginate {
-            margin-top: -25px;
-        }
-        
-        .page-item.active .page-link {
-            z-index: 1;
-            color: #fff;
-            background-color: #5D78FF;
-            border-color: #5D78FF;
-			
-        }
-		.btn.focus, .btn:focus {
-			outline: 0;
-			box-shadow: none;
-		}
-		.btn-group-sm>.btn,{
-			padding: .25rem .5rem;
-			font-size: .875rem;
-			line-height: 1.5;
-			border-radius: 1.2rem;
-			border: 1px solid #ccc;
-		}
-		.btn-sm{
-			padding: .5rem;
-			font-size: .9rem;
-			line-height: 1.5;
-			border-radius: 5px;
-			border: 1px solid #ccc;
-		}
-		#example_filter input {
-		  border-radius: 1.2rem;
-		}
-		.border-shadow{
-			    box-shadow: 0 3px 10px rgba(0,0,0,.1);
+ <head> 	
+<title>Leave Settings</title>
+<link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('assets/favicon_io/apple-touch-icon.png') ?>">
+  <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/favicon_io/favicon-32x32.png') ?>">
+  <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/favicon_io/favicon-16x16.png') ?>">
+  <link rel="manifest" href="<?= base_url('assets/favicon_io/site.webmanifest') ?>">
+<link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+<link href="<?php echo base_url('assets/css/bootstrap.min.css');?>" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-		}
-		.modal-header {
-			border-bottom:none;
-			border-top-left-radius:0;
-			border-top-right-radius:0;
-			background-color: #8D91AA;
-			color: #F3F4F7;
-      font-size: 1rem;
-      display: flex;
-      justify-content: center;
-		}
-		.modal-content {
-			border-radius:0;	
-		}
-		
-		
-		/* tabs */
-nav > div a.nav-item.nav-link,
-nav > div a.nav-item.nav-link.active
-{
-  border: none;
-    padding: 10px 15px;
-    color:#212528;
-    background:#307bd3;
-    border-radius:0;
-    font-size:15px;
-    font-weight:500;
-}
-nav > div a.nav-item.nav-link.active:after
- {
-  content: "";
-  position: relative;
-  bottom: -46px;
-  left: -10%;
-  border: 15px solid transparent;
-  border-top-color: #ddd ;
-}
-.tab-content{
-    line-height: 25px;
-    padding:30px 25px;
-}
-.nav-item{
-	color:white !important;
-}
-nav > div a.nav-item.nav-link:hover,
-nav > div a.nav-item.nav-link:focus
-{
-  border: none;
-    background: #307bd3 !important;
-    color:#212528;
-    border-radius:0;
-    transition:background 0.20s linear;
-}
-		/* tabs end */
-		
-		
-/* Toggle */
-.switchToggle input[type=checkbox]{height: 0; width: 0; visibility: hidden; position: absolute; }
-.switchToggle label {cursor: pointer; text-indent: -9999px; width: 70px; max-width: 70px; height: 30px; background: #d1d1d1; display: block; border-radius: 100px; position: relative; }
-.switchToggle label:after {content: ''; position: absolute; top: 2px; left: 2px; width: 26px; height: 26px; background: #fff; border-radius: 90px; transition: 0.3s; }
-.switchToggle input:checked + label, .switchToggle input:checked + input + label  {background: #4caf50a6; }
-.switchToggle input + label:before, .switchToggle input + input + label:before {content: 'No'; position: absolute; top: 1px; left: 35px; width: 26px; height: 26px; border-radius: 90px; transition: 0.3s; text-indent: 0; color: #fff; }
-.switchToggle input:checked + label:before, .switchToggle input:checked + input + label:before {content: 'Yes'; position: absolute; top: 1px; left: 10px; width: 26px; height: 26px; border-radius: 90px; transition: 0.3s; text-indent: 0; color: #fff; }
-.switchToggle input:checked + label:after, .switchToggle input:checked + input + label:after {left: calc(100% - 2px); transform: translateX(-100%); }
-.switchToggle label:active:after {width: 60px; } 
-.toggle-switchArea { margin: 10px 0 10px 0; }
-/* Toggle end */
-/* Toggle */
-.switcToggle input[type=checkbox]{height: 0; width: 0; visibility: hidden; position: absolute; }
-.switcToggle label {cursor: pointer; text-indent: -9999px; width: 70px; max-width: 70px; height: 30px; background: #d1d1d1; display: block; border-radius: 100px; position: relative; }
-.switcToggle label:after {content: ''; position: absolute; top: 2px; left: 2px; width: 26px; height: 26px; background: #fff; border-radius: 90px; transition: 0.3s; }
-.switcToggle input:checked + label, .switcToggle input:checked + input + label  {background: #4caf50a6; }
-.switcToggle input + label:before, .switcToggle input + input + label:before {content: 'No'; position: absolute; top: 1px; left: 35px; width: 26px; height: 26px; border-radius: 90px; transition: 0.3s; text-indent: 0; color: #fff; }
-.switcToggle input:checked + label:before, .switcToggle input:checked + input + label:before {content: 'Yes'; position: absolute; top: 1px; left: 10px; width: 26px; height: 26px; border-radius: 90px; transition: 0.3s; text-indent: 0; color: #fff; }
-.switcToggle input:checked + label:after, .switcToggle input:checked + input + label:after {left: calc(100% - 2px); transform: translateX(-100%); }
-.switcToggle label:active:after {width: 60px; } 
-.toggle-switchArea { margin: 10px 0 10px 0; }
-/* Toggle end */
-/* Toggle */
-.switToggle input[type=checkbox]{height: 0; width: 0; visibility: hidden; position: absolute; }
-.switToggle label {cursor: pointer; text-indent: -9999px; width: 70px; max-width: 70px; height: 30px; background: #d1d1d1; display: block; border-radius: 100px; position: relative; }
-.switToggle label:after {content: ''; position: absolute; top: 2px; left: 2px; width: 26px; height: 26px; background: #fff; border-radius: 90px; transition: 0.3s; }
-.switToggle input:checked + label, .switToggle input:checked + input + label  {background: #4caf50a6; }
-.switToggle input + label:before, .switToggle input + input + label:before {content: 'No'; position: absolute; top: 1px; left: 35px; width: 26px; height: 26px; border-radius: 90px; transition: 0.3s; text-indent: 0; color: #fff; }
-.switToggle input:checked + label:before, .switToggle input:checked + input + label:before {content: 'Yes'; position: absolute; top: 1px; left: 10px; width: 26px; height: 26px; border-radius: 90px; transition: 0.3s; text-indent: 0; color: #fff; }
-.switToggle input:checked + label:after, .switToggle input:checked + input + label:after {left: calc(100% - 2px); transform: translateX(-100%); }
-.switToggle label:active:after {width: 60px; } 
-.toggle-switchArea { margin: 10px 0 10px 0; }
-/* Toggle end */
-		/*leaves balance bar*/
-.chat_people{ overflow:hidden; clear:both;}
-.chat_list {
-  border-bottom: 1px solid #c4c4c4;
-  margin: 0;
-  padding: 18px 16px 10px;
-}
-.chat_img {
-  float: left;
-  width: 11%;
-}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-.chat_ib h5{ font-size:15px; color:#464646; margin:0 0 8px 0;}
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/layout.css?version='.VERSION);?>">
+ <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/container.css?version='.VERSION);?>">
+  
+<script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js');?>" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('assets/js/popper.min.js');?>" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="<?php echo base_url('assets/js/bootstrap.min.js');?>" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
 
-.chat_ib p{ font-size:14px; color:#989898; margin:auto}
-.chat_img {
-  float: left;
-  width: 11%;
+<style>
+.navbar-nav .nav-item-header:nth-of-type(9) {
+    background: var(--blue2) !important;
+    position: relative;
 }
-.chat_ib {
-  float: left;
-  padding: 0 0 0 15px;
-  width: 88%;
-}
-img{ max-width:140%;}
-
-.row.vdivide [class*='col-']:not(:last-child):after {
-  background: #e0e0e0;
-  width: 1px;
-  content: "";
-  display:block;
-  position: absolute;
-  top:0;
-  bottom: 0;
-  right: 0;
-  min-height: 70px;
-}
-/*leaves balance bar end*/
-.dropdown-toggle::after {
-            content: none;
-            display: none;
-        }
-		
-/*corousol*/	
-.carousel-control-next, .carousel-control-prev {
-   
-    width: 2%;
-   
-}
-.carousel-control-next-icon, .carousel-control-prev-icon {
-    height: 40px;
-    background-color: #ccc;
-}
-	
-/*corousol end*/		
-		
-
-   .modal-logout {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        opacity: 0;
-        visibility: hidden;
-        transform: scale(1.1);
-        transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
-        text-align: center;
-    }
-    .modal-content-logout {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: white;
-        padding: 1rem 1.5rem;
-        width: 50%;
-        border-radius: 0.5rem;
-    }
-    .show-modal {
-        opacity: 1;
-        visibility: visible;
-        transform: scale(1.0);
-        transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
-    }
-    .sync_button{
-      display: flex;
-      margin-right:2rem;
-      justify-content: center;
-      align-items: center;
-    }
-input[class=checkbox_label] + label {
-  display: block;
-  margin: 0.2em;
-  cursor: pointer;
-  padding: 0.2em;
-}
-
-input[class=checkbox_label] {
-  display: none;
-}
-
-input[class=checkbox_label] + label:before {
-  content: "\2714";
-  border: 0.1em solid #000;
-  border-radius: 0.2em;
-  display: inline-block;
-  width: 1em;
-  height: 1.3em;
-  vertical-align: bottom;
-  color: transparent;
-  transition: .2s;
-}
-
-input[class=checkbox_label] + label:active:before {
-  transform: scale(0);
-}
-
-input[class=checkbox_label]:checked + label:before {
-  background-color: #307bd3 ;
-  border-color: #307bd3 ;
-  color: #fff;
-}
-  .table{
-    font-size: 1rem;
-    background-color: white;
-    width: 100%;
-    margin: auto;
-    text-align: center;
-    max-height: 100%;
-    overflow-y: auto;
-   }
-    thead tr{
-      background-color: #8D91AA;
-      color: #F3F4F7 !important;
-    }
-    tr{
-      border-top:  1px solid #d2d0d0;
-      border-bottom: 1px solid #d2d0d0;
-    }
-    tbody tr{
-      background: white !important;
-    }
-.buttons-parent{
-	padding:1rem;
-}
-.buttonn,
-.button,
-button[type=button]{
-  /*position: absolute;*/
-/*  right: 0;*/
-    border: none !important;
-    color: rgb(23, 29, 75) !important;
-    text-align: center !important;
-    text-decoration: none !important;
-    display: inline-block;
-    font-weight: 700 !important;
-    margin: 2px !important;
-    min-width:6rem !important;
-      border-radius: 20px !important;
-      padding: 4px 8px !important;
-      background: rgb(164, 217, 214) !important;
-      font-size: 1rem !important;
-      margin-right:5px !important;
-      justify-content: center !important;
-}
-input[type="text"],input[type=time],select,#casualEmp_date{
-  background: #ebebeb;
-  border-radius: 5px;
-    padding: 5px;
-    border: 1px solid #D2D0D0 !important;
-    border-radius: 20px;
-}
-.disabled{
-  background: rgb(235, 235, 228) !important;
+.navbar-nav .nav-item-header:nth-of-type(9)::after {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    bottom: 0;
+    content: "";
+    background: var(--orange1);
 }
 </style>
- 	<title></title>
  </head>
  <body>
- 	<?php 
-    $permissions = json_decode($permissions);
-    $centers = json_decode($centers); 
-  ?>
-<div class="containers">
-  <span class="d-flex heading">
-	  <span class="d-inline-flex">
-      <a href="<?php echo base_url('settings');?>">
-        <button class="btn back-button">
-          <img src="<?php echo base_url('assets/images/back.svg');?>">
-        </button>
-      </a>
-      <span class="settings_title">Manage Leave Types</span>
-    </span>
-    <span class="ml-auto sync_button">
-        <?php if(isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N" === "Y"){ ?>
-          <span class="select_css">
-            <select placehdr="Center" id="centerValue" name="centerValue" >
-						  <?php // $centers = json_decode($centers);
-						    for($i=0;$i<count($centers->centers);$i++){
-						    	if($_SESSION['centerr'] == $centers->centers[$i]->centerid){
-				    	?>
-					        <option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid; ?>" selected><?php echo $centers->centers[$i]->name?></option>
-			      	<?php }else{ ?>
-				      	<option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid; ?>"><?php echo $centers->centers[$i]->name?></option>
-			        <?php }
-                  }  ?>
-            </select>
-          </span>
-          <?php $syncedWithXero = json_decode($syncedWithXero);  ?>
-          <button class="button <?php 
-            if(isset($syncedWithXero->syncedWithXero) && $syncedWithXero->syncedWithXero != null){
-              if($syncedWithXero->syncedWithXero == 'N'){
-                echo 'disabled';
-              }
-            }
-           ?>" id="XeroLeaves" <?php 
-            if(isset($syncedWithXero->syncedWithXero) && $syncedWithXero->syncedWithXero != null){
-              if($syncedWithXero->syncedWithXero == 'N'){
-                echo "disabled";
-              }
-            }
-           ?>>
-            <i>
-              <img src="<?php echo base_url('assets/images/icons/xero.png'); ?>" style="max-height:2rem;margin-right:10px">
-            </i>Sync Xero Leaves</button>
-        <?php } ?>
+<div class="wrapperContainer">
+    <?php include 'headerNew.php'; ?>
+    <?php 
+      $permissions = json_decode($permissions);
+      $centers = json_decode($centers); 
+    ?>
+    <div class="containers scrollY">
+		  <div class="settingsContainer ">
 
-    </span>
-  </span>
+      <span class="d-flex pageHead heading-bar">
+        <div class="withBackLink">
+          <a href="<?php echo base_url('settings');?>">
+          <span class="material-icons-outlined">arrow_back</span>
+          </a>				
+          <span class="events_title">Manage Leave Types</span>
+        </div>
+        <div class="rightHeader">
+          <?php if(isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N" === "Y"){ ?>
+              <select placehdr="Center" id="centerValue" name="centerValue" >
+                <?php // $centers = json_decode($centers);
+                  for($i=0;$i<count($centers->centers);$i++){
+                    if($_SESSION['centerr'] == $centers->centers[$i]->centerid){
+                ?>
+                    <option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid; ?>" selected><?php echo $centers->centers[$i]->name?></option>
+                <?php }else{ ?>
+                  <option href="javascript:void(0)" class="center-class" id="<?php echo $centers->centers[$i]->centerid ?>" value="<?php echo $centers->centers[$i]->centerid; ?>"><?php echo $centers->centers[$i]->name?></option>
+                <?php }
+                    }  ?>
+              </select>
+            <?php $syncedWithXero = json_decode($syncedWithXero);  ?>
+            <button class="btn btn-default btn-small btnOrange pull-right <?php 
+              if(isset($syncedWithXero->syncedWithXero) && $syncedWithXero->syncedWithXero != null){
+                if($syncedWithXero->syncedWithXero == 'N'){
+                  echo 'disabled';
+                }
+              }
+            ?>" id="XeroLeaves" <?php 
+              if(isset($syncedWithXero->syncedWithXero) && $syncedWithXero->syncedWithXero != null){
+                if($syncedWithXero->syncedWithXero == 'N'){
+                  echo "disabled";
+                }
+              }
+            ?>>
+              <img src="<?php echo base_url('assets/images/icons/xero.png'); ?>" style="max-height:2rem;margin-right:10px">
+              Sync Xero Leaves</button>
+          <?php } ?>
+          <button class="addLeaves btn btn-default btn-small btnBlue pull-right">Add Leaves</button>
+        </div>
+      </span>
+
+ 
   <div class="tab-pane " id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
   	<div class="tab-pane-child">
  	  <?php  if((isset($permissions->permissions) ? $permissions->permissions->viewLeaveTypeYN : "N") === "Y"){ ?>
 
 
-  	<div class="card-body">
+  	<div class="table-div pageTableDiv">
         <table class="table " id="example2" style="width:100%;">
             <thead>
                 <tr>
@@ -479,6 +106,7 @@ input[type="text"],input[type=time],select,#casualEmp_date{
                 </tr>
             </thead>
             <tbody>
+            <textarea id="leaves-data" cols="30" rows="10" class="d-none"><?= $leaveType ?></textarea>
             	<?php
             	$leaveType = json_decode($leaveType);
             	$var = 0;
@@ -492,13 +120,11 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 					<td id="<?php echo $leaveType->id.'isPaidYN';?>"><?php echo $leaveType->isPaidYN;?></td>
           <td id="<?php echo $leaveType->id.'medicalFileYN';?>"><?php echo $leaveType->medicalFileYN;?></td>
           <td id="<?php echo $leaveType->id.'hoursYN';?>"><?php echo $leaveType->hoursYN;?></td>
-					<td>
+					<td style="display: flex;justify-content: center;">
 <?php if(isset($permissions->permissions) ? $permissions->permissions->editLeaveTypeYN : "N" == "Y"){ ?>
-					<span onclick="editLeaveType('<?php echo $leaveType->id;?>')">
+					<span onclick="editLeaveType('<?php echo $leaveType->leaveid;?>','<?php echo $leaveType->id;?>')">
 					<a href="#" title="Edit">
-            <i>
-              <img src="<?php echo base_url('assets/images/icons/pencil.png'); ?>" style="max-height:0.8rem;margin-right:10px">
-            </i>
+            <span class="material-icons-outlined">edit</span>
           </a>
 	<?php }else{ echo "-"; } ?>
 					</td>
@@ -512,105 +138,240 @@ input[type="text"],input[type=time],select,#casualEmp_date{
 		</div>
 	</div>
 </div>
-<!-- modal start here -->
-  <div class="modal fade" id="userModal">
-    <div class="modal-dialog">
-  		<form id="leaveTypeForm" action="<?php  echo base_url().'settings/addLeaveType';?>" method="POST">
-				<div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Leave Type</h5>
+
+
+<!-- begin::ADD MODAL -->
+<div class="addLeaveForm modal modalNew" style="display: none;">
+	<div class="modal-dialog mw-40">
+		<div class="modal-content NewFormDesign">
+			<div class="modal-header">
+				<h3 class="modal-title ">Add Leave</h3>
+			</div>
+			<div class="modal-body">
+				<form>
+				<script>
+
+					$('body').on('click','#slbtn',function(){
+						var userid = $('#add-userid').val();
+						var centerid = $('#add-centerid').val();
+						var leave = $('#add-leave-name').val();
+            var leaveslug = $('#add-leave-slug').val();
+            var isPaid = $('#add-isPaid').val();
+            var sop = $('#add-sop').val();
+            var currentrecord = $('#add-currentRecord').val();
+
+
+						if(leave == ""){
+							alert("Enter Leave Name");
+						}else if(userid == ""){
+							alert("Userid is missing");
+						}else if(centerid == ""){
+							alert("Centerid is missing");
+						}else{
+							$.ajax({
+								url:'<?= base_url('api/Leave/CreateLeaveType') ?>',
+								type:"POST",
+								headers:{
+									"x-device-id":'<?= $this->session->userdata('x-device-id') ?>',
+									"x-token":'<?= $this->session->userdata('AuthToken') ?>'
+								},
+								data:JSON.stringify({
+									"userid":userid,
+									"centerid":centerid,
+									"name":leave,
+									"slug":leaveslug,
+									"isPaidYN":isPaid,
+									"showOnPaySlipYN":sop,
+                  "CurrentRecord":currentrecord
+								}),
+								beforeSend:function(){
+									$('#slbtn').text('PLEASE WAIT...');
+									$('#slbtn').attr('disabled',true);
+								},
+								success:function(result,status,xhr){
+                  console.log(result);
+                  var da = jQuery.parseJSON(result);
+        					// console.log(da);
+                  // console.log(result);
+                  if(da.Status == "OK"){
+                    // alert("Hello");
+                    $("#XeroLeaves").trigger("click");
+                  }else if(da.ErrorNumber == 10){
+                    alert(da.Message);
+                    // alert("Hello Failed");
+                  }
+								}
+							});
+						}
+					});
+				</script>
+
+					<!-- <input type="text" name="centerid" id="centerid" value="<= $this->uri->segment('3') ?>"> -->
+					<input type="hidden" name="centerid" id="add-centerid" value="<?= $centerid ?>">
+					<input type="hidden" name="userid" id="add-userid" value="<?= $this->session->userdata('LoginId') ?>">
+					<div class="col-md-12">								
+						<div class="form-floating">
+							<input type="text" placeholder="Leave Name" class="form-control" name="leave-name" id="add-leave-name">
+							<label for="leave-name">Leave Name</label>
+						</div> 
+					</div>
+          <div class="col-md-12">								
+						<div class="form-floating">
+							<input type="text" placeholder="Leave Slug" class="form-control" name="leave-slug" id="add-leave-slug">
+							<label for="leave-name">Leave Slug</label>
+						</div> 
+					</div>
+          <div class="row m-1">
+					<div class="col-md-4">						
+						<div class="form-floating">
+							<select id="add-isPaid" class="form-control">
+								<option value="true">Yes</option>
+								<option value="false">No</option>
+							</select>
+							<label for="isPaid">isPaid</label>
+						</div> 
+					</div>
+					<div class="col-md-4">					
+						<div class="form-floating">
+							<select id="add-sop" class="form-control">
+								<option value="true">Yes</option>
+								<option value="false">No</option>
+							</select>
+							<label for="sop">Show on payslips</label>
+						</div> 
+					</div>
+					<div class="col-md-4">			
+						<div class="form-floating">
+							<select id="add-currentRecord" class="form-control">
+								<option value="true">Yes</option>
+								<option value="false">No</option>
+							</select>
+							<label for="currentRecord">Current Record</label>
+						</div>
+					</div>
           </div>
-          <div class="modal-body">
-						<div class="col-md-12 col-xl-12">	
-							<!-- <form id="leaveType" method="POST" action="<?php echo base_url().'settings/addLeave';?>"> -->
-								<input type="hidden" name="leaveId" id="leaveId" value="">
-								<div class="form-group">
-								  <label>Leave Type</label>
-								  <input type="text" class="form-control" id="leaveName" placeholder="Enter leave name" name="leaveName" >
-								  <span id="new_leave_type_error" class="text-danger"></span>
-								</div>
-								<span style="color: red" id="leaveNameError"></span>
-								<div class="form-group">
-									<label>Slug</label>
-									<input type="text" class="form-control" name="leaveSlug" id="leaveSlug" placeholder="slug"  >
-								  <span id="slug_error" class="text-danger"></span>
-								</div>
-								<span style="color: red" id="leaveSlugError"></span>
-								<div class="form-group">
-									<label for="leaveIsPaid">IsPaid</label><br>
-									<div class="outerDivFull" >
-										<div class="switchToggle">
-										<!--dont rename id="switch"-->
-											<input type="checkbox" id="switch" name="leaveIsPaid">
-											<label for="switch">Toggle</label>
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="leaveIsPaid">Medical Record</label><br>
-									<div class="outerDivFull" >
-										<div class="switcToggle">
-										<!--dont rename id="switch"-->
-											<input type="checkbox" id="switc" name="medicalFile">
-											<label for="switc">Toggle</label>
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="leaveIsPaid">Hours</label><br>
-									<div class="outerDivFull" >
-										<div class="switToggle">
-										<!--dont rename id="switch"-->
-											<input type="checkbox" id="swit" name="hours">
-											<label for="swit">Toggle</label>
-										</div>
-									</div>
-								</div>
-						<div class="">
-							<input type="checkbox" name="show_in_payslips" class="checkbox_label" id="show_in_payslips"><label class=""for="show_in_payslips">Show in payslips</label>
-						</div>
-						<div class="form-group text-center " id="updateLeaveType" >
-  						<button class="submitEditLeave" onclick="submitEditLeave()" type="button">
-                <i>
-                  <img src="<?php echo base_url('assets/images/icons/pencil.png'); ?>" style="max-height:1rem;margin-right:10px">
-                </i>Update</button>
-             <button type="button" class=" btn-close" data-dismiss="modal" aria-label="Close">
-                <i>
-                  <img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:1rem;margin-right:10px">
-                </i>Cancel</button>
-  						<button class=" btn-danger rounded-0" type="button" onclick="deleteLeave()">
-                <i>
-                  <img src="<?php echo base_url('assets/images/icons/del.png'); ?>" style="max-height:1rem;margin-right:10px">
-                </i>Delete</button> 
-						</div>
-						<!-- <div class="form-group text-center  form-group-add" id="addLeaveType" >
-              <button type="button" class=" " data-dismiss="modal" aria-label="Close">
-                <i>
-                  <img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:1rem;margin-right:10px">
-                </i>Cancel</button>
-  						<button class="" type="button" onclick="addLeave()">
-                <i>
-                  <img src="<?php echo base_url('assets/images/icons/plus.png'); ?>" style="max-height:1rem;margin-right:10px">
-                </i>Add</button>
-						</div> -->
-				  <!-- </form>	 -->
+
+					<div class="modal-footer">
+						<button type="button" class="close btn btn-default btn-small pull-right"><span class="material-icons-outlined">close</span> Cancel</button>
+						<button type="button" id="slbtn" class="btn btn-default btn-small btnOrange pull-right"><span class="material-icons-outlined">save</span> Save</button>
 					</div>
-					</div>
-					
-                    </div>
-					</form>
-                </div>
-              <!-- Notification -->
-              <div class="notify_">
-                <div class="note">
-                  <div class="notify_body">
-                    <span class="_notify_message"></span>
-                    <span class="_notify_close" onclick="closeNotification()">&times;</span>
-                    </div>
+				</form>
+			</div>
+		</div>
+	</div>
+					-
+</div>
+<!-- end::ADD MODAL -->
+
+
+
+<!-- modal start here -->
+  <div class="modal modalNew fade" id="userModal">
+    <div class="modal-dialog mw-40">
+      <div class="modal-content NewFormDesign">
+        <form id="leaveTypeForm" action="<?php  echo base_url().'settings/addLeaveType';?>" method="POST">
+          <div class="modal-header ">
+            <h3 class="modal-title ">Leave Type</h3>
+          </div>
+          <div class="modal-body container">
+            <div class="col-md-12 col-xl-12">	
+              <!-- <form id="leaveType" method="POST" action="<php echo base_url().'settings/addLeave';?>"> -->
+              <input type="hidden" name="leaveId" id="xeroleaveId" value="">
+              <input type="hidden" name="leaveId" id="leaveId" value="">
+              
+              <div class="col-md-12">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="leaveName" placeholder="Enter leave name" name="leaveName">
+                  <label for="leaveName">Leave Type</label>
+                </div> 
+                <span id="new_leave_type_error" class="text-danger"></span>
+              </div>
+              <span style="color: red" id="leaveNameError"></span>
+
+              <div class="col-md-12">
+                <div class="form-floating">
+                  <input type="text" class="form-control" name="leaveSlug" id="leaveSlug" placeholder="slug">
+                  <label for="leaveSlug">Slug</label>
+                </div> 
+                <span id="slug_error" class="text-danger"></span>
+              </div>
+              <span style="color: red" id="leaveSlugError"></span>
+              
+              <div class="col-md-12 formJustifyCeenter d-flex">
+                <label for="leaveIsPaid">IsPaid</label>
+                <div class="outerDivFull" >
+                  <div class="switchToggle">
+                    <!--dont rename id="switch"-->
+                    <input type="checkbox" id="switch" name="leaveIsPaid">
+                    <!-- <label for="switch">Toggle</label> -->
+                  </div>
                 </div>
               </div>
-              <!-- Notification -->
+              <div class="col-md-12 formJustifyCeenter d-flex">
+                <label for="leaveIsPaid">Medical Record</label><br>
+                <div class="outerDivFull" >
+                  <div class="switcToggle">
+                    <!--dont rename id="switch"-->
+                    <input type="checkbox" id="switc" name="medicalFile">
+                    <!-- <label for="switc">Toggle</label> -->
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 formJustifyCeenter d-flex">
+                <label for="leaveIsPaid">Hours</label><br>
+                <div class="outerDivFull" >
+                  <div class="switToggle">
+                    <!--dont rename id="switch"-->
+                    <input type="checkbox" id="swit" name="hours">
+                    <!-- <label for="swit">Toggle</label> -->
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 checkPayslip">
+                <input type="checkbox" name="show_in_payslips" class="checkbox_label" id="show_in_payslips"><label class=""for="show_in_payslips">Show in payslips</label>
+              </div>
+              <div class="formSubmit " id="updateLeaveType" >
+                <button type="button" class="btn-close btn btn-default btn-small btnBlue pull-right" aria-label="Close" id="closeModal">
+                  <span class="material-icons-outlined">close</span>
+                  Cancel</button>
+                <!-- <button class="submitEditLeave btn btn-default btn-small btnOrange pull-right" onclick="submitEditLeave()" type="button"> -->
+                <button class="submitEditLeave btn btn-default btn-small btnOrange pull-right" type="button" id="editLeave">
+                  <span class="material-icons-outlined">edit</span>
+                  Update</button>
+                <!-- <button class=" btn btn-default btn-small pull-right" type="button" onclick="deleteLeave()"> -->
+                <button class=" btn btn-default btn-small pull-right" type="button" id="deleteLeave">
+                  <span class="material-icons-outlined">delete</span>
+                  Delete</button> 
+              </div>
+              <!-- <div class="form-group text-center  form-group-add" id="addLeaveType" >
+              <button type="button" class=" " data-dismiss="modal" aria-label="Close">
+              <i>
+              <img src="<?php echo base_url('assets/images/icons/x.png'); ?>" style="max-height:1rem;margin-right:10px">
+              </i>Cancel</button>
+              <button class="" type="button" onclick="addLeave()">
+              <i>
+              <img src="<?php echo base_url('assets/images/icons/plus.png'); ?>" style="max-height:1rem;margin-right:10px">
+              </i>Add</button>
+              </div> -->
+              <!-- </form>	 -->
             </div>
+          </div>
+          
+        </form>
+      </div>
+    </div>
+  </div>
+
+    <!-- Notification -->
+    <div class="notify_">
+      <div class="note">
+        <div class="notify_body">
+          <span class="_notify_message"></span>
+          <span class="_notify_close" onclick="closeNotification()">&times;</span>
+          </div>
+      </div>
+    </div>
+    <!-- Notification -->
             <!-- modal end here -->
 <script type="text/javascript">
 
@@ -634,13 +395,14 @@ function showNotification(){
 });
 
   	var base_url = "<?php echo base_url(); ?>";
-		function editLeaveType(leaveId){
-			document.getElementById("leaveId").value = leaveId;
-			document.getElementById("leaveName").value = document.getElementById(leaveId+"name").innerHTML;
-			document.getElementById("leaveSlug").value = document.getElementById(leaveId+"slug").innerHTML;
-			document.getElementById("switch").checked = document.getElementById(leaveId+"isPaidYN").innerHTML == "Y";
-      document.getElementById("switc").checked = document.getElementById(leaveId+"medicalFileYN").innerHTML == "Y";
-      document.getElementById("swit").checked = document.getElementById(leaveId+"hoursYN").innerHTML == "Y";
+		function editLeaveType(leaveId,id){
+			document.getElementById("xeroleaveId").value = leaveId;
+      document.getElementById("leaveId").value = id;
+			document.getElementById("leaveName").value = document.getElementById(id+"name").innerHTML;
+			document.getElementById("leaveSlug").value = document.getElementById(id+"slug").innerHTML;
+			document.getElementById("switch").checked = document.getElementById(id+"isPaidYN").innerHTML == "Y";
+      document.getElementById("switc").checked = document.getElementById(id+"medicalFileYN").innerHTML == "Y";
+      document.getElementById("swit").checked = document.getElementById(id+"hoursYN").innerHTML == "Y";
 			document.getElementById("updateLeaveType").style.display = "block";
 			// document.getElementById("addLeaveType").style.display = "none";
 			jQuery(function($) {
@@ -692,7 +454,7 @@ function showNotification(){
 		    xhr.onreadystatechange = function() {
 		        if (xhr.readyState>3 && xhr.status==200) { 
               // console.log(xhr.responseText)
-		        	// location.reload();
+		        	location.reload();
 		        }
 		    };
 		    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
@@ -705,7 +467,7 @@ function showNotification(){
 
 	$('#XeroLeaves').click(function(){
     var centerid = $('#centerValue').val();
-		var url =  "<?php echo base_url();?>settings/syncXeroLeaves/"+centerid ;
+		var url =  "<?php echo base_url();?>settings/syncXeroLeaves/"+centerid;
     console.log(url)
     $.ajax({
 				url:url,
@@ -721,6 +483,238 @@ function showNotification(){
       var centerid = $('#centerValue').val();
       window.location.href = '<?php echo base_url();?>settings/leaveSettings/'+centerid;
     })
+
+    // DELETE LEAVE
+    $('body').on('click','#deleteLeave',function(){
+      // alert("Hello");
+      var fullurl  = '<?= base_url('api/leave/editLeaveType') ?>';
+			var xdeviceid = '<?php echo $this->session->userdata('x-device-id'); ?>';
+			var xtoken = '<?php echo $this->session->userdata('AuthToken'); ?>';
+      var leaveId = $('#leaveId').val();
+      var xeroleaveId = $('#xeroleaveId').val();
+      var userid = '<?php echo $this->session->userdata('LoginId'); ?>';
+      var centerid = $('#centerValue').val();
+      var leavesdata = JSON.parse($("#leaves-data").text());
+
+      // alert(fullurl + "||" + xdeviceid + "||" + xtoken + "||" + leaveId + "||" + xeroleaveId + "||" + userid + "||" + centerid);
+      var removeIndex = leavesdata.leaveTypes.map(function(item) { return item.leaveid; }).indexOf(xeroleaveId);
+      leavesdata.leaveTypes.splice(removeIndex, 1);
+      var exdata = leavesdata.leaveTypes;
+      
+      $.ajax({
+          url:fullurl,
+          type:"POST",
+          headers:{
+            "x-device-id":'<?= $this->session->userdata('x-device-id') ?>',
+            "x-token":'<?= $this->session->userdata('AuthToken') ?>'
+          },
+          data:JSON.stringify({
+            "leaveId":leaveId,
+            "userid":userid,
+            "centerid":centerid,
+            "xeroleaveId":xeroleaveId,
+            "existeddata":exdata,
+            "type":"DEL"
+          }),
+          beforeSend:function(){
+            $('#deleteLeave').text('PLEASE WAIT...');
+            $('#deleteLeave').attr('disabled',true);
+          },
+          success:function(result,status,xhr){
+            console.log(result);
+            var da = jQuery.parseJSON(result);
+            // console.log(da);
+            console.log(result);
+            if(da.Status == "OK"){
+              // alert("Hello");
+              $("#XeroLeaves").trigger("click");
+            }else if(da.ErrorNumber == 10){
+              alert(da.Message);
+              // alert("Hello Failed");
+            }
+          }
+				});
+
+
+
+
+
+
+
+//       var xhttp = new XMLHttpRequest();
+//       xhttp.open("POST", fullurl, true);
+//       xhttp.setRequestHeader('x-device-id', xdeviceid);
+//       xhttp.setRequestHeader('x-token', xtoken);
+      
+//       xhttp.send(JSON.stringify({
+//           "leaveId":leaveId,
+//           "userid":userid,
+//           "centerid":centerid,
+//           "xeroleaveId":xeroleaveId,
+//           "existeddata":exdata,
+//           "type":"DEL"
+//         }));
+
+//       xhttp.onreadystatechange = function() {
+//         var da = jQuery.parseJSON(this.responseText);
+// // 									// // console.log(da);
+//           // console.log(result);
+//           if(da.Status == "OK"){
+//             // alert("Hello");
+//             $("#XeroLeaves").trigger("click");
+//           }else if(da.ErrorNumber == 10){
+//             alert(da.Message);
+//             // alert("Hello Failed");
+//           }
+//         // console.log(this.responseText);
+//           // if (this.readyState == 4 && this.status == 200) {
+//           //   //console.log(this.responseText);
+//             // var da  = jQuery.parseJSON(this.responseText);
+//             // // console.log(da);
+//             // if(da.Status == "SUCCESS"){
+//             //   alert("Leave Deleted Successfully");
+//             //   location.reload();
+//             // }else if(da.Status == "ERROR"){
+//             //   alert(da.Message);
+//             //   location.reload();
+//             // }
+//           // }
+//       }
+    });
+    // DELETE LEAVE
+
+    //UPDATE LEAVE
+    $('body').on('click','#editLeave',function(){
+      // alert("Hello");
+      var fullurl  = '<?= base_url('api/leave/editLeaveType') ?>';
+			var xdeviceid = '<?php echo $this->session->userdata('x-device-id'); ?>';
+			var xtoken = '<?php echo $this->session->userdata('AuthToken'); ?>';
+
+      var leaveId = $('#leaveId').val();
+      var name = $('#leaveName').val();
+      var slug = $('#leaveSlug').val();
+      var xeroleaveId = $('#xeroleaveId').val();
+
+      if ($('#switch').is(':checked')) {
+        var isPaidYN = "Y";
+      }else{
+        var isPaidYN = "N";
+      }
+      if ($('#switc').is(':checked')) {
+        var medicalFileYN = "Y";
+      }else{
+        var medicalFileYN = "N";
+      }
+      if ($('#swit').is(':checked')) {
+        var hoursYN = "Y";
+      }else{
+        var hoursYN = "N";
+      }
+      if ($('#show_in_payslips').is(':checked')) {
+        var showOnPaySlipYN = "Y";
+      }else{
+        var showOnPaySlipYN = "N";
+      }
+      
+      var userid = '<?php echo $this->session->userdata('LoginId'); ?>';
+      var leavesdata = JSON.parse($("#leaves-data").text());
+      // alert(typeof(leavesdata));
+      // alert(typeof(awards));
+      var removeIndex = leavesdata.leaveTypes.map(function(item) { return item.leaveid; }).indexOf(leaveId);
+      leavesdata.leaveTypes.splice(removeIndex, 1);
+      var exdata = leavesdata.leaveTypes;
+
+      $.ajax({
+          url:fullurl,
+          type:"POST",
+          headers:{
+            "x-device-id":'<?= $this->session->userdata('x-device-id') ?>',
+            "x-token":'<?= $this->session->userdata('AuthToken') ?>'
+          },
+          data:JSON.stringify({
+            "type":"EDI",
+						"existeddata":exdata,
+            "leaveId":leaveId,
+            "name":name,
+            "slug":slug,
+            "isPaidYN":isPaidYN,
+            "showOnPaySlipYN":showOnPaySlipYN,
+            "hours":hoursYN,
+            "userid":userid,
+            "medicalFile":medicalFileYN,
+            "xeroLeaveId":xeroleaveId
+          }),
+          beforeSend:function(){
+            $('#editLeave').text('PLEASE WAIT...');
+            $('#editLeave').attr('disabled',true);
+          },
+          success:function(result,status,xhr){
+            console.log(result);
+            var da = jQuery.parseJSON(result);
+            // console.log(da);
+            console.log(result);
+            if(da.Status == "OK"){
+              // alert("Hello");
+              $("#XeroLeaves").trigger("click");
+            }else if(da.ErrorNumber == 10){
+              alert(da.Message);
+              // alert("Hello Failed");
+            }
+          }
+				});
+
+      // var xhttp = new XMLHttpRequest();
+      // xhttp.open("POST", fullurl, true);
+      // xhttp.setRequestHeader('x-device-id', xdeviceid);
+      // xhttp.setRequestHeader('x-token', xtoken);
+      
+      // xhttp.send(JSON.stringify({
+      //     "leaveId":leaveId,
+      //     "name":name,
+      //     "slug":slug,
+      //     "isPaidYN":isPaidYN,
+      //     "showOnPaySlipYN":showOnPaySlipYN,
+      //     "hours":hoursYN,
+      //     "userid":userid,
+      //     "medicalFile":medicalFileYN
+      //   }));
+
+      // xhttp.onreadystatechange = function() {
+      //     if (this.readyState == 4 && this.status == 200) {
+      //       console.log(this.responseText);
+      //       // var da  = jQuery.parseJSON(this.responseText);
+      //       // // console.log(da);
+      //       // if(da.Status == "SUCCESS"){
+      //       //   alert("Leave Updated Successfully");
+      //       //   location.reload();
+      //       // }else if(da.Status == "ERROR"){
+      //       //   alert(da.Message);
+      //       //   location.reload();
+      //       // }
+      //     }
+      // }
+    });
+    //UPDATE LEAVE
+
+    //CLOSE MODAL
+    $('body').on('click','#closeModal',function(){
+      $('#userModal').modal('hide');
+      location.reload();
+    });
+    //CLOSE MODAL
+
+
+    // XERO POSTINGS
+    //INTERNAL MODALS ADD LEAVE
+    
+    //INTERNAL MODALS ADD LEAVE
+  $(document).on('click','.addLeaves',function(){
+		$(".addLeaveForm").show();    		
+	});
+	$(document).on('click','.close',function(){
+		$(".addLeaveForm,.editLeaveForm").hide();    		
+	});
+    // XERO POSTINGS
 	})
 </script>
  </body>
