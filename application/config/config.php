@@ -24,8 +24,11 @@ date_default_timezone_set('Asia/Kolkata');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/hrms/';
-  // $config['base_url'] = "https://stage.todquest.com/HRMS101/";
+//local host
+// $config['base_url'] = 'http://localhost/hrms/';
+
+//server conn
+$config['base_url'] = "https://hrms.zinggerr.com/";
 /*
 |--------------------------------------------------------------------------
 | Index File

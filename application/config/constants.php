@@ -84,9 +84,11 @@ defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
+//local host
+// define('BASE_API_URL','http://localhost/hrms/api/');
 
-define('BASE_API_URL','http://localhost/hrms/api/');
-// define('BASE_API_URL','https://stage.todquest.com/HRMS101/api/');
+//server conn
+define('BASE_API_URL','https://hrms.zinggerr.com/api/');
 
 define('DOCUMENTS_PATH','../api/application/assets/uploads/documents/');
 
