@@ -42,8 +42,24 @@ if (isset($quotations->quotations) && is_array($quotations->quotations)) {
 }
 ?>
 
-        <span class="quotation"><?php echo $quotations->quotations[$rand]->quote ?></span>
-        <span class="author_name"><i> <br>- <?php echo $quotations->quotations[$rand]->author ?></i></span>
+<?php
+if (isset($quotations->quotations) && is_array($quotations->quotations) && count($quotations->quotations) > 0) {
+    $quoteLength = count($quotations->quotations);
+    $rand = rand(0, $quoteLength - 1);
+
+    if (isset($quotations->quotations[$rand])) {
+        $quote = $quotations->quotations[$rand];
+        ?>
+        <span class="quotation"><?php echo isset($quote->quote) ? $quote->quote : ''; ?></span>
+        <span class="author_name"><i><br>- <?php echo isset($quote->author) ? $quote->author : 'Unknown'; ?></i></span>
+        <?php
+    }
+} else {
+    ?>
+    <span class="quotation">No quote available.</span>
+    <?php
+}
+?>
       </div>
       <form method="post" action="<?php echo base_url('welcome/login'); ?>">          
         <?php  echo '<div class="text-danger">'.$this->session->flashdata("error").'</div>';  ?>
