@@ -90,6 +90,11 @@ class Welcome extends CI_Controller {
 			log_message('error',$e->getMessage().__CLASS__.__FUNCTION__.__FILE__);
 		}
 		$data['quotations'] = $this->getQuotes();
+
+		echo "<pre>";
+		print_r($data);
+		exit;
+
 		$this->load->view('login',$data);
 	}
 
