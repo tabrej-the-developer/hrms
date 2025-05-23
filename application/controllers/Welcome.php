@@ -89,11 +89,12 @@ class Welcome extends CI_Controller {
 		}catch (Exception $e){
 			log_message('error',$e->getMessage().__CLASS__.__FUNCTION__.__FILE__);
 		}
-		$data['quotations'] = $this->getQuotes();
+		$quotes = $this->getQuotes();
+    $data['quotations'] = ($quotes !== null) ? $quotes : array();
 
-		echo "<pre>";
-		print_r($data);
-		exit;
+		// echo "<pre>";
+		// print_r($data);
+		// exit;
 
 		$this->load->view('login',$data);
 	}
