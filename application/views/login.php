@@ -27,20 +27,21 @@
       <h1>Welcome to <span> Our Application<span></h1>
       <div class="text-class">
       <?php 
-    if (is_string($quotations)) {
-        $quotations = json_decode($quotations);
-    }
+if (!empty($quotations) && is_string($quotations)) {
+    $quotations = json_decode($quotations);
+}
 
-    // Defensive check in case decoding failed or structure is unexpected
-    if (isset($quotations->quotations) && is_array($quotations->quotations)) {
-        $quoteLength = count($quotations->quotations);
-        $rand = rand(0, $quoteLength - 1);
-    } else {
-        $quoteLength = 0;
-        $rand = 0;
-        $quotations->quotations = []; // prevent further errors
-    }
+// Defensive check in case decoding failed or structure is unexpected
+if (isset($quotations->quotations) && is_array($quotations->quotations)) {
+    $quoteLength = count($quotations->quotations);
+    $rand = rand(0, $quoteLength - 1);
+} else {
+    $quoteLength = 0;
+    $rand = 0;
+    $quotations = (object)[ 'quotations' => [] ]; // Ensure it's safe to access later
+}
 ?>
+
         <span class="quotation"><?php echo $quotations->quotations[$rand]->quote ?></span>
         <span class="author_name"><i> <br>- <?php echo $quotations->quotations[$rand]->author ?></i></span>
       </div>
