@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Util extends MY_Controller
+class Util extends CI_Controller 
 {
 
 	function __construct()
@@ -22,6 +22,8 @@ class Util extends MY_Controller
 
 	public function getQuotes()
 	{
+		print_r("test");
+		exit;
 		echo json_encode("testingggg");
 		// $this->load->model('utilModel');
 		// $data['quotations'] = $this->utilModel->getQuotations();
