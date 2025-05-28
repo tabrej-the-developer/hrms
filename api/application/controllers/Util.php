@@ -22,13 +22,13 @@ class Util extends MY_Controller
 
 	public function getQuotes()
 	{
-		print_r("test");
-		exit;
-		echo json_encode("testingggg");
-		// $this->load->model('utilModel');
-		// $data['quotations'] = $this->utilModel->getQuotations();
-		// http_response_code(200);
-		// echo json_encode($data);
+		// print_r("test");
+		// exit;
+		// echo json_encode("testingggg");
+		$this->load->model('utilModel');
+		$data['quotations'] = $this->utilModel->getQuotations();
+		http_response_code(200);
+		echo json_encode($data);
 	}
 
 	public function GetAllCenters($userid)
