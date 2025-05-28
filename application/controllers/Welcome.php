@@ -37,11 +37,23 @@ class Welcome extends CI_Controller {
 {
     $this->load->database();
 
-    try {
-        $this->db->initialize();
-        echo "Database is connected.";
-    } catch (Exception $e) {
-        echo "Database connection error: " . $e->getMessage();
+    // Check if DB is connected
+    if ($this->db->conn_id) {
+        echo "Database is connected.<br><br>";
+
+        // Run query
+        $query = $this->db->query("SELECT * FROM quotes");
+
+        // Fetch and display results
+        if ($query->num_rows() > 0) {
+            echo "<pre>";
+            print_r($query->result()); // returns array of objects
+            echo "</pre>";
+        } else {
+            echo "No records found in quotes table.";
+        }
+    } else {
+        echo "Database connection failed.";
     }
 }
 
