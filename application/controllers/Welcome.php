@@ -137,7 +137,6 @@ class Welcome extends CI_Controller {
 
 	function getQuotes(){
 		$url = BASE_API_URL."/Util/getQuotes";
-		print_r($url);
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
