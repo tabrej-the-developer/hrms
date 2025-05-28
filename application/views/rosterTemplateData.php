@@ -65,7 +65,7 @@
 			<div class="rosterContainer ">
 				<div class="d-flex pageHead heading-bar" id="center-id" c_id="<?php echo isset($rosterDetails->centerid) ? $rosterDetails->centerid : null; ?>">
 					<div class="withBackLink">
-						<a href="<?php echo base_url('Roster');?>">
+						<a href="<?php echo base_url('roster/roster_dashboard');?>">
 						<span class="material-icons-outlined">arrow_back</span>
 						</a>				
 						<span class="events_title"><?php echo $rosterDetails->templateName ?></span>
