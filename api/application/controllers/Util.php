@@ -25,8 +25,6 @@ class Util extends MY_Controller
 		$this->load->model('utilModel');
 		$data['quotations'] = $this->utilModel->getQuotations();
 		http_response_code(200);
-		print_r(json_encode($data));
-		exit;
 		echo json_encode($data);
 	}
 
