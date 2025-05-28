@@ -32,6 +32,20 @@ class Welcome extends CI_Controller {
 			redirect(base_url().'welcome/login');
 	}
 
+
+	public function test_db()
+{
+    $this->load->database();
+
+    try {
+        $this->db->initialize();
+        echo "Database is connected.";
+    } catch (Exception $e) {
+        echo "Database connection error: " . $e->getMessage();
+    }
+}
+
+
 	public function login(){
 		try{
 			$this->load->helper('form');
