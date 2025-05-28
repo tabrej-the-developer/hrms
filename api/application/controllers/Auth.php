@@ -52,6 +52,8 @@ class Auth extends CI_Controller
 
 
 
+
+
 	public function login()
 	{
 		$json = json_decode(file_get_contents('php://input'));
@@ -66,6 +68,11 @@ class Auth extends CI_Controller
 				$user = $this->authModel->getUser($email, $password);
 				$emailExist = $this->authModel->getUserFromEmail($email);
 				$userExist = $this->authModel->getUserFromId($email);
+
+				// http_response_code(200);
+				// print_r($userExist);
+				// exit;
+
 				if ($user == null) {
 					$data['Status'] = "ERROR";
 					$data['Message'] = "Invalid email id or password";

@@ -58,6 +58,28 @@ class Welcome extends CI_Controller {
 }
 
 
+public function clear_cache() {
+
+	$this->load->database();
+        // Load the cache driver
+        $this->load->driver('cache');
+	// Clear file cache
+	$this->cache->file->clean();
+
+	// Clear database cache
+	if ($this->db) {
+		$this->db->cache_delete_all(); // Deletes database cache
+	}
+
+	// Clear output cache
+	$this->output->cache(0); // Turns off caching for output
+
+	echo "Cache cleared successfully!";
+}
+
+
+
+
 	public function login(){
 		try{
 			$this->load->helper('form');
@@ -71,7 +93,7 @@ class Welcome extends CI_Controller {
 				$data['password'] = md5($form_data['password']);
 				$data['deviceid'] = $this->getIpAddress();
 				$data['devicetype'] = 'WEB';
-				$url = BASE_API_URL.'auth/login';
+				$url = BASE_API_URL.'Auth/login';
 				$ch = curl_init($url);
 				curl_setopt($ch, CURLOPT_URL,$url);
 				curl_setopt($ch, CURLOPT_POST, 1);
@@ -81,7 +103,9 @@ class Welcome extends CI_Controller {
 				$server_output = curl_exec($ch);
 				// var_dump($server_output);die;
 				$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
+				// $jsonOutput = json_decode($server_output);
+				// print_r($server_output);
+				// exit;
 				if($httpcode == 200){
 					$jsonOutput = json_decode($server_output);
 					if($jsonOutput->Status == "SUCCESS"){

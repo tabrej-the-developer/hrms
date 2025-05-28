@@ -85,10 +85,10 @@ defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automat
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
 //local host
-// define('BASE_API_URL','http://localhost/hrms/api');
+// define('BASE_API_URL','http://localhost/hrms/api/');
 
 //server conn
-define('BASE_API_URL','https://hrms.zinggerr.com/api');
+define('BASE_API_URL','https://hrms.zinggerr.com/api/');
 
 define('DOCUMENTS_PATH','../api/application/assets/uploads/documents/');
 
