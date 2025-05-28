@@ -142,7 +142,11 @@ class Welcome extends CI_Controller {
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		$server_output = curl_exec($ch);
 		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		
+		print_r($server_output);
+		exit;
 		if($httpcode == 200){
+			
 			return $server_output;
 			curl_close ($ch);
 		}
